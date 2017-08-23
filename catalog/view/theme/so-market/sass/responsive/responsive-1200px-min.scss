@@ -1,0 +1,22 @@
+@include breakpoint(lg){
+	.container{width:1200px; overflow: visible;padding: 0 15px;}
+	
+	/*============HOME DEFAULT ==================*/
+	.layout-1.common-home .vertical .vertical-wrapper {
+		display: block !important;
+	}
+     .main-newsleter-popup{
+	    .popup-content{
+	        padding: 84px 30px !important;
+	        padding-left: 53% !important;
+	        margin: 0 20px !important;
+	    }
+	}
+	.typeheader-1 .header-top .header-top-left .languages-block, .typeheader-1 .header-top .header-top-left .currencies-block{
+		z-index: 1000;
+	}
+	 .header-bottom .content_menu .container{
+        overflow: visible !important;
+    }
+	
+}

@@ -1,0 +1,81 @@
+
+//** simple and lightweight mixin library for Sass **
+//-- url : http://bourbon.io/docs ---
+@import 'bourbon/bourbon';
+
+//** Mixins for Rem Font Sizing **
+//-- url : http://hugogiraudel.com/2013/03/18/ultimate-rem-mixin/
+@import 'utilities/rem';
+
+//** Variables for responsive design in bootstrap with sass **
+//-- url : https://gist.github.com/webinfinita/11407836
+@import 'utilities/bootstrap_breakpoints';
+
+//** Makes supporting both left-to-right (LTR) and right-to-left (RTL) easy.**
+//-- url : https://github.com/tysonmatanich/directional-scss
+@import 'utilities/directional';
+
+//Mixins utilities
+@import 'utilities/theme_variables';
+@import 'utilities/utilities';
+
+/*===============================================
+	[SASS DIRECTORY ]
+	
+    [1] BLOCK HEADER
+    [2] BLOCK FOOTER
+	
+==============================================*/
+
+footer.typefooter-3{ background-color: #fff; color: $background; position: relative; font-size: 13px;
+	a{ color: #666; 
+		&:hover{ color: $background; }
+	}
+	.module h3.modtitle,
+	.module h3.footer-title{
+	    text-transform: uppercase;
+    	font-weight: 700;
+    	font-size: 16px;
+    	color: #222;
+    	margin-bottom: 17px;
+    	border: none;
+    	&:before{ display: none; }
+	}
+    .footer-top {
+	    background: transparent;
+	    padding: 53px 0 37px;
+    	ul.menu li { margin-bottom: 8px;
+    		a{ padding: 2px 0;
+    			&:before{ display: none; }
+    			&:hover{ color: #fff; }
+    		}
+    	}
+    	.contact-address li{ color: #8c8c8c; padding:side-values(0 0 25px 41px); }
+    	.contact-address span{ background: #a3a3a3; cursor: pointer;
+    		&:hover{ background: $background; }
+    	}
+    	.contact-address a{ color: #8c8c8c;
+    		&:hover{ color: #fff; }
+    	}
+    	.contact-address > li:last-child{ margin-top: 7px; span{ margin: 0; } }
+	}
+	.footer-socials{ padding: 34px 0;  border-bottom: 1px solid #ddd; text-align: center;
+		.socials-wrap { display: inline-block;
+			.footer-title{ display: table-cell; padding-top: 8px; margin: 0; vertical-align: top; padding-#{$right}: 5px;}
+			ul{ display: table-cell; padding-top: 5px;
+				li{ display: inline-block; margin-#{$left}: 10px; 
+					a{ font-size: 18px; display: block;  width: 40px;  height: 40px;  text-align: center; line-height: 40px; background-color: #3b5998; color: #fff;  border-radius: 50%; @include transition(all .3s ease 0s);
+						.name-social{ display: none; }
+						&:hover{ background: $background!important; color: #fff; }
+					}
+					&.facebook-social  a{ background: #3b5998; }
+					&.twitter-social   a{ background: #00aced; }
+					&.google-social    a{ background: #dd4b39; }
+					&.pinterest-social a{ background: #007bb7; }
+					&.instagram-social  a{ background: #fd47b2; }
+				}
+			}
+		}
+	}
+	.footer-bottom{ background: #f2f2f2; padding: 14px 0; color: #666; }
+}

@@ -1,0 +1,286 @@
+<modification>
+	<name>Email Templates Core</name>
+	<code>emailtemplates_core</code>
+	<version>2.9.3.9</version>
+	<author>Opencart-Templates</author>
+	<link>http://www.opencart-templates.co.uk/advanced_professional_email_template</link>
+
+	<file path="system/library/language.php">
+		<operation>
+			<search><![CDATA[$file = DIR_LANGUAGE]]></search>
+			<ignoreif><![CDATA[$file = $this->path]]></ignoreif>
+			<add position="replace"><![CDATA[$file = $this->path]]></add>
+		</operation>
+		<operation>
+			<search index="0"><![CDATA[private $directory;]]></search>
+			<ignoreif><![CDATA[private $path = DIR_LANGUAGE;]]></ignoreif>
+			<add position="after"><![CDATA[private $path = DIR_LANGUAGE;]]></add>
+		</operation>
+		<operation>
+			<search index="0"><![CDATA[public function get($key]]></search>
+			<ignoreif><![CDATA[public function setPath($path)]]></ignoreif>
+			<add position="before"><![CDATA[	public function setPath($path) {
+		if (!is_dir($path)) {
+			trigger_error('Error: check path exists: '.$path);
+			exit;
+		}
+
+		$this->path = $path;
+	}
+	]]></add>
+		</operation>
+		<operation>
+			<search index="0,1"><![CDATA[require(modification($file));]]></search>
+			<add position="replace"><![CDATA[// Manual Modification Override
+			$base = substr(DIR_SYSTEM, 0, -7);
+			$modification_file = DIR_MODIFICATION . substr($file, strlen($base));
+
+			if (is_file($modification_file)) {
+				require($modification_file);
+			} else {
+				require($file);
+			}]]></add>
+		</operation>
+	</file>
+
+	<file path="system/library/mail.php">
+		<operation>
+			<search index="0"><![CDATA[protected $subject;]]></search>
+			<ignoreif><![CDATA[protected $bcc;]]></ignoreif>
+			<add position="before"><![CDATA[	protected $bcc;]]></add>
+		</operation>
+		<operation>
+			<search index="0"><![CDATA[protected $subject;]]></search>
+			<ignoreif><![CDATA[protected $cc;]]></ignoreif>
+			<add position="before"><![CDATA[	protected $cc;]]></add>
+		</operation>
+		<operation>
+			<search index="0"><![CDATA[protected $subject;]]></search>
+			<ignoreif><![CDATA[protected $mail_queue;]]></ignoreif>
+			<add position="before"><![CDATA[	protected $mail_queue;]]></add>
+		</operation>
+		<operation>
+			<search index="0"><![CDATA[public function send(]]></search>
+			<ignoreif><![CDATA[public function setMailQueue(]]></ignoreif>
+			<add position="before"><![CDATA[	public function setMailQueue($option) {
+		$this->mail_queue = (bool)$option;
+	}]]></add>
+		</operation>
+		<operation>
+			<search index="0"><![CDATA[public function send(]]></search>
+			<ignoreif><![CDATA[public function getSubject(]]></ignoreif>
+			<add position="before"><![CDATA[	public function getSubject() {
+		return $this->subject;
+	}]]></add>
+		</operation>
+		<operation>
+			<search index="0"><![CDATA[public function send(]]></search>
+			<ignoreif><![CDATA[public function setCc(]]></ignoreif>
+			<add position="before"><![CDATA[
+	public function setCc($address) {
+		$this->cc = $address;
+	}]]></add>
+		</operation>
+		<operation>
+			<search index="0"><![CDATA[public function send(]]></search>
+			<ignoreif><![CDATA[public function setBcc(]]></ignoreif>
+			<add position="before"><![CDATA[
+	public function setBcc($address) {
+		$this->bcc = $address;
+	}]]></add>
+		</operation>
+		<operation>
+			<search index="0"><![CDATA[public function send(]]></search>
+			<ignoreif><![CDATA[public function getMailProperties(]]></ignoreif>
+			<add position="before"><![CDATA[
+	public function getMailProperties() {
+		return array(
+			'mail_queue' => $this->mail_queue,
+			'smtp' => array(
+				'hostname' => $this->smtp_hostname,
+				'username' => $this->smtp_username,
+				'password' => $this->smtp_password,
+				'post' => $this->smtp_port,
+				'timeout' => $this->smtp_timeout
+			),
+			'protocol' => $this->protocol,
+			'parameter' => $this->parameter,
+			'attachments' => $this->attachments,
+			'to' => $this->to,
+			'from' => $this->from,
+			'sender' => $this->sender,
+			'reply_to' => (property_exists($this, 'reply_to') ? $this->reply_to : $this->replyto),
+			'cc' => $this->cc,
+			'bcc' => $this->bcc,
+			'subject' => $this->subject,
+			'text' => $this->text
+		);
+	}
+	]]></add>
+		</operation>
+		<operation>
+			<search index="0"><![CDATA[public function send() {]]></search>
+			<ignoreif><![CDATA[if ($this->mail_queue) return true;]]></ignoreif>
+			<add position="after"><![CDATA[		if ($this->mail_queue) {
+			return true; // send later via cron
+		}
+]]></add>
+		</operation>
+		<operation>
+			<search index="0"><![CDATA[$header .= 'Reply-To:]]></search>
+			<ignoreif><![CDATA[$header .= 'CC: ' . $this->cc . PHP_EOL;]]></ignoreif>
+			<add position="after"><![CDATA[
+		if ($this->cc) {
+			$header .= 'CC: ' . $this->cc . PHP_EOL;
+		}
+		]]></add>
+		</operation>
+		<operation>
+			<search index="0"><![CDATA[$header .= 'Reply-To:]]></search>
+			<ignoreif><![CDATA[$header .= 'BCC: ' . $this->bcc . PHP_EOL;]]></ignoreif>
+			<add position="after"><![CDATA[
+		if ($this->bcc) {
+			$header .= 'BCC: ' . $this->bcc . PHP_EOL;
+		}
+		]]></add>
+		</operation>
+	</file>
+
+	<file path="system/library/cache.php">
+		<operation>
+			<search index="0"><![CDATA[public function get(]]></search>
+			<ignoreif><![CDATA[public function getAllKeys(]]></ignoreif>
+			<add position="before"><![CDATA[
+		/**
+		 * Gets the keys stored on all the servers
+		 */
+		public function getAllKeys() {
+			return $this->adaptor->getAllKeys();
+		}]]></add>
+		</operation>
+	</file>
+	<file path="system/library/cache/apc.php">
+		<operation>
+			<search index="0"><![CDATA[public function get(]]></search>
+			<ignoreif><![CDATA[public function getAllKeys(]]></ignoreif>
+			<add position="before"><![CDATA[
+		/**
+		 * Gets the keys stored on all the servers
+		 */
+		public function getAllKeys() {
+			if (!$this->active) {
+				return false;
+			}
+
+			$cache_info = apc_cache_info('user');
+			return $cache_info['cache_list'];
+		}]]></add>
+		</operation>
+	</file>
+	<file path="system/library/cache/mem.php">
+		<operation>
+			<search index="0"><![CDATA[public function get(]]></search>
+			<ignoreif><![CDATA[public function getAllKeys(]]></ignoreif>
+			<add position="before"><![CDATA[
+		/**
+		 * Gets the keys stored on all the servers
+		 */
+		public function getAllKeys() {
+			return $this->memcache->getAllKeys();
+		}]]></add>
+		</operation>
+	</file>
+	<file path="system/library/cache/memcached.php" error="skip">
+		<operation>
+			<search index="0"><![CDATA[public function get(]]></search>
+			<ignoreif><![CDATA[public function getAllKeys(]]></ignoreif>
+			<add position="before"><![CDATA[
+		/**
+		 * Gets the keys stored on all the servers
+		 */
+		public function getAllKeys() {
+			return $this->memcached->getAllKeys();
+		}]]></add>
+		</operation>
+	</file>
+
+	<file path="catalog/model/checkout/order.php">
+		<operation error="log">
+			<search index="0"><![CDATA[$this->db->query("INSERT INTO `" . DB_PREFIX . "order` SET]]></search>
+			<ignoreif>
+				<![CDATA[weight = '" . (isset($data['weight']) ? floatval($data['weight']) : 0) . "',]]></ignoreif>
+			<add position="replace">
+				<![CDATA[$this->db->query("INSERT INTO `" . DB_PREFIX . "order` SET weight = '" . (isset($data['weight']) ? floatval($data['weight']) : 0) . "',]]></add>
+		</operation>
+		<operation error="log">
+			<search index="0"><![CDATA['customer_id'             => $order_query->row['customer_id'],]]></search>
+			<ignoreif>
+				<![CDATA['weight' => (isset($order_query->row['weight'])) ? $order_query->row['weight'] : 0,]]></ignoreif>
+			<add position="after">
+				<![CDATA[            	'weight' => (isset($order_query->row['weight'])) ? $order_query->row['weight'] : 0,]]></add>
+		</operation>
+		<operation>
+			<search index="0"><![CDATA['customer_id'             => $order_query->row['customer_id'],]]></search>
+			<ignoreif>
+				<![CDATA['customer_group_id' => (isset($order_query->row['customer_group_id'])) ? $order_query->row['customer_group_id'] : '',]]></ignoreif>
+			<add position="after">
+				<![CDATA[				'customer_group_id' => (isset($order_query->row['customer_group_id'])) ? $order_query->row['customer_group_id'] : '',]]></add>
+		</operation>
+		<operation>
+			<search index="0"><![CDATA['customer_id'             => $order_query->row['customer_id'],]]></search>
+			<ignoreif>
+				<![CDATA['affiliate_id' => (isset($order_query->row['affiliate_id'])) ? $order_query->row['affiliate_id'] : '',]]></ignoreif>
+			<add position="after">
+				<![CDATA[				'affiliate_id' => (isset($order_query->row['affiliate_id'])) ? $order_query->row['affiliate_id'] : '',]]></add>
+		</operation>
+	</file>
+
+	<file path="catalog/controller/affiliate/login.php">
+		<operation error="skip">
+			<search index="0"><![CDATA[$data['email'] = $this->request->post['email'];]]></search>
+			<ignoreif><![CDATA[elseif (isset($this->request->get['email']))]]></ignoreif>
+			<add position="after"><![CDATA[		} elseif (isset($this->request->get['email'])) {
+			$data['email'] = $this->request->get['email'];]]></add>
+		</operation>
+	</file>
+
+	<file path="catalog/controller/account/login.php">
+		<operation error="skip">
+			<search index="0"><![CDATA[$data['email'] = $this->request->post['email'];]]></search>
+			<ignoreif><![CDATA[elseif (isset($this->request->get['email']))]]></ignoreif>
+			<add position="after"><![CDATA[		} elseif (isset($this->request->get['email'])) {
+			$data['email'] = $this->request->get['email'];]]></add>
+		</operation>
+	</file>
+
+	<file path="admin/controller/startup/permission.php">
+		<operation error="skip">
+			<search index="0"><![CDATA['extension/module']]></search>
+			<ignoreif><![CDATA['extension/mail']]></ignoreif>
+			<add position="before"><![CDATA[				'extension/mail',]]></add>
+		</operation>
+	</file>
+
+	<file path="admin/controller/common/column_left.php">
+		<operation>
+			<search index="0"><![CDATA[if ($extension) {	]]></search>
+			<ignoreif><![CDATA[$this->url->link('extension/mail/template',]]></ignoreif>
+			<add position="before"><![CDATA[            if ($this->user->hasPermission('access', 'extension/mail/template')) {
+                $extension[] = array(
+                    'name'     => $this->language->get('text_emailtemplate'),
+                    'href'     => $this->url->link('extension/mail/template', 'token=' . $this->session->data['token'], true),
+                    'children' => array()
+                );
+            }
+        ]]></add>
+		</operation>
+	</file>
+
+	<file path="admin/language/en-gb/common/column_left.php">
+		<operation>
+			<search index="0"><![CDATA[<?php]]></search>
+			<ignoreif><![CDATA[$_['text_emailtemplate']]]></ignoreif>
+			<add position="after"><![CDATA[$_['text_emailtemplate'] = 'Email Templates';]]></add>
+		</operation>
+	</file>
+</modification>

@@ -1,0 +1,30 @@
+/*===============================================
+	[SASS DIRECTORY ]
+
+	
+==============================================*/
+
+#content{margin-bottom: 30px;}
+.sohomepage-slider .so-homeslider{border: none;}
+.common-home .container-megamenu.vertical .vertical-wrapper{display: block;}
+.container-megamenu.vertical .vertical-wrapper{display: none;}
+.container-megamenu.vertical:hover{
+	.vertical-wrapper{
+		position: absolute;
+		width: 100%;
+		display: block;
+		z-index: 1;
+	}	
+}
+
+.common-home.layout-1{
+	#content{
+		margin-bottom: 0;
+	}
+}
+#collections_block{
+     ul li{
+        width: 16.66%;
+    }
+}
+
