@@ -20,10 +20,32 @@ class ControllerExtensionExtensionModule extends Controller {
 		$this->load->model('extension/module');
 
 		if ($this->validate()) {
+			
+			// Skeleton User Group Add - Team table create when install skeleton Extension.
+				if($this->request->get['extension'] == 'skeleton')
+				{
+					$sql = "CREATE TABLE IF NOT EXISTS `oc_team` (
+						  `team_id` int(6) NOT NULL AUTO_INCREMENT,
+						  `team_name` varchar(255) NOT NULL,
+						  `sales_manager` int(11) NOT NULL,
+						  PRIMARY KEY (`team_id`)
+						) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1" ;
+	
+					$this->model_extension_extension->createtable($sql, 'oc_teams');
+					
+					//3 user group create default
+					$this->model_extension_extension->Bypassusergroupcreate('Company admin');
+					$this->model_extension_extension->Bypassusergroupcreate('Sales Manager');
+					$this->model_extension_extension->Bypassusergroupcreate('Sales Rep');
+					
+					
+				}
+			// End Skeleton User Group Add
+			
 			$this->model_extension_extension->install('module', $this->request->get['extension']);
 
 			$this->load->model('user/user_group');
-
+			
 			$this->model_user_user_group->addPermission($this->user->getGroupId(), 'access', 'extension/module/' . $this->request->get['extension']);
 			$this->model_user_user_group->addPermission($this->user->getGroupId(), 'modify', 'extension/module/' . $this->request->get['extension']);
 

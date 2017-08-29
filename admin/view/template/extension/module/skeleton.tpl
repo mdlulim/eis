@@ -30,10 +30,11 @@
           
           
           <div class="form-group">
-            <label class="col-sm-2 control-label" for="input-status" style="width:100%;text-align:left;"<strong>User Group Insert Successfully - User Group List</strong> <br /> <br /> 
+            <label class="col-sm-2 control-label" for="input-status" style="width:100%;text-align:left;"> <strong>User Group Insert Successfully - User Group List</strong> <br /> <br /> 
    <b style="color:#FF0000;">(1) Company admin </b><br />
    <b style="color:#FF0000;">(2) Sales Manager </b><br />
-   <b style="color:#FF0000;">(3) Sales Rep</b>
+   <b style="color:#FF0000;">(3) Sales Rep</b><br /><br />
+   <strong style="color:#990000;">User Group Insert Successfully - Set the User Group Permission and Access - Go to System > Users > User Groups</strong>
 </label>
             
           </div>
