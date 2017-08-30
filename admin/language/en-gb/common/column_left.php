@@ -78,6 +78,7 @@ $_['text_upload']                    = 'Uploads';
 $_['text_user']                      = 'Users';
 $_['text_users']                     = 'Users';
 $_['text_user_group']                = 'User Groups';
+$_['text_team']                = 'Team';
 $_['text_voucher']                   = 'Gift Vouchers';
 $_['text_voucher_theme']             = 'Voucher Themes';
 $_['text_weight_class']              = 'Weight Classes';
