@@ -177,7 +177,7 @@ class ControllerUserTeam extends Controller {
 			
 		$user = $this->model_user_user->getUser($result['sales_manager']); ;
 		//print_r($user); exit;
-	    $sales_manag = $user['firstname'] . $user['lastname']." (".$user['username'].")";
+	    $sales_manag = $user['firstname'] ." ". $user['lastname']." (".$user['username'].")";
 			
 			$data['teams'][] = array(
 				'team_id' => $result['team_id'],
