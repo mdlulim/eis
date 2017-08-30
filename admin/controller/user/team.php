@@ -171,15 +171,18 @@ class ControllerUserTeam extends Controller {
 
 		$results = $this->model_user_team->getTeams($filter_data);
 		
-		$this->load->model('user/user_group');
+		$this->load->model('user/user');
 		
 		foreach ($results as $result) {
 			
-			$usergroup = $this->model_user_user_group->getUserGroup($result['sales_manager']);
+		$user = $this->model_user_user->getUser($result['sales_manager']); ;
+		//print_r($user); exit;
+	    $sales_manag = $user['firstname'] . $user['lastname']." (".$user['username'].")";
+			
 			$data['teams'][] = array(
 				'team_id' => $result['team_id'],
 				'team_name'          => $result['team_name'],
-				'sales_manager'          => $usergroup['name'],
+				'sales_manager'          => $sales_manag,
 				'edit'          => $this->url->link('user/team/edit', 'token=' . $this->session->data['token'] . '&team_id=' . $result['team_id'] . $url, true)
 			);
 		}
@@ -335,7 +338,10 @@ class ControllerUserTeam extends Controller {
 		}
 		
 		$this->load->model('user/user_group');
-		$data['user_groups'] = $this->model_user_user_group->getUserGroups(); ;
+		$this->load->model('user/user');
+		$user_group_id = $this->model_user_user_group->getUserGroupByName('Sales Manager');
+		$data['users'] = $this->model_user_user->getUsersByGroupId($user_group_id['user_group_id']); ;
+	   //print_r($data['users']); exit;
 	
 		if (isset($this->request->post['sales_manager'])) {
 			$data['sales_manager'] = $this->request->post['sales_manager'];

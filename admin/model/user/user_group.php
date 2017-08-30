@@ -25,6 +25,14 @@ class ModelUserUserGroup extends Model {
 		return $user_group;
 	}
 
+	public function getUserGroupByName($group_name) {
+	
+		$sql = "SELECT * FROM " . DB_PREFIX . "user_group where name LIKE '".$group_name."'";
+		$query = $this->db->query($sql);
+		return $query->row;
+	
+	}
+	
 	public function getUserGroups($data = array()) {
 		$sql = "SELECT * FROM " . DB_PREFIX . "user_group";
 

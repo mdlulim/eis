@@ -94,6 +94,12 @@ class ModelUserUser extends Model {
 		return $query->row['total'];
 	}
 
+	public function getUsersByGroupId($user_group_id) {
+		$query = $this->db->query("SELECT * FROM `" . DB_PREFIX . "user` WHERE user_group_id = '" . (int)$user_group_id . "'");
+
+		return $query->rows;
+	}
+	
 	public function getTotalUsersByGroupId($user_group_id) {
 		$query = $this->db->query("SELECT COUNT(*) AS total FROM `" . DB_PREFIX . "user` WHERE user_group_id = '" . (int)$user_group_id . "'");
 
