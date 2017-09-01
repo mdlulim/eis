@@ -444,13 +444,13 @@ class ControllerCommonColumnLeft extends Controller {
 				);	
 			}
 			
-			if ($this->user->hasPermission('access', 'user/team')) {	
+			/*if ($this->user->hasPermission('access', 'user/team')) {	
 				$user[] = array(
 					'name'	   => $this->language->get('text_team'),
 					'href'     => $this->url->link('user/team', 'token=' . $this->session->data['token'], true),
 					'children' => array()		
 				);	
-			}
+			}*/
 			
 			if ($this->user->hasPermission('access', 'user/api')) {		
 				$user[] = array(
@@ -850,6 +850,46 @@ class ControllerCommonColumnLeft extends Controller {
 					'children' => $report
 				);	
 			}		
+			
+			// Replogic
+			$replogic = array();
+			
+			$teams = array();
+			// Manage Teams
+			if ($this->user->hasPermission('access', 'user/team')) {
+				$teams[] = array(
+					'name'	   => $this->language->get('text_manage_teams'),
+					'href'     => $this->url->link('user/team', 'token=' . $this->session->data['token'], true),
+					'children' => array()		
+				);	
+			}
+			
+			// My Teams
+			if ($this->user->hasPermission('access', 'user/team')) {
+				$teams[] = array(
+					'name'	   => $this->language->get('text_myteams'),
+					'href'     => $this->url->link('user/team', 'token=' . $this->session->data['token'], true),
+					'children' => array()		
+				);	
+			}
+			
+			if ($this->user->hasPermission('access', 'user/team')) {
+				$replogic[] = array(
+					'name'	   => $this->language->get('text_teams'),
+					'children' => 	$teams	
+				);	
+			}
+			
+			
+			if ($replogic) {	
+				$data['menus'][] = array(
+					'id'       => 'menu-replogic',
+					'icon'	   => 'fa-cog', 
+					'name'	   => $this->language->get('text_replogic'),
+					'href'     => '',
+					'children' => $replogic
+				);	
+			}
 			
 			// Stats
 			$data['text_complete_status'] = $this->language->get('text_complete_status');
