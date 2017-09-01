@@ -1,7 +1,7 @@
 <?php
 class ModelUserTeam extends Model {
 	public function addTeam($data) {
-		$this->db->query("INSERT INTO " . DB_PREFIX . "team SET team_name = '" . $this->db->escape($data['team_name']) . "', sales_manager = '" . $this->db->escape($data['permission']) . "'");
+		$this->db->query("INSERT INTO " . DB_PREFIX . "team SET team_name = '" . $this->db->escape($data['team_name']) . "', sales_manager = '" . $this->db->escape($data['sales_manager']) . "'");
 	
 		return $this->db->getLastId();
 	}
