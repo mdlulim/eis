@@ -46,23 +46,30 @@
                 </tr>
               </thead>
               <tbody>
+                <?php if($access == 'yes') { ?>
                 <?php if ($teams) { ?>
-                <?php foreach ($teams as $team) { ?>
-                <tr>
-                  <td class="text-center"><?php if (in_array($team['team_id'], $selected)) { ?>
-                    <input type="checkbox" name="selected[]" value="<?php echo $team['team_id']; ?>" checked="checked" />
+                    <?php foreach ($teams as $team) { ?>
+                        
+                            <tr>
+                              <td class="text-center"><?php if (in_array($team['team_id'], $selected)) { ?>
+                                <input type="checkbox" name="selected[]" value="<?php echo $team['team_id']; ?>" checked="checked" />
+                                <?php } else { ?>
+                                <input type="checkbox" name="selected[]" value="<?php echo $team['team_id']; ?>" />
+                                <?php } ?></td>
+                              <td class="text-left"><?php echo $team['team_name']; ?></td>
+                              <td class="text-left"><?php echo $team['sales_manager']; ?></td>
+                              <td class="text-right"><a href="<?php echo $team['edit']; ?>" data-toggle="tooltip" title="<?php echo $button_edit; ?>" class="btn btn-primary"><i class="fa fa-pencil"></i></a></td>
+                            </tr>
+                     <?php } ?>
                     <?php } else { ?>
-                    <input type="checkbox" name="selected[]" value="<?php echo $team['team_id']; ?>" />
-                    <?php } ?></td>
-                  <td class="text-left"><?php echo $team['team_name']; ?></td>
-                  <td class="text-left"><?php echo $team['sales_manager']; ?></td>
-                  <td class="text-right"><a href="<?php echo $team['edit']; ?>" data-toggle="tooltip" title="<?php echo $button_edit; ?>" class="btn btn-primary"><i class="fa fa-pencil"></i></a></td>
-                </tr>
-                <?php } ?>
+                    <tr>
+                      <td class="text-center" colspan="5"><?php echo $text_no_results; ?></td>
+                    </tr>
+                    <?php } ?>
                 <?php } else { ?>
-                <tr>
-                  <td class="text-center" colspan="5"><?php echo $text_no_results; ?></td>
-                </tr>
+                	<tr>
+                        <td class="text-center" colspan="5">You Don't have Permission to access the Manage Group.</td>
+                    </tr>
                 <?php } ?>
               </tbody>
             </table>
