@@ -880,6 +880,14 @@ class ControllerCommonColumnLeft extends Controller {
 				);	
 			}
 			
+			if ($this->user->hasPermission('access', 'replogic/schedule_management')) {
+				$replogic[] = array(
+					'name'	   => $this->language->get('text_schedule_management'),
+					'href'     => $this->url->link('replogic/schedule_management', 'token=' . $this->session->data['token'], true),
+					'children' => array()
+				);	
+			}
+			
 			
 			if ($replogic) {	
 				$data['menus'][] = array(
