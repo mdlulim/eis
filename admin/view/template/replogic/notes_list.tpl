@@ -35,42 +35,40 @@
               <thead>
                 <tr>
                   <td style="width: 1px;" class="text-center"><input type="checkbox" onclick="$('input[name*=\'selected\']').prop('checked', this.checked);" /></td>
-                  <td class="text-left"><?php if ($sort == 'name') { ?>
-                    <a href="<?php echo $sort_name; ?>" class="<?php echo strtolower($order); ?>"><?php echo $column_name; ?></a>
+                  <td class="text-left"><?php if ($sort == 'note_title') { ?>
+                    <a href="<?php echo $sort_note_title; ?>" class="<?php echo strtolower($order); ?>"><?php echo $column_note_title; ?></a>
                     <?php } else { ?>
-                    <a href="<?php echo $sort_name; ?>"><?php echo $column_name; ?></a>
+                    <a href="<?php echo $sort_note_title; ?>"><?php echo $column_note_title; ?></a>
                     <?php } ?></td>
                   <td class="text-left">Sales Manager</td>
-                  <td class="text-left">Appointment Date</td>
                   
                   <td class="text-right"><?php echo $column_action; ?></td>
                 </tr>
               </thead>
               <tbody>
                 <?php if($access == 'yes') { ?>
-                <?php if ($schedule_managements) { ?>
-                    <?php foreach ($schedule_managements as $schedule_management) { ?>
+                <?php if ($notes) { ?>
+                    <?php foreach ($notes as $note) {  ?>
                         
                             <tr>
-                              <td class="text-center"><?php if (in_array($schedule_management['appointment_id'], $selected)) { ?>
-                                <input type="checkbox" name="selected[]" value="<?php echo $schedule_management['appointment_id']; ?>" checked="checked" />
+                              <td class="text-center"><?php if (in_array($note['note_id'], $selected)) { ?>
+                                <input type="checkbox" name="selected[]" value="<?php echo $note['note_id']; ?>" checked="checked" />
                                 <?php } else { ?>
-                                <input type="checkbox" name="selected[]" value="<?php echo $schedule_management['appointment_id']; ?>" />
+                                <input type="checkbox" name="selected[]" value="<?php echo $note['note_id']; ?>" />
                                 <?php } ?></td>
-                              <td class="text-left"><?php echo $schedule_management['appointment_name']; ?></td>
-                              <td class="text-left"><?php echo $schedule_management['sales_manager']; ?></td>
-                               <td class="text-left"><?php echo $schedule_management['appointment_date']; ?></td>
-                              <td class="text-right"><a href="<?php echo $schedule_management['notes']; ?>" data-toggle="tooltip" title="Notes" class="btn btn-primary"><i class="fa fa-sticky-note"></i></a>&nbsp;<a href="<?php echo $schedule_management['edit']; ?>" data-toggle="tooltip" title="<?php echo $button_edit; ?>" class="btn btn-primary"><i class="fa fa-pencil"></i></a></td>
+                              <td class="text-left"><?php echo $note['note_title']; ?></td>
+                              <td class="text-left"><?php echo $note['sales_manager']; ?></td>
+                              <td class="text-right"><a href="<?php echo $note['edit']; ?>" data-toggle="tooltip" title="<?php echo $button_edit; ?>" class="btn btn-primary"><i class="fa fa-pencil"></i></a></td>
                             </tr>
                      <?php } ?>
                     <?php } else { ?>
                     <tr>
-                      <td class="text-center" colspan="5"><?php echo $text_no_results; ?></td>
+                      <td class="text-center" colspan="5">No any Appointment Notes Available</td>
                     </tr>
                     <?php } ?>
                 <?php } else { ?>
                 	<tr>
-                        <td class="text-center" colspan="5">You Don't have Permission to access the Schedule Manegement.</td>
+                        <td class="text-center" colspan="5">You Don't have Permission to access the Manage Group.</td>
                     </tr>
                 <?php } ?>
               </tbody>

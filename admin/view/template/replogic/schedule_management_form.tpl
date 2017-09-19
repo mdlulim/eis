@@ -68,7 +68,7 @@
             <label class="col-sm-2 control-label" for="input-username"><?php echo $entry_appointment_date; ?></label>
             
             <div class="input-group date" style="padding-left:14px;">
-                  <input type="text" name="appointment_date" value="<?php echo $appointment_date; ?>" placeholder="YYYY-MM-DD" data-date-format="YYYY-MM-DD" id="input-date-added" class="form-control" style="width:163px;" />
+                  <input type="text" name="appointment_date" value="<?php echo $appointment_date; ?>" placeholder="YYYY-MM-DD" data-date-format="YYYY-MM-DD HH:mm:ss" id="input-date-added" class="form-control" style="width:163px;" />
                   <span class="input-group-btn" style="float:left;">
                   <button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
                   </span>
@@ -95,7 +95,10 @@
   </div>
   <script type="text/javascript"><!--
 $('.date').datetimepicker({
-	pickTime: false
+	pickTime: true,
+	defaultDate: new Date(),
+    format:'DD/MM/YYYY HH:mm'
+
 });
 //--></script>
 </div>

@@ -11,6 +11,8 @@ class ModelReplogicScheduleManagement extends Model {
 	}
 
 	public function deleteAppointment($appointment_id) {
+		
+		$this->db->query("DELETE FROM " . DB_PREFIX . "notes WHERE appointment_id = '" . (int)$appointment_id  . "'");
 		$this->db->query("DELETE FROM " . DB_PREFIX . "appointment WHERE appointment_id = '" . (int)$appointment_id . "'");
 	}
 
