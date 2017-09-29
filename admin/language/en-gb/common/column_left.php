@@ -108,4 +108,6 @@ $_['text_schedule_management']       = 'Schedule Management';
 $_['text_replogic']              = 'Replogic'; 
 $_['text_teams']                 = 'Teams'; 
 $_['text_myteams']              = 'My Teams'; 
-$_['text_manage_teams']              = 'Manage Team'; 
+$_['text_manage_teams']              = 'Manage Team';
+$_['text_manage_salesrep']              = 'Manage Sales Rep'; 
+$_['text_manage_salesrep_salesreplist']     = 'Sales Rep List'; 

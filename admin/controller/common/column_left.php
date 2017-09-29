@@ -865,13 +865,13 @@ class ControllerCommonColumnLeft extends Controller {
 			}
 			
 			// My Teams
-			if ($this->user->hasPermission('access', 'user/team')) {
+			/*if ($this->user->hasPermission('access', 'user/team')) {
 				$teams[] = array(
 					'name'	   => $this->language->get('text_myteams'),
 					'href'     => $this->url->link('user/team', 'token=' . $this->session->data['token'], true),
 					'children' => array()		
 				);	
-			}
+			}*/
 			
 			if ($this->user->hasPermission('access', 'user/team')) {
 				$replogic[] = array(
@@ -888,6 +888,21 @@ class ControllerCommonColumnLeft extends Controller {
 				);	
 			}
 			
+			$sales_rep = array();
+			// Sales Rep Team List
+			if ($this->user->hasPermission('access', 'replogic/sales_rep_management')) {
+				$sales_rep[] = array(
+					'name'	   => $this->language->get('text_manage_salesrep_salesreplist'),
+					'href'     => $this->url->link('replogic/sales_rep_management', 'token=' . $this->session->data['token'], true),
+					'children' => array()		
+				);	
+			}
+			if ($this->user->hasPermission('access', 'replogic/sales_rep_management')) {
+				$replogic[] = array(
+					'name'	   => $this->language->get('text_manage_salesrep'),
+					'children' => 	$sales_rep	
+				);	
+			}
 			
 			if ($replogic) {	
 				$data['menus'][] = array(
