@@ -24,7 +24,28 @@ class ModelReplogicScheduleManagement extends Model {
 
 	public function getScheduleManagement($data = array()) {
 		$sql = "SELECT * FROM " . DB_PREFIX . "appointment";
+		
+		if (!empty($data['filter_appointment_name']) || !empty($data['filter_salesrep_id']) || !empty($data['filter_appointment_from']) || !empty($data['filter_appointment_to'])) {
+			$sql .= " where appointment_id > '0'";
+		}
+		
+		if (!empty($data['filter_appointment_name'])) {
+			$sql .= " AND appointment_name LIKE '" . $this->db->escape($data['filter_appointment_name']) . "%'";
+		}
 
+		if (!empty($data['filter_salesrep_id'])) {
+			$sql .= " AND salesrep_id LIKE '" . $this->db->escape($data['filter_salesrep_id']) . "'";
+		}
+		
+		if (!empty($data['filter_appointment_from']) && !empty($data['filter_appointment_to'])) {
+			$fromdate1 = date('Y-m-d', strtotime($data['filter_appointment_from'])); 
+			$fromdate = $fromdate1 ." 00:00:00"; 
+			$todate1 = date('Y-m-d', strtotime($data['filter_appointment_to'])); 
+			$todate = $todate1 ." 00:00:00"; 
+			$sql .= " AND appointment_date >= '" . $fromdate . "' AND appointment_date <= '" . $todate . "'";
+		}
+
+		
 		$sql .= " ORDER BY appointment_name";
 
 		if (isset($data['order']) && ($data['order'] == 'DESC')) {
@@ -44,7 +65,7 @@ class ModelReplogicScheduleManagement extends Model {
 
 			$sql .= " LIMIT " . (int)$data['start'] . "," . (int)$data['limit'];
 		}
-
+//echo $sql; exit;
 		$query = $this->db->query($sql);
 
 		return $query->rows;

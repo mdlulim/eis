@@ -111,6 +111,31 @@ class ControllerReplogicScheduleManagement extends Controller {
 	}
 
 	protected function getList() {
+		
+		if (isset($this->request->get['filter_appointment_name'])) {
+			$filter_appointment_name = $this->request->get['filter_appointment_name'];
+		} else {
+			$filter_appointment_name = null;
+		}
+
+		if (isset($this->request->get['filter_appointment_from'])) {
+			$filter_appointment_from = $this->request->get['filter_appointment_from'];
+		} else {
+			$filter_appointment_from = null;
+		}
+
+		if (isset($this->request->get['filter_appointment_to'])) {
+			$filter_appointment_to = $this->request->get['filter_appointment_to'];
+		} else {
+			$filter_appointment_to = null;
+		}
+
+		if (isset($this->request->get['filter_salesrep_id'])) {
+			$filter_salesrep_id = $this->request->get['filter_salesrep_id'];
+		} else {
+			$filter_salesrep_id = null;
+		}
+		
 		if (isset($this->request->get['sort'])) {
 			$sort = $this->request->get['sort'];
 		} else {
@@ -161,6 +186,10 @@ class ControllerReplogicScheduleManagement extends Controller {
 		$data['schedule_managements'] = array();
 
 		$filter_data = array(
+			'filter_appointment_name'	  => $filter_appointment_name,
+			'filter_appointment_from'	  => $filter_appointment_from,
+			'filter_appointment_to'	  => $filter_appointment_to,
+			'filter_salesrep_id' => $filter_salesrep_id,
 			'sort'  => $sort,
 			'order' => $order,
 			'start' => ($page - 1) * $this->config->get('config_limit_admin'),
@@ -196,12 +225,17 @@ class ControllerReplogicScheduleManagement extends Controller {
 				'appointment_id' => $result['appointment_id'],
 				'appointment_name'          => $result['appointment_name'],
 				'sales_manager'          => $sales_manag,
-				'appointment_date'          => $result['appointment_date'],
+				'appointment_date'          => date('d-m-y H:i:s', strtotime($result['appointment_date'])),
 				'notes'          => $this->url->link('replogic/notes', 'token=' . $this->session->data['token'] . '&appointment_id=' . $result['appointment_id'] . $url, true),
 				'edit'          => $this->url->link('replogic/schedule_management/edit', 'token=' . $this->session->data['token'] . '&appointment_id=' . $result['appointment_id'] . $url, true)
 			);
 		}
-
+		
+		$this->load->model('user/user_group');
+		$this->load->model('user/user');
+		$user_group_id = $this->model_user_user_group->getUserGroupByName('Sales Manager');
+		$data['sales_managers'] = $this->model_user_user->getUsersByGroupId($user_group_id['user_group_id']);
+		
 		$data['heading_title'] = $this->language->get('heading_title');
 		
 		$data['text_list'] = $this->language->get('text_list');
@@ -214,7 +248,8 @@ class ControllerReplogicScheduleManagement extends Controller {
 		$data['button_add'] = $this->language->get('button_add');
 		$data['button_edit'] = $this->language->get('button_edit');
 		$data['button_delete'] = $this->language->get('button_delete');
-
+		$data['token'] = $this->session->data['token'];
+		
 		if (isset($this->error['warning'])) {
 			$data['error_warning'] = $this->error['warning'];
 		} else {
@@ -236,7 +271,23 @@ class ControllerReplogicScheduleManagement extends Controller {
 		}
 
 		$url = '';
+		
+		if (isset($this->request->get['filter_appointment_name'])) {
+			$url .= '&filter_appointment_name=' . urlencode(html_entity_decode($this->request->get['filter_appointment_name'], ENT_QUOTES, 'UTF-8'));
+		}
 
+		if (isset($this->request->get['filter_salesrep_id'])) {
+			$url .= '&filter_salesrep_id=' . $this->request->get['filter_salesrep_id'];
+		}
+		
+		if (isset($this->request->get['filter_appointment_from'])) {
+			$url .= '&filter_appointment_from=' . $this->request->get['filter_appointment_from'];
+		}
+
+		if (isset($this->request->get['filter_appointment_to'])) {
+			$url .= '&filter_appointment_to=' . $this->request->get['filter_appointment_to'];
+		}
+		
 		if ($order == 'ASC') {
 			$url .= '&order=DESC';
 		} else {
@@ -250,7 +301,23 @@ class ControllerReplogicScheduleManagement extends Controller {
 		$data['sort_name'] = $this->url->link('replogic/schedule_management', 'token=' . $this->session->data['token'] . '&sort=name' . $url, true);
 
 		$url = '';
+		
+		if (isset($this->request->get['filter_appointment_name'])) {
+			$url .= '&filter_appointment_name=' . urlencode(html_entity_decode($this->request->get['filter_appointment_name'], ENT_QUOTES, 'UTF-8'));
+		}
 
+		if (isset($this->request->get['filter_salesrep_id'])) {
+			$url .= '&filter_salesrep_id=' . $this->request->get['filter_salesrep_id'];
+		}
+		
+		if (isset($this->request->get['filter_appointment_from'])) {
+			$url .= '&filter_appointment_from=' . $this->request->get['filter_appointment_from'];
+		}
+
+		if (isset($this->request->get['filter_appointment_to'])) {
+			$url .= '&filter_appointment_to=' . $this->request->get['filter_appointment_to'];
+		}
+		
 		if (isset($this->request->get['sort'])) {
 			$url .= '&sort=' . $this->request->get['sort'];
 		}
@@ -269,6 +336,10 @@ class ControllerReplogicScheduleManagement extends Controller {
 
 		$data['results'] = sprintf($this->language->get('text_pagination'), ($schedule_management_total) ? (($page - 1) * $this->config->get('config_limit_admin')) + 1 : 0, ((($page - 1) * $this->config->get('config_limit_admin')) > ($schedule_management_total - $this->config->get('config_limit_admin'))) ? $schedule_management_total : ((($page - 1) * $this->config->get('config_limit_admin')) + $this->config->get('config_limit_admin')), $schedule_management_total, ceil($schedule_management_total / $this->config->get('config_limit_admin')));
 
+		$data['filter_appointment_name'] = $filter_appointment_name;
+		$data['filter_appointment_from'] = $filter_appointment_from;
+		$data['filter_appointment_to'] = $filter_appointment_to;
+		$data['filter_salesrep_id'] = $filter_salesrep_id;
 		$data['sort'] = $sort;
 		$data['order'] = $order;
 

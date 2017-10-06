@@ -29,6 +29,52 @@
         <h3 class="panel-title"><i class="fa fa-list"></i> <?php echo $text_list; ?></h3>
       </div>
       <div class="panel-body">
+        
+        <div class="well">
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label class="control-label" for="input-name">Appointment Name</label>
+                <input type="text" name="filter_appointment_name" value="<?php echo $filter_appointment_name; ?>" placeholder="Appointment Name" id="input-name" class="form-control" />
+              </div>
+              <div class="form-group fromdate">
+                <label class="control-label" for="input-model">Appointment Date From</label>
+                <input type="text" name="filter_appointment_from" value="<?php echo $filter_appointment_from; ?>" placeholder="DD-MM-YYYY" data-date-format="DD-MM-YYYY" id="input-model" class="form-control" style="float:left;width:84%;" />
+                <span class="input-group-btn" style="float:left;">
+                  <button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
+                  </span>
+               
+              </div>
+            </div>
+            <div class="col-sm-6" style="margin-bottom:10px;">
+              <div class="form-group">
+                <label class="control-label" for="input-price">Sales Manager</label>
+                <select name="filter_salesrep_id" class="form-control">
+                	<option value="">Select Sales Manager</option>
+                    <?php foreach($sales_managers as $sales_manager) { ?>
+                    	<?php if ($sales_manager['user_id'] == $filter_salesrep_id) { ?>
+                <option value="<?php echo $sales_manager['user_id']; ?>" selected="selected"><?php echo $sales_manager['firstname']; ?> <?php echo $sales_manager['lastname']; ?></option>
+                <?php } else { ?>
+                <option value="<?php echo $sales_manager['user_id']; ?>"><?php echo $sales_manager['firstname']; ?> <?php echo $sales_manager['lastname']; ?></option>
+                <?php } ?>
+                    <?php } ?>
+                    
+                </select>
+              </div>
+              <div class="form-group todate">
+                <label class="control-label" for="input-quantity">Appointment Date To</label>
+                <input type="text" name="filter_appointment_to" value="<?php echo $filter_appointment_to; ?>" placeholder="DD-MM-YYYY" data-date-format="DD-MM-YYYY" id="input-model" class="form-control" style="float:left;width:84%;" />
+                <span class="input-group-btn" style="float:left;">
+                  <button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
+                  </span>
+              </div>
+            </div>
+            <button type="button" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-filter"></i> Filter</button>
+            <button type="button" id="button-filter-reset" class="btn btn-primary pull-right" style="margin-right:10px;"><i class="fa fa-filter"></i> Reset</button>
+          </div>
+           
+        </div>
+        
         <form action="<?php echo $delete; ?>" method="post" enctype="multipart/form-data" id="form-user">
           <div class="table-responsive">
             <table class="table table-bordered table-hover">
@@ -85,4 +131,56 @@
     </div>
   </div>
 </div>
+<script type="text/javascript"><!--
+$('#button-filter').on('click', function() {
+	var url = 'index.php?route=replogic/schedule_management&token=<?php echo $token; ?>';
+
+	var filter_appointment_name = $('input[name=\'filter_appointment_name\']').val();
+
+	if (filter_appointment_name) {
+		url += '&filter_appointment_name=' + encodeURIComponent(filter_appointment_name);
+	}
+
+	var filter_salesrep_id = $('select[name=\'filter_salesrep_id\']').val();
+
+	if (filter_salesrep_id) {
+		url += '&filter_salesrep_id=' + encodeURIComponent(filter_salesrep_id);
+	}
+
+	var filter_appointment_from = $('input[name=\'filter_appointment_from\']').val();
+
+	if (filter_appointment_from) {
+		url += '&filter_appointment_from=' + encodeURIComponent(filter_appointment_from);
+	}
+	
+	var filter_appointment_to = $('input[name=\'filter_appointment_to\']').val();
+
+	if (filter_appointment_to) {
+		url += '&filter_appointment_to=' + encodeURIComponent(filter_appointment_to);
+	}
+
+	var filter_appointment_to = $('input[name=\'filter_appointment_to\']').val();
+//alert(url);
+	location = url;
+});
+$('#button-filter-reset').on('click', function() {
+	var url = 'index.php?route=replogic/schedule_management&token=<?php echo $token; ?>';
+
+	location = url;
+});
+//--></script>
+<script type="text/javascript"><!--
+$('.fromdate').datetimepicker({
+	pickTime: false,
+	//defaultDate: new Date(),
+    //format:'DD/MM/YYYY HH:mm'
+
+});
+$('.todate').datetimepicker({
+	pickTime: false,
+	//defaultDate: new Date(),
+    //format:'DD/MM/YYYY HH:mm'
+
+});
+//--></script>
 <?php echo $footer; ?> 
