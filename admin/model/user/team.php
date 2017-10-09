@@ -27,7 +27,19 @@ class ModelUserTeam extends Model {
 
 	public function getTeams($data = array()) {
 		$sql = "SELECT * FROM " . DB_PREFIX . "team";
+		
+		if (!empty($data['filter_team_name']) || !empty($data['filter_salesrep_id'])) {
+			$sql .= " where team_id > '0'";
+		}
+		
+		if (!empty($data['filter_team_name'])) {
+			$sql .= " AND team_name LIKE '" . $this->db->escape($data['filter_team_name']) . "%'";
+		}
 
+		if (!empty($data['filter_salesrep_id'])) {
+			$sql .= " AND sales_manager LIKE '" . $this->db->escape($data['filter_salesrep_id']) . "'";
+		}
+		
 		$sql .= " ORDER BY team_name";
 
 		if (isset($data['order']) && ($data['order'] == 'DESC')) {
@@ -47,15 +59,28 @@ class ModelUserTeam extends Model {
 
 			$sql .= " LIMIT " . (int)$data['start'] . "," . (int)$data['limit'];
 		}
-
+//echo $sql; exit;
 		$query = $this->db->query($sql);
 
 		return $query->rows;
 	}
 
-	public function getTotalTeam() {
-		$query = $this->db->query("SELECT COUNT(*) AS total FROM " . DB_PREFIX . "team");
+	public function getTotalTeam($data = array()) {
+		
+		$sql = "SELECT COUNT(*) AS total FROM " . DB_PREFIX . "team";
+		
+		if (!empty($data['filter_team_name']) || !empty($data['filter_salesrep_id'])) {
+			$sql .= " where team_id > '0'";
+		}
+		
+		if (!empty($data['filter_team_name'])) {
+			$sql .= " AND team_name LIKE '" . $this->db->escape($data['filter_team_name']) . "%'";
+		}
 
+		if (!empty($data['filter_salesrep_id'])) {
+			$sql .= " AND sales_manager LIKE '" . $this->db->escape($data['filter_salesrep_id']) . "'";
+		}
+		$query = $this->db->query($sql);
 		return $query->row['total'];
 	}
 

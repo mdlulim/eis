@@ -111,6 +111,19 @@ class ControllerUserTeam extends Controller {
 	}
 
 	protected function getList() {
+		
+		if (isset($this->request->get['filter_team_name'])) {
+			$filter_team_name = $this->request->get['filter_team_name'];
+		} else {
+			$filter_team_name = null;
+		}
+		
+		if (isset($this->request->get['filter_salesrep_id'])) {
+			$filter_salesrep_id = $this->request->get['filter_salesrep_id'];
+		} else {
+			$filter_salesrep_id = null;
+		}
+		
 		if (isset($this->request->get['sort'])) {
 			$sort = $this->request->get['sort'];
 		} else {
@@ -161,13 +174,15 @@ class ControllerUserTeam extends Controller {
 		$data['teams'] = array();
 
 		$filter_data = array(
+			'filter_team_name'	  => $filter_team_name,
+			'filter_salesrep_id' => $filter_salesrep_id,
 			'sort'  => $sort,
 			'order' => $order,
 			'start' => ($page - 1) * $this->config->get('config_limit_admin'),
 			'limit' => $this->config->get('config_limit_admin')
 		);
 
-		$team_total = $this->model_user_team->getTotalTeam();
+		$team_total = $this->model_user_team->getTotalTeam($filter_data);
 
 		$results = $this->model_user_team->getTeams($filter_data);
 		
@@ -213,7 +228,8 @@ class ControllerUserTeam extends Controller {
 		$data['button_add'] = $this->language->get('button_add');
 		$data['button_edit'] = $this->language->get('button_edit');
 		$data['button_delete'] = $this->language->get('button_delete');
-
+		$data['token'] = $this->session->data['token'];
+		
 		if (isset($this->error['warning'])) {
 			$data['error_warning'] = $this->error['warning'];
 		} else {
@@ -235,7 +251,15 @@ class ControllerUserTeam extends Controller {
 		}
 
 		$url = '';
-
+		
+		if (isset($this->request->get['filter_team_name'])) {
+			$url .= '&filter_team_name=' . urlencode(html_entity_decode($this->request->get['filter_team_name'], ENT_QUOTES, 'UTF-8'));
+		}
+		
+		if (isset($this->request->get['filter_salesrep_id'])) {
+			$url .= '&filter_salesrep_id=' . $this->request->get['filter_salesrep_id'];
+		}
+		
 		if ($order == 'ASC') {
 			$url .= '&order=DESC';
 		} else {
@@ -249,7 +273,15 @@ class ControllerUserTeam extends Controller {
 		$data['sort_team_name'] = $this->url->link('user/team', 'token=' . $this->session->data['token'] . '&sort=team_name' . $url, true);
 
 		$url = '';
-
+		
+		if (isset($this->request->get['filter_team_name'])) {
+			$url .= '&filter_team_name=' . urlencode(html_entity_decode($this->request->get['filter_team_name'], ENT_QUOTES, 'UTF-8'));
+		}
+		
+		if (isset($this->request->get['filter_salesrep_id'])) {
+			$url .= '&filter_salesrep_id=' . $this->request->get['filter_salesrep_id'];
+		}
+		
 		if (isset($this->request->get['sort'])) {
 			$url .= '&sort=' . $this->request->get['sort'];
 		}
@@ -257,7 +289,12 @@ class ControllerUserTeam extends Controller {
 		if (isset($this->request->get['order'])) {
 			$url .= '&order=' . $this->request->get['order'];
 		}
-
+		
+		$this->load->model('user/user_group');
+		$this->load->model('user/user');
+		$user_group_id = $this->model_user_user_group->getUserGroupByName('Sales Manager');
+		$data['sales_managers'] = $this->model_user_user->getUsersByGroupId($user_group_id['user_group_id']); 
+		
 		$pagination = new Pagination();
 		$pagination->total = $team_total;
 		$pagination->page = $page;
@@ -268,6 +305,8 @@ class ControllerUserTeam extends Controller {
 
 		$data['results'] = sprintf($this->language->get('text_pagination'), ($team_total) ? (($page - 1) * $this->config->get('config_limit_admin')) + 1 : 0, ((($page - 1) * $this->config->get('config_limit_admin')) > ($team_total - $this->config->get('config_limit_admin'))) ? $team_total : ((($page - 1) * $this->config->get('config_limit_admin')) + $this->config->get('config_limit_admin')), $team_total, ceil($team_total / $this->config->get('config_limit_admin')));
 
+		$data['filter_team_name'] = $filter_team_name;
+		$data['filter_salesrep_id'] = $filter_salesrep_id;
 		$data['sort'] = $sort;
 		$data['order'] = $order;
 
@@ -354,7 +393,7 @@ class ControllerUserTeam extends Controller {
 		$this->load->model('user/user_group');
 		$this->load->model('user/user');
 		$user_group_id = $this->model_user_user_group->getUserGroupByName('Sales Manager');
-		$data['users'] = $this->model_user_user->getUsersByGroupId($user_group_id['user_group_id']); ;
+		$data['users'] = $this->model_user_user->getUsersByGroupId($user_group_id['user_group_id']); 
 	   //print_r($data['users']); exit;
 	
 		if (isset($this->request->post['sales_manager'])) {
