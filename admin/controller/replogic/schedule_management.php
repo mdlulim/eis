@@ -196,7 +196,7 @@ class ControllerReplogicScheduleManagement extends Controller {
 			'limit' => $this->config->get('config_limit_admin')
 		);
 
-		$schedule_management_total = $this->model_replogic_schedule_management->getTotalScheduleManagement();
+		$schedule_management_total = $this->model_replogic_schedule_management->getTotalScheduleManagement($filter_data);
 
 		$results = $this->model_replogic_schedule_management->getScheduleManagement($filter_data);
 		

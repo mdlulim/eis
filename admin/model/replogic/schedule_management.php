@@ -71,9 +71,31 @@ class ModelReplogicScheduleManagement extends Model {
 		return $query->rows;
 	}
 
-	public function getTotalScheduleManagement() {
-		$query = $this->db->query("SELECT COUNT(*) AS total FROM " . DB_PREFIX . "appointment");
+	public function getTotalScheduleManagement($data = array()) {
+		//$query = $this->db->query("SELECT COUNT(*) AS total FROM " . DB_PREFIX . "appointment");
+		
+		$sql = "SELECT COUNT(*) AS total FROM " . DB_PREFIX . "appointment";
+		
+		if (!empty($data['filter_appointment_name']) || !empty($data['filter_salesrep_id']) || !empty($data['filter_appointment_from']) || !empty($data['filter_appointment_to'])) {
+			$sql .= " where appointment_id > '0'";
+		}
+		
+		if (!empty($data['filter_appointment_name'])) {
+			$sql .= " AND appointment_name LIKE '" . $this->db->escape($data['filter_appointment_name']) . "%'";
+		}
 
+		if (!empty($data['filter_salesrep_id'])) {
+			$sql .= " AND salesrep_id LIKE '" . $this->db->escape($data['filter_salesrep_id']) . "'";
+		}
+		
+		if (!empty($data['filter_appointment_from']) && !empty($data['filter_appointment_to'])) {
+			$fromdate1 = date('Y-m-d', strtotime($data['filter_appointment_from'])); 
+			$fromdate = $fromdate1 ." 00:00:00"; 
+			$todate1 = date('Y-m-d', strtotime($data['filter_appointment_to'])); 
+			$todate = $todate1 ." 00:00:00"; 
+			$sql .= " AND appointment_date >= '" . $fromdate . "' AND appointment_date <= '" . $todate . "'";
+		}
+		$query = $this->db->query($sql);
 		return $query->row['total'];
 	}
 
