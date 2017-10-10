@@ -97,6 +97,7 @@
 $('.date').datetimepicker({
 	pickTime: true,
 	defaultDate: new Date(),
+	minDate: moment(),
     format:'DD/MM/YYYY HH:mm'
 
 });
