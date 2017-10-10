@@ -463,11 +463,11 @@ class ControllerReplogicSalesRepManagement extends Controller {
 			$this->error['email'] = $this->language->get('error_email');
 		}
 		
-		if ((utf8_strlen($this->request->post['tel']) < 3) || (utf8_strlen($this->request->post['tel']) > 32)) {
+		if (utf8_strlen($this->request->post['tel']) < 10) {
 			$this->error['tel'] = $this->language->get('error_tel');
 		}
 		
-		if ((utf8_strlen($this->request->post['cell']) < 3) || (utf8_strlen($this->request->post['cell']) > 32)) {
+		if (utf8_strlen($this->request->post['cell']) < 10) {
 			$this->error['cell'] = $this->language->get('error_cell');
 		}
 		

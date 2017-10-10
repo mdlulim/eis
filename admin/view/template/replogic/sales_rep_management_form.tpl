@@ -72,7 +72,7 @@
           <div class="form-group required">
             <label class="col-sm-2 control-label" for="input-username"><?php echo $entry_tel; ?></label>
             <div class="col-sm-10">
-              <input type="text" name="tel" value="<?php echo $tel; ?>" placeholder="<?php echo $entry_tel; ?>" id="input-tel" class="form-control" />
+              <input type="text" name="tel" value="<?php echo $tel; ?>" maxlength="10" placeholder="<?php echo $entry_tel; ?>" id="input-tel" class="form-control" />
               <?php if ($error_tel) { ?>
               <div class="text-danger"><?php echo $error_tel; ?></div>
               <?php } ?>
@@ -82,7 +82,7 @@
           <div class="form-group required">
             <label class="col-sm-2 control-label" for="input-username"><?php echo $entry_cell; ?></label>
             <div class="col-sm-10">
-              <input type="text" name="cell" value="<?php echo $cell; ?>" placeholder="<?php echo $entry_cell; ?>" id="input-cell" class="form-control" />
+              <input type="text" name="cell" value="<?php echo $cell; ?>" maxlength="10" placeholder="<?php echo $entry_cell; ?>" id="input-cell" class="form-control" />
               <?php if ($error_cell) { ?>
               <div class="text-danger"><?php echo $error_cell; ?></div>
               <?php } ?>
