@@ -29,7 +29,8 @@ class ModelReplogicSalesRepManagement extends Model {
 		}
 		
 		if (!empty($data['filter_sales_rep_name'])) {
-			$sql .= " AND (salesrep_name LIKE '" . $this->db->escape($data['filter_sales_rep_name']) . "%' || salesrep_lastname LIKE '" . $this->db->escape($data['filter_sales_rep_name']) . "%')";
+			
+			$sql .= " AND CONCAT(salesrep_name,' ',salesrep_lastname) like '%" . $this->db->escape($data['filter_sales_rep_name']) . "%'";
 			
 		}
 		
@@ -75,7 +76,7 @@ class ModelReplogicSalesRepManagement extends Model {
 		}
 		
 		if (!empty($data['filter_sales_rep_name'])) {
-			$sql .= " AND (salesrep_name LIKE '" . $this->db->escape($data['filter_sales_rep_name']) . "%' || salesrep_lastname LIKE '" . $this->db->escape($data['filter_sales_rep_name']) . "%')";
+			$sql .= " AND CONCAT(salesrep_name,' ',salesrep_lastname) like '%" . $this->db->escape($data['filter_sales_rep_name']) . "%'";
 			
 		}
 		

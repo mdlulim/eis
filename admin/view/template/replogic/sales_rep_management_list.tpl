@@ -122,7 +122,8 @@ $('#button-filter').on('click', function() {
 	var url = 'index.php?route=replogic/sales_rep_management&token=<?php echo $token; ?>';
 
 	var filter_sales_rep_name = $('input[name=\'filter_sales_rep_name\']').val();
-
+	
+	var filter_sales_rep_name = $.trim(filter_sales_rep_name);
 	if (filter_sales_rep_name) {
 		url += '&filter_sales_rep_name=' + encodeURIComponent(filter_sales_rep_name);
 	}
@@ -134,7 +135,7 @@ $('#button-filter').on('click', function() {
 	}
 
 	var filter_email = $('input[name=\'filter_email\']').val();
-
+	var filter_email = $.trim(filter_email);
 	if (filter_email) {
 		url += '&filter_email=' + encodeURIComponent(filter_email);
 	}
