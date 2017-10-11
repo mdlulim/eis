@@ -7,6 +7,7 @@ $_['text_success']     = 'Success: You have modified Schedule Management!';
 $_['text_list']        = 'Schedule Management';
 $_['text_add']         = 'Add Schedule Management';
 $_['text_edit']        = 'Edit Schedule Management';
+$_['text_confirm']        = 'Are you sure want to Delete Schedule Management ?';
 
 // Column
 $_['column_name']      = 'Appointment Name';

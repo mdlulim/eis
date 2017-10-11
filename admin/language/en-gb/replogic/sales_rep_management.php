@@ -7,6 +7,7 @@ $_['text_success']     = 'Success: You have modified Sales Rep Management!';
 $_['text_list']        = 'Sales Rep Management';
 $_['text_add']         = 'Add Sales Rep';
 $_['text_edit']        = 'Edit Sales Rep';
+$_['text_confirm']        = 'Are you sure want to Delete Sales Rep Management ?';
 
 // Column
 $_['column_name']      = 'Sales Rep Name';
