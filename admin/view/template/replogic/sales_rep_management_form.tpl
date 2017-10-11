@@ -92,7 +92,7 @@
           <div class="form-group required">
             <label class="col-sm-2 control-label" for="input-username"><?php echo $entry_password; ?></label>
             <div class="col-sm-10">
-              <input type="text" name="password" value="<?php echo $password; ?>" placeholder="<?php echo $entry_password; ?>" id="input-password" class="form-control" />
+              <input type="password" name="password" value="<?php echo $password; ?>" placeholder="<?php echo $entry_password; ?>" id="input-password" class="form-control" />
               <?php if ($error_password) { ?>
               <div class="text-danger"><?php echo $error_password; ?></div>
               <?php } ?>
