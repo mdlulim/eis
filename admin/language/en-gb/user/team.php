@@ -7,6 +7,7 @@ $_['text_success']     = 'Success: You have modified Team!';
 $_['text_list']        = 'Team';
 $_['text_add']         = 'Add Team';
 $_['text_edit']        = 'Edit Team';
+$_['text_confirm']        = 'Are you sure want to Delete Team ?';
 
 // Column
 $_['column_team_name']      = 'Team Name';
