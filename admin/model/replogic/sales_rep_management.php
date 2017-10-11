@@ -23,7 +23,24 @@ class ModelReplogicSalesRepManagement extends Model {
 
 	public function getSalesReps($data = array()) {
 		$sql = "SELECT * FROM " . DB_PREFIX . "salesrep";
+		
+		if (!empty($data['filter_sales_rep_name']) || !empty($data['filter_team_id']) || !empty($data['filter_email']) ) {
+			$sql .= " where salesrep_id > '0'";
+		}
+		
+		if (!empty($data['filter_sales_rep_name'])) {
+			$sql .= " AND (salesrep_name LIKE '" . $this->db->escape($data['filter_sales_rep_name']) . "%' || salesrep_lastname LIKE '" . $this->db->escape($data['filter_sales_rep_name']) . "%')";
+			
+		}
+		
+		if (!empty($data['filter_email'])) {
+			$sql .= " AND email LIKE '" . $this->db->escape($data['filter_email']) . "%'";
+		}
 
+		if (!empty($data['filter_team_id'])) {
+			$sql .= " AND sales_team_id LIKE '" . $this->db->escape($data['filter_team_id']) . "'";
+		}
+		
 		$sql .= " ORDER BY salesrep_name";
 
 		if (isset($data['order']) && ($data['order'] == 'DESC')) {
@@ -43,15 +60,34 @@ class ModelReplogicSalesRepManagement extends Model {
 
 			$sql .= " LIMIT " . (int)$data['start'] . "," . (int)$data['limit'];
 		}
-
+//echo $sql; exit;
 		$query = $this->db->query($sql);
 
 		return $query->rows;
 	}
 
-	public function getTotalScheduleManagement() {
-		$query = $this->db->query("SELECT COUNT(*) AS total FROM " . DB_PREFIX . "salesrep");
+	public function getTotalScheduleManagement($data = array()) {
+		
+		$sql = "SELECT COUNT(*) AS total FROM " . DB_PREFIX . "salesrep";
+		
+		if (!empty($data['filter_sales_rep_name']) || !empty($data['filter_team_id']) || !empty($data['filter_email']) ) {
+			$sql .= " where salesrep_id > '0'";
+		}
+		
+		if (!empty($data['filter_sales_rep_name'])) {
+			$sql .= " AND (salesrep_name LIKE '" . $this->db->escape($data['filter_sales_rep_name']) . "%' || salesrep_lastname LIKE '" . $this->db->escape($data['filter_sales_rep_name']) . "%')";
+			
+		}
+		
+		if (!empty($data['filter_email'])) {
+			$sql .= " AND email LIKE '" . $this->db->escape($data['filter_email']) . "%'";
+		}
 
+		if (!empty($data['filter_team_id'])) {
+			$sql .= " AND sales_team_id LIKE '" . $this->db->escape($data['filter_team_id']) . "'";
+		}
+		
+		$query = $this->db->query($sql);
 		return $query->row['total'];
 	}
 	

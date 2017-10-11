@@ -111,6 +111,25 @@ class ControllerReplogicSalesRepManagement extends Controller {
 	}
 
 	protected function getList() {
+		
+		if (isset($this->request->get['filter_sales_rep_name'])) {
+			$filter_sales_rep_name = $this->request->get['filter_sales_rep_name'];
+		} else {
+			$filter_sales_rep_name = null;
+		}
+
+		if (isset($this->request->get['filter_email'])) {
+			$filter_email = $this->request->get['filter_email'];
+		} else {
+			$filter_email = null;
+		}
+
+		if (isset($this->request->get['filter_team_id'])) {
+			$filter_team_id = $this->request->get['filter_team_id'];
+		} else {
+			$filter_team_id = null;
+		}
+		
 		if (isset($this->request->get['sort'])) {
 			$sort = $this->request->get['sort'];
 		} else {
@@ -161,13 +180,16 @@ class ControllerReplogicSalesRepManagement extends Controller {
 		$data['sales_rep_managements'] = array();
 
 		$filter_data = array(
+			'filter_sales_rep_name'	  => $filter_sales_rep_name,
+			'filter_email'	  => $filter_email,
+			'filter_team_id' => $filter_team_id,
 			'sort'  => $sort,
 			'order' => $order,
 			'start' => ($page - 1) * $this->config->get('config_limit_admin'),
 			'limit' => $this->config->get('config_limit_admin')
 		);
 
-		$sales_rep_management_total = $this->model_replogic_sales_rep_management->getTotalScheduleManagement();
+		$sales_rep_management_total = $this->model_replogic_sales_rep_management->getTotalScheduleManagement($filter_data);
 
 		$results = $this->model_replogic_sales_rep_management->getSalesReps($filter_data);
 		
@@ -186,7 +208,9 @@ class ControllerReplogicSalesRepManagement extends Controller {
 				'edit'          => $this->url->link('replogic/sales_rep_management/edit', 'token=' . $this->session->data['token'] . '&salesrep_id=' . $result['salesrep_id'] . $url, true)
 			);
 		}
-
+		
+		$data['teams'] = $this->model_replogic_sales_rep_management->getTeams();
+		
 		$data['heading_title'] = $this->language->get('heading_title');
 		
 		$data['text_list'] = $this->language->get('text_list');
@@ -199,6 +223,7 @@ class ControllerReplogicSalesRepManagement extends Controller {
 		$data['button_add'] = $this->language->get('button_add');
 		$data['button_edit'] = $this->language->get('button_edit');
 		$data['button_delete'] = $this->language->get('button_delete');
+		$data['token'] = $this->session->data['token'];
 
 		if (isset($this->error['warning'])) {
 			$data['error_warning'] = $this->error['warning'];
@@ -221,7 +246,19 @@ class ControllerReplogicSalesRepManagement extends Controller {
 		}
 
 		$url = '';
+		
+		if (isset($this->request->get['filter_sales_rep_name'])) {
+			$url .= '&filter_sales_rep_name=' . urlencode(html_entity_decode($this->request->get['filter_sales_rep_name'], ENT_QUOTES, 'UTF-8'));
+		}
 
+		if (isset($this->request->get['filter_team_id'])) {
+			$url .= '&filter_team_id=' . $this->request->get['filter_team_id'];
+		}
+		
+		if (isset($this->request->get['filter_email'])) {
+			$url .= '&filter_email=' . $this->request->get['filter_email'];
+		}
+		
 		if ($order == 'ASC') {
 			$url .= '&order=DESC';
 		} else {
@@ -235,7 +272,19 @@ class ControllerReplogicSalesRepManagement extends Controller {
 		$data['sort_name'] = $this->url->link('replogic/sales_rep_management', 'token=' . $this->session->data['token'] . '&sort=name' . $url, true);
 
 		$url = '';
+		
+		if (isset($this->request->get['filter_sales_rep_name'])) {
+			$url .= '&filter_sales_rep_name=' . urlencode(html_entity_decode($this->request->get['filter_sales_rep_name'], ENT_QUOTES, 'UTF-8'));
+		}
 
+		if (isset($this->request->get['filter_team_id'])) {
+			$url .= '&filter_team_id=' . $this->request->get['filter_team_id'];
+		}
+		
+		if (isset($this->request->get['filter_email'])) {
+			$url .= '&filter_email=' . $this->request->get['filter_email'];
+		}
+		
 		if (isset($this->request->get['sort'])) {
 			$url .= '&sort=' . $this->request->get['sort'];
 		}
@@ -254,6 +303,9 @@ class ControllerReplogicSalesRepManagement extends Controller {
 
 		$data['results'] = sprintf($this->language->get('text_pagination'), ($sales_rep_management_total) ? (($page - 1) * $this->config->get('config_limit_admin')) + 1 : 0, ((($page - 1) * $this->config->get('config_limit_admin')) > ($sales_rep_management_total - $this->config->get('config_limit_admin'))) ? $sales_rep_management_total : ((($page - 1) * $this->config->get('config_limit_admin')) + $this->config->get('config_limit_admin')), $sales_rep_management_total, ceil($sales_rep_management_total / $this->config->get('config_limit_admin')));
 
+		$data['filter_sales_rep_name'] = $filter_sales_rep_name;
+		$data['filter_email'] = $filter_email;
+		$data['filter_team_id'] = $filter_team_id;
 		$data['sort'] = $sort;
 		$data['order'] = $order;
 
@@ -414,7 +466,7 @@ class ControllerReplogicSalesRepManagement extends Controller {
 			$data['password'] = '';
 		}
 		
-		$data['teams'] = $this->model_replogic_sales_rep_management->getTeams(); ;
+		$data['teams'] = $this->model_replogic_sales_rep_management->getTeams();
 	 //  print_r($data['teams']); exit;
 	    if (isset($this->request->post['sales_team_id'])) {
 			$data['sales_team_id'] = $this->request->post['sales_team_id'];

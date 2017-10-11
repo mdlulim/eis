@@ -29,6 +29,44 @@
         <h3 class="panel-title"><i class="fa fa-list"></i> <?php echo $text_list; ?></h3>
       </div>
       <div class="panel-body">
+        
+        <div class="well">
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label class="control-label" for="input-name">Sales Rep Name</label>
+                <input type="text" name="filter_sales_rep_name" value="<?php echo $filter_sales_rep_name; ?>" placeholder="Sales Rep Name" id="input-name" class="form-control" />
+              </div>
+              
+              <div class="form-group">
+                <label class="control-label" for="input-name">Email</label>
+                <input type="text" name="filter_email" value="<?php echo $filter_email; ?>" placeholder="Email" id="input-name" class="form-control" />
+              </div>
+              
+            </div>
+            <div class="col-sm-6" style="margin-bottom:10px;">
+              <div class="form-group">
+                <label class="control-label" for="input-price">Sales Team</label>
+                <select name="filter_team_id" class="form-control">
+                	<option value="">Select Sales Manager</option>
+                    <?php foreach ($teams as $team) {  ?>
+                <?php if ($team['team_id'] == $filter_team_id) { ?>
+                <option value="<?php echo $team['team_id']; ?>" selected="selected"><?php echo $team['team_name']; ?></option>
+                <?php } else { ?>
+                <option value="<?php echo $team['team_id']; ?>"><?php echo $team['team_name']; ?></option>
+                <?php } ?>
+                <?php } ?>
+                    
+                </select>
+              </div>
+              
+            </div>
+            <button type="button" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-filter"></i> Filter</button>
+            <button type="button" id="button-filter-reset" class="btn btn-primary pull-right" style="margin-right:10px;"><i class="fa fa-filter"></i> Reset</button>
+          </div>
+           
+        </div>
+        
         <form action="<?php echo $delete; ?>" method="post" enctype="multipart/form-data" id="form-user">
           <div class="table-responsive">
             <table class="table table-bordered table-hover">
@@ -79,4 +117,35 @@
     </div>
   </div>
 </div>
+<script type="text/javascript"><!--
+$('#button-filter').on('click', function() {
+	var url = 'index.php?route=replogic/sales_rep_management&token=<?php echo $token; ?>';
+
+	var filter_sales_rep_name = $('input[name=\'filter_sales_rep_name\']').val();
+
+	if (filter_sales_rep_name) {
+		url += '&filter_sales_rep_name=' + encodeURIComponent(filter_sales_rep_name);
+	}
+
+	var filter_team_id = $('select[name=\'filter_team_id\']').val();
+
+	if (filter_team_id) {
+		url += '&filter_team_id=' + encodeURIComponent(filter_team_id);
+	}
+
+	var filter_email = $('input[name=\'filter_email\']').val();
+
+	if (filter_email) {
+		url += '&filter_email=' + encodeURIComponent(filter_email);
+	}
+	
+//alert(url);
+	location = url;
+});
+$('#button-filter-reset').on('click', function() {
+	var url = 'index.php?route=replogic/sales_rep_management&token=<?php echo $token; ?>';
+
+	location = url;
+});
+//--></script>
 <?php echo $footer; ?> 
