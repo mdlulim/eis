@@ -907,7 +907,7 @@ class ControllerCommonColumnLeft extends Controller {
 			if ($replogic) {	
 				$data['menus'][] = array(
 					'id'       => 'menu-replogic',
-					'icon'	   => 'fa-cog', 
+					'icon'	   => 'fa-users', 
 					'name'	   => $this->language->get('text_replogic'),
 					'href'     => '',
 					'children' => $replogic
