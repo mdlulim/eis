@@ -48,7 +48,7 @@
               <div class="form-group">
                 <label class="control-label" for="input-price">Sales Team</label>
                 <select name="filter_team_id" class="form-control">
-                	<option value="">Select Sales Manager</option>
+                	<option value="">Select Sales Team</option>
                     <?php foreach ($teams as $team) {  ?>
                 <?php if ($team['team_id'] == $filter_team_id) { ?>
                 <option value="<?php echo $team['team_id']; ?>" selected="selected"><?php echo $team['team_name']; ?></option>
