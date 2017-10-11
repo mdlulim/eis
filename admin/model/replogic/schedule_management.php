@@ -37,11 +37,11 @@ class ModelReplogicScheduleManagement extends Model {
 			$sql .= " AND salesrep_id LIKE '" . $this->db->escape($data['filter_salesrep_id']) . "'";
 		}
 		
-		if (!empty($data['filter_appointment_from']) && !empty($data['filter_appointment_to'])) {
+		if (!empty($data['filter_appointment_from']) && !empty($data['filter_appointment_to'])) { 
 			$fromdate1 = date('Y-m-d', strtotime($data['filter_appointment_from'])); 
-			$fromdate = $fromdate1 ." 00:00:00"; 
+			$fromdate = $fromdate1 ." 23:59:59"; 
 			$todate1 = date('Y-m-d', strtotime($data['filter_appointment_to'])); 
-			$todate = $todate1 ." 00:00:00"; 
+			$todate = $todate1 ." 23:59:59"; 
 			$sql .= " AND appointment_date >= '" . $fromdate . "' AND appointment_date <= '" . $todate . "'";
 		}
 
@@ -90,9 +90,9 @@ class ModelReplogicScheduleManagement extends Model {
 		
 		if (!empty($data['filter_appointment_from']) && !empty($data['filter_appointment_to'])) {
 			$fromdate1 = date('Y-m-d', strtotime($data['filter_appointment_from'])); 
-			$fromdate = $fromdate1 ." 00:00:00"; 
+			$fromdate = $fromdate1 ." 23:59:59"; 
 			$todate1 = date('Y-m-d', strtotime($data['filter_appointment_to'])); 
-			$todate = $todate1 ." 00:00:00"; 
+			$todate = $todate1 ." 23:59:59"; 
 			$sql .= " AND appointment_date >= '" . $fromdate . "' AND appointment_date <= '" . $todate . "'";
 		}
 		$query = $this->db->query($sql);
