@@ -65,6 +65,22 @@
                           </select>
                         </div>
                       </div>
+                      
+                      <div class="form-group">
+                        <label class="col-sm-2 control-label" for="input-customer-group"><?php echo $entry_salesrep; ?></label>
+                        <div class="col-sm-10">
+                          <select name="salesrep_id" id="input-salesrep-id" class="form-control">
+                            <?php foreach ($salesreps as $salesrep) { ?>
+                            <?php if ($salesrep['salesrep_id'] == $salesrep_id) { ?>
+                            <option value="<?php echo $salesrep['salesrep_id']; ?>" selected="selected"><?php echo $salesrep['salesrep_name']; ?> <?php echo $salesrep['salesrep_lastname']; ?></option>
+                            <?php } else { ?>
+                            <option value="<?php echo $salesrep['salesrep_id']; ?>"><?php echo $salesrep['salesrep_name']; ?> <?php echo $salesrep['salesrep_lastname']; ?></option>
+                            <?php } ?>
+                            <?php } ?>
+                          </select>
+                        </div>
+                      </div>
+                      
                       <div class="form-group required">
                         <label class="col-sm-2 control-label" for="input-firstname"><?php echo $entry_firstname; ?></label>
                         <div class="col-sm-10">

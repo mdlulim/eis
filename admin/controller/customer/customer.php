@@ -683,6 +683,7 @@ class ControllerCustomerCustomer extends Controller {
 		$data['text_remove_ban_ip'] = $this->language->get('text_remove_ban_ip');
 
 		$data['entry_customer_group'] = $this->language->get('entry_customer_group');
+		$data['entry_salesrep'] = $this->language->get('entry_salesrep');
 		$data['entry_firstname'] = $this->language->get('entry_firstname');
 		$data['entry_lastname'] = $this->language->get('entry_lastname');
 		$data['entry_email'] = $this->language->get('entry_email');
@@ -854,6 +855,10 @@ class ControllerCustomerCustomer extends Controller {
 			$customer_info = $this->model_customer_customer->getCustomer($this->request->get['customer_id']);
 		}
 
+		$this->load->model('replogic/sales_rep_management');
+
+		$data['salesreps'] = $this->model_replogic_sales_rep_management->getSalesReps();
+		
 		$this->load->model('customer/customer_group');
 
 		$data['customer_groups'] = $this->model_customer_customer_group->getCustomerGroups();
@@ -864,6 +869,14 @@ class ControllerCustomerCustomer extends Controller {
 			$data['customer_group_id'] = $customer_info['customer_group_id'];
 		} else {
 			$data['customer_group_id'] = $this->config->get('config_customer_group_id');
+		}
+		
+		if (isset($this->request->post['salesrep_id'])) {
+			$data['salesrep_id'] = $this->request->post['salesrep_id'];
+		} elseif (!empty($customer_info)) {
+			$data['salesrep_id'] = $customer_info['salesrep_id'];
+		} else {
+			$data['salesrep_id'] = '';
 		}
 
 		if (isset($this->request->post['firstname'])) {
