@@ -178,8 +178,8 @@ class ControllerUserTeam extends Controller {
 			'filter_salesrep_id' => $filter_salesrep_id,
 			'sort'  => $sort,
 			'order' => $order,
-			'start' => ($page - 1) * $this->config->get('config_limit_admin'),
-			'limit' => $this->config->get('config_limit_admin')
+			'start' => ($page - 1) * 10,
+			'limit' => 10
 		);
 
 		$team_total = $this->model_user_team->getTotalTeam($filter_data);
@@ -298,12 +298,12 @@ class ControllerUserTeam extends Controller {
 		$pagination = new Pagination();
 		$pagination->total = $team_total;
 		$pagination->page = $page;
-		$pagination->limit = $this->config->get('config_limit_admin');
+		$pagination->limit = 10;
 		$pagination->url = $this->url->link('user/team', 'token=' . $this->session->data['token'] . $url . '&page={page}', true);
 
 		$data['pagination'] = $pagination->render();
 
-		$data['results'] = sprintf($this->language->get('text_pagination'), ($team_total) ? (($page - 1) * $this->config->get('config_limit_admin')) + 1 : 0, ((($page - 1) * $this->config->get('config_limit_admin')) > ($team_total - $this->config->get('config_limit_admin'))) ? $team_total : ((($page - 1) * $this->config->get('config_limit_admin')) + $this->config->get('config_limit_admin')), $team_total, ceil($team_total / $this->config->get('config_limit_admin')));
+		$data['results'] = sprintf($this->language->get('text_pagination'), ($team_total) ? (($page - 1) * 10) + 1 : 0, ((($page - 1) * 10) > ($team_total - 10)) ? $team_total : ((($page - 1) * 10) + 10), $team_total, ceil($team_total / 10));
 
 		$data['filter_team_name'] = $filter_team_name;
 		$data['filter_salesrep_id'] = $filter_salesrep_id;
