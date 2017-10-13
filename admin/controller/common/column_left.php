@@ -904,6 +904,14 @@ class ControllerCommonColumnLeft extends Controller {
 				);	
 			}
 			
+			if ($this->user->hasPermission('access', 'replogic/customer_contact')) {
+				$replogic[] = array(
+					'name'	   => $this->language->get('text_customer_contact'),
+					'href'     => $this->url->link('replogic/customer_contact', 'token=' . $this->session->data['token'], true),
+					'children' => 	array()	
+				);	
+			}
+			
 			if ($replogic) {	
 				$data['menus'][] = array(
 					'id'       => 'menu-replogic',
