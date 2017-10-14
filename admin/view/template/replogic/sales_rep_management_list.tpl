@@ -4,6 +4,7 @@
     <div class="container-fluid">
       <div class="pull-right"><a href="<?php echo $add; ?>" data-toggle="tooltip" title="<?php echo $button_add; ?>" class="btn btn-primary"><i class="fa fa-plus"></i></a>
         <button type="button" data-toggle="tooltip" title="<?php echo $button_delete; ?>" class="btn btn-danger" onclick="confirm('<?php echo $text_confirm; ?>') ? $('#form-user').submit() : false;"><i class="fa fa-trash-o"></i></button>
+        <a href="<?php echo $cancel; ?>" data-toggle="tooltip" title="<?php echo $button_cancel; ?>" class="btn btn-default"><i class="fa fa-reply"></i></a>
       </div>
       <h1><?php echo $heading_title; ?></h1>
       <ul class="breadcrumb">
@@ -38,14 +39,9 @@
                 <input type="text" name="filter_sales_rep_name" value="<?php echo $filter_sales_rep_name; ?>" placeholder="Sales Rep Name" id="input-name" class="form-control" />
               </div>
               
-              <div class="form-group">
-                <label class="control-label" for="input-name">Email</label>
-                <input type="text" name="filter_email" value="<?php echo $filter_email; ?>" placeholder="Email" id="input-name" class="form-control" />
-              </div>
-              
             </div>
             <div class="col-sm-6" style="margin-bottom:10px;">
-              <div class="form-group">
+              <!--<div class="form-group">
                 <label class="control-label" for="input-price">Sales Team</label>
                 <select name="filter_team_id" class="form-control">
                 	<option value="">Select Sales Team</option>
@@ -58,8 +54,12 @@
                 <?php } ?>
                     
                 </select>
+              </div>-->
+              <input type="hidden" name="team_id" value="<?php echo $team_id; ?>"/>
+              <div class="form-group">
+                <label class="control-label" for="input-name">Email</label>
+                <input type="text" name="filter_email" value="<?php echo $filter_email; ?>" placeholder="Email" id="input-name" class="form-control" />
               </div>
-              
             </div>
             <button type="button" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-filter"></i> Filter</button>
             <button type="button" id="button-filter-reset" class="btn btn-primary pull-right" style="margin-right:10px;"><i class="fa fa-filter"></i> Reset</button>
@@ -128,10 +128,10 @@ $('#button-filter').on('click', function() {
 		url += '&filter_sales_rep_name=' + encodeURIComponent(filter_sales_rep_name);
 	}
 
-	var filter_team_id = $('select[name=\'filter_team_id\']').val();
+	var team_id = $('input[name=\'team_id\']').val();
 
-	if (filter_team_id) {
-		url += '&filter_team_id=' + encodeURIComponent(filter_team_id);
+	if (team_id) {
+		url += '&team_id=' + encodeURIComponent(team_id);
 	}
 
 	var filter_email = $('input[name=\'filter_email\']').val();
@@ -144,7 +144,8 @@ $('#button-filter').on('click', function() {
 	location = url;
 });
 $('#button-filter-reset').on('click', function() {
-	var url = 'index.php?route=replogic/sales_rep_management&token=<?php echo $token; ?>';
+	var team_id = $('input[name=\'team_id\']').val();
+	var url = 'index.php?route=replogic/sales_rep_management&token=<?php echo $token; ?>&team_id=' + team_id + '';
 
 	location = url;
 });

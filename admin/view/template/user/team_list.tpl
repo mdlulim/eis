@@ -91,7 +91,7 @@
                                 <?php } ?></td>
                               <td class="text-left"><?php echo $team['team_name']; ?></td>
                               <td class="text-left"><?php echo $team['sales_manager']; ?></td>
-                              <td class="text-right"><a href="<?php echo $team['edit']; ?>" data-toggle="tooltip" title="<?php echo $button_edit; ?>" class="btn btn-primary"><i class="fa fa-pencil"></i></a></td>
+                              <td class="text-right"><a href="<?php echo $team['salesrep']; ?>" data-toggle="tooltip" title="Sales Rep Management" class="btn btn-primary"><i class="fa fa-street-view"></i></a>&nbsp;<a href="<?php echo $team['edit']; ?>" data-toggle="tooltip" title="<?php echo $button_edit; ?>" class="btn btn-primary"><i class="fa fa-pencil"></i></a></td>
                             </tr>
                      <?php } ?>
                     <?php } else { ?>

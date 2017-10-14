@@ -25,6 +25,7 @@
       </div>
       <div class="panel-body">
         <form action="<?php echo $action; ?>" method="post" enctype="multipart/form-data" id="form-user" class="form-horizontal">
+          <input type="hidden" name="sales_team_id" value="<?php echo $team_id;?>"  />
           <div class="form-group required">
             <label class="col-sm-2 control-label" for="input-username"><?php echo $entry_name; ?></label>
             <div class="col-sm-10">
@@ -43,7 +44,7 @@
               <?php } ?>
             </div>
           </div>
-          <div class="form-group required">
+          <!--<div class="form-group required">
             <label class="col-sm-2 control-label" for="input-user-group"><?php echo $entry_sales_team; ?></label>
             <div class="col-sm-10">
               <select name="sales_team_id" id="input-sales_manager" class="form-control">
@@ -57,7 +58,7 @@
                 <?php } ?>
               </select>
             </div>
-          </div>
+          </div>-->
           
           <div class="form-group required">
             <label class="col-sm-2 control-label" for="input-username"><?php echo $entry_email; ?></label>

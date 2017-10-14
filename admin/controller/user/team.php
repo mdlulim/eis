@@ -212,6 +212,7 @@ class ControllerUserTeam extends Controller {
 				'team_id' => $result['team_id'],
 				'team_name'          => $result['team_name'],
 				'sales_manager'          => $sales_manag,
+				'salesrep'          => $this->url->link('replogic/sales_rep_management', 'token=' . $this->session->data['token'] . '&team_id=' . $result['team_id'] . $url, true),
 				'edit'          => $this->url->link('user/team/edit', 'token=' . $this->session->data['token'] . '&team_id=' . $result['team_id'] . $url, true)
 			);
 		}

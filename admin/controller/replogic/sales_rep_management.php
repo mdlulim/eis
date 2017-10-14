@@ -26,6 +26,18 @@ class ControllerReplogicSalesRepManagement extends Controller {
 
 			$url = '';
 
+			if (isset($this->request->get['filter_sales_rep_name'])) {
+			$url .= '&filter_sales_rep_name=' . urlencode(html_entity_decode($this->request->get['filter_sales_rep_name'], ENT_QUOTES, 'UTF-8'));
+			}
+	
+			if (isset($this->request->get['team_id'])) {
+				$url .= '&team_id=' . $this->request->get['team_id'];
+			}
+			
+			if (isset($this->request->get['filter_email'])) {
+				$url .= '&filter_email=' . $this->request->get['filter_email'];
+			}
+			
 			if (isset($this->request->get['sort'])) {
 				$url .= '&sort=' . $this->request->get['sort'];
 			}
@@ -57,7 +69,19 @@ class ControllerReplogicSalesRepManagement extends Controller {
 			$this->session->data['success'] = $this->language->get('text_success');
 
 			$url = '';
-
+			
+			if (isset($this->request->get['filter_sales_rep_name'])) {
+			$url .= '&filter_sales_rep_name=' . urlencode(html_entity_decode($this->request->get['filter_sales_rep_name'], ENT_QUOTES, 'UTF-8'));
+			}
+	
+			if (isset($this->request->get['team_id'])) {
+				$url .= '&team_id=' . $this->request->get['team_id'];
+			}
+			
+			if (isset($this->request->get['filter_email'])) {
+				$url .= '&filter_email=' . $this->request->get['filter_email'];
+			}
+			
 			if (isset($this->request->get['sort'])) {
 				$url .= '&sort=' . $this->request->get['sort'];
 			}
@@ -92,6 +116,18 @@ class ControllerReplogicSalesRepManagement extends Controller {
 
 			$url = '';
 
+			if (isset($this->request->get['filter_sales_rep_name'])) {
+			$url .= '&filter_sales_rep_name=' . urlencode(html_entity_decode($this->request->get['filter_sales_rep_name'], ENT_QUOTES, 'UTF-8'));
+			}
+	
+			if (isset($this->request->get['team_id'])) {
+				$url .= '&team_id=' . $this->request->get['team_id'];
+			}
+			
+			if (isset($this->request->get['filter_email'])) {
+				$url .= '&filter_email=' . $this->request->get['filter_email'];
+			}
+			
 			if (isset($this->request->get['sort'])) {
 				$url .= '&sort=' . $this->request->get['sort'];
 			}
@@ -124,11 +160,9 @@ class ControllerReplogicSalesRepManagement extends Controller {
 			$filter_email = null;
 		}
 
-		if (isset($this->request->get['filter_team_id'])) {
-			$filter_team_id = $this->request->get['filter_team_id'];
-		} else {
-			$filter_team_id = null;
-		}
+		if (isset($this->request->get['team_id'])) {
+			$team_id = $this->request->get['team_id'];
+		} 
 		
 		if (isset($this->request->get['sort'])) {
 			$sort = $this->request->get['sort'];
@@ -150,6 +184,10 @@ class ControllerReplogicSalesRepManagement extends Controller {
 
 		$url = '';
 
+		if (isset($this->request->get['team_id'])) {
+			$url .= '&team_id=' . $this->request->get['team_id'];
+		}
+		
 		if (isset($this->request->get['sort'])) {
 			$url .= '&sort=' . $this->request->get['sort'];
 		}
@@ -176,13 +214,14 @@ class ControllerReplogicSalesRepManagement extends Controller {
 
 		$data['add'] = $this->url->link('replogic/sales_rep_management/add', 'token=' . $this->session->data['token'] . $url, true);
 		$data['delete'] = $this->url->link('replogic/sales_rep_management/delete', 'token=' . $this->session->data['token'] . $url, true);
+		$data['cancel'] = $this->url->link('user/team', 'token=' . $this->session->data['token'] . $url, true);
 
 		$data['sales_rep_managements'] = array();
 
 		$filter_data = array(
 			'filter_sales_rep_name'	  => $filter_sales_rep_name,
 			'filter_email'	  => $filter_email,
-			'filter_team_id' => $filter_team_id,
+			'team_id' => $team_id,
 			'sort'  => $sort,
 			'order' => $order,
 			'start' => ($page - 1) * $this->config->get('config_limit_admin'),
@@ -209,7 +248,7 @@ class ControllerReplogicSalesRepManagement extends Controller {
 			);
 		}
 		
-		$data['teams'] = $this->model_replogic_sales_rep_management->getTeams();
+		$data['team_id'] = $team_id;
 		
 		$data['heading_title'] = $this->language->get('heading_title');
 		
@@ -251,8 +290,8 @@ class ControllerReplogicSalesRepManagement extends Controller {
 			$url .= '&filter_sales_rep_name=' . urlencode(html_entity_decode($this->request->get['filter_sales_rep_name'], ENT_QUOTES, 'UTF-8'));
 		}
 
-		if (isset($this->request->get['filter_team_id'])) {
-			$url .= '&filter_team_id=' . $this->request->get['filter_team_id'];
+		if (isset($this->request->get['team_id'])) {
+			$url .= '&team_id=' . $this->request->get['team_id'];
 		}
 		
 		if (isset($this->request->get['filter_email'])) {
@@ -277,8 +316,8 @@ class ControllerReplogicSalesRepManagement extends Controller {
 			$url .= '&filter_sales_rep_name=' . urlencode(html_entity_decode($this->request->get['filter_sales_rep_name'], ENT_QUOTES, 'UTF-8'));
 		}
 
-		if (isset($this->request->get['filter_team_id'])) {
-			$url .= '&filter_team_id=' . $this->request->get['filter_team_id'];
+		if (isset($this->request->get['team_id'])) {
+			$url .= '&team_id=' . $this->request->get['team_id'];
 		}
 		
 		if (isset($this->request->get['filter_email'])) {
@@ -305,7 +344,7 @@ class ControllerReplogicSalesRepManagement extends Controller {
 
 		$data['filter_sales_rep_name'] = $filter_sales_rep_name;
 		$data['filter_email'] = $filter_email;
-		$data['filter_team_id'] = $filter_team_id;
+		$data['team_id'] = $team_id;
 		$data['sort'] = $sort;
 		$data['order'] = $order;
 
@@ -381,7 +420,19 @@ class ControllerReplogicSalesRepManagement extends Controller {
 		}
 
 		$url = '';
+		
+		if (isset($this->request->get['filter_sales_rep_name'])) {
+			$url .= '&filter_sales_rep_name=' . urlencode(html_entity_decode($this->request->get['filter_sales_rep_name'], ENT_QUOTES, 'UTF-8'));
+		}
 
+		if (isset($this->request->get['team_id'])) {
+			$url .= '&team_id=' . $this->request->get['team_id'];
+		}
+		
+		if (isset($this->request->get['filter_email'])) {
+			$url .= '&filter_email=' . $this->request->get['filter_email'];
+		}
+		
 		if (isset($this->request->get['sort'])) {
 			$url .= '&sort=' . $this->request->get['sort'];
 		}
@@ -468,13 +519,9 @@ class ControllerReplogicSalesRepManagement extends Controller {
 		
 		$data['teams'] = $this->model_replogic_sales_rep_management->getTeams();
 	 //  print_r($data['teams']); exit;
-	    if (isset($this->request->post['sales_team_id'])) {
-			$data['sales_team_id'] = $this->request->post['sales_team_id'];
-		} elseif (!empty($appointment_info)) {
-			$data['sales_team_id'] = $appointment_info['sales_team_id'];
-		} else {
-			$data['sales_team_id'] = '';
-		}
+	    if (isset($this->request->get['team_id'])) {
+			$data['team_id'] = $this->request->get['team_id'];
+		} 
 
 		$ignore = array(
 			'common/dashboard',

@@ -888,7 +888,7 @@ class ControllerCommonColumnLeft extends Controller {
 				);	
 			}
 			
-			$sales_rep = array();
+			/*$sales_rep = array();
 			// Sales Rep Team List
 			if ($this->user->hasPermission('access', 'replogic/sales_rep_management')) {
 				$sales_rep[] = array(
@@ -902,7 +902,7 @@ class ControllerCommonColumnLeft extends Controller {
 					'name'	   => $this->language->get('text_manage_salesrep'),
 					'children' => 	$sales_rep	
 				);	
-			}
+			}*/
 			
 			if ($this->user->hasPermission('access', 'replogic/customer_contact')) {
 				$replogic[] = array(
