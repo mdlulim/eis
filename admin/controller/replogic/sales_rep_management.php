@@ -563,11 +563,7 @@ class ControllerReplogicSalesRepManagement extends Controller {
 		}
 		
 		if (utf8_strlen($this->request->post['tel']) < 10) {
-			$tel = $this->request->post['tel'];
-			if(!is_numeric($tel))
-			{ 
-				$this->error['tel'] = $this->language->get('error_tel');
-			}
+			$this->error['tel'] = $this->language->get('error_tel');
 			
 		}
 		
