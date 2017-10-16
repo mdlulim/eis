@@ -83,5 +83,11 @@ class ModelUserTeam extends Model {
 		$query = $this->db->query($sql);
 		return $query->row['total'];
 	}
+	
+	public function getTeamName($team_name) {
+		$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "team WHERE team_name = '" . $this->db->escape($team_name) . "'");
+
+		return $query->row;
+	}
 
 }

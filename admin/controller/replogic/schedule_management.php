@@ -392,6 +392,18 @@ class ControllerReplogicScheduleManagement extends Controller {
 		} else {
 			$data['error_appointment_date'] = '';
 		}
+		
+		if (isset($this->error['salesrep_id'])) {
+			$data['error_salesrep_id'] = $this->error['salesrep_id'];
+		} else {
+			$data['error_salesrep_id'] = '';
+		}
+		
+		if (isset($this->error['customer_id'])) {
+			$data['error_customer_id'] = $this->error['customer_id'];
+		} else {
+			$data['error_customer_id'] = '';
+		}
 
 		$url = '';
 
@@ -472,8 +484,8 @@ class ControllerReplogicScheduleManagement extends Controller {
 	   $this->load->model('customer/customer');
 	   $data['customers'] = $this->model_customer_customer->getCustomers(); ;
 	
-		if (isset($this->request->post['sales_manager'])) {
-			$data['sales_manager'] = $this->request->post['sales_manager'];
+		if (isset($this->request->post['salesrep_id'])) {
+			$data['sales_manager'] = $this->request->post['salesrep_id'];
 		} elseif (!empty($appointment_info)) {
 			$data['sales_manager'] = $appointment_info['salesrep_id'];
 		} else {
@@ -517,6 +529,14 @@ class ControllerReplogicScheduleManagement extends Controller {
 		
 		if ((utf8_strlen($this->request->post['appointment_date']) < 3) || (utf8_strlen($this->request->post['appointment_date']) > 64)) {
 			$this->error['appointment_date'] = $this->language->get('error_appointment_date');
+		}
+		
+		if ($this->request->post['salesrep_id'] == '') {
+			$this->error['salesrep_id'] = $this->language->get('error_salesrep_id');
+		}
+		
+		if ($this->request->post['customer_id'] == '') {
+			$this->error['customer_id'] = $this->language->get('error_customer_id');
 		}
 
 		return !$this->error;

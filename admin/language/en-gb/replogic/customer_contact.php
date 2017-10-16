@@ -31,3 +31,5 @@ $_['error_last_name']       = 'Last Name must be between 3 and 64 characters!';
 $_['error_email']           = 'E-Mail Address does not appear to be valid!';
 $_['error_telephone_number']       = 'Telephone Number must be 10 Digits!';
 $_['error_cellphone_number']       = 'Cell Number must be 10 Digits!';
+$_['error_customer_id']       = 'Plz Select Customer!';
+

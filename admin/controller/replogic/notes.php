@@ -319,6 +319,12 @@ class ControllerReplogicNotes extends Controller {
 		} else {
 			$data['error_note_description'] = '';
 		}
+		
+		if (isset($this->error['salesrep_id'])) {
+			$data['error_salesrep_id'] = $this->error['salesrep_id'];
+		} else {
+			$data['error_salesrep_id'] = '';
+		}
 
 		$url = '';
 
@@ -385,8 +391,8 @@ class ControllerReplogicNotes extends Controller {
 		$data['users'] = $this->model_user_user->getUsersByGroupId($user_group_id['user_group_id']); ;
 	   //print_r($data['users']); exit;
 	
-		if (isset($this->request->post['sales_manager'])) {
-			$data['sales_manager'] = $this->request->post['sales_manager'];
+		if (isset($this->request->post['salesrep_id'])) {
+			$data['sales_manager'] = $this->request->post['salesrep_id'];
 		} elseif (!empty($team_info)) {
 			$data['sales_manager'] = $team_info['sales_manager'];
 		} else {
@@ -426,6 +432,10 @@ class ControllerReplogicNotes extends Controller {
 		
 		if ((utf8_strlen($this->request->post['note_description']) < 3) || (utf8_strlen($this->request->post['note_description']) > 64)) {
 			$this->error['note_description'] = $this->language->get('error_note_description');
+		}
+		
+		if ($this->request->post['salesrep_id'] == '') {
+			$this->error['salesrep_id'] = $this->language->get('error_salesrep_id');
 		}
 
 		return !$this->error;

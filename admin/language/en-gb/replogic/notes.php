@@ -24,3 +24,4 @@ $_['entry_modify']     = 'Modify Permission';
 $_['error_permission'] = 'Warning: You do not have permission to modify Appointment Notes!';
 $_['error_note_title']       = 'Notes Title must be between 3 and 64 characters!';
 $_['error_note_description']       = 'Notes Description must be between 3 and 64 characters!';
+$_['error_salesrep_id']       = 'Plz Select Sales Manager!';

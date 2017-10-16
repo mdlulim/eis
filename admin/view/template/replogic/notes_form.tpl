@@ -39,6 +39,7 @@
             <label class="col-sm-2 control-label" for="input-user-group"><?php echo $entry_sales; ?></label>
             <div class="col-sm-10">
               <select name="salesrep_id" id="input-sales_manager" class="form-control">
+                <option value="">Select Sales Manager</option>
                 <?php foreach ($users as $user) { ?>
                 <?php if ($user['user_id'] == $sales_manager) { ?>
                 <option value="<?php echo $user['user_id']; ?>" selected="selected"><?php echo $user['firstname']; ?> <?php echo $user['lastname']; ?>&nbsp;(<?php echo $user['username']; ?>)</option>
@@ -47,6 +48,9 @@
                 <?php } ?>
                 <?php } ?>
               </select>
+              <?php if ($error_salesrep_id) { ?>
+              <div class="text-danger"><?php echo $error_salesrep_id; ?></div>
+              <?php } ?>
             </div>
           </div>
           

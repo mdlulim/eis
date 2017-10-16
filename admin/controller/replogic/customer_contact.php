@@ -372,6 +372,12 @@ class ControllerReplogicCustomerContact extends Controller {
 			$data['error_cellphone_number'] = '';
 		}
 		
+		if (isset($this->error['customer_id'])) {
+			$data['error_customer_id'] = $this->error['customer_id'];
+		} else {
+			$data['error_customer_id'] = '';
+		}
+		
 		$url = '';
 
 		if (isset($this->request->get['sort'])) {
@@ -505,6 +511,10 @@ class ControllerReplogicCustomerContact extends Controller {
 		
 		if (utf8_strlen($this->request->post['cellphone_number']) < 10) {
 			$this->error['cellphone_number'] = $this->language->get('error_cellphone_number');
+		}
+		
+		if ($this->request->post['customer_id'] == '') {
+			$this->error['customer_id'] = $this->language->get('error_customer_id');
 		}
 		
 		return !$this->error;

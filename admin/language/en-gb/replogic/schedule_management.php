@@ -28,3 +28,5 @@ $_['error_schedule_management'] = 'Warning: You do not have permission to modify
 $_['error_appointment_name']       = 'Appointment Name must be between 3 and 64 characters!';
 $_['error_appointment_description']       = 'Appointment Description must be between 3 and 64 characters!';
 $_['error_appointment_date']       = 'Plz Enter Appointment Date!';
+$_['error_salesrep_id']       = 'Plz Select Sales Manager!';
+$_['error_customer_id']       = 'Plz Select Customer!';

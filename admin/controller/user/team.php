@@ -344,6 +344,12 @@ class ControllerUserTeam extends Controller {
 		} else {
 			$data['error_team_name'] = '';
 		}
+		
+		if (isset($this->error['sales_manager'])) {
+			$data['error_sales_manager'] = $this->error['sales_manager'];
+		} else {
+			$data['error_sales_manager'] = '';
+		}
 
 		$url = '';
 
@@ -431,9 +437,28 @@ class ControllerUserTeam extends Controller {
 		if (!$this->user->hasPermission('modify', 'user/team')) {
 			$this->error['warning'] = $this->language->get('error_team');
 		}
-
+		
 		if ((utf8_strlen($this->request->post['team_name']) < 3) || (utf8_strlen($this->request->post['team_name']) > 64)) {
 			$this->error['team_name'] = $this->language->get('error_team_name');
+			
+		}
+		else
+		{ 
+			
+				$team_info = $this->model_user_team->getTeamName($this->request->post['team_name']);
+	
+				if ($team_info && isset($this->request->get['team_id']) && $team_info['team_id'] != $this->request->get['team_id']) { 
+					$this->error['team_name'] = sprintf($this->language->get('error_team_name_exit'));
+				}
+	
+				if ($team_info && !isset($this->request->get['team_id'])) {
+					$this->error['team_name'] = sprintf($this->language->get('error_team_name_exit'));
+				}
+			
+		}
+		
+		if ($this->request->post['sales_manager'] == '') {
+			$this->error['sales_manager'] = $this->language->get('error_sales_manager');
 		}
 
 		return !$this->error;
