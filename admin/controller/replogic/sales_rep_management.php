@@ -563,10 +563,25 @@ class ControllerReplogicSalesRepManagement extends Controller {
 		}
 		
 		if (utf8_strlen($this->request->post['tel']) < 10) {
+			$tel = $this->request->post['tel'];
+			if(!is_numeric($tel))
+			{ 
+				$this->error['tel'] = $this->language->get('error_tel');
+			}
+			
+		}
+		
+		$tel = $this->request->post['tel'];
+		if(!is_numeric($tel)) {
 			$this->error['tel'] = $this->language->get('error_tel');
 		}
 		
 		if (utf8_strlen($this->request->post['cell']) < 10) {
+			$this->error['cell'] = $this->language->get('error_cell');
+		}
+		
+		$cell = $this->request->post['cell'];
+		if(!is_numeric($cell)) {
 			$this->error['cell'] = $this->language->get('error_cell');
 		}
 		
