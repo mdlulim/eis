@@ -106,7 +106,7 @@
                               <td class="text-left"><?php echo $schedule_management['appointment_name']; ?></td>
                               <td class="text-left"><?php echo $schedule_management['sales_manager']; ?></td>
                                <td class="text-left"><?php echo $schedule_management['appointment_date']; ?></td>
-                              <td class="text-right"><a href="<?php echo $schedule_management['notes']; ?>" data-toggle="tooltip" title="Notes" class="btn btn-primary"><i class="fa fa-sticky-note"></i></a>&nbsp;<a href="<?php echo $schedule_management['edit']; ?>" data-toggle="tooltip" title="<?php echo $button_edit; ?>" class="btn btn-primary"><i class="fa fa-pencil"></i></a></td>
+                              <td class="text-right"><a href="<?php echo $schedule_management['tasks']; ?>" data-toggle="tooltip" title="Tasks" class="btn btn-primary"><i class="fa fa-tasks"></i></a>&nbsp;<a href="<?php echo $schedule_management['notes']; ?>" data-toggle="tooltip" title="Notes" class="btn btn-primary"><i class="fa fa-sticky-note"></i></a>&nbsp;<a href="<?php echo $schedule_management['edit']; ?>" data-toggle="tooltip" title="<?php echo $button_edit; ?>" class="btn btn-primary"><i class="fa fa-pencil"></i></a></td>
                             </tr>
                      <?php } ?>
                     <?php } else { ?>

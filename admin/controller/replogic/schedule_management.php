@@ -226,6 +226,7 @@ class ControllerReplogicScheduleManagement extends Controller {
 				'appointment_name'          => $result['appointment_name'],
 				'sales_manager'          => $sales_manag,
 				'appointment_date'          => date('d-m-y H:i:s', strtotime($result['appointment_date'])),
+				'tasks'          => $this->url->link('replogic/tasks', 'token=' . $this->session->data['token'] . '&appointment_id=' . $result['appointment_id'] . $url, true),
 				'notes'          => $this->url->link('replogic/notes', 'token=' . $this->session->data['token'] . '&appointment_id=' . $result['appointment_id'] . $url, true),
 				'edit'          => $this->url->link('replogic/schedule_management/edit', 'token=' . $this->session->data['token'] . '&appointment_id=' . $result['appointment_id'] . $url, true)
 			);

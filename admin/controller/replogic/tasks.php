@@ -1,31 +1,35 @@
 <?php
-class ControllerReplogicNotes extends Controller {
+class ControllerReplogicTasks extends Controller {
 	private $error = array();
 
 	public function index() {
-		$this->load->language('replogic/notes');
+		$this->load->language('replogic/tasks');
 
 		$this->document->setTitle($this->language->get('heading_title'));
 
-		$this->load->model('replogic/notes');
+		$this->load->model('replogic/tasks');
 
 		$this->getList();
 	}
 
 	public function add() {
-		$this->load->language('replogic/notes');
+		$this->load->language('replogic/tasks');
 
 		$this->document->setTitle($this->language->get('heading_title'));
 
-		$this->load->model('replogic/notes');
+		$this->load->model('replogic/tasks');
 
 		if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validateForm()) {
-			$this->model_replogic_notes->addNote($this->request->post);
+			$this->model_replogic_tasks->addTasks($this->request->post);
 
 			$this->session->data['success'] = $this->language->get('text_success');
 
 			$url = '';
 
+			if (isset($this->request->get['appointment_id'])) {
+				$url .= '&appointment_id=' . $this->request->get['appointment_id'];
+			}
+			
 			if (isset($this->request->get['sort'])) {
 				$url .= '&sort=' . $this->request->get['sort'];
 			}
@@ -38,26 +42,30 @@ class ControllerReplogicNotes extends Controller {
 				$url .= '&page=' . $this->request->get['page'];
 			}
 
-			$this->response->redirect($this->url->link('replogic/notes', 'token=' . $this->session->data['token'] . '&appointment_id=' . $this->request->get['appointment_id'] . $url, true));
+			$this->response->redirect($this->url->link('replogic/tasks', 'token=' . $this->session->data['token'] . '&appointment_id=' . $this->request->get['appointment_id'] . $url, true));
 		}
 
 		$this->getForm();
 	}
 
 	public function edit() {
-		$this->load->language('replogic/notes');
+		$this->load->language('replogic/tasks');
 
 		$this->document->setTitle($this->language->get('heading_title'));
 
-		$this->load->model('replogic/notes');
+		$this->load->model('replogic/tasks');
 
 		if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validateForm()) {
-			$this->model_replogic_notes->editNote($this->request->get['note_id'], $this->request->post);
+			$this->model_replogic_tasks->editTasks($this->request->get['task_id'], $this->request->post);
 
 			$this->session->data['success'] = $this->language->get('text_success');
 
 			$url = '';
 
+			if (isset($this->request->get['appointment_id'])) {
+				$url .= '&appointment_id=' . $this->request->get['appointment_id'];
+			}
+			
 			if (isset($this->request->get['sort'])) {
 				$url .= '&sort=' . $this->request->get['sort'];
 			}
@@ -70,28 +78,32 @@ class ControllerReplogicNotes extends Controller {
 				$url .= '&page=' . $this->request->get['page'];
 			}
 
-			$this->response->redirect($this->url->link('replogic/notes', 'token=' . $this->session->data['token'] . '&appointment_id=' . $this->request->get['appointment_id'] . $url, true));
+			$this->response->redirect($this->url->link('replogic/tasks', 'token=' . $this->session->data['token'] . '&appointment_id=' . $this->request->get['appointment_id'] . $url, true));
 		}
 
 		$this->getForm();
 	}
 
 	public function delete() {
-		$this->load->language('replogic/notes');
+		$this->load->language('replogic/tasks');
 
 		$this->document->setTitle($this->language->get('heading_title'));
 
-		$this->load->model('replogic/notes');
+		$this->load->model('replogic/tasks');
 
 		if (isset($this->request->post['selected'])) { 
-			foreach ($this->request->post['selected'] as $note_id) {
-				$this->model_replogic_notes->deleteNote($note_id);
+			foreach ($this->request->post['selected'] as $task_id) {
+				$this->model_replogic_tasks->deleteTasks($task_id);
 			}
 
 			$this->session->data['success'] = $this->language->get('text_success');
 
 			$url = '';
-
+			
+			if (isset($this->request->get['appointment_id'])) {
+				$url .= '&appointment_id=' . $this->request->get['appointment_id'];
+			}
+			
 			if (isset($this->request->get['sort'])) {
 				$url .= '&sort=' . $this->request->get['sort'];
 			}
@@ -104,13 +116,18 @@ class ControllerReplogicNotes extends Controller {
 				$url .= '&page=' . $this->request->get['page'];
 			}
 
-			$this->response->redirect($this->url->link('replogic/notes', 'token=' . $this->session->data['token'] . '&appointment_id=' . $this->request->get['appointment_id'] . $url, true));
+			$this->response->redirect($this->url->link('replogic/tasks', 'token=' . $this->session->data['token'] . '&appointment_id=' . $this->request->get['appointment_id'] . $url, true));
 		}
 
 		$this->getList();
 	}
 
 	protected function getList() {
+		
+		if (isset($this->request->get['appointment_id'])) {
+			$appointment_id = $this->request->get['appointment_id'];
+		}
+		
 		if (isset($this->request->get['sort'])) {
 			$sort = $this->request->get['sort'];
 		} else {
@@ -131,6 +148,10 @@ class ControllerReplogicNotes extends Controller {
 
 		$url = '';
 
+		if (isset($this->request->get['appointment_id'])) {
+				$url .= '&appointment_id=' . $this->request->get['appointment_id'];
+		}
+			
 		if (isset($this->request->get['sort'])) {
 			$url .= '&sort=' . $this->request->get['sort'];
 		}
@@ -157,16 +178,17 @@ class ControllerReplogicNotes extends Controller {
 		
 		$data['breadcrumbs'][] = array(
 			'text' => $this->language->get('heading_title'),
-			'href' => $this->url->link('replogic/notes', 'token=' . $this->session->data['token'] . $url, true)
+			'href' => $this->url->link('replogic/tasks', 'token=' . $this->session->data['token'] . $url, true)
 		);
 
-		$data['add'] = $this->url->link('replogic/notes/add', 'token=' . $this->session->data['token'] . '&appointment_id=' . $this->request->get['appointment_id'] . $url, true);
-		$data['delete'] = $this->url->link('replogic/notes/delete', 'token=' . $this->session->data['token'] . '&appointment_id=' . $this->request->get['appointment_id'] . $url, true);
+		$data['add'] = $this->url->link('replogic/tasks/add', 'token=' . $this->session->data['token'] . $url, true);
+		$data['delete'] = $this->url->link('replogic/tasks/delete', 'token=' . $this->session->data['token'] . $url, true);
 		$data['cancel'] = $this->url->link('replogic/schedule_management', 'token=' . $this->session->data['token'] . $url, true);
 
-		$data['notes'] = array();
+		$data['tasks'] = array();
 
 		$filter_data = array(
+			'appointment_id' => $appointment_id,
 			'sort'  => $sort,
 			'order' => $order,
 			'appointment_id' => $this->request->get['appointment_id'],
@@ -174,9 +196,9 @@ class ControllerReplogicNotes extends Controller {
 			'limit' => $this->config->get('config_limit_admin')
 		);
 
-		$notes_total = $this->model_replogic_notes->getTotalNotes();
+		$notes_total = $this->model_replogic_tasks->getTotalTasks($filter_data);
 
-		$results = $this->model_replogic_notes->getNotes($filter_data);
+		$results = $this->model_replogic_tasks->getTasks($filter_data);
 		
 		$this->load->model('user/user');
 		$this->load->model('user/user_group');
@@ -196,15 +218,11 @@ class ControllerReplogicNotes extends Controller {
 		
 		foreach ($results as $result) {
 			
-		$user = $this->model_user_user->getUser($result['salesrep_id']); ;
-		//print_r($user); exit;
-	    $sales_manag = $user['firstname'] ." ". $user['lastname']." (".$user['username'].")";
-			//print_r($result); exit;
-			$data['notes'][] = array(
-				'note_id' => $result['note_id'],
-				'note_title'          => $result['note_title'],
-				'sales_manager'          => $sales_manag,
-				'edit'          => $this->url->link('replogic/notes/edit', 'token=' . $this->session->data['token'] . '&appointment_id=' . $this->request->get['appointment_id'] .'&note_id=' . $result['note_id'] . $url, true)
+			$data['tasks'][] = array(
+				'task_id' => $result['task_id'],
+				'task_name'          => $result['task_name'],
+				'status'          => $result['status'],
+				'edit'          => $this->url->link('replogic/tasks/edit', 'token=' . $this->session->data['token'] .'&task_id=' . $result['task_id'] . $url, true)
 			);
 		}
 
@@ -214,7 +232,7 @@ class ControllerReplogicNotes extends Controller {
 		$data['text_no_results'] = $this->language->get('text_no_results');
 		$data['text_confirm'] = $this->language->get('text_confirm');
 
-		$data['column_note_title'] = $this->language->get('column_note_title');
+		$data['column_task_name'] = $this->language->get('column_task_name');
 		$data['column_action'] = $this->language->get('column_action');
 
 		$data['button_add'] = $this->language->get('button_add');
@@ -248,15 +266,23 @@ class ControllerReplogicNotes extends Controller {
 		} else {
 			$url .= '&order=ASC';
 		}
-
+		
+		if (isset($this->request->get['appointment_id'])) {
+				$url .= '&appointment_id=' . $this->request->get['appointment_id'];
+		}
+		
 		if (isset($this->request->get['page'])) {
 			$url .= '&page=' . $this->request->get['page'];
 		}
 
-		$data['sort_note_title'] = $this->url->link('replogic/notes', 'token=' . $this->session->data['token'] . '&sort=note_title' . $url, true);
+		$data['sort_task_name'] = $this->url->link('replogic/tasks', 'token=' . $this->session->data['token'] . '&sort=task_name' . $url, true);
 
 		$url = '';
 
+		if (isset($this->request->get['appointment_id'])) {
+				$url .= '&appointment_id=' . $this->request->get['appointment_id'];
+		}
+		
 		if (isset($this->request->get['sort'])) {
 			$url .= '&sort=' . $this->request->get['sort'];
 		}
@@ -269,7 +295,7 @@ class ControllerReplogicNotes extends Controller {
 		$pagination->total = $notes_total;
 		$pagination->page = $page;
 		$pagination->limit = $this->config->get('config_limit_admin');
-		$pagination->url = $this->url->link('replogic/notes', 'token=' . $this->session->data['token'] . $url . '&page={page}', true);
+		$pagination->url = $this->url->link('replogic/tasks', 'token=' . $this->session->data['token'] . $url . '&page={page}', true);
 
 		$data['pagination'] = $pagination->render();
 
@@ -282,19 +308,21 @@ class ControllerReplogicNotes extends Controller {
 		$data['column_left'] = $this->load->controller('common/column_left');
 		$data['footer'] = $this->load->controller('common/footer');
 
-		$this->response->setOutput($this->load->view('replogic/notes_list', $data));
+		$this->response->setOutput($this->load->view('replogic/tasks_list', $data));
 	}
 
 	protected function getForm() {
 		$data['heading_title'] = $this->language->get('heading_title');
 		
-		$data['text_form'] = !isset($this->request->get['note_id']) ? $this->language->get('text_add') : $this->language->get('text_edit');
+		$data['text_form'] = !isset($this->request->get['task_id']) ? $this->language->get('text_add') : $this->language->get('text_edit');
 		$data['text_select_all'] = $this->language->get('text_select_all');
 		$data['text_unselect_all'] = $this->language->get('text_unselect_all');
+		$data['text_enabled'] = $this->language->get('text_enabled');
+		$data['text_disabled'] = $this->language->get('text_disabled');
 
-		$data['entry_name'] = $this->language->get('entry_name');
-		$data['entry_note_description'] = $this->language->get('entry_note_description');
-		$data['entry_sales'] = $this->language->get('entry_sales');
+		$data['entry_task_name'] = $this->language->get('entry_task_name');
+		$data['entry_task_description'] = $this->language->get('entry_task_description');
+		$data['entry_status'] = $this->language->get('entry_status');
 		$data['entry_access'] = $this->language->get('entry_access');
 		$data['entry_modify'] = $this->language->get('entry_modify');
 
@@ -309,26 +337,24 @@ class ControllerReplogicNotes extends Controller {
 			$data['error_warning'] = '';
 		}
 
-		if (isset($this->error['note_title'])) {
-			$data['error_note_title'] = $this->error['note_title'];
+		if (isset($this->error['task_name'])) {
+			$data['error_task_name'] = $this->error['task_name'];
 		} else {
-			$data['error_note_title'] = '';
+			$data['error_task_name'] = '';
 		}
 		
-		if (isset($this->error['note_description'])) {
-			$data['error_note_description'] = $this->error['note_description'];
+		if (isset($this->error['task_description'])) {
+			$data['error_task_description'] = $this->error['task_description'];
 		} else {
-			$data['error_note_description'] = '';
+			$data['error_task_description'] = '';
 		}
 		
-		if (isset($this->error['salesrep_id'])) {
-			$data['error_salesrep_id'] = $this->error['salesrep_id'];
-		} else {
-			$data['error_salesrep_id'] = '';
-		}
-
 		$url = '';
 
+		if (isset($this->request->get['appointment_id'])) {
+				$url .= '&appointment_id=' . $this->request->get['appointment_id'];
+		}
+		
 		if (isset($this->request->get['sort'])) {
 			$url .= '&sort=' . $this->request->get['sort'];
 		}
@@ -355,35 +381,43 @@ class ControllerReplogicNotes extends Controller {
 		
 		$data['breadcrumbs'][] = array(
 			'text' => $this->language->get('heading_title'),
-			'href' => $this->url->link('replogic/notes', 'token=' . $this->session->data['token'] . '&appointment_id=' . $this->request->get['appointment_id'] . $url, true)
+			'href' => $this->url->link('replogic/tasks', 'token=' . $this->session->data['token'] . '&appointment_id=' . $this->request->get['appointment_id'] . $url, true)
 		);
 
-		if (!isset($this->request->get['note_id'])) {
-			$data['action'] = $this->url->link('replogic/notes/add', 'token=' . $this->session->data['token'] . '&appointment_id=' . $this->request->get['appointment_id'] . $url, true);
+		if (!isset($this->request->get['task_id'])) {
+			$data['action'] = $this->url->link('replogic/tasks/add', 'token=' . $this->session->data['token'] . $url, true);
 		} else {
-			$data['action'] = $this->url->link('replogic/notes/edit', 'token=' . $this->session->data['token'] . '&appointment_id=' . $this->request->get['appointment_id'] . '&note_id=' . $this->request->get['note_id'] . $url, true);
+			$data['action'] = $this->url->link('replogic/tasks/edit', 'token=' . $this->session->data['token'] . '&task_id=' . $this->request->get['task_id'] . $url, true);
 		}
 
-		$data['cancel'] = $this->url->link('replogic/notes', 'token=' . $this->session->data['token'] . '&appointment_id=' . $this->request->get['appointment_id'] . $url, true);
+		$data['cancel'] = $this->url->link('replogic/tasks', 'token=' . $this->session->data['token'] . $url, true);
 
-		if (isset($this->request->get['note_id']) && $this->request->server['REQUEST_METHOD'] != 'POST') {
-			$note_info = $this->model_replogic_notes->getNote($this->request->get['note_id']);
+		if (isset($this->request->get['task_id']) && $this->request->server['REQUEST_METHOD'] != 'POST') {
+			$task_info = $this->model_replogic_tasks->getTask($this->request->get['task_id']);
 		}
-
-		if (isset($this->request->post['note_title'])) {
-			$data['note_title'] = $this->request->post['note_title'];
-		} elseif (!empty($note_info)) {
-			$data['note_title'] = $note_info['note_title'];
+//print_r($task_info); exit;
+		if (isset($this->request->post['task_name'])) {
+			$data['task_name'] = $this->request->post['task_name'];
+		} elseif (!empty($task_info)) {
+			$data['task_name'] = $task_info['task_name'];
 		} else {
-			$data['note_title'] = '';
+			$data['task_name'] = '';
 		}
 		
-		if (isset($this->request->post['note_description'])) {
-			$data['note_description'] = $this->request->post['note_description'];
-		} elseif (!empty($note_info)) {
-			$data['note_description'] = $note_info['note_content'];
+		if (isset($this->request->post['task_description'])) {
+			$data['task_description'] = $this->request->post['task_description'];
+		} elseif (!empty($task_info)) {
+			$data['task_description'] = $task_info['task_description'];
 		} else {
-			$data['note_description'] = '';
+			$data['task_description'] = '';
+		}
+		
+		if (isset($this->request->post['status'])) {
+			$data['status'] = $this->request->post['status'];
+		} elseif (!empty($task_info)) {
+			$data['status'] = $task_info['status'];
+		} else {
+			$data['status'] = true;
 		}
 		
 		$this->load->model('user/user_group');
@@ -392,14 +426,6 @@ class ControllerReplogicNotes extends Controller {
 		$data['users'] = $this->model_user_user->getUsersByGroupId($user_group_id['user_group_id']); ;
 	   //print_r($data['users']); exit;
 	
-		if (isset($this->request->post['salesrep_id'])) {
-			$data['sales_manager'] = $this->request->post['salesrep_id'];
-		} elseif (!empty($note_info)) {
-			$data['sales_manager'] = $note_info['salesrep_id'];
-		} else {
-			$data['sales_manager'] = '';
-		}
-
 		$ignore = array(
 			'common/dashboard',
 			'common/startup',
@@ -419,26 +445,22 @@ class ControllerReplogicNotes extends Controller {
 		$data['column_left'] = $this->load->controller('common/column_left');
 		$data['footer'] = $this->load->controller('common/footer');
 
-		$this->response->setOutput($this->load->view('replogic/notes_form', $data));
+		$this->response->setOutput($this->load->view('replogic/tasks_form', $data));
 	}
 
 	protected function validateForm() {
-		if (!$this->user->hasPermission('modify', 'replogic/notes')) {
+		if (!$this->user->hasPermission('modify', 'replogic/tasks')) {
 			$this->error['warning'] = $this->language->get('error_team');
 		}
 
-		if ((utf8_strlen($this->request->post['note_title']) < 3) || (utf8_strlen($this->request->post['note_title']) > 64)) {
-			$this->error['note_title'] = $this->language->get('error_note_title');
+		if ((utf8_strlen($this->request->post['task_name']) < 3) || (utf8_strlen($this->request->post['task_name']) > 64)) {
+			$this->error['task_name'] = $this->language->get('error_task_name');
 		}
 		
-		if ((utf8_strlen($this->request->post['note_description']) < 3)) {
-			$this->error['note_description'] = $this->language->get('error_note_description');
+		if ((utf8_strlen($this->request->post['task_description']) < 3)) {
+			$this->error['task_description'] = $this->language->get('error_task_description');
 		}
 		
-		if ($this->request->post['salesrep_id'] == '') {
-			$this->error['salesrep_id'] = $this->language->get('error_salesrep_id');
-		}
-
 		return !$this->error;
 	}
 
