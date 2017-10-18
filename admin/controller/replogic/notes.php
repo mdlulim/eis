@@ -394,8 +394,8 @@ class ControllerReplogicNotes extends Controller {
 	
 		if (isset($this->request->post['salesrep_id'])) {
 			$data['sales_manager'] = $this->request->post['salesrep_id'];
-		} elseif (!empty($team_info)) {
-			$data['sales_manager'] = $team_info['sales_manager'];
+		} elseif (!empty($note_info)) {
+			$data['sales_manager'] = $note_info['salesrep_id'];
 		} else {
 			$data['sales_manager'] = '';
 		}
@@ -431,7 +431,7 @@ class ControllerReplogicNotes extends Controller {
 			$this->error['note_title'] = $this->language->get('error_note_title');
 		}
 		
-		if ((utf8_strlen($this->request->post['note_description']) < 3) || (utf8_strlen($this->request->post['note_description']) > 64)) {
+		if ((utf8_strlen($this->request->post['note_description']) < 3))) {
 			$this->error['note_description'] = $this->language->get('error_note_description');
 		}
 		
