@@ -216,11 +216,17 @@ class ControllerReplogicTasks extends Controller {
 			$data['access'] = 'no';
 		}
 		
-		foreach ($results as $result) {
+		 $this->load->model('replogic/sales_rep_management');
+	   
+	  	foreach ($results as $result) {
+			
+			$salesrep = $this->model_replogic_sales_rep_management->getsalesrep($result['salesrep_id']); ;
+			$sales_rep = $salesrep['salesrep_name'] ." ". $salesrep['salesrep_lastname'];
 			
 			$data['tasks'][] = array(
 				'task_id' => $result['task_id'],
 				'task_name'          => $result['task_name'],
+				'salesrep'          => $sales_rep,
 				'status'          => $result['status'],
 				'edit'          => $this->url->link('replogic/tasks/edit', 'token=' . $this->session->data['token'] .'&task_id=' . $result['task_id'] . $url, true)
 			);
@@ -323,6 +329,7 @@ class ControllerReplogicTasks extends Controller {
 		$data['entry_task_name'] = $this->language->get('entry_task_name');
 		$data['entry_task_description'] = $this->language->get('entry_task_description');
 		$data['entry_status'] = $this->language->get('entry_status');
+		$data['entry_salesrep'] = $this->language->get('entry_salesrep');
 		$data['entry_access'] = $this->language->get('entry_access');
 		$data['entry_modify'] = $this->language->get('entry_modify');
 
@@ -347,6 +354,12 @@ class ControllerReplogicTasks extends Controller {
 			$data['error_task_description'] = $this->error['task_description'];
 		} else {
 			$data['error_task_description'] = '';
+		}
+		
+		if (isset($this->error['salesrep_id'])) {
+			$data['error_salesrep_id'] = $this->error['salesrep_id'];
+		} else {
+			$data['error_salesrep_id'] = '';
 		}
 		
 		$url = '';
@@ -420,11 +433,23 @@ class ControllerReplogicTasks extends Controller {
 			$data['status'] = false;
 		}
 		
+		if (isset($this->request->post['salesrep_id'])) {
+			$data['salesrep_id'] = $this->request->post['salesrep_id'];
+		} elseif (!empty($task_info)) {
+			$data['salesrep_id'] = $task_info['salesrep_id'];
+		} else {
+			$data['salesrep_id'] = '';
+		}
+		
 		$this->load->model('user/user_group');
 		$this->load->model('user/user');
 		$user_group_id = $this->model_user_user_group->getUserGroupByName('Sales Manager');
 		$data['users'] = $this->model_user_user->getUsersByGroupId($user_group_id['user_group_id']); ;
 	   //print_r($data['users']); exit;
+	   
+	   $this->load->model('replogic/sales_rep_management');
+	   
+	   $data['salesReps'] = $this->model_replogic_sales_rep_management->getSalesReps();
 	
 		$ignore = array(
 			'common/dashboard',
@@ -459,6 +484,10 @@ class ControllerReplogicTasks extends Controller {
 		
 		if ((utf8_strlen($this->request->post['task_description']) < 3)) {
 			$this->error['task_description'] = $this->language->get('error_task_description');
+		}
+		
+		if ($this->request->post['salesrep_id'] == '') {
+			$this->error['salesrep_id'] = $this->language->get('error_salesrep_id');
 		}
 		
 		return !$this->error;

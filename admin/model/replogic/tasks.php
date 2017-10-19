@@ -1,13 +1,13 @@
 <?php
 class ModelReplogicTasks extends Model {
 	public function addTasks($data) {
-		$this->db->query("INSERT INTO " . DB_PREFIX . "tasks SET task_name = '" . $this->db->escape($data['task_name']) . "', task_description = '" . $this->db->escape($data['task_description']) . "', status = '" . $this->db->escape($data['status']) . "', appointment_id = '" . $this->db->escape($data['appointment_id']) . "'");
+		$this->db->query("INSERT INTO " . DB_PREFIX . "tasks SET task_name = '" . $this->db->escape($data['task_name']) . "', task_description = '" . $this->db->escape($data['task_description']) . "', status = '" . $this->db->escape($data['status']) . "', appointment_id = '" . $this->db->escape($data['appointment_id']) . "', salesrep_id = '" . $this->db->escape($data['salesrep_id']) . "'");
 	
 		return $this->db->getLastId();
 	}
 
 	public function editTasks($task_id, $data) {
-		$this->db->query("UPDATE " . DB_PREFIX . "tasks SET task_name = '" . $this->db->escape($data['task_name']) . "', task_description = '" . $this->db->escape($data['task_description']) . "', status = '" . $this->db->escape($data['status']) . "', appointment_id = '" . $this->db->escape($data['appointment_id']) . "'WHERE task_id = '" . (int)$task_id . "'");
+		$this->db->query("UPDATE " . DB_PREFIX . "tasks SET task_name = '" . $this->db->escape($data['task_name']) . "', task_description = '" . $this->db->escape($data['task_description']) . "', status = '" . $this->db->escape($data['status']) . "', appointment_id = '" . $this->db->escape($data['appointment_id']) . "', salesrep_id = '" . $this->db->escape($data['salesrep_id']) . "'WHERE task_id = '" . (int)$task_id . "'");
 	}
 
 	public function deleteTasks($task_id) { 

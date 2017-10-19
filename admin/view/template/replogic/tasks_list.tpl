@@ -41,6 +41,7 @@
                     <?php } else { ?>
                     <a href="<?php echo $sort_task_name; ?>"><?php echo $column_task_name; ?></a>
                     <?php } ?></td>
+                  <td class="text-left">Sales Rep</td>
                   <td class="text-left">Status</td>
                   
                   <td class="text-right"><?php echo $column_action; ?></td>
@@ -58,6 +59,7 @@
                                 <input type="checkbox" name="selected[]" value="<?php echo $task['task_id']; ?>" />
                                 <?php } ?></td>
                               <td class="text-left"><?php echo $task['task_name']; ?></td>
+                              <td class="text-left"><?php echo $task['salesrep']; ?></td>
                               <td class="text-left"><?php if($task['status'] == '0') { ?><strong>Not Done</strong> <?php } else { ?><strong>Done</strong><?php } ?></td>
                               <td class="text-right"><a href="<?php echo $task['edit']; ?>" data-toggle="tooltip" title="<?php echo $button_edit; ?>" class="btn btn-primary"><i class="fa fa-pencil"></i></a></td>
                             </tr>

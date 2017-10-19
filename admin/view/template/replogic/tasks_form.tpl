@@ -36,6 +36,24 @@
             </div>
           </div>
           <div class="form-group required">
+            <label class="col-sm-2 control-label" for="input-username"><?php echo $entry_salesrep; ?></label>
+            <div class="col-sm-10">
+              <select name="salesrep_id" id="input-sales_manager" class="form-control">
+                <option value="">Select Sales Rep</option>
+                <?php foreach ($salesReps as $salesRep) { ?>
+                <?php if ($salesRep['salesrep_id'] == $salesrep_id) { ?>
+                <option value="<?php echo $salesRep['salesrep_id']; ?>" selected="selected"><?php echo $salesRep['salesrep_name']; ?> <?php echo $salesRep['salesrep_lastname']; ?></option>
+                <?php } else { ?>
+                <option value="<?php echo $salesRep['salesrep_id']; ?>"><?php echo $salesRep['salesrep_name']; ?> <?php echo $salesRep['salesrep_lastname']; ?></option>
+                <?php } ?>
+                <?php } ?>
+              </select>
+              <?php if ($error_salesrep_id) { ?>
+              <div class="text-danger"><?php echo $error_salesrep_id; ?></div>
+              <?php } ?>
+            </div>
+          </div>
+          <div class="form-group required">
             <label class="col-sm-2 control-label" for="input-username"><?php echo $entry_task_description; ?></label>
             <div class="col-sm-10">
               <textarea name="task_description" id="input-description" class="form-control" cols="10" rows="10" placeholder="<?php echo $entry_task_description; ?>"><?php echo $task_description; ?></textarea>

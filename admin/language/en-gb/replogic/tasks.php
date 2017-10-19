@@ -21,6 +21,7 @@ $_['column_action']    = 'Action';
 $_['entry_task_name']       = 'Task Name';
 $_['entry_task_description']       = 'Task Description';
 $_['entry_status']       = 'Status';
+$_['entry_salesrep']       = 'Sales Rep';
 $_['entry_access']     = 'Access Permission';
 $_['entry_modify']     = 'Modify Permission';
 
@@ -28,3 +29,4 @@ $_['entry_modify']     = 'Modify Permission';
 $_['error_permission'] = 'Warning: You do not have permission to modify Appointment Tasks!';
 $_['error_task_name']       = 'Task Name must be between 3 and 64 characters!';
 $_['error_task_description']       = 'Task Description must be between 3 and 4000 characters!';
+$_['error_salesrep_id']       = 'Plz Select Sales Rep!';
