@@ -34,9 +34,14 @@
               <?php } ?>
             </div>
           </div>
+          <?php if($loginuser == 'Sales Manager') { ?>
+              <input type="hidden" name="sales_manager" value="<?php echo $salesrep_id; ?>" />
+           <?php } else { ?>    
           <div class="form-group required">
             <label class="col-sm-2 control-label" for="input-user-group"><?php echo $entry_sales; ?></label>
             <div class="col-sm-10">
+            
+           
               <select name="sales_manager" id="input-sales_manager" class="form-control">
                <option value="">Select Sales Manager</option>
                 <?php foreach ($users as $user) { ?>
@@ -47,11 +52,14 @@
                 <?php } ?>
                 <?php } ?>
               </select>
+            
               <?php if ($error_sales_manager) { ?>
               <div class="text-danger"><?php echo $error_sales_manager; ?></div>
               <?php } ?>
             </div>
           </div>
+          
+          <?php } ?>  
           
           
         </form>

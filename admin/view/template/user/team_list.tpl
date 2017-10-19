@@ -39,6 +39,7 @@
               </div>
               
             </div>
+            <?php if($loginuser != 'Sales Manager') { ?>
             <div class="col-sm-6" style="margin-bottom:10px;">
               <div class="form-group">
                 <label class="control-label" for="input-price">Sales Manager</label>
@@ -56,6 +57,7 @@
               </div>
               
             </div>
+            <?php } ?>
             <button type="button" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-filter"></i> Filter</button>
             <button type="button" id="button-filter-reset" class="btn btn-primary pull-right" style="margin-right:10px;"><i class="fa fa-filter"></i> Reset</button>
           </div>
@@ -73,8 +75,9 @@
                     <?php } else { ?>
                     <a href="<?php echo $sort_team_name; ?>"><?php echo $column_team_name; ?></a>
                     <?php } ?></td>
+                  <?php if($loginuser != 'Sales Manager') { ?>
                   <td class="text-left">Sales Manager</td>
-                  
+                  <?php } ?>
                   <td class="text-right"><?php echo $column_action; ?></td>
                 </tr>
               </thead>
@@ -90,7 +93,9 @@
                                 <input type="checkbox" name="selected[]" value="<?php echo $team['team_id']; ?>" />
                                 <?php } ?></td>
                               <td class="text-left"><?php echo $team['team_name']; ?></td>
+                             <?php if($loginuser != 'Sales Manager') { ?>
                               <td class="text-left"><?php echo $team['sales_manager']; ?></td>
+                             <?php } ?> 
                               <td class="text-right"><a href="<?php echo $team['salesrep']; ?>" data-toggle="tooltip" title="Sales Rep Management" class="btn btn-primary"><i class="fa fa-street-view"></i></a>&nbsp;<a href="<?php echo $team['edit']; ?>" data-toggle="tooltip" title="<?php echo $button_edit; ?>" class="btn btn-primary"><i class="fa fa-pencil"></i></a></td>
                             </tr>
                      <?php } ?>
@@ -125,13 +130,13 @@ $('#button-filter').on('click', function() {
 	if (filter_team_name) {
 		url += '&filter_team_name=' + encodeURIComponent(filter_team_name);
 	}
-
+<?php if($loginuser != 'Sales Manager') { ?>
 	var filter_salesrep_id = $('select[name=\'filter_salesrep_id\']').val();
 
 	if (filter_salesrep_id) {
 		url += '&filter_salesrep_id=' + encodeURIComponent(filter_salesrep_id);
 	}
-
+<?php } ?>
 //alert(url);
 	location = url;
 });

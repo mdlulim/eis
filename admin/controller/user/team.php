@@ -172,7 +172,33 @@ class ControllerUserTeam extends Controller {
 		$data['delete'] = $this->url->link('user/team/delete', 'token=' . $this->session->data['token'] . $url, true);
 
 		$data['teams'] = array();
-
+		
+		$this->load->model('user/user');
+		$this->load->model('user/user_group');
+		
+		$current_user = $this->session->data['user_id'];
+		$current_user_group_id = $this->model_user_user->getUser($current_user);
+		$current_user_group = $this->model_user_user_group->getUserGroup($current_user_group_id['user_group_id']); 
+		//print_r($current_user_group); exit;
+		if($current_user_group['name'] == 'Company admin' || $current_user_group['name'] == 'Administrator' || $current_user_group['name'] == 'Sales Manager')
+		{
+			$data['access'] = 'yes';
+		}
+		else
+		{
+			$data['access'] = 'no';
+		}
+		//print_r($current_user_group); exit;
+		if($current_user_group['name'] == 'Sales Manager')
+		{
+			$filter_salesrep_id = $current_user; 
+			$data['loginuser'] = 'Sales Manager';
+		}
+		else
+		{
+			$data['loginuser'] = 'Other';
+		}
+		
 		$filter_data = array(
 			'filter_team_name'	  => $filter_team_name,
 			'filter_salesrep_id' => $filter_salesrep_id,
@@ -185,22 +211,6 @@ class ControllerUserTeam extends Controller {
 		$team_total = $this->model_user_team->getTotalTeam($filter_data);
 
 		$results = $this->model_user_team->getTeams($filter_data);
-		
-		$this->load->model('user/user');
-		$this->load->model('user/user_group');
-		
-		$current_user = $this->session->data['user_id'];
-		$current_user_group_id = $this->model_user_user->getUser($current_user); ;
-		$current_user_group = $this->model_user_user_group->getUserGroup($current_user_group_id); ;
-		//print_r($current_user_group); exit;
-		if($current_user_group['name'] == 'Company admin' || $current_user_group['name'] == 'Administrator')
-		{
-			$data['access'] = 'yes';
-		}
-		else
-		{
-			$data['access'] = 'no';
-		}
 		
 		foreach ($results as $result) {
 			
@@ -410,6 +420,21 @@ class ControllerUserTeam extends Controller {
 		} else {
 			$data['sales_manager'] = '';
 		}
+		
+		
+		$current_user = $this->session->data['user_id'];
+		$current_user_group_id = $this->model_user_user->getUser($current_user);
+		$current_user_group = $this->model_user_user_group->getUserGroup($current_user_group_id['user_group_id']); 
+		if($current_user_group['name'] == 'Sales Manager')
+		{
+			$filter_salesrep_id = $current_user; 
+			$data['loginuser'] = 'Sales Manager';
+			$data['salesrep_id'] = $current_user;
+		}
+		else
+		{
+			$data['loginuser'] = 'Other';
+		}
 
 		$ignore = array(
 			'common/dashboard',
@@ -447,7 +472,7 @@ class ControllerUserTeam extends Controller {
 			
 				$team_info = $this->model_user_team->getTeamName($this->request->post['team_name']);
 	
-				if ($team_info && isset($this->request->get['team_id']) && $team_info['team_id'] != $this->request->get['team_id']) { 
+				if ($team_info && isset($this->request->get['team_id']) && $team_info['team_id'] != $this->request->get['team_id'] ) { 
 					$this->error['team_name'] = sprintf($this->language->get('error_team_name_exit'));
 				}
 	

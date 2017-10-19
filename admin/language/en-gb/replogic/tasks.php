@@ -8,8 +8,8 @@ $_['text_success']     = 'Success: You have modified Appointment Tasks!';
 $_['text_list']        = 'Tasks';
 $_['text_add']         = 'Add Appointment Tasks';
 $_['text_edit']        = 'Edit Appointment Tasks';
-$_['text_enabled']        = 'Enable';
-$_['text_disabled']        = 'Disable';
+$_['text_enabled']        = 'Done';
+$_['text_disabled']        = 'Not Done';
 $_['text_confirm']        = 'Are you sure want to Delete Appointment Task ?';
 
 

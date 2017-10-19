@@ -417,7 +417,7 @@ class ControllerReplogicTasks extends Controller {
 		} elseif (!empty($task_info)) {
 			$data['status'] = $task_info['status'];
 		} else {
-			$data['status'] = true;
+			$data['status'] = false;
 		}
 		
 		$this->load->model('user/user_group');

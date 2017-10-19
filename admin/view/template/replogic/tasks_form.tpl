@@ -49,11 +49,11 @@
                 <div class="col-sm-10">
                   <select name="status" id="input-status" class="form-control">
                     <?php if ($status) { ?>
-                    <option value="1" selected="selected"><?php echo $text_enabled; ?></option>
                     <option value="0"><?php echo $text_disabled; ?></option>
+                    <option value="1" selected="selected"><?php echo $text_enabled; ?></option>
                     <?php } else { ?>
-                    <option value="1"><?php echo $text_enabled; ?></option>
                     <option value="0" selected="selected"><?php echo $text_disabled; ?></option>
+                    <option value="1"><?php echo $text_enabled; ?></option>
                     <?php } ?>
                   </select>
                 </div>
