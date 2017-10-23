@@ -38,12 +38,12 @@
             <label class="col-sm-2 control-label" for="input-user-group"><?php echo $entry_sales; ?></label>
             <div class="col-sm-10">
               <select name="salesrep_id" id="input-sales_manager" class="form-control">
-                <option value="">Select Sales Manager</option>
-                <?php foreach ($users as $user) { ?>
-                <?php if ($user['user_id'] == $sales_manager) { ?>
-                <option value="<?php echo $user['user_id']; ?>" selected="selected"><?php echo $user['firstname']; ?> <?php echo $user['lastname']; ?>&nbsp;(<?php echo $user['username']; ?>)</option>
+                <option value="">Select Sales Rep</option>
+                <?php foreach ($salesReps as $salesRep) { ?>
+                <?php if ($salesRep['salesrep_id'] == $salesrep_id) { ?>
+                <option value="<?php echo $salesRep['salesrep_id']; ?>" selected="selected"><?php echo $salesRep['salesrep_name']; ?> <?php echo $salesRep['salesrep_lastname']; ?></option>
                 <?php } else { ?>
-                <option value="<?php echo $user['user_id']; ?>"><?php echo $user['firstname']; ?> <?php echo $user['lastname']; ?>&nbsp;(<?php echo $user['username']; ?>)</option>
+                <option value="<?php echo $salesRep['salesrep_id']; ?>"><?php echo $salesRep['salesrep_name']; ?> <?php echo $salesRep['salesrep_lastname']; ?></option>
                 <?php } ?>
                 <?php } ?>
               </select>

@@ -216,15 +216,18 @@ class ControllerReplogicScheduleManagement extends Controller {
 			$data['access'] = 'no';
 		}
 		
+		$this->load->model('replogic/sales_rep_management');
+		 $data['salesReps'] = $this->model_replogic_sales_rep_management->getSalesReps();
+		
 		foreach ($results as $result) {
 			
-		$user = $this->model_user_user->getUser($result['salesrep_id']); ;
-		//print_r($user); exit;
-	    $sales_manag = $user['firstname'] ." ". $user['lastname']." (".$user['username'].")";
-			$data['schedule_managements'][] = array(
+		$salesrep = $this->model_replogic_sales_rep_management->getsalesrep($result['salesrep_id']); ;
+		$sales_rep = $salesrep['salesrep_name'] ." ". $salesrep['salesrep_lastname'];
+			
+		$data['schedule_managements'][] = array(
 				'appointment_id' => $result['appointment_id'],
 				'appointment_name'          => $result['appointment_name'],
-				'sales_manager'          => $sales_manag,
+				'sales_manager'          => $sales_rep,
 				'appointment_date'          => date('d-m-y H:i:s', strtotime($result['appointment_date'])),
 				'tasks'          => $this->url->link('replogic/tasks', 'token=' . $this->session->data['token'] . '&appointment_id=' . $result['appointment_id'] . $url, true),
 				'notes'          => $this->url->link('replogic/notes', 'token=' . $this->session->data['token'] . '&appointment_id=' . $result['appointment_id'] . $url, true),
@@ -460,6 +463,14 @@ class ControllerReplogicScheduleManagement extends Controller {
 			$data['appointment_date'] = '';
 		}
 		
+		if (isset($this->request->post['salesrep_id'])) {
+			$data['salesrep_id'] = $this->request->post['salesrep_id'];
+		} elseif (!empty($appointment_info)) {
+			$data['salesrep_id'] = $appointment_info['salesrep_id'];
+		} else {
+			$data['salesrep_id'] = '';
+		}
+		
 		if (isset($this->request->post['customer_id'])) {
 			$data['customer_id'] = $this->request->post['customer_id'];
 		} elseif (!empty($appointment_info)) {
@@ -481,6 +492,10 @@ class ControllerReplogicScheduleManagement extends Controller {
 		$user_group_id = $this->model_user_user_group->getUserGroupByName('Sales Manager');
 		$data['users'] = $this->model_user_user->getUsersByGroupId($user_group_id['user_group_id']); ;
 	   //print_r($data['users']); exit;
+	   
+	   $this->load->model('replogic/sales_rep_management');
+	   
+	   $data['salesReps'] = $this->model_replogic_sales_rep_management->getSalesReps();
 	   
 	   $this->load->model('customer/customer');
 	   $data['customers'] = $this->model_customer_customer->getCustomers(); ;

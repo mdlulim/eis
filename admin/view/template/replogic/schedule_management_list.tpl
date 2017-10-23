@@ -48,18 +48,18 @@
             </div>
             <div class="col-sm-6" style="margin-bottom:10px;">
               <div class="form-group">
-                <label class="control-label" for="input-price">Sales Manager</label>
-                <select name="filter_salesrep_id" class="form-control">
-                	<option value="">Select Sales Manager</option>
-                    <?php foreach($sales_managers as $sales_manager) { ?>
-                    	<?php if ($sales_manager['user_id'] == $filter_salesrep_id) { ?>
-                <option value="<?php echo $sales_manager['user_id']; ?>" selected="selected"><?php echo $sales_manager['firstname']; ?> <?php echo $sales_manager['lastname']; ?></option>
-                <?php } else { ?>
-                <option value="<?php echo $sales_manager['user_id']; ?>"><?php echo $sales_manager['firstname']; ?> <?php echo $sales_manager['lastname']; ?></option>
-                <?php } ?>
-                    <?php } ?>
-                    
-                </select>
+                <label class="control-label" for="input-price">Sales Rep Name</label>
+                
+                	<select name="filter_salesrep_id" id="input-sales_manager" class="form-control">
+                        <option value="">Select Sales Rep Name</option>
+                        <?php foreach ($salesReps as $salesRep) { ?>
+                        <?php if ($salesRep['salesrep_id'] == $filter_salesrep_id) { ?>
+                        <option value="<?php echo $salesRep['salesrep_id']; ?>" selected="selected"><?php echo $salesRep['salesrep_name']; ?> <?php echo $salesRep['salesrep_lastname']; ?></option>
+                        <?php } else { ?>
+                        <option value="<?php echo $salesRep['salesrep_id']; ?>"><?php echo $salesRep['salesrep_name']; ?> <?php echo $salesRep['salesrep_lastname']; ?></option>
+                        <?php } ?>
+                        <?php } ?>
+                      </select>
               </div>
               <div class="form-group todate">
                 <label class="control-label" for="input-quantity">Appointment Date To</label>
@@ -86,7 +86,7 @@
                     <?php } else { ?>
                     <a href="<?php echo $sort_name; ?>"><?php echo $column_name; ?></a>
                     <?php } ?></td>
-                  <td class="text-left">Sales Manager</td>
+                  <td class="text-left">Sales Rep Name</td>
                   <td class="text-left">Appointment Date</td>
                   
                   <td class="text-right"><?php echo $column_action; ?></td>
