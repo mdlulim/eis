@@ -110,5 +110,6 @@ $_['text_teams']                 = 'Teams';
 $_['text_myteams']              = 'My Teams'; 
 $_['text_manage_teams']              = 'Manage Team';
 $_['text_manage_salesrep']              = 'Manage Sales Rep'; 
+$_['text_appointmemt']              = 'Appointments'; 
 $_['text_manage_salesrep_salesreplist']     = 'Sales Rep List';
 $_['text_customer_contact']     = 'Customer Contact'; 

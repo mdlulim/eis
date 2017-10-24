@@ -880,11 +880,20 @@ class ControllerCommonColumnLeft extends Controller {
 				);	
 			}
 			
+			$schdeule_management = array();
+			
+			if ($this->user->hasPermission('access', 'replogic/schedule_management')) {
+				$schdeule_management[] = array(
+					'name'	   => $this->language->get('text_appointmemt'),
+					'href'     => $this->url->link('replogic/schedule_management', 'token=' . $this->session->data['token'], true),
+					'children' => array()
+				);	
+			}
+			
 			if ($this->user->hasPermission('access', 'replogic/schedule_management')) {
 				$replogic[] = array(
 					'name'	   => $this->language->get('text_schedule_management'),
-					'href'     => $this->url->link('replogic/schedule_management', 'token=' . $this->session->data['token'], true),
-					'children' => array()
+					'children' => $schdeule_management
 				);	
 			}
 			
