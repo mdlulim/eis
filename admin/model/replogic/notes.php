@@ -24,6 +24,15 @@ class ModelReplogicNotes extends Model {
 		$sql = "SELECT * FROM " . DB_PREFIX . "notes";
 
 		$sql .= " WHERE appointment_id = ".$data['appointment_id']."";
+		
+		if (!empty($data['filter_note_title'])) {
+			$sql .= " AND note_title LIKE '" . $this->db->escape($data['filter_note_title']) . "%'";
+		}
+
+		if (!empty($data['filter_salesrep_id'])) {
+			$sql .= " AND salesrep_id LIKE '" . $this->db->escape($data['filter_salesrep_id']) . "'";
+		}
+		
 		$sql .= " ORDER BY note_title";
 
 		if (isset($data['order']) && ($data['order'] == 'DESC')) {
@@ -49,9 +58,20 @@ class ModelReplogicNotes extends Model {
 		return $query->rows;
 	}
 
-	public function getTotalNotes() {
-		$query = $this->db->query("SELECT COUNT(*) AS total FROM " . DB_PREFIX . "notes");
+	public function getTotalNotes($data = array()) {
+		$sql = "SELECT COUNT(*) AS total FROM " . DB_PREFIX . "notes";
+		
+		$sql .= " WHERE appointment_id = ".$data['appointment_id']."";
+		
+		if (!empty($data['filter_note_title'])) {
+			$sql .= " AND note_title LIKE '" . $this->db->escape($data['filter_note_title']) . "%'";
+		}
 
+		if (!empty($data['filter_salesrep_id'])) {
+			$sql .= " AND salesrep_id LIKE '" . $this->db->escape($data['filter_salesrep_id']) . "'";
+		}
+		
+		$query = $this->db->query($sql);
 		return $query->row['total'];
 	}
 

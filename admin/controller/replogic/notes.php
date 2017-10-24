@@ -26,6 +26,18 @@ class ControllerReplogicNotes extends Controller {
 
 			$url = '';
 
+			if (isset($this->request->get['appointment_id'])) {
+			$url .= '&appointment_id=' . $this->request->get['appointment_id'];
+			}
+			
+			if (isset($this->request->get['filter_salesrep_id'])) {
+				$url .= '&filter_salesrep_id=' . $this->request->get['filter_salesrep_id'];
+			}
+			
+			if (isset($this->request->get['filter_note_title'])) {
+				$url .= '&filter_note_title=' . $this->request->get['filter_note_title'];
+			}
+		
 			if (isset($this->request->get['sort'])) {
 				$url .= '&sort=' . $this->request->get['sort'];
 			}
@@ -58,6 +70,18 @@ class ControllerReplogicNotes extends Controller {
 
 			$url = '';
 
+			if (isset($this->request->get['appointment_id'])) {
+			$url .= '&appointment_id=' . $this->request->get['appointment_id'];
+			}
+			
+			if (isset($this->request->get['filter_salesrep_id'])) {
+				$url .= '&filter_salesrep_id=' . $this->request->get['filter_salesrep_id'];
+			}
+			
+			if (isset($this->request->get['filter_note_title'])) {
+				$url .= '&filter_note_title=' . $this->request->get['filter_note_title'];
+			}
+		
 			if (isset($this->request->get['sort'])) {
 				$url .= '&sort=' . $this->request->get['sort'];
 			}
@@ -91,7 +115,19 @@ class ControllerReplogicNotes extends Controller {
 			$this->session->data['success'] = $this->language->get('text_success');
 
 			$url = '';
-
+			
+			if (isset($this->request->get['appointment_id'])) {
+			$url .= '&appointment_id=' . $this->request->get['appointment_id'];
+			}
+			
+			if (isset($this->request->get['filter_salesrep_id'])) {
+				$url .= '&filter_salesrep_id=' . $this->request->get['filter_salesrep_id'];
+			}
+			
+			if (isset($this->request->get['filter_note_title'])) {
+				$url .= '&filter_note_title=' . $this->request->get['filter_note_title'];
+			}
+			
 			if (isset($this->request->get['sort'])) {
 				$url .= '&sort=' . $this->request->get['sort'];
 			}
@@ -111,6 +147,19 @@ class ControllerReplogicNotes extends Controller {
 	}
 
 	protected function getList() {
+		
+		if (isset($this->request->get['filter_note_title'])) {
+			$filter_note_title = $this->request->get['filter_note_title'];
+		} else {
+			$filter_note_title = null;
+		}
+		
+		if (isset($this->request->get['filter_salesrep_id'])) {
+			$filter_salesrep_id = $this->request->get['filter_salesrep_id'];
+		} else {
+			$filter_salesrep_id = null;
+		}
+		
 		if (isset($this->request->get['sort'])) {
 			$sort = $this->request->get['sort'];
 		} else {
@@ -122,6 +171,10 @@ class ControllerReplogicNotes extends Controller {
 		} else {
 			$order = 'ASC';
 		}
+		
+		if (isset($this->request->get['appointment_id'])) {
+			$appointment_id = $this->request->get['appointment_id'];
+		}
 
 		if (isset($this->request->get['page'])) {
 			$page = $this->request->get['page'];
@@ -131,6 +184,18 @@ class ControllerReplogicNotes extends Controller {
 
 		$url = '';
 
+		if (isset($this->request->get['appointment_id'])) {
+			$url .= '&appointment_id=' . $this->request->get['appointment_id'];
+		}
+		
+		if (isset($this->request->get['filter_salesrep_id'])) {
+			$url .= '&filter_salesrep_id=' . $this->request->get['filter_salesrep_id'];
+		}
+		
+		if (isset($this->request->get['filter_note_title'])) {
+			$url .= '&filter_note_title=' . $this->request->get['filter_note_title'];
+		}
+		
 		if (isset($this->request->get['sort'])) {
 			$url .= '&sort=' . $this->request->get['sort'];
 		}
@@ -167,14 +232,16 @@ class ControllerReplogicNotes extends Controller {
 		$data['notes'] = array();
 
 		$filter_data = array(
+			'filter_note_title'	  => $filter_note_title,
+			'filter_salesrep_id' => $filter_salesrep_id,
 			'sort'  => $sort,
 			'order' => $order,
-			'appointment_id' => $this->request->get['appointment_id'],
+			'appointment_id' => $appointment_id,
 			'start' => ($page - 1) * $this->config->get('config_limit_admin'),
 			'limit' => $this->config->get('config_limit_admin')
 		);
 
-		$notes_total = $this->model_replogic_notes->getTotalNotes();
+		$notes_total = $this->model_replogic_notes->getTotalNotes($filter_data);
 
 		$results = $this->model_replogic_notes->getNotes($filter_data);
 		
@@ -193,6 +260,9 @@ class ControllerReplogicNotes extends Controller {
 		{
 			$data['access'] = 'no';
 		}
+		
+		$user_group_id = $this->model_user_user_group->getUserGroupByName('Sales Manager');
+		$data['sales_managers'] = $this->model_user_user->getUsersByGroupId($user_group_id['user_group_id']);
 		
 		foreach ($results as $result) {
 			
@@ -220,6 +290,7 @@ class ControllerReplogicNotes extends Controller {
 		$data['button_add'] = $this->language->get('button_add');
 		$data['button_edit'] = $this->language->get('button_edit');
 		$data['button_delete'] = $this->language->get('button_delete');
+		$data['token'] = $this->session->data['token'];
 
 		if (isset($this->error['warning'])) {
 			$data['error_warning'] = $this->error['warning'];
@@ -242,7 +313,19 @@ class ControllerReplogicNotes extends Controller {
 		}
 
 		$url = '';
-
+		
+		if (isset($this->request->get['appointment_id'])) {
+			$url .= '&appointment_id=' . $this->request->get['appointment_id'];
+		}
+		
+		if (isset($this->request->get['filter_salesrep_id'])) {
+			$url .= '&filter_salesrep_id=' . $this->request->get['filter_salesrep_id'];
+		}
+		
+		if (isset($this->request->get['filter_note_title'])) {
+			$url .= '&filter_note_title=' . $this->request->get['filter_note_title'];
+		}
+		
 		if ($order == 'ASC') {
 			$url .= '&order=DESC';
 		} else {
@@ -257,6 +340,18 @@ class ControllerReplogicNotes extends Controller {
 
 		$url = '';
 
+		if (isset($this->request->get['appointment_id'])) {
+			$url .= '&appointment_id=' . $this->request->get['appointment_id'];
+		}
+		
+		if (isset($this->request->get['filter_salesrep_id'])) {
+			$url .= '&filter_salesrep_id=' . $this->request->get['filter_salesrep_id'];
+		}
+		
+		if (isset($this->request->get['filter_note_title'])) {
+			$url .= '&filter_note_title=' . $this->request->get['filter_note_title'];
+		}
+		
 		if (isset($this->request->get['sort'])) {
 			$url .= '&sort=' . $this->request->get['sort'];
 		}
@@ -277,6 +372,9 @@ class ControllerReplogicNotes extends Controller {
 
 		$data['sort'] = $sort;
 		$data['order'] = $order;
+		$data['appointment_id'] = $appointment_id;
+		$data['filter_salesrep_id'] = $filter_salesrep_id;
+		$data['filter_note_title'] = $filter_note_title;
 
 		$data['header'] = $this->load->controller('common/header');
 		$data['column_left'] = $this->load->controller('common/column_left');
@@ -329,6 +427,18 @@ class ControllerReplogicNotes extends Controller {
 
 		$url = '';
 
+		if (isset($this->request->get['appointment_id'])) {
+			$url .= '&appointment_id=' . $this->request->get['appointment_id'];
+		}
+		
+		if (isset($this->request->get['filter_salesrep_id'])) {
+			$url .= '&filter_salesrep_id=' . $this->request->get['filter_salesrep_id'];
+		}
+		
+		if (isset($this->request->get['filter_note_title'])) {
+			$url .= '&filter_note_title=' . $this->request->get['filter_note_title'];
+		}
+		
 		if (isset($this->request->get['sort'])) {
 			$url .= '&sort=' . $this->request->get['sort'];
 		}
@@ -389,7 +499,7 @@ class ControllerReplogicNotes extends Controller {
 		$this->load->model('user/user_group');
 		$this->load->model('user/user');
 		$user_group_id = $this->model_user_user_group->getUserGroupByName('Sales Manager');
-		$data['users'] = $this->model_user_user->getUsersByGroupId($user_group_id['user_group_id']); ;
+		$data['users'] = $this->model_user_user->getUsersByGroupId($user_group_id['user_group_id']);
 	   //print_r($data['users']); exit;
 	
 		if (isset($this->request->post['salesrep_id'])) {

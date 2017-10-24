@@ -30,6 +30,39 @@
         <h3 class="panel-title"><i class="fa fa-list"></i> <?php echo $text_list; ?></h3>
       </div>
       <div class="panel-body">
+      
+      	<div class="well">
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label class="control-label" for="input-name">Note Title</label>
+                <input type="text" name="filter_note_title" value="<?php echo $filter_note_title; ?>" placeholder="Note Title" id="input-name" class="form-control" />
+              </div>
+              
+            </div>
+            <div class="col-sm-6" style="margin-bottom:10px;">
+              <div class="form-group">
+                <label class="control-label" for="input-price">Sales Manager</label>
+                <select name="filter_salesrep_id" class="form-control">
+                	<option value="">Select Sales Manager</option>
+                    <?php foreach($sales_managers as $sales_manager) { ?>
+                    	<?php if ($sales_manager['user_id'] == $filter_salesrep_id) { ?>
+                <option value="<?php echo $sales_manager['user_id']; ?>" selected="selected"><?php echo $sales_manager['firstname']; ?> <?php echo $sales_manager['lastname']; ?></option>
+                <?php } else { ?>
+                <option value="<?php echo $sales_manager['user_id']; ?>"><?php echo $sales_manager['firstname']; ?> <?php echo $sales_manager['lastname']; ?></option>
+                <?php } ?>
+                    <?php } ?>
+                    
+                </select>
+              </div>
+              
+            </div>
+            <button type="button" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-filter"></i> Filter</button>
+            <button type="button" id="button-filter-reset" class="btn btn-primary pull-right" style="margin-right:10px;"><i class="fa fa-filter"></i> Reset</button>
+          </div>
+           
+        </div>
+      
         <form action="<?php echo $delete; ?>" method="post" enctype="multipart/form-data" id="form-user">
           <div class="table-responsive">
             <table class="table table-bordered table-hover">
@@ -84,4 +117,29 @@
     </div>
   </div>
 </div>
+<script type="text/javascript"><!--
+$('#button-filter').on('click', function() {
+	var url = 'index.php?route=replogic/notes&token=<?php echo $token; ?>&appointment_id=<?php echo $appointment_id; ?>';
+
+	var filter_note_title = $('input[name=\'filter_note_title\']').val();
+
+	if (filter_note_title) {
+		url += '&filter_note_title=' + encodeURIComponent(filter_note_title);
+	}
+
+	var filter_salesrep_id = $('select[name=\'filter_salesrep_id\']').val();
+
+	if (filter_salesrep_id) {
+		url += '&filter_salesrep_id=' + encodeURIComponent(filter_salesrep_id);
+	}
+
+//alert(url);
+	location = url;
+});
+$('#button-filter-reset').on('click', function() {
+	var url = 'index.php?route=replogic/notes&token=<?php echo $token; ?>&appointment_id=<?php echo $appointment_id; ?>';
+
+	location = url;
+});
+//--></script>
 <?php echo $footer; ?> 
