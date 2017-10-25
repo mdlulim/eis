@@ -1,13 +1,23 @@
 <?php
 class ModelReplogicScheduleManagement extends Model {
 	public function addScheduleManagement($data) {
-		$this->db->query("INSERT INTO " . DB_PREFIX . "appointment SET appointment_name = '" . $this->db->escape($data['appointment_name']) . "', appointment_description = '" . $this->db->escape($data['appointment_description']) . "',salesrep_id = '" . $this->db->escape($data['salesrep_id']) . "',appointment_date = '" . $this->db->escape($data['appointment_date']) . "',customer_id = '" . $this->db->escape($data['customer_id']) . "'");
+		
+		$appointment_date = $data['appointment_date'];
+		$time = strtotime($data['appointment_date']);
+		$mysqltime = date ("Y-m-d H:i:s", $time);
+		
+		$this->db->query("INSERT INTO " . DB_PREFIX . "appointment SET appointment_name = '" . $this->db->escape($data['appointment_name']) . "', appointment_description = '" . $this->db->escape($data['appointment_description']) . "',salesrep_id = '" . $this->db->escape($data['salesrep_id']) . "',appointment_date = '" . $mysqltime . "',customer_id = '" . $this->db->escape($data['customer_id']) . "'");
 	
 		return $this->db->getLastId();
 	}
 
 	public function editScheduleManagement($appointment_id, $data) {
-		$this->db->query("UPDATE " . DB_PREFIX . "appointment SET appointment_name = '" . $this->db->escape($data['appointment_name']) . "', appointment_description = '" . $this->db->escape($data['appointment_description']) . "',salesrep_id = '" . $this->db->escape($data['salesrep_id']) . "',appointment_date = '" . $this->db->escape($data['appointment_date']) . "',customer_id = '" . $this->db->escape($data['customer_id']) . "' WHERE appointment_id = '" . (int)$appointment_id . "'");
+		
+		$appointment_date = $data['appointment_date'];
+		$time = strtotime($data['appointment_date']);
+		$mysqltime = date ("Y-m-d H:i:s", $time);
+		
+		$this->db->query("UPDATE " . DB_PREFIX . "appointment SET appointment_name = '" . $this->db->escape($data['appointment_name']) . "', appointment_description = '" . $this->db->escape($data['appointment_description']) . "',salesrep_id = '" . $this->db->escape($data['salesrep_id']) . "',appointment_date = '" . $mysqltime . "',customer_id = '" . $this->db->escape($data['customer_id']) . "' WHERE appointment_id = '" . (int)$appointment_id . "'");
 	}
 
 	public function deleteAppointment($appointment_id) {
@@ -38,10 +48,8 @@ class ModelReplogicScheduleManagement extends Model {
 		}
 		
 		if (!empty($data['filter_appointment_from']) && !empty($data['filter_appointment_to'])) { 
-			$fromdate1 = date('Y-m-d', strtotime($data['filter_appointment_from'])); 
-			$fromdate = $fromdate1 ." 00:00:00"; 
-			$todate1 = date('Y-m-d', strtotime($data['filter_appointment_to'])); 
-			$todate = $todate1 ." 23:59:59"; 
+			$fromdate = date('Y-m-d H:i:s', strtotime($data['filter_appointment_from'])); 
+			$todate = date('Y-m-d H:i:s', strtotime($data['filter_appointment_to'])); 
 			$sql .= " AND appointment_date >= '" . $fromdate . "' AND appointment_date <= '" . $todate . "'";
 		}
 
@@ -89,10 +97,8 @@ class ModelReplogicScheduleManagement extends Model {
 		}
 		
 		if (!empty($data['filter_appointment_from']) && !empty($data['filter_appointment_to'])) {
-			$fromdate1 = date('Y-m-d', strtotime($data['filter_appointment_from'])); 
-			$fromdate = $fromdate1 ." 00:00:00"; 
-			$todate1 = date('Y-m-d', strtotime($data['filter_appointment_to'])); 
-			$todate = $todate1 ." 23:59:59"; 
+			$fromdate = date('Y-m-d H:i:s', strtotime($data['filter_appointment_from'])); 
+			$todate = date('Y-m-d H:i:s', strtotime($data['filter_appointment_to'])); 
 			$sql .= " AND appointment_date >= '" . $fromdate . "' AND appointment_date <= '" . $todate . "'";
 		}
 		$query = $this->db->query($sql);

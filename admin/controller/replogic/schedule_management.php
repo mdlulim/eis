@@ -26,6 +26,22 @@ class ControllerReplogicScheduleManagement extends Controller {
 
 			$url = '';
 
+			if (isset($this->request->get['filter_appointment_name'])) {
+			$url .= '&filter_appointment_name=' . urlencode(html_entity_decode($this->request->get['filter_appointment_name'], ENT_QUOTES, 'UTF-8'));
+			}
+	
+			if (isset($this->request->get['filter_salesrep_id'])) {
+				$url .= '&filter_salesrep_id=' . $this->request->get['filter_salesrep_id'];
+			}
+			
+			if (isset($this->request->get['filter_appointment_from'])) {
+				$url .= '&filter_appointment_from=' . $this->request->get['filter_appointment_from'];
+			}
+	
+			if (isset($this->request->get['filter_appointment_to'])) {
+				$url .= '&filter_appointment_to=' . $this->request->get['filter_appointment_to'];
+			}
+			
 			if (isset($this->request->get['sort'])) {
 				$url .= '&sort=' . $this->request->get['sort'];
 			}
@@ -57,7 +73,23 @@ class ControllerReplogicScheduleManagement extends Controller {
 			$this->session->data['success'] = $this->language->get('text_success');
 
 			$url = '';
-
+			
+			if (isset($this->request->get['filter_appointment_name'])) {
+			$url .= '&filter_appointment_name=' . urlencode(html_entity_decode($this->request->get['filter_appointment_name'], ENT_QUOTES, 'UTF-8'));
+			}
+	
+			if (isset($this->request->get['filter_salesrep_id'])) {
+				$url .= '&filter_salesrep_id=' . $this->request->get['filter_salesrep_id'];
+			}
+			
+			if (isset($this->request->get['filter_appointment_from'])) {
+				$url .= '&filter_appointment_from=' . $this->request->get['filter_appointment_from'];
+			}
+	
+			if (isset($this->request->get['filter_appointment_to'])) {
+				$url .= '&filter_appointment_to=' . $this->request->get['filter_appointment_to'];
+			}
+			
 			if (isset($this->request->get['sort'])) {
 				$url .= '&sort=' . $this->request->get['sort'];
 			}
@@ -91,7 +123,23 @@ class ControllerReplogicScheduleManagement extends Controller {
 			$this->session->data['success'] = $this->language->get('text_success');
 
 			$url = '';
-
+			
+			if (isset($this->request->get['filter_appointment_name'])) {
+			$url .= '&filter_appointment_name=' . urlencode(html_entity_decode($this->request->get['filter_appointment_name'], ENT_QUOTES, 'UTF-8'));
+			}
+	
+			if (isset($this->request->get['filter_salesrep_id'])) {
+				$url .= '&filter_salesrep_id=' . $this->request->get['filter_salesrep_id'];
+			}
+			
+			if (isset($this->request->get['filter_appointment_from'])) {
+				$url .= '&filter_appointment_from=' . $this->request->get['filter_appointment_from'];
+			}
+	
+			if (isset($this->request->get['filter_appointment_to'])) {
+				$url .= '&filter_appointment_to=' . $this->request->get['filter_appointment_to'];
+			}
+			
 			if (isset($this->request->get['sort'])) {
 				$url .= '&sort=' . $this->request->get['sort'];
 			}
@@ -156,6 +204,22 @@ class ControllerReplogicScheduleManagement extends Controller {
 
 		$url = '';
 
+		if (isset($this->request->get['filter_appointment_name'])) {
+			$url .= '&filter_appointment_name=' . urlencode(html_entity_decode($this->request->get['filter_appointment_name'], ENT_QUOTES, 'UTF-8'));
+		}
+
+		if (isset($this->request->get['filter_salesrep_id'])) {
+			$url .= '&filter_salesrep_id=' . $this->request->get['filter_salesrep_id'];
+		}
+		
+		if (isset($this->request->get['filter_appointment_from'])) {
+			$url .= '&filter_appointment_from=' . $this->request->get['filter_appointment_from'];
+		}
+
+		if (isset($this->request->get['filter_appointment_to'])) {
+			$url .= '&filter_appointment_to=' . $this->request->get['filter_appointment_to'];
+		}
+		
 		if (isset($this->request->get['sort'])) {
 			$url .= '&sort=' . $this->request->get['sort'];
 		}
@@ -223,12 +287,15 @@ class ControllerReplogicScheduleManagement extends Controller {
 			
 		$salesrep = $this->model_replogic_sales_rep_management->getsalesrep($result['salesrep_id']); ;
 		$sales_rep = $salesrep['salesrep_name'] ." ". $salesrep['salesrep_lastname'];
+		
+		$time = strtotime($result['appointment_date']);
+		$myFormatForView = date("d-m-Y g:i A", $time); 
 			
 		$data['schedule_managements'][] = array(
 				'appointment_id' => $result['appointment_id'],
 				'appointment_name'          => $result['appointment_name'],
 				'sales_manager'          => $sales_rep,
-				'appointment_date'          => date('d-m-y H:i:s', strtotime($result['appointment_date'])),
+				'appointment_date'          => $myFormatForView,
 				'tasks'          => $this->url->link('replogic/tasks', 'token=' . $this->session->data['token'] . '&appointment_id=' . $result['appointment_id'] . $url, true),
 				'notes'          => $this->url->link('replogic/notes', 'token=' . $this->session->data['token'] . '&appointment_id=' . $result['appointment_id'] . $url, true),
 				'edit'          => $this->url->link('replogic/schedule_management/edit', 'token=' . $this->session->data['token'] . '&appointment_id=' . $result['appointment_id'] . $url, true)
@@ -411,6 +478,22 @@ class ControllerReplogicScheduleManagement extends Controller {
 
 		$url = '';
 
+		if (isset($this->request->get['filter_appointment_name'])) {
+			$url .= '&filter_appointment_name=' . urlencode(html_entity_decode($this->request->get['filter_appointment_name'], ENT_QUOTES, 'UTF-8'));
+		}
+
+		if (isset($this->request->get['filter_salesrep_id'])) {
+			$url .= '&filter_salesrep_id=' . $this->request->get['filter_salesrep_id'];
+		}
+		
+		if (isset($this->request->get['filter_appointment_from'])) {
+			$url .= '&filter_appointment_from=' . $this->request->get['filter_appointment_from'];
+		}
+
+		if (isset($this->request->get['filter_appointment_to'])) {
+			$url .= '&filter_appointment_to=' . $this->request->get['filter_appointment_to'];
+		}
+		
 		if (isset($this->request->get['sort'])) {
 			$url .= '&sort=' . $this->request->get['sort'];
 		}
@@ -445,6 +528,11 @@ class ControllerReplogicScheduleManagement extends Controller {
 
 		if (isset($this->request->get['appointment_id']) && $this->request->server['REQUEST_METHOD'] != 'POST') {
 			$appointment_info = $this->model_replogic_schedule_management->getappointment($this->request->get['appointment_id']);
+			$data['appointment_mode'] = 'Edit';
+		}
+		else
+		{
+			$data['appointment_mode'] = 'Add';
 		}
 
 		if (isset($this->request->post['appointment_name'])) {
@@ -458,7 +546,9 @@ class ControllerReplogicScheduleManagement extends Controller {
 		if (isset($this->request->post['appointment_date'])) {
 			$data['appointment_date'] = $this->request->post['appointment_date'];
 		} elseif (!empty($appointment_info)) {
-			$data['appointment_date'] = $appointment_info['appointment_date'];
+			$time = strtotime($appointment_info['appointment_date']);
+			$myFormatForView = date("d-m-Y g:i A", $time); 
+			$data['appointment_date'] = $myFormatForView;
 		} else {
 			$data['appointment_date'] = '';
 		}

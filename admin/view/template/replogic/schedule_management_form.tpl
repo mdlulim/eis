@@ -76,10 +76,31 @@
             <label class="col-sm-2 control-label" for="input-username"><?php echo $entry_appointment_date; ?></label>
             
             <div class="input-group date" style="padding-left:14px;">
-                  <input type="text" name="appointment_date" value="<?php echo $appointment_date; ?>" placeholder="YYYY-MM-DD" data-date-format="YYYY-MM-DD HH:mm:ss" id="input-date-added" class="form-control" style="width:163px;" />
+                  <!--<input type="text" name="appointment_date" value="<?php echo $appointment_date; ?>" placeholder="YYYY-MM-DD" data-date-format="YYYY-MM-DD HH:mm:ss" id="input-date-added" class="form-control" style="width:163px;" />
                   <span class="input-group-btn" style="float:left;">
                   <button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
-                  </span>
+                  </span>-->
+                  
+                
+                <div class='input-group date' id='datetimepicker5'>
+                    <input name="appointment_date" type='text' value="<?php echo $appointment_date; ?>"  placeholder="DD-MM-YYYY hh:mm A" class="form-control" data-date-format="DD-MM-YYYY hh:mm A" class="form-control"  />
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            
+        		<script type="text/javascript">
+            $(function () {
+                $('#datetimepicker5').datetimepicker({
+                    defaultDate: new Date(),
+                    <?php if($appointment_mode == 'Add') { ?>
+					minDate: moment()
+					<?php } ?>
+					
+                });
+            });
+        </script>
+      
                      <?php if ($error_appointment_date) { ?>
                   <div class="text-danger" style="width:100%;margin-top:40px;"><?php echo $error_appointment_date; ?></div>
                   <?php } ?>

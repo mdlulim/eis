@@ -39,10 +39,25 @@
               </div>
               <div class="form-group fromdate">
                 <label class="control-label" for="input-model">Appointment Date From</label>
-                <input type="text" name="filter_appointment_from" value="<?php echo $filter_appointment_from; ?>" placeholder="DD-MM-YYYY" data-date-format="DD-MM-YYYY" id="input-model" class="form-control" style="float:left;width:84%;" />
+                <!--<input type="text" name="filter_appointment_from" value="<?php echo $filter_appointment_from; ?>" placeholder="DD-MM-YYYY" data-date-format="DD-MM-YYYY" id="input-model" class="form-control" style="float:left;width:84%;" />
                 <span class="input-group-btn" style="float:left;">
                   <button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
-                  </span>
+                  </span>-->
+                
+                <div class='input-group date' id='filter_appointment_from'>
+                    <input name="filter_appointment_from" type='text' value="<?php echo $filter_appointment_from; ?>"  placeholder="DD-MM-YYYY hh:mm A" class="form-control" data-date-format="DD-MM-YYYY hh:mm A" class="form-control"  />
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            
+        		<script type="text/javascript">
+            $(function () {
+                $('#filter_appointment_from').datetimepicker({
+                     //defaultDate: new Date(),
+                });
+            });
+        </script>  
                
               </div>
             </div>
@@ -63,10 +78,27 @@
               </div>
               <div class="form-group todate">
                 <label class="control-label" for="input-quantity">Appointment Date To</label>
-                <input type="text" name="filter_appointment_to" value="<?php echo $filter_appointment_to; ?>" placeholder="DD-MM-YYYY" data-date-format="DD-MM-YYYY" id="input-model" class="form-control" style="float:left;width:84%;" />
+                <!--<input type="text" name="filter_appointment_to" value="<?php echo $filter_appointment_to; ?>" placeholder="DD-MM-YYYY" data-date-format="DD-MM-YYYY" id="input-model" class="form-control" style="float:left;width:84%;" />
                 <span class="input-group-btn" style="float:left;">
                   <button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
-                  </span>
+                  </span>-->
+                  
+                  <div class='input-group date' id='filter_appointment_to'>
+                    <input name="filter_appointment_to" type='text' value="<?php echo $filter_appointment_to; ?>"  placeholder="DD-MM-YYYY hh:mm A" class="form-control" data-date-format="DD-MM-YYYY hh:mm A" class="form-control"  />
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            
+        		<script type="text/javascript">
+            $(function () {
+                $('#filter_appointment_to').datetimepicker({
+                    //defaultDate: new Date(),
+                   
+                });
+            });
+        </script>
+                  
               </div>
             </div>
             <button type="button" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-filter"></i> Filter</button>
@@ -105,7 +137,7 @@
                                 <?php } ?></td>
                               <td class="text-left"><?php echo $schedule_management['appointment_name']; ?></td>
                               <td class="text-left"><?php echo $schedule_management['sales_manager']; ?></td>
-                               <td class="text-left"><?php echo $schedule_management['appointment_date']; ?></td>
+                              <td class="text-left"><?php  echo $schedule_management['appointment_date']; ?></td>
                               <td class="text-right"><!--<a href="<?php echo $schedule_management['tasks']; ?>" data-toggle="tooltip" title="Tasks" class="btn btn-primary"><i class="fa fa-tasks"></i></a>-->&nbsp;<a href="<?php echo $schedule_management['notes']; ?>" data-toggle="tooltip" title="Notes" class="btn btn-primary"><i class="fa fa-sticky-note"></i></a>&nbsp;<a href="<?php echo $schedule_management['edit']; ?>" data-toggle="tooltip" title="<?php echo $button_edit; ?>" class="btn btn-primary"><i class="fa fa-pencil"></i></a></td>
                             </tr>
                      <?php } ?>
