@@ -528,11 +528,7 @@ class ControllerReplogicScheduleManagement extends Controller {
 
 		if (isset($this->request->get['appointment_id']) && $this->request->server['REQUEST_METHOD'] != 'POST') {
 			$appointment_info = $this->model_replogic_schedule_management->getappointment($this->request->get['appointment_id']);
-			$data['appointment_mode'] = 'Edit';
-		}
-		else
-		{
-			$data['appointment_mode'] = 'Add';
+			
 		}
 
 		if (isset($this->request->post['appointment_name'])) {

@@ -88,15 +88,14 @@
                         <span class="glyphicon glyphicon-calendar"></span>
                     </span>
                 </div>
-            
+           <style>
+		   .glyphicon-calendar:before {content: "\e109" !important; }
+		   </style>
         		<script type="text/javascript">
             $(function () {
                 $('#datetimepicker5').datetimepicker({
                     defaultDate: new Date(),
-                    <?php if($appointment_mode == 'Add') { ?>
-					minDate: moment()
-					<?php } ?>
-					
+                   
                 });
             });
         </script>

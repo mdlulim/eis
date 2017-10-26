@@ -1,4 +1,5 @@
 <?php echo $header; ?><?php echo $column_left; ?>
+
 <div id="content">
   <div class="page-header">
     <div class="container-fluid">
@@ -50,11 +51,14 @@
                         <span class="glyphicon glyphicon-calendar"></span>
                     </span>
                 </div>
-            
-        		<script type="text/javascript">
+           <style>
+		   .glyphicon-calendar:before {content: "\e109" !important; }
+		   </style>
+            	<script type="text/javascript">
             $(function () {
                 $('#filter_appointment_from').datetimepicker({
                      //defaultDate: new Date(),
+					// inline: true,
                 });
             });
         </script>  
@@ -201,18 +205,5 @@ $('#button-filter-reset').on('click', function() {
 	location = url;
 });
 //--></script>
-<script type="text/javascript"><!--
-$('.fromdate').datetimepicker({
-	pickTime: false,
-	//defaultDate: new Date(),
-    //format:'DD/MM/YYYY HH:mm'
 
-});
-$('.todate').datetimepicker({
-	pickTime: false,
-	//defaultDate: new Date(),
-    //format:'DD/MM/YYYY HH:mm'
-
-});
-//--></script>
 <?php echo $footer; ?> 
