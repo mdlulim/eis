@@ -788,6 +788,12 @@ class ControllerCustomerCustomer extends Controller {
 		} else {
 			$data['error_address'] = array();
 		}
+		
+		if (isset($this->error['salesrep_id'])) {
+			$data['error_salesrep_id'] = $this->error['salesrep_id'];
+		} else {
+			$data['error_salesrep_id'] = '';
+		}
 
 		$url = '';
 
@@ -858,6 +864,23 @@ class ControllerCustomerCustomer extends Controller {
 		$this->load->model('replogic/sales_rep_management');
 
 		$data['salesreps'] = $this->model_replogic_sales_rep_management->getSalesReps();
+		
+		$this->load->model('user/user');
+		$this->load->model('user/user_group');
+		
+		$current_user = $this->session->data['user_id'];
+		$current_user_group_id = $this->model_user_user->getUser($current_user);
+		$current_user_group = $this->model_user_user_group->getUserGroup($current_user_group_id['user_group_id']); 
+		//print_r($current_user_group); exit;
+		if($current_user_group['name'] == 'Company admin')
+		{
+			$data['access'] = 'yes';
+		}
+		else
+		{
+			$data['access'] = 'no';
+		}
+		
 		
 		$this->load->model('customer/customer_group');
 
@@ -1050,7 +1073,16 @@ class ControllerCustomerCustomer extends Controller {
 				$this->error['warning'] = $this->language->get('error_exists');
 			}
 		}
-
+		
+		if (isset($this->request->post['salesrep_id'])) { 
+		
+			if($this->request->post['salesrep_id'] == '')
+			{
+				$this->error['salesrep_id'] = $this->language->get('error_salesrep_id');
+			}
+		
+		}
+		
 		if ((utf8_strlen($this->request->post['telephone']) < 3) || (utf8_strlen($this->request->post['telephone']) > 32)) {
 			$this->error['telephone'] = $this->language->get('error_telephone');
 		}

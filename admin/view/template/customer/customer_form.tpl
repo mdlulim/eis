@@ -66,10 +66,12 @@
                         </div>
                       </div>
                       
-                      <div class="form-group">
+                      <?php if($access == 'yes') { ?>
+                      <div class="form-group required">
                         <label class="col-sm-2 control-label" for="input-customer-group"><?php echo $entry_salesrep; ?></label>
                         <div class="col-sm-10">
                           <select name="salesrep_id" id="input-salesrep-id" class="form-control">
+                            <option value="">Select Sales Rep</option>
                             <?php foreach ($salesreps as $salesrep) { ?>
                             <?php if ($salesrep['salesrep_id'] == $salesrep_id) { ?>
                             <option value="<?php echo $salesrep['salesrep_id']; ?>" selected="selected"><?php echo $salesrep['salesrep_name']; ?> <?php echo $salesrep['salesrep_lastname']; ?></option>
@@ -78,8 +80,12 @@
                             <?php } ?>
                             <?php } ?>
                           </select>
+                           <?php if ($error_salesrep_id) { ?>
+                          <div class="text-danger"><?php echo $error_salesrep_id; ?></div>
+                          <?php } ?>
                         </div>
                       </div>
+                      <?php } ?>
                       
                       <div class="form-group required">
                         <label class="col-sm-2 control-label" for="input-firstname"><?php echo $entry_firstname; ?></label>
