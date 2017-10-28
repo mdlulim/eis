@@ -228,9 +228,28 @@ class ControllerReplogicSalesRepManagement extends Controller {
 			'limit' => $this->config->get('config_limit_admin')
 		);
 
-		$sales_rep_management_total = $this->model_replogic_sales_rep_management->getTotalScheduleManagement($filter_data);
+		
+		$this->load->model('user/user_group');
+		$this->load->model('user/user');
+		$current_user = $this->session->data['user_id'];
+		$current_user_group_id = $this->model_user_user->getUser($current_user); ;
+		$current_user_group = $this->model_user_user_group->getUserGroup($current_user_group_id['user_group_id']); ;
+		//print_r($current_user_group); exit;
+		if($current_user_group['name'] == 'Company admin' || $current_user_group['name'] == 'Administrator')
+		{
+			$allaccess = true;
+			$current_user_id = 0;
+		}
+		else
+		{ 
+			$allaccess = false;
+			$current_user_id = $this->session->data['user_id'];
+			
+		}
+		
+		$sales_rep_management_total = $this->model_replogic_sales_rep_management->getTotalScheduleManagement($filter_data,$allaccess, $current_user_id);
 
-		$results = $this->model_replogic_sales_rep_management->getSalesReps($filter_data);
+		$results = $this->model_replogic_sales_rep_management->getSalesReps($filter_data,$allaccess, $current_user_id);
 		
 		$this->load->model('user/team');
 		
@@ -241,10 +260,10 @@ class ControllerReplogicSalesRepManagement extends Controller {
 	    $sales_manag = $user['firstname'] ." ". $user['lastname']." (".$user['username'].")";
 			$data['sales_rep_managements'][] = array(
 				'salesrep_id' => $result['salesrep_id'],
-				'email' => $result['email'],
-				'team' => $team['team_name'],
-				'name'          => $result['salesrep_name'] . '&nbsp;' . $result['salesrep_lastname'],
-				'edit'          => $this->url->link('replogic/sales_rep_management/edit', 'token=' . $this->session->data['token'] . '&salesrep_id=' . $result['salesrep_id'] . $url, true)
+				'email'       => $result['email'],
+				'team'        => $team['team_name'],
+				'name'        => $result['salesrep_name'] . '&nbsp;' . $result['salesrep_lastname'],
+				'edit'        => $this->url->link('replogic/sales_rep_management/edit', 'token=' . $this->session->data['token'] . '&salesrep_id=' . $result['salesrep_id'] . $url, true)
 			);
 		}
 		

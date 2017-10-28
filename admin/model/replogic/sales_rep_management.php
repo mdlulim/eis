@@ -21,11 +21,20 @@ class ModelReplogicSalesRepManagement extends Model {
 		return $query->row;
 	}
 
-	public function getSalesReps($data = array()) {
-		$sql = "SELECT * FROM " . DB_PREFIX . "salesrep";
+	public function getSalesReps($data = array(), $allaccess, $current_user_id) {
 		
-		if (!empty($data['filter_sales_rep_name']) || !empty($data['team_id']) || !empty($data['filter_email']) ) {
-			$sql .= " where salesrep_id > '0'";
+		if($allaccess)
+		{
+			$sql = "SELECT * FROM " . DB_PREFIX . "salesrep";
+			
+			if (!empty($data['filter_sales_rep_name']) || !empty($data['team_id']) || !empty($data['filter_email']) ) 
+			{
+				$sql .= " where salesrep_id > '0'";
+			}
+		}
+		else
+		{
+			$sql = "SELECT * FROM oc_salesrep sr left join oc_team tm on tm.team_id = sr.sales_team_id where tm.sales_manager = ".$current_user_id.""; 
 		}
 		
 		if (!empty($data['filter_sales_rep_name'])) {
@@ -85,12 +94,20 @@ class ModelReplogicSalesRepManagement extends Model {
 	}
 
 
-	public function getTotalScheduleManagement($data = array()) {
+	public function getTotalScheduleManagement($data = array(), $allaccess, $current_user_id) {
 		
-		$sql = "SELECT COUNT(*) AS total FROM " . DB_PREFIX . "salesrep";
-		
-		if (!empty($data['filter_sales_rep_name']) || !empty($data['team_id']) || !empty($data['filter_email']) ) {
-			$sql .= " where salesrep_id > '0'";
+		if($allaccess)
+		{
+			$sql = "SELECT * FROM " . DB_PREFIX . "salesrep";
+			
+			if (!empty($data['filter_sales_rep_name']) || !empty($data['team_id']) || !empty($data['filter_email']) ) 
+			{
+				$sql .= " where salesrep_id > '0'";
+			}
+		}
+		else
+		{
+			$sql = "SELECT * FROM oc_salesrep sr left join oc_team tm on tm.team_id = sr.sales_team_id where tm.sales_manager = ".$current_user_id.""; 
 		}
 		
 		if (!empty($data['filter_sales_rep_name'])) {
