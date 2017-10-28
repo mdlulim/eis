@@ -66,6 +66,24 @@ class ModelReplogicSalesRepManagement extends Model {
 
 		return $query->rows;
 	}
+	
+	public function getSalesRepsDropdown($allaccess, $current_user_id) {
+		
+		if($allaccess)
+		{
+			$sql = "SELECT * FROM " . DB_PREFIX . "salesrep";
+		}
+		else
+		{
+			$sql = "SELECT * FROM oc_salesrep sr left join oc_team tm on tm.team_id = sr.sales_team_id where tm.sales_manager = ".$current_user_id.""; 
+		}
+		
+//echo $sql; exit;
+		$query = $this->db->query($sql);
+
+		return $query->rows;
+	}
+
 
 	public function getTotalScheduleManagement($data = array()) {
 		

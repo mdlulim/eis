@@ -32,29 +32,47 @@ class ModelReplogicScheduleManagement extends Model {
 		return $query->row;
 	}
 
-	public function getScheduleManagement($data = array()) {
-		$sql = "SELECT * FROM " . DB_PREFIX . "appointment";
+	public function getScheduleManagement($data = array(), $allaccess, $current_user_id) {
 		
-		if (!empty($data['filter_appointment_name']) || !empty($data['filter_salesrep_id']) || !empty($data['filter_appointment_from']) || !empty($data['filter_appointment_to'])) {
-			$sql .= " where appointment_id > '0'";
+		if($allaccess)
+		{
+		
+			$sql = "SELECT * FROM " . DB_PREFIX . "appointment";
+			
+			if (!empty($data['filter_appointment_name']) || !empty($data['filter_salesrep_id']) || !empty($data['filter_appointment_from']) || !empty($data['filter_appointment_to'])) 		{
+				$sql .= " where appointment_id > '0'";
+			}
+			
+			$appointment_name = 'appointment_name';
+			$salesrep_id = 'salesrep_id';
+			$appointment_date = 'appointment_date';
+		}
+		else
+		{
+			$sql = "SELECT * FROM oc_appointment ap left join oc_salesrep sr on sr.salesrep_id = ap.salesrep_id left join oc_team tm on tm.team_id = sr.sales_team_id where tm.sales_manager = ".$current_user_id.""; 
+			
+			$appointment_name = 'ap.appointment_name';
+			$salesrep_id = 'ap.salesrep_id';
+			$appointment_date = 'ap.appointment_date';
+			
 		}
 		
 		if (!empty($data['filter_appointment_name'])) {
-			$sql .= " AND appointment_name LIKE '" . $this->db->escape($data['filter_appointment_name']) . "%'";
+			$sql .= " AND ".$appointment_name." LIKE '" . $this->db->escape($data['filter_appointment_name']) . "%'";
 		}
 
 		if (!empty($data['filter_salesrep_id'])) {
-			$sql .= " AND salesrep_id LIKE '" . $this->db->escape($data['filter_salesrep_id']) . "'";
+			$sql .= " AND ".$salesrep_id." LIKE '" . $this->db->escape($data['filter_salesrep_id']) . "'";
 		}
 		
 		if (!empty($data['filter_appointment_from']) && !empty($data['filter_appointment_to'])) { 
 			$fromdate = date('Y-m-d H:i:s', strtotime($data['filter_appointment_from'])); 
 			$todate = date('Y-m-d H:i:s', strtotime($data['filter_appointment_to'])); 
-			$sql .= " AND appointment_date >= '" . $fromdate . "' AND appointment_date <= '" . $todate . "'";
+			$sql .= " AND ".$appointment_date." >= '" . $fromdate . "' AND ".$appointment_date." <= '" . $todate . "'";
 		}
 
 		
-		$sql .= " ORDER BY appointment_name";
+		$sql .= " ORDER BY ".$appointment_name."";
 
 		if (isset($data['order']) && ($data['order'] == 'DESC')) {
 			$sql .= " DESC";
@@ -78,29 +96,47 @@ class ModelReplogicScheduleManagement extends Model {
 
 		return $query->rows;
 	}
-
-	public function getTotalScheduleManagement($data = array()) {
-		//$query = $this->db->query("SELECT COUNT(*) AS total FROM " . DB_PREFIX . "appointment");
+	
+	
+	public function getTotalScheduleManagement($data = array(), $allaccess, $current_user_id) {
 		
-		$sql = "SELECT COUNT(*) AS total FROM " . DB_PREFIX . "appointment";
+		if($allaccess)
+		{
 		
-		if (!empty($data['filter_appointment_name']) || !empty($data['filter_salesrep_id']) || !empty($data['filter_appointment_from']) || !empty($data['filter_appointment_to'])) {
-			$sql .= " where appointment_id > '0'";
+			$sql = "SELECT COUNT(*) AS total FROM " . DB_PREFIX . "appointment";
+			
+			if (!empty($data['filter_appointment_name']) || !empty($data['filter_salesrep_id']) || !empty($data['filter_appointment_from']) || !empty($data['filter_appointment_to'])) 		{
+				$sql .= " where appointment_id > '0'";
+			}
+			
+			$appointment_name = 'appointment_name';
+			$salesrep_id = 'salesrep_id';
+			$appointment_date = 'appointment_date';
+		}
+		else
+		{
+			$sql = "SELECT COUNT(*) AS total FROM oc_appointment ap left join oc_salesrep sr on sr.salesrep_id = ap.salesrep_id left join oc_team tm on tm.team_id = sr.sales_team_id where tm.sales_manager = ".$current_user_id.""; 
+			
+			$appointment_name = 'ap.appointment_name';
+			$salesrep_id = 'ap.salesrep_id';
+			$appointment_date = 'ap.appointment_date';
+			
 		}
 		
 		if (!empty($data['filter_appointment_name'])) {
-			$sql .= " AND appointment_name LIKE '" . $this->db->escape($data['filter_appointment_name']) . "%'";
+			$sql .= " AND ".$appointment_name." LIKE '" . $this->db->escape($data['filter_appointment_name']) . "%'";
 		}
 
 		if (!empty($data['filter_salesrep_id'])) {
-			$sql .= " AND salesrep_id LIKE '" . $this->db->escape($data['filter_salesrep_id']) . "'";
+			$sql .= " AND ".$salesrep_id." LIKE '" . $this->db->escape($data['filter_salesrep_id']) . "'";
 		}
 		
-		if (!empty($data['filter_appointment_from']) && !empty($data['filter_appointment_to'])) {
+		if (!empty($data['filter_appointment_from']) && !empty($data['filter_appointment_to'])) { 
 			$fromdate = date('Y-m-d H:i:s', strtotime($data['filter_appointment_from'])); 
 			$todate = date('Y-m-d H:i:s', strtotime($data['filter_appointment_to'])); 
-			$sql .= " AND appointment_date >= '" . $fromdate . "' AND appointment_date <= '" . $todate . "'";
+			$sql .= " AND ".$appointment_date." >= '" . $fromdate . "' AND ".$appointment_date." <= '" . $todate . "'";
 		}
+		
 		$query = $this->db->query($sql);
 		return $query->row['total'];
 	}
