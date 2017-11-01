@@ -861,10 +861,6 @@ class ControllerCustomerCustomer extends Controller {
 			$customer_info = $this->model_customer_customer->getCustomer($this->request->get['customer_id']);
 		}
 
-		$this->load->model('replogic/sales_rep_management');
-
-		$data['salesreps'] = $this->model_replogic_sales_rep_management->getSalesReps();
-		
 		$this->load->model('user/user');
 		$this->load->model('user/user_group');
 		
@@ -875,12 +871,20 @@ class ControllerCustomerCustomer extends Controller {
 		if($current_user_group['name'] == 'Company admin')
 		{
 			$data['access'] = 'yes';
+			$allaccess = true;
+			$current_user_id = 0;
 		}
 		else
 		{
 			$data['access'] = 'no';
+			$allaccess = false;
+			$current_user_id = $this->session->data['user_id'];
 		}
 		
+		$this->load->model('replogic/sales_rep_management');
+
+		$data['salesreps'] = $this->model_replogic_sales_rep_management->getSalesRepsDropdown($allaccess, $current_user_id);
+		//$data['salesreps'] = '';
 		
 		$this->load->model('customer/customer_group');
 
