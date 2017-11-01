@@ -1087,7 +1087,13 @@ class ControllerCustomerCustomer extends Controller {
 		
 		}
 		
-		if ((utf8_strlen($this->request->post['telephone']) < 3) || (utf8_strlen($this->request->post['telephone']) > 32)) {
+		if (utf8_strlen($this->request->post['telephone']) < 10) {
+			$this->error['telephone'] = $this->language->get('error_telephone');
+			
+		}
+		
+		$tel = $this->request->post['telephone'];
+		if(!is_numeric($tel)) {
 			$this->error['telephone'] = $this->language->get('error_telephone');
 		}
 
