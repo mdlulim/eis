@@ -1394,7 +1394,7 @@ function addRecurring() {
 }
 //--></script>
   <script type="text/javascript"><!--
-$('.date').datetimepicker({
+$('.date').datetimepicker({ 
 	pickTime: false
 });
 
