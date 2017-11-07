@@ -121,14 +121,6 @@
       </div>
     </div>
   </div>
-  <script type="text/javascript"><!--
-$('.date').datetimepicker({
-	pickTime: true,
-	defaultDate: new Date(),
-	minDate: moment(),
-    format:'DD/MM/YYYY HH:mm'
-
-});
-//--></script>
+  
 </div>
 <?php echo $footer; ?> 

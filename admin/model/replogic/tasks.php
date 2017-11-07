@@ -55,6 +55,34 @@ class ModelReplogicTasks extends Model {
 
 		return $query->rows;
 	}
+	
+	public function getTasksDash($data = array(), $current_user_id) {
+		$sql = "SELECT * FROM oc_tasks tk left join oc_salesrep sr on sr.salesrep_id = tk.salesrep_id left join oc_team tm on tm.team_id = sr.sales_team_id where tm.sales_manager = ".$current_user_id.""; 
+		
+		$sql .= " ORDER BY task_name";
+
+		if (isset($data['order']) && ($data['order'] == 'DESC')) {
+			$sql .= " DESC";
+		} else {
+			$sql .= " ASC";
+		}
+
+		if (isset($data['start']) || isset($data['limit'])) {
+			if ($data['start'] < 0) {
+				$data['start'] = 0;
+			}
+
+			if ($data['limit'] < 1) {
+				$data['limit'] = 20;
+			}
+
+			$sql .= " LIMIT " . (int)$data['start'] . "," . (int)$data['limit'];
+		}
+
+		$query = $this->db->query($sql);
+
+		return $query->rows;
+	}
 
 	public function getTotalTasks($data = array()) {
 		$sql = "SELECT COUNT(*) AS total FROM " . DB_PREFIX . "tasks";

@@ -276,6 +276,20 @@ class ModelSaleOrder extends Model {
 		return $query->rows;
 	}
 
+	public function getTotalOrdersDash($data = array(), $current_user_id) {
+		
+		$sql = "SELECT COUNT(*) AS total FROM oc_order ord left join oc_customer ct on ct.customer_id = ord.customer_id left join oc_salesrep sr on sr.salesrep_id = ct.salesrep_id left join oc_team tm on tm.team_id = sr.sales_team_id where tm.sales_manager = ".$current_user_id." AND order_status_id > '0'"; 
+		
+		
+		if (!empty($data['filter_date_added'])) {
+			$sql .= " AND DATE(ord.date_added) = DATE('" . $this->db->escape($data['filter_date_added']) . "')";
+		}
+
+		$query = $this->db->query($sql);
+
+		return $query->row['total'];
+	}
+	
 	public function getTotalOrders($data = array()) {
 		$sql = "SELECT COUNT(*) AS total FROM `" . DB_PREFIX . "order`";
 

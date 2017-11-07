@@ -126,4 +126,36 @@ class ControllerExtensionDashboardMap extends Controller {
 		$this->response->addHeader('Content-Type: application/json');
 		$this->response->setOutput(json_encode($json));
 	}
+	
+	public function mapcustom() {
+		$json = array();
+
+		$this->load->model('report/sale');
+
+		$this->load->model('user/user_group');
+		$this->load->model('user/user');
+		$current_user = $this->session->data['user_id'];
+		$current_user_group_id = $this->model_user_user->getUser($current_user); ;
+		$current_user_group = $this->model_user_user_group->getUserGroup($current_user_group_id['user_group_id']);
+		//print_r($current_user_group); exit;
+		
+		if($current_user_group['name'] == 'Sales Manager')
+		{
+			$results = $this->model_report_sale->getTotalOrdersByCountryDash($this->session->data['user_id']);
+		}
+		else
+		{
+			$results = $this->model_report_sale->getTotalOrdersByCountry();
+		}
+//print_r($results); exit;
+		foreach ($results as $result) {
+			$json[strtolower($result['iso_code_2'])] = array(
+				'total'  => $result['total'],
+				'amount' => $this->currency->format($result['amount'], $this->config->get('config_currency'))
+			);
+		}
+
+		$this->response->addHeader('Content-Type: application/json');
+		$this->response->setOutput(json_encode($json));
+	}
 }

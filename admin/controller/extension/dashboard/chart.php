@@ -216,4 +216,175 @@ class ControllerExtensionDashboardChart extends Controller {
 		$this->response->addHeader('Content-Type: application/json');
 		$this->response->setOutput(json_encode($json));
 	}
+	
+	public function chartcustom() {
+		$this->load->language('extension/dashboard/chart');
+
+		$json = array();
+
+		$this->load->model('report/sale');
+		$this->load->model('report/customer');
+
+		$json['order'] = array();
+		$json['customer'] = array();
+		$json['xaxis'] = array();
+
+		$json['order']['label'] = $this->language->get('text_order');
+		$json['customer']['label'] = $this->language->get('text_customer');
+		$json['order']['data'] = array();
+		$json['customer']['data'] = array();
+
+		if (isset($this->request->get['range'])) {
+			$range = $this->request->get['range'];
+		} else {
+			$range = 'day';
+		}
+		
+		$this->load->model('user/user_group');
+		$this->load->model('user/user');
+		$current_user = $this->session->data['user_id'];
+		$current_user_group_id = $this->model_user_user->getUser($current_user); ;
+		$current_user_group = $this->model_user_user_group->getUserGroup($current_user_group_id['user_group_id']); ;
+
+		switch ($range) {
+			default:
+			case 'day':
+				
+				if($current_user_group['name'] == 'Sales Manager')
+				{
+					$results = $this->model_report_sale->getTotalOrdersByDayDash($this->session->data['user_id']);
+				}
+				else
+				{
+					$results = $this->model_report_sale->getTotalOrdersByDay();
+				}
+
+				foreach ($results as $key => $value) {
+					$json['order']['data'][] = array($key, $value['total']);
+				}
+
+				if($current_user_group['name'] == 'Sales Manager')
+				{
+					$results = $this->model_report_customer->getTotalCustomersByDayDash($this->session->data['user_id']);
+				}
+				else
+				{
+					$results = $this->model_report_customer->getTotalCustomersByDay();
+				}
+
+				foreach ($results as $key => $value) {
+					$json['customer']['data'][] = array($key, $value['total']);
+				}
+
+				for ($i = 0; $i < 24; $i++) {
+					$json['xaxis'][] = array($i, $i);
+				}
+				break;
+			case 'week':
+				
+				if($current_user_group['name'] == 'Sales Manager')
+				{
+					$results = $this->model_report_sale->getTotalOrdersByWeekDash($this->session->data['user_id']);
+				}
+				else
+				{
+					$results = $this->model_report_sale->getTotalOrdersByWeek();
+				}
+
+				foreach ($results as $key => $value) {
+					$json['order']['data'][] = array($key, $value['total']);
+				}
+
+				if($current_user_group['name'] == 'Sales Manager')
+				{
+					$results = $this->model_report_customer->getTotalCustomersByWeekDash($this->session->data['user_id']);
+				}
+				else
+				{
+					$results = $this->model_report_customer->getTotalCustomersByWeek();
+				}
+
+				foreach ($results as $key => $value) {
+					$json['customer']['data'][] = array($key, $value['total']);
+				}
+
+				$date_start = strtotime('-' . date('w') . ' days');
+
+				for ($i = 0; $i < 7; $i++) {
+					$date = date('Y-m-d', $date_start + ($i * 86400));
+
+					$json['xaxis'][] = array(date('w', strtotime($date)), date('D', strtotime($date)));
+				}
+				break;
+			case 'month':
+				
+				if($current_user_group['name'] == 'Sales Manager')
+				{
+					$results = $this->model_report_sale->getTotalOrdersByMonthDash($this->session->data['user_id']);
+				}
+				else
+				{
+					$results = $this->model_report_sale->getTotalOrdersByMonth();
+				}
+
+				foreach ($results as $key => $value) {
+					$json['order']['data'][] = array($key, $value['total']);
+				}
+
+				if($current_user_group['name'] == 'Sales Manager')
+				{
+					$results = $this->model_report_customer->getTotalCustomersByMonthDash($this->session->data['user_id']);
+				}
+				else
+				{
+					$results = $this->model_report_customer->getTotalCustomersByMonth();
+				}
+
+				foreach ($results as $key => $value) {
+					$json['customer']['data'][] = array($key, $value['total']);
+				}
+
+				for ($i = 1; $i <= date('t'); $i++) {
+					$date = date('Y') . '-' . date('m') . '-' . $i;
+
+					$json['xaxis'][] = array(date('j', strtotime($date)), date('d', strtotime($date)));
+				}
+				break;
+			case 'year':
+				
+				if($current_user_group['name'] == 'Sales Manager')
+				{
+					$results = $this->model_report_sale->getTotalOrdersByYearDash($this->session->data['user_id']);
+				}
+				else
+				{
+					$results = $this->model_report_sale->getTotalOrdersByYear();
+				}
+
+				foreach ($results as $key => $value) {
+					$json['order']['data'][] = array($key, $value['total']);
+				}
+
+				if($current_user_group['name'] == 'Sales Manager')
+				{
+					$results = $this->model_report_customer->getTotalCustomersByYearDash($this->session->data['user_id']);
+				}
+				else
+				{
+					$results = $this->model_report_customer->getTotalCustomersByYear();
+				}
+
+				foreach ($results as $key => $value) {
+					$json['customer']['data'][] = array($key, $value['total']);
+				}
+
+				for ($i = 1; $i <= 12; $i++) {
+					$json['xaxis'][] = array($i, date('M', mktime(0, 0, 0, $i)));
+				}
+				break;
+		}
+
+		$this->response->addHeader('Content-Type: application/json');
+		$this->response->setOutput(json_encode($json));
+	}
 }

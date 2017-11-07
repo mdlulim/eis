@@ -296,6 +296,27 @@ class ModelCustomerCustomer extends Model {
 		return $address_data;
 	}
 
+	public function getTotalCustomersDash($data = array(), $current_user_id) { 
+		
+		$sql = "SELECT COUNT(*) AS total FROM oc_customer ap left join oc_salesrep sr on sr.salesrep_id = ap.salesrep_id left join oc_team tm on tm.team_id = sr.sales_team_id"; 
+		
+		$implode = array();
+		
+		$implode[] = "tm.sales_manager = '" . $current_user_id . "'";
+		
+		if (!empty($data['filter_date_added'])) {
+			$implode[] = "DATE(date_added) = DATE('" . $this->db->escape($data['filter_date_added']) . "')";
+		}
+
+		if ($implode) {
+			$sql .= " WHERE " . implode(" AND ", $implode);
+		}
+	//echo $sql; exit;		
+		$query = $this->db->query($sql);
+
+		return $query->row['total'];
+	}
+	
 	public function getTotalCustomers($data = array()) {
 		$sql = "SELECT COUNT(*) AS total FROM " . DB_PREFIX . "customer";
 

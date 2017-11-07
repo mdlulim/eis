@@ -1,5 +1,29 @@
 <?php
 class ModelReportCustomer extends Model {
+	public function getTotalCustomersByDayDash($current_user_id) {
+		$customer_data = array();
+
+		for ($i = 0; $i < 24; $i++) {
+			$customer_data[$i] = array(
+				'hour'  => $i,
+				'total' => 0
+			);
+		}
+		
+		$sql = "SELECT COUNT(*) AS total, HOUR(ct.date_added) AS hour FROM `" . DB_PREFIX . "customer` ct left join oc_salesrep sr on sr.salesrep_id = ct.salesrep_id left join oc_team tm on tm.team_id = sr.sales_team_id WHERE tm.sales_manager = ".$current_user_id." AND DATE(ct.date_added) = DATE(NOW()) GROUP BY HOUR(ct.date_added) ORDER BY ct.date_added ASC";
+		
+		$query = $this->db->query($sql);
+
+		foreach ($query->rows as $result) {
+			$customer_data[$result['hour']] = array(
+				'hour'  => $result['hour'],
+				'total' => $result['total']
+			);
+		}
+
+		return $customer_data;
+	}
+	
 	public function getTotalCustomersByDay() {
 		$customer_data = array();
 
@@ -22,6 +46,33 @@ class ModelReportCustomer extends Model {
 		return $customer_data;
 	}
 
+	public function getTotalCustomersByWeekDash($current_user_id) {
+		$customer_data = array();
+
+		$date_start = strtotime('-' . date('w') . ' days');
+
+		for ($i = 0; $i < 7; $i++) {
+			$date = date('Y-m-d', $date_start + ($i * 86400));
+
+			$customer_data[date('w', strtotime($date))] = array(
+				'day'   => date('D', strtotime($date)),
+				'total' => 0
+			);
+		}
+
+		$sql = "SELECT COUNT(*) AS total, ct.date_added FROM `" . DB_PREFIX . "customer` ct left join oc_salesrep sr on sr.salesrep_id = ct.salesrep_id left join oc_team tm on tm.team_id = sr.sales_team_id WHERE tm.sales_manager = ".$current_user_id." AND DATE(ct.date_added) >= DATE('" . $this->db->escape(date('Y-m-d', $date_start)) . "') GROUP BY DAYNAME(ct.date_added)";
+		$query = $this->db->query($sql);
+
+		foreach ($query->rows as $result) {
+			$customer_data[date('w', strtotime($result['date_added']))] = array(
+				'day'   => date('D', strtotime($result['date_added'])),
+				'total' => $result['total']
+			);
+		}
+
+		return $customer_data;
+	}
+	
 	public function getTotalCustomersByWeek() {
 		$customer_data = array();
 
@@ -48,6 +99,32 @@ class ModelReportCustomer extends Model {
 		return $customer_data;
 	}
 
+	public function getTotalCustomersByMonthDash($current_user_id) {
+		$customer_data = array();
+
+		for ($i = 1; $i <= date('t'); $i++) {
+			$date = date('Y') . '-' . date('m') . '-' . $i;
+
+			$customer_data[date('j', strtotime($date))] = array(
+				'day'   => date('d', strtotime($date)),
+				'total' => 0
+			);
+		}
+		
+		$sql = "SELECT COUNT(*) AS total, ct.date_added FROM `" . DB_PREFIX . "customer` ct left join oc_salesrep sr on sr.salesrep_id = ct.salesrep_id left join oc_team tm on tm.team_id = sr.sales_team_id WHERE tm.sales_manager = ".$current_user_id." AND DATE(ct.date_added) >= '" . $this->db->escape(date('Y') . '-' . date('m') . '-1') . "' GROUP BY DATE(ct.date_added)";
+		
+		$query = $this->db->query($sql);
+
+		foreach ($query->rows as $result) {
+			$customer_data[date('j', strtotime($result['date_added']))] = array(
+				'day'   => date('d', strtotime($result['date_added'])),
+				'total' => $result['total']
+			);
+		}
+
+		return $customer_data;
+	}
+	
 	public function getTotalCustomersByMonth() {
 		$customer_data = array();
 
@@ -72,6 +149,30 @@ class ModelReportCustomer extends Model {
 		return $customer_data;
 	}
 
+	public function getTotalCustomersByYearDash($current_user_id) {
+		$customer_data = array();
+
+		for ($i = 1; $i <= 12; $i++) {
+			$customer_data[$i] = array(
+				'month' => date('M', mktime(0, 0, 0, $i)),
+				'total' => 0
+			);
+		}
+		
+		$sql = "SELECT COUNT(*) AS total, ct.date_added FROM `" . DB_PREFIX . "customer` ct left join oc_salesrep sr on sr.salesrep_id = ct.salesrep_id left join oc_team tm on tm.team_id = sr.sales_team_id WHERE tm.sales_manager = ".$current_user_id." AND YEAR(ct.date_added) = YEAR(NOW()) GROUP BY MONTH(ct.date_added)";
+		
+		$query = $this->db->query($sql);
+
+		foreach ($query->rows as $result) {
+			$customer_data[date('n', strtotime($result['date_added']))] = array(
+				'month' => date('M', strtotime($result['date_added'])),
+				'total' => $result['total']
+			);
+		}
+
+		return $customer_data;
+	}
+	
 	public function getTotalCustomersByYear() {
 		$customer_data = array();
 

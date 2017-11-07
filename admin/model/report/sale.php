@@ -1,5 +1,20 @@
 <?php
 class ModelReportSale extends Model {
+	
+	public function getTotalSalesDash($data = array(), $current_user_id) {
+		
+		$sql = "SELECT SUM(ord.total) AS total FROM oc_order ord left join oc_customer ct on ct.customer_id = ord.customer_id left join oc_salesrep sr on sr.salesrep_id = ct.salesrep_id left join oc_team tm on tm.team_id = sr.sales_team_id where tm.sales_manager = ".$current_user_id." AND order_status_id > '0'"; 
+		
+		
+		if (!empty($data['filter_date_added'])) {
+			$sql .= " AND DATE(ord.date_added) = DATE('" . $this->db->escape($data['filter_date_added']) . "')";
+		}
+
+		$query = $this->db->query($sql);
+//echo $sql; exit;
+		return $query->row['total'];
+	}
+	
 	public function getTotalSales($data = array()) {
 		$sql = "SELECT SUM(total) AS total FROM `" . DB_PREFIX . "order` WHERE order_status_id > '0'";
 
@@ -14,6 +29,15 @@ class ModelReportSale extends Model {
 
 	public function getTotalOrdersByCountry() {
 		$query = $this->db->query("SELECT COUNT(*) AS total, SUM(o.total) AS amount, c.iso_code_2 FROM `" . DB_PREFIX . "order` o LEFT JOIN `" . DB_PREFIX . "country` c ON (o.payment_country_id = c.country_id) WHERE o.order_status_id > '0' GROUP BY o.payment_country_id");
+
+		return $query->rows;
+	}
+	
+	public function getTotalOrdersByCountryDash($current_user_id) {
+		
+		$sql = "SELECT COUNT(*) AS total, SUM(o.total) AS amount, c.iso_code_2 FROM `" . DB_PREFIX . "order` o LEFT JOIN `" . DB_PREFIX . "country` c ON (o.payment_country_id = c.country_id) left join oc_customer ct on ct.customer_id = o.customer_id left join oc_salesrep sr on sr.salesrep_id = ct.salesrep_id left join oc_team tm on tm.team_id = sr.sales_team_id WHERE tm.sales_manager = ".$current_user_id." AND o.order_status_id > '0' GROUP BY o.payment_country_id";
+		
+		$query = $this->db->query($sql);
 
 		return $query->rows;
 	}
@@ -45,7 +69,71 @@ class ModelReportSale extends Model {
 
 		return $order_data;
 	}
+	
+	public function getTotalOrdersByDayDash($current_user_id) {
+		$implode = array();
 
+		foreach ($this->config->get('config_complete_status') as $order_status_id) {
+			$implode[] = "'" . (int)$order_status_id . "'";
+		}
+
+		$order_data = array();
+
+		for ($i = 0; $i < 24; $i++) {
+			$order_data[$i] = array(
+				'hour'  => $i,
+				'total' => 0
+			);
+		}
+		
+		$sql = "SELECT COUNT(*) AS total, HOUR(o.date_added) AS hour FROM `" . DB_PREFIX . "order` o left join oc_customer ct on ct.customer_id = o.customer_id left join oc_salesrep sr on sr.salesrep_id = ct.salesrep_id left join oc_team tm on tm.team_id = sr.sales_team_id WHERE tm.sales_manager = ".$current_user_id." AND o.order_status_id IN(" . implode(",", $implode) . ") AND DATE(o.date_added) = DATE(NOW()) GROUP BY HOUR(o.date_added) ORDER BY o.date_added ASC"; 
+		
+		$query = $this->db->query($sql);
+
+		foreach ($query->rows as $result) {
+			$order_data[$result['hour']] = array(
+				'hour'  => $result['hour'],
+				'total' => $result['total']
+			);
+		}
+
+		return $order_data;
+	}
+
+	public function getTotalOrdersByWeekDash($current_user_id) {
+		$implode = array();
+
+		foreach ($this->config->get('config_complete_status') as $order_status_id) {
+			$implode[] = "'" . (int)$order_status_id . "'";
+		}
+
+		$order_data = array();
+
+		$date_start = strtotime('-' . date('w') . ' days');
+
+		for ($i = 0; $i < 7; $i++) {
+			$date = date('Y-m-d', $date_start + ($i * 86400));
+
+			$order_data[date('w', strtotime($date))] = array(
+				'day'   => date('D', strtotime($date)),
+				'total' => 0
+			);
+		}
+		
+		$sql = "SELECT COUNT(*) AS total, o.date_added FROM `" . DB_PREFIX . "order` o left join oc_customer ct on ct.customer_id = o.customer_id left join oc_salesrep sr on sr.salesrep_id = ct.salesrep_id left join oc_team tm on tm.team_id = sr.sales_team_id WHERE tm.sales_manager = ".$current_user_id." AND o.order_status_id IN(" . implode(",", $implode) . ") AND DATE(o.date_added) >= DATE('" . $this->db->escape(date('Y-m-d', $date_start)) . "') GROUP BY DAYNAME(o.date_added)";
+		
+		$query = $this->db->query($sql);
+
+		foreach ($query->rows as $result) {
+			$order_data[date('w', strtotime($result['date_added']))] = array(
+				'day'   => date('D', strtotime($result['date_added'])),
+				'total' => $result['total']
+			);
+		}
+
+		return $order_data;
+	}
+	
 	public function getTotalOrdersByWeek() {
 		$implode = array();
 
@@ -78,6 +166,38 @@ class ModelReportSale extends Model {
 		return $order_data;
 	}
 
+	public function getTotalOrdersByMonthDash($current_user_id) {
+		$implode = array();
+
+		foreach ($this->config->get('config_complete_status') as $order_status_id) {
+			$implode[] = "'" . (int)$order_status_id . "'";
+		}
+
+		$order_data = array();
+
+		for ($i = 1; $i <= date('t'); $i++) {
+			$date = date('Y') . '-' . date('m') . '-' . $i;
+
+			$order_data[date('j', strtotime($date))] = array(
+				'day'   => date('d', strtotime($date)),
+				'total' => 0
+			);
+		}
+		
+		$sql = "SELECT COUNT(*) AS total, o.date_added FROM `" . DB_PREFIX . "order` o left join oc_customer ct on ct.customer_id = o.customer_id left join oc_salesrep sr on sr.salesrep_id = ct.salesrep_id left join oc_team tm on tm.team_id = sr.sales_team_id WHERE tm.sales_manager = ".$current_user_id." AND o.order_status_id IN(" . implode(",", $implode) . ") AND DATE(o.date_added) >= '" . $this->db->escape(date('Y') . '-' . date('m') . '-1') . "' GROUP BY DATE(o.date_added)";
+		
+		$query = $this->db->query($sql);
+
+		foreach ($query->rows as $result) {
+			$order_data[date('j', strtotime($result['date_added']))] = array(
+				'day'   => date('d', strtotime($result['date_added'])),
+				'total' => $result['total']
+			);
+		}
+
+		return $order_data;
+	}
+	
 	public function getTotalOrdersByMonth() {
 		$implode = array();
 
@@ -108,6 +228,36 @@ class ModelReportSale extends Model {
 		return $order_data;
 	}
 
+	public function getTotalOrdersByYearDash($current_user_id) {
+		$implode = array();
+
+		foreach ($this->config->get('config_complete_status') as $order_status_id) {
+			$implode[] = "'" . (int)$order_status_id . "'";
+		}
+
+		$order_data = array();
+
+		for ($i = 1; $i <= 12; $i++) {
+			$order_data[$i] = array(
+				'month' => date('M', mktime(0, 0, 0, $i)),
+				'total' => 0
+			);
+		}
+		
+		$sql = "SELECT COUNT(*) AS total, o.date_added FROM `" . DB_PREFIX . "order` o left join oc_customer ct on ct.customer_id = o.customer_id left join oc_salesrep sr on sr.salesrep_id = ct.salesrep_id left join oc_team tm on tm.team_id = sr.sales_team_id WHERE tm.sales_manager = ".$current_user_id." AND o.order_status_id IN(" . implode(",", $implode) . ") AND YEAR(o.date_added) = YEAR(NOW()) GROUP BY MONTH(o.date_added)";
+		
+		$query = $this->db->query($sql);
+
+		foreach ($query->rows as $result) {
+			$order_data[date('n', strtotime($result['date_added']))] = array(
+				'month' => date('M', strtotime($result['date_added'])),
+				'total' => $result['total']
+			);
+		}
+
+		return $order_data;
+	}
+	
 	public function getTotalOrdersByYear() {
 		$implode = array();
 

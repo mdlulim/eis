@@ -447,9 +447,26 @@ class ControllerReplogicTasks extends Controller {
 		$data['users'] = $this->model_user_user->getUsersByGroupId($user_group_id['user_group_id']); ;
 	   //print_r($data['users']); exit;
 	   
+	   	$current_user = $this->session->data['user_id'];
+		$current_user_group_id = $this->model_user_user->getUser($current_user); ;
+		$current_user_group = $this->model_user_user_group->getUserGroup($current_user_group_id['user_group_id']); ;
+		//print_r($current_user_group); exit;
+		if($current_user_group['name'] == 'Company admin' || $current_user_group['name'] == 'Administrator')
+		{
+			$data['access'] = 'yes';
+			$allaccess = true;
+			$current_user_id = 0;
+		}
+		else
+		{ 
+			$data['access'] = 'yes';
+			$allaccess = false;
+			$current_user_id = $this->session->data['user_id'];
+			
+		}
 	   $this->load->model('replogic/sales_rep_management');
 	   
-	   $data['salesReps'] = $this->model_replogic_sales_rep_management->getSalesReps();
+	   $data['salesReps'] = $this->model_replogic_sales_rep_management->getSalesRepsDropdown($allaccess, $current_user_id);
 	
 		$ignore = array(
 			'common/dashboard',
