@@ -104,6 +104,7 @@
                   </span></div>
               </div>
               <button type="button" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-filter"></i> <?php echo $button_filter; ?></button>
+               <button type="button" id="button-filter-reset" class="btn btn-primary pull-right" style="margin-right:10px;"><i class="fa fa-filter"></i> Reset</button>
             </div>
           </div>
         </div>
@@ -245,6 +246,12 @@ $('#button-filter').on('click', function() {
 		url += '&filter_date_added=' + encodeURIComponent(filter_date_added);
 	}
 	
+	location = url;
+});
+
+$('#button-filter-reset').on('click', function() {
+	var url = 'index.php?route=customer/customer&token=<?php echo $token; ?>';
+
 	location = url;
 });
 //--></script> 
