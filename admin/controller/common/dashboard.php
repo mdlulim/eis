@@ -285,10 +285,10 @@ class ControllerCommonDashboard extends Controller {
 				'appointment_name'   => $result['appointment_name'],
 				'sales_manager'          => $sales_rep,
 				'appointment_date'          => $myFormatForView,
-				'view'       => $this->url->link('replogic/schedule_management/edit', 'token=' . $this->session->data['token'] . '&appointment_id=' . $result['appointment_id'] . $url, true)
+				'view'       => $this->url->link('replogic/schedule_management/edit', 'token=' . $this->session->data['token'] . '&appointment_id=' . $result['appointment_id'], true)
 			);
 		}
-		
+		$data['viewmoreappo'] = $this->url->link('replogic/schedule_management', 'token=' . $this->session->data['token'], true);
 		// Last 5 Orders End //
 		// Activity Start //
 		

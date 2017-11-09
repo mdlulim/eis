@@ -272,7 +272,7 @@ $('#range .active a').trigger('click');
       	<div class="panel panel-default" style="border-right:5px solid;">
       	<div class="panel-heading">
           <h3 class="panel-title"><i class="fa fa-calendar"></i> Appointment Tasks</h3>
-        </div>
+       	</div>
         <div class="table-responsive">
                 <table class="table">
                   <thead>
@@ -305,6 +305,7 @@ $('#range .active a').trigger('click');
           <div class="panel panel-default">
   		     <div class="panel-heading">
                 <h3 class="panel-title"><i class="fa fa-shopping-cart"></i> Latest Appointment</h3>
+                <h3 class="panel-title" style="float:right;"><a href="<?php echo $viewmoreappo; ?>" >View more...</a></h3>
               </div>
   		     <div class="table-responsive">
                 <table class="table">
