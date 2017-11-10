@@ -91,7 +91,7 @@
         </div>
         <div class="col-lg-3 col-md-3 col-sm-6">
           <div class="tile">
-          <div class="tile-heading">Total Customers <span class="pull-right">
+          <div class="tile-heading">Customers Awaiting Approval <span class="pull-right">
             <?php if ($percentage > 0) { ?>
             <i class="fa fa-caret-up"></i>
             <?php } elseif ($percentage < 0) { ?>

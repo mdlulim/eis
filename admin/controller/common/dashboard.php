@@ -56,7 +56,7 @@ class ControllerCommonDashboard extends Controller {
 			
 		}
 		
-		if($current_user_group['name'] == 'Company admin' || $current_user_group['name'] == 'Administrator' || $current_user_group['name'] == 'Sales Manager')
+		if($current_user_group['name'] == 'Company admin' || $current_user_group['name'] == 'Sales Manager')
 		{ 
 			
 			if (isset($this->request->get['filter_appointment_from'])) {
@@ -79,18 +79,18 @@ class ControllerCommonDashboard extends Controller {
 			$data['filter_appointment_from'] = $filter_appointment_from;
 			$data['filter_appointment_to'] = $filter_appointment_to;
 		
-	// Customer Start //
+	// Customer Awaiting Approval Start //
 			$this->load->model('customer/customer');
 
 			if($current_user_group['name'] == 'Sales Manager')
 			{ 
-				$today = $this->model_customer_customer->getTotalCustomersDash(array('filter_date_added' => date('Y-m-d', strtotime('-1 day'))), $current_user_id);
-				$yesterday = $this->model_customer_customer->getTotalCustomersDash(array('filter_date_added' => date('Y-m-d', strtotime('-2 day'))), $current_user_id);
+				$today = $this->model_customer_customer->getTotalCustomersDash(array('filter_date_added' => date('Y-m-d', strtotime('-1 day')),'filter_approved' => '0'), $current_user_id);
+				$yesterday = $this->model_customer_customer->getTotalCustomersDash(array('filter_date_added' => date('Y-m-d', strtotime('-2 day')),'filter_approved' => '0'), $current_user_id);
 			}
 			else
-			{
-				$today = $this->model_customer_customer->getTotalCustomers(array('filter_date_added' => date('Y-m-d', strtotime('-1 day'))));
-				$yesterday = $this->model_customer_customer->getTotalCustomers(array('filter_date_added' => date('Y-m-d', strtotime('-2 day'))));
+			{ 
+				$today = $this->model_customer_customer->getTotalCustomers(array('filter_date_added' => date('Y-m-d', strtotime('-1 day')),'filter_approved' => '0'));
+				$yesterday = $this->model_customer_customer->getTotalCustomers(array('filter_date_added' => date('Y-m-d', strtotime('-2 day')),'filter_approved' => '0'));
 			}
 	
 			$difference = $today - $yesterday;
@@ -103,12 +103,12 @@ class ControllerCommonDashboard extends Controller {
 	
 			if($current_user_group['name'] == 'Sales Manager')
 			{ 
-				$customer_total = $this->model_customer_customer->getTotalCustomersDash(array(), $current_user_id);
+				$customer_total = $this->model_customer_customer->getTotalCustomersDash(array('filter_approved' => '0'), $current_user_id);
 				
 			}
 			else
 			{
-				$customer_total = $this->model_customer_customer->getTotalCustomers();
+				$customer_total = $this->model_customer_customer->getTotalCustomers(array('filter_approved' => 0));
 			}
 	
 			if ($customer_total > 1000000000000) {
@@ -122,9 +122,9 @@ class ControllerCommonDashboard extends Controller {
 			} else {
 				$data['total'] = $customer_total;
 			}
-			$data['customer'] = $this->url->link('customer/customer', 'token=' . $this->session->data['token'], true);
+			$data['customer'] = $this->url->link('customer/customer', 'token=' . $this->session->data['token'] . '&filter_approved=0', true);
 	
-	// Customer End //	
+	// Customer Awaiting Approval End //	
 	
 	// Map Start //
 	

@@ -307,6 +307,10 @@ class ModelCustomerCustomer extends Model {
 		if (!empty($data['filter_date_added'])) {
 			$implode[] = "DATE(date_added) = DATE('" . $this->db->escape($data['filter_date_added']) . "')";
 		}
+		
+		if (isset($data['filter_approved']) && !is_null($data['filter_approved'])) {
+			$implode[] = "approved = 0";
+		}
 
 		if ($implode) {
 			$sql .= " WHERE " . implode(" AND ", $implode);
@@ -350,14 +354,14 @@ class ModelCustomerCustomer extends Model {
 			$implode[] = "approved = '" . (int)$data['filter_approved'] . "'";
 		}
 
-		if (!empty($data['filter_date_added'])) {
+		if (!empty($data['filter_date_added'])) { 
 			$implode[] = "DATE(date_added) = DATE('" . $this->db->escape($data['filter_date_added']) . "')";
 		}
 
 		if ($implode) {
 			$sql .= " WHERE " . implode(" AND ", $implode);
 		}
-
+//echo $sql; exit;
 		$query = $this->db->query($sql);
 
 		return $query->row['total'];
