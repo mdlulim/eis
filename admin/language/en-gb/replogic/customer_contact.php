@@ -16,6 +16,7 @@ $_['column_action']    = 'Action';
 // Entry
 $_['entry_first_name']       = 'First Name';
 $_['entry_last_name']       = 'Last Name';
+$_['entry_role']       = 'Role';
 $_['entry_email']       = 'Email';
 $_['entry_telephone_number']       = 'Telephone Number';
 $_['entry_cellphone_number']       = 'Cell Number';
@@ -28,6 +29,7 @@ $_['error_permission'] = 'Warning: You do not have permission to modify Customer
 $_['error_customer_contact'] = 'Warning: You do not have permission to modify Customer Contact!';
 $_['error_first_name']       = 'First Name must be between 3 and 64 characters!';
 $_['error_last_name']       = 'Last Name must be between 3 and 64 characters!';
+$_['error_role']       = 'Role must be between 3 and 64 characters!';
 $_['error_email']           = 'E-Mail Address does not appear to be valid!';
 $_['error_telephone_number']       = 'Telephone Number must be 10 Digits!';
 $_['error_cellphone_number']       = 'Cell Number must be 10 Digits!';

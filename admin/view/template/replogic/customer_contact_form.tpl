@@ -92,6 +92,16 @@
             </div>
           </div>
           
+          <div class="form-group required">
+            <label class="col-sm-2 control-label" for="input-username"><?php echo $entry_role; ?></label>
+            <div class="col-sm-10">
+              <input type="text" name="role" value="<?php echo $role; ?>" placeholder="<?php echo $entry_role; ?>" id="input-cell" class="form-control" />
+              <?php if ($error_role) { ?>
+              <div class="text-danger"><?php echo $error_role; ?></div>
+              <?php } ?>
+            </div>
+          </div>
+          
         </form>
       </div>
     </div>

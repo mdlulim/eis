@@ -329,6 +329,7 @@ class ControllerReplogicCustomerContact extends Controller {
 		$data['entry_cellphone_number'] = $this->language->get('entry_cellphone_number');
 		$data['entry_telephone_number'] = $this->language->get('entry_telephone_number');
 		$data['entry_customer'] = $this->language->get('entry_customer');
+		$data['entry_role'] = $this->language->get('entry_role');
 		
 		$data['entry_access'] = $this->language->get('entry_access');
 		$data['entry_modify'] = $this->language->get('entry_modify');
@@ -376,6 +377,12 @@ class ControllerReplogicCustomerContact extends Controller {
 			$data['error_customer_id'] = $this->error['customer_id'];
 		} else {
 			$data['error_customer_id'] = '';
+		}
+		
+		if (isset($this->error['role'])) {
+			$data['error_role'] = $this->error['role'];
+		} else {
+			$data['error_role'] = '';
 		}
 		
 		$url = '';
@@ -456,6 +463,14 @@ class ControllerReplogicCustomerContact extends Controller {
 			$data['cellphone_number'] = '';
 		}
 		
+		if (isset($this->request->post['role'])) {
+			$data['role'] = $this->request->post['role'];
+		} elseif (!empty($customer_contact_info)) {
+			$data['role'] = $customer_contact_info['role'];
+		} else {
+			$data['role'] = '';
+		}
+		
 		$this->load->model('customer/customer');
 	    $data['customers'] = $this->model_customer_customer->getCustomers();
 	    if (isset($this->request->post['customer_id'])) {
@@ -499,6 +514,10 @@ class ControllerReplogicCustomerContact extends Controller {
 		
 		if ((utf8_strlen($this->request->post['last_name']) < 3) || (utf8_strlen($this->request->post['last_name']) > 64)) {
 			$this->error['last_name'] = $this->language->get('error_last_name');
+		}
+		
+		if ((utf8_strlen($this->request->post['role']) < 3) || (utf8_strlen($this->request->post['role']) > 64)) {
+			$this->error['role'] = $this->language->get('error_role');
 		}
 		
 		if ((utf8_strlen($this->request->post['email']) > 96) || !filter_var($this->request->post['email'], FILTER_VALIDATE_EMAIL)) {

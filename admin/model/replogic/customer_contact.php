@@ -1,13 +1,13 @@
 <?php
 class ModelReplogicCustomerContact extends Model {
 	public function addCustomercontact($data) {
-		$this->db->query("INSERT INTO " . DB_PREFIX . "customer_contact SET first_name = '" . $this->db->escape($data['first_name']) . "', last_name = '" . $this->db->escape($data['last_name']) . "',email = '" . $this->db->escape($data['email']) . "', telephone_number = '" . $this->db->escape($data['telephone_number']) . "',cellphone_number = '" . $this->db->escape($data['cellphone_number']) . "',customer_id = '" . $this->db->escape($data['customer_id']) . "'");
+		$this->db->query("INSERT INTO " . DB_PREFIX . "customer_contact SET first_name = '" . $this->db->escape($data['first_name']) . "', last_name = '" . $this->db->escape($data['last_name']) . "',email = '" . $this->db->escape($data['email']) . "', telephone_number = '" . $this->db->escape($data['telephone_number']) . "',cellphone_number = '" . $this->db->escape($data['cellphone_number']) . "',customer_id = '" . $this->db->escape($data['customer_id']) . "',role = '" . $this->db->escape($data['role']) . "'");
 	
 		return $this->db->getLastId();
 	}
 
 	public function editCustomercontact($customer_con_id, $data) {
-		$this->db->query("UPDATE " . DB_PREFIX . "customer_contact SET first_name = '" . $this->db->escape($data['first_name']) . "', last_name = '" . $this->db->escape($data['last_name']) . "',email = '" . $this->db->escape($data['email']) . "',telephone_number = '" . $this->db->escape($data['telephone_number']) . "',cellphone_number = '" . $this->db->escape($data['cellphone_number']) . "',customer_id = '" . $this->db->escape($data['customer_id']) . "' WHERE customer_con_id = '" . (int)$customer_con_id . "'");
+		$this->db->query("UPDATE " . DB_PREFIX . "customer_contact SET first_name = '" . $this->db->escape($data['first_name']) . "', last_name = '" . $this->db->escape($data['last_name']) . "',email = '" . $this->db->escape($data['email']) . "',telephone_number = '" . $this->db->escape($data['telephone_number']) . "',cellphone_number = '" . $this->db->escape($data['cellphone_number']) . "',customer_id = '" . $this->db->escape($data['customer_id']) . "',role = '" . $this->db->escape($data['role']) . "' WHERE customer_con_id = '" . (int)$customer_con_id . "'");
 	}
 
 	public function deleteCustomercontact($customer_con_id) {
