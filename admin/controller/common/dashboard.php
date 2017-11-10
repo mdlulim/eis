@@ -124,7 +124,54 @@ class ControllerCommonDashboard extends Controller {
 			}
 			$data['customer'] = $this->url->link('customer/customer', 'token=' . $this->session->data['token'] . '&filter_approved=0', true);
 	
-	// Customer Awaiting Approval End //	
+	// Customer Awaiting Approval End //
+	
+	// Order Awaiting Approval Start //
+			$this->load->model('sale/order');
+
+			if($current_user_group['name'] == 'Sales Manager')
+			{ 
+				$today = $this->model_sale_order->getTotalOrdersDash2(array('filter_date_added' => date('Y-m-d', strtotime('-1 day'))), $current_user_id);
+				$yesterday = $this->model_sale_order->getTotalOrdersDash2(array('filter_date_added' => date('Y-m-d', strtotime('-2 day'))), $current_user_id);
+			}
+			else
+			{ 
+				$today = $this->model_sale_order->getTotalOrders(array('filter_date_added' => date('Y-m-d', strtotime('-1 day')),'filter_order_status' => '1'));
+				$yesterday = $this->model_sale_order->getTotalOrders(array('filter_date_added' => date('Y-m-d', strtotime('-2 day')),'filter_order_status' => '1'));
+			}
+	
+			$difference = $today - $yesterday;
+	
+			if ($difference && $today) {
+				$data['percentageordwait'] = round(($difference / $today) * 100);
+			} else {
+				$data['percentageordwait'] = 0;
+			}
+	
+			if($current_user_group['name'] == 'Sales Manager')
+			{ 
+				$ordwait_total = $this->model_sale_order->getTotalOrdersDash2(array(), $current_user_id);
+				
+			}
+			else
+			{
+				$ordwait_total = $this->model_sale_order->getTotalOrders(array('filter_order_status' => 1));
+			}
+	
+			if ($ordwait_total > 1000000000000) {
+				$data['totalordwait'] = round($ordwait_total / 1000000000000, 1) . 'T';
+			} elseif ($customer_total > 1000000000) {
+				$data['totalordwait'] = round($ordwait_total / 1000000000, 1) . 'B';
+			} elseif ($customer_total > 1000000) {
+				$data['totalordwait'] = round($ordwait_total / 1000000, 1) . 'M';
+			} elseif ($customer_total > 1000) {
+				$data['totalordwait'] = round($ordwait_total / 1000, 1) . 'K';
+			} else {
+				$data['totalordwait'] = $ordwait_total;
+			}
+			$data['ordwait'] = $this->url->link('sale/order', 'token=' . $this->session->data['token'] . '&filter_order_status=1', true);
+	
+	// Order Awaiting Approval End //	
 	
 	// Map Start //
 	

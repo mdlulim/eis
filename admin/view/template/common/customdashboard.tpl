@@ -106,13 +106,28 @@
         </div>
         <div class="col-lg-3 col-md-3 col-sm-6">
           <div class="tile">
+          <div class="tile-heading">Order Awaiting Approval <span class="pull-right">
+            <?php if ($percentageordwait > 0) { ?>
+            <i class="fa fa-caret-up"></i>
+            <?php } elseif ($percentageordwait < 0) { ?>
+            <i class="fa fa-caret-down"></i>
+            <?php } ?>
+            <?php echo $percentageordwait; ?>%</span></div>
+          <div class="tile-body"><i class="fa fa-user"></i>
+            <h2 class="pull-right"><?php echo $totalordwait; ?></h2>
+          </div>
+          <div class="tile-footer"><a href="<?php echo $ordwait; ?>">View more...</a></div>
+        </div>
+        </div>
+        <!--<div class="col-lg-3 col-md-3 col-sm-6">
+          <div class="tile">
               <div class="tile-heading">People Online</div>
               <div class="tile-body"><i class="fa fa-users"></i>
                 <h2 class="pull-right"><?php echo $totalonline; ?></h2>
               </div>
               <div class="tile-footer"><a href="<?php echo $online; ?>">View more...</a></div>
             </div>
-        </div>
+        </div>-->
       </div>
       <div class="row">
         <div class="col-lg-6 col-md-12 col-sm-12">
