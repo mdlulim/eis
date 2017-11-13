@@ -372,10 +372,12 @@ class ControllerCommonDashboard extends Controller {
 		if($current_user_group['name'] == 'Sales Manager')
 		{
 			$data['loginuser'] = 'Sales Manager';
+			$data['cls'] = 'class="col-lg-6 col-md-3 col-sm-6"';
 		}
 		else
 		{
 			$data['loginuser'] = 'Other';
+			$data['cls'] = 'class="col-lg-3 col-md-3 col-sm-6"';
 		}
 		
 		$this->load->model('replogic/tasks');
@@ -399,6 +401,14 @@ class ControllerCommonDashboard extends Controller {
 			);
 		}
 		// Appointment & Task End //
+		
+		// Button Start//
+		
+		$data['addteambutton'] = $this->url->link('user/team/add', 'token=' . $this->session->data['token'], true);
+		$data['addappointmentbutton'] = $this->url->link('replogic/schedule_management/add', 'token=' . $this->session->data['token'], true);
+		$data['addsalesmangebutton'] = $this->url->link('user/user/add', 'token=' . $this->session->data['token'], true);
+		$data['addsalesrepbutton'] = $this->url->link('replogic/sales_rep_management/add', 'token=' . $this->session->data['token'], true);
+		// Button End //
 				
 			$this->response->setOutput($this->load->view('common/customdashboard', $data));
 	}
