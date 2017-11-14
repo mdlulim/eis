@@ -107,7 +107,7 @@
             
           </div>
           <div class="form-group required">
-            <label class="col-sm-2 control-label" for="input-username">Select Duration</label>
+            <label class="col-sm-2 control-label" for="input-username">Appointment Duration</label>
             
             
                 <div class="input-group" style="float:left;margin-left:15px;">
