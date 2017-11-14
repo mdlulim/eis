@@ -30,3 +30,5 @@ $_['error_appointment_description']       = 'Appointment Description must be bet
 $_['error_appointment_date']       = 'Plz Enter Appointment Date!';
 $_['error_salesrep_id']       = 'Plz Select Sales Rep Name!';
 $_['error_customer_id']       = 'Plz Select Customer!';
+$_['error_hour']       = 'Plz Select Hour!';
+$_['error_minutes']       = 'Plz Select Minutes!';

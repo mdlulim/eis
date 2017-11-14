@@ -479,6 +479,18 @@ class ControllerReplogicScheduleManagement extends Controller {
 		} else {
 			$data['error_customer_id'] = '';
 		}
+		
+		if (isset($this->error['hour'])) {
+			$data['error_hour'] = $this->error['hour'];
+		} else {
+			$data['error_hour'] = '';
+		}
+		
+		if (isset($this->error['minutes'])) {
+			$data['error_minutes'] = $this->error['minutes'];
+		} else {
+			$data['error_minutes'] = '';
+		}
 
 		$url = '';
 
@@ -569,6 +581,22 @@ class ControllerReplogicScheduleManagement extends Controller {
 			$data['customer_id'] = '';
 		}
 		
+		if (isset($this->request->post['hour'])) {
+			$data['hour'] = $this->request->post['hour'];
+		} elseif (!empty($appointment_info)) {
+			 $data['hour'] = $appointment_info['duration_hours']; 
+		} else {
+			$data['hour'] = '';
+		}
+		
+		if (isset($this->request->post['minutes'])) {
+			$data['minutes'] = $this->request->post['minutes'];
+		} elseif (!empty($appointment_info)) {
+			 $data['minutes'] = $appointment_info['duration_minutes']; 
+		} else {
+			$data['minutes'] = '';
+		}
+		
 		if (isset($this->request->post['appointment_description'])) {
 			$data['appointment_description'] = $this->request->post['appointment_description'];
 		} elseif (!empty($appointment_info)) {
@@ -651,6 +679,14 @@ class ControllerReplogicScheduleManagement extends Controller {
 		
 		if ((utf8_strlen($this->request->post['appointment_date']) < 3) || (utf8_strlen($this->request->post['appointment_date']) > 64)) {
 			$this->error['appointment_date'] = $this->language->get('error_appointment_date');
+		}
+		
+		if ($this->request->post['hour'] == '') {
+			$this->error['hour'] = $this->language->get('error_hour');
+		}
+		
+		if ($this->request->post['minutes'] == '') {
+			$this->error['minutes'] = $this->language->get('error_minutes');
 		}
 		
 		if ($this->request->post['salesrep_id'] == '') {

@@ -106,7 +106,60 @@
             </div>
             
           </div>
-          
+          <div class="form-group required">
+            <label class="col-sm-2 control-label" for="input-username">Select Duration</label>
+            
+            
+                <div class="input-group" style="float:left;margin-left:15px;">
+                <select name="hour" class="form-control" style="float:left;width:120px;">
+                    <option value="">Select Hour</option>
+                    <?php for($i=1;$i<=12;$i++) { ?>
+                    	<?php if($i == $hour) { ?>
+                        	<option value="<?php echo $i; ?>" selected="selected"><?php echo $i; ?></option>
+                        <?php } else { ?>    
+                            <option value="<?php echo $i; ?>"><?php echo $i; ?></option>
+                        <?php } ?>
+                    <?php } ?>
+                </select>
+                  
+      
+               <?php if ($error_hour) { ?>
+              		<div class="text-danger" style="width:100%;margin-top:40px;"><?php echo $error_hour; ?></div>
+              <?php } ?>
+              </div> 
+              <div style="float:left;margin:0px 5px 0px 5px;"><strong style="font-size:23px;">:</strong></div>
+              <div style="float:left;">
+               <select name="minutes" class="form-control" style="float:left;width:135px;">
+                            <option value="">Select Minutes</option>
+                            <?php for($i=1;$i<=60;$i++) { ?>
+                            <?php	if ($i < 10) {
+                                    $i = str_pad($i, 2, "0", STR_PAD_LEFT);
+                                } ?>
+                                <?php if($i == $minutes) { ?>
+                                    <?php if($i == '60') { ?>
+                                        <option value="00" selected="selected">00</option>
+                                    <?php } else { ?>
+                                        <option value="<?php echo $i; ?>" selected="selected"><?php echo $i; ?></option>
+                                    <?php } ?>
+                                <?php } else { ?>
+                                	<?php if($i == '60') { ?>
+                                    <option value="00">00</option>
+                                    <?php } else { ?>
+                                        <option value="<?php echo $i; ?>" ><?php echo $i; ?></option>
+                                    <?php } ?>
+                                <?php } ?>
+                            <?php } ?>
+                        </select>
+                   
+      
+               <?php if ($error_minutes) { ?>
+              		<div class="text-danger" style="width:100%;margin-top:40px;"><?php echo $error_minutes; ?></div>
+              <?php } ?>
+              </div>
+              
+            
+            
+          </div>
           <div class="form-group required">
             <label class="col-sm-2 control-label" for="input-username"><?php echo $entry_appointment_description; ?></label>
             <div class="col-sm-10">

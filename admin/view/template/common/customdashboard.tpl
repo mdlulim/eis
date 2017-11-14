@@ -130,30 +130,30 @@
         </div>-->
         
         <?php if($loginuser != 'Sales Manager') { ?>
-            <div class="col-lg-3 col-md-3 col-sm-6">
+            <div class="col-lg-3 col-md-3 col-sm-6" >
               <div class="tile">
-              <div class="tile-footer" style="text-align:center;"><a href="<?php echo $addteambutton; ?>"><i class="fa fa-users fw"></i> Add Team</a></div>
+              <div class="tile-footer" style="text-align: center; min-height: 45px; font-weight: bold; padding-top: 14px;"><a href="<?php echo $addteambutton; ?>"><i class="fa fa-users fw"></i> Add Team</a></div>
             </div>
             </div>
         <?php } ?>
         
         <div <?php echo $cls; ?>>
           <div class="tile">
-          <div class="tile-footer" style="text-align:center;"><a href="<?php echo $addappointmentbutton; ?>"><i class="fa fa-calendar"></i> Add Appointment</a></div>
+          <div class="tile-footer" style="text-align: center; min-height: 45px; font-weight: bold; padding-top: 14px;"><a href="<?php echo $addappointmentbutton; ?>"><i class="fa fa-calendar"></i> Add Appointment</a></div>
         </div>
         </div>
         
         <?php if($loginuser != 'Sales Manager') { ?>
             <div class="col-lg-3 col-md-3 col-sm-6">
               <div class="tile">
-              <div class="tile-footer" style="text-align:center;"><a href="<?php echo $addsalesmangebutton; ?>"><i class="fa fa-user"></i> Add Sales Manager</a></div>
+              <div class="tile-footer" style="text-align: center; min-height: 45px; font-weight: bold; padding-top: 14px;"><a href="<?php echo $addsalesmangebutton; ?>"><i class="fa fa-user"></i> Add Sales Manager</a></div>
             </div>
             </div>
         <?php } ?>
         
         <div <?php echo $cls; ?>>
           <div class="tile">
-          <div class="tile-footer" style="text-align:center;"><a href="<?php echo $addsalesrepbutton; ?>"><i class="fa fa-street-view"></i> Add Sales Rep</a></div>
+          <div class="tile-footer" style="text-align: center; min-height: 45px; font-weight: bold; padding-top: 14px;"><a href="<?php echo $addsalesrepbutton; ?>"><i class="fa fa-street-view"></i> Add Sales Rep</a></div>
         </div>
         </div>
         
