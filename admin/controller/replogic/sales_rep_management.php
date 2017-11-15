@@ -432,11 +432,11 @@ class ControllerReplogicSalesRepManagement extends Controller {
 			$data['error_cell'] = '';
 		}
 		
-		if (isset($this->error['password'])) {
+		/*if (isset($this->error['password'])) {
 			$data['error_password'] = $this->error['password'];
 		} else {
 			$data['error_password'] = '';
-		}
+		}*/
 
 		$url = '';
 		
@@ -528,13 +528,13 @@ class ControllerReplogicSalesRepManagement extends Controller {
 			$data['cell'] = '';
 		}
 		
-		if (isset($this->request->post['password'])) {
+		/*if (isset($this->request->post['password'])) {
 			$data['password'] = $this->request->post['password'];
 		} elseif (!empty($salesrep_info)) {
 			$data['password'] = $salesrep_info['password'];
 		} else {
 			$data['password'] = '';
-		}
+		}*/
 		
 		$data['teams'] = $this->model_replogic_sales_rep_management->getTeams();
 	 //  print_r($data['teams']); exit;
@@ -600,9 +600,9 @@ class ControllerReplogicSalesRepManagement extends Controller {
 			$this->error['cell'] = $this->language->get('error_cell');
 		}
 		
-		if ((utf8_strlen($this->request->post['password']) < 3) || (utf8_strlen($this->request->post['password']) > 32)) {
+		/*if ((utf8_strlen($this->request->post['password']) < 3) || (utf8_strlen($this->request->post['password']) > 32)) {
 			$this->error['password'] = $this->language->get('error_password');
-		}
+		}*/
 
 		return !$this->error;
 	}
