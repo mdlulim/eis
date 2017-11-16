@@ -4,7 +4,39 @@ class ModelReplogicSalesRepManagement extends Model {
 		$this->db->query("INSERT INTO " . DB_PREFIX . "salesrep SET salesrep_name = '" . $this->db->escape($data['salesrep_name']) . "', salesrep_lastname = '" . $this->db->escape($data['salesrep_lastname']) . "',email = '" . $this->db->escape($data['email']) . "',sales_team_id = '" . $this->db->escape($data['sales_team_id']) . "',cell = '" . $this->db->escape($data['cell']) . "',tel = '" . $this->db->escape($data['tel']) . "'");
 	
 		$salesrep_id = $this->db->getLastId();
-		return $salesrep_id;
+		
+		
+		$service_url = 'http://46.101.26.246:8000/api/v1/salesrep/register';
+		$curl = curl_init($service_url);
+		$curl_post_data = array(
+				'company_id' => 1,
+				'rep_id' => $salesrep_id,
+				'username' => $data['email'],
+				'email' => $data['email']);
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($curl, CURLOPT_POST, true);
+		curl_setopt($curl, CURLOPT_POSTFIELDS, $curl_post_data);
+		$curl_response = curl_exec($curl);
+		if ($curl_response === false) {
+			$info = curl_getinfo($curl);
+			curl_close($curl);
+			die('error occured during curl exec. Additioanl info: ' . var_export($info));
+		}
+		curl_close($curl);
+		$decoded = json_decode($curl_response);
+	//echo $decoded->message; exit;
+		if (isset($decoded->error) && $decoded->error == 'Not Found') {
+			$message = $decoded->message;
+		}
+		else
+		{
+				$message = $decoded->message;
+		}
+		
+		//var_export($decoded->response);
+		
+		
+		return $message;
 	}
 
 	public function editSalesRep($salesrep_id, $data) {
