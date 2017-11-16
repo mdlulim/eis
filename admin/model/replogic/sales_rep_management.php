@@ -131,7 +131,7 @@ class ModelReplogicSalesRepManagement extends Model {
 		
 		if($allaccess)
 		{
-			$sql = "SELECT * FROM " . DB_PREFIX . "salesrep";
+			$sql = "SELECT COUNT(*) AS total FROM " . DB_PREFIX . "salesrep";
 			
 			if (!empty($data['filter_sales_rep_name']) || !empty($data['team_id']) || !empty($data['filter_email']) ) 
 			{
@@ -140,7 +140,7 @@ class ModelReplogicSalesRepManagement extends Model {
 		}
 		else
 		{
-			$sql = "SELECT * FROM oc_salesrep sr left join oc_team tm on tm.team_id = sr.sales_team_id where tm.sales_manager = ".$current_user_id.""; 
+			$sql = "SELECT COUNT(*) AS total FROM oc_salesrep sr left join oc_team tm on tm.team_id = sr.sales_team_id where tm.sales_manager = ".$current_user_id.""; 
 		}
 		
 		if (!empty($data['filter_sales_rep_name'])) {
