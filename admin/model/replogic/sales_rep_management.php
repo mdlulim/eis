@@ -5,11 +5,15 @@ class ModelReplogicSalesRepManagement extends Model {
 	
 		$salesrep_id = $this->db->getLastId();
 		
+		$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "rep_settings order by company_id asc LIMIT 1");
+
+		$row = $query->row;
+		$company_id = $row['company_id']; 
 		
 		$service_url = 'http://46.101.26.246:8000/api/v1/salesrep/register';
 		$curl = curl_init($service_url);
 		$curl_post_data = array(
-				'company_id' => 1,
+				'company_id' => $company_id,
 				'rep_id' => $salesrep_id,
 				'username' => $data['email'],
 				'email' => $data['email']);
