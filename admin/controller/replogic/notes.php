@@ -225,7 +225,7 @@ class ControllerReplogicNotes extends Controller {
 			'href' => $this->url->link('replogic/notes', 'token=' . $this->session->data['token'] . $url, true)
 		);
 
-		$data['add'] = $this->url->link('replogic/notes/add', 'token=' . $this->session->data['token'] . '&appointment_id=' . $this->request->get['appointment_id'] . $url, true);
+		$data['add'] = $this->url->link('replogic/notes/add', 'token=' . $this->session->data['token'] . $url, true);
 		$data['delete'] = $this->url->link('replogic/notes/delete', 'token=' . $this->session->data['token'] . '&appointment_id=' . $this->request->get['appointment_id'] . $url, true);
 		$data['cancel'] = $this->url->link('replogic/schedule_management', 'token=' . $this->session->data['token'] . $url, true);
 
@@ -545,9 +545,9 @@ class ControllerReplogicNotes extends Controller {
 			$this->error['note_description'] = $this->language->get('error_note_description');
 		}
 		
-		if ($this->request->post['salesrep_id'] == '') {
+		/*if ($this->request->post['salesrep_id'] == '') {
 			$this->error['salesrep_id'] = $this->language->get('error_salesrep_id');
-		}
+		}*/
 
 		return !$this->error;
 	}

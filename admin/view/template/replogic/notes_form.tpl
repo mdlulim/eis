@@ -35,7 +35,7 @@
               <?php } ?>
             </div>
           </div>
-          <div class="form-group required">
+          <!--<div class="form-group required">
             <label class="col-sm-2 control-label" for="input-user-group"><?php echo $entry_sales; ?></label>
             <div class="col-sm-10">
               <select name="salesrep_id" id="input-sales_manager" class="form-control">
@@ -52,7 +52,7 @@
               <div class="text-danger"><?php echo $error_salesrep_id; ?></div>
               <?php } ?>
             </div>
-          </div>
+          </div>-->
           
           <div class="form-group required">
             <label class="col-sm-2 control-label" for="input-username"><?php echo $entry_note_description; ?></label>

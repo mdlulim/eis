@@ -1,13 +1,13 @@
 <?php
 class ModelReplogicNotes extends Model {
 	public function addNote($data) {
-		$this->db->query("INSERT INTO " . DB_PREFIX . "notes SET note_title = '" . $this->db->escape($data['note_title']) . "', salesrep_id = '" . $this->db->escape($data['salesrep_id']) . "', note_content = '" . $this->db->escape($data['note_description']) . "', appointment_id = '" . $this->db->escape($data['appointment_id']) . "'");
+		$this->db->query("INSERT INTO " . DB_PREFIX . "notes SET note_title = '" . $this->db->escape($data['note_title']) . "', note_content = '" . $this->db->escape($data['note_description']) . "', appointment_id = '" . $this->db->escape($data['appointment_id']) . "'");
 	
 		return $this->db->getLastId();
 	}
 
 	public function editNote($note_id, $data) {
-		$this->db->query("UPDATE " . DB_PREFIX . "notes SET note_title = '" . $this->db->escape($data['note_title']) . "', salesrep_id = '" . $this->db->escape($data['salesrep_id']) . "', note_content = '" . $this->db->escape($data['note_description']) . "', appointment_id = '" . $this->db->escape($data['appointment_id']) . "'WHERE note_id = '" . (int)$note_id . "'");
+		$this->db->query("UPDATE " . DB_PREFIX . "notes SET note_title = '" . $this->db->escape($data['note_title']) . "', note_content = '" . $this->db->escape($data['note_description']) . "', appointment_id = '" . $this->db->escape($data['appointment_id']) . "'WHERE note_id = '" . (int)$note_id . "'");
 	}
 
 	public function deleteNote($note_id) { 

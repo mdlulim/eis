@@ -40,7 +40,7 @@
               </div>
               
             </div>
-            <div class="col-sm-6" style="margin-bottom:10px;">
+            <!--<div class="col-sm-6" style="margin-bottom:10px;">
               <div class="form-group">
                 <label class="control-label" for="input-price">Sales Manager</label>
                 <select name="filter_salesrep_id" class="form-control">
@@ -56,9 +56,11 @@
                 </select>
               </div>
               
-            </div>
+            </div>-->
+            <div style="margin-top:35px;">
             <button type="button" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-filter"></i> Filter</button>
             <button type="button" id="button-filter-reset" class="btn btn-primary pull-right" style="margin-right:10px;"><i class="fa fa-filter"></i> Reset</button>
+            </div>
           </div>
            
         </div>
@@ -74,7 +76,7 @@
                     <?php } else { ?>
                     <a href="<?php echo $sort_note_title; ?>"><?php echo $column_note_title; ?></a>
                     <?php } ?></td>
-                  <td class="text-left">Sales Manager</td>
+                 <!-- <td class="text-left">Sales Manager</td>-->
                   
                   <td class="text-right"><?php echo $column_action; ?></td>
                 </tr>
@@ -91,7 +93,7 @@
                                 <input type="checkbox" name="selected[]" value="<?php echo $note['note_id']; ?>" />
                                 <?php } ?></td>
                               <td class="text-left"><?php echo $note['note_title']; ?></td>
-                              <td class="text-left"><?php echo $note['sales_manager']; ?></td>
+                             <!-- <td class="text-left"><?php echo $note['sales_manager']; ?></td>-->
                               <td class="text-right"><a href="<?php echo $note['edit']; ?>" data-toggle="tooltip" title="<?php echo $button_edit; ?>" class="btn btn-primary"><i class="fa fa-pencil"></i></a></td>
                             </tr>
                      <?php } ?>
