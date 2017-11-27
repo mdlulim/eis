@@ -857,61 +857,53 @@ class ControllerCommonColumnLeft extends Controller {
 			$teams = array();
 			// Manage Teams
 			if ($this->user->hasPermission('access', 'user/team')) {
-				$teams[] = array(
+				$replogic[] = array(
 					'name'	   => $this->language->get('text_manage_teams'),
 					'href'     => $this->url->link('user/team', 'token=' . $this->session->data['token'], true),
 					'children' => array()		
 				);	
 			}
 			
-			// My Teams
-			/*if ($this->user->hasPermission('access', 'user/team')) {
-				$teams[] = array(
-					'name'	   => $this->language->get('text_myteams'),
-					'href'     => $this->url->link('user/team', 'token=' . $this->session->data['token'], true),
-					'children' => array()		
-				);	
-			}*/
 			
-			if ($this->user->hasPermission('access', 'user/team')) {
+			/*if ($this->user->hasPermission('access', 'user/team')) {
 				$replogic[] = array(
 					'name'	   => $this->language->get('text_teams'),
 					'children' => 	$teams	
 				);	
-			}
+			}*/
 			
 			$schdeule_management = array();
 			
 			if ($this->user->hasPermission('access', 'replogic/schedule_management')) {
-				$schdeule_management[] = array(
+				$replogic[] = array(
 					'name'	   => $this->language->get('text_appointmemt'),
 					'href'     => $this->url->link('replogic/schedule_management', 'token=' . $this->session->data['token'], true),
 					'children' => array()
 				);	
 			}
 			
-			if ($this->user->hasPermission('access', 'replogic/schedule_management')) {
+			/*if ($this->user->hasPermission('access', 'replogic/schedule_management')) {
 				$replogic[] = array(
 					'name'	   => $this->language->get('text_schedule_management'),
 					'children' => $schdeule_management
 				);	
-			}
+			}*/
 			
 			$sales_rep = array();
 			// Sales Rep Team List
 			if ($this->user->hasPermission('access', 'replogic/sales_rep_management')) {
-				$sales_rep[] = array(
+				$replogic[] = array(
 					'name'	   => $this->language->get('text_manage_salesrep_salesreplist'),
 					'href'     => $this->url->link('replogic/sales_rep_management', 'token=' . $this->session->data['token'], true),
 					'children' => array()		
 				);	
 			}
-			if ($this->user->hasPermission('access', 'replogic/sales_rep_management')) {
+			/*if ($this->user->hasPermission('access', 'replogic/sales_rep_management')) {
 				$replogic[] = array(
 					'name'	   => $this->language->get('text_manage_salesrep'),
 					'children' => 	$sales_rep	
 				);	
-			}
+			}*/
 			
 			if ($this->user->hasPermission('access', 'replogic/customer_contact')) {
 				$replogic[] = array(
