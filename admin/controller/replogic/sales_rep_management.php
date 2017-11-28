@@ -432,6 +432,12 @@ class ControllerReplogicSalesRepManagement extends Controller {
 			$data['error_cell'] = '';
 		}
 		
+		if (isset($this->error['sales_team_id'])) {
+			$data['error_sales_team_id'] = $this->error['sales_team_id'];
+		} else {
+			$data['error_sales_team_id'] = '';
+		}
+		
 		/*if (isset($this->error['password'])) {
 			$data['error_password'] = $this->error['password'];
 		} else {
@@ -535,8 +541,23 @@ class ControllerReplogicSalesRepManagement extends Controller {
 		} else {
 			$data['password'] = '';
 		}*/
-		
-		$data['teams'] = $this->model_replogic_sales_rep_management->getTeams();
+		$this->load->model('user/user');
+		$this->load->model('user/user_group');
+		$this->load->model('user/team');
+		$current_user = $this->session->data['user_id'];
+		$current_user_group_id = $this->model_user_user->getUser($current_user);
+		$current_user_group = $this->model_user_user_group->getUserGroup($current_user_group_id['user_group_id']); 
+		if($current_user_group['name'] == 'Sales Manager')
+		{
+			$filter_salesrep_id = $current_user; 
+			
+		}
+		else
+		{
+			$filter_salesrep_id = ''; 
+		}
+		$filter_data = array('filter_salesrep_id' => $filter_salesrep_id);
+		$data['teams'] = $this->model_user_team->getTeams($filter_data);
 	 //  print_r($data['teams']); exit;
 	    if (isset($this->request->get['team_id'])) {
 			$data['team_id'] = $this->request->get['team_id'];
@@ -598,6 +619,10 @@ class ControllerReplogicSalesRepManagement extends Controller {
 		$cell = $this->request->post['cell'];
 		if(!is_numeric($cell)) {
 			$this->error['cell'] = $this->language->get('error_cell');
+		}
+		
+		if ($this->request->post['sales_team_id'] == '') {
+			$this->error['sales_team_id'] = $this->language->get('error_salesrep_id');
 		}
 		
 		/*if ((utf8_strlen($this->request->post['password']) < 3) || (utf8_strlen($this->request->post['password']) > 32)) {

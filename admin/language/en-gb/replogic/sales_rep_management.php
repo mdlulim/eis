@@ -33,3 +33,4 @@ $_['error_email']           = 'E-Mail Address does not appear to be valid!';
 $_['error_tel']       = 'Telephone Number must be 10 Digits!';
 $_['error_cell']       = 'Cell Number must be 10 Digits!';
 $_['error_password']       = 'Password must be between 3 and 32 characters!';
+$_['error_salesrep_id']       = 'Select Team!';
