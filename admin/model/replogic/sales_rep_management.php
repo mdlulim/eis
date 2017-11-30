@@ -51,6 +51,11 @@ class ModelReplogicSalesRepManagement extends Model {
 		
 		$this->db->query("DELETE FROM " . DB_PREFIX . "salesrep WHERE salesrep_id = '" . (int)$salesrep_id . "'");
 	}
+	
+	public function AssignSalesRep($sales_rep_id,$team_id) { 
+		
+		$this->db->query("UPDATE " . DB_PREFIX . "salesrep SET sales_team_id = '".$team_id."' WHERE salesrep_id = '" . (int)$sales_rep_id . "'");
+	}
 
 	public function getsalesrep($salesrep_id) {
 		$query = $this->db->query("SELECT DISTINCT * FROM " . DB_PREFIX . "salesrep WHERE salesrep_id = '" . (int)$salesrep_id . "'");
@@ -58,13 +63,13 @@ class ModelReplogicSalesRepManagement extends Model {
 		return $query->row;
 	}
 
-	public function getSalesReps($data = array(), $allaccess, $current_user_id) {
+	public function getSalesReps($data = array(), $allaccess, $current_user_id) { 
 		
 		if($allaccess)
 		{
 			$sql = "SELECT * FROM " . DB_PREFIX . "salesrep";
 			
-			if (!empty($data['filter_sales_rep_name']) || !empty($data['team_id']) || !empty($data['filter_email']) ) 
+			if (!empty($data['filter_sales_rep_name']) || !empty($data['team_id']) || !empty($data['filter_email']) || !empty($data['filter_team_id']) ) 
 			{
 				$sql .= " where salesrep_id > '0'";
 			}
@@ -86,6 +91,10 @@ class ModelReplogicSalesRepManagement extends Model {
 
 		if (!empty($data['team_id'])) {
 			$sql .= " AND sales_team_id LIKE '" . $this->db->escape($data['team_id']) . "'";
+		}
+		
+		if (!empty($data['filter_team_id'])) {
+			$sql .= " AND sales_team_id LIKE '" . $this->db->escape($data['filter_team_id']) . "'";
 		}
 		
 		$sql .= " ORDER BY salesrep_name";
@@ -137,7 +146,7 @@ class ModelReplogicSalesRepManagement extends Model {
 		{
 			$sql = "SELECT COUNT(*) AS total FROM " . DB_PREFIX . "salesrep";
 			
-			if (!empty($data['filter_sales_rep_name']) || !empty($data['team_id']) || !empty($data['filter_email']) ) 
+			if (!empty($data['filter_sales_rep_name']) || !empty($data['team_id']) || !empty($data['filter_email']) || !empty($data['filter_team_id']) ) 
 			{
 				$sql .= " where salesrep_id > '0'";
 			}
@@ -158,6 +167,10 @@ class ModelReplogicSalesRepManagement extends Model {
 
 		if (!empty($data['team_id'])) {
 			$sql .= " AND sales_team_id LIKE '" . $this->db->escape($data['team_id']) . "'";
+		}
+		
+		if (!empty($data['filter_team_id'])) {
+			$sql .= " AND sales_team_id LIKE '" . $this->db->escape($data['filter_team_id']) . "'";
 		}
 		
 		$query = $this->db->query($sql);
