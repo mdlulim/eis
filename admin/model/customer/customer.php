@@ -80,7 +80,7 @@ class ModelCustomerCustomer extends Model {
 		$this->db->query("DELETE FROM " . DB_PREFIX . "address WHERE customer_id = '" . (int)$customer_id . "'");
 	}
 
-	public function getCustomer($customer_id) {
+	public function getCustomer($customer_id) { 
 		$query = $this->db->query("SELECT DISTINCT * FROM " . DB_PREFIX . "customer WHERE customer_id = '" . (int)$customer_id . "'");
 
 		return $query->row;

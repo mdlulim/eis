@@ -15,7 +15,7 @@ class ModelReplogicCustomerContact extends Model {
 		$this->db->query("DELETE FROM " . DB_PREFIX . "customer_contact WHERE customer_con_id = '" . (int)$customer_con_id . "'");
 	}
 
-	public function getcustomercontact($customer_con_id) {
+	public function getcustomercontact($customer_con_id) { 
 		$query = $this->db->query("SELECT DISTINCT * FROM " . DB_PREFIX . "customer_contact WHERE customer_con_id = '" . (int)$customer_con_id . "'");
 
 		return $query->row;

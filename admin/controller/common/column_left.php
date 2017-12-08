@@ -913,10 +913,10 @@ class ControllerCommonColumnLeft extends Controller {
 				);	
 			}
 			
-			if ($this->user->hasPermission('access', 'replogic/customer_contact')) {
+			if ($this->user->hasPermission('access', 'replogic/order_quotes')) {
 				$replogic[] = array(
 					'name'	   => $this->language->get('text_order_quotes'),
-					'href'     => $this->url->link('replogic/customer_contact', 'token=' . $this->session->data['token'], true),
+					'href'     => $this->url->link('replogic/order_quotes', 'token=' . $this->session->data['token'], true),
 					'children' => 	array()	
 				);	
 			}
