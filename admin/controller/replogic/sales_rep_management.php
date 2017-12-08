@@ -641,6 +641,14 @@ class ControllerReplogicSalesRepManagement extends Controller {
 			$data['cell'] = '';
 		}
 		
+		if (isset($this->request->post['sales_team_id'])) {
+			$data['sales_team_id'] = $this->request->post['sales_team_id'];
+		} elseif (!empty($salesrep_info)) {
+			$data['sales_team_id'] = $salesrep_info['sales_team_id'];
+		} else {
+			$data['sales_team_id'] = '';
+		}
+		
 		/*if (isset($this->request->post['password'])) {
 			$data['password'] = $this->request->post['password'];
 		} elseif (!empty($salesrep_info)) {

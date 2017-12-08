@@ -44,10 +44,11 @@
               <?php } ?>
             </div>
           </div>
-          <?php if($team_id == '') { ?>
+          
           <div class="form-group required">
             <label class="col-sm-2 control-label" for="input-user-group"><?php echo $entry_sales_team; ?></label>
             <div class="col-sm-10">
+              <?php if($team_id == '') { ?>
               <select name="sales_team_id" id="input-sales_manager" class="form-control">
              	<option value="">Select Team</option>
                 <?php foreach ($teams as $team) {  ?>
@@ -61,11 +62,23 @@
               <?php if ($error_sales_team_id) { ?>
               <div class="text-danger"><?php echo $error_sales_team_id; ?></div>
               <?php } ?>
+              
+              <?php } else { ?>
+          	 <input type="hidden" name="sales_team_id" value="<?php echo $team_id;?>"  />
+             <select name="sales_team_id" id="input-sales_manager" class="form-control" disabled="disabled">
+             	<?php foreach ($teams as $team) {  ?>
+                <?php if ($team['team_id'] == $team_id) { ?>
+                <option value="<?php echo $team['team_id']; ?>" selected="selected"><?php echo $team['team_name']; ?></option>
+                <?php } else { ?>
+                <option value="<?php echo $team['team_id']; ?>"><?php echo $team['team_name']; ?></option>
+                <?php } ?>
+                <?php } ?>
+              </select>
+          <?php } ?>
+              
             </div>
           </div>
-          <?php } else { ?>
-          	 <input type="hidden" name="sales_team_id" value="<?php echo $team_id;?>"  />
-          <?php } ?>
+          
           
           <div class="form-group required">
             <label class="col-sm-2 control-label" for="input-username"><?php echo $entry_email; ?></label>
