@@ -5,7 +5,7 @@
       <div class="pull-right">
       	<button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal"  id="popup" title="Assign Sales Rep to Team"><i class="fa fa-user-plus"></i></button>
         <a href="<?php echo $add; ?>" data-toggle="tooltip" title="<?php echo $button_add; ?>" class="btn btn-primary"><i class="fa fa-plus"></i></a>
-        <button type="button" data-toggle="tooltip" title="<?php echo $button_delete; ?>" class="btn btn-danger" onclick="confirm('<?php echo $text_confirm; ?>') ? $('#form-user').submit() : false;"><i class="fa fa-trash-o"></i></button>
+        <button type="button" data-toggle="tooltip" title="<?php echo $button_delete; ?>" id="button-delete" class="btn btn-danger" onclick="confirm('<?php echo $text_confirm; ?>') ? $('#form-user').submit() : false;"><i class="fa fa-trash-o"></i></button>
         <?php if(isset($team_id)) {?>
         <a href="<?php echo $cancel; ?>" data-toggle="tooltip" title="<?php echo $button_cancel; ?>" class="btn btn-default"><i class="fa fa-reply"></i></a>
         <?php } ?>
@@ -207,4 +207,22 @@ $('#button-filter-reset').on('click', function() {
 	location = url;
 });
 //--></script>
+<script type="text/javascript"><!--
+$('input[name^=\'selected\']').on('change', function() {
+	
+	var selected = $('input[name^=\'selected\']:checked');
+
+	if (selected.length) {
+		$('#button-delete').prop('disabled', false);
+		$('#popup').prop('disabled', false);
+	}
+
+});
+
+$('#button-delete').prop('disabled', true);
+$('#popup').prop('disabled', true);
+
+$('input[name^=\'selected\']:first').trigger('change');
+
+//--></script> 
 <?php echo $footer; ?> 

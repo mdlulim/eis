@@ -70,9 +70,22 @@
                   
                 </select>
               </div>
-              <div class="form-group">
+              <!--<div class="form-group">
                 <label class="control-label" for="input-total"><?php echo $entry_total; ?></label>
                 <input type="text" name="filter_total" value="<?php echo $filter_total; ?>" placeholder="<?php echo $entry_total; ?>" id="input-total" class="form-control" />
+              </div>-->
+              <!--<div class="form-group">
+                <label class="control-label" for="input-date-modified"><?php echo $entry_date_modified; ?></label>
+                <div class="input-group date">
+                  <input type="text" name="filter_date_modified" value="<?php echo $filter_date_modified; ?>" placeholder="<?php echo $entry_date_modified; ?>" data-date-format="YYYY-MM-DD" id="input-date-modified" class="form-control" />
+                  <span class="input-group-btn">
+                  <button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
+                  </span></div>
+              </div>-->
+              <div class="form-group">
+                <label class="control-label" for="input-customer">Customer Contact</label>
+                <input type="text" name="filter_customer_contact" value="<?php echo $filter_customer_contact; ?>" placeholder="Customer Contact" id="input-customer-contact" class="form-control" />
+   				   <input type="hidden" name="filter_customer_contact_id" value="<?php echo $filter_customer_contact_id; ?>" id="customer_contact_id">          
               </div>
             </div>
             <div class="col-sm-4">
@@ -84,16 +97,10 @@
                   <button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
                   </span></div>
               </div>
-              <div class="form-group">
-                <label class="control-label" for="input-date-modified"><?php echo $entry_date_modified; ?></label>
-                <div class="input-group date">
-                  <input type="text" name="filter_date_modified" value="<?php echo $filter_date_modified; ?>" placeholder="<?php echo $entry_date_modified; ?>" data-date-format="YYYY-MM-DD" id="input-date-modified" class="form-control" />
-                  <span class="input-group-btn">
-                  <button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
-                  </span></div>
-              </div>
+              <div style="margin-top:15px;">
               <button type="button" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-filter"></i> <?php echo $button_filter; ?></button>
               <button type="button" id="button-filter-reset" class="btn btn-primary pull-right" style="margin-right:10px;"><i class="fa fa-filter"></i> Reset</button>
+              </div>
             </div>
           </div>
         </div>
@@ -161,14 +168,14 @@
                   <td class="text-right">
                     
                     <?php if ($order['status'] == '0') { ?>
-                    	<a href="<?php echo $order['approve']; ?>" data-toggle="tooltip" title="Approve" class="btn btn-success"><i class="fa fa-thumbs-o-up"></i></a>
-                        <a href="<?php echo $order['decline']; ?>" data-toggle="tooltip" title="Decline" class="btn btn-success"><i class="fa fa-thumbs-o-down"></i></a>
+                    	<a href="<?php echo $order['approve']; ?>" data-toggle="tooltip" title="Approve" class="btn btn-success"><i class="fa fa-check"></i> Approve</a>
+                        <a href="<?php echo $order['decline']; ?>" data-toggle="tooltip" title="Decline" class="btn btn-danger"><i class="fa fa-times"> Decline</i></a>
                     <?php } elseif($order['status'] == '1') { ?>
-                    	<button type="button" class="btn btn-success" title="Approved" disabled><i class="fa fa-thumbs-o-up"></i></button>
-                        <a href="<?php echo $order['decline']; ?>" data-toggle="tooltip" title="Decline" class="btn btn-success"><i class="fa fa-thumbs-o-down"></i></a>
+                    	<button type="button" class="btn btn-success" title="Approved" disabled><i class="fa fa-check"></i> Approve</button>
+                        <a href="<?php echo $order['decline']; ?>" data-toggle="tooltip" title="Decline" class="btn btn-danger"><i class="fa fa-times"></i> Decline</a>
                     <?php } elseif($order['status'] == '2') { ?>
-                    	<a href="<?php echo $order['approve']; ?>" data-toggle="tooltip" title="Approve" class="btn btn-success"><i class="fa fa-thumbs-o-up"></i></a>
-                        <button type="button" class="btn btn-success" disabled title="Decline"><i class="fa fa-thumbs-o-down"></i></button>
+                    	<a href="<?php echo $order['approve']; ?>" data-toggle="tooltip" title="Approve" class="btn btn-success"><i class="fa fa-check"></i> Approve</a>
+                        <button type="button" class="btn btn-danger" disabled title="Decline"><i class="fa fa-times"></i> Decline</button>
                     <?php } ?>
                     
                     </td>
@@ -211,6 +218,18 @@ $('#button-filter').on('click', function() {
 
 	if (filter_customer) {
 		url += '&filter_customer=' + encodeURIComponent(filter_customer);
+	}
+	
+	var filter_customer_contact_id = $('input[name=\'filter_customer_contact_id\']').val();
+
+	if (filter_customer_contact_id) {
+		url += '&filter_customer_contact_id=' + encodeURIComponent(filter_customer_contact_id);
+	}
+	
+	var filter_customer_contact = $('input[name=\'filter_customer_contact\']').val();
+
+	if (filter_customer_contact) {
+		url += '&filter_customer_contact=' + encodeURIComponent(filter_customer_contact);
 	}
 
 	var filter_order_status = $('select[name=\'filter_order_status\']').val();
@@ -266,6 +285,29 @@ $('input[name=\'filter_customer\']').autocomplete({
 		$('input[name=\'filter_customer_id\']').val(item['value']);
 	}
 });
+//--></script>
+
+<script type="text/javascript"><!--
+$('input[name=\'filter_customer_contact\']').autocomplete({
+	'source': function(request, response) {
+		$.ajax({
+			url: 'index.php?route=replogic/customer_contact/autocomplete&token=<?php echo $token; ?>&filter_name=' +  encodeURIComponent(request),
+			dataType: 'json',
+			success: function(json) {
+				response($.map(json, function(item) {
+					return {
+						label: item['name'],
+						value: item['customer_con_id']
+					}
+				}));
+			}
+		});
+	},
+	'select': function(item) {
+		$('input[name=\'filter_customer_contact\']').val(item['label']);
+		$('input[name=\'filter_customer_contact_id\']').val(item['value']);
+	}
+});
 //--></script> 
   <script type="text/javascript"><!--
 $('input[name^=\'selected\']').on('change', function() {
@@ -275,6 +317,10 @@ $('input[name^=\'selected\']').on('change', function() {
 
 	if (selected.length) {
 		$('#button-invoice').prop('disabled', false);
+	}
+	
+	if (selected.length) {
+		$('#button-delete').prop('disabled', false);
 	}
 
 	for (i = 0; i < selected.length; i++) {
@@ -286,7 +332,7 @@ $('input[name^=\'selected\']').on('change', function() {
 	}
 });
 
-$('#button-shipping, #button-invoice').prop('disabled', true);
+$('#button-shipping, #button-invoice, #button-delete').prop('disabled', true);
 
 $('input[name^=\'selected\']:first').trigger('change');
 
