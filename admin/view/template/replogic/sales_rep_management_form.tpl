@@ -64,9 +64,23 @@
               <?php } ?>
               
               <?php } else { ?>
-          	 <input type="hidden" name="sales_team_id" value="<?php echo $team_id;?>"  />
-             <select name="sales_team_id" id="input-sales_manager" class="form-control" disabled="disabled">
-             	<?php foreach ($teams as $team) {  ?>
+              
+              <?php 
+              	
+                if($form_action == 'add')
+                {
+                	$dis = 'disabled="disabled"';
+                }
+                else
+                {
+                	$dis = '';
+                }
+                
+              ?>
+              
+          	 <select name="sales_team_id" id="input-sales_manager" class="form-control" <?php echo $dis; ?> >
+             	<option value="">Select Team</option>
+                <?php foreach ($teams as $team) {  ?>
                 <?php if ($team['team_id'] == $team_id) { ?>
                 <option value="<?php echo $team['team_id']; ?>" selected="selected"><?php echo $team['team_name']; ?></option>
                 <?php } else { ?>

@@ -111,7 +111,7 @@
             
             
                 <div class="input-group" style="float:left;margin-left:15px;">
-                <select name="hour" class="form-control" style="float:left;width:125px;">
+                <select name="hour" class="form-control" style="float:left;width:135px;">
                     <option value="">Select Hours</option>
                     <?php for($i=1;$i<=12;$i++) { ?>
                     	<?php if($i == $hour) { ?>
@@ -129,7 +129,7 @@
               </div> 
               <div style="float:left;margin:0px 5px 0px 5px;"><strong style="font-size:23px;">:</strong></div>
               <div style="float:left;">
-               <select name="minutes" class="form-control" style="float:left;width:125px;">
+               <select name="minutes" class="form-control" style="float:left;width:135px;">
                             <option value="">Select Minutes</option>
                             <?php if($minutes == '00') { ?>
                             <option value="00" selected="selected">00</option>

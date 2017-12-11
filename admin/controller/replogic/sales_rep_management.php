@@ -502,6 +502,8 @@ class ControllerReplogicSalesRepManagement extends Controller {
 
 		$data['button_save'] = $this->language->get('button_save');
 		$data['button_cancel'] = $this->language->get('button_cancel');
+		
+		$data['form_action'] = !isset($this->request->get['salesrep_id']) ? 'add' : 'edit';
 
 		if (isset($this->error['warning'])) {
 			$data['error_warning'] = $this->error['warning'];
