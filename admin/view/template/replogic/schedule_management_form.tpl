@@ -111,8 +111,8 @@
             
             
                 <div class="input-group" style="float:left;margin-left:15px;">
-                <select name="hour" class="form-control" style="float:left;width:120px;">
-                    <option value="">Select Hour</option>
+                <select name="hour" class="form-control" style="float:left;width:125px;">
+                    <option value="">Select Hours</option>
                     <?php for($i=1;$i<=12;$i++) { ?>
                     	<?php if($i == $hour) { ?>
                         	<option value="<?php echo $i; ?>" selected="selected"><?php echo $i; ?></option>
@@ -129,26 +129,32 @@
               </div> 
               <div style="float:left;margin:0px 5px 0px 5px;"><strong style="font-size:23px;">:</strong></div>
               <div style="float:left;">
-               <select name="minutes" class="form-control" style="float:left;width:135px;">
+               <select name="minutes" class="form-control" style="float:left;width:125px;">
                             <option value="">Select Minutes</option>
-                            <?php for($i=1;$i<=60;$i++) { ?>
-                            <?php	if ($i < 10) {
-                                    $i = str_pad($i, 2, "0", STR_PAD_LEFT);
-                                } ?>
-                                <?php if($i == $minutes) { ?>
-                                    <?php if($i == '60') { ?>
-                                        <option value="00" selected="selected">00</option>
-                                    <?php } else { ?>
-                                        <option value="<?php echo $i; ?>" selected="selected"><?php echo $i; ?></option>
-                                    <?php } ?>
-                                <?php } else { ?>
-                                	<?php if($i == '60') { ?>
-                                    <option value="00">00</option>
-                                    <?php } else { ?>
-                                        <option value="<?php echo $i; ?>" ><?php echo $i; ?></option>
-                                    <?php } ?>
-                                <?php } ?>
+                            <?php if($minutes == '00') { ?>
+                            <option value="00" selected="selected">00</option>
+                            <?php } else { ?>
+                            <option value="00" >00</option>
                             <?php } ?>
+                            
+                            <?php if($minutes == '15') { ?>
+                            <option value="15" selected="selected">15</option>
+                            <?php } else { ?>
+                            <option value="15" >15</option>
+                            <?php } ?>
+                            
+                            <?php if($minutes == '30') { ?>
+                            <option value="30" selected="selected">30</option>
+                            <?php } else { ?>
+                            <option value="30" >30</option>
+                            <?php } ?>
+                            
+                            <?php if($minutes == '45') { ?>
+                            <option value="45" selected="selected">45</option>
+                            <?php } else { ?>
+                            <option value="45" >45</option>
+                            <?php } ?>
+                           
                         </select>
                    
       
