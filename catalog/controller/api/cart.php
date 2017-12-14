@@ -7,11 +7,11 @@ class ControllerApiCart extends Controller {
 
 		if (!isset($this->session->data['api_id'])) {
 			$json['error']['warning'] = $this->language->get('error_permission');
-		} else {
-			if (isset($this->request->post['product'])) {
+		} else { 
+			if (isset($this->request->post['product'])) { 
 				$this->cart->clear();
 
-				foreach ($this->request->post['product'] as $product) {
+				foreach ($this->request->post['product'] as $product) { 
 					if (isset($product['option'])) {
 						$option = $product['option'];
 					} else {

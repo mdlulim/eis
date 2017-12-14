@@ -11,6 +11,47 @@ class ControllerReplogicCustomerContact extends Controller {
 
 		$this->getList();
 	}
+	
+	public function autocomplete() {
+		$json = array();
+
+		if (isset($this->request->get['filter_name']) || isset($this->request->get['filter_email'])) {
+			if (isset($this->request->get['filter_name'])) {
+				$filter_name = $this->request->get['filter_name'];
+			} else {
+				$filter_name = '';
+			}
+
+			$this->load->model('replogic/customer_contact');
+
+			$filter_data = array(
+				'filter_name'  => $filter_name,
+				'start'        => 0,
+				'limit'        => 5
+			);
+
+			$results = $this->model_replogic_customer_contact->getcustomercontacts($filter_data);
+
+			foreach ($results as $result) {
+				$name = $result['first_name'] ." ". $result['last_name'];
+				$json[] = array(
+					'customer_con_id'       => $result['customer_con_id'],
+					'name'              => strip_tags(html_entity_decode($name, ENT_QUOTES, 'UTF-8'))
+				);
+			}
+		}
+
+		$sort_order = array();
+
+		foreach ($json as $key => $value) {
+			$sort_order[$key] = $value['name'];
+		}
+
+		array_multisort($sort_order, SORT_ASC, $json);
+
+		$this->response->addHeader('Content-Type: application/json');
+		$this->response->setOutput(json_encode($json));
+	}
 
 	public function add() {
 		$this->load->language('replogic/customer_contact');

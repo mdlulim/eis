@@ -351,6 +351,25 @@ class ControllerApiOrder extends Controller {
 				}
 
 				$this->model_checkout_order->addOrderHistory($json['order_id'], $order_status_id);
+		
+		// Start Using Quote Id to Update the table Using Order Id //				
+				if($this->request->get['quote_id'])
+				{
+					$this->load->model('replogic/order_quotes');
+					$ord_id = $json['order_id'];
+					
+					$quote_info = $this->model_replogic_order_quotes->getOrderquote($this->request->get['quote_id']);
+					
+					$salesrep_id = $quote_info['salesrep_id'];
+					$customer_contact_id = $quote_info['customer_contact_id'];
+					
+					$this->model_replogic_order_quotes->QuoteOrderIdUpdate($this->request->get['quote_id'], $ord_id);
+					$this->model_replogic_order_quotes->statuschange($this->request->get['quote_id'], 1);
+					$this->model_replogic_order_quotes->SalesRepOrderIdTable($salesrep_id, $ord_id);
+					$this->model_replogic_order_quotes->CustomerContactOrderIdTable($customer_contact_id, $ord_id);
+					
+				}
+			// End Using Quote Id to Update the table Using Order Id //		
 				
 				// clear cart since the order has already been successfully stored.
 				//$this->cart->clear();
@@ -368,7 +387,7 @@ class ControllerApiOrder extends Controller {
 		$this->response->setOutput(json_encode($json));
 	}
 
-	public function edit() {
+	public function edit() { 
 		$this->load->language('api/order');
 
 		$json = array();
@@ -695,6 +714,26 @@ class ControllerApiOrder extends Controller {
 					}
 
 					$this->model_checkout_order->addOrderHistory($order_id, $order_status_id);
+			
+	// Start Using Quote Id to Update the table Using Order Id //		
+					if($this->request->get['quote_id'])
+					{ 
+						$this->load->model('replogic/order_quotes');
+						$ord_id = $order_id;
+						
+						$quote_info = $this->model_replogic_order_quotes->getOrderquote($this->request->get['quote_id']);
+						
+						$salesrep_id = $quote_info['salesrep_id'];
+						$customer_contact_id = $quote_info['customer_contact_id'];
+						
+						$this->model_replogic_order_quotes->QuoteOrderIdUpdate($this->request->get['quote_id'], $ord_id);
+						$this->model_replogic_order_quotes->statuschange($this->request->get['quote_id'], 1);
+						$this->model_replogic_order_quotes->SalesRepOrderIdTable($salesrep_id, $ord_id);
+						$this->model_replogic_order_quotes->CustomerContactOrderIdTable($customer_contact_id, $ord_id);
+						
+					}
+				// End Using Quote Id to Update the table Using Order Id //		
+					
 				}
 			} else {
 				$json['error'] = $this->language->get('error_not_found');

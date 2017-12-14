@@ -167,16 +167,17 @@
                   <td class="text-left"><?php echo $order['date_added']; ?></td>
                   <td class="text-right">
                     
-                    <?php if ($order['status'] == '0') { ?>
-                    	<a href="<?php echo $order['approve']; ?>" data-toggle="tooltip" title="Approve" class="btn btn-success"><i class="fa fa-check"></i> Approve</a>
-                        <a href="<?php echo $order['decline']; ?>" data-toggle="tooltip" title="Decline" class="btn btn-danger"><i class="fa fa-times"> Decline</i></a>
-                    <?php } elseif($order['status'] == '1') { ?>
-                    	<button type="button" class="btn btn-success" title="Approved" disabled><i class="fa fa-check"></i> Approve</button>
-                        <a href="<?php echo $order['decline']; ?>" data-toggle="tooltip" title="Decline" class="btn btn-danger"><i class="fa fa-times"></i> Decline</a>
-                    <?php } elseif($order['status'] == '2') { ?>
-                    	<a href="<?php echo $order['approve']; ?>" data-toggle="tooltip" title="Approve" class="btn btn-success"><i class="fa fa-check"></i> Approve</a>
-                        <button type="button" class="btn btn-danger" disabled title="Decline"><i class="fa fa-times"></i> Decline</button>
-                    <?php } ?>
+                    	<?php if($order['view']) { ?>
+                        <a href="<?php echo $order['view']; ?>" data-toggle="tooltip" title="View Order Quotes" class="btn btn-info"><i class="fa fa-eye"></i></a>
+                   		<?php } ?>
+                        <?php if($order['order_id'] == '' && $order['status'] != '2') { ?>
+                        	<a href="<?php echo $order['approve']; ?>" data-toggle="tooltip" title="Approve" class="btn btn-success"><i class="fa fa-check"></i> Approve</a>
+                        	<a href="javascript:void();" data-toggle="tooltip" title="Decline" onclick="onpopup(<?php echo $order['quote_id']; ?>);" class="btn btn-danger decline"><i class="fa fa-times"> Decline</i></a>
+                           <!-- <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#myModal" data-whatever="@getbootstrap"><i class="fa fa-times"></i>Decline</button>-->
+                        <?php } else { ?>
+                        	<button type="button" class="btn btn-success" disabled title="Decline"><i class="fa fa-up"></i> Approve</button>
+                        	<button type="button" class="btn btn-danger" disabled title="Decline"><i class="fa fa-times"></i> Decline</button>
+                        <?php } ?>
                     
                     </td>
                     
@@ -191,6 +192,31 @@
             </table>
           </div>
         </form>
+         
+        <div id="myModal" class="modal fade" role="dialog">
+          <form action="<?php echo $decline; ?>" method="post" enctype="multipart/form-data" id="form-popup">
+          <input type="hidden" name="quote_id" id="popupquote_id" value=""  />
+          <div class="modal-dialog">
+        
+            <!-- Modal content-->
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Confirm Decline</h4>
+              </div>
+              <div class="modal-body">
+                <p><strong>Please Enter your reasons for declining the quote inside the following box</strong> </p>
+                <textarea name="reason" rows="5" placeholder="Plz Enter Reason" id="reason" class="form-control"></textarea>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" id="Decline">Ok</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+              </div>
+            </div>
+        
+          </div>
+          </form>
+        </div>
         <div class="row">
           <div class="col-sm-6 text-left"><?php echo $pagination; ?></div>
           <div class="col-sm-6 text-right"><?php echo $results; ?></div>
@@ -198,6 +224,34 @@
       </div>
     </div>
   </div>
+  <script type="text/javascript">
+	
+		function onpopup(id)
+		{
+		 
+			$('#popupquote_id').val(); 
+			$('#popupquote_id').val(id); 
+			document.getElementById('reason').value = "";
+			$('#myModal').modal('show'); 
+			$('#Decline').attr('disabled', 'disabled');
+		}
+		
+		$('#Decline').prop('disabled', true);
+		$('#reason').on('keyup',function() {
+			if($(this).val()) {
+				$('#Decline').prop('disabled' , false);
+			}else{
+				$('#Decline').prop('disabled' , true);
+			}
+		});
+		
+		document.getElementById('Decline').onclick = function() {
+        document.getElementById('form-popup').submit();
+        return false;
+			};
+		
+		
+		</script>
   <script type="text/javascript"><!--
 $('#button-filter').on('click', function() {
 	url = 'index.php?route=replogic/order_quotes&token=<?php echo $token; ?>';

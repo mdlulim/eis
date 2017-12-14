@@ -21,6 +21,10 @@ class ModelReplogicOrderQuotes extends Model {
 		if (!empty($data['filter_customer_id'])) {
 			$sql .= " AND customer_id = '" . (int)$data['filter_customer_id'] . "'";
 		}
+		
+		if (!empty($data['filter_customer_contact_id'])) {
+			$sql .= " AND customer_contact_id = '" . (int)$data['filter_customer_contact_id'] . "'";
+		}
 
 		if (!empty($data['filter_date_added'])) {
 			$sql .= " AND DATE(date_added) = DATE('" . $this->db->escape($data['filter_date_added']) . "')";
@@ -28,10 +32,6 @@ class ModelReplogicOrderQuotes extends Model {
 
 		if (!empty($data['filter_date_modified'])) {
 			$sql .= " AND DATE(date_modified) = DATE('" . $this->db->escape($data['filter_date_modified']) . "')";
-		}
-
-		if (!empty($data['filter_total'])) {
-			$sql .= " AND o.total = '" . (float)$data['filter_total'] . "'";
 		}
 
 		$sort_data = array(
@@ -72,10 +72,47 @@ class ModelReplogicOrderQuotes extends Model {
 		return $query->rows;
 	}
 	
+	public function getOrderquote($quote_id) {
+	
+		$sql = "SELECT * FROM " . DB_PREFIX . "replogic_order_quote where quote_id = ".$quote_id;
+		$query = $this->db->query($sql);
+
+		return $query->row;
+	
+	}
+	
 	public function statuschange($quote_id, $stats) {
 		$query = $this->db->query("UPDATE " . DB_PREFIX . "replogic_order_quote set status = '". $stats ."' WHERE quote_id = '" . (int)$quote_id . "'");
 
 		return $query->rows;
+	}
+	
+	public function Declinestatuschange($quote_id, $reason) {
+		$query = $this->db->query("UPDATE " . DB_PREFIX . "replogic_order_quote set status = '2', comments = '".$reason."' WHERE quote_id = '" . (int)$quote_id . "'");
+
+		return $query->row;
+	}
+	
+	public function QuoteOrderIdUpdate($quote_id, $order_id) {
+		$query = $this->db->query("UPDATE " . DB_PREFIX . "replogic_order_quote set order_id = '". $order_id ."' WHERE quote_id = '" . (int)$quote_id . "'");
+
+		return $query->row;
+	}
+	
+	public function SalesRepOrderIdTable($salesrep_id,$ord_id) {
+		
+		$query = $this->db->query("DELETE FROM " . DB_PREFIX . "salesrep_to_order WHERE salesrep_id = '" . $salesrep_id . "' AND order_id = '" . (int)$ord_id . "'");
+
+		$this->db->query("INSERT " . DB_PREFIX . "salesrep_to_order SET salesrep_id = '" . $salesrep_id . "', order_id = '" . $ord_id . "'");
+		
+	}
+	
+	public function CustomerContactOrderIdTable($customer_contact_id,$ord_id) {
+		
+		$query = $this->db->query("DELETE FROM " . DB_PREFIX . "customercontact_to_order WHERE customer_contact_id = '" . $customer_contact_id . "' AND order_id = '" . (int)$ord_id . "'");
+
+		$this->db->query("INSERT " . DB_PREFIX . "customercontact_to_order SET customer_contact_id = '" . $customer_contact_id . "', order_id = '" . $ord_id . "'");
+		
 	}
 	
 	public function getOrderTotals($quote_id) {
@@ -100,6 +137,10 @@ class ModelReplogicOrderQuotes extends Model {
 		if (!empty($data['filter_customer_id'])) {
 			$sql .= " AND customer_id = '" . (int)$data['filter_customer_id'] . "'";
 		}
+		
+		if (!empty($data['filter_customer_contact_id'])) {
+			$sql .= " AND customer_contact_id = '" . (int)$data['filter_customer_contact_id'] . "'";
+		}
 
 		if (!empty($data['filter_date_added'])) {
 			$sql .= " AND DATE(date_added) = DATE('" . $this->db->escape($data['filter_date_added']) . "')";
@@ -107,10 +148,6 @@ class ModelReplogicOrderQuotes extends Model {
 
 		if (!empty($data['filter_date_modified'])) {
 			$sql .= " AND DATE(date_modified) = DATE('" . $this->db->escape($data['filter_date_modified']) . "')";
-		}
-
-		if (!empty($data['filter_total'])) {
-			$sql .= " AND o.total = '" . (float)$data['filter_total'] . "'";
 		}
 
 		$query = $this->db->query($sql);

@@ -34,7 +34,7 @@ class ControllerReplogicOrderQuotes extends Controller {
 	public function approve() { 
 		
 		$this->load->model('replogic/order_quotes');
-		
+		$this->load->language('replogic/order_quotes');
 		if (isset($this->request->get['quote_id'])) {
 			
 			$quote_id = $this->request->get['quote_id'];
@@ -55,14 +55,18 @@ class ControllerReplogicOrderQuotes extends Controller {
 			
 			if (isset($this->request->get['filter_customer_id'])) {
 			$url .= '&filter_customer_id=' . $this->request->get['filter_customer_id'];
-		}
+			}
+			
+			if (isset($this->request->get['filter_customer_contact_id'])) {
+			$url .= '&filter_customer_contact_id=' . $this->request->get['filter_customer_contact_id'];
+			}
+			
+			if (isset($this->request->get['filter_customer_contact'])) {
+				$url .= '&filter_customer_contact=' . urlencode(html_entity_decode($this->request->get['filter_customer_contact'], ENT_QUOTES, 'UTF-8'));
+			}
 	
 			if (isset($this->request->get['filter_order_status'])) {
 				$url .= '&filter_order_status=' . $this->request->get['filter_order_status'];
-			}
-	
-			if (isset($this->request->get['filter_total'])) {
-				$url .= '&filter_total=' . $this->request->get['filter_total'];
 			}
 	
 			if (isset($this->request->get['filter_date_added'])) {
@@ -80,12 +84,14 @@ class ControllerReplogicOrderQuotes extends Controller {
 	public function decline() { 
 		
 		$this->load->model('replogic/order_quotes');
+		$this->load->language('replogic/order_quotes');
 		
-		if (isset($this->request->get['quote_id'])) {
+		if (isset($this->request->post['quote_id'])) {
 			
-			$quote_id = $this->request->get['quote_id'];
+			$quote_id = $this->request->post['quote_id'];
+			$reason = $this->request->post['reason'];
 			
-			$this->model_replogic_order_quotes->statuschange($quote_id,2);
+			$this->model_replogic_order_quotes->Declinestatuschange($quote_id,$reason);
 			
 			$this->session->data['success'] = $this->language->get('text_success');
 
@@ -101,14 +107,18 @@ class ControllerReplogicOrderQuotes extends Controller {
 			
 			if (isset($this->request->get['filter_customer_id'])) {
 			$url .= '&filter_customer_id=' . $this->request->get['filter_customer_id'];
-		}
-	
+			}
+			
+			if (isset($this->request->get['filter_customer_contact_id'])) {
+			$url .= '&filter_customer_contact_id=' . $this->request->get['filter_customer_contact_id'];
+			}
+			
+			if (isset($this->request->get['filter_customer_contact'])) {
+				$url .= '&filter_customer_contact=' . urlencode(html_entity_decode($this->request->get['filter_customer_contact'], ENT_QUOTES, 'UTF-8'));
+			}
+		
 			if (isset($this->request->get['filter_order_status'])) {
 				$url .= '&filter_order_status=' . $this->request->get['filter_order_status'];
-			}
-	
-			if (isset($this->request->get['filter_total'])) {
-				$url .= '&filter_total=' . $this->request->get['filter_total'];
 			}
 	
 			if (isset($this->request->get['filter_date_added'])) {
@@ -149,14 +159,18 @@ class ControllerReplogicOrderQuotes extends Controller {
 			
 			if (isset($this->request->get['filter_customer_id'])) {
 			$url .= '&filter_customer_id=' . $this->request->get['filter_customer_id'];
-		}
+			}
+			
+			if (isset($this->request->get['filter_customer_contact_id'])) {
+			$url .= '&filter_customer_contact_id=' . $this->request->get['filter_customer_contact_id'];
+			}
+			
+			if (isset($this->request->get['filter_customer_contact'])) {
+				$url .= '&filter_customer_contact=' . urlencode(html_entity_decode($this->request->get['filter_customer_contact'], ENT_QUOTES, 'UTF-8'));
+			}
 	
 			if (isset($this->request->get['filter_order_status'])) {
 				$url .= '&filter_order_status=' . $this->request->get['filter_order_status'];
-			}
-	
-			if (isset($this->request->get['filter_total'])) {
-				$url .= '&filter_total=' . $this->request->get['filter_total'];
 			}
 	
 			if (isset($this->request->get['filter_date_added'])) {
@@ -191,17 +205,23 @@ class ControllerReplogicOrderQuotes extends Controller {
 		} else {
 			$filter_customer_id = null;
 		}
+		
+		if (isset($this->request->get['filter_customer_contact'])) {
+			$filter_customer_contact = $this->request->get['filter_customer_contact'];
+		} else {
+			$filter_customer_contact = null;
+		}
+		
+		if (isset($this->request->get['filter_customer_contact_id'])) {
+			$filter_customer_contact_id = $this->request->get['filter_customer_contact_id'];
+		} else {
+			$filter_customer_contact_id = null;
+		}
 
 		if (isset($this->request->get['filter_order_status'])) {
 			$filter_order_status = $this->request->get['filter_order_status'];
 		} else {
 			$filter_order_status = null;
-		}
-
-		if (isset($this->request->get['filter_total'])) {
-			$filter_total = $this->request->get['filter_total'];
-		} else {
-			$filter_total = null;
 		}
 
 		if (isset($this->request->get['filter_date_added'])) {
@@ -247,13 +267,17 @@ class ControllerReplogicOrderQuotes extends Controller {
 		if (isset($this->request->get['filter_customer'])) {
 			$url .= '&filter_customer=' . urlencode(html_entity_decode($this->request->get['filter_customer'], ENT_QUOTES, 'UTF-8'));
 		}
+		
+		if (isset($this->request->get['filter_customer_contact_id'])) {
+			$url .= '&filter_customer_contact_id=' . $this->request->get['filter_customer_contact_id'];
+		}
+		
+		if (isset($this->request->get['filter_customer_contact'])) {
+			$url .= '&filter_customer_contact=' . urlencode(html_entity_decode($this->request->get['filter_customer_contact'], ENT_QUOTES, 'UTF-8'));
+		}
 
 		if (isset($this->request->get['filter_order_status'])) {
 			$url .= '&filter_order_status=' . $this->request->get['filter_order_status'];
-		}
-
-		if (isset($this->request->get['filter_total'])) {
-			$url .= '&filter_total=' . $this->request->get['filter_total'];
 		}
 
 		if (isset($this->request->get['filter_date_added'])) {
@@ -298,6 +322,7 @@ class ControllerReplogicOrderQuotes extends Controller {
 		$filter_data = array(
 			'filter_quote_id'      => $filter_quote_id,
 			'filter_customer_id'	   => $filter_customer_id,
+			'filter_customer_contact_id'	   => $filter_customer_contact_id,
 			'filter_order_status'  => $filter_order_status,
 			'filter_date_added'    => $filter_date_added,
 			'filter_date_modified' => $filter_date_modified,
@@ -308,10 +333,22 @@ class ControllerReplogicOrderQuotes extends Controller {
 		);
 
 		$order_quotes_total = $this->model_replogic_order_quotes->getTotalOrders($filter_data);
-
+		
+		$data['decline']  = $this->url->link('replogic/order_quotes/decline', 'token=' . $this->session->data['token'] . $url, true);
+				
+		
 		$results = $this->model_replogic_order_quotes->getOrders($filter_data);
 		$this->load->model('replogic/customer_contact');
 		$this->load->model('customer/customer');
+		
+		$this->load->model('user/user_group');
+		$this->load->model('user/user');
+		$current_user = $this->session->data['user_id'];
+		$current_user_group_id = $this->model_user_user->getUser($current_user); ;
+		$current_user_group = $this->model_user_user_group->getUserGroup($current_user_group_id['user_group_id']); ;
+		//print_r($current_user_group); exit;
+		
+		
 		foreach ($results as $result) {
 			
 			if ($result['status'] == 0) {
@@ -333,19 +370,28 @@ class ControllerReplogicOrderQuotes extends Controller {
 			$cust = $this->model_customer_customer->getCustomer($result['customer_id']);
 			$customer_nm = $cust['firstname'] ." ". $cust['lastname'];
 			
+			if($current_user_group['name'] == 'Company admin' || $current_user_group['name'] == 'Administrator')
+			{
+				$view_button = $this->url->link('replogic/order_quotes/info', 'quote_id='.$result['quote_id'].'&token=' . $this->session->data['token'] . $url, true);
+			}
+			else
+			{ 
+				$view_button = '';
+			}
+			
 			$data['orders'][] = array(
 				'quote_id'      => $result['quote_id'],
 				'customer'      => $customer_nm,
 				'customer_contact'      => $customer_contact,
-				'approve'      => $this->url->link('replogic/order_quotes/approve', 'token=' . $this->session->data['token'] . '&quote_id=' . $result['quote_id'] . $url, true),
-				'decline'      => $this->url->link('replogic/order_quotes/decline', 'token=' . $this->session->data['token'] . '&quote_id=' . $result['quote_id'] . $url, true),
+				'approve'      => $this->url->link('replogic/order/add', 'token=' . $this->session->data['token'] . '&quote_id=' . $result['quote_id'] . $url, true),
 				'qstatus'      => $qstatus,
 				'status'      => $result['status'],
+				'order_id'      => $result['order_id'],
 				'order_status'  => $result['order_status'] ? $result['order_status'] : $this->language->get('text_missing'),
 				'total'         => $total,
 				'date_added'    => date($this->language->get('date_format_short'), strtotime($result['date_added'])),
 				'shipping_code' => $result['shipping_code'],
-				'view'          => $this->url->link('replogic/order_quotes/info', 'token=' . $this->session->data['token'] . '&quote_id=' . $result['quote_id'] . $url, true),
+				'view'          => $view_button,
 				'edit'          => $this->url->link('replogic/order_quotes/edit', 'token=' . $this->session->data['token'] . '&quote_id=' . $result['quote_id'] . $url, true)
 			);
 		}
@@ -418,13 +464,17 @@ class ControllerReplogicOrderQuotes extends Controller {
 		if (isset($this->request->get['filter_customer_id'])) {
 			$url .= '&filter_customer_id=' . $this->request->get['filter_customer_id'];
 		}
+		
+		if (isset($this->request->get['filter_customer_contact_id'])) {
+			$url .= '&filter_customer_contact_id=' . $this->request->get['filter_customer_contact_id'];
+		}
+		
+		if (isset($this->request->get['filter_customer_contact'])) {
+			$url .= '&filter_customer_contact=' . urlencode(html_entity_decode($this->request->get['filter_customer_contact'], ENT_QUOTES, 'UTF-8'));
+		}
 
 		if (isset($this->request->get['filter_order_status'])) {
 			$url .= '&filter_order_status=' . $this->request->get['filter_order_status'];
-		}
-
-		if (isset($this->request->get['filter_total'])) {
-			$url .= '&filter_total=' . $this->request->get['filter_total'];
 		}
 
 		if (isset($this->request->get['filter_date_added'])) {
@@ -466,13 +516,17 @@ class ControllerReplogicOrderQuotes extends Controller {
 		if (isset($this->request->get['filter_customer_id'])) {
 			$url .= '&filter_customer_id=' . $this->request->get['filter_customer_id'];
 		}
+		
+		if (isset($this->request->get['filter_customer_contact_id'])) {
+			$url .= '&filter_customer_contact_id=' . $this->request->get['filter_customer_contact_id'];
+		}
+		
+		if (isset($this->request->get['filter_customer_contact'])) {
+			$url .= '&filter_customer_contact=' . urlencode(html_entity_decode($this->request->get['filter_customer_contact'], ENT_QUOTES, 'UTF-8'));
+		}
 
 		if (isset($this->request->get['filter_order_status'])) {
 			$url .= '&filter_order_status=' . $this->request->get['filter_order_status'];
-		}
-
-		if (isset($this->request->get['filter_total'])) {
-			$url .= '&filter_total=' . $this->request->get['filter_total'];
 		}
 
 		if (isset($this->request->get['filter_date_added'])) {
@@ -504,8 +558,9 @@ class ControllerReplogicOrderQuotes extends Controller {
 		$data['filter_quote_id'] = $filter_quote_id;
 		$data['filter_customer'] = $filter_customer;
 		$data['filter_customer_id'] = $filter_customer_id;
+		$data['filter_customer_contact'] = $filter_customer_contact;
+		$data['filter_customer_contact_id'] = $filter_customer_contact_id;
 		$data['filter_order_status'] = $filter_order_status;
-		$data['filter_total'] = $filter_total;
 		$data['filter_date_added'] = $filter_date_added;
 		$data['filter_date_modified'] = $filter_date_modified;
 
@@ -610,13 +665,21 @@ class ControllerReplogicOrderQuotes extends Controller {
 		if (isset($this->request->get['filter_customer'])) {
 			$url .= '&filter_customer=' . urlencode(html_entity_decode($this->request->get['filter_customer'], ENT_QUOTES, 'UTF-8'));
 		}
+		
+		if (isset($this->request->get['filter_customer_id'])) {
+			$url .= '&filter_customer_id=' . urlencode(html_entity_decode($this->request->get['filter_customer_id'], ENT_QUOTES, 'UTF-8'));
+		}
+		
+		if (isset($this->request->get['filter_customer_contact_id'])) {
+			$url .= '&filter_customer_contact_id=' . $this->request->get['filter_customer_contact_id'];
+		}
+		
+		if (isset($this->request->get['filter_customer_contact'])) {
+			$url .= '&filter_customer_contact=' . urlencode(html_entity_decode($this->request->get['filter_customer_contact'], ENT_QUOTES, 'UTF-8'));
+		}
 
 		if (isset($this->request->get['filter_order_status'])) {
 			$url .= '&filter_order_status=' . $this->request->get['filter_order_status'];
-		}
-
-		if (isset($this->request->get['filter_total'])) {
-			$url .= '&filter_total=' . $this->request->get['filter_total'];
 		}
 
 		if (isset($this->request->get['filter_date_added'])) {
@@ -899,16 +962,61 @@ class ControllerReplogicOrderQuotes extends Controller {
 
 	public function info() {
 		$this->load->model('replogic/order_quotes');
-
+		$this->load->model('sale/order');
+		$this->load->model('customer/customer');
+		$this->load->model('replogic/customer_contact');
+		$this->load->model('replogic/sales_rep_management');
+		$this->load->model('catalog/product');
+		
 		if (isset($this->request->get['quote_id'])) {
 			$quote_id = $this->request->get['quote_id'];
+			$quote_info = $this->model_replogic_order_quotes->getOrderquote($this->request->get['quote_id']);
+			if($quote_info['order_id'])
+			{
+				$order_id = $quote_info['order_id'];
+			}
+			else
+			{
+				$order_id = 0;
+			}
 		} else {
 			$quote_id = 0;
+			$order_id = 0;
 		}
-
-		$order_info = $this->model_replogic_order_quotes->getOrder($quote_id);
-
-		if ($order_info) {
+		
+		$data['Qdate_added'] = date($this->language->get('date_format_short'), strtotime($quote_info['date_added']));
+		$data['store_url'] = $this->request->server['HTTPS'] ? HTTPS_CATALOG : HTTP_CATALOG;
+		$data['store_name'] = $this->config->get('config_name');
+		
+		$cust_con = $this->model_replogic_customer_contact->getcustomercontact($quote_info['customer_contact_id']);
+		
+		$cust = $this->model_customer_customer->getCustomer($quote_info['customer_id']);
+		$this->load->model('customer/customer_group');
+    	$customer_group_info = $this->model_customer_customer_group->getCustomerGroup($cust['customer_group_id']);
+		if ($customer_group_info) {
+			$data['customer_group'] = $customer_group_info['name'];
+		} else {
+			$data['customer_group'] = '';
+		}
+		
+		$salesrep = $this->model_replogic_sales_rep_management->getsalesrep($quote_info['salesrep_id']);
+		
+		$data['ssfirstname'] = $salesrep['salesrep_name'];
+		$data['sslastname'] = $salesrep['salesrep_lastname'];
+		
+		$data['firstname'] = $cust['firstname'];
+		$data['lastname'] = $cust['lastname'];
+		$data['telephone'] = $cust['telephone'];
+		$data['email'] = $cust['email'];
+		
+		$data['ccfirstname'] = $cust_con['first_name'];
+		$data['cclastname'] = $cust_con['last_name'];
+		$data['ccemail'] = $cust_con['email'];
+		$data['cctelephone'] = $cust_con['telephone_number'];
+		
+		$order_info = $this->model_sale_order->getOrder($order_id);
+		
+		
 			$this->load->language('replogic/order_quotes');
 
 			$this->document->setTitle($this->language->get('heading_title'));
@@ -988,10 +1096,6 @@ class ControllerReplogicOrderQuotes extends Controller {
 				$url .= '&filter_order_status=' . $this->request->get['filter_order_status'];
 			}
 
-			if (isset($this->request->get['filter_total'])) {
-				$url .= '&filter_total=' . $this->request->get['filter_total'];
-			}
-
 			if (isset($this->request->get['filter_date_added'])) {
 				$url .= '&filter_date_added=' . $this->request->get['filter_date_added'];
 			}
@@ -1024,14 +1128,16 @@ class ControllerReplogicOrderQuotes extends Controller {
 				'href' => $this->url->link('replogic/order_quotes', 'token=' . $this->session->data['token'] . $url, true)
 			);
 
-			$data['shipping'] = $this->url->link('replogic/order_quotes/shipping', 'token=' . $this->session->data['token'] . '&quote_id=' . (int)$this->request->get['quote_id'], true);
-			$data['invoice'] = $this->url->link('replogic/order_quotes/invoice', 'token=' . $this->session->data['token'] . '&quote_id=' . (int)$this->request->get['quote_id'], true);
-			$data['edit'] = $this->url->link('replogic/order_quotes/edit', 'token=' . $this->session->data['token'] . '&quote_id=' . (int)$this->request->get['quote_id'], true);
+			$data['shipping'] = $this->url->link('sale/order/shipping', 'token=' . $this->session->data['token'] . '&order_id=' . $order_id, true);
+			$data['invoice'] = $this->url->link('sale/order/invoice', 'token=' . $this->session->data['token'] . '&order_id=' . $order_id, true);
+			$data['edit'] = $this->url->link('sale/order/edit', 'token=' . $this->session->data['token'] . '&order_id=' . $order_id, true);
 			$data['cancel'] = $this->url->link('replogic/order_quotes', 'token=' . $this->session->data['token'] . $url, true);
 
 			$data['token'] = $this->session->data['token'];
 
-			$data['quote_id'] = $this->request->get['quote_id'];
+			$data['order_id'] = $order_id;
+			
+		if ($order_info) {
 
 			$data['store_id'] = $order_info['store_id'];
 			$data['store_name'] = $order_info['store_name'];
@@ -1047,8 +1153,6 @@ class ControllerReplogicOrderQuotes extends Controller {
 			} else {
 				$data['invoice_no'] = '';
 			}
-
-			$data['date_added'] = date($this->language->get('date_format_short'), strtotime($order_info['date_added']));
 
 			$data['firstname'] = $order_info['firstname'];
 			$data['lastname'] = $order_info['lastname'];
@@ -1150,12 +1254,12 @@ class ControllerReplogicOrderQuotes extends Controller {
 
 			$data['products'] = array();
 
-			$products = $this->model_replogic_order_quotes->getOrderProducts($this->request->get['quote_id']);
+			$products = $this->model_sale_order->getOrderProducts($order_id);
 
 			foreach ($products as $product) {
 				$option_data = array();
 
-				$options = $this->model_replogic_order_quotes->getOrderOptions($this->request->get['quote_id'], $product['order_product_id']);
+				$options = $this->model_sale_order->getOrderOptions($order_id, $product['order_product_id']);
 
 				foreach ($options as $option) {
 					if ($option['type'] != 'file') {
@@ -1193,7 +1297,7 @@ class ControllerReplogicOrderQuotes extends Controller {
 
 			$data['vouchers'] = array();
 
-			$vouchers = $this->model_replogic_order_quotes->getOrderVouchers($this->request->get['quote_id']);
+			$vouchers = $this->model_sale_order->getOrderVouchers($order_id);
 
 			foreach ($vouchers as $voucher) {
 				$data['vouchers'][] = array(
@@ -1205,7 +1309,7 @@ class ControllerReplogicOrderQuotes extends Controller {
 
 			$data['totals'] = array();
 
-			$totals = $this->model_replogic_order_quotes->getOrderTotals($this->request->get['quote_id']);
+			$totals = $this->model_sale_order->getOrderTotals($order_id);
 
 			foreach ($totals as $total) {
 				$data['totals'][] = array(
@@ -1220,7 +1324,7 @@ class ControllerReplogicOrderQuotes extends Controller {
 
 			$data['reward'] = $order_info['reward'];
 
-			$data['reward_total'] = $this->model_customer_customer->getTotalCustomerRewardsByOrderId($this->request->get['quote_id']);
+			$data['reward_total'] = $this->model_customer_customer->getTotalCustomerRewardsByOrderId($order_id);
 
 			$data['affiliate_firstname'] = $order_info['affiliate_firstname'];
 			$data['affiliate_lastname'] = $order_info['affiliate_lastname'];
@@ -1235,7 +1339,7 @@ class ControllerReplogicOrderQuotes extends Controller {
 
 			$this->load->model('marketing/affiliate');
 
-			$data['commission_total'] = $this->model_marketing_affiliate->getTotalTransactionsByOrderId($this->request->get['quote_id']);
+			$data['commission_total'] = $this->model_marketing_affiliate->getTotalTransactionsByOrderId($order_id);
 
 			$this->load->model('localisation/order_status');
 
@@ -1484,10 +1588,60 @@ class ControllerReplogicOrderQuotes extends Controller {
 			$data['header'] = $this->load->controller('common/header');
 			$data['column_left'] = $this->load->controller('common/column_left');
 			$data['footer'] = $this->load->controller('common/footer');
-
+			
+			$data['access'] = true;
+			
 			$this->response->setOutput($this->load->view('replogic/order_quotes_info', $data));
 		} else {
-			return new Action('error/not_found');
+			
+			$data['access'] = false;
+			
+			$data['products'] = array();
+			$objct = json_decode($quote_info['cart']);
+			$array = (array) $objct;
+			//print_r($array); exit;
+			$products = $array['cart_items'];
+			foreach ($products as $product) { 
+				$singleproduct = $this->model_catalog_product->getProduct($product->id);
+				$data['products'][] = array(
+					'product_id' => $product->id,
+					'name'       => $product->name,
+					'sku'      => $product->sku,
+					'model'      => $singleproduct['model'],
+					'option'     => '',
+					'quantity'   => $product->qty,
+					'price'      => $this->currency->format($product->unit_price, 'ZAR', '1.0000'),
+					'total'      => $this->currency->format($product->total_price, 'ZAR', '1.0000'),
+					'href'     		   => $this->url->link('catalog/product/edit', 'token=' . $this->session->data['token'] . '&product_id=' . $product->id, true),
+					'reward'     => ''
+				);
+			}
+			//print_r($data['order_products']); exit;
+			$data['vouchers'] = array();
+			$data['totals'] = $this->currency->format($array['cart_total_price'], 'ZAR', '1.0000');
+			
+			// The URL we send API requests to
+			$data['catalog'] = $this->request->server['HTTPS'] ? HTTPS_CATALOG : HTTP_CATALOG;
+			// API login
+			$this->load->model('user/api');
+
+			$api_info = $this->model_user_api->getApi($this->config->get('config_api_id'));
+
+			if ($api_info) {
+				$data['api_id'] = $api_info['api_id'];
+				$data['api_key'] = $api_info['key'];
+				$data['api_ip'] = $this->request->server['REMOTE_ADDR'];
+			} else {
+				$data['api_id'] = '';
+				$data['api_key'] = '';
+				$data['api_ip'] = '';
+			}
+			
+			$data['header'] = $this->load->controller('common/header');
+			$data['column_left'] = $this->load->controller('common/column_left');
+			$data['footer'] = $this->load->controller('common/footer');
+
+			$this->response->setOutput($this->load->view('replogic/order_quotes_info', $data));
 		}
 	}
 	
