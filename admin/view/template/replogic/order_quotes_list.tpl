@@ -171,12 +171,14 @@
                         <a href="<?php echo $order['view']; ?>" data-toggle="tooltip" title="View Order Quotes" class="btn btn-info"><i class="fa fa-eye"></i></a>
                    		<?php } ?>
                         <?php if($order['order_id'] == '' && $order['status'] != '2') { ?>
-                        	<a href="<?php echo $order['approve']; ?>" data-toggle="tooltip" title="Approve" class="btn btn-success"><i class="fa fa-check"></i> Approve</a>
-                        	<a href="javascript:void();" data-toggle="tooltip" title="Decline" onclick="onpopup(<?php echo $order['quote_id']; ?>);" class="btn btn-danger decline"><i class="fa fa-times"> Decline</i></a>
+                        	<a href="<?php echo $order['approve']; ?>" data-toggle="tooltip" title="Approve" class="btn btn-success"><i class="fa fa-check"></i></a>
+                        	<a href="javascript:void();" data-toggle="tooltip" title="Decline" onclick="onpopup(<?php echo $order['quote_id']; ?>);" class="btn btn-danger decline"><i class="fa fa-times"></i></a>
                            <!-- <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#myModal" data-whatever="@getbootstrap"><i class="fa fa-times"></i>Decline</button>-->
                         <?php } else { ?>
-                        	<button type="button" class="btn btn-success" disabled title="Decline"><i class="fa fa-up"></i> Approve</button>
-                        	<button type="button" class="btn btn-danger" disabled title="Decline"><i class="fa fa-times"></i> Decline</button>
+                        	
+                            <a href="javascript:void();" disabled  data-toggle="tooltip" title="Approve" class="btn btn-success"><i class="fa fa-check"></i></a>
+                            <a href="javascript:void();" data-toggle="tooltip" title="Decline" disabled class="btn btn-danger decline"><i class="fa fa-times"></i></a>
+                        	
                         <?php } ?>
                     
                     </td>
@@ -209,7 +211,7 @@
                 <textarea name="reason" rows="5" placeholder="Plz Enter Reason" id="reason" class="form-control"></textarea>
               </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-default" id="Decline">Ok</button>
+                <button type="button" class="btn btn-primary" id="Decline">Confirm</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
               </div>
             </div>

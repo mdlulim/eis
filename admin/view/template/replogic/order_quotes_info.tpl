@@ -175,7 +175,7 @@
         <table class="table table-bordered">
           <thead>
             <tr>
-              <td><?php echo $text_comment; ?></td>
+              <td><?php if($qstatus == '2') { ?>Quote Decline Reasons<?php } else { ?><?php echo $text_comment; ?><?php } ?></td>
             </tr>
           </thead>
           <tbody>
@@ -185,10 +185,68 @@
           </tbody>
         </table>
         <?php } ?>
+        <?php if($qstatus == '0') { ?>
+        <div style="width:100%;">
+        <a href="javascript:void();" data-toggle="tooltip" title="Decline" onclick="onpopup(<?php echo $_GET['quote_id']; ?>);" style="float:right;" class="btn btn-danger decline"><i class="fa fa-times"> Decline</i></a>
+        <a href="<?php echo $approvelink; ?>" data-toggle="tooltip" title="Approve" class="btn btn-success" style="float:right;margin-right:8px;"><i class="fa fa-check"></i> Approve</a>
+        </div>
+        <?php } ?>
       </div>
     </div>
     
   </div>
+  <div id="myModal" class="modal fade" role="dialog">
+          <form action="<?php echo $decline; ?>" method="post" enctype="multipart/form-data" id="form-popup">
+          <input type="hidden" name="quote_id" id="popupquote_id" value=""  />
+          <div class="modal-dialog">
+        
+            <!-- Modal content-->
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Confirm Decline</h4>
+              </div>
+              <div class="modal-body">
+                <p><strong>Please Enter your reasons for declining the quote inside the following box</strong> </p>
+                <textarea name="reason" rows="5" placeholder="Plz Enter Reason" id="reason" class="form-control"></textarea>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="Decline">Confirm</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+              </div>
+            </div>
+        
+          </div>
+          </form>
+        </div>
+  <script type="text/javascript">
+	
+		function onpopup(id)
+		{
+		 
+			$('#popupquote_id').val(); 
+			$('#popupquote_id').val(id); 
+			document.getElementById('reason').value = "";
+			$('#myModal').modal('show'); 
+			$('#Decline').attr('disabled', 'disabled');
+		}
+		
+		$('#Decline').prop('disabled', true);
+		$('#reason').on('keyup',function() {
+			if($(this).val()) {
+				$('#Decline').prop('disabled' , false);
+			}else{
+				$('#Decline').prop('disabled' , true);
+			}
+		});
+		
+		document.getElementById('Decline').onclick = function() {
+        document.getElementById('form-popup').submit();
+        return false;
+			};
+		
+		
+		</script>
   <script type="text/javascript"><!--
 $(document).delegate('#button-ip-add', 'click', function() {
 	$.ajax({

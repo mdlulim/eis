@@ -388,7 +388,7 @@ class ControllerReplogicOrderQuotes extends Controller {
 				'status'      => $result['status'],
 				'order_id'      => $result['order_id'],
 				'order_status'  => $result['order_status'] ? $result['order_status'] : $this->language->get('text_missing'),
-				'total'         => $total,
+				'total'         => $this->currency->format($total, 'ZAR', '1.0000'),
 				'date_added'    => date($this->language->get('date_format_short'), strtotime($result['date_added'])),
 				'shipping_code' => $result['shipping_code'],
 				'view'          => $view_button,
@@ -988,6 +988,9 @@ class ControllerReplogicOrderQuotes extends Controller {
 		$data['store_url'] = $this->request->server['HTTPS'] ? HTTPS_CATALOG : HTTP_CATALOG;
 		$data['store_name'] = $this->config->get('config_name');
 		
+		$data['comment'] = $quote_info['comments'];
+		$data['qstatus'] = $quote_info['status'];
+		
 		$cust_con = $this->model_replogic_customer_contact->getcustomercontact($quote_info['customer_contact_id']);
 		
 		$cust = $this->model_customer_customer->getCustomer($quote_info['customer_id']);
@@ -1013,6 +1016,9 @@ class ControllerReplogicOrderQuotes extends Controller {
 		$data['cclastname'] = $cust_con['last_name'];
 		$data['ccemail'] = $cust_con['email'];
 		$data['cctelephone'] = $cust_con['telephone_number'];
+		
+		$data['approvelink'] = $this->url->link('replogic/order/add', 'token=' . $this->session->data['token'] . '&quote_id=' . $quote_id . $url, true);
+		$data['decline']  = $this->url->link('replogic/order_quotes/decline', 'token=' . $this->session->data['token'] . $url, true);
 		
 		$order_info = $this->model_sale_order->getOrder($order_id);
 		
