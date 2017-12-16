@@ -415,7 +415,14 @@
                   <select name="payment_address" id="input-payment-address" class="form-control">
                     <option value="0" selected="selected"><?php echo $text_none; ?></option>
                     <?php foreach ($addresses as $address) { ?>
+                    <?php 
+                    $add = $address['firstname']. ' ' .$address['lastname'];
+                    $selectadd = $payment_firstname. ' ' .$payment_lastname;
+                    if($add == $selectadd) { ?>
+                    <option selected="selected" value="<?php echo $address['address_id']; ?>"><?php echo $address['firstname'] . ' ' . $address['lastname'] . ', ' . $address['address_1'] . ', ' . $address['city'] . ', ' . $address['country']; ?></option>
+                    <?php } else { ?>
                     <option value="<?php echo $address['address_id']; ?>"><?php echo $address['firstname'] . ' ' . $address['lastname'] . ', ' . $address['address_1'] . ', ' . $address['city'] . ', ' . $address['country']; ?></option>
+                    <?php } ?>
                     <?php } ?>
                   </select>
                 </div>
@@ -626,7 +633,15 @@
                   <select name="shipping_address" id="input-shipping-address" class="form-control">
                     <option value="0" selected="selected"><?php echo $text_none; ?></option>
                     <?php foreach ($addresses as $address) { ?>
+                     
+                    <?php 
+                    $Sadd = $address['firstname']. ' ' .$address['lastname'];
+                    $Sselectadd = $shipping_firstname. ' ' .$shipping_lastname;
+                    if($Sadd == $Sselectadd) { ?>
+                    <option selected="selected" value="<?php echo $address['address_id']; ?>"><?php echo $address['firstname'] . ' ' . $address['lastname'] . ', ' . $address['address_1'] . ', ' . $address['city'] . ', ' . $address['country']; ?></option>
+                    <?php } else { ?>
                     <option value="<?php echo $address['address_id']; ?>"><?php echo $address['firstname'] . ' ' . $address['lastname'] . ', ' . $address['address_1'] . ', ' . $address['city'] . ', ' . $address['country']; ?></option>
+                    <?php } ?>
                     <?php } ?>
                   </select>
                 </div>

@@ -315,7 +315,22 @@ class ControllerReplogicOrderQuotes extends Controller {
 		$data['invoice'] = $this->url->link('replogic/order_quotes/invoice', 'token=' . $this->session->data['token'], true);
 		$data['shipping'] = $this->url->link('replogic/order_quotes/shipping', 'token=' . $this->session->data['token'], true);
 		$data['add'] = $this->url->link('replogic/order_quotes/add', 'token=' . $this->session->data['token'], true);
-		$data['delete'] = $this->url->link('replogic/order_quotes/delete', 'token=' . $this->session->data['token'], true);
+		
+		$this->load->model('user/user_group');
+		$this->load->model('user/user');
+		$current_user = $this->session->data['user_id'];
+		$current_user_group_id = $this->model_user_user->getUser($current_user); ;
+		$current_user_group = $this->model_user_user_group->getUserGroup($current_user_group_id['user_group_id']); ;
+		//print_r($current_user_group); exit;
+		if($current_user_group['name'] == 'Company admin' || $current_user_group['name'] == 'Administrator')
+		{
+			$data['delete'] = $this->url->link('replogic/order_quotes/delete', 'token=' . $this->session->data['token'], true);
+		}
+		else
+		{ 
+			$data['delete'] = '';
+			
+		}
 
 		$data['orders'] = array();
 

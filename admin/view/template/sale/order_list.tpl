@@ -164,6 +164,24 @@
       </div>
     </div>
   </div>
+ <script type="text/javascript"><!--
+$('input[name^=\'selected\']').on('change', function() {
+	
+	var selected = $('input[name^=\'selected\']:checked');
+
+	if (selected.length) {
+		$('#button-delete').prop('disabled', false);
+	}
+	else
+	{
+		$('#button-delete').prop('disabled', true);
+	}
+
+});
+
+$('#button-delete').prop('disabled', true);
+
+//--></script>   
   <script type="text/javascript"><!--
 $('#button-filter').on('click', function() {
 	url = 'index.php?route=sale/order&token=<?php echo $token; ?>';
