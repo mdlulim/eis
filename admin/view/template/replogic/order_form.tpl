@@ -60,6 +60,7 @@
                 <div class="col-sm-10">
                   <input type="text" name="customer" value="<?php echo $customer; ?>" placeholder="<?php echo $entry_customer; ?>" id="input-customer" class="form-control" />
                   <input type="hidden" name="customer_id" value="<?php echo $customer_id; ?>" />
+                  <input type="hidden" name="quote_id" value="<?php echo $_GET['quote_id']; ?>" />
                 </div>
               </div>
               <div class="form-group">
@@ -80,6 +81,7 @@
                 <label class="col-sm-2 control-label" for="input-customer">Customer Contact</label>
                 <div class="col-sm-10">
                   <input type="text" name="customer_contact" value="<?php echo $customer_contact; ?>" placeholder="Customer Contact" id="input-customer-contact" class="form-control" />
+                  <input type="hidden" name="customer_contact_id" value="<?php echo $customer_contact_id; ?>" id="customer_contact_id"> 
                 </div>
               </div>
               <div class="form-group required">
@@ -970,6 +972,33 @@
       </div>
     </div>
   </div>
+<script type="text/javascript"><!--
+$('input[name=\'customer_contact\']').autocomplete({
+	'source': function(request, response) {
+		$.ajax({
+			url: 'index.php?route=replogic/customer_contact/autocomplete&token=<?php echo $token; ?>&filter_name=' +  encodeURIComponent(request),
+			dataType: 'json',
+			success: function(json) {
+				json.unshift({
+					customer_contact_id: '0',
+					name: ' --- None --- '
+					
+				});
+				response($.map(json, function(item) {
+					return {
+						label: item['name'],
+						value: item['customer_con_id']
+					}
+				}));
+			}
+		});
+	},
+	'select': function(item) {
+		$('input[name=\'customer_contact\']').val(item['label']);
+		$('input[name=\'customer_contact_id\']').val(item['value']);
+	}
+});
+//--></script>  
   <script type="text/javascript"><!--
 // Disable the tabs
 $('#order a[data-toggle=\'tab\']').on('click', function(e) {

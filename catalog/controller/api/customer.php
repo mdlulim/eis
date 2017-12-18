@@ -14,6 +14,7 @@ class ControllerApiCustomer extends Controller {
 			// Add keys for missing post vars
 			$keys = array(
 				'customer_id',
+				'customer_contact_id',
 				'customer_group_id',
 				'firstname',
 				'lastname',
@@ -53,6 +54,19 @@ class ControllerApiCustomer extends Controller {
 
 			if ((utf8_strlen($this->request->post['telephone']) < 3) || (utf8_strlen($this->request->post['telephone']) > 32)) {
 				$json['error']['telephone'] = $this->language->get('error_telephone');
+			}
+			
+			if (isset($this->request->post['customer_contact_id'])) { 
+				if(empty($this->request->post['customer_contact_id']))
+				{
+					$json['error']['customer_contact'] = 'Plz Select Customer Contact';
+				}
+				else
+				{
+					$this->load->model('replogic/order_quotes');
+					$quote_id = $this->request->post['quote_id'];
+					$this->model_replogic_order_quotes->QuoteCustomerContactIdUpdate($quote_id, $this->request->post['customer_contact_id']);
+				}
 			}
 
 			// Customer Group

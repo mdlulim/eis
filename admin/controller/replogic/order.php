@@ -275,7 +275,7 @@ class ControllerReplogicOrder extends Controller {
 			
 			
 			$data['customer_contact'] = $customer_contact_info['first_name']." ".$customer_contact_info['last_name'];
-			$data['customer_contact_id'] = $customer_contact_info['customer_contact_id'];
+			$data['customer_contact_id'] = $customer_contact_info['customer_con_id'];
 			$data['customer'] = $custome_info['firstname']." ".$custome_info['lastname'];
 			$data['customer_id'] = $custome_info['customer_id'];
 			$data['customer_group_id'] = $this->config->get('config_customer_group_id');

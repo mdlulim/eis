@@ -26,6 +26,12 @@ class ModelReplogicOrderQuotes extends Model {
 		return $query->row;
 	}
 	
+	public function QuoteCustomerContactIdUpdate($quote_id, $customer_contact_id) {
+		$query = $this->db->query("UPDATE " . DB_PREFIX . "replogic_order_quote set customer_contact_id = '". $customer_contact_id ."' WHERE quote_id = '" . (int)$quote_id . "'");
+
+		return $query->row;
+	}
+	
 	public function SalesRepOrderIdTable($salesrep_id,$ord_id) {
 		
 		$query = $this->db->query("DELETE FROM " . DB_PREFIX . "salesrep_to_order WHERE salesrep_id = '" . $salesrep_id . "' AND order_id = '" . (int)$ord_id . "'");

@@ -187,8 +187,8 @@
         <?php } ?>
         <?php if($qstatus == '0') { ?>
         <div style="width:100%;">
-        <a href="javascript:void();" data-toggle="tooltip" title="Decline" onclick="onpopup(<?php echo $_GET['quote_id']; ?>);" style="float:right;" class="btn btn-danger decline"><i class="fa fa-times"> Decline</i></a>
-        <a href="<?php echo $approvelink; ?>" data-toggle="tooltip" title="Approve" class="btn btn-success" style="float:right;margin-right:8px;"><i class="fa fa-check"></i> Approve</a>
+        <a href="javascript:void();" data-toggle="tooltip" title="Decline" onclick="onpopup(<?php echo $_GET['quote_id']; ?>);" style="float: right; font-family: Calibri;" class="btn btn-danger decline"><i class="fa fa-times"> Decline</i></a>
+        <a href="<?php echo $approvelink; ?>" data-toggle="tooltip" title="Approve" class="btn btn-success" style="float:right;margin-right:8px;font-family: Calibri;"><i class="fa fa-check"></i> Approve</a>
         </div>
         <?php } ?>
       </div>
