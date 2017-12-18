@@ -921,6 +921,14 @@ class ControllerCommonColumnLeft extends Controller {
 				);	
 			}
 			
+			if ($this->user->hasPermission('access', 'replogic/location_management')) {
+				$replogic[] = array(
+					'name'	   => $this->language->get('text_location_management'),
+					'href'     => $this->url->link('replogic/location_management', 'token=' . $this->session->data['token'], true),
+					'children' => 	array()	
+				);	
+			}
+			
 			if ($replogic) {	
 				$data['menus'][] = array(
 					'id'       => 'menu-replogic',

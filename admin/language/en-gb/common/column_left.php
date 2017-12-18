@@ -114,3 +114,4 @@ $_['text_appointmemt']              = 'Appointments';
 $_['text_manage_salesrep_salesreplist']     = 'Sales Rep List';
 $_['text_customer_contact']     = 'Customer Contact'; 
 $_['text_order_quotes']     = 'Order Quotes'; 
+$_['text_location_management']     = 'Location Management'; 
