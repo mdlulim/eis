@@ -1,78 +1,46 @@
 <?php
 class ModelReplogicLocationManagement extends Model {
-	public function addScheduleManagement($data) {
-		  
-		$appointment_date = $data['appointment_date'];
-		$time = strtotime($data['appointment_date']);
-		$mysqltime = date ("Y-m-d H:i:s", $time);
-		
-		$this->db->query("INSERT INTO " . DB_PREFIX . "appointment SET appointment_name = '" . $this->db->escape($data['appointment_name']) . "', appointment_description = '" . $this->db->escape($data['appointment_description']) . "',salesrep_id = '" . $this->db->escape($data['salesrep_id']) . "',appointment_date = '" . $mysqltime . "',duration_hours = '" . $this->db->escape($data['hour']) . "',duration_minutes = '" . $this->db->escape($data['minutes']) . "',customer_id = '" . $this->db->escape($data['customer_id']) . "'");
 	
-		return $this->db->getLastId();
-	}
-
-	public function editScheduleManagement($appointment_id, $data) {
+	public function getLocations($data = array()) {
 		
-		$appointment_date = $data['appointment_date'];
-		$time = strtotime($data['appointment_date']);
-		$mysqltime = date ("Y-m-d H:i:s", $time);
-		
-		$this->db->query("UPDATE " . DB_PREFIX . "appointment SET appointment_name = '" . $this->db->escape($data['appointment_name']) . "', appointment_description = '" . $this->db->escape($data['appointment_description']) . "',salesrep_id = '" . $this->db->escape($data['salesrep_id']) . "',appointment_date = '" . $mysqltime . "',duration_hours = '" . $this->db->escape($data['hour']) . "',duration_minutes = '" . $this->db->escape($data['minutes']) . "',customer_id = '" . $this->db->escape($data['customer_id']) . "' WHERE appointment_id = '" . (int)$appointment_id . "'");
-	}
-
-	public function deleteAppointment($appointment_id) {
-		
-		$this->db->query("DELETE FROM " . DB_PREFIX . "notes WHERE appointment_id = '" . (int)$appointment_id  . "'");
-		$this->db->query("DELETE FROM " . DB_PREFIX . "appointment WHERE appointment_id = '" . (int)$appointment_id . "'");
-	}
-
-	public function getappointment($appointment_id) {
-		$query = $this->db->query("SELECT DISTINCT * FROM " . DB_PREFIX . "appointment WHERE appointment_id = '" . (int)$appointment_id . "'");
-
-		return $query->row;
-	}
-
-	public function getScheduleManagement($data = array(), $allaccess, $current_user_id) {
-		
-		if($allaccess)
+		if(!isset($data['filter_team_id']))
 		{
-		
-			$sql = "SELECT * FROM " . DB_PREFIX . "appointment";
+			$sql = "SELECT * FROM " . DB_PREFIX . "salesrep_checkins";
+				
+			$sql .= " where checkin_id > '0'";
 			
-			if (!empty($data['filter_appointment_name']) || !empty($data['filter_salesrep_id']) || !empty($data['filter_appointment_from']) || !empty($data['filter_appointment_to'])) 		{
-				$sql .= " where appointment_id > '0'";
+			if (isset($data['filter_address'])) {
+				$sql .= " AND location LIKE '%" . $data['filter_address'] . "%'";
+			} 
+	
+			if (!empty($data['filter_salesrep_id'])) {
+				$sql .= " AND salesrep_id = '" . (int)$data['filter_salesrep_id'] . "'";
+			}
+	
+			if (!empty($data['filter_customer_id'])) {
+				$sql .= " AND customer_id = '" . (int)$data['filter_customer_id'] . "'";
 			}
 			
-			$appointment_name = 'appointment_name';
-			$salesrep_id = 'salesrep_id';
-			$appointment_date = 'appointment_date';
+			$sql .= " ORDER BY checkin_id";
 		}
 		else
 		{
-			$sql = "SELECT * FROM oc_appointment ap left join oc_salesrep sr on sr.salesrep_id = ap.salesrep_id left join oc_team tm on tm.team_id = sr.sales_team_id where tm.sales_manager = ".$current_user_id.""; 
+			$sql = "SELECT * FROM oc_salesrep_checkins ck left join oc_salesrep sr on ck.salesrep_id = sr.salesrep_id where sr.sales_team_id = ".$data['filter_team_id'].""; 	
+			if (isset($data['filter_address'])) {
+				$sql .= " AND ck.location LIKE '" . $data['filter_address'] . "'";
+			} 
+	
+			if (!empty($data['filter_salesrep_id'])) {
+				$sql .= " AND ck.salesrep_id = '" . (int)$data['filter_salesrep_id'] . "'";
+			}
+	
+			if (!empty($data['filter_customer_id'])) {
+				$sql .= " AND ck.customer_id = '" . (int)$data['filter_customer_id'] . "'";
+			}
 			
-			$appointment_name = 'ap.appointment_name';
-			$salesrep_id = 'ap.salesrep_id';
-			$appointment_date = 'ap.appointment_date';
-			
-		}
-		
-		if (!empty($data['filter_appointment_name'])) {
-			$sql .= " AND ".$appointment_name." LIKE '" . $this->db->escape($data['filter_appointment_name']) . "%'";
-		}
+			$sql .= " ORDER BY ck.checkin_id";
 
-		if (!empty($data['filter_salesrep_id'])) {
-			$sql .= " AND ".$salesrep_id." LIKE '" . $this->db->escape($data['filter_salesrep_id']) . "'";
 		}
-		
-		if (!empty($data['filter_appointment_from']) && !empty($data['filter_appointment_to'])) { 
-			$fromdate = date('Y-m-d H:i:s', strtotime($data['filter_appointment_from'])); 
-			$todate = date('Y-m-d H:i:s', strtotime($data['filter_appointment_to'])); 
-			$sql .= " AND ".$appointment_date." >= '" . $fromdate . "' AND ".$appointment_date." <= '" . $todate . "'";
-		}
-
-		
-		$sql .= " ORDER BY ".$appointment_name."";
 
 		if (isset($data['order']) && ($data['order'] == 'DESC')) {
 			$sql .= " DESC";
@@ -96,48 +64,44 @@ class ModelReplogicLocationManagement extends Model {
 
 		return $query->rows;
 	}
-	
-	
-	public function getTotalScheduleManagement($data = array(), $allaccess, $current_user_id) {
-		
-		if($allaccess)
+	public function getTotalLocations($data = array()) {
+		if(!isset($data['filter_team_id']))
 		{
-		
-			$sql = "SELECT COUNT(*) AS total FROM " . DB_PREFIX . "appointment";
+			$sql = "SELECT COUNT(*) AS total FROM `" . DB_PREFIX . "salesrep_checkins`";
+
+			$sql .= " where checkin_id > '0'";
 			
-			if (!empty($data['filter_appointment_name']) || !empty($data['filter_salesrep_id']) || !empty($data['filter_appointment_from']) || !empty($data['filter_appointment_to'])) 		{
-				$sql .= " where appointment_id > '0'";
+			if (isset($data['filter_address'])) {
+				$sql .= " AND location LIKE '%" . $data['filter_address'] . "%'";
+			} 
+	
+			if (!empty($data['filter_salesrep_id'])) {
+				$sql .= " AND salesrep_id = '" . (int)$data['filter_salesrep_id'] . "'";
 			}
-			
-			$appointment_name = 'appointment_name';
-			$salesrep_id = 'salesrep_id';
-			$appointment_date = 'appointment_date';
+	
+			if (!empty($data['filter_customer_id'])) {
+				$sql .= " AND customer_id = '" . (int)$data['filter_customer_id'] . "'";
+			}
+		
 		}
 		else
 		{
-			$sql = "SELECT COUNT(*) AS total FROM oc_appointment ap left join oc_salesrep sr on sr.salesrep_id = ap.salesrep_id left join oc_team tm on tm.team_id = sr.sales_team_id where tm.sales_manager = ".$current_user_id.""; 
-			
-			$appointment_name = 'ap.appointment_name';
-			$salesrep_id = 'ap.salesrep_id';
-			$appointment_date = 'ap.appointment_date';
-			
-		}
-		
-		if (!empty($data['filter_appointment_name'])) {
-			$sql .= " AND ".$appointment_name." LIKE '" . $this->db->escape($data['filter_appointment_name']) . "%'";
+			$sql = "SELECT COUNT(*) AS total FROM oc_salesrep_checkins ck left join oc_salesrep sr on ck.salesrep_id = sr.salesrep_id where sr.sales_team_id = ".$data['filter_team_id'].""; 	
+			if (isset($data['filter_address'])) {
+				$sql .= " AND ck.location LIKE '" . $data['filter_address'] . "'";
+			} 
+	
+			if (!empty($data['filter_salesrep_id'])) {
+				$sql .= " AND ck.salesrep_id = '" . (int)$data['filter_salesrep_id'] . "'";
+			}
+	
+			if (!empty($data['filter_customer_id'])) {
+				$sql .= " AND ck.customer_id = '" . (int)$data['filter_customer_id'] . "'";
+			}
 		}
 
-		if (!empty($data['filter_salesrep_id'])) {
-			$sql .= " AND ".$salesrep_id." LIKE '" . $this->db->escape($data['filter_salesrep_id']) . "'";
-		}
-		
-		if (!empty($data['filter_appointment_from']) && !empty($data['filter_appointment_to'])) { 
-			$fromdate = date('Y-m-d H:i:s', strtotime($data['filter_appointment_from'])); 
-			$todate = date('Y-m-d H:i:s', strtotime($data['filter_appointment_to'])); 
-			$sql .= " AND ".$appointment_date." >= '" . $fromdate . "' AND ".$appointment_date." <= '" . $todate . "'";
-		}
-		
 		$query = $this->db->query($sql);
+
 		return $query->row['total'];
 	}
 

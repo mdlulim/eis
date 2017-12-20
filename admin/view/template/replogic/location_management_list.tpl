@@ -3,9 +3,6 @@
 <div id="content">
   <div class="page-header">
     <div class="container-fluid">
-      <div class="pull-right"><a href="<?php echo $add; ?>" data-toggle="tooltip" title="<?php echo $button_add; ?>" class="btn btn-primary"><i class="fa fa-plus"></i></a>
-        <button type="button" data-toggle="tooltip" title="<?php echo $button_delete; ?>" id="button-delete" class="btn btn-danger" onclick="confirm('<?php echo $text_confirm; ?>') ? $('#form-user').submit() : false;"><i class="fa fa-trash-o"></i></button>
-      </div>
       <h1><?php echo $heading_title; ?></h1>
       <ul class="breadcrumb">
         <?php foreach ($breadcrumbs as $breadcrumb) { ?>
@@ -35,35 +32,22 @@
           <div class="row">
             <div class="col-sm-6">
               <div class="form-group">
-                <label class="control-label" for="input-name">Appointment Name</label>
-                <input type="text" name="filter_appointment_name" value="<?php echo $filter_appointment_name; ?>" placeholder="Appointment Name" id="input-name" class="form-control" />
+                <label class="control-label" for="input-name">Search Address</label>
+                <input type="text" name="filter_address" value="<?php echo $filter_address; ?>" placeholder="Search Address" id="input-address" class="form-control" />
               </div>
               <div class="form-group fromdate">
-                <label class="control-label" for="input-model">Appointment Date From</label>
-                <!--<input type="text" name="filter_appointment_from" value="<?php echo $filter_appointment_from; ?>" placeholder="DD-MM-YYYY" data-date-format="DD-MM-YYYY" id="input-model" class="form-control" style="float:left;width:84%;" />
-                <span class="input-group-btn" style="float:left;">
-                  <button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
-                  </span>-->
-                
-                <div class='input-group date' id='filter_appointment_from'>
-                    <input name="filter_appointment_from" type='text' value="<?php echo $filter_appointment_from; ?>"  placeholder="DD-MM-YYYY hh:mm A" class="form-control" data-date-format="DD-MM-YYYY hh:mm A" class="form-control"  />
-                    <span class="input-group-addon">
-                        <span class="glyphicon glyphicon-calendar"></span>
-                    </span>
-                </div>
-           <style>
-		   .glyphicon-calendar:before {content: "\e109" !important; }
-		   </style>
-            	<script type="text/javascript">
-            $(function () {
-                $('#filter_appointment_from').datetimepicker({
-                     //defaultDate: new Date(),
-					// inline: true,
-                });
-            });
-        </script>  
-               
-              </div>
+                <label class="control-label" for="input-model">Select Team</label>
+               <select name="filter_team_id" id="input-team" class="form-control">
+                        <option value="">Select Team</option>
+                        <?php foreach ($teams as $team) {  ?>
+                        <?php if ($team['team_id'] == $filter_team_id) { ?>
+                        <option value="<?php echo $team['team_id']; ?>" selected="selected"><?php echo $team['team_name']; ?></option>
+                        <?php } else { ?>
+                        <option value="<?php echo $team['team_id']; ?>"><?php echo $team['team_name']; ?></option>
+                        <?php } ?>
+                        <?php } ?>
+                      </select>
+               </div>
             </div>
             <div class="col-sm-6" style="margin-bottom:10px;">
               <div class="form-group">
@@ -81,28 +65,18 @@
                       </select>
               </div>
               <div class="form-group todate">
-                <label class="control-label" for="input-quantity">Appointment Date To</label>
-                <!--<input type="text" name="filter_appointment_to" value="<?php echo $filter_appointment_to; ?>" placeholder="DD-MM-YYYY" data-date-format="DD-MM-YYYY" id="input-model" class="form-control" style="float:left;width:84%;" />
-                <span class="input-group-btn" style="float:left;">
-                  <button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
-                  </span>-->
-                  
-                  <div class='input-group date' id='filter_appointment_to'>
-                    <input name="filter_appointment_to" type='text' value="<?php echo $filter_appointment_to; ?>"  placeholder="DD-MM-YYYY hh:mm A" class="form-control" data-date-format="DD-MM-YYYY hh:mm A" class="form-control"  />
-                    <span class="input-group-addon">
-                        <span class="glyphicon glyphicon-calendar"></span>
-                    </span>
-                </div>
-            
-        		<script type="text/javascript">
-            $(function () {
-                $('#filter_appointment_to').datetimepicker({
-                    //defaultDate: new Date(),
-                   
-                });
-            });
-        </script>
-                  
+                <label class="control-label" for="input-quantity">Select Customer</label>
+                
+                  <select name="filter_customer_id" id="input-customer" class="form-control">
+                        <option value="">Select Customer</option>
+                        <?php foreach ($customers as $customer) { ?>
+                        <?php if ($customer['customer_id'] == $filter_customer_id) { ?>
+                        <option value="<?php echo $customer['customer_id']; ?>" selected="selected"><?php echo $customer['firstname']; ?> <?php echo $customer['lastname']; ?></option>
+                        <?php } else { ?>
+                        <option value="<?php echo $customer['customer_id']; ?>"><?php echo $customer['firstname']; ?> <?php echo $customer['lastname']; ?></option>
+                        <?php } ?>
+                        <?php } ?>
+                      </select>
               </div>
             </div>
             <button type="button" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-filter"></i> Filter</button>
@@ -110,39 +84,127 @@
           </div>
            
         </div>
-        
-        <form action="<?php echo $delete; ?>" method="post" enctype="multipart/form-data" id="form-user">
+         
           <div class="table-responsive">
             <table class="table table-bordered table-hover">
-              <thead>
+              
+              <tbody>
+               <tr>
+              		<td>
+                    	<div id="map"></div>
+                                <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA6ycZiGobIPuZ8wtXalf2m2MtxAzncn_Q&callback=initMap&sensor=false"> </script>
+                                <script type="text/javascript">
+								/*function initMap() { 
+									var uluru = {lat: 29.8587, lng: 31.0218}; 
+									var map = new google.maps.Map(document.getElementById('map'), { zoom: 4, center: uluru });
+									var marker = new google.maps.Marker({ position: uluru, map: map }); 
+								}*/
+								
+								
+								
+								function initMap() {
+
+									var latlng = new google.maps.LatLng(-27.4457987, 21.4340156); // default location
+									var myOptions = {
+										zoom: 4,
+										center: latlng,
+										zoomControlOptions: true,
+										 zoomControlOptions: {
+										 style: google.maps.ZoomControlStyle.LARGE
+										 },
+										gestureHandling: 'greedy',
+										mapTypeId: google.maps.MapTypeId.ROADMAP,
+										mapTypeControl: true
+									};
+						
+									var map = new google.maps.Map(document.getElementById('map'),myOptions);
+									var infowindow = new google.maps.InfoWindow(), marker, lat, lng;
+									
+									
+									
+									<?php foreach($locationsmaps as $key => $locationsmap ) { ?>
+									
+										<?php if($locationsmap['latitude'] != '' && $locationsmap['longitude'] != '' ) { ?>
+											
+											lat = '<?php echo $locationsmap['latitude']; ?>';
+											lng = '<?php echo $locationsmap['longitude']; ?>';
+											name = '<?php echo $locationsmap['name']; ?>';
+							
+											marker = new google.maps.Marker({
+												position: new google.maps.LatLng(lat,lng),
+												name:name,
+												map: map,
+												icon: '<?php echo $locationsmap['icon']; ?>'
+											}); 
+											google.maps.event.addListener( marker, 'click', function(e){
+												infowindow.setContent( this.name );
+												infowindow.open( map, this );
+											}.bind( marker ) );
+											
+											lat = '';
+											lng = '';
+											name = '';
+							
+											marker = new google.maps.Marker({
+												position: new google.maps.LatLng(lat,lng),
+												name:name,
+												map: map,
+												icon: ''
+											}); 
+											
+									   <?php } ?>
+									
+									<?php }  ?>
+									
+									
+								}
+								
+								</script>
+                                <style>
+								#map { height: 400px; width: 100%; }
+								</style>
+                    </td> 
+               </tr>
+              </tbody>
+            </table>
+          </div>
+        
+          <div class="table-responsive" style="margin-bottom:15px;" >
+            <table class="table table-bordered table-hover" style="margin-bottom:0px !important;">
+              <thead style="background-color:#CCCCCC;">
                 <tr>
-                  <td style="width: 1px;" class="text-center"><input type="checkbox" onclick="$('input[name*=\'selected\']').prop('checked', this.checked);" /></td>
-                  <td class="text-left"><?php if ($sort == 'name') { ?>
-                    <a href="<?php echo $sort_name; ?>" class="<?php echo strtolower($order); ?>"><?php echo $column_name; ?></a>
+                  <td class="text-center" >Sales Rep Name</td>
+                    <td class="text-left" ><?php if ($sort == 'name') { ?>
+                    <a href="<?php echo $sort_name; ?>" class="<?php echo strtolower($order); ?>">Team</a>
                     <?php } else { ?>
-                    <a href="<?php echo $sort_name; ?>"><?php echo $column_name; ?></a>
+                    <a href="<?php echo $sort_name; ?>">Team</a>
                     <?php } ?></td>
-                  <td class="text-left">Sales Rep Name</td>
-                  <td class="text-left">Appointment Date</td>
+                  <td class="text-left" >Last Check</td>
+                  <td class="text-left" ><?php if ($sort == 'name') { ?>
+                    <a href="<?php echo $sort_name; ?>" class="<?php echo strtolower($order); ?>">Customer</a>
+                    <?php } else { ?>
+                    <a href="<?php echo $sort_name; ?>">Customer</a>
+                    <?php } ?></td>
+                  <td class="text-left"><?php if ($sort == 'name') { ?>
+                    <a href="<?php echo $sort_name; ?>" class="<?php echo strtolower($order); ?>">Check In Location</a>
+                    <?php } else { ?>
+                    <a href="<?php echo $sort_name; ?>">Check In Location</a>
+                    <?php } ?></td>  
                   
-                  <td class="text-right"><?php echo $column_action; ?></td>
+                  <td class="text-left" width="200">Current Location</td>
                 </tr>
               </thead>
               <tbody>
-                <?php if($access == 'yes') { ?>
-                <?php if ($schedule_managements) { ?>
-                    <?php foreach ($schedule_managements as $schedule_management) { ?>
+                <?php if ($locations) { ?>
+                    <?php foreach ($locations as $location) { ?>
                         
                             <tr>
-                              <td class="text-center"><?php if (in_array($schedule_management['appointment_id'], $selected)) { ?>
-                                <input type="checkbox" name="selected[]" value="<?php echo $schedule_management['appointment_id']; ?>" checked="checked" />
-                                <?php } else { ?>
-                                <input type="checkbox" name="selected[]" value="<?php echo $schedule_management['appointment_id']; ?>" />
-                                <?php } ?></td>
-                              <td class="text-left"><?php echo $schedule_management['appointment_name']; ?></td>
-                              <td class="text-left"><?php echo $schedule_management['sales_manager']; ?></td>
-                              <td class="text-left"><?php  echo $schedule_management['appointment_date']; ?></td>
-                              <td class="text-right"><!--<a href="<?php echo $schedule_management['tasks']; ?>" data-toggle="tooltip" title="Tasks" class="btn btn-primary"><i class="fa fa-tasks"></i></a>-->&nbsp;<a href="<?php echo $schedule_management['notes']; ?>" data-toggle="tooltip" title="Notes" class="btn btn-primary"><i class="fa fa-sticky-note"></i></a>&nbsp;<a href="<?php echo $schedule_management['edit']; ?>" data-toggle="tooltip" title="<?php echo $button_edit; ?>" class="btn btn-primary"><i class="fa fa-pencil"></i></a></td>
+                              <td class="text-center"><img src="view/image/green-dot.png"  /><?php echo $location['sales_manager']; ?></td>
+                              <td class="text-left"><?php echo $location['team']; ?></td>
+                              <td class="text-left"><?php echo $location['last_check']; ?></td>
+                              <td class="text-left"><img src="view/image/blue-dot.png"  /><?php  echo $location['customer']; ?></td>
+                              <td class="text-left"><?php echo $location['checkin_location']; ?></td>
+                              <td class="text-left" width="200"><?php  echo $location['current_location']; ?></td>
                             </tr>
                      <?php } ?>
                     <?php } else { ?>
@@ -150,15 +212,11 @@
                       <td class="text-center" colspan="5"><?php echo $text_no_results; ?></td>
                     </tr>
                     <?php } ?>
-                <?php } else { ?>
-                	<tr>
-                        <td class="text-center" colspan="5">You Don't have Permission to access the Schedule Manegement.</td>
-                    </tr>
-                <?php } ?>
+                
               </tbody>
             </table>
           </div>
-        </form>
+  
         <div class="row">
           <div class="col-sm-6 text-left"><?php echo $pagination; ?></div>
           <div class="col-sm-6 text-right"><?php echo $results; ?></div>
@@ -169,12 +227,12 @@
 </div>
 <script type="text/javascript"><!--
 $('#button-filter').on('click', function() {
-	var url = 'index.php?route=replogic/schedule_management&token=<?php echo $token; ?>';
+	var url = 'index.php?route=replogic/location_management&token=<?php echo $token; ?>';
 
-	var filter_appointment_name = $('input[name=\'filter_appointment_name\']').val();
+	var filter_address = $('input[name=\'filter_address\']').val();
 
-	if (filter_appointment_name) {
-		url += '&filter_appointment_name=' + encodeURIComponent(filter_appointment_name);
+	if (filter_address) {
+		url += '&filter_address=' + encodeURIComponent(filter_address);
 	}
 
 	var filter_salesrep_id = $('select[name=\'filter_salesrep_id\']').val();
@@ -182,44 +240,29 @@ $('#button-filter').on('click', function() {
 	if (filter_salesrep_id) {
 		url += '&filter_salesrep_id=' + encodeURIComponent(filter_salesrep_id);
 	}
+	
+	var filter_customer_id = $('select[name=\'filter_customer_id\']').val();
 
-	var filter_appointment_from = $('input[name=\'filter_appointment_from\']').val();
-
-	if (filter_appointment_from) {
-		url += '&filter_appointment_from=' + encodeURIComponent(filter_appointment_from);
+	if (filter_customer_id) {
+		url += '&filter_customer_id=' + encodeURIComponent(filter_customer_id);
 	}
 	
-	var filter_appointment_to = $('input[name=\'filter_appointment_to\']').val();
+	var filter_team_id = $('select[name=\'filter_team_id\']').val();
 
-	if (filter_appointment_to) {
-		url += '&filter_appointment_to=' + encodeURIComponent(filter_appointment_to);
+	if (filter_team_id) {
+		url += '&filter_team_id=' + encodeURIComponent(filter_team_id);
 	}
 
-	var filter_appointment_to = $('input[name=\'filter_appointment_to\']').val();
+	
 //alert(url);
 	location = url;
 });
 $('#button-filter-reset').on('click', function() {
-	var url = 'index.php?route=replogic/schedule_management&token=<?php echo $token; ?>';
+	var url = 'index.php?route=replogic/location_management&token=<?php echo $token; ?>';
 
 	location = url;
 });
 //--></script>
-<script type="text/javascript"><!--
-$('input[name^=\'selected\']').on('change', function() {
-	
-	var selected = $('input[name^=\'selected\']:checked');
-
-	if (selected.length) {
-		$('#button-delete').prop('disabled', false);
-	}
-
-});
-
-$('#button-delete').prop('disabled', true);
-
-$('input[name^=\'selected\']:first').trigger('change');
-
-//--></script> 
+ 
 
 <?php echo $footer; ?> 
