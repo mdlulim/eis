@@ -14,7 +14,7 @@ class ControllerApiCustomer extends Controller {
 			// Add keys for missing post vars
 			$keys = array(
 				'customer_id',
-				'customer_contact_id',
+				//'customer_contact_id',
 				'customer_group_id',
 				'firstname',
 				'lastname',
@@ -59,7 +59,7 @@ class ControllerApiCustomer extends Controller {
 			if (isset($this->request->post['customer_contact_id'])) { 
 				if(empty($this->request->post['customer_contact_id']))
 				{
-					$json['error']['customer_contact'] = 'Plz Select Customer Contact';
+					$json['error']['customer_contact_id'] = 'Plz Select Customer Contact';
 				}
 				else
 				{
