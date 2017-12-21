@@ -29,9 +29,9 @@ class ModelReplogicNotes extends Model {
 			$sql .= " AND note_title LIKE '" . $this->db->escape($data['filter_note_title']) . "%'";
 		}
 
-		if (!empty($data['filter_salesrep_id'])) {
+		/*if (!empty($data['filter_salesrep_id'])) {
 			$sql .= " AND salesrep_id LIKE '" . $this->db->escape($data['filter_salesrep_id']) . "'";
-		}
+		}*/
 		
 		$sql .= " ORDER BY note_title";
 
