@@ -15,8 +15,35 @@ class ModelCustomerCustomer extends Model {
 		$customer_id = $this->db->getLastId();
 
 		if (isset($data['address'])) {
+			$this->load->model('localisation/geo_zone');
+			$this->load->model('localisation/country');
 			foreach ($data['address'] as $address) {
-				$this->db->query("INSERT INTO " . DB_PREFIX . "address SET customer_id = '" . (int)$customer_id . "', firstname = '" . $this->db->escape($address['firstname']) . "', lastname = '" . $this->db->escape($address['lastname']) . "', company = '" . $this->db->escape($address['company']) . "', address_1 = '" . $this->db->escape($address['address_1']) . "', address_2 = '" . $this->db->escape($address['address_2']) . "', city = '" . $this->db->escape($address['city']) . "', postcode = '" . $this->db->escape($address['postcode']) . "', country_id = '" . (int)$address['country_id'] . "', zone_id = '" . (int)$address['zone_id'] . "', custom_field = '" . $this->db->escape(isset($address['custom_field']) ? json_encode($address['custom_field']) : '') . "'");
+				
+				// Start Get Latitude and Longitude 
+					$geo_zone_info = $this->model_localisation_geo_zone->getGeoZone($address['zone_id']);
+					$stat_name = $geo_zone_info['name'];
+					$country_info = $this->model_localisation_country->getCountry($address['country_id']);
+					$county_name = $country_info['name'];
+					$customeraddress = $address['address_1']." ".$address['address_2']." ".$address['postcode']." ".$address['city']." ".$stat_name." ".$county_name;
+					
+					$customerlatitude = '';
+					$customerlongitude = '';
+					
+					$url = "http://maps.google.com/maps/api/geocode/json?address=".urlencode($customeraddress)."&sensor=false&region=India";
+					$ch = curl_init();
+					curl_setopt($ch, CURLOPT_URL, $url);
+					curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+					curl_setopt($ch, CURLOPT_PROXYPORT, 3128);
+					curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+					curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+					$response = curl_exec($ch);
+					curl_close($ch);
+					$response_a = json_decode($response);
+					$customerlatitude = $response_a->results[0]->geometry->location->lat;
+					$customerlongitude = $response_a->results[0]->geometry->location->lng;
+				// End Get Latitude and Longitude 
+				
+				$this->db->query("INSERT INTO " . DB_PREFIX . "address SET customer_id = '" . (int)$customer_id . "', firstname = '" . $this->db->escape($address['firstname']) . "', lastname = '" . $this->db->escape($address['lastname']) . "', company = '" . $this->db->escape($address['company']) . "', address_1 = '" . $this->db->escape($address['address_1']) . "', address_2 = '" . $this->db->escape($address['address_2']) . "', city = '" . $this->db->escape($address['city']) . "', postcode = '" . $this->db->escape($address['postcode']) . "', country_id = '" . (int)$address['country_id'] . "', zone_id = '" . (int)$address['zone_id'] . "', custom_field = '" . $this->db->escape(isset($address['custom_field']) ? json_encode($address['custom_field']) : '') . "', latitude = '" . $customerlatitude . "', longitude = '" . $customerlongitude . "'");
 
 				if (isset($address['default'])) {
 					$address_id = $this->db->getLastId();
@@ -51,12 +78,41 @@ class ModelCustomerCustomer extends Model {
 		$this->db->query("DELETE FROM " . DB_PREFIX . "address WHERE customer_id = '" . (int)$customer_id . "'");
 
 		if (isset($data['address'])) {
+		
+			$this->load->model('localisation/geo_zone');
+			$this->load->model('localisation/country');
+			
 			foreach ($data['address'] as $address) {
 				if (!isset($address['custom_field'])) {
 					$address['custom_field'] = array();
 				}
-
-				$this->db->query("INSERT INTO " . DB_PREFIX . "address SET address_id = '" . (int)$address['address_id'] . "', customer_id = '" . (int)$customer_id . "', firstname = '" . $this->db->escape($address['firstname']) . "', lastname = '" . $this->db->escape($address['lastname']) . "', company = '" . $this->db->escape($address['company']) . "', address_1 = '" . $this->db->escape($address['address_1']) . "', address_2 = '" . $this->db->escape($address['address_2']) . "', city = '" . $this->db->escape($address['city']) . "', postcode = '" . $this->db->escape($address['postcode']) . "', country_id = '" . (int)$address['country_id'] . "', zone_id = '" . (int)$address['zone_id'] . "', custom_field = '" . $this->db->escape(isset($address['custom_field']) ? json_encode($address['custom_field']) : '') . "'");
+				
+				// Start Get Latitude and Longitude 
+					$geo_zone_info = $this->model_localisation_geo_zone->getGeoZone($address['zone_id']);
+					$stat_name = $geo_zone_info['name'];
+					$country_info = $this->model_localisation_country->getCountry($address['country_id']);
+					$county_name = $country_info['name'];
+					$customeraddress = $address['address_1']." ".$address['address_2']." ".$address['postcode']." ".$address['city']." ".$stat_name." ".$county_name;
+					
+					$customerlatitude = '';
+					$customerlongitude = '';
+					
+					$url = "http://maps.google.com/maps/api/geocode/json?address=".urlencode($customeraddress)."&sensor=false";
+					$ch = curl_init();
+					curl_setopt($ch, CURLOPT_URL, $url);
+					curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+					curl_setopt($ch, CURLOPT_PROXYPORT, 3128);
+					curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+					curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+					$response = curl_exec($ch);
+					curl_close($ch);
+					$response_a = json_decode($response);
+					$customerlatitude = $response_a->results[0]->geometry->location->lat;
+					$customerlongitude = $response_a->results[0]->geometry->location->lng;
+					
+				// End Get Latitude and Longitude 
+				
+				$this->db->query("INSERT INTO " . DB_PREFIX . "address SET address_id = '" . (int)$address['address_id'] . "', customer_id = '" . (int)$customer_id . "', firstname = '" . $this->db->escape($address['firstname']) . "', lastname = '" . $this->db->escape($address['lastname']) . "', company = '" . $this->db->escape($address['company']) . "', address_1 = '" . $this->db->escape($address['address_1']) . "', address_2 = '" . $this->db->escape($address['address_2']) . "', city = '" . $this->db->escape($address['city']) . "', postcode = '" . $this->db->escape($address['postcode']) . "', country_id = '" . (int)$address['country_id'] . "', zone_id = '" . (int)$address['zone_id'] . "', custom_field = '" . $this->db->escape(isset($address['custom_field']) ? json_encode($address['custom_field']) : '') . "', latitude = '" . $customerlatitude . "', longitude = '" . $customerlongitude . "'");
 
 				if (isset($address['default'])) {
 					$address_id = $this->db->getLastId();
