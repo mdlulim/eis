@@ -166,19 +166,8 @@ class ControllerReplogicLocationManagement extends Controller {
 		$customername = $customer['firstname'] ." ". $customer['lastname'];
 		
 		$customeraddress = $this->model_customer_customer->getAddress($customer['address_id']);
-		$customeraddress = $customeraddress['address_1']." ".$customeraddress['postcode']." ".$customeraddress['city']." ".$customeraddress['zone']." ".$customeraddress['country'];
-		$customeraddres = str_replace(' ','+',$customeraddress);
-	// Get JSON results from this request
-		$geo1 = file_get_contents('http://maps.googleapis.com/maps/api/geocode/json?address='.urlencode($customeraddres).'&sensor=false');
-		$geo1 = json_decode($geo1, true); // Convert the JSON to an array
-		
-		$customerlatitude = '';
-		$customerlongitude = '';
-		
-		if (isset($geo1['status']) && ($geo1['status'] == 'OK')) { 
-		  $customerlatitude = $geo1['results'][0]['geometry']['location']['lat']; // Latitude
-		  $customerlongitude = $geo1['results'][0]['geometry']['location']['lng']; // Longitude
-		}
+		$customerlatitude = $customeraddress['latitude'];
+		$customerlongitude = $customeraddress['longitude'];
 		
 		$team = $this->model_user_team->getTeam($salesrep['sales_team_id']); ;
 		$teamname = $team['team_name'];
@@ -187,19 +176,24 @@ class ControllerReplogicLocationManagement extends Controller {
 		$last_check = date("d M Y g:i A", $time);
 		
 		$address = $result['location']; // Address
-		$address = str_replace(' ','+',$address);
-	// Get JSON results from this request
 		
-		$geo = file_get_contents('http://maps.googleapis.com/maps/api/geocode/json?address='.urlencode($address).'&sensor=false');
-		$geo = json_decode($geo, true); // Convert the JSON to an array
+	// Get JSON results from this request
 		
 		$latitude = '';
 		$longitude = '';
 		
-		if (isset($geo['status']) && ($geo['status'] == 'OK')) { 
-		  $latitude = $geo['results'][0]['geometry']['location']['lat']; // Latitude
-		  $longitude = $geo['results'][0]['geometry']['location']['lng']; // Longitude
-		}
+		$url = "http://maps.google.com/maps/api/geocode/json?address=".urlencode($address)."&sensor=false&region=India";
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_PROXYPORT, 3128);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+		$response = curl_exec($ch);
+		curl_close($ch);
+		$response_a = json_decode($response);
+		$latitude = $response_a->results[0]->geometry->location->lat;
+		$longitude = $response_a->results[0]->geometry->location->lng;
 		
 		$data['locations'][] = array(
 				'checkin_id' => $result['checkin_id'],
@@ -208,18 +202,15 @@ class ControllerReplogicLocationManagement extends Controller {
 				'customer'          => $customername,
 				'last_check'          => $last_check,
 				'checkin_location'          => $result['checkin_location'],
-				'current_location'          => $result['location'],
-				'latitude' => $latitude,
-				'longitude' => $longitude,
-				'customerlatitude' => $customerlatitude,
-				'customerlongitude' => $customerlongitude
+				'current_location'          => $result['location']
+				
 			);
 		$locationsmaps[] = array('latitude'=>$latitude,'longitude'=>$longitude,'name'=>$sales_rep,'icon'=>'view/image/green-dot.png');
 		$locationsmaps[] = array('latitude'=>$customerlatitude,'longitude'=>$customerlongitude,'name'=>$customername,'icon'=>'view/image/blue-dot.png');
 		
 		}
 		$data['locationsmaps'] = $locationsmaps;
-		// print_r($locationsmaps); exit;
+		 //print_r($locationsmaps); exit;
 	//print_r($data['locations']); exit;	
 		$this->load->model('user/user_group');
 		$this->load->model('user/user');
@@ -315,7 +306,7 @@ class ControllerReplogicLocationManagement extends Controller {
 		if (isset($this->request->get['order'])) {
 			$url .= '&order=' . $this->request->get['order'];
 		}
-
+		
 		$pagination = new Pagination();
 		$pagination->total = $location_total;
 		$pagination->page = $page;

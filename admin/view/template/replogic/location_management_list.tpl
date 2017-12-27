@@ -119,7 +119,7 @@
 						
 									var map = new google.maps.Map(document.getElementById('map'),myOptions);
 									var infowindow = new google.maps.InfoWindow(), marker, lat, lng;
-									
+									var bounds = new google.maps.LatLngBounds();
 									
 									
 									<?php foreach($locationsmaps as $key => $locationsmap ) { ?>
@@ -135,7 +135,9 @@
 												name:name,
 												map: map,
 												icon: '<?php echo $locationsmap['icon']; ?>'
-											}); 
+											});
+											
+											bounds.extend(marker.position); 
 											google.maps.event.addListener( marker, 'click', function(e){
 												infowindow.setContent( this.name );
 												infowindow.open( map, this );
@@ -156,7 +158,7 @@
 									
 									<?php }  ?>
 									
-									
+									map.fitBounds(bounds);
 								}
 								
 								</script>
