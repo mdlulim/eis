@@ -88,15 +88,15 @@
                       <?php } ?>
                       
                       <div class="form-group required">
-                        <label class="col-sm-2 control-label" for="input-firstname"><?php echo $entry_firstname; ?></label>
+                        <label class="col-sm-2 control-label" for="input-firstname"><?php //echo $entry_firstname; ?>Company Name</label>
                         <div class="col-sm-10">
-                          <input type="text" name="firstname" value="<?php echo $firstname; ?>" placeholder="<?php echo $entry_firstname; ?>" id="input-firstname" class="form-control" />
+                          <input type="text" name="firstname" value="<?php echo $firstname; ?>" placeholder="<?php //echo $entry_firstname; ?>Company Name" id="input-firstname" class="form-control" />
                           <?php if ($error_firstname) { ?>
-                          <div class="text-danger"><?php echo $error_firstname; ?></div>
+                          <div class="text-danger"><?php //echo $error_firstname; ?>Plz Enter Company Name</div>
                           <?php } ?>
                         </div>
                       </div>
-                      <div class="form-group required">
+                      <!--<div class="form-group required">
                         <label class="col-sm-2 control-label" for="input-lastname"><?php echo $entry_lastname; ?></label>
                         <div class="col-sm-10">
                           <input type="text" name="lastname" value="<?php echo $lastname; ?>" placeholder="<?php echo $entry_lastname; ?>" id="input-lastname" class="form-control" />
@@ -104,7 +104,7 @@
                           <div class="text-danger"><?php echo $error_lastname; ?></div>
                           <?php } ?>
                         </div>
-                      </div>
+                      </div>-->
                       <div class="form-group required">
                         <label class="col-sm-2 control-label" for="input-email"><?php echo $entry_email; ?></label>
                         <div class="col-sm-10">
@@ -361,7 +361,7 @@
                     <?php foreach ($addresses as $address) { ?>
                     <div class="tab-pane" id="tab-address<?php echo $address_row; ?>">
                       <input type="hidden" name="address[<?php echo $address_row; ?>][address_id]" value="<?php echo $address['address_id']; ?>" />
-                      <div class="form-group required">
+                     <!-- <div class="form-group required">
                         <label class="col-sm-2 control-label" for="input-firstname<?php echo $address_row; ?>"><?php echo $entry_firstname; ?></label>
                         <div class="col-sm-10">
                           <input type="text" name="address[<?php echo $address_row; ?>][firstname]" value="<?php echo $address['firstname']; ?>" placeholder="<?php echo $entry_firstname; ?>" id="input-firstname<?php echo $address_row; ?>" class="form-control" />
@@ -384,7 +384,7 @@
                         <div class="col-sm-10">
                           <input type="text" name="address[<?php echo $address_row; ?>][company]" value="<?php echo $address['company']; ?>" placeholder="<?php echo $entry_company; ?>" id="input-company<?php echo $address_row; ?>" class="form-control" />
                         </div>
-                      </div>
+                      </div>-->
                       <div class="form-group required">
                         <label class="col-sm-2 control-label" for="input-address-1<?php echo $address_row; ?>"><?php echo $entry_address_1; ?></label>
                         <div class="col-sm-10">
@@ -713,7 +713,7 @@ function addAddress() {
 	html  = '<div class="tab-pane" id="tab-address' + address_row + '">';
 	html += '  <input type="hidden" name="address[' + address_row + '][address_id]" value="" />';
 
-	html += '  <div class="form-group required">';
+	/*html += '  <div class="form-group required">';
 	html += '    <label class="col-sm-2 control-label" for="input-firstname' + address_row + '"><?php echo $entry_firstname; ?></label>';
 	html += '    <div class="col-sm-10"><input type="text" name="address[' + address_row + '][firstname]" value="" placeholder="<?php echo $entry_firstname; ?>" id="input-firstname' + address_row + '" class="form-control" /></div>';
 	html += '  </div>';
@@ -726,7 +726,7 @@ function addAddress() {
 	html += '  <div class="form-group">';
 	html += '    <label class="col-sm-2 control-label" for="input-company' + address_row + '"><?php echo $entry_company; ?></label>';
 	html += '    <div class="col-sm-10"><input type="text" name="address[' + address_row + '][company]" value="" placeholder="<?php echo $entry_company; ?>" id="input-company' + address_row + '" class="form-control" /></div>';
-	html += '  </div>';
+	html += '  </div>';*/
 
 	html += '  <div class="form-group required">';
 	html += '    <label class="col-sm-2 control-label" for="input-address-1' + address_row + '"><?php echo $entry_address_1; ?></label>';

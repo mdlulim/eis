@@ -1122,13 +1122,13 @@ class ControllerCustomerCustomer extends Controller {
 
 		if (isset($this->request->post['address'])) {
 			foreach ($this->request->post['address'] as $key => $value) {
-				if ((utf8_strlen($value['firstname']) < 1) || (utf8_strlen($value['firstname']) > 32)) {
+				/*if ((utf8_strlen($value['firstname']) < 1) || (utf8_strlen($value['firstname']) > 32)) {
 					$this->error['address'][$key]['firstname'] = $this->language->get('error_firstname');
 				}
 
 				if ((utf8_strlen($value['lastname']) < 1) || (utf8_strlen($value['lastname']) > 32)) {
 					$this->error['address'][$key]['lastname'] = $this->language->get('error_lastname');
-				}
+				}*/
 
 				if ((utf8_strlen($value['address_1']) < 3) || (utf8_strlen($value['address_1']) > 128)) {
 					$this->error['address'][$key]['address_1'] = $this->language->get('error_address_1');
