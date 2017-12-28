@@ -11,50 +11,6 @@
       </div>
     </div>
     <div class="container-fluid">
-      <div class="row" style="margin-bottom:27px;">
-            <div class="col-sm-6">
-              <div class="form-group">
-                <label class="control-label" for="input-model">Appointment Date From</label>
-                <div class='input-group date' id='filter_appointment_from'>
-                    <input name="filter_appointment_from" type='text' value="<?php echo $filter_appointment_from; ?>"  placeholder="DD-MM-YYYY hh:mm A" class="form-control" data-date-format="DD-MM-YYYY hh:mm A" class="form-control"  />
-                    <span class="input-group-addon">
-                        <span class="glyphicon glyphicon-calendar"></span>
-                    </span>
-                </div>
-              </div>
-              <script type="text/javascript">
-            $(function () {
-                $('#filter_appointment_from').datetimepicker({
-                     //defaultDate: new Date(),
-					// inline: true,
-                });
-            });
-        </script>
-            </div>
-            <div class="col-sm-6" style="margin-bottom:10px;">
-              <div class="form-group">
-                <label class="control-label" for="input-quantity">Appointment Date To</label>
-                <div class='input-group date' id='filter_appointment_to'>
-                    <input name="filter_appointment_to" type='text' value="<?php echo $filter_appointment_to; ?>"  placeholder="DD-MM-YYYY hh:mm A" class="form-control" data-date-format="DD-MM-YYYY hh:mm A" class="form-control"  />
-                    <span class="input-group-addon">
-                        <span class="glyphicon glyphicon-calendar"></span>
-                    </span>
-                </div>
-            
-        		<script type="text/javascript">
-            $(function () {
-                $('#filter_appointment_to').datetimepicker({
-                    //defaultDate: new Date(),
-                   
-                });
-            });
-        </script>
-              </div>
-              
-            </div>
-            <button type="button" id="button-filter" class="btn btn-primary pull-right" style="margin-right:18px;"><i class="fa fa-filter"></i> Filter</button>
-            <button type="button" id="button-filter-reset" class="btn btn-primary pull-right" style="margin-right:10px;"><i class="fa fa-filter"></i> Reset</button>
-          </div>
       <div class="row">
         <div class="col-lg-3 col-md-3 col-sm-6">
           <div class="tile">
@@ -159,145 +115,141 @@
         
       </div>
       <div class="row">
-        <div class="col-lg-6 col-md-12 col-sm-12">
+        <div class="col-lg-12 col-md-12 col-sm-12">
           <div class="panel panel-default">
             <div class="panel-heading">
-              <h3 class="panel-title"><i class="fa fa-globe"></i> World Map</h3>
+              <h3 class="panel-title"><i class="fa fa-globe"></i> Sales Rep Location Management</h3>
             </div>
             <div class="panel-body">
-              <div id="vmap" style="width: 100%; height: 260px;"></div>
-            </div>
-          </div>
-          <link type="text/css" href="view/javascript/jquery/jqvmap/jqvmap.css" rel="stylesheet" media="screen" />
-		  <script type="text/javascript" src="view/javascript/jquery/jqvmap/jquery.vmap.js"></script> 
-          <script type="text/javascript" src="view/javascript/jquery/jqvmap/maps/jquery.vmap.world.js"></script> 
-          <script type="text/javascript"><!--
-        $(document).ready(function() {
-            $.ajax({
-                url: 'index.php?route=extension/dashboard/map/mapcustom&token=<?php echo $token; ?>',
-                dataType: 'json',
-                success: function(json) {
-                    data = [];
-                                
-                    for (i in json) {
-                        data[i] = json[i]['total'];
-                    }
-                            
-                    $('#vmap').vectorMap({
-                        map: 'world_en',
-                        backgroundColor: '#FFFFFF',
-                        borderColor: '#FFFFFF',
-                        color: '#9FD5F1',
-                        hoverOpacity: 0.7,
-                        selectedColor: '#666666',
-                        enableZoom: true,
-                        showTooltip: true,
-                        values: data,
-                        normalizeFunction: 'polynomial',
-                        onLabelShow: function(event, label, code) {
-                            if (json[code]) {
-                                label.html('<strong>' + label.text() + '</strong><br />' + '<?php echo $text_order; ?> ' + json[code]['total'] + '<br />' + '<?php echo $text_sale; ?> ' + json[code]['amount']);
-                            }
-                        }
-                    });			
-                },
-                error: function(xhr, ajaxOptions, thrownError) {
-                    alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
-                }
-            });			
-        });
-        //--></script> 
-        </div>
-        <div class="col-lg-6 col-md-12 col-sm-12">
-          <div class="panel panel-default">
-            <div class="panel-heading">
-              <div class="pull-right"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-calendar"></i> <i class="caret"></i></a>
-                <ul id="range" class="dropdown-menu dropdown-menu-right">
-                  <li><a href="day">Today</a></li>
-                  <li><a href="week">Week</a></li>
-                  <li class="active"><a href="month">Month</a></li>
-                  <li><a href="year">Year</a></li>
-                </ul>
-              </div>
-              <h3 class="panel-title"><i class="fa fa-bar-chart-o"></i> Sales Analytics</h3>
-            </div>
-            <div class="panel-body">
-              <div id="chart-sale" style="width: 100%; height: 260px;"></div>
-            </div>
-          </div>
-          <script type="text/javascript" src="view/javascript/jquery/flot/jquery.flot.js"></script>
-          <script type="text/javascript" src="view/javascript/jquery/flot/jquery.flot.resize.min.js"></script>
-          <script type="text/javascript"><!--
-$('#range a').on('click', function(e) {
-	e.preventDefault();
-	
-	$(this).parent().parent().find('li').removeClass('active');
-	
-	$(this).parent().addClass('active');
-	
-	$.ajax({
-		type: 'get',
-		url: 'index.php?route=extension/dashboard/chart/chartcustom&token=<?php echo $token; ?>&range=' + $(this).attr('href'),
-		dataType: 'json',
-		success: function(json) {
-                        if (typeof json['order'] == 'undefined') { return false; }
-			var option = {	
-				shadowSize: 0,
-				colors: ['#9FD5F1', '#1065D2'],
-				bars: { 
-					show: true,
-					fill: true,
-					lineWidth: 1
-				},
-				grid: {
-					backgroundColor: '#FFFFFF',
-					hoverable: true
-				},
-				points: {
-					show: false
-				},
-				xaxis: {
-					show: true,
-            		ticks: json['xaxis']
-				}
-			}
-			
-			$.plot('#chart-sale', [json['order'], json['customer']], option);	
-					
-			$('#chart-sale').bind('plothover', function(event, pos, item) {
-				$('.tooltip').remove();
-			  
-				if (item) {
-					$('<div id="tooltip" class="tooltip top in"><div class="tooltip-arrow"></div><div class="tooltip-inner">' + item.datapoint[1].toFixed(2) + '</div></div>').prependTo('body');
-					
-					$('#tooltip').css({
-						position: 'absolute',
-						left: item.pageX - ($('#tooltip').outerWidth() / 2),
-						top: item.pageY - $('#tooltip').outerHeight(),
-						pointer: 'cusror'
-					}).fadeIn('slow');	
-					
-					$('#chart-sale').css('cursor', 'pointer');		
-			  	} else {
-					$('#chart-sale').css('cursor', 'auto');
-				}
-			});
-		},
-        error: function(xhr, ajaxOptions, thrownError) {
-           alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
-        }
-	});
-});
+              <div id="map"></div>
+                                <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA6ycZiGobIPuZ8wtXalf2m2MtxAzncn_Q&callback=initMap&sensor=false"> </script>
+                                <script type="text/javascript">
+								/*function initMap() { 
+									var uluru = {lat: 29.8587, lng: 31.0218}; 
+									var map = new google.maps.Map(document.getElementById('map'), { zoom: 4, center: uluru });
+									var marker = new google.maps.Marker({ position: uluru, map: map }); 
+								}*/
+								
+								
+								
+								function initMap() {
 
-$('#range .active a').trigger('click');
-//--></script>
+									var latlng = new google.maps.LatLng(-27.4457987, 21.4340156); // default location
+									var myOptions = {
+										zoom: 4,
+										center: latlng,
+										zoomControlOptions: true,
+										 zoomControlOptions: {
+										 style: google.maps.ZoomControlStyle.LARGE
+										 },
+										gestureHandling: 'greedy',
+										mapTypeId: google.maps.MapTypeId.ROADMAP,
+										mapTypeControl: true
+									};
+						
+									var map = new google.maps.Map(document.getElementById('map'),myOptions);
+									var infowindow = new google.maps.InfoWindow(), marker, lat, lng;
+									var bounds = new google.maps.LatLngBounds();
+									
+									
+									<?php foreach($locationsmaps as $key => $locationsmap ) { ?>
+									
+										<?php if($locationsmap['latitude'] != '' && $locationsmap['longitude'] != '' ) { ?>
+											
+											lat = '<?php echo $locationsmap['latitude']; ?>';
+											lng = '<?php echo $locationsmap['longitude']; ?>';
+											name = '<?php echo $locationsmap['name']; ?>';
+							
+											marker = new google.maps.Marker({
+												position: new google.maps.LatLng(lat,lng),
+												name:name,
+												map: map,
+												icon: '<?php echo $locationsmap['icon']; ?>'
+											});
+											
+											bounds.extend(marker.position); 
+											google.maps.event.addListener( marker, 'click', function(e){
+												infowindow.setContent( this.name );
+												infowindow.open( map, this );
+											}.bind( marker ) );
+											
+											lat = '';
+											lng = '';
+											name = '';
+							
+											marker = new google.maps.Marker({
+												position: new google.maps.LatLng(lat,lng),
+												name:name,
+												map: map,
+												icon: ''
+											}); 
+											
+									   <?php } ?>
+									
+									<?php }  ?>
+									
+									map.fitBounds(bounds);
+								}
+								
+								</script>
+                                <style>
+								#map { height: 400px; width: 100%; }
+								</style>
+            </div>
+          </div>
+          
         </div>
+        
       </div>
+      <div class="row" style="margin-bottom:27px;">
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label class="control-label" for="input-model">Appointment Date From</label>
+                <div class='input-group date' id='filter_appointment_from'>
+                    <input name="filter_appointment_from" type='text' value="<?php echo $filter_appointment_from; ?>"  placeholder="DD-MM-YYYY hh:mm A" class="form-control" data-date-format="DD-MM-YYYY hh:mm A" class="form-control"  />
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+              </div>
+              <script type="text/javascript">
+            $(function () {
+                $('#filter_appointment_from').datetimepicker({
+                     //defaultDate: new Date(),
+					// inline: true,
+                });
+            });
+        </script>
+            </div>
+            <div class="col-sm-6" style="margin-bottom:10px;">
+              <div class="form-group">
+                <label class="control-label" for="input-quantity">Appointment Date To</label>
+                <div class='input-group date' id='filter_appointment_to'>
+                    <input name="filter_appointment_to" type='text' value="<?php echo $filter_appointment_to; ?>"  placeholder="DD-MM-YYYY hh:mm A" class="form-control" data-date-format="DD-MM-YYYY hh:mm A" class="form-control"  />
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            
+        		<script type="text/javascript">
+            $(function () {
+                $('#filter_appointment_to').datetimepicker({
+                    //defaultDate: new Date(),
+                   
+                });
+            });
+        </script>
+              </div>
+              
+            </div>
+            <button type="button" id="button-filter" class="btn btn-primary pull-right" style="margin-right:18px;"><i class="fa fa-filter"></i> Filter</button>
+            <button type="button" id="button-filter-reset" class="btn btn-primary pull-right" style="margin-right:10px;"><i class="fa fa-filter"></i> Reset</button>
+          </div>
       <div class="row">
         <div class="col-lg-4 col-md-12 col-sm-12">
           
       <?php if($loginuser != 'Sales Manager' ) { ?>      
-          <div class="panel panel-default">
+          <!--<div class="panel panel-default">
             <div class="panel-heading">
               <h3 class="panel-title"><i class="fa fa-calendar"></i> Recent Activity</h3>
             </div>
@@ -311,7 +263,7 @@ $('#range .active a').trigger('click');
                 <li class="list-group-item text-center"><?php echo $text_no_results; ?></li>
                 <?php } ?>
               </ul>
-              
+          </div>-->    
       <?php } else { ?>
       	<div class="panel panel-default" style="border-right:5px solid;">
       	<div class="panel-heading">
@@ -342,10 +294,15 @@ $('#range .active a').trigger('click');
                   </tbody>
                 </table>
   		</div>
-      <?php } ?>
-          </div>
         </div>
+      <?php } ?>
+          
+        </div>
+        <?php if($loginuser != 'Sales Manager' ) { ?>   
+        <div class="col-lg-12 col-md-12 col-sm-12">
+        <?php } else { ?>
         <div class="col-lg-8 col-md-12 col-sm-12">
+        <?php } ?>
           <div class="panel panel-default">
   		     <div class="panel-heading">
                 <h3 class="panel-title"><i class="fa fa-shopping-cart"></i> Latest Appointment</h3>

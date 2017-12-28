@@ -409,6 +409,63 @@ class ControllerCommonDashboard extends Controller {
 		$data['addsalesmangebutton'] = $this->url->link('user/user/add', 'token=' . $this->session->data['token'], true);
 		$data['addsalesrepbutton'] = $this->url->link('replogic/sales_rep_management/add', 'token=' . $this->session->data['token'], true);
 		// Button End //
+		
+		// Start Google Map  
+		$this->load->model('replogic/location_management');
+		$this->load->model('user/team');
+		if($current_user_group['name'] == 'Sales Manager')
+		{
+			$curent_sales_team = $this->model_user_team->getTeamBySalesmanager($current_user);
+			$filter_team_id = $curent_sales_team['team_id']; 
+			
+		}
+		else
+		{
+			$filter_team_id = NULL; 
+		}
+		
+		$filter_dataMap = array('filter_team_id'	  => $filter_team_id);
+		$results = $this->model_replogic_location_management->getLocations($filter_dataMap);
+		$locationsmaps = array();
+		foreach ($results as $result) {
+			
+		$salesrep = $this->model_replogic_sales_rep_management->getsalesrep($result['salesrep_id']); ;
+		$sales_rep = $salesrep['salesrep_name'] ." ". $salesrep['salesrep_lastname'];
+		
+		$customer = $this->model_customer_customer->getCustomer($result['customer_id']);
+		$customername = $customer['firstname'] ." ". $customer['lastname'];
+		
+		$customeraddress = $this->model_customer_customer->getAddress($customer['address_id']);
+		$customerlatitude = $customeraddress['latitude'];
+		$customerlongitude = $customeraddress['longitude'];
+		
+		$address = $result['location']; // Address
+		
+		// Get JSON results from this request
+		
+		$latitude = '';
+		$longitude = '';
+		
+		$url = "http://maps.google.com/maps/api/geocode/json?address=".urlencode($address)."&sensor=false&region=India";
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_PROXYPORT, 3128);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+		$response = curl_exec($ch);
+		curl_close($ch);
+		$response_a = json_decode($response);
+		$latitude = $response_a->results[0]->geometry->location->lat;
+		$longitude = $response_a->results[0]->geometry->location->lng;
+		
+		$locationsmaps[] = array('latitude'=>$latitude,'longitude'=>$longitude,'name'=>$sales_rep,'icon'=>'view/image/green-dot.png');
+		$locationsmaps[] = array('latitude'=>$customerlatitude,'longitude'=>$customerlongitude,'name'=>$customername,'icon'=>'view/image/blue-dot.png');
+		
+		}
+		$data['locationsmaps'] = $locationsmaps;
+		//print_r($locationsmaps); exit;
+		// End Google Map
 				
 			$this->response->setOutput($this->load->view('common/customdashboard', $data));
 	}

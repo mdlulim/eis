@@ -24,6 +24,16 @@ class ModelUserTeam extends Model {
 
 		return $team;
 	}
+	
+	public function getTeamBySalesmanager($sales_manager_id) { 
+		$query = $this->db->query("SELECT  * FROM " . DB_PREFIX . "team WHERE sales_manager = '" . (int)$sales_manager_id . "'");
+
+		$team = array(
+			'team_id'       => $query->row['team_id']
+		);
+
+		return $team;
+	}
 
 	public function getTeams($data = array()) {
 		$sql = "SELECT * FROM " . DB_PREFIX . "team";
