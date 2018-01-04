@@ -28,33 +28,16 @@
       </div>
       <div class="panel-body">
         
-        <div class="well">
           <div class="row">
-            <div class="col-sm-6">
+            <!--<div class="col-sm-3">
               <div class="form-group">
-                <label class="control-label" for="input-name">Search Address</label>
-                <input type="text" name="filter_address" value="<?php echo $filter_address; ?>" placeholder="Search Address" id="input-address" class="form-control" />
+                <input type="text" name="filter_address" value="<?php echo $filter_address; ?>" placeholder="Search Address" id="input-address" class="form-control" style="border-radius:25px;" />
               </div>
-              <div class="form-group fromdate">
-                <label class="control-label" for="input-model">Select Team</label>
-               <select name="filter_team_id" id="input-team" class="form-control">
-                        <option value="">Select Team</option>
-                        <?php foreach ($teams as $team) {  ?>
-                        <?php if ($team['team_id'] == $filter_team_id) { ?>
-                        <option value="<?php echo $team['team_id']; ?>" selected="selected"><?php echo $team['team_name']; ?></option>
-                        <?php } else { ?>
-                        <option value="<?php echo $team['team_id']; ?>"><?php echo $team['team_name']; ?></option>
-                        <?php } ?>
-                        <?php } ?>
-                      </select>
-               </div>
-            </div>
-            <div class="col-sm-6" style="margin-bottom:10px;">
+            </div>-->
+            <div class="col-sm-2">
               <div class="form-group">
-                <label class="control-label" for="input-price">Sales Rep Name</label>
-                
-                	<select name="filter_salesrep_id" id="input-sales_manager" class="form-control">
-                        <option value="">Select Sales Rep Name</option>
+                <select name="filter_salesrep_id" id="input-sales_manager" class="form-control">
+                        <option value="">Select Sales Rep</option>
                         <?php foreach ($salesReps as $salesRep) { ?>
                         <?php if ($salesRep['salesrep_id'] == $filter_salesrep_id) { ?>
                         <option value="<?php echo $salesRep['salesrep_id']; ?>" selected="selected"><?php echo $salesRep['salesrep_name']; ?> <?php echo $salesRep['salesrep_lastname']; ?></option>
@@ -64,10 +47,24 @@
                         <?php } ?>
                       </select>
               </div>
-              <div class="form-group todate">
-                <label class="control-label" for="input-quantity">Select Customer</label>
-                
-                  <select name="filter_customer_id" id="input-customer" class="form-control">
+            </div>
+            <div class="col-sm-3">
+              <div class="form-group">
+                <select name="filter_team_id" id="input-team" class="form-control">
+                        <option value="">Select Team</option>
+                        <?php foreach ($teams as $team) {  ?>
+                        <?php if ($team['team_id'] == $filter_team_id) { ?>
+                        <option value="<?php echo $team['team_id']; ?>" selected="selected"><?php echo $team['team_name']; ?></option>
+                        <?php } else { ?>
+                        <option value="<?php echo $team['team_id']; ?>"><?php echo $team['team_name']; ?></option>
+                        <?php } ?>
+                        <?php } ?>
+                      </select>
+              </div>
+            </div>
+            <div class="col-sm-3">
+              <div class="form-group">
+                <select name="filter_customer_id" id="input-customer" class="form-control">
                         <option value="">Select Customer</option>
                         <?php foreach ($customers as $customer) { ?>
                         <?php if ($customer['customer_id'] == $filter_customer_id) { ?>
@@ -79,11 +76,21 @@
                       </select>
               </div>
             </div>
-            <button type="button" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-filter"></i> Filter</button>
-            <button type="button" id="button-filter-reset" class="btn btn-primary pull-right" style="margin-right:10px;"><i class="fa fa-filter"></i> Reset</button>
-          </div>
+            <div class="col-sm-1">
+              <div class="form-group">
+                <button type="button" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-filter"></i> Filter</button>
+              </div>
+            </div>
+            
+            <div class="col-sm-1">
+              <div class="form-group">
+                <button type="button" id="button-filter-reset" class="btn btn-primary pull-right" style="margin-right:10px;"><i class="fa fa-filter"></i> Reset</button>
+              </div>
+            </div>
+            
+          </div>  
+          
            
-        </div>
          
           <div class="table-responsive">
             <table class="table table-bordered table-hover">
@@ -164,6 +171,7 @@
 								</script>
                                 <style>
 								#map { height: 400px; width: 100%; }
+								
 								</style>
                     </td> 
                </tr>
@@ -201,10 +209,10 @@
                     <?php foreach ($locations as $location) { ?>
                         
                             <tr>
-                              <td class="text-center"><img src="view/image/green-dot.png"  /><?php echo $location['sales_manager']; ?></td>
+                              <td class="text-center"><?php echo $location['sales_manager']; ?></td>
                               <td class="text-left"><?php echo $location['team']; ?></td>
                               <td class="text-left"><?php echo $location['last_check']; ?></td>
-                              <td class="text-left"><img src="view/image/blue-dot.png"  /><?php  echo $location['customer']; ?></td>
+                              <td class="text-left"><?php  echo $location['customer']; ?></td>
                               <td class="text-left"><?php echo $location['checkin_location']; ?></td>
                               <td class="text-left" width="200"><?php  echo $location['current_location']; ?></td>
                             </tr>

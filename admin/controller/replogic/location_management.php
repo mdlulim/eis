@@ -100,7 +100,25 @@ class ControllerReplogicLocationManagement extends Controller {
 
 		$data['add'] = $this->url->link('replogic/location_management/add', 'token=' . $this->session->data['token'] . $url, true);
 		$data['delete'] = $this->url->link('replogic/location_management/delete', 'token=' . $this->session->data['token'] . $url, true);
-
+		
+		$this->load->model('user/user_group');
+		$this->load->model('user/user');
+		$this->load->model('user/team');
+		$current_user = $this->session->data['user_id'];
+		$current_user_group_id = $this->model_user_user->getUser($current_user); ;
+		$current_user_group = $this->model_user_user_group->getUserGroup($current_user_group_id['user_group_id']); ;
+		//print_r($current_user_group); exit;
+		if($current_user_group['name'] == 'Sales Manager')
+		{
+			$curent_sales_team = $this->model_user_team->getTeamBySalesmanager($current_user);
+			$filter_team_id = $curent_sales_team['team_id']; 
+			
+		}
+		else
+		{
+			$filter_team_id = NULL; 
+		}
+		
 		$filter_data = array(
 			'filter_address'	  => $filter_address,
 			'filter_customer_id'	  => $filter_customer_id,
@@ -143,14 +161,14 @@ class ControllerReplogicLocationManagement extends Controller {
 		$this->load->model('user/team');
 		if($current_user_group['name'] == 'Sales Manager')
 		{
-			$filter_salesrep_id = $current_user; 
+			$salesrep_id = $current_user; 
 			
 		}
 		else
 		{
-			$filter_salesrep_id = ''; 
+			$salesrep_id = ''; 
 		}
-		$filter_dataa = array('filter_salesrep_id' => $filter_salesrep_id);
+		$filter_dataa = array('filter_salesrep_id' => $salesrep_id);
 		$data['teams'] = $this->model_user_team->getTeams($filter_dataa);
 		
 		$data['customers'] = $this->model_customer_customer->getCustomers(); ;
