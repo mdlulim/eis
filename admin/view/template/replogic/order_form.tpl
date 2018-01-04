@@ -1305,7 +1305,6 @@ $('input[name=\'customer\']').autocomplete({
 					email: '',
 					telephone: '',
 					fax: '',
-					address_id: '',
 					custom_field: [],
 					address: []
 				});
@@ -1322,7 +1321,6 @@ $('input[name=\'customer\']').autocomplete({
 						telephone: item['telephone'],
 						fax: item['fax'],
 						custom_field: item['custom_field'],
-						address_id: item['address_id'],
 						address: item['address']
 					}
 				}));
@@ -1369,7 +1367,6 @@ $('input[name=\'customer\']').autocomplete({
 		$('select[name=\'payment_address\']').html(html);
 		$('select[name=\'shipping_address\']').html(html);
 		
-		//var address_id = item['address_id'];
 		$('select[name=\'payment_address\']').trigger('change');
 		$('select[name=\'shipping_address\']').trigger('change');
 	}
