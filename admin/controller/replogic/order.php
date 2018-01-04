@@ -35,7 +35,7 @@ class ControllerReplogicOrder extends Controller {
 	public function getForm() { 
 		$data['heading_title'] = $this->language->get('heading_title');
 
-		$data['text_form'] = !isset($this->request->get['order_id']) ? $this->language->get('text_add') : $this->language->get('text_edit');
+		$data['text_form'] = 'Process Quote';
 		$data['text_no_results'] = $this->language->get('text_no_results');
 		$data['text_default'] = $this->language->get('text_default');
 		$data['text_select'] = $this->language->get('text_select');
@@ -271,6 +271,7 @@ class ControllerReplogicOrder extends Controller {
 				$quote_info = $this->model_replogic_order_quotes->getOrderquote($this->request->get['quote_id']);
 				$custome_info = $this->model_customer_customer->getCustomer($quote_info['customer_id']);
 				$customer_contact_info = $this->model_replogic_customer_contact->getcustomercontact($quote_info['customer_contact_id']);
+				$data['customer_contacts'] = $this->model_replogic_customer_contact->getcustomercontacts();
 			}
 			
 			
