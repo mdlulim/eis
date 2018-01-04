@@ -16,8 +16,8 @@ class ControllerApiShipping extends Controller {
 			} else {
 				// Add keys for missing post vars
 				$keys = array(
-					'firstname',
-					'lastname',
+					//'firstname',
+					//'lastname',
 					'company',
 					'address_1',
 					'address_2',
@@ -32,13 +32,18 @@ class ControllerApiShipping extends Controller {
 						$this->request->post[$key] = '';
 					}
 				}
-
-				if ((utf8_strlen(trim($this->request->post['firstname'])) < 1) || (utf8_strlen(trim($this->request->post['firstname'])) > 32)) {
-					$json['error']['firstname'] = $this->language->get('error_firstname');
+				
+				if(isset($this->request->post['firstname']))
+				{
+					if ((utf8_strlen(trim($this->request->post['firstname'])) < 1) || (utf8_strlen(trim($this->request->post['firstname'])) > 32)) {
+						$json['error']['firstname'] = $this->language->get('error_firstname');
+					}
 				}
-
-				if ((utf8_strlen(trim($this->request->post['lastname'])) < 1) || (utf8_strlen(trim($this->request->post['lastname'])) > 32)) {
-					$json['error']['lastname'] = $this->language->get('error_lastname');
+				if(isset($this->request->post['lastname']))
+				{
+					if ((utf8_strlen(trim($this->request->post['lastname'])) < 1) || (utf8_strlen(trim($this->request->post['lastname'])) > 32)) {
+						$json['error']['lastname'] = $this->language->get('error_lastname');
+					}
 				}
 
 				if ((utf8_strlen(trim($this->request->post['address_1'])) < 3) || (utf8_strlen(trim($this->request->post['address_1'])) > 128)) {

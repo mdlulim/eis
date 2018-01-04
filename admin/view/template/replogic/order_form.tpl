@@ -77,11 +77,21 @@
                   </select>
                 </div>
               </div>
-              <div class="form-group">
+              <div class="form-group required">
                 <label class="col-sm-2 control-label" for="input-customer">Customer Contact</label>
                 <div class="col-sm-10">
-                  <input type="text" name="customer_contact" value="<?php echo $customer_contact; ?>" placeholder="Customer Contact" id="input-customer-contact" class="form-control" />
-                  <input type="hidden" name="customer_contact_id" value="<?php echo $customer_contact_id; ?>" id="customer_contact_id"> 
+                   <select name="customer_contact_id" id="input-customer_contact_id" class="form-control">
+                    <option value="">Select Customer Contact</option>
+                    <?php foreach($customer_contacts as $customer_contact) { ?>
+                    	<?php if($customer_contact['customer_con_id'] == $customer_contact_id) { ?>
+                        <option selected="selected" value="<?php echo $customer_contact['customer_con_id']; ?>"><?php echo $customer_contact['first_name']." ".$customer_contact['last_name']; ?></option>
+                        <?php } else { ?>
+                        <option value="<?php echo $customer_contact['customer_con_id']; ?>"><?php echo $customer_contact['first_name']." ".$customer_contact['last_name']; ?></option>
+                        <?php } ?>
+                    <?php } ?>
+                    
+                  </select>
+                  <div id="custm"></div>
                 </div>
               </div>
               <div class="form-group required">
@@ -429,7 +439,7 @@
                   </select>
                 </div>
               </div>
-              <div class="form-group required">
+             <!-- <div class="form-group required">
                 <label class="col-sm-2 control-label" for="input-payment-firstname"><?php echo $entry_firstname; ?></label>
                 <div class="col-sm-10">
                   <input type="text" name="firstname" value="<?php echo $payment_firstname; ?>" id="input-payment-firstname" class="form-control" />
@@ -446,7 +456,7 @@
                 <div class="col-sm-10">
                   <input type="text" name="company" value="<?php echo $payment_company; ?>" id="input-payment-company" class="form-control" />
                 </div>
-              </div>
+              </div>-->
               <div class="form-group required">
                 <label class="col-sm-2 control-label" for="input-payment-address-1"><?php echo $entry_address_1; ?></label>
                 <div class="col-sm-10">
@@ -648,7 +658,7 @@
                   </select>
                 </div>
               </div>
-              <div class="form-group required">
+             <!-- <div class="form-group required">
                 <label class="col-sm-2 control-label" for="input-shipping-firstname"><?php echo $entry_firstname; ?></label>
                 <div class="col-sm-10">
                   <input type="text" name="firstname" value="<?php echo $shipping_firstname; ?>" id="input-shipping-firstname" class="form-control" />
@@ -665,7 +675,7 @@
                 <div class="col-sm-10">
                   <input type="text" name="company" value="<?php echo $shipping_company; ?>" id="input-shipping-company" class="form-control" />
                 </div>
-              </div>
+              </div>-->
               <div class="form-group required">
                 <label class="col-sm-2 control-label" for="input-shipping-address-1"><?php echo $entry_address_1; ?></label>
                 <div class="col-sm-10">
@@ -1295,6 +1305,7 @@ $('input[name=\'customer\']').autocomplete({
 					email: '',
 					telephone: '',
 					fax: '',
+					address_id: '',
 					custom_field: [],
 					address: []
 				});
@@ -1311,16 +1322,17 @@ $('input[name=\'customer\']').autocomplete({
 						telephone: item['telephone'],
 						fax: item['fax'],
 						custom_field: item['custom_field'],
+						address_id: item['address_id'],
 						address: item['address']
 					}
 				}));
 			}
 		});
 	},
-	'select': function(item) {
+	'select': function(item) { 
 		// Reset all custom fields
 		$('#tab-customer input[type=\'text\'], #tab-customer textarea').not('#tab-customer input[name=\'customer\'], #tab-customer input[name=\'customer_id\']').val('');
-		$('#tab-customer select option').not($('#tab-customer select[name=\'store_id\'] option, #tab-customer select[name=\'currency\'] option')).removeAttr('selected');
+		$('#tab-customer select option').not($('#tab-customer select[name=\'store_id\'] option, #tab-customer select[name=\'currency\'] option, #tab-customer select[name=\'customer_contact_id\'] option')).removeAttr('selected');
 		$('#tab-customer input[type=\'checkbox\'], #tab-customer input[type=\'radio\']').removeAttr('checked');
 
 		$('#tab-customer input[name=\'customer\']').val(item['label']);
@@ -1356,7 +1368,8 @@ $('input[name=\'customer\']').autocomplete({
 
 		$('select[name=\'payment_address\']').html(html);
 		$('select[name=\'shipping_address\']').html(html);
-
+		
+		//var address_id = item['address_id'];
 		$('select[name=\'payment_address\']').trigger('change');
 		$('select[name=\'shipping_address\']').trigger('change');
 	}
@@ -1411,13 +1424,24 @@ $('#button-customer').on('click', function() {
 					$('#content > .container-fluid').prepend('<div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> ' + json['error']['warning'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
 				}
 
-				for (i in json['error']) {
-					var element = $('#input-' + i.replace('_', '-'));
-
-					if (element.parent().hasClass('input-group')) {
-                   		$(element).parent().after('<div class="text-danger">' + json['error'][i] + '</div>');
-					} else {
-						$(element).after('<div class="text-danger">' + json['error'][i] + '</div>');
+				for (i in json['error']) { 
+					if(i == 'customer_contact_id')
+					{
+						var element = $('#customer_contact_id');
+						var txt = '<div class="text-danger">' + json['error'][i] + '</div>';
+						
+						$('#input-customer_contact_id').after(txt);
+						
+					}
+					else
+					{
+						var element = $('#input-' + i.replace('_', '-'));
+	
+						if (element.parent().hasClass('input-group')) {
+							$(element).parent().after('<div class="text-danger">' + json['error'][i] + '</div>');
+						} else {
+							$(element).after('<div class="text-danger">' + json['error'][i] + '</div>');
+						}
 					}
 				}
 
@@ -1862,7 +1886,7 @@ $('#button-cart').on('click', function() {
 });
 
 // Payment Address
-$('select[name=\'payment_address\']').on('change', function() {
+$('select[name=\'payment_address\']').on('change', function() { 
 	$.ajax({
 		url: 'index.php?route=customer/customer/address&token=<?php echo $token; ?>&address_id=' + this.value,
 		dataType: 'json',
@@ -1872,10 +1896,10 @@ $('select[name=\'payment_address\']').on('change', function() {
 		complete: function() {
 			$('#tab-payment .fa-spin').remove();
 		},
-		success: function(json) {
+		success: function(json) { 
 			// Reset all fields
 			$('#tab-payment input[type=\'text\'], #tab-payment input[type=\'text\'], #tab-payment textarea').val('');
-			$('#tab-payment select option').not('#tab-payment select[name=\'payment_address\']').removeAttr('selected');
+			//$('#tab-payment select option').not('#tab-payment select[name=\'payment_address\']').removeAttr('selected');
 			$('#tab-payment input[type=\'checkbox\'], #tab-payment input[type=\'radio\']').removeAttr('checked');
 
 			$('#tab-payment input[name=\'firstname\']').val(json['firstname']);
@@ -2060,7 +2084,7 @@ $('select[name=\'shipping_address\']').on('change', function() {
 		success: function(json) {
 			// Reset all fields
 			$('#tab-shipping input[type=\'text\'], #tab-shipping input[type=\'text\'], #tab-shipping textarea').val('');
-			$('#tab-shipping select option').not('#tab-shipping select[name=\'shipping_address\']').removeAttr('selected');
+			//$('#tab-shipping select option').not('#tab-shipping select[name=\'shipping_address\']').removeAttr('selected');
 			$('#tab-shipping input[type=\'checkbox\'], #tab-shipping input[type=\'radio\']').removeAttr('checked');
 
 			$('#tab-shipping input[name=\'firstname\']').val(json['firstname']);

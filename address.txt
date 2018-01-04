@@ -1,0 +1,4 @@
+
+
+ALTER TABLE `oc_address` ADD `latitude` VARCHAR( 20 ) NOT NULL AFTER `custom_field` ,
+ADD `longitude` VARCHAR( 20 ) NOT NULL AFTER `latitude` ;
