@@ -45,7 +45,7 @@ class ModelReplogicLocationManagement extends Model {
 		if (isset($data['order']) && ($data['order'] == 'DESC')) {
 			$sql .= " DESC";
 		} else {
-			$sql .= " ASC";
+			$sql .= " DESC";
 		}
 
 		if (isset($data['start']) || isset($data['limit'])) {

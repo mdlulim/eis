@@ -78,13 +78,13 @@
             </div>
             <div class="col-sm-1">
               <div class="form-group">
-                <button type="button" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-filter"></i> Filter</button>
+                <button type="button" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-filter"></i> Search</button>
               </div>
             </div>
             
-            <div class="col-sm-1">
+            <div class="col-sm-3">
               <div class="form-group">
-                <button type="button" id="button-filter-reset" class="btn btn-primary pull-right" style="margin-right:10px;"><i class="fa fa-filter"></i> Reset</button>
+                <button type="button" id="button-filter-reset" class="btn btn-primary pull-right" style="margin-right:10px;"><i class="fa fa-filter"></i> Locate all</button>
               </div>
             </div>
             
@@ -189,7 +189,7 @@
                     <?php } else { ?>
                     <a href="<?php echo $sort_name; ?>">Team</a>
                     <?php } ?></td>
-                  <td class="text-left" >Last Check</td>
+                  <td class="text-left" >Last Check In</td>
                   <td class="text-left" ><?php if ($sort == 'name') { ?>
                     <a href="<?php echo $sort_name; ?>" class="<?php echo strtolower($order); ?>">Customer</a>
                     <?php } else { ?>
@@ -268,9 +268,8 @@ $('#button-filter').on('click', function() {
 	location = url;
 });
 $('#button-filter-reset').on('click', function() {
-	var url = 'index.php?route=replogic/location_management&token=<?php echo $token; ?>';
-
-	location = url;
+	//var url = 'index.php?route=replogic/location_management&token=<?php echo $token; ?>';
+	//location = url;
 });
 //--></script>
  
