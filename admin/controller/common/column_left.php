@@ -359,6 +359,14 @@ class ControllerCommonColumnLeft extends Controller {
 				);	
 			}
 			
+			if ($this->user->hasPermission('access', 'replogic/customer_contact')) {
+				$customer[] = array(
+					'name'	   => $this->language->get('text_customer_contact'),
+					'href'     => $this->url->link('replogic/customer_contact', 'token=' . $this->session->data['token'], true),
+					'children' => 	array()	
+				);	
+			}
+			
 			if ($customer) {
 				$data['menus'][] = array(
 					'id'       => 'menu-customer',
@@ -904,14 +912,6 @@ class ControllerCommonColumnLeft extends Controller {
 					'children' => 	$sales_rep	
 				);	
 			}*/
-			
-			if ($this->user->hasPermission('access', 'replogic/customer_contact')) {
-				$replogic[] = array(
-					'name'	   => $this->language->get('text_customer_contact'),
-					'href'     => $this->url->link('replogic/customer_contact', 'token=' . $this->session->data['token'], true),
-					'children' => 	array()	
-				);	
-			}
 			
 			if ($this->user->hasPermission('access', 'replogic/order_quotes')) {
 				$replogic[] = array(
