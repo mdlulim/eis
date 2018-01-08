@@ -84,7 +84,8 @@
             
             <div class="col-sm-3">
               <div class="form-group">
-                <button type="button" id="button-filter-reset" class="btn btn-primary pull-right" style="margin-right:10px;"><i class="fa fa-filter"></i> Locate all</button>
+                <button type="button" id="button-locate-all" class="btn btn-primary pull-right" style="margin-right:10px;"><i class="fa fa-filter"></i> Locate all</button>
+                <input type="hidden" id="checkin_id" name="checkin_id" value=""  />
               </div>
             </div>
             
@@ -183,6 +184,7 @@
             <table class="table table-bordered table-hover" style="margin-bottom:0px !important;">
               <thead style="background-color:#CCCCCC;">
                 <tr>
+                  <td style="width: 1px;" class="text-center"><input type="checkbox" onclick="$('input[name*=\'selected\']').prop('checked', this.checked);" /></td>
                   <td class="text-center" >Sales Rep Name</td>
                     <td class="text-left" ><?php if ($sort == 'name') { ?>
                     <a href="<?php echo $sort_name; ?>" class="<?php echo strtolower($order); ?>">Team</a>
@@ -209,6 +211,11 @@
                     <?php foreach ($locations as $location) { ?>
                         
                             <tr>
+                              <td class="text-center"><?php if (in_array($location['checkin_id'], $selected)) { ?>
+                                <input type="checkbox" name="selected[]" value="<?php echo $location['checkin_id']; ?>" checked="checked" />
+                                <?php } else { ?>
+                                <input type="checkbox" name="selected[]" value="<?php echo $location['checkin_id']; ?>" />
+                                <?php } ?></td>
                               <td class="text-center"><?php echo $location['sales_manager']; ?></td>
                               <td class="text-left"><?php echo $location['team']; ?></td>
                               <td class="text-left"><?php echo $location['last_check']; ?></td>
@@ -235,6 +242,29 @@
     </div>
   </div>
 </div>
+<div id="popupmyModal" class="modal fade" role="dialog">
+          <form action="<?php echo $decline; ?>" method="post" enctype="multipart/form-data" id="form-popup">
+          <input type="hidden" name="quote_id" id="popupquote_id" value=""  />
+          <div class="modal-dialog">
+        
+            <!-- Modal content-->
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Sales Rep Location</h4>
+              </div>
+              <div class="modal-body">
+                <div id="popupmap"></div>
+                
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+              </div>
+            </div>
+        
+          </div>
+          </form>
+        </div>
 <script type="text/javascript"><!--
 $('#button-filter').on('click', function() {
 	var url = 'index.php?route=replogic/location_management&token=<?php echo $token; ?>';
@@ -267,11 +297,129 @@ $('#button-filter').on('click', function() {
 //alert(url);
 	location = url;
 });
-$('#button-filter-reset').on('click', function() {
-	//var url = 'index.php?route=replogic/location_management&token=<?php echo $token; ?>';
-	//location = url;
-});
+
+
 //--></script>
- 
+
+<script type="text/javascript"><!--
+$('input[name^=\'selected\']').on('change', function() { 
+	
+	var selected = $('input[name^=\'selected\']:checked');
+	
+	var chk_id = this.value;
+	var chk_ids = $("#checkin_id").attr('value');
+	
+	if(chk_ids)
+	{ 
+		var set_id = chk_ids +','+ chk_id;
+	}
+	else
+	{ 
+		var set_id = this.value;
+	}
+	
+	if ($(this).prop('checked')==true){
+       if( chk_ids.indexOf(chk_id) >= 0)
+		{
+			
+		}
+		else
+		{
+			$('#checkin_id').val(set_id);
+		}
+    }
+	else
+	{
+		
+		if( chk_ids.indexOf(','+chk_id) >= 0)
+		{
+			var myNewString = chk_ids.replace(','+chk_id, "");
+			$('#checkin_id').val(myNewString);	
+		}
+		else if(chk_ids.indexOf(chk_id+',') >= 0)
+		{
+			var myNewString = chk_ids.replace(chk_id+',', "");
+			$('#checkin_id').val(myNewString);
+		}
+		else
+		{
+			var myNewString = chk_ids.replace(chk_id, "");
+			$('#checkin_id').val(myNewString);
+		}
+	}
+	
+	if (selected.length) 
+	{
+		$('#button-locate-all').prop('disabled', false);
+		
+	}
+	else
+	{
+		$('#button-locate-all').prop('disabled', true);
+		
+	}
+	
+});
+
+$('#button-locate-all').prop('disabled', true);
+
+//$('input[name^=\'selected\']:first').trigger('change');
+
+//--></script>
+<script type="text/javascript"><!--
+$('#button-locate-all').on('click', function() {
+
+$.ajax({
+		url: 'index.php?route=replogic/location_management/Popupmap&token=<?php echo $token; ?>',
+		type: 'post',
+		data: $('#checkin_id'),
+		dataType: 'json',
+		success: function(json) { 
+			
+			$('#popupmyModal').modal('show');
+			var storeArray = new Array(
+     ["23.589242", "58.412586", "<p style='background:blue;color:white;padding:10px'> inner html in the page</p>"],["23.628695", "58.266483","ST2"],["23.622155", "58.488977","ST3"],
+     ["23.239333", "58.312586", "ST4"],["23.151933", "58.312586", "ST5"],["23.609027", "58.538858", "ST6"],["23.608280", "58.538343", "ST7"],["23.607789", "58.538021", "ST8"],["23.606412", "58.537399", "ST9"]);
+
+			var myOptions = {
+			  center: new google.maps.LatLng(storeArray[0][0], storeArray[0][1]),
+			  zoom: 9,
+			  mapTypeId: google.maps.MapTypeId.ROADMAP
+			  };
+			
+			  var map = new google.maps.Map(document.getElementById("popupmap"), myOptions); 
+			
+			  
+			  google.maps.event.addDomListener(window, 'load', testmap);
+			
+			
+			  var mapNode = map.getDiv();
+				  $('#popupmyModal').append(mapNode);
+			
+		},
+		error: function(xhr, ajaxOptions, thrownError) {
+			alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+		}
+	});
+
+});
+function testmap() {
+      for (i = 0; i < storeArray.length; i++) {  
+    		marker = new google.maps.Marker({
+        	position: new google.maps.LatLng(storeArray[i][0], storeArray[i][1]),
+        	map: map
+         });
+		 
+		
+    var infowindow = new google.maps.InfoWindow({
+		content: storeArray[i][2]
+		
+	});
+	infowindow.open(map, marker); 
+  
+      }
+        
+  }
+//--></script> 
 
 <?php echo $footer; ?> 

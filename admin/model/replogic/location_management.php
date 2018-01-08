@@ -64,6 +64,11 @@ class ModelReplogicLocationManagement extends Model {
 
 		return $query->rows;
 	}
+	public function getLocation($checkin_id) {
+		$query = $this->db->query("SELECT DISTINCT * FROM " . DB_PREFIX . "salesrep_checkins WHERE checkin_id = '" . (int)$checkin_id . "'");
+
+		return $query->row;;
+	}
 	public function getTotalLocations($data = array()) {
 		if(!isset($data['filter_team_id']))
 		{
