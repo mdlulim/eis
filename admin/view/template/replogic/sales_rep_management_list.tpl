@@ -3,7 +3,8 @@
   <div class="page-header">
     <div class="container-fluid">
       <div class="pull-right">
-      	<button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal"  id="popup" title="Assign Sales Rep to Team"><i class="fa fa-user-plus"></i></button>
+      	<button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal"  id="popup" title="Assign Sales Rep to Team"><i class="fa fa-user-plus" style="font-size:14px;"></i></button>
+        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#Modalunassign"  id="popupunassign" title="Sales Rep to Unassign Team"><i class="fa fa-user-times" style="font-size:14px;"></i></button>
         <a href="<?php echo $add; ?>" data-toggle="tooltip" title="<?php echo $button_add; ?>" class="btn btn-primary"><i class="fa fa-plus"></i></a>
         <button type="button" data-toggle="tooltip" title="<?php echo $button_delete; ?>" id="button-delete" class="btn btn-danger" onclick="confirm('<?php echo $text_confirm; ?>') ? $('#form-user').submit() : false;"><i class="fa fa-trash-o"></i></button>
         <?php if(isset($team_id)) {?>
@@ -89,6 +90,20 @@
         return false;
     };
 	
+
+
+$("#popupunassign").click(function () {
+        $('#bookId').val($(this).data('id'));
+        var array = $.map($('input[name="selected[]"]:checked'), function(c){return c.value; })
+		$('#unsales_rep_ids').val(array);
+		
+    });
+	
+	document.getElementById('unassign').onclick = function() {
+        document.getElementById('form-unassign').submit();
+        return false;
+    };
+	
 });
 		</script>
         <div id="myModal" class="modal fade" role="dialog">
@@ -113,6 +128,30 @@
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-primary" id="assign">Assign</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+        
+          </div>
+          </form>
+        </div>
+        <div id="Modalunassign" class="modal fade" role="dialog">
+          <form action="<?php echo $unassign; ?>" method="post" enctype="multipart/form-data" id="form-unassign">
+          <input type="hidden" name="sales_rep_ids" id="unsales_rep_ids" value=""  />
+          <div class="modal-dialog">
+        
+            <!-- Modal content-->
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Sales Rep to Unassign Team</h4>
+              </div>
+              <div class="modal-body">
+                <p><strong>Are you Sure to Unassign Sales rep from the team</strong> </p>
+                
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="unassign">Unassign</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
               </div>
             </div>
@@ -215,12 +254,14 @@ $('input[name^=\'selected\']').on('change', function() {
 	if (selected.length) {
 		$('#button-delete').prop('disabled', false);
 		$('#popup').prop('disabled', false);
+		$('#popupunassign').prop('disabled', false);
 	}
 
 });
 
 $('#button-delete').prop('disabled', true);
 $('#popup').prop('disabled', true);
+$('#popupunassign').prop('disabled', true);
 
 $('input[name^=\'selected\']:first').trigger('change');
 

@@ -56,6 +56,11 @@ class ModelReplogicSalesRepManagement extends Model {
 		
 		$this->db->query("UPDATE " . DB_PREFIX . "salesrep SET sales_team_id = '".$team_id."' WHERE salesrep_id = '" . (int)$sales_rep_id . "'");
 	}
+	
+	public function UnAssignSalesRep($sales_rep_id,$team_id) { 
+		
+		$this->db->query("UPDATE " . DB_PREFIX . "salesrep SET sales_team_id = '".$team_id."' WHERE salesrep_id = '" . (int)$sales_rep_id . "'");
+	}
 
 	public function getsalesrep($salesrep_id) {
 		$query = $this->db->query("SELECT DISTINCT * FROM " . DB_PREFIX . "salesrep WHERE salesrep_id = '" . (int)$salesrep_id . "'");

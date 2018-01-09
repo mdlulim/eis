@@ -211,6 +211,60 @@ class ControllerReplogicSalesRepManagement extends Controller {
 
 		$this->getList();
 	}
+	
+	public function unassign() { 
+		$this->load->language('replogic/sales_rep_management');
+
+		$this->document->setTitle($this->language->get('heading_title'));
+
+		$this->load->model('replogic/sales_rep_management');
+
+		if (isset($this->request->post['sales_rep_ids'])) {
+			
+			$sales_rep_ids = explode(',',$this->request->post['sales_rep_ids']);
+			$team_id = '';
+			
+			foreach ($sales_rep_ids as $sales_rep_id) {
+				$this->model_replogic_sales_rep_management->UnAssignSalesRep($sales_rep_id,$team_id);
+			}
+
+			$this->session->data['success'] = $this->language->get('text_success');
+
+			$url = '';
+
+			if (isset($this->request->get['filter_sales_rep_name'])) {
+			$url .= '&filter_sales_rep_name=' . urlencode(html_entity_decode($this->request->get['filter_sales_rep_name'], ENT_QUOTES, 'UTF-8'));
+			}
+	
+			if (isset($this->request->get['team_id'])) {
+				$url .= '&team_id=' . $this->request->get['team_id'];
+			}
+			
+			if (isset($this->request->get['filter_team_id'])) {
+				$url .= '&filter_team_id=' . $this->request->get['filter_team_id'];
+			}
+			
+			if (isset($this->request->get['filter_email'])) {
+				$url .= '&filter_email=' . $this->request->get['filter_email'];
+			}
+			
+			if (isset($this->request->get['sort'])) {
+				$url .= '&sort=' . $this->request->get['sort'];
+			}
+
+			if (isset($this->request->get['order'])) {
+				$url .= '&order=' . $this->request->get['order'];
+			}
+
+			if (isset($this->request->get['page'])) {
+				$url .= '&page=' . $this->request->get['page'];
+			}
+
+			$this->response->redirect($this->url->link('replogic/sales_rep_management', 'token=' . $this->session->data['token'] . $url, true));
+		}
+
+		$this->getList();
+	}
 
 	protected function getList() {
 		
@@ -293,6 +347,7 @@ class ControllerReplogicSalesRepManagement extends Controller {
 		$data['add'] = $this->url->link('replogic/sales_rep_management/add', 'token=' . $this->session->data['token'] . $url, true);
 		$data['delete'] = $this->url->link('replogic/sales_rep_management/delete', 'token=' . $this->session->data['token'] . $url, true);
 		$data['assign'] = $this->url->link('replogic/sales_rep_management/assign', 'token=' . $this->session->data['token'] . $url, true);
+		$data['unassign'] = $this->url->link('replogic/sales_rep_management/unassign', 'token=' . $this->session->data['token'] . $url, true);
 		if (isset($this->request->get['team_id'])) {
 			$data['cancel'] = $this->url->link('user/team', 'token=' . $this->session->data['token'] . $url, true);
 		}
