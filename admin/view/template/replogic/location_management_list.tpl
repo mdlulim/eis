@@ -184,7 +184,7 @@
             <table class="table table-bordered table-hover" style="margin-bottom:0px !important;">
               <thead style="background-color:#CCCCCC;">
                 <tr>
-                  <td style="width: 1px;" class="text-center"><!--<input type="checkbox" onclick="$('input[name*=\'selected\']').prop('checked', this.checked);" />--></td>
+                  <td style="width: 1px;" class="text-center"><input type="checkbox" onclick="$('input[name*=\'selected\']').prop('checked', this.checked);" id="chkbx" /></td>
                   <td class="text-center" >Sales Rep Name</td>
                     <td class="text-left" ><?php if ($sort == 'name') { ?>
                     <a href="<?php echo $sort_name; ?>" class="<?php echo strtolower($order); ?>">Team</a>
@@ -305,7 +305,7 @@ $('input[name^=\'selected\']').on('change', function() {
 	
 	var selected = $('input[name^=\'selected\']:checked');
 	
-	var chk_id = this.value;
+	/*var chk_id = this.value;
 	var chk_ids = $("#checkin_id").attr('value');
 	
 	if(chk_ids)
@@ -345,7 +345,7 @@ $('input[name^=\'selected\']').on('change', function() {
 			var myNewString = chk_ids.replace(chk_id, "");
 			$('#checkin_id').val(myNewString);
 		}
-	}
+	}*/
 	
 	if (selected.length) 
 	{
@@ -362,64 +362,17 @@ $('input[name^=\'selected\']').on('change', function() {
 
 $('#button-locate-all').prop('disabled', true);
 
-//$('input[name^=\'selected\']:first').trigger('change');
+$('#chkbx').on('click', function() { 
+        if (this.checked == true)
+            $('#button-locate-all').prop('disabled', false);
+        else
+            $('#button-locate-all').prop('disabled', true);
+    });
 
 //--></script>
-<!--<script type="text/javascript">
-$('#button-locate-all').on('click', function() {
-
-$.ajax({
-		url: 'index.php?route=replogic/location_management/Popupmap&token=<?php echo $token; ?>',
-		type: 'post',
-		data: $('#checkin_id'),
-		dataType: 'json',
-		success: function(json) { 
-			
-			$('#popupmyModal').modal('show');
-			//google.maps.event.trigger(map, 'resize');
-           // map.setCenter(center);
-		   //initialize();
-		   
-			
-		},
-		error: function(xhr, ajaxOptions, thrownError) {
-			alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
-		}
-	});
-
-});
-
-</script>-->
 
 <script type="text/javascript" src="http://maps.google.com/maps/api/js?key=AIzaSyA6ycZiGobIPuZ8wtXalf2m2MtxAzncn_Q&sensor=false"></script>  
-<script type="text/javascript">  
-      
-    /*var map; 
-    var iw = new google.maps.InfoWindow(); 
   
-    function initialize()   
-    {  
-        var myOptions = {  
-            zoom: 13,  
-            center: new google.maps.LatLng(37.4419, -122.1419),  
-            mapTypeId: google.maps.MapTypeId.ROADMAP  
-        }  
-        map = new google.maps.Map(document.getElementById("popupmap"), myOptions);  
-          
-        var markerOptions = {  
-            map: map,  
-            position: new google.maps.LatLng(37.429, -122.1419)       
-        };  
-        marker = new google.maps.Marker(markerOptions);  
-          
-        google.maps.event.addListener(marker, "click", function()  
-        {  
-            iw.setContent("This is an infowindow");  
-            iw.open(map, this);  
-        });  
-    }  */
-  
-</script>  
 <script type="text/javascript">
   
   var center = new google.maps.LatLng(59.76522, 18.35002);
@@ -427,7 +380,8 @@ $.ajax({
       var mapOptions = {
           zoom: 4,
           mapTypeId: google.maps.MapTypeId.ROADMAP,
-          center: center
+          center: center,
+		  gestureHandling: 'greedy'
       };
       map = new google.maps.Map(document.getElementById('popupmap'), mapOptions);
       var marker = new google.maps.Marker({
@@ -447,12 +401,15 @@ $.ajax({
 		  google.maps.event.trigger(map, 'resize');
           map.setCenter(center);
 		  
+		  var array = $.map($('input[name="selected[]"]:checked'), function(c){return c.value; })
+		  $('#checkin_id').val(array);
+		  
 		  $.ajax({
-		url: 'index.php?route=replogic/location_management/Popupmap&token=<?php echo $token; ?>',
-		type: 'post',
-		data: $('#checkin_id'),
-		dataType: 'json',
-		success: function(json) { 
+		  url: 'index.php?route=replogic/location_management/Popupmap&token=<?php echo $token; ?>',
+		  type: 'post',
+		  data: $('#checkin_id'),
+		  dataType: 'json',
+		  success: function(json) { 
 			
 			//$('#popupmyModal').modal('show');
 			//google.maps.event.trigger(map, 'resize');
