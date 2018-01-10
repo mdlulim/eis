@@ -455,10 +455,28 @@ class ControllerCustomerCustomer extends Controller {
 			'start'                    => ($page - 1) * $this->config->get('config_limit_admin'),
 			'limit'                    => $this->config->get('config_limit_admin')
 		);
+		
+		$this->load->model('user/user');
+		$this->load->model('user/user_group');
+		
+		$current_user = $this->session->data['user_id'];
+		$current_user_group_id = $this->model_user_user->getUser($current_user);
+		$current_user_group = $this->model_user_user_group->getUserGroup($current_user_group_id['user_group_id']); 
+		//print_r($current_user_group); exit;
+		if($current_user_group['name'] == 'Sales Manager' )
+		{ 
+			$allaccess = true;
+			$current_user_id = $this->session->data['user_id'];
+		}
+		else
+		{
+			$allaccess = false;
+			$current_user_id = 0;
+		}
+		
+		$customer_total = $this->model_customer_customer->getTotalCustomers($filter_data,$allaccess,$current_user_id);
 
-		$customer_total = $this->model_customer_customer->getTotalCustomers($filter_data);
-
-		$results = $this->model_customer_customer->getCustomers($filter_data);
+		$results = $this->model_customer_customer->getCustomers($filter_data,$allaccess,$current_user_id);
 
 		foreach ($results as $result) {
 			if (!$result['approved']) {
@@ -868,11 +886,17 @@ class ControllerCustomerCustomer extends Controller {
 		$current_user_group_id = $this->model_user_user->getUser($current_user);
 		$current_user_group = $this->model_user_user_group->getUserGroup($current_user_group_id['user_group_id']); 
 		//print_r($current_user_group); exit;
-		if($current_user_group['name'] == 'Company admin' || $current_user_group['name'] == 'Sales Manager' )
+		if($current_user_group['name'] == 'Company admin')
 		{
 			$data['access'] = 'yes';
 			$allaccess = true;
 			$current_user_id = 0;
+		}
+		else if($current_user_group['name'] == 'Sales Manager')
+		{
+			$data['access'] = 'yes';
+			$allaccess = false;
+			$current_user_id = $this->session->data['user_id'];
 		}
 		else
 		{
@@ -1519,9 +1543,27 @@ class ControllerCustomerCustomer extends Controller {
 				'start'        => 0,
 				'limit'        => 5
 			);
-
-			$results = $this->model_customer_customer->getCustomers($filter_data);
-
+			
+			$this->load->model('user/user');
+			$this->load->model('user/user_group');
+			
+			$current_user = $this->session->data['user_id'];
+			$current_user_group_id = $this->model_user_user->getUser($current_user);
+			$current_user_group = $this->model_user_user_group->getUserGroup($current_user_group_id['user_group_id']); 
+			//print_r($current_user_group); exit;
+			if($current_user_group['name'] == 'Sales Manager' )
+			{ 
+				$allaccess = true;
+				$current_user_id = $this->session->data['user_id'];
+			}
+			else
+			{
+				$allaccess = false;
+				$current_user_id = 0;
+			}
+			
+			$results = $this->model_customer_customer->getCustomers($filter_data,$allaccess,$current_user_id);
+			
 			foreach ($results as $result) {
 				$json[] = array(
 					'customer_id'       => $result['customer_id'],

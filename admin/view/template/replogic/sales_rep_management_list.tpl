@@ -147,7 +147,7 @@ $("#popupunassign").click(function () {
                 <h4 class="modal-title">Sales Rep to Unassign Team</h4>
               </div>
               <div class="modal-body">
-                <p><strong>Are you Sure to Unassign Sales rep from the team</strong> </p>
+                <p><strong>Are you Sure want to Unassign Sales rep from the team</strong> </p>
                 
               </div>
               <div class="modal-footer">

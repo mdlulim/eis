@@ -153,8 +153,16 @@ class ModelCustomerCustomer extends Model {
 		return $query->row;
 	}
 
-	public function getCustomers($data = array()) {
-		$sql = "SELECT *, CONCAT(c.firstname, ' ', c.lastname) AS name, cgd.name AS customer_group FROM " . DB_PREFIX . "customer c LEFT JOIN " . DB_PREFIX . "customer_group_description cgd ON (c.customer_group_id = cgd.customer_group_id) WHERE cgd.language_id = '" . (int)$this->config->get('config_language_id') . "'";
+	public function getCustomers($data = array(), $allaccess=false, $current_user_id) {
+		if($allaccess)
+		{
+			$sql = "SELECT *, CONCAT(c.firstname, ' ', c.lastname) AS name, cgd.name AS customer_group FROM " . DB_PREFIX . "customer c LEFT JOIN " . DB_PREFIX . "customer_group_description cgd ON (c.customer_group_id = cgd.customer_group_id) LEFT JOIN oc_salesrep sr on sr.salesrep_id = c.salesrep_id left join oc_team tm on tm.team_id = sr.sales_team_id WHERE tm.sales_manager = '".$current_user_id."' and cgd.language_id = '" . (int)$this->config->get('config_language_id') . "'";
+			
+		}
+		else
+		{
+			$sql = "SELECT *, CONCAT(c.firstname, ' ', c.lastname) AS name, cgd.name AS customer_group FROM " . DB_PREFIX . "customer c LEFT JOIN " . DB_PREFIX . "customer_group_description cgd ON (c.customer_group_id = cgd.customer_group_id) WHERE cgd.language_id = '" . (int)$this->config->get('config_language_id') . "'";
+		}
 
 		$implode = array();
 
@@ -227,7 +235,7 @@ class ModelCustomerCustomer extends Model {
 
 			$sql .= " LIMIT " . (int)$data['start'] . "," . (int)$data['limit'];
 		}
-
+//echo $sql; exit;
 		$query = $this->db->query($sql);
 
 		return $query->rows;
@@ -384,10 +392,19 @@ class ModelCustomerCustomer extends Model {
 		return $query->row['total'];
 	}
 	
-	public function getTotalCustomers($data = array()) {
-		$sql = "SELECT COUNT(*) AS total FROM " . DB_PREFIX . "customer";
-
+	public function getTotalCustomers($data = array(), $allaccess=false, $current_user_id) {
+		
 		$implode = array();
+		if($allaccess)
+		{
+			$sql = "SELECT COUNT(*) AS total FROM " . DB_PREFIX . "customer ap left join oc_salesrep sr on sr.salesrep_id = ap.salesrep_id left join oc_team tm on tm.team_id = sr.sales_team_id";
+			$implode[] = "tm.sales_manager = '" . $current_user_id . "'";
+		}
+		else
+		{
+			$sql = "SELECT COUNT(*) AS total FROM " . DB_PREFIX . "customer";
+			
+		}
 
 		if (!empty($data['filter_name'])) {
 			$implode[] = "CONCAT(firstname, ' ', lastname) LIKE '%" . $this->db->escape($data['filter_name']) . "%'";
