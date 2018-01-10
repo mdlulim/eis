@@ -495,7 +495,8 @@ class ControllerCustomerCustomer extends Controller {
 
 			$data['customers'][] = array(
 				'customer_id'    => $result['customer_id'],
-				'name'           => $result['name'],
+				//'name'           => $result['name'],
+				'name'           => $result['firstname'],
 				'email'          => $result['email'],
 				'customer_group' => $result['customer_group'],
 				'status'         => ($result['status'] ? $this->language->get('text_enabled') : $this->language->get('text_disabled')),
