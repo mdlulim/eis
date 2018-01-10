@@ -383,7 +383,7 @@ class ControllerReplogicOrderQuotes extends Controller {
 			$customer_contact = $cust_con['first_name'] ." ". $cust_con['last_name'];
 			
 			$cust = $this->model_customer_customer->getCustomer($result['customer_id']);
-			$customer_nm = $cust['firstname'] ." ". $cust['lastname'];
+			$customer_nm = $cust['firstname'];
 			
 			if($current_user_group['name'] == 'Company admin' || $current_user_group['name'] == 'Administrator')
 			{

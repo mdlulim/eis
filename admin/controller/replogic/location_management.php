@@ -187,7 +187,7 @@ class ControllerReplogicLocationManagement extends Controller {
 		$sales_rep = $salesrep['salesrep_name'] ." ". $salesrep['salesrep_lastname'];
 		
 		$customer = $this->model_customer_customer->getCustomer($result['customer_id']);
-		$customername = $customer['firstname'] ." ". $customer['lastname'];
+		$customername = $customer['firstname'];
 		
 		$customeraddress = $this->model_customer_customer->getAddress($customer['address_id']);
 		$customerlatitude = $customeraddress['latitude'];

@@ -156,12 +156,12 @@ class ModelCustomerCustomer extends Model {
 	public function getCustomers($data = array(), $allaccess=false, $current_user_id) {
 		if($allaccess)
 		{
-			$sql = "SELECT *, CONCAT(c.firstname, ' ', c.lastname) AS name, cgd.name AS customer_group FROM " . DB_PREFIX . "customer c LEFT JOIN " . DB_PREFIX . "customer_group_description cgd ON (c.customer_group_id = cgd.customer_group_id) LEFT JOIN oc_salesrep sr on sr.salesrep_id = c.salesrep_id left join oc_team tm on tm.team_id = sr.sales_team_id WHERE tm.sales_manager = '".$current_user_id."' and cgd.language_id = '" . (int)$this->config->get('config_language_id') . "'";
+			$sql = "SELECT *, CONCAT(c.firstname) AS name, cgd.name AS customer_group FROM " . DB_PREFIX . "customer c LEFT JOIN " . DB_PREFIX . "customer_group_description cgd ON (c.customer_group_id = cgd.customer_group_id) LEFT JOIN oc_salesrep sr on sr.salesrep_id = c.salesrep_id left join oc_team tm on tm.team_id = sr.sales_team_id WHERE tm.sales_manager = '".$current_user_id."' and cgd.language_id = '" . (int)$this->config->get('config_language_id') . "'";
 			
 		}
 		else
 		{
-			$sql = "SELECT *, CONCAT(c.firstname, ' ', c.lastname) AS name, cgd.name AS customer_group FROM " . DB_PREFIX . "customer c LEFT JOIN " . DB_PREFIX . "customer_group_description cgd ON (c.customer_group_id = cgd.customer_group_id) WHERE cgd.language_id = '" . (int)$this->config->get('config_language_id') . "'";
+			$sql = "SELECT *, CONCAT(c.firstname) AS name, cgd.name AS customer_group FROM " . DB_PREFIX . "customer c LEFT JOIN " . DB_PREFIX . "customer_group_description cgd ON (c.customer_group_id = cgd.customer_group_id) WHERE cgd.language_id = '" . (int)$this->config->get('config_language_id') . "'";
 		}
 
 		$implode = array();

@@ -244,7 +244,7 @@ class ControllerReplogicCustomerContact extends Controller {
 			$data['customer_contacts'][] = array(
 				'customer_con_id' => $result['customer_con_id'],
 				'email' => $result['email'],
-				'customer' => $customers['firstname'] . '&nbsp;' . $customers['lastname'],
+				'customer' => $customers['firstname'],
 				'name'          => $result['first_name'] . '&nbsp;' . $result['last_name'],
 				'edit'          => $this->url->link('replogic/customer_contact/edit', 'token=' . $this->session->data['token'] . '&customer_con_id=' . $result['customer_con_id'] . $url, true)
 			);

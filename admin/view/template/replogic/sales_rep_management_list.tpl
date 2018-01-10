@@ -10,7 +10,7 @@
         <?php if(isset($team_id)) {?>
         <a href="<?php echo $cancel; ?>" data-toggle="tooltip" title="<?php echo $button_cancel; ?>" class="btn btn-default"><i class="fa fa-reply"></i></a>
         <?php } ?>
-        
+        <span data-toggle="tooltip" title="" data-original-title="Minimum amount a customer can purchase a voucher for.">Voucher Min</span>
       </div>
       <h1><?php echo $heading_title; ?></h1>
       <ul class="breadcrumb">
