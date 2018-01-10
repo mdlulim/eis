@@ -84,14 +84,14 @@
             
             <div class="col-sm-3">
               <div class="form-group">
-                <button type="button" id="button-locate-all" class="btn btn-primary pull-right" style="margin-right:10px;"><i class="fa fa-filter"></i> Locate all</button>
+                <button type="button" id="button-locate-all" class="btn btn-primary pull-right" style="float:left!important;margin-left:45px;" title="Select the sales rep/s you wish to locate from the table below and click on the Locate selected button."><i class="fa fa-filter"></i>Locate Selected</button>
+                <label class="col-sm-2 control-label" for="input-voucher-min" style="float:left;padding-left:0px;top:-3px;"><span data-toggle="tooltip" title="Select the sales rep/s you wish to locate from the table below and click on the Locate selected button." style="font-size:27px;"></span></label>
                 <input type="hidden" id="checkin_id" name="checkin_id" value=""  />
               </div>
+              
             </div>
             
           </div>  
-          
-           
          
           <div class="table-responsive">
             <table class="table table-bordered table-hover">
@@ -100,6 +100,7 @@
                <tr>
               		<td>
                     	<div id="map"></div>
+                        
                                 <!--<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA6ycZiGobIPuZ8wtXalf2m2MtxAzncn_Q&callback=initMap&sensor=false"> </script>-->
                                 <script type="text/javascript">
 								/*function initMap() { 
