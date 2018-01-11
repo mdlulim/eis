@@ -2,7 +2,10 @@
 <div id="content">
   <div class="page-header">
     <div class="container-fluid">
-      <div class="pull-right"><a href="<?php echo $add; ?>" data-toggle="tooltip" title="<?php echo $button_add; ?>" class="btn btn-primary"><i class="fa fa-plus"></i></a>
+      <div class="pull-right">
+        <?php if(count($notes) < 1) { ?>
+        <a href="<?php echo $add; ?>" data-toggle="tooltip" title="<?php echo $button_add; ?>" class="btn btn-primary"><i class="fa fa-plus"></i></a>
+        <?php } ?>
         <button type="button" data-toggle="tooltip" title="<?php echo $button_delete; ?>" class="btn btn-danger" onclick="confirm('<?php echo $text_confirm; ?>') ? $('#form-user').submit() : false;"><i class="fa fa-trash-o"></i></button>
         <a href="<?php echo $cancel; ?>" data-toggle="tooltip" title="<?php echo $button_cancel; ?>" class="btn btn-default"><i class="fa fa-reply"></i></a>
       </div>
@@ -76,6 +79,7 @@
                     <?php } else { ?>
                     <a href="<?php echo $sort_note_title; ?>"><?php echo $column_note_title; ?></a>
                     <?php } ?></td>
+                    <td class="text-left">Description</td>
                  <!-- <td class="text-left">Sales Manager</td>-->
                   
                   <td class="text-right"><?php echo $column_action; ?></td>
@@ -93,6 +97,7 @@
                                 <input type="checkbox" name="selected[]" value="<?php echo $note['note_id']; ?>" />
                                 <?php } ?></td>
                               <td class="text-left"><?php echo $note['note_title']; ?></td>
+                              <td class="text-left"><?php echo $note['description']; ?></td>
                              <!-- <td class="text-left"><?php echo $note['sales_manager']; ?></td>-->
                               <td class="text-right"><a href="<?php echo $note['edit']; ?>" data-toggle="tooltip" title="<?php echo $button_edit; ?>" class="btn btn-primary"><i class="fa fa-pencil"></i></a></td>
                             </tr>

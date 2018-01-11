@@ -1,7 +1,7 @@
 <?php
 // Heading
 $_['heading_title']    = 'Appointment Notes';
-$_['heading_schedule_management']    = 'Schedule Management';
+$_['heading_schedule_management']    = 'Appointments';
 
 // Text
 $_['text_success']     = 'Success: You have modified Appointment Notes!';
