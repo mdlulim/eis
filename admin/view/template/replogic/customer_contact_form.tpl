@@ -43,7 +43,7 @@
               <?php } ?>
             </div>
           </div>
-          <div class="form-group required">
+          <div class="form-group">
             <label class="col-sm-2 control-label" for="input-user-group"><?php echo $entry_customer; ?></label>
             <div class="col-sm-10">
               <select name="customer_id" id="input-sales_manager" class="form-control">
@@ -72,7 +72,7 @@
             </div>
           </div>
           
-          <div class="form-group required">
+          <div class="form-group">
             <label class="col-sm-2 control-label" for="input-username"><?php echo $entry_telephone_number; ?></label>
             <div class="col-sm-10">
               <input type="text" name="telephone_number" value="<?php echo $telephone_number; ?>" maxlength="10" placeholder="<?php echo $entry_telephone_number; ?>" id="input-tel" class="form-control" />
@@ -82,7 +82,7 @@
             </div>
           </div>
           
-          <div class="form-group required">
+          <div class="form-group">
             <label class="col-sm-2 control-label" for="input-username"><?php echo $entry_cellphone_number; ?></label>
             <div class="col-sm-10">
               <input type="text" name="cellphone_number" value="<?php echo $cellphone_number; ?>" maxlength="10" placeholder="<?php echo $entry_cellphone_number; ?>" id="input-cell" class="form-control" />
@@ -92,7 +92,7 @@
             </div>
           </div>
           
-          <div class="form-group required">
+          <div class="form-group">
             <label class="col-sm-2 control-label" for="input-username"><?php echo $entry_role; ?></label>
             <div class="col-sm-10">
               <input type="text" name="role" value="<?php echo $role; ?>" placeholder="<?php echo $entry_role; ?>" id="input-cell" class="form-control" />

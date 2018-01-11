@@ -557,12 +557,12 @@ class ControllerReplogicCustomerContact extends Controller {
 			$this->error['last_name'] = $this->language->get('error_last_name');
 		}
 		
-		if ((utf8_strlen($this->request->post['role']) < 3) || (utf8_strlen($this->request->post['role']) > 64)) {
-			$this->error['role'] = $this->language->get('error_role');
-		}
-		
 		if ((utf8_strlen($this->request->post['email']) > 96) || !filter_var($this->request->post['email'], FILTER_VALIDATE_EMAIL)) {
 			$this->error['email'] = $this->language->get('error_email');
+		}
+		
+		/*if ((utf8_strlen($this->request->post['role']) < 3) || (utf8_strlen($this->request->post['role']) > 64)) {
+			$this->error['role'] = $this->language->get('error_role');
 		}
 		
 		if (utf8_strlen($this->request->post['telephone_number']) < 10) {
@@ -575,7 +575,7 @@ class ControllerReplogicCustomerContact extends Controller {
 		
 		if ($this->request->post['customer_id'] == '') {
 			$this->error['customer_id'] = $this->language->get('error_customer_id');
-		}
+		}*/
 		
 		return !$this->error;
 	}
