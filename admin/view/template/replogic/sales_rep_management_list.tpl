@@ -4,13 +4,15 @@
     <div class="container-fluid">
       <div class="pull-right">
       	<button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal"  id="popup" title="Assign Sales Rep to Team"><i class="fa fa-user-plus" style="font-size:14px;"></i></button>
+        <?php if($team_id == '') { ?>
         <button type="button" class="btn btn-info" data-toggle="modal" data-target="#Modalunassign"  id="popupunassign" title="Sales Rep to Unassign Team"><i class="fa fa-user-times" style="font-size:14px;"></i></button>
+        <?php } ?>
         <a href="<?php echo $add; ?>" data-toggle="tooltip" title="<?php echo $button_add; ?>" class="btn btn-primary"><i class="fa fa-plus"></i></a>
         <button type="button" data-toggle="tooltip" title="<?php echo $button_delete; ?>" id="button-delete" class="btn btn-danger" onclick="confirm('<?php echo $text_confirm; ?>') ? $('#form-user').submit() : false;"><i class="fa fa-trash-o"></i></button>
         <?php if(isset($team_id)) {?>
         <a href="<?php echo $cancel; ?>" data-toggle="tooltip" title="<?php echo $button_cancel; ?>" class="btn btn-default"><i class="fa fa-reply"></i></a>
         <?php } ?>
-        <span data-toggle="tooltip" title="" data-original-title="Minimum amount a customer can purchase a voucher for.">Voucher Min</span>
+        
       </div>
       <h1><?php echo $heading_title; ?></h1>
       <ul class="breadcrumb">
