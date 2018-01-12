@@ -72,16 +72,31 @@ class ModelReplogicSalesRepManagement extends Model {
 		
 		if($allaccess)
 		{
-			$sql = "SELECT * FROM " . DB_PREFIX . "salesrep";
-			
-			if (!empty($data['filter_sales_rep_name']) || !empty($data['team_id']) || !empty($data['filter_email']) || !empty($data['filter_team_id']) ) 
+			if(!empty($data['filter_customer_id']))
 			{
-				$sql .= " where salesrep_id > '0'";
+				$sql = "SELECT * FROM " . DB_PREFIX . "salesrep sr left join oc_customer cu on cu.salesrep_id = sr.salesrep_id";
+				$sql .= " where sr.salesrep_id > '0'";
+				$sql .= " and cu.customer_id = ".$data['filter_customer_id']."";
+			}
+			else
+			{
+				$sql = "SELECT * FROM " . DB_PREFIX . "salesrep";
+				if (!empty($data['filter_sales_rep_name']) || !empty($data['team_id']) || !empty($data['filter_email']) || !empty($data['filter_team_id']) ) 
+				{
+					$sql .= " where salesrep_id > '0'";
+				}
 			}
 		}
 		else
 		{
-			$sql = "SELECT * FROM oc_salesrep sr left join oc_team tm on tm.team_id = sr.sales_team_id where tm.sales_manager = ".$current_user_id.""; 
+			if(!empty($data['filter_customer_id']))
+			{
+				$sql = "SELECT * FROM oc_salesrep sr left join oc_team tm on tm.team_id = sr.sales_team_id left join oc_customer cu on cu.salesrep_id = sr.salesrep_id where tm.sales_manager = ".$current_user_id." and cu.customer_id = ".$data['filter_customer_id'].""; 
+			}
+			else
+			{
+				$sql = "SELECT * FROM oc_salesrep sr left join oc_team tm on tm.team_id = sr.sales_team_id where tm.sales_manager = ".$current_user_id.""; 
+			}
 		}
 		
 		if (!empty($data['filter_sales_rep_name'])) {
@@ -149,16 +164,31 @@ class ModelReplogicSalesRepManagement extends Model {
 		
 		if($allaccess)
 		{
-			$sql = "SELECT COUNT(*) AS total FROM " . DB_PREFIX . "salesrep";
-			
-			if (!empty($data['filter_sales_rep_name']) || !empty($data['team_id']) || !empty($data['filter_email']) || !empty($data['filter_team_id']) ) 
+			if(!empty($data['filter_customer_id']))
 			{
-				$sql .= " where salesrep_id > '0'";
+				$sql = "SELECT COUNT(*) AS total FROM " . DB_PREFIX . "salesrep sr left join oc_customer cu on cu.salesrep_id = sr.salesrep_id";
+				$sql .= " where sr.salesrep_id > '0'";
+				$sql .= " and cu.customer_id = ".$data['filter_customer_id']."";
+			}
+			else
+			{
+				$sql = "SELECT * FROM " . DB_PREFIX . "salesrep";
+				if (!empty($data['filter_sales_rep_name']) || !empty($data['team_id']) || !empty($data['filter_email']) || !empty($data['filter_team_id']) ) 
+				{
+					$sql .= " where salesrep_id > '0'";
+				}
 			}
 		}
 		else
 		{
-			$sql = "SELECT COUNT(*) AS total FROM oc_salesrep sr left join oc_team tm on tm.team_id = sr.sales_team_id where tm.sales_manager = ".$current_user_id.""; 
+			if(!empty($data['filter_customer_id']))
+			{
+				$sql = "SELECT COUNT(*) AS total FROM oc_salesrep sr left join oc_team tm on tm.team_id = sr.sales_team_id left join oc_customer cu on cu.salesrep_id = sr.salesrep_id where tm.sales_manager = ".$current_user_id." and cu.customer_id = ".$data['filter_customer_id'].""; 
+			}
+			else
+			{
+				$sql = "SELECT COUNT(*) AS total FROM oc_salesrep sr left join oc_team tm on tm.team_id = sr.sales_team_id where tm.sales_manager = ".$current_user_id.""; 
+			}
 		}
 		
 		if (!empty($data['filter_sales_rep_name'])) {
