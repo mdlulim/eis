@@ -1,13 +1,13 @@
 <?php
 // Heading
-$_['heading_title']    = 'Schedule Management';
+$_['heading_title']    = 'Appointments';
 
 // Text
-$_['text_success']     = 'Success: You have modified Schedule Management!';
-$_['text_list']        = 'Schedule Management';
-$_['text_add']         = 'Add Schedule Management';
-$_['text_edit']        = 'Edit Schedule Management';
-$_['text_confirm']        = 'Are you sure want to Delete Schedule Management ?';
+$_['text_success']     = 'Success: You have modified Appointments!';
+$_['text_list']        = 'Appointments';
+$_['text_add']         = 'Add Appointment';
+$_['text_edit']        = 'Edit Appointment';
+$_['text_confirm']        = 'Are you sure want to Delete Appointment ?';
 
 // Column
 $_['column_name']      = 'Appointment Name';
@@ -23,8 +23,8 @@ $_['entry_access']     = 'Access Permission';
 $_['entry_modify']     = 'Modify Permission';
 
 // Error
-$_['error_permission'] = 'Warning: You do not have permission to modify Schedule Management!';
-$_['error_schedule_management'] = 'Warning: You do not have permission to modify Schedule Management!';
+$_['error_permission'] = 'Warning: You do not have permission to modify Appointments!';
+$_['error_schedule_management'] = 'Warning: You do not have permission to modify Appointments!';
 $_['error_appointment_name']       = 'Appointment Name must be between 3 and 64 characters!';
 $_['error_appointment_description']       = 'Appointment Description must be between 3 and 64 characters!';
 $_['error_appointment_date']       = 'Plz Enter Appointment Date!';

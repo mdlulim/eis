@@ -29,6 +29,10 @@ class ControllerReplogicScheduleManagement extends Controller {
 			if (isset($this->request->get['filter_appointment_name'])) {
 			$url .= '&filter_appointment_name=' . urlencode(html_entity_decode($this->request->get['filter_appointment_name'], ENT_QUOTES, 'UTF-8'));
 			}
+			
+			if (isset($this->request->get['filter_customer_id'])) {
+				$url .= '&filter_customer_id=' . $this->request->get['filter_customer_id'];
+			}
 	
 			if (isset($this->request->get['filter_salesrep_id'])) {
 				$url .= '&filter_salesrep_id=' . $this->request->get['filter_salesrep_id'];
@@ -75,7 +79,11 @@ class ControllerReplogicScheduleManagement extends Controller {
 			$url = '';
 			
 			if (isset($this->request->get['filter_appointment_name'])) {
-			$url .= '&filter_appointment_name=' . urlencode(html_entity_decode($this->request->get['filter_appointment_name'], ENT_QUOTES, 'UTF-8'));
+				$url .= '&filter_appointment_name=' . urlencode(html_entity_decode($this->request->get['filter_appointment_name'], ENT_QUOTES, 'UTF-8'));
+			}
+			
+			if (isset($this->request->get['filter_customer_id'])) {
+				$url .= '&filter_customer_id=' . $this->request->get['filter_customer_id'];
 			}
 	
 			if (isset($this->request->get['filter_salesrep_id'])) {
@@ -127,6 +135,10 @@ class ControllerReplogicScheduleManagement extends Controller {
 			if (isset($this->request->get['filter_appointment_name'])) {
 			$url .= '&filter_appointment_name=' . urlencode(html_entity_decode($this->request->get['filter_appointment_name'], ENT_QUOTES, 'UTF-8'));
 			}
+			
+			if (isset($this->request->get['filter_customer_id'])) {
+				$url .= '&filter_customer_id=' . $this->request->get['filter_customer_id'];
+			}
 	
 			if (isset($this->request->get['filter_salesrep_id'])) {
 				$url .= '&filter_salesrep_id=' . $this->request->get['filter_salesrep_id'];
@@ -164,6 +176,12 @@ class ControllerReplogicScheduleManagement extends Controller {
 			$filter_appointment_name = $this->request->get['filter_appointment_name'];
 		} else {
 			$filter_appointment_name = null;
+		}
+		
+		if (isset($this->request->get['filter_customer_id'])) {
+			$filter_customer_id = $this->request->get['filter_customer_id'];
+		} else {
+			$filter_customer_id = null;
 		}
 
 		if (isset($this->request->get['filter_appointment_from'])) {
@@ -206,6 +224,10 @@ class ControllerReplogicScheduleManagement extends Controller {
 
 		if (isset($this->request->get['filter_appointment_name'])) {
 			$url .= '&filter_appointment_name=' . urlencode(html_entity_decode($this->request->get['filter_appointment_name'], ENT_QUOTES, 'UTF-8'));
+		}
+		
+		if (isset($this->request->get['filter_customer_id'])) {
+			$url .= '&filter_customer_id=' . $this->request->get['filter_customer_id'];
 		}
 
 		if (isset($this->request->get['filter_salesrep_id'])) {
@@ -251,6 +273,7 @@ class ControllerReplogicScheduleManagement extends Controller {
 
 		$filter_data = array(
 			'filter_appointment_name'	  => $filter_appointment_name,
+			'filter_customer_id'  => $filter_customer_id,
 			'filter_appointment_from'	  => $filter_appointment_from,
 			'filter_appointment_to'	  => $filter_appointment_to,
 			'filter_salesrep_id' => $filter_salesrep_id,
@@ -308,8 +331,11 @@ class ControllerReplogicScheduleManagement extends Controller {
 		
 		$this->load->model('user/user_group');
 		$this->load->model('user/user');
+		$this->load->model('customer/customer');
 		$user_group_id = $this->model_user_user_group->getUserGroupByName('Sales Manager');
 		$data['sales_managers'] = $this->model_user_user->getUsersByGroupId($user_group_id['user_group_id']);
+		
+		$data['customers'] = $this->model_customer_customer->getCustomers();
 		
 		$data['heading_title'] = $this->language->get('heading_title');
 		
@@ -351,6 +377,10 @@ class ControllerReplogicScheduleManagement extends Controller {
 			$url .= '&filter_appointment_name=' . urlencode(html_entity_decode($this->request->get['filter_appointment_name'], ENT_QUOTES, 'UTF-8'));
 		}
 
+		if (isset($this->request->get['filter_customer_id'])) {
+			$url .= '&filter_customer_id=' . $this->request->get['filter_customer_id'];
+		}
+		
 		if (isset($this->request->get['filter_salesrep_id'])) {
 			$url .= '&filter_salesrep_id=' . $this->request->get['filter_salesrep_id'];
 		}
@@ -379,6 +409,10 @@ class ControllerReplogicScheduleManagement extends Controller {
 		
 		if (isset($this->request->get['filter_appointment_name'])) {
 			$url .= '&filter_appointment_name=' . urlencode(html_entity_decode($this->request->get['filter_appointment_name'], ENT_QUOTES, 'UTF-8'));
+		}
+		
+		if (isset($this->request->get['filter_customer_id'])) {
+			$url .= '&filter_customer_id=' . $this->request->get['filter_customer_id'];
 		}
 
 		if (isset($this->request->get['filter_salesrep_id'])) {
@@ -412,6 +446,7 @@ class ControllerReplogicScheduleManagement extends Controller {
 		$data['results'] = sprintf($this->language->get('text_pagination'), ($schedule_management_total) ? (($page - 1) * $this->config->get('config_limit_admin')) + 1 : 0, ((($page - 1) * $this->config->get('config_limit_admin')) > ($schedule_management_total - $this->config->get('config_limit_admin'))) ? $schedule_management_total : ((($page - 1) * $this->config->get('config_limit_admin')) + $this->config->get('config_limit_admin')), $schedule_management_total, ceil($schedule_management_total / $this->config->get('config_limit_admin')));
 
 		$data['filter_appointment_name'] = $filter_appointment_name;
+		$data['filter_customer_id'] = $filter_customer_id;
 		$data['filter_appointment_from'] = $filter_appointment_from;
 		$data['filter_appointment_to'] = $filter_appointment_to;
 		$data['filter_salesrep_id'] = $filter_salesrep_id;
@@ -498,6 +533,10 @@ class ControllerReplogicScheduleManagement extends Controller {
 			$url .= '&filter_appointment_name=' . urlencode(html_entity_decode($this->request->get['filter_appointment_name'], ENT_QUOTES, 'UTF-8'));
 		}
 
+		if (isset($this->request->get['filter_customer_id'])) {
+			$url .= '&filter_customer_id=' . $this->request->get['filter_customer_id'];
+		}
+		
 		if (isset($this->request->get['filter_salesrep_id'])) {
 			$url .= '&filter_salesrep_id=' . $this->request->get['filter_salesrep_id'];
 		}

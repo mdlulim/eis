@@ -39,12 +39,13 @@ class ModelReplogicScheduleManagement extends Model {
 		
 			$sql = "SELECT * FROM " . DB_PREFIX . "appointment";
 			
-			if (!empty($data['filter_appointment_name']) || !empty($data['filter_salesrep_id']) || !empty($data['filter_appointment_from']) || !empty($data['filter_appointment_to'])) 		{
+			if (!empty($data['filter_appointment_name']) || !empty($data['filter_salesrep_id']) || !empty($data['filter_appointment_from']) || !empty($data['filter_appointment_to']) || !empty($data['filter_customer_id'])) 		{
 				$sql .= " where appointment_id > '0'";
 			}
 			
 			$appointment_name = 'appointment_name';
 			$salesrep_id = 'salesrep_id';
+			$customer_id = 'customer_id';
 			$appointment_date = 'appointment_date';
 		}
 		else
@@ -53,6 +54,7 @@ class ModelReplogicScheduleManagement extends Model {
 			
 			$appointment_name = 'ap.appointment_name';
 			$salesrep_id = 'ap.salesrep_id';
+			$customer_id = 'ap.customer_id';
 			$appointment_date = 'ap.appointment_date';
 			
 		}
@@ -63,6 +65,10 @@ class ModelReplogicScheduleManagement extends Model {
 
 		if (!empty($data['filter_salesrep_id'])) {
 			$sql .= " AND ".$salesrep_id." LIKE '" . $this->db->escape($data['filter_salesrep_id']) . "'";
+		}
+		
+		if (!empty($data['filter_customer_id'])) {
+			$sql .= " AND ".$customer_id." LIKE '" . $this->db->escape($data['filter_customer_id']) . "'";
 		}
 		
 		if (!empty($data['filter_appointment_from']) && !empty($data['filter_appointment_to'])) { 
@@ -105,12 +111,13 @@ class ModelReplogicScheduleManagement extends Model {
 		
 			$sql = "SELECT COUNT(*) AS total FROM " . DB_PREFIX . "appointment";
 			
-			if (!empty($data['filter_appointment_name']) || !empty($data['filter_salesrep_id']) || !empty($data['filter_appointment_from']) || !empty($data['filter_appointment_to'])) 		{
+			if (!empty($data['filter_appointment_name']) || !empty($data['filter_salesrep_id']) || !empty($data['filter_appointment_from']) || !empty($data['filter_appointment_to']) || !empty($data['filter_customer_id'])) 		{
 				$sql .= " where appointment_id > '0'";
 			}
 			
 			$appointment_name = 'appointment_name';
 			$salesrep_id = 'salesrep_id';
+			$customer_id = 'customer_id';
 			$appointment_date = 'appointment_date';
 		}
 		else
@@ -119,6 +126,7 @@ class ModelReplogicScheduleManagement extends Model {
 			
 			$appointment_name = 'ap.appointment_name';
 			$salesrep_id = 'ap.salesrep_id';
+			$customer_id = 'ap.customer_id';
 			$appointment_date = 'ap.appointment_date';
 			
 		}
@@ -129,6 +137,10 @@ class ModelReplogicScheduleManagement extends Model {
 
 		if (!empty($data['filter_salesrep_id'])) {
 			$sql .= " AND ".$salesrep_id." LIKE '" . $this->db->escape($data['filter_salesrep_id']) . "'";
+		}
+		
+		if (!empty($data['filter_customer_id'])) {
+			$sql .= " AND ".$customer_id." LIKE '" . $this->db->escape($data['filter_customer_id']) . "'";
 		}
 		
 		if (!empty($data['filter_appointment_from']) && !empty($data['filter_appointment_to'])) { 

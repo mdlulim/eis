@@ -68,9 +68,9 @@
                         <option value="">Select Customer</option>
                         <?php foreach ($customers as $customer) { ?>
                         <?php if ($customer['customer_id'] == $filter_customer_id) { ?>
-                        <option value="<?php echo $customer['customer_id']; ?>" selected="selected"><?php echo $customer['firstname']; ?> <?php echo $customer['lastname']; ?></option>
+                        <option value="<?php echo $customer['customer_id']; ?>" selected="selected"><?php echo $customer['firstname']; ?></option>
                         <?php } else { ?>
-                        <option value="<?php echo $customer['customer_id']; ?>"><?php echo $customer['firstname']; ?> <?php echo $customer['lastname']; ?></option>
+                        <option value="<?php echo $customer['customer_id']; ?>"><?php echo $customer['firstname']; ?></option>
                         <?php } ?>
                         <?php } ?>
                       </select>

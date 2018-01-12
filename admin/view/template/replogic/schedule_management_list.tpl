@@ -34,9 +34,23 @@
         <div class="well">
           <div class="row">
             <div class="col-sm-6">
-              <div class="form-group">
+              <!--<div class="form-group">
                 <label class="control-label" for="input-name">Appointment Name</label>
                 <input type="text" name="filter_appointment_name" value="<?php echo $filter_appointment_name; ?>" placeholder="Appointment Name" id="input-name" class="form-control" />
+              </div>-->
+              <div class="form-group">
+                <label class="control-label" for="input-price">Customer</label>
+                <select name="filter_customer_id" class="form-control">
+                	<option value="">Select Customer</option>
+                    <?php foreach ($customers as $customer) {  ?>
+                <?php if ($customer['customer_id'] == $filter_customer_id) { ?>
+                <option value="<?php echo $customer['customer_id']; ?>" selected="selected"><?php echo $customer['firstname']; ?></option>
+                <?php } else { ?>
+                <option value="<?php echo $customer['customer_id']; ?>"><?php echo $customer['firstname']; ?></option>
+                <?php } ?>
+                <?php } ?>
+                    
+                </select>
               </div>
               <div class="form-group fromdate">
                 <label class="control-label" for="input-model">Appointment Date From</label>
@@ -181,6 +195,12 @@ $('#button-filter').on('click', function() {
 
 	if (filter_salesrep_id) {
 		url += '&filter_salesrep_id=' + encodeURIComponent(filter_salesrep_id);
+	}
+	
+	var filter_customer_id = $('select[name=\'filter_customer_id\']').val();
+
+	if (filter_customer_id) {
+		url += '&filter_customer_id=' + encodeURIComponent(filter_customer_id);
 	}
 
 	var filter_appointment_from = $('input[name=\'filter_appointment_from\']').val();

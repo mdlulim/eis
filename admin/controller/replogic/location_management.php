@@ -428,6 +428,7 @@ class ControllerReplogicLocationManagement extends Controller {
 			$latitude = '';
 			$longitude = '';
 			$address = $location_info['location']; // Address
+			
 			$url = "http://maps.google.com/maps/api/geocode/json?address=".urlencode($address)."&sensor=false&region=India";
 			$ch = curl_init();
 			curl_setopt($ch, CURLOPT_URL, $url);
