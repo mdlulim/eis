@@ -106,6 +106,11 @@
                     <?php } else { ?>
                     <a href="<?php echo $sort_customer; ?>"><?php echo $column_customer; ?></a>
                     <?php } ?></td>
+                  <td class="text-left"><?php if ($sort == 'salesrep') { ?>
+                    <a href="<?php echo $sort_salesrep; ?>" class="<?php echo strtolower($order); ?>">Sales Rep</a>
+                    <?php } else { ?>
+                    <a href="<?php echo $sort_salesrep; ?>">Sales Rep</a>
+                    <?php } ?></td>
                   <td class="text-left"><?php if ($sort == 'order_status') { ?>
                     <a href="<?php echo $sort_status; ?>" class="<?php echo strtolower($order); ?>"><?php echo $column_status; ?></a>
                     <?php } else { ?>
@@ -141,6 +146,7 @@
                     <input type="hidden" name="shipping_code[]" value="<?php echo $order['shipping_code']; ?>" /></td>
                   <td class="text-right"><?php echo $order['order_id']; ?></td>
                   <td class="text-left"><?php echo $order['customer']; ?></td>
+                  <td class="text-left"><?php echo $order['salesrep']; ?></td>
                   <td class="text-left"><?php echo $order['order_status']; ?></td>
                   <td class="text-right"><?php echo $order['total']; ?></td>
                   <td class="text-left"><?php echo $order['date_added']; ?></td>
