@@ -937,6 +937,14 @@ class ControllerCommonColumnLeft extends Controller {
 				);	
 			}
 			
+			if ($this->user->hasPermission('access', 'replogic/sales_rep_management')) {
+				$replogic[] = array(
+					'name'	   => $this->language->get('text_quick_reports'),
+					'href'     => $this->url->link('replogic/sales_rep_management', 'token=' . $this->session->data['token'], true),
+					'children' => 	array()	
+				);	
+			}
+			
 			if ($replogic) {	
 				$data['menus'][] = array(
 					'id'       => 'menu-replogic',
