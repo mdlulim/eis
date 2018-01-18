@@ -53,20 +53,22 @@
 
 
 			$simpleblogsettings = array();
-			
-				$simpleblogsettings[] = array(
-					'name'	   => $this->language->get('text_simple_blog_general_setting'),
-					'href'     => $this->url->link('extension/module/simple_blog', 'token=' . $this->session->data['token'], true),
-					'children' => array()
-				);
+				if ($this->user->hasPermission('access', 'extension/module/simple_blog')) {
+					$simpleblogsettings[] = array(
+						'name'	   => $this->language->get('text_simple_blog_general_setting'),
+						'href'     => $this->url->link('extension/module/simple_blog', 'token=' . $this->session->data['token'], true),
+						'children' => array()
+					);
+				}
 		
 
-			
-				$simpleblogsettings[] = array(
-					'name'	   => $this->language->get('text_simple_blog_category_setting'),
-					'href'     => $this->url->link('extension/module/simple_blog_category', 'token=' . $this->session->data['token'], true),
-					'children' => array()
-				);
+				if ($this->user->hasPermission('access', 'extension/module/simple_blog_category')) {
+					$simpleblogsettings[] = array(
+						'name'	   => $this->language->get('text_simple_blog_category_setting'),
+						'href'     => $this->url->link('extension/module/simple_blog_category', 'token=' . $this->session->data['token'], true),
+						'children' => array()
+					);
+				}
 			
 
 
