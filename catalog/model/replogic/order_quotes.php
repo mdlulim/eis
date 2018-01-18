@@ -40,6 +40,14 @@ class ModelReplogicOrderQuotes extends Model {
 		
 	}
 	
+	public function OrderTableIsReplogicUpdate($ord_id) {
+		
+		$query = $this->db->query("UPDATE " . DB_PREFIX . "order set isReplogic = 1 WHERE order_id = '" . (int)$ord_id . "'");
+
+		return $query->row;
+		
+	}
+	
 	public function CustomerContactOrderIdTable($customer_contact_id,$ord_id) {
 		
 		$query = $this->db->query("DELETE FROM " . DB_PREFIX . "customercontact_to_order WHERE customer_contact_id = '" . $customer_contact_id . "' AND order_id = '" . (int)$ord_id . "'");

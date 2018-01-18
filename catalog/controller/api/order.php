@@ -367,6 +367,7 @@ class ControllerApiOrder extends Controller {
 					$this->model_replogic_order_quotes->statuschange($this->request->get['quote_id'], 1);
 					$this->model_replogic_order_quotes->SalesRepOrderIdTable($salesrep_id, $ord_id);
 					$this->model_replogic_order_quotes->CustomerContactOrderIdTable($customer_contact_id, $ord_id);
+					$this->model_replogic_order_quotes->OrderTableIsReplogicUpdate($ord_id);
 					
 				}
 			// End Using Quote Id to Update the table Using Order Id //		
@@ -730,6 +731,7 @@ class ControllerApiOrder extends Controller {
 						$this->model_replogic_order_quotes->statuschange($this->request->get['quote_id'], 1);
 						$this->model_replogic_order_quotes->SalesRepOrderIdTable($salesrep_id, $ord_id);
 						$this->model_replogic_order_quotes->CustomerContactOrderIdTable($customer_contact_id, $ord_id);
+						$this->model_replogic_order_quotes->OrderTableIsReplogicUpdate($ord_id);
 						
 					}
 				// End Using Quote Id to Update the table Using Order Id //		
