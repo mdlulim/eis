@@ -451,7 +451,8 @@ class ControllerReplogicSalesRepManagement extends Controller {
 				'email'       => $result['email'],
 				'team'        => $team['team_name'],
 				'name'        => $result['salesrep_name'] . '&nbsp;' . $result['salesrep_lastname'],
-				'edit'        => $this->url->link('replogic/sales_rep_management/edit', 'token=' . $this->session->data['token'] . '&salesrep_id=' . $result['salesrep_id'] . $url, true)
+				'edit'        => $this->url->link('replogic/sales_rep_management/edit', 'token=' . $this->session->data['token'] . '&salesrep_id=' . $result['salesrep_id'] . $url, true),
+				'view'          => $this->url->link('replogic/salesrep_info', 'type=general&token=' . $this->session->data['token'] . '&salesrep_id=' . $result['salesrep_id'] . $url, true),
 			);
 		}
 		

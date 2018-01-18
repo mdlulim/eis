@@ -181,6 +181,7 @@
                     <?php } else { ?>
                     <button type="button" class="btn btn-warning" disabled><i class="fa fa-unlock"></i></button>
                     <?php } ?>
+                    <a href="<?php echo $customer['view']; ?>" data-toggle="tooltip" title="<?php echo $button_view; ?>" class="btn btn-info"><i class="fa fa-eye"></i></a>
                     <a href="<?php echo $customer['edit']; ?>" data-toggle="tooltip" title="<?php echo $button_edit; ?>" class="btn btn-primary"><i class="fa fa-pencil"></i></a></td>
                 </tr>
                 <?php } ?>

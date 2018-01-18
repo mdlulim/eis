@@ -172,7 +172,7 @@ class ModelReplogicSalesRepManagement extends Model {
 			}
 			else
 			{
-				$sql = "SELECT * FROM " . DB_PREFIX . "salesrep";
+				$sql = "SELECT COUNT(*) AS total FROM " . DB_PREFIX . "salesrep";
 				if (!empty($data['filter_sales_rep_name']) || !empty($data['team_id']) || !empty($data['filter_email']) || !empty($data['filter_team_id']) ) 
 				{
 					$sql .= " where salesrep_id > '0'";

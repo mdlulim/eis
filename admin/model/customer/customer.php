@@ -181,6 +181,10 @@ class ModelCustomerCustomer extends Model {
 		if (!empty($data['filter_customer_group_id'])) {
 			$implode[] = "c.customer_group_id = '" . (int)$data['filter_customer_group_id'] . "'";
 		}
+		
+		if (!empty($data['filter_salesrep_id'])) {
+			$implode[] = "c.salesrep_id = '" . (int)$data['filter_salesrep_id'] . "'";
+		}
 
 		if (!empty($data['filter_ip'])) {
 			$implode[] = "c.customer_id IN (SELECT customer_id FROM " . DB_PREFIX . "customer_ip WHERE ip = '" . $this->db->escape($data['filter_ip']) . "')";
@@ -399,10 +403,17 @@ class ModelCustomerCustomer extends Model {
 		{
 			$sql = "SELECT COUNT(*) AS total FROM " . DB_PREFIX . "customer ap left join oc_salesrep sr on sr.salesrep_id = ap.salesrep_id left join oc_team tm on tm.team_id = sr.sales_team_id";
 			$implode[] = "tm.sales_manager = '" . $current_user_id . "'";
+			if (!empty($data['filter_salesrep_id'])) {
+				$implode[] = "ap.salesrep_id = '" . (int)$data['filter_salesrep_id'] . "'";
+			}
 		}
 		else
 		{
 			$sql = "SELECT COUNT(*) AS total FROM " . DB_PREFIX . "customer";
+			
+			if (!empty($data['filter_salesrep_id'])) {
+				$implode[] = "salesrep_id = '" . (int)$data['filter_salesrep_id'] . "'";
+			}
 			
 		}
 
@@ -413,7 +424,7 @@ class ModelCustomerCustomer extends Model {
 		if (!empty($data['filter_email'])) {
 			$implode[] = "email LIKE '" . $this->db->escape($data['filter_email']) . "%'";
 		}
-
+		
 		if (isset($data['filter_newsletter']) && !is_null($data['filter_newsletter'])) {
 			$implode[] = "newsletter = '" . (int)$data['filter_newsletter'] . "'";
 		}

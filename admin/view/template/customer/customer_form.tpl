@@ -25,6 +25,9 @@
       </div>
       <div class="panel-body">
         <form action="<?php echo $action; ?>" method="post" enctype="multipart/form-data" id="form-customer" class="form-horizontal">
+        	<input type="hidden" name="type" value="<?php echo $type; ?>" />
+            <input type="hidden" name="csalesrep_id" value="<?php echo $csalesrep_id; ?>" />
+            
           <ul class="nav nav-tabs">
             <li class="active"><a href="#tab-general" data-toggle="tab"><?php echo $tab_general; ?></a></li>
             <?php if ($customer_id) { ?>

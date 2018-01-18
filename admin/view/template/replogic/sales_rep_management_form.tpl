@@ -93,7 +93,6 @@
             </div>
           </div>
           
-          
           <div class="form-group required">
             <label class="col-sm-2 control-label" for="input-username"><?php echo $entry_email; ?></label>
             <div class="col-sm-10">

@@ -25,7 +25,15 @@ class ControllerCustomerCustomer extends Controller {
 			$this->session->data['success'] = $this->language->get('text_success');
 
 			$url = '';
-
+			
+			if (isset($this->request->get['type'])) {
+				$url .= '&type=' . $this->request->get['type'];
+			}
+			
+			if (isset($this->request->get['csalesrep_id'])) {
+				$url .= '&csalesrep_id=' . $this->request->get['csalesrep_id'];
+			}
+			
 			if (isset($this->request->get['filter_name'])) {
 				$url .= '&filter_name=' . urlencode(html_entity_decode($this->request->get['filter_name'], ENT_QUOTES, 'UTF-8'));
 			}
@@ -65,8 +73,16 @@ class ControllerCustomerCustomer extends Controller {
 			if (isset($this->request->get['page'])) {
 				$url .= '&page=' . $this->request->get['page'];
 			}
-
-			$this->response->redirect($this->url->link('customer/customer', 'token=' . $this->session->data['token'] . $url, true));
+			
+			
+			if(!empty($this->request->post['type']))
+			{
+				$this->response->redirect($this->url->link('replogic/salesrep_info', 'token=' . $this->session->data['token'] . '&type=customers&salesrep_id='.$this->request->post['csalesrep_id'], true));
+			}
+			else
+			{
+				$this->response->redirect($this->url->link('customer/customer', 'token=' . $this->session->data['token'] . $url, true));
+			}
 		}
 
 		$this->getForm();
@@ -85,7 +101,15 @@ class ControllerCustomerCustomer extends Controller {
 			$this->session->data['success'] = $this->language->get('text_success');
 
 			$url = '';
-
+			
+			if (isset($this->request->get['type'])) {
+				$url .= '&type=' . $this->request->get['type'];
+			}
+			
+			if (isset($this->request->get['csalesrep_id'])) {
+				$url .= '&csalesrep_id=' . $this->request->get['csalesrep_id'];
+			}
+			
 			if (isset($this->request->get['filter_name'])) {
 				$url .= '&filter_name=' . urlencode(html_entity_decode($this->request->get['filter_name'], ENT_QUOTES, 'UTF-8'));
 			}
@@ -126,7 +150,14 @@ class ControllerCustomerCustomer extends Controller {
 				$url .= '&page=' . $this->request->get['page'];
 			}
 
-			$this->response->redirect($this->url->link('customer/customer', 'token=' . $this->session->data['token'] . $url, true));
+			if(!empty($this->request->post['type']))
+			{
+				$this->response->redirect($this->url->link('replogic/salesrep_info', 'token=' . $this->session->data['token'] . '&type=customers&salesrep_id='.$this->request->post['csalesrep_id'], true));
+			}
+			else
+			{
+				$this->response->redirect($this->url->link('customer/customer', 'token=' . $this->session->data['token'] . $url, true));
+			}
 		}
 
 		$this->getForm();
@@ -504,6 +535,7 @@ class ControllerCustomerCustomer extends Controller {
 				'date_added'     => date($this->language->get('date_format_short'), strtotime($result['date_added'])),
 				'approve'        => $approve,
 				'unlock'         => $unlock,
+				'view'          => 'javascript:void()',
 				'edit'           => $this->url->link('customer/customer/edit', 'token=' . $this->session->data['token'] . '&customer_id=' . $result['customer_id'] . $url, true)
 			);
 		}
@@ -816,6 +848,14 @@ class ControllerCustomerCustomer extends Controller {
 
 		$url = '';
 
+		if (isset($this->request->get['type'])) {
+			$url .= '&type=' . $this->request->get['type'];
+		}
+		
+		if (isset($this->request->get['csalesrep_id'])) {
+			$url .= '&csalesrep_id=' . $this->request->get['csalesrep_id'];
+		}
+		
 		if (isset($this->request->get['filter_name'])) {
 			$url .= '&filter_name=' . urlencode(html_entity_decode($this->request->get['filter_name'], ENT_QUOTES, 'UTF-8'));
 		}
@@ -874,7 +914,18 @@ class ControllerCustomerCustomer extends Controller {
 			$data['action'] = $this->url->link('customer/customer/edit', 'token=' . $this->session->data['token'] . '&customer_id=' . $this->request->get['customer_id'] . $url, true);
 		}
 
-		$data['cancel'] = $this->url->link('customer/customer', 'token=' . $this->session->data['token'] . $url, true);
+		if(isset($this->request->get['type']))
+		{
+			$data['cancel'] = $this->url->link('replogic/salesrep_info', 'token=' . $this->session->data['token'] . '&type=customers&salesrep_id='.$this->request->get['csalesrep_id'], true);
+			$data['type'] = $this->request->get['type'];
+			$data['csalesrep_id'] = $this->request->get['csalesrep_id'];
+		}
+		else
+		{
+			$data['cancel'] = $this->url->link('customer/customer', 'token=' . $this->session->data['token'] . $url, true);
+			$data['type'] = '';
+			$data['csalesrep_id'] = '';
+		}
 
 		if (isset($this->request->get['customer_id']) && ($this->request->server['REQUEST_METHOD'] != 'POST')) {
 			$customer_info = $this->model_customer_customer->getCustomer($this->request->get['customer_id']);
@@ -927,7 +978,10 @@ class ControllerCustomerCustomer extends Controller {
 			$data['salesrep_id'] = $this->request->post['salesrep_id'];
 		} elseif (!empty($customer_info)) {
 			$data['salesrep_id'] = $customer_info['salesrep_id'];
-		} else {
+		}elseif(isset($this->request->get['type']) && $this->request->get['type'] == 'customers') {
+			$data['salesrep_id'] = $this->request->get['csalesrep_id'];
+		} 
+		else {
 			$data['salesrep_id'] = '';
 		}
 
