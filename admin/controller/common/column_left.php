@@ -913,12 +913,30 @@ class ControllerCommonColumnLeft extends Controller {
 				);	
 			}*/
 			
+			$replogic_customer = array();	
+			
+			if ($this->user->hasPermission('access', 'customer/customer')) {
+				$replogic_customer[] = array(
+					'name'	   => $this->language->get('text_customer'),
+					'href'     => $this->url->link('customer/customer', 'token=' . $this->session->data['token'], true),
+					'children' => 	array()	
+				);	
+			}
+			
 			if ($this->user->hasPermission('access', 'replogic/customer_contact')) {
-				$replogic[] = array(
+				$replogic_customer[] = array(
 					'name'	   => $this->language->get('text_customer_contact'),
 					'href'     => $this->url->link('replogic/customer_contact', 'token=' . $this->session->data['token'], true),
 					'children' => 	array()	
 				);	
+			}
+			
+			if ($replogic_customer) {	
+				$replogic[] = array(
+					'name'	   => $this->language->get('text_customer'),
+					'href'     => '',
+					'children' => $replogic_customer	
+				);		
 			}
 			
 			if ($this->user->hasPermission('access', 'replogic/order_quotes')) {
