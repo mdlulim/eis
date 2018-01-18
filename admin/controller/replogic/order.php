@@ -160,7 +160,15 @@ class ControllerReplogicOrder extends Controller {
 			'href' => $this->url->link('replogic/order', 'token=' . $this->session->data['token'] . $url, true)
 		);
 
-		$data['cancel'] = $this->url->link('replogic/order_quotes', 'token=' . $this->session->data['token'] . $url, true);
+		if(isset($this->request->get['type']))
+		{
+			$data['cancel'] = $this->url->link('replogic/salesrep_info', 'token=' . $this->session->data['token'] . '&type=quotes&salesrep_id='.$this->request->get['salesrep_id'] .  $url, true);
+			
+		}
+		else
+		{
+			$data['cancel'] = $this->url->link('replogic/order_quotes', 'token=' . $this->session->data['token'] . $url, true);
+		}
 
 		$data['token'] = $this->session->data['token'];
 

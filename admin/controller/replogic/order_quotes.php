@@ -97,6 +97,14 @@ class ControllerReplogicOrderQuotes extends Controller {
 
 			$url = '';
 
+			if (isset($this->request->get['type'])) {
+				$url .= '&type=' . $this->request->get['type'];
+			}
+			
+			if (isset($this->request->get['salesrep_id'])) {
+				$url .= '&salesrep_id=' . $this->request->get['salesrep_id'];
+			}
+			
 			if (isset($this->request->get['filter_quote_id'])) {
 				$url .= '&filter_quote_id=' . $this->request->get['filter_quote_id'];
 			}
@@ -128,8 +136,15 @@ class ControllerReplogicOrderQuotes extends Controller {
 			if (isset($this->request->get['filter_date_modified'])) {
 				$url .= '&filter_date_modified=' . $this->request->get['filter_date_modified'];
 			}
-
-			$this->response->redirect($this->url->link('replogic/order_quotes', 'token=' . $this->session->data['token'] . $url, true));
+			
+			if(isset($this->request->get['type']))
+			{
+				$this->response->redirect($this->url->link('replogic/salesrep_info', 'token=' . $this->session->data['token'] . $url, true));
+			}
+			else
+			{
+				$this->response->redirect($this->url->link('replogic/order_quotes', 'token=' . $this->session->data['token'] . $url, true));
+			}
 		}
 		
 	}
@@ -1152,7 +1167,16 @@ class ControllerReplogicOrderQuotes extends Controller {
 			$data['shipping'] = $this->url->link('sale/order/shipping', 'token=' . $this->session->data['token'] . '&order_id=' . $order_id, true);
 			$data['invoice'] = $this->url->link('sale/order/invoice', 'token=' . $this->session->data['token'] . '&order_id=' . $order_id, true);
 			$data['edit'] = $this->url->link('sale/order/edit', 'token=' . $this->session->data['token'] . '&order_id=' . $order_id, true);
-			$data['cancel'] = $this->url->link('replogic/order_quotes', 'token=' . $this->session->data['token'] . $url, true);
+			
+			if(isset($this->request->get['type']))
+			{
+				$data['cancel'] = $this->url->link('replogic/salesrep_info', 'token=' . $this->session->data['token'] . '&type=quotes&salesrep_id='.$this->request->get['salesrep_id'] .  $url, true);
+				
+			}
+			else
+			{
+				$data['cancel'] = $this->url->link('replogic/order_quotes', 'token=' . $this->session->data['token'] . $url, true);
+			}
 
 			$data['token'] = $this->session->data['token'];
 

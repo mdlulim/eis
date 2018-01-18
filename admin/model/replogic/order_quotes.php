@@ -17,6 +17,10 @@ class ModelReplogicOrderQuotes extends Model {
 		if (!empty($data['filter_quote_id'])) {
 			$sql .= " AND quote_id = '" . (int)$data['filter_quote_id'] . "'";
 		}
+		
+		if (!empty($data['filter_salesrep_id'])) {
+			$sql .= " AND salesrep_id = '" . (int)$data['filter_salesrep_id'] . "'";
+		}
 
 		if (!empty($data['filter_customer_id'])) {
 			$sql .= " AND customer_id = '" . (int)$data['filter_customer_id'] . "'";
@@ -129,7 +133,11 @@ class ModelReplogicOrderQuotes extends Model {
 		if (isset($data['filter_order_status'])) {
 			$sql .= " AND status = '" . (int)$data['filter_order_status'] . "'";
 		} 
-
+		
+		if (!empty($data['filter_salesrep_id'])) {
+			$sql .= " AND salesrep_id = '" . (int)$data['filter_salesrep_id'] . "'";
+		}
+		
 		if (!empty($data['filter_quote_id'])) {
 			$sql .= " AND quote_id = '" . (int)$data['filter_quote_id'] . "'";
 		}
