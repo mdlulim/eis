@@ -21,6 +21,13 @@ class ModelReplogicLocationManagement extends Model {
 				$sql .= " AND customer_id = '" . (int)$data['filter_customer_id'] . "'";
 			}
 			
+			if (!empty($data['filter_date_from']) && !empty($data['filter_date_to'])) 
+			{ 
+				$fromdate = date('Y-m-d H:i:s', strtotime($data['filter_date_from'])); 
+				$todate = date('Y-m-d H:i:s', strtotime($data['filter_date_to'])); 
+				$sql .= " AND checkin >= '" . $fromdate . "' AND checkin <= '" . $todate . "'";
+			}
+			
 			$sql .= " ORDER BY checkin_id";
 		}
 		else
@@ -36,6 +43,13 @@ class ModelReplogicLocationManagement extends Model {
 	
 			if (!empty($data['filter_customer_id'])) {
 				$sql .= " AND ck.customer_id = '" . (int)$data['filter_customer_id'] . "'";
+			}
+			
+			if (!empty($data['filter_date_from']) && !empty($data['filter_date_to'])) 
+			{ 
+				$fromdate = date('Y-m-d H:i:s', strtotime($data['filter_date_from'])); 
+				$todate = date('Y-m-d H:i:s', strtotime($data['filter_date_to'])); 
+				$sql .= " AND ck.checkin >= '" . $fromdate . "' AND ck.checkin <= '" . $todate . "'";
 			}
 			
 			$sql .= " ORDER BY ck.checkin_id";
@@ -87,6 +101,13 @@ class ModelReplogicLocationManagement extends Model {
 			if (!empty($data['filter_customer_id'])) {
 				$sql .= " AND customer_id = '" . (int)$data['filter_customer_id'] . "'";
 			}
+			
+			if (!empty($data['filter_date_from']) && !empty($data['filter_date_to'])) 
+			{ 
+				$fromdate = date('Y-m-d H:i:s', strtotime($data['filter_date_from'])); 
+				$todate = date('Y-m-d H:i:s', strtotime($data['filter_date_to'])); 
+				$sql .= " AND checkin >= '" . $fromdate . "' AND checkin <= '" . $todate . "'";
+			}
 		
 		}
 		else
@@ -102,6 +123,13 @@ class ModelReplogicLocationManagement extends Model {
 	
 			if (!empty($data['filter_customer_id'])) {
 				$sql .= " AND ck.customer_id = '" . (int)$data['filter_customer_id'] . "'";
+			}
+			
+			if (!empty($data['filter_date_from']) && !empty($data['filter_date_to'])) 
+			{ 
+				$fromdate = date('Y-m-d H:i:s', strtotime($data['filter_date_from'])); 
+				$todate = date('Y-m-d H:i:s', strtotime($data['filter_date_to'])); 
+				$sql .= " AND ck.checkin >= '" . $fromdate . "' AND ck.checkin <= '" . $todate . "'";
 			}
 		}
 
