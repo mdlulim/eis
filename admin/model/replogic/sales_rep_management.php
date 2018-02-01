@@ -67,7 +67,40 @@ class ModelReplogicSalesRepManagement extends Model {
 
 	public function deleteSalesRep($salesrep_id) {
 		
+		
+		$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "rep_settings order by company_id asc LIMIT 1");
+
+		$row = $query->row;
+		$company_id = $row['company_id']; 
+		
+		$service_url = 'http://46.101.26.246:8000/api/v1/salesrep';
+		$curl = curl_init($service_url);
+		$curl_post_data = array(
+				'c_id' => $company_id,
+				'r_id' => $salesrep_id);
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($curl, CURLOPT_POST, true);
+		curl_setopt($curl, CURLOPT_POSTFIELDS, $curl_post_data);
+		$curl_response = curl_exec($curl);
+		if ($curl_response === false) {
+			$info = curl_getinfo($curl);
+			curl_close($curl);
+			die('error occured during curl exec. Additioanl info: ' . var_export($info));
+		}
+		curl_close($curl);
+		$decoded = json_decode($curl_response);
+	//echo $decoded->message; exit;
+		if (isset($decoded->error) && $decoded->error == 'Not Found') {
+			$message = $decoded->message;
+		}
+		else
+		{
+				$message = $decoded->message;
+		}
+		
+		
 		$this->db->query("DELETE FROM " . DB_PREFIX . "salesrep WHERE salesrep_id = '" . (int)$salesrep_id . "'");
+		
 	}
 	
 	public function AssignSalesRep($sales_rep_id,$team_id) { 
