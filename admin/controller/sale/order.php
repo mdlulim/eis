@@ -522,7 +522,14 @@ class ControllerSaleOrder extends Controller {
 
 		if(isset($this->request->get['type']))
 		{
-			$data['cancel'] = $this->url->link('replogic/salesrep_info', 'token=' . $this->session->data['token'] . '&type=orders&salesrep_id='.$this->request->get['csalesrep_id'] .  $url, true);
+			if(isset($this->request->get['csalesrep_id']))
+			{
+				$data['cancel'] = $this->url->link('replogic/salesrep_info', 'token=' . $this->session->data['token'] . '&type=orders&salesrep_id='.$this->request->get['csalesrep_id'] .  $url, true);
+			}
+			else
+			{
+				$data['cancel'] = $this->url->link('customer/customer_info', 'token=' . $this->session->data['token'] . '&type=orders&customer_id='.$this->request->get['customer_id'] .  $url, true);
+			}
 			
 		}
 		else
@@ -907,7 +914,14 @@ class ControllerSaleOrder extends Controller {
 			
 			if(isset($this->request->get['type']))
 			{
-				$data['cancel'] = $this->url->link('replogic/salesrep_info', 'token=' . $this->session->data['token'] . '&type=orders&salesrep_id='.$this->request->get['csalesrep_id'] .  $url, true);
+				if(isset($this->request->get['csalesrep_id']))
+				{
+					$data['cancel'] = $this->url->link('replogic/salesrep_info', 'token=' . $this->session->data['token'] . '&type=orders&salesrep_id='.$this->request->get['csalesrep_id'] .  $url, true);
+				}
+				else
+				{
+					$data['cancel'] = $this->url->link('customer/customer_info', 'token=' . $this->session->data['token'] . '&type=orders&customer_id='.$this->request->get['customer_id'] .  $url, true);
+				}
 				
 			}
 			else

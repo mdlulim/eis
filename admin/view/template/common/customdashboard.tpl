@@ -188,7 +188,9 @@
 									
 									<?php }  ?>
 									
-									map.fitBounds(bounds);
+									<?php if(!empty($locationsmap)) { ?>
+										map.fitBounds(bounds);
+									<?php } ?>
 								}
 								
 								</script>

@@ -169,7 +169,7 @@ class ControllerCustomerCustomer extends Controller {
 		$this->document->setTitle($this->language->get('heading_title'));
 
 		$this->load->model('customer/customer');
-
+		
 		if (isset($this->request->post['selected']) && $this->validateDelete()) {
 			foreach ($this->request->post['selected'] as $customer_id) {
 				$this->model_customer_customer->deleteCustomer($customer_id);
@@ -354,6 +354,22 @@ class ControllerCustomerCustomer extends Controller {
 	}
 
 	protected function getList() {
+		
+		/*$custs = $this->model_customer_customer->getCustomers();
+		foreach($custs as $cust)
+		{
+			$firstname = $cust['firstname'];
+			$adds = $this->model_customer_customer->getAddresses($cust['customer_id']);
+			if(!empty($adds))
+			{
+				foreach($adds as $add)
+				{
+					$this->db->query("update " . DB_PREFIX . "address set firstname='".$firstname."' WHERE address_id = '" . (int)$add['address_id'] . "'");
+				}
+			}
+			
+		}*/
+		
 		if (isset($this->request->get['filter_name'])) {
 			$filter_name = $this->request->get['filter_name'];
 		} else {
@@ -535,7 +551,7 @@ class ControllerCustomerCustomer extends Controller {
 				'date_added'     => date($this->language->get('date_format_short'), strtotime($result['date_added'])),
 				'approve'        => $approve,
 				'unlock'         => $unlock,
-				'view'          => 'javascript:void()',
+				'view'          => $this->url->link('customer/customer_info', 'token=' . $this->session->data['token'] . '&type=general&customer_id=' . $result['customer_id'] . $url, true),
 				'edit'           => $this->url->link('customer/customer/edit', 'token=' . $this->session->data['token'] . '&customer_id=' . $result['customer_id'] . $url, true)
 			);
 		}

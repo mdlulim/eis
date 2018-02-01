@@ -259,6 +259,7 @@
                 <table class="table table-bordered">
                   <thead>
                     <tr>
+                      <td class="text-left">Image</td>
                       <td class="text-left"><?php echo $column_product; ?></td>
                       <td class="text-left"><?php echo $column_model; ?></td>
                       <td class="text-right"><?php echo $column_quantity; ?></td>
@@ -273,6 +274,7 @@
                     <?php $product_row = 0; ?>
                     <?php foreach ($order_products as $order_product) { ?>
                     <tr>
+                      <td class="text-left"><?php echo $order_product['image']; ?></td>
                       <td class="text-left"><?php echo $order_product['name']; ?><br />
                         <input type="hidden" name="product[<?php echo $product_row; ?>][product_id]" value="<?php echo $order_product['product_id']; ?>" />
                         <?php foreach ($order_product['option'] as $option) { ?>
@@ -1143,6 +1145,7 @@ $('#button-refresh').on('click', function() {
 					product = json['products'][i];
 
 					html += '<tr>';
+					html += '  <td class="text-left"><img src="' + product['image'] + '" alt="' + product['name'] + '" class="img-thumbnail" /></td>';
 					html += '  <td class="text-left">' + product['name'] + ' ' + (!product['stock'] ? '<span class="text-danger">***</span>' : '') + '<br />';
 					html += '  <input type="hidden" name="product[' + i + '][product_id]" value="' + product['product_id'] + '" />';
 
@@ -1361,7 +1364,7 @@ $('input[name=\'customer\']').autocomplete({
 		html = '<option value="0"><?php echo $text_none; ?></option>';
 
 		for (i in  item['address']) {
-			html += '<option value="' + item['address'][i]['address_id'] + '">' + item['address'][i]['firstname'] + ' ' + item['address'][i]['lastname'] + ', ' + item['address'][i]['address_1'] + ', ' + item['address'][i]['city'] + ', ' + item['address'][i]['country'] + '</option>';
+			html += '<option value="' + item['address'][i]['address_id'] + '">' + item['firstname'] + ', ' + item['address'][i]['address_1'] + ', ' + item['address'][i]['city'] + ', ' + item['address'][i]['country'] + '</option>';
 		}
 
 		$('select[name=\'payment_address\']').html(html);

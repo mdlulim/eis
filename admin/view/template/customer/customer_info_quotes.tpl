@@ -26,14 +26,14 @@
     <?php } ?>
     <div class="panel panel-default">
       <div class="panel-heading">
-        <h3 class="panel-title"><i class="fa fa-info-circle" style="font-size:23px;"></i> <?php echo $text_list; ?><strong><?php echo $salesrepname; ?></strong></h3>
+        <h3 class="panel-title"><i class="fa fa-info-circle" style="font-size:23px;"></i> <?php echo $text_list; ?><strong><?php echo $customername; ?></strong></h3>
       </div>
       <div class="panel-body">
       
       	<ul class="nav nav-tabs">
             <li><a href="<?php echo $generaltab; ?>" >General</a></li>
             <li><a href="<?php echo $appointmenttab; ?>" >Appointment</a></li>
-            <li><a href="<?php echo $customerstab; ?>" >Customers</a></li>
+            <li><a href="<?php echo $customerstab; ?>" >Customer Contact</a></li>
             <li><a href="<?php echo $visitstab; ?>" >Visits</a></li>
             <li><a href="<?php echo $orderstab; ?>" >Orders</a></li>
             <li class="active"><a href="javascript:void()" >Quotes</a></li>
@@ -42,27 +42,18 @@
       
         <div class="well">
           <div class="row">
-            <div class="col-sm-4">
+            <div class="col-sm-3">
               <div class="form-group">
                 <label class="control-label" for="input-order-id"><?php echo $entry_quote_id; ?></label>
                 <input type="text" name="filter_quote_id" value="<?php echo $filter_quote_id; ?>" placeholder="<?php echo $entry_quote_id; ?>" id="input-order-id" class="form-control" />
               </div>
-              <div class="form-group">
-                <label class="control-label" for="input-price">Customer</label>
-                <select name="filter_customer_id" class="form-control">
-                	<option value="">Select Customer</option>
-                    <?php foreach ($customers as $customer) {  ?>
-                <?php if ($customer['customer_id'] == $filter_customer_id) { ?>
-                <option value="<?php echo $customer['customer_id']; ?>" selected="selected"><?php echo $customer['firstname']; ?></option>
-                <?php } else { ?>
-                <option value="<?php echo $customer['customer_id']; ?>"><?php echo $customer['firstname']; ?></option>
-                <?php } ?>
-                <?php } ?>
-                    
-                </select>
-              </div>
+              <!--<div class="form-group">
+                <label class="control-label" for="input-customer"><?php echo $entry_customer; ?></label>
+                <input type="text" name="filter_customer" value="<?php echo $filter_customer; ?>" placeholder="<?php echo $entry_customer; ?>" id="input-customer" class="form-control" />
+   				   <input type="hidden" name="filter_customer_id" value="<?php echo $filter_customer_id; ?>" id="customer_id">          
+              </div>-->
             </div>
-            <div class="col-sm-4">
+            <div class="col-sm-3">
               <div class="form-group">
                 <label class="control-label" for="input-order-status"><?php echo $entry_order_status; ?></label>
                 <select name="filter_order_status" id="input-order-status" class="form-control">
@@ -87,18 +78,10 @@
                   
                 </select>
               </div>
-              <!--<div class="form-group">
-                <label class="control-label" for="input-total"><?php echo $entry_total; ?></label>
-                <input type="text" name="filter_total" value="<?php echo $filter_total; ?>" placeholder="<?php echo $entry_total; ?>" id="input-total" class="form-control" />
-              </div>-->
-              <!--<div class="form-group">
-                <label class="control-label" for="input-date-modified"><?php echo $entry_date_modified; ?></label>
-                <div class="input-group date">
-                  <input type="text" name="filter_date_modified" value="<?php echo $filter_date_modified; ?>" placeholder="<?php echo $entry_date_modified; ?>" data-date-format="YYYY-MM-DD" id="input-date-modified" class="form-control" />
-                  <span class="input-group-btn">
-                  <button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
-                  </span></div>
-              </div>-->
+              
+            </div>
+            <div class="col-sm-3">
+              
               <div class="form-group">
                 <label class="control-label" for="input-price">Customer Contact</label>
                 <select name="filter_customer_contact_id" class="form-control">
@@ -113,8 +96,9 @@
                     
                 </select>
               </div>
+              
             </div>
-            <div class="col-sm-4">
+            <div class="col-sm-3">
               <div class="form-group">
                 <label class="control-label" for="input-date-added"><?php echo $entry_date_added; ?></label>
                 <div class="input-group date">
@@ -189,7 +173,7 @@
                     	<?php if($order['view']) { ?>
                         <a href="<?php echo $order['view']; ?>" data-toggle="tooltip" title="View Quote" class="btn btn-info"><i class="fa fa-eye"></i></a>
                    		<?php } ?>
-                        <?php if($order['order_id'] == '' && $order['status'] != '2') { ?>
+                        <?php if($order['order_id'] == '' && $order['status'] != '2' && $order['status'] != '1') { ?>
                         	<a href="<?php echo $order['approve']; ?>" data-toggle="tooltip" title="Approve" class="btn btn-success"><i class="fa fa-check"></i></a>
                         	<a href="javascript:void();" data-toggle="tooltip" title="Decline" onclick="onpopup(<?php echo $order['quote_id']; ?>);" class="btn btn-danger decline"><i class="fa fa-times"></i></a>
                            <!-- <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#myModal" data-whatever="@getbootstrap"><i class="fa fa-times"></i>Decline</button>-->
@@ -217,7 +201,7 @@
         <div id="myModal" class="modal fade" role="dialog">
           <form action="<?php echo $decline; ?>" method="post" enctype="multipart/form-data" id="form-popup">
           <input type="hidden" name="quote_id" id="popupquote_id" value=""  />
-          <input type="hidden" name="redirto" value="salesrepinfo"  />
+          <input type="hidden" name="redirto" value="customer/customer_info"  />
           <div class="modal-dialog">
         
             <!-- Modal content-->
@@ -276,7 +260,7 @@
 		</script>
   <script type="text/javascript"><!--
 $('#button-filter').on('click', function() {
-	url = 'index.php?route=replogic/salesrep_info&token=<?php echo $token; ?>&type=quotes&salesrep_id=<?php echo $salesrep_id; ?>';
+	url = 'index.php?route=customer/customer_info&token=<?php echo $token; ?>&type=quotes&customer_id=<?php echo $customer_id; ?>';
 
 	var filter_quote_id = $('input[name=\'filter_quote_id\']').val();
 
@@ -295,7 +279,7 @@ $('#button-filter').on('click', function() {
 	if (filter_customer_contact_id) {
 		url += '&filter_customer_contact_id=' + encodeURIComponent(filter_customer_contact_id);
 	}
-	
+
 	var filter_order_status = $('select[name=\'filter_order_status\']').val();
 
 	if (filter_order_status != '*') {
@@ -323,7 +307,7 @@ $('#button-filter').on('click', function() {
 	location = url;
 });
 $('#button-filter-reset').on('click', function() {
-	url = 'index.php?route=replogic/salesrep_info&token=<?php echo $token; ?>&type=quotes&salesrep_id=<?php echo $salesrep_id; ?>';
+	var url = 'index.php?route=customer/customer_info&token=<?php echo $token; ?>&type=quotes&customer_id=<?php echo $customer_id; ?>';
 
 	location = url;
 });

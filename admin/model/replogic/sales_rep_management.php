@@ -43,6 +43,24 @@ class ModelReplogicSalesRepManagement extends Model {
 		return $message;
 	}
 
+	public function CheckEmailByApi($email) {
+		
+		$service_url = "http://46.101.26.246:8000/api/v1/users/search/$email";
+		$curl = curl_init($service_url);
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+		$curl_response = curl_exec($curl);
+		if ($curl_response === false) {
+			 $info = curl_getinfo($curl);
+			 curl_close($curl);
+			 die('error occured during curl exec. Additioanl info: ' . var_export($info));
+		}
+		curl_close($curl);
+		$decoded = json_decode($curl_response);
+		
+		return $decoded;
+		
+	}
+	
 	public function editSalesRep($salesrep_id, $data) {
 		$this->db->query("UPDATE " . DB_PREFIX . "salesrep SET salesrep_name = '" . $this->db->escape($data['salesrep_name']) . "', salesrep_lastname = '" . $this->db->escape($data['salesrep_lastname']) . "',email = '" . $this->db->escape($data['email']) . "',sales_team_id = '" . $this->db->escape($data['sales_team_id']) . "',cell = '" . $this->db->escape($data['cell']) . "',tel = '" . $this->db->escape($data['tel']) . "' WHERE salesrep_id = '" . (int)$salesrep_id . "'");
 	}
@@ -216,6 +234,12 @@ class ModelReplogicSalesRepManagement extends Model {
 		$query = $this->db->query("SELECT * FROM `" . DB_PREFIX . "team`");
 
 		return $query->rows;
+	}
+	
+	public function getSalesrepByEmail($email) {
+		$query = $this->db->query("SELECT DISTINCT * FROM " . DB_PREFIX . "salesrep WHERE LCASE(email) = '" . $this->db->escape(utf8_strtolower($email)) . "'");
+
+		return $query->row;
 	}
 
 }

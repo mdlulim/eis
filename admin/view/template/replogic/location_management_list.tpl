@@ -102,16 +102,15 @@
                     	<div id="map"></div>
                         
                                 <!--<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA6ycZiGobIPuZ8wtXalf2m2MtxAzncn_Q&callback=initMap&sensor=false"> </script>-->
+                                <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA6ycZiGobIPuZ8wtXalf2m2MtxAzncn_Q"></script>  
                                 <script type="text/javascript">
-								/*function initMap() { 
-									var uluru = {lat: 29.8587, lng: 31.0218}; 
-									var map = new google.maps.Map(document.getElementById('map'), { zoom: 4, center: uluru });
-									var marker = new google.maps.Marker({ position: uluru, map: map }); 
-								}*/
 								
 								
-								
-								function initMap() {
+								$(window).load(function(){
+								 	initMap();
+								 });
+								 
+								function initMap() { 
 
 									var latlng = new google.maps.LatLng(-27.4457987, 21.4340156); // default location
 									var myOptions = {
@@ -167,12 +166,18 @@
 									
 									<?php }  ?>
 									
-									map.fitBounds(bounds);
+									<?php if(!empty($locationsmaps)) { ?>
+										map.fitBounds(bounds);
+									<?php } ?>
 								}
 								
 								</script>
                                 <style>
 								#map { height: 400px; width: 100%; }
+								#map-canvas {
+									  height: 400px;
+									  width: 100%;
+								   }
 								
 								</style>
                     </td> 
@@ -243,28 +248,24 @@
     </div>
   </div>
 </div>
-<div id="popupmyModal" class="modal fade" role="dialog">
-          
-          <div class="modal-dialog">
-        
-            <!-- Modal content-->
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Sales Rep Location</h4>
-              </div>
-              <div class="modal-body">
-                <div id="popupmap" style="height:400px;"></div>
-                
-              </div>
-              <div class="modal-footer">
+<div class="modal fade" id="popupmyModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Sales Rep Location</h4>
+          </div>
+          <div class="modal-body">
+              <div style="margin-bottom:10px;"><b>GPS Check in location of selected sales representatives</b></div>
+              <div id="map-canvas"></div>
+          </div>
+          <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
               </div>
-            </div>
-        
-          </div>
           
         </div>
+      </div>
+    </div>
 <script type="text/javascript"><!--
 $('#button-filter').on('click', function() {
 	var url = 'index.php?route=replogic/location_management&token=<?php echo $token; ?>';
@@ -306,48 +307,6 @@ $('input[name^=\'selected\']').on('change', function() {
 	
 	var selected = $('input[name^=\'selected\']:checked');
 	
-	/*var chk_id = this.value;
-	var chk_ids = $("#checkin_id").attr('value');
-	
-	if(chk_ids)
-	{ 
-		var set_id = chk_ids +','+ chk_id;
-	}
-	else
-	{ 
-		var set_id = this.value;
-	}
-	
-	if ($(this).prop('checked')==true){
-       if( chk_ids.indexOf(chk_id) >= 0)
-		{
-			
-		}
-		else
-		{
-			$('#checkin_id').val(set_id);
-		}
-    }
-	else
-	{
-		
-		if( chk_ids.indexOf(','+chk_id) >= 0)
-		{
-			var myNewString = chk_ids.replace(','+chk_id, "");
-			$('#checkin_id').val(myNewString);	
-		}
-		else if(chk_ids.indexOf(chk_id+',') >= 0)
-		{
-			var myNewString = chk_ids.replace(chk_id+',', "");
-			$('#checkin_id').val(myNewString);
-		}
-		else
-		{
-			var myNewString = chk_ids.replace(chk_id, "");
-			$('#checkin_id').val(myNewString);
-		}
-	}*/
-	
 	if (selected.length) 
 	{
 		$('#button-locate-all').prop('disabled', false);
@@ -372,9 +331,9 @@ $('#chkbx').on('click', function() {
 
 //--></script>
 
-<script type="text/javascript" src="http://maps.google.com/maps/api/js?key=AIzaSyA6ycZiGobIPuZ8wtXalf2m2MtxAzncn_Q&sensor=false"></script>  
+
   
-<script type="text/javascript">
+<!--<script type="text/javascript">
   
   var center = new google.maps.LatLng(59.76522, 18.35002);
  function initialize() {
@@ -412,11 +371,6 @@ $('#chkbx').on('click', function() {
 		  dataType: 'json',
 		  success: function(json) { 
 			
-			//$('#popupmyModal').modal('show');
-			//google.maps.event.trigger(map, 'resize');
-           // map.setCenter(center);
-		   //initialize();
-		   
 			
 		},
 		error: function(xhr, ajaxOptions, thrownError) {
@@ -427,8 +381,81 @@ $('#chkbx').on('click', function() {
       });
   });
   
-  initMap();
   initialize();
+  
+</script>-->
+<script type="text/javascript">
+  
+  
+
+ // $('#button-locate-all').on('click', function () { 
+ $(document).on('click', '#button-locate-all', function (e) {
+  		  e.preventDefault();
+		  $('#map-canvas').empty();
+          $('#popupmyModal').modal('show');
+      });
+ 
+  $('#popupmyModal').on('shown.bs.modal', function () {
+        
+		var array = $.map($('input[name="selected[]"]:checked'), function(c){return c.value; })
+		  $('#checkin_id').val(array);
+		
+		  $.ajax({
+              url: 'index.php?route=replogic/location_management/Popupmap&token=<?php echo $token; ?>',
+		  	  type: 'post',
+		  	  data: $('#checkin_id'),
+		  	  dataType: 'json',
+              success: function (responce) {
+
+                 
+                      var data = responce;
+                      var locations = [];
+
+                      // validation: remove any null values to prevent map errors
+                      for (var i=0; i<data.length; i++) { 
+                          if (data[i].latitude != null && data[i].latitude != "null" && data[i].longitude != null && data[i].longitude != "null") {
+                              locations.push({latitude: data[i].latitude, longitude: data[i].longitude, name: data[i].name, icon: data[i].icon});
+                          }
+                      }
+                      // initialize map with markers
+                      initialize(locations);
+                  
+              }
+          });
+      });
+  
+  	 // var map;
+
+      // initialize map
+      function initialize(locations) {
+          map = new google.maps.Map(document.getElementById('map-canvas'), {
+              zoom: 10,
+              center: new google.maps.LatLng(locations[0].latitude, locations[0].longitude),
+              mapTypeId: google.maps.MapTypeId.ROADMAP,
+			  gestureHandling: 'greedy'
+          });
+
+          var infowindow = new google.maps.InfoWindow();
+
+          var marker, i;
+
+          // loop through locations and create markers for the map
+          for (i = 0; i < locations.length; i++) { 
+              marker = new google.maps.Marker({
+                  position: new google.maps.LatLng(locations[i].latitude, locations[i].longitude),
+				  name:locations[i].name,
+                  map: map,
+				  icon: locations[i].icon
+              });
+
+              google.maps.event.addListener(marker, 'click', (function(marker, i) {
+                  return function() {
+                      infowindow.setContent(locations[i].name);
+                      infowindow.open(map, marker);
+                  }
+              })(marker, i));
+          }
+      };
   
 </script>
 <?php echo $footer; ?> 

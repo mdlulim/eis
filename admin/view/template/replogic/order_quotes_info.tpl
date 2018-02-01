@@ -198,6 +198,7 @@
   <div id="myModal" class="modal fade" role="dialog">
           <form action="<?php echo $decline; ?>" method="post" enctype="multipart/form-data" id="form-popup">
           <input type="hidden" name="quote_id" id="popupquote_id" value=""  />
+          <input type="hidden" name="redirto" value="<?php echo $redirto; ?>"  />
           <div class="modal-dialog">
         
             <!-- Modal content-->

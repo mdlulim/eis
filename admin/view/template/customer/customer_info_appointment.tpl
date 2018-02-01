@@ -26,14 +26,14 @@
     <?php } ?>
     <div class="panel panel-default">
       <div class="panel-heading">
-        <h3 class="panel-title"><i class="fa fa-info-circle" style="font-size:23px;"></i> <?php echo $text_list; ?><strong><?php echo $salesrepname; ?></strong></h3>
+        <h3 class="panel-title"><i class="fa fa-info-circle" style="font-size:23px;"></i> <?php echo $text_list; ?><strong><?php echo $customername; ?></strong></h3>
       </div>
       <div class="panel-body">
         
          <ul class="nav nav-tabs">
             <li><a href="<?php echo $generaltab; ?>" >General</a></li>
             <li class="active"><a href="javascript:void()" >Appointment</a></li>
-            <li><a href="<?php echo $customerstab; ?>" >Customers</a></li>
+            <li><a href="<?php echo $customerstab; ?>" >Customer Contact</a></li>
             <li><a href="<?php echo $visitstab; ?>" >Visits</a></li>
             <li><a href="<?php echo $orderstab; ?>" >Orders</a></li>
             <li><a href="<?php echo $quotestab; ?>" >Quotes</a></li>
@@ -69,7 +69,7 @@
         </script>  
                
               </div>
-              <div class="form-group">
+              <!--<div class="form-group">
                 <label class="control-label" for="input-price">Customer</label>
                 <select name="filter_customer_id" class="form-control">
                 	<option value="">Select Customer</option>
@@ -82,7 +82,7 @@
                 <?php } ?>
                     
                 </select>
-              </div>
+              </div>-->
             </div>
             <div class="col-sm-6" style="margin-bottom:10px;">
               
@@ -128,7 +128,6 @@
                     <a href="<?php echo $sort_name; ?>">Appointment Name</a>
                     <?php } ?></td>
                   <td class="text-left">Sales Rep Name</td>
-                  <td class="text-left">Customer Name</td>
                   <td class="text-left">Appointment Date</td>
                   
                   <td class="text-right"><?php echo $column_action; ?></td>
@@ -142,7 +141,6 @@
                             <tr>
                               <td class="text-left"><?php echo $schedule_management['appointment_name']; ?></td>
                               <td class="text-left"><?php echo $schedule_management['sales_manager']; ?></td>
-                              <td class="text-left"><?php echo $schedule_management['customername']; ?></td>
                               <td class="text-left"><?php  echo $schedule_management['appointment_date']; ?></td>
                               <td class="text-right"><a href="<?php echo $schedule_management['view']; ?>" data-toggle="tooltip" title="View" class="btn btn-info"><i class="fa fa-eye"></i></a></td>
                             </tr>
@@ -171,7 +169,7 @@
 </div>
 <script type="text/javascript"><!--
 $('#button-filter').on('click', function() {
-	var url = 'index.php?route=replogic/salesrep_info&type=appointment&salesrep_id=<?php echo $salesrep_id; ?>&token=<?php echo $token; ?>';
+	var url = 'index.php?route=customer/customer_info&type=appointment&customer_id=<?php echo $customer_id; ?>&token=<?php echo $token; ?>';
 
 	var filter_appointment_name = $('input[name=\'filter_appointment_name\']').val();
 
@@ -185,12 +183,6 @@ $('#button-filter').on('click', function() {
 		url += '&filter_salesrep_id=' + encodeURIComponent(filter_salesrep_id);
 	}
 	
-	var filter_customer_id = $('select[name=\'filter_customer_id\']').val();
-
-	if (filter_customer_id) {
-		url += '&filter_customer_id=' + encodeURIComponent(filter_customer_id);
-	}
-
 	var filter_appointment_from = $('input[name=\'filter_appointment_from\']').val();
 
 	if (filter_appointment_from) {
@@ -208,7 +200,7 @@ $('#button-filter').on('click', function() {
 	location = url;
 });
 $('#button-filter-reset').on('click', function() {
-	var url = 'index.php?route=replogic/salesrep_info&type=appointment&salesrep_id=<?php echo $salesrep_id; ?>&token=<?php echo $token; ?>';
+	var url = 'index.php?route=customer/customer_info&type=appointment&customer_id=<?php echo $customer_id; ?>&token=<?php echo $token; ?>';
 
 	location = url;
 });

@@ -26,14 +26,14 @@
     <?php } ?>
     <div class="panel panel-default">
       <div class="panel-heading">
-        <h3 class="panel-title"><i class="fa fa-info-circle" style="font-size:23px;"></i> <?php echo $text_list; ?><strong><?php echo $salesrepname; ?></strong></h3>
+        <h3 class="panel-title"><i class="fa fa-info-circle" style="font-size:23px;"></i> <?php echo $text_list; ?><strong><?php echo $customername; ?></strong></h3>
       </div>
       <div class="panel-body">
         
         <ul class="nav nav-tabs">
             <li><a href="<?php echo $generaltab; ?>" >General</a></li>
             <li><a href="<?php echo $appointmenttab; ?>" >Appointment</a></li>
-            <li><a href="<?php echo $customerstab; ?>" >Customers</a></li>
+            <li><a href="<?php echo $customerstab; ?>" >Customer Contact</a></li>
             <li class="active"><a href="javascript:void()" >Visits</a></li>
             <li><a href="<?php echo $orderstab; ?>" >Orders</a></li>
             <li><a href="<?php echo $quotestab; ?>" >Quotes</a></li>
@@ -41,7 +41,7 @@
           </ul>
         
           <div class="row">
-            <div class="col-sm-3">
+            <!--<div class="col-sm-3">
               <div class="form-group">
               	<label class="control-label" for="input-name">Select Customer</label>
                 <select name="filter_customer_id" id="input-customer" class="form-control">
@@ -55,7 +55,7 @@
                         <?php } ?>
                       </select>
               </div>
-            </div>
+            </div>-->
             <div class="col-sm-3">
               <div class="form-group">
                 <label class="control-label" for="input-date-added">Visit Date From</label>
@@ -92,15 +92,15 @@
             <table class="table table-bordered table-hover" style="margin-bottom:0px !important;">
               <thead style="background-color:#CCCCCC;">
                 <tr>
-                  <td class="text-left" width="120"><?php if ($sort == 'name') { ?>
+                  <td class="text-left" ><?php if ($sort == 'name') { ?>
                     <a href="<?php echo $sort_name; ?>" class="<?php echo strtolower($order); ?>">Customer</a>
                     <?php } else { ?>
                     <a href="<?php echo $sort_name; ?>">Customer</a>
                     <?php } ?></td>
-                  <td class="text-center" width="100" >Last Check in</td>
-                    <td class="text-left" width="140" >Visit date</td>
+                  <td class="text-center" >Last Check in</td>
+                    <td class="text-left" >Visit date</td>
                   <td class="text-left" >Duration</td>
-                  <td class="text-left"><?php if ($sort == 'name') { ?>
+                  <td class="text-left" width="236"><?php if ($sort == 'name') { ?>
                     <a href="<?php echo $sort_name; ?>" class="<?php echo strtolower($order); ?>">Self reported location</a>
                     <?php } else { ?>
                     <a href="<?php echo $sort_name; ?>">Self reported location</a>
@@ -112,7 +112,7 @@
               </thead>
               <tbody>
               <input type="hidden" value="" id="modalcheckinid" />
-                <?php if ($locations) { ?>
+                 <?php if ($locations) { ?>
                     <?php foreach ($locations as $location) { ?>
                         
                             <tr>
@@ -166,6 +166,7 @@
           <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
               </div>
+          
         </div>
       </div>
     </div>
@@ -235,8 +236,8 @@
 				  icon: locations[i].icon
               });
 			  
-			bounds.extend(marker.position); 
-			
+			  bounds.extend(marker.position); 
+			  
               google.maps.event.addListener(marker, 'click', (function(marker, i) {
                   return function() {
                       infowindow.setContent(locations[i].name);
@@ -244,25 +245,19 @@
                   }
               })(marker, i));
           }
-		  
-		  map.fitBounds(bounds);
+		 
+		 map.fitBounds(bounds);
 		  
       };
   
 </script>
-  
+
 
 
 <script type="text/javascript"><!--
 $('#button-filter').on('click', function() {
-	var url = 'index.php?route=replogic/salesrep_info&type=visits&salesrep_id=<?php echo $salesrep_id; ?>&token=<?php echo $token; ?>';
+	var url = 'index.php?route=customer/customer_info&type=visits&customer_id=<?php echo $customer_id; ?>&token=<?php echo $token; ?>';
 
-	var filter_customer_id = $('select[name=\'filter_customer_id\']').val();
-
-	if (filter_customer_id) {
-		url += '&filter_customer_id=' + encodeURIComponent(filter_customer_id);
-	}
-	
 	var filter_date_from = $('input[name=\'filter_date_from\']').val();
 
 	if (filter_date_from) {
@@ -279,7 +274,7 @@ $('#button-filter').on('click', function() {
 });
 
 $('#button-filter-reset').on('click', function() {
-	var url = 'index.php?route=replogic/salesrep_info&type=visits&salesrep_id=<?php echo $salesrep_id; ?>&token=<?php echo $token; ?>';
+	var url = 'index.php?route=customer/customer_info&type=visits&customer_id=<?php echo $customer_id; ?>&token=<?php echo $token; ?>';
 
 	location = url;
 });

@@ -26,14 +26,14 @@
     <?php } ?>
     <div class="panel panel-default">
       <div class="panel-heading">
-        <h3 class="panel-title"><i class="fa fa-info-circle" style="font-size:23px;"></i> <?php echo $text_list; ?><strong><?php echo $salesrepname; ?></strong></h3>
+        <h3 class="panel-title"><i class="fa fa-info-circle" style="font-size:23px;"></i> <?php echo $text_list; ?><strong><?php echo $customername; ?></strong></h3>
       </div>
       <div class="panel-body">
       	
         <ul class="nav nav-tabs">
             <li><a href="<?php echo $generaltab; ?>" >General</a></li>
             <li><a href="<?php echo $appointmenttab; ?>" >Appointment</a></li>
-            <li><a href="<?php echo $customerstab; ?>" >Customers</a></li>
+            <li><a href="<?php echo $customerstab; ?>" >Customer Contact</a></li>
             <li><a href="<?php echo $visitstab; ?>" >Visits</a></li>
             <li class="active"><a href="javascript:void()" >Orders</a></li>
             <li><a href="<?php echo $quotestab; ?>" >Quotes</a></li>
@@ -48,18 +48,8 @@
                 <input type="text" name="filter_order_id" value="<?php echo $filter_order_id; ?>" placeholder="<?php echo $entry_order_id; ?>" id="input-order-id" class="form-control" />
               </div>
               <div class="form-group">
-                <label class="control-label" for="input-price">Customer</label>
-                <select name="filter_customer_id" class="form-control">
-                	<option value="">Select Customer</option>
-                    <?php foreach ($customers as $customer) {  ?>
-                <?php if ($customer['customer_id'] == $filter_customer_id) { ?>
-                <option value="<?php echo $customer['customer_id']; ?>" selected="selected"><?php echo $customer['firstname']; ?></option>
-                <?php } else { ?>
-                <option value="<?php echo $customer['customer_id']; ?>"><?php echo $customer['firstname']; ?></option>
-                <?php } ?>
-                <?php } ?>
-                    
-                </select>
+                <label class="control-label" for="input-customer"><?php echo $entry_customer; ?></label>
+                <input type="text" name="filter_customer" value="<?php echo $filter_customer; ?>" placeholder="<?php echo $entry_customer; ?>" id="input-customer" class="form-control" />
               </div>
             </div>
             <div class="col-sm-4">
@@ -201,7 +191,7 @@ $('#button-delete').prop('disabled', true);
 //--></script>   
   <script type="text/javascript"><!--
 $('#button-filter').on('click', function() {
-	url = 'index.php?route=replogic/salesrep_info&token=<?php echo $token; ?>&type=orders&salesrep_id=<?php echo $salesrep_id; ?>';
+	url = 'index.php?route=customer/customer_info&token=<?php echo $token; ?>&type=orders&customer_id=<?php echo $customer_id; ?>';
 
 	var filter_order_id = $('input[name=\'filter_order_id\']').val();
 
@@ -209,10 +199,10 @@ $('#button-filter').on('click', function() {
 		url += '&filter_order_id=' + encodeURIComponent(filter_order_id);
 	}
 
-	var filter_customer_id = $('select[name=\'filter_customer_id\']').val();
+	var filter_customer = $('input[name=\'filter_customer\']').val();
 
-	if (filter_customer_id) {
-		url += '&filter_customer_id=' + encodeURIComponent(filter_customer_id);
+	if (filter_customer) {
+		url += '&filter_customer=' + encodeURIComponent(filter_customer);
 	}
 
 	var filter_order_status = $('select[name=\'filter_order_status\']').val();
@@ -243,7 +233,7 @@ $('#button-filter').on('click', function() {
 });
 $('#button-filter-reset').on('click', function() {
 	
-	var url = 'index.php?route=replogic/salesrep_info&token=<?php echo $token; ?>&type=orders&salesrep_id=<?php echo $salesrep_id; ?>';
+	var url = 'index.php?route=customer/customer_info&token=<?php echo $token; ?>&type=orders&customer_id=<?php echo $customer_id; ?>';
 
 	location = url;
 });

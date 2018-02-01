@@ -285,7 +285,7 @@ class ControllerReplogicOrder extends Controller {
 			
 			$data['customer_contact'] = $customer_contact_info['first_name']." ".$customer_contact_info['last_name'];
 			$data['customer_contact_id'] = $customer_contact_info['customer_con_id'];
-			$data['customer'] = $custome_info['firstname']." ".$custome_info['lastname'];
+			$data['customer'] = $custome_info['firstname'];
 			$data['customer_id'] = $custome_info['customer_id'];
 			$data['customer_group_id'] = $this->config->get('config_customer_group_id');
 			$data['firstname'] = $custome_info['firstname'];
@@ -297,6 +297,7 @@ class ControllerReplogicOrder extends Controller {
 
 			//$data['addresses'] = array();
 			$data['addresses'] = $this->model_customer_customer->getAddresses($quote_info['customer_id']);
+			//print_r($data['addresses']); exit;
 			
 			$data['payment_firstname'] = '';
 			$data['payment_lastname'] = '';
@@ -331,12 +332,20 @@ class ControllerReplogicOrder extends Controller {
 			$products = $array['cart_items'];
 			
 			$data['order_products'] = array();
-			
+			$this->load->model('tool/image');
 			
 			foreach ($products as $product) { 
+				
+				if (is_file(DIR_IMAGE . $product->image)) {
+					$image = $this->model_tool_image->resize($product->image, 40, 40);
+				} else {
+					$image = $this->model_tool_image->resize('tsc_image.png', 40, 40);
+				}
+				
 				$data['order_products'][] = array(
 					'product_id' => $product->id,
 					'name'       => $product->name,
+					'image'      => $image,
 					'sku'      => $product->sku,
 					'model'      => '',
 					'option'     => '',

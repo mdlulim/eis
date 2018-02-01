@@ -162,6 +162,8 @@ class ControllerApiCart extends Controller {
 			$json['products'] = array();
 
 			$products = $this->cart->getProducts();
+			
+			$this->load->model('tool/image');
 
 			foreach ($products as $product) {
 				$product_total = 0;
@@ -187,11 +189,18 @@ class ControllerApiCart extends Controller {
 						'type'                    => $option['type']
 					);
 				}
+				
+				if (is_file(DIR_IMAGE . $product['image'])) {
+					$image = $this->model_tool_image->resize($product['image'], 40, 40);
+				} else {
+					$image = $this->model_tool_image->resize('tsc_image.png', 40, 40);
+				}
 
 				$json['products'][] = array(
 					'cart_id'    => $product['cart_id'],
 					'product_id' => $product['product_id'],
 					'name'       => $product['name'],
+					'image'      => $image,
 					'model'      => $product['model'],
 					'option'     => $option_data,
 					'quantity'   => $product['quantity'],

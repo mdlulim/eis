@@ -44,9 +44,18 @@
           <div class="row">
             <div class="col-sm-3">
               <div class="form-group">
-                <label class="control-label" for="input-name">Customer Name</label>
-                <input type="text" name="filter_name" value="<?php echo $filter_name; ?>" placeholder="Customer Name" id="input-name" class="form-control" />
-                
+                <label class="control-label" for="input-price">Customer</label>
+                <select name="filter_customer_id" class="form-control">
+                	<option value="">Select Customer</option>
+                    <?php foreach ($dropdowncustomers as $dropdowncustomer) {  ?>
+                <?php if ($dropdowncustomer['customer_id'] == $filter_customer_id) { ?>
+                <option value="<?php echo $dropdowncustomer['customer_id']; ?>" selected="selected"><?php echo $dropdowncustomer['firstname']; ?></option>
+                <?php } else { ?>
+                <option value="<?php echo $dropdowncustomer['customer_id']; ?>"><?php echo $dropdowncustomer['firstname']; ?></option>
+                <?php } ?>
+                <?php } ?>
+                    
+                </select>
               </div>
               
             </div>
@@ -145,12 +154,12 @@
    
   <script type="text/javascript"><!--
 $('#button-filter').on('click', function() {
-	url = 'index.php?route=customer/customer&token=<?php echo $token; ?>';
+	var url = 'index.php?route=replogic/salesrep_info&type=customers&salesrep_id=<?php echo $salesrep_id; ?>&token=<?php echo $token; ?>';
 	
-	var filter_name = $('input[name=\'filter_name\']').val();
-	
-	if (filter_name) {
-		url += '&filter_name=' + encodeURIComponent(filter_name);
+	var filter_customer_id = $('select[name=\'filter_customer_id\']').val();
+
+	if (filter_customer_id) {
+		url += '&filter_customer_id=' + encodeURIComponent(filter_customer_id);
 	}
 	
 	var filter_customer_group_id = $('select[name=\'filter_customer_group_id\']').val();
@@ -169,7 +178,7 @@ $('#button-filter').on('click', function() {
 });
 
 $('#button-filter-reset').on('click', function() {
-	var url = 'index.php?route=customer/customer&token=<?php echo $token; ?>';
+	var url = 'index.php?route=replogic/salesrep_info&type=customers&salesrep_id=<?php echo $salesrep_id; ?>&token=<?php echo $token; ?>';
 
 	location = url;
 });

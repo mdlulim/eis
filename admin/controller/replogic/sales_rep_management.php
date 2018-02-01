@@ -822,6 +822,26 @@ class ControllerReplogicSalesRepManagement extends Controller {
 			$this->error['email'] = $this->language->get('error_email');
 		}
 		
+		/*$salesrep_info = $this->model_replogic_sales_rep_management->getSalesrepByEmail($this->request->post['email']);
+
+		if (!isset($this->request->get['salesrep_id'])) {
+			if ($salesrep_info) {
+				$this->error['warning'] = $this->language->get('error_exists');
+			}
+		} else {
+			if ($salesrep_info && ($this->request->get['salesrep_id'] != $salesrep_info['salesrep_id'])) {
+				$this->error['warning'] = $this->language->get('error_exists');
+			}
+		}*/
+		
+		$user_info = $this->model_replogic_sales_rep_management->CheckEmailByApi($this->request->post['email']);
+
+		if (!isset($this->request->get['salesrep_id'])) {
+			if (!empty($user_info->data)) {
+				$this->error['warning'] = $this->language->get('error_exists');
+			}
+		}
+		
 		if (utf8_strlen($this->request->post['tel']) < 10) {
 			$this->error['tel'] = $this->language->get('error_tel');
 			

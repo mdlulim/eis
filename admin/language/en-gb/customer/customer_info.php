@@ -1,13 +1,11 @@
 <?php
 // Heading
-$_['heading_title']    = 'Sales Rep Management';
+$_['heading_title']    = 'Customer Sales Representative';
+$_['breadcrum_title']    = 'Customer Info';
 
 // Text
-$_['text_success']     = 'Success: You have modified Sales Rep Management!';
-$_['text_list']        = 'Sales Rep Management';
-$_['text_add']         = 'Add Sales Rep';
-$_['text_edit']        = 'Edit Sales Rep';
-$_['text_confirm']        = 'Are you sure want to Delete Sales Rep Management ?';
+$_['text_success']     = 'Success: You have modified Customer Sales Representative!';
+$_['text_list']        = 'Customer Info : ';
 
 // Column
 $_['column_name']      = 'Sales Rep Name';
@@ -34,4 +32,3 @@ $_['error_tel']       = 'Telephone Number must be 10 Digits!';
 $_['error_cell']       = 'Cell Number must be 10 Digits!';
 $_['error_password']       = 'Password must be between 3 and 32 characters!';
 $_['error_salesrep_id']       = 'Select Team!';
-$_['error_exists']          = 'Warning: E-Mail Address is already in List!';

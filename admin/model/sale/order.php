@@ -171,7 +171,7 @@ class ModelSaleOrder extends Model {
 
 	public function getOrders($data = array()) {
 		
-		if (!empty($data['filter_salesrep_id'])) 
+		if (!empty($data['filter_salesrep_id']) || !empty($data['filter_customer_id']) ) 
 		{
 			$sql = "SELECT o.order_id, CONCAT(o.firstname) AS customer, (SELECT os.name FROM " . DB_PREFIX . "order_status os WHERE os.order_status_id = o.order_status_id AND os.language_id = '" . (int)$this->config->get('config_language_id') . "') AS order_status, o.shipping_code, o.total, o.currency_code, o.currency_value, o.date_added, o.date_modified FROM `" . DB_PREFIX . "order` o left join oc_customer as c on o.customer_id = c.customer_id";
 		}
@@ -202,6 +202,10 @@ class ModelSaleOrder extends Model {
 		
 		if (!empty($data['filter_salesrep_id'])) {
 			$sql .= " AND c.salesrep_id = '" . (int)$data['filter_salesrep_id'] . "'";
+		}
+		
+		if (!empty($data['filter_customer_id'])) {
+			$sql .= " AND c.customer_id = '" . (int)$data['filter_customer_id'] . "'";
 		}
 
 		if (!empty($data['filter_customer'])) {
@@ -304,7 +308,7 @@ class ModelSaleOrder extends Model {
 	
 	public function getTotalOrders($data = array()) {
 		
-		if (!empty($data['filter_salesrep_id'])) 
+		if (!empty($data['filter_salesrep_id']) || !empty($data['filter_customer_id'])) 
 		{
 			$sql = "SELECT COUNT(*) AS total FROM `" . DB_PREFIX . "order` o left join oc_customer as c on o.customer_id = c.customer_id";
 		}
@@ -336,9 +340,13 @@ class ModelSaleOrder extends Model {
 		if (!empty($data['filter_salesrep_id'])) {
 			$sql .= " AND c.salesrep_id = '" . (int)$data['filter_salesrep_id'] . "'";
 		}
+		
+		if (!empty($data['filter_customer_id'])) {
+			$sql .= " AND c.customer_id = '" . (int)$data['filter_customer_id'] . "'";
+		}
 
 		if (!empty($data['filter_customer'])) {
-			$sql .= " AND CONCAT(firstname, ' ', lastname) LIKE '%" . $this->db->escape($data['filter_customer']) . "%'";
+			$sql .= " AND CONCAT(o.firstname, ' ', o.lastname) LIKE '%" . $this->db->escape($data['filter_customer']) . "%'";
 		}
 
 		if (!empty($data['filter_date_added'])) {
@@ -352,7 +360,7 @@ class ModelSaleOrder extends Model {
 		if (!empty($data['filter_total'])) {
 			$sql .= " AND o.total = '" . (float)$data['filter_total'] . "'";
 		}
-
+//echo $sql; exit;
 		$query = $this->db->query($sql);
 
 		return $query->row['total'];

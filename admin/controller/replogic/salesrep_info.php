@@ -210,6 +210,7 @@ class ControllerReplogicSalesrepInfo extends Controller {
 	protected function getAppointmentTab() {
 		
 		$this->load->model('replogic/schedule_management');
+		$this->load->model('customer/customer');
 		
 		$salesrepdetails = $this->model_replogic_sales_rep_management->getsalesrep($salesrep_id);
 		$data['salesrepname'] = $salesrepdetails['salesrep_name'] . $salesrepdetails['salesrep_lastname'];
@@ -381,6 +382,9 @@ class ControllerReplogicSalesrepInfo extends Controller {
 		$salesrep = $this->model_replogic_sales_rep_management->getsalesrep($result['salesrep_id']); ;
 		$sales_rep = $salesrep['salesrep_name'] ." ". $salesrep['salesrep_lastname'];
 		
+		$customerdetail = $this->model_customer_customer->getCustomer($result['customer_id']); ;
+		$customername = $customerdetail['firstname'];
+		
 		$time = strtotime($result['appointment_date']);
 		$myFormatForView = date("d-m-Y g:i A", $time); 
 			
@@ -388,6 +392,7 @@ class ControllerReplogicSalesrepInfo extends Controller {
 				'appointment_id' => $result['appointment_id'],
 				'appointment_name'          => $result['appointment_name'],
 				'sales_manager'          => $sales_rep,
+				'customername'          => $customername,
 				'appointment_date'          => $myFormatForView,
 				'tasks'          => $this->url->link('replogic/tasks', 'token=' . $this->session->data['token'] . '&appointment_id=' . $result['appointment_id'] . $url, true),
 				'view'          => $this->url->link('replogic/salesrep_info/appointmentView', 'token=' . $this->session->data['token'] . '&appointment_id=' . $result['appointment_id'] . $url, true)
@@ -673,7 +678,7 @@ class ControllerReplogicSalesrepInfo extends Controller {
 	   $data['salesReps'] = $this->model_replogic_sales_rep_management->getSalesRepsDropdown($allaccess, $current_user_id);
 	   
 	   $this->load->model('customer/customer');
-	   $data['customers'] = $this->model_customer_customer->getCustomers(); ;
+	   $data['customers'] = $this->model_customer_customer->getCustomers();
 	
 		$data['sales_manager'] = $appointment_info['salesrep_id'];
 		
@@ -695,11 +700,12 @@ class ControllerReplogicSalesrepInfo extends Controller {
 		$salesrep_id = $this->request->get['salesrep_id'];
 		$salesrepdetails = $this->model_replogic_sales_rep_management->getsalesrep($salesrep_id);
 		$data['salesrepname'] = $salesrepdetails['salesrep_name'] ." ". $salesrepdetails['salesrep_lastname'];
+		$data['salesrep_id'] = $salesrep_id;
 		
-		if (isset($this->request->get['filter_name'])) {
-			$filter_name = $this->request->get['filter_name'];
+		if (isset($this->request->get['filter_customer_id'])) {
+			$filter_customer_id = $this->request->get['filter_customer_id'];
 		} else {
-			$filter_name = null;
+			$filter_customer_id = null;
 		}
 
 		if (isset($this->request->get['filter_customer_group_id'])) {
@@ -742,8 +748,8 @@ class ControllerReplogicSalesrepInfo extends Controller {
 			$url .= '&salesrep_id=' . $this->request->get['salesrep_id'];
 		}
 		
-		if (isset($this->request->get['filter_name'])) {
-			$url .= '&filter_name=' . urlencode(html_entity_decode($this->request->get['filter_name'], ENT_QUOTES, 'UTF-8'));
+		if (isset($this->request->get['filter_customer_id'])) {
+			$url .= '&filter_customer_id=' . $this->request->get['filter_customer_id'];
 		}
 
 		if (isset($this->request->get['filter_customer_group_id'])) {
@@ -796,7 +802,7 @@ class ControllerReplogicSalesrepInfo extends Controller {
 		$data['customers'] = array();
 
 		$filter_data = array(
-			'filter_name'              => $filter_name,
+			'filter_customer_id'              => $filter_customer_id,
 			'filter_customer_group_id' => $filter_customer_group_id,
 			'filter_date_added'        => $filter_date_added,
 			'filter_salesrep_id'        => $salesrep_id,
@@ -840,7 +846,7 @@ class ControllerReplogicSalesrepInfo extends Controller {
 				'status'         => ($result['status'] ? $this->language->get('text_enabled') : $this->language->get('text_disabled')),
 				'ip'             => $result['ip'],
 				'date_added'     => date($this->language->get('date_format_short'), strtotime($result['date_added'])),
-				'view'          => $this->url->link('replogic/salesrep_info/CustomersView', 'token=' . $this->session->data['token'] . '&type=customers&csalesrep_id='.$salesrep_id.'&customer_id=' . $result['customer_id'], true),
+				'view'          => $this->url->link('customer/customer_info', 'token=' . $this->session->data['token'] . '&type=general&csalesrep_id='.$salesrep_id.'&customer_id=' . $result['customer_id'], true),
 				'edit'           => $this->url->link('customer/customer/edit', 'token=' . $this->session->data['token'] . '&type=customers&csalesrep_id='.$salesrep_id.'&customer_id=' . $result['customer_id'], true)
 			);
 		}
@@ -896,8 +902,8 @@ class ControllerReplogicSalesrepInfo extends Controller {
 			$url .= '&salesrep_id=' . $this->request->get['salesrep_id'];
 		}
 		
-		if (isset($this->request->get['filter_name'])) {
-			$url .= '&filter_name=' . urlencode(html_entity_decode($this->request->get['filter_name'], ENT_QUOTES, 'UTF-8'));
+		if (isset($this->request->get['filter_customer_id'])) {
+			$url .= '&filter_customer_id=' . $this->request->get['filter_customer_id'];
 		}
 
 		if (isset($this->request->get['filter_customer_group_id'])) {
@@ -933,8 +939,8 @@ class ControllerReplogicSalesrepInfo extends Controller {
 			$url .= '&salesrep_id=' . $this->request->get['salesrep_id'];
 		}
 		
-		if (isset($this->request->get['filter_name'])) {
-			$url .= '&filter_name=' . urlencode(html_entity_decode($this->request->get['filter_name'], ENT_QUOTES, 'UTF-8'));
+		if (isset($this->request->get['filter_customer_id'])) {
+			$url .= '&filter_customer_id=' . $this->request->get['filter_customer_id'];
 		}
 
 		if (isset($this->request->get['filter_customer_group_id'])) {
@@ -963,13 +969,16 @@ class ControllerReplogicSalesrepInfo extends Controller {
 
 		$data['results'] = sprintf($this->language->get('text_pagination'), ($customer_total) ? (($page - 1) * $this->config->get('config_limit_admin')) + 1 : 0, ((($page - 1) * $this->config->get('config_limit_admin')) > ($customer_total - $this->config->get('config_limit_admin'))) ? $customer_total : ((($page - 1) * $this->config->get('config_limit_admin')) + $this->config->get('config_limit_admin')), $customer_total, ceil($customer_total / $this->config->get('config_limit_admin')));
 
-		$data['filter_name'] = $filter_name;
+		$data['filter_customer_id'] = $filter_customer_id;
 		$data['filter_customer_group_id'] = $filter_customer_group_id;
 		$data['filter_date_added'] = $filter_date_added;
 
 		$this->load->model('customer/customer_group');
 
 		$data['customer_groups'] = $this->model_customer_customer_group->getCustomerGroups();
+		
+		$this->load->model('customer/customer');
+	    $data['dropdowncustomers'] = $this->model_customer_customer->getCustomers();
 
 		$this->load->model('setting/store');
 
@@ -1422,10 +1431,10 @@ class ControllerReplogicSalesrepInfo extends Controller {
 			$filter_order_id = null;
 		}
 
-		if (isset($this->request->get['filter_customer'])) {
-			$filter_customer = $this->request->get['filter_customer'];
+		if (isset($this->request->get['filter_customer_id'])) {
+			$filter_customer_id = $this->request->get['filter_customer_id'];
 		} else {
-			$filter_customer = null;
+			$filter_customer_id = null;
 		}
 
 		if (isset($this->request->get['filter_order_status'])) {
@@ -1484,8 +1493,8 @@ class ControllerReplogicSalesrepInfo extends Controller {
 			$url .= '&filter_order_id=' . $this->request->get['filter_order_id'];
 		}
 
-		if (isset($this->request->get['filter_customer'])) {
-			$url .= '&filter_customer=' . urlencode(html_entity_decode($this->request->get['filter_customer'], ENT_QUOTES, 'UTF-8'));
+		if (isset($this->request->get['filter_customer_id'])) {
+			$url .= '&filter_customer_id=' . $this->request->get['filter_customer_id'];
 		}
 
 		if (isset($this->request->get['filter_order_status'])) {
@@ -1548,7 +1557,7 @@ class ControllerReplogicSalesrepInfo extends Controller {
 		$filter_data = array(
 			'filter_order_id'      => $filter_order_id,
 			'filter_salesrep_id'   => $salesrep_id,
-			'filter_customer'	   => $filter_customer,
+			'filter_customer_id'   => $filter_customer_id,
 			'filter_order_status'  => $filter_order_status,
 			'filter_total'         => $filter_total,
 			'filter_date_added'    => $filter_date_added,
@@ -1580,10 +1589,12 @@ class ControllerReplogicSalesrepInfo extends Controller {
 				'date_added'    => date($this->language->get('date_format_short'), strtotime($result['date_added'])),
 				'date_modified' => date($this->language->get('date_format_short'), strtotime($result['date_modified'])),
 				'shipping_code' => $result['shipping_code'],
-				'view'          => $this->url->link('sale/order/info', 'token=' . $this->session->data['token'] . '&type=orders&csalesrep_id='.$salesrep_id.'&order_id=' . $result['order_id'] . $url, true),
-				'edit'           => $this->url->link('sale/order/edit', 'token=' . $this->session->data['token'] . '&type=orders&csalesrep_id='.$salesrep_id.'&order_id=' . $result['order_id']. $url, true)
+				'view'          => $this->url->link('sale/order/info', 'token=' . $this->session->data['token'] . '&csalesrep_id='.$salesrep_id.'&order_id=' . $result['order_id'] . $url, true),
+				'edit'           => $this->url->link('sale/order/edit', 'token=' . $this->session->data['token'] . '&csalesrep_id='.$salesrep_id.'&order_id=' . $result['order_id']. $url, true)
 			);
 		}
+		
+		$data['customers'] = $this->model_customer_customer->getCustomers();
 
 		$data['heading_title'] = $this->language->get('heading_title');
 
@@ -1647,10 +1658,10 @@ class ControllerReplogicSalesrepInfo extends Controller {
 			$url .= '&filter_order_id=' . $this->request->get['filter_order_id'];
 		}
 
-		if (isset($this->request->get['filter_customer'])) {
-			$url .= '&filter_customer=' . urlencode(html_entity_decode($this->request->get['filter_customer'], ENT_QUOTES, 'UTF-8'));
+		if (isset($this->request->get['filter_customer_id'])) {
+			$url .= '&filter_customer_id=' . $this->request->get['filter_customer_id'];
 		}
-
+		
 		if (isset($this->request->get['filter_order_status'])) {
 			$url .= '&filter_order_status=' . $this->request->get['filter_order_status'];
 		}
@@ -1699,8 +1710,8 @@ class ControllerReplogicSalesrepInfo extends Controller {
 			$url .= '&filter_order_id=' . $this->request->get['filter_order_id'];
 		}
 
-		if (isset($this->request->get['filter_customer'])) {
-			$url .= '&filter_customer=' . urlencode(html_entity_decode($this->request->get['filter_customer'], ENT_QUOTES, 'UTF-8'));
+		if (isset($this->request->get['filter_customer_id'])) {
+			$url .= '&filter_customer_id=' . $this->request->get['filter_customer_id'];
 		}
 
 		if (isset($this->request->get['filter_order_status'])) {
@@ -1738,7 +1749,7 @@ class ControllerReplogicSalesrepInfo extends Controller {
 		$data['results'] = sprintf($this->language->get('text_pagination'), ($order_total) ? (($page - 1) * $this->config->get('config_limit_admin')) + 1 : 0, ((($page - 1) * $this->config->get('config_limit_admin')) > ($order_total - $this->config->get('config_limit_admin'))) ? $order_total : ((($page - 1) * $this->config->get('config_limit_admin')) + $this->config->get('config_limit_admin')), $order_total, ceil($order_total / $this->config->get('config_limit_admin')));
 
 		$data['filter_order_id'] = $filter_order_id;
-		$data['filter_customer'] = $filter_customer;
+		$data['filter_customer_id'] = $filter_customer_id;
 		$data['filter_order_status'] = $filter_order_status;
 		$data['filter_total'] = $filter_total;
 		$data['filter_date_added'] = $filter_date_added;
@@ -1767,6 +1778,7 @@ class ControllerReplogicSalesrepInfo extends Controller {
 		$salesrep_id = $this->request->get['salesrep_id'];
 		$salesrepdetails = $this->model_replogic_sales_rep_management->getsalesrep($salesrep_id);
 		$data['salesrepname'] = $salesrepdetails['salesrep_name'] ." ". $salesrepdetails['salesrep_lastname'];
+		$data['salesrep_id'] = $salesrep_id;
 		
 		if (isset($this->request->get['filter_quote_id'])) {
 			$filter_quote_id = $this->request->get['filter_quote_id'];
@@ -1774,12 +1786,6 @@ class ControllerReplogicSalesrepInfo extends Controller {
 			$filter_quote_id = null;
 		}
 
-		if (isset($this->request->get['filter_customer'])) {
-			$filter_customer = $this->request->get['filter_customer'];
-		} else {
-			$filter_customer = null;
-		}
-		
 		if (isset($this->request->get['filter_customer_id'])) {
 			$filter_customer_id = $this->request->get['filter_customer_id'];
 		} else {
@@ -1923,17 +1929,7 @@ class ControllerReplogicSalesrepInfo extends Controller {
 		$current_user = $this->session->data['user_id'];
 		$current_user_group_id = $this->model_user_user->getUser($current_user); ;
 		$current_user_group = $this->model_user_user_group->getUserGroup($current_user_group_id['user_group_id']); ;
-		//print_r($current_user_group); exit;
-		if($current_user_group['name'] == 'Company admin' || $current_user_group['name'] == 'Administrator')
-		{
-			$data['delete'] = $this->url->link('replogic/order_quotes/delete', 'token=' . $this->session->data['token'], true);
-		}
-		else
-		{ 
-			$data['delete'] = '';
-			
-		}
-
+		
 		$data['orders'] = array();
 
 		$filter_data = array(
@@ -1990,7 +1986,7 @@ class ControllerReplogicSalesrepInfo extends Controller {
 			
 			if($current_user_group['name'] == 'Company admin' || $current_user_group['name'] == 'Administrator')
 			{
-				$view_button = $this->url->link('replogic/order_quotes/info', 'quote_id='.$result['quote_id'].'&token=' . $this->session->data['token'] . $url, true);
+				$view_button = $this->url->link('replogic/order_quotes/info', 'redirto=salesrepinfo&quote_id='.$result['quote_id'].'&token=' . $this->session->data['token'] . $url, true);
 			}
 			else
 			{ 
@@ -2012,7 +2008,11 @@ class ControllerReplogicSalesrepInfo extends Controller {
 				'view'          => $view_button
 			);
 		}
-
+		
+	    $data['customers'] = $this->model_customer_customer->getCustomers();
+		
+		$data['customercontacts'] = $this->model_replogic_customer_contact->getcustomercontacts();
+		
 		$data['heading_title'] = $this->language->get('heading_title');
 
 		$data['text_list'] = $this->language->get('text_list');
@@ -2082,10 +2082,6 @@ class ControllerReplogicSalesrepInfo extends Controller {
 			$url .= '&filter_quote_id=' . $this->request->get['filter_quote_id'];
 		}
 
-		if (isset($this->request->get['filter_customer'])) {
-			$url .= '&filter_customer=' . urlencode(html_entity_decode($this->request->get['filter_customer'], ENT_QUOTES, 'UTF-8'));
-		}
-		
 		if (isset($this->request->get['filter_customer_id'])) {
 			$url .= '&filter_customer_id=' . $this->request->get['filter_customer_id'];
 		}
@@ -2143,10 +2139,6 @@ class ControllerReplogicSalesrepInfo extends Controller {
 			$url .= '&filter_quote_id=' . $this->request->get['filter_quote_id'];
 		}
 
-		if (isset($this->request->get['filter_customer'])) {
-			$url .= '&filter_customer=' . urlencode(html_entity_decode($this->request->get['filter_customer'], ENT_QUOTES, 'UTF-8'));
-		}
-		
 		if (isset($this->request->get['filter_customer_id'])) {
 			$url .= '&filter_customer_id=' . $this->request->get['filter_customer_id'];
 		}
@@ -2190,7 +2182,6 @@ class ControllerReplogicSalesrepInfo extends Controller {
 		$data['results'] = sprintf($this->language->get('text_pagination'), ($order_quotes_total) ? (($page - 1) * $this->config->get('config_limit_admin')) + 1 : 0, ((($page - 1) * $this->config->get('config_limit_admin')) > ($order_quotes_total - $this->config->get('config_limit_admin'))) ? $order_quotes_total : ((($page - 1) * $this->config->get('config_limit_admin')) + $this->config->get('config_limit_admin')), $order_quotes_total, ceil($order_quotes_total / $this->config->get('config_limit_admin')));
 
 		$data['filter_quote_id'] = $filter_quote_id;
-		$data['filter_customer'] = $filter_customer;
 		$data['filter_customer_id'] = $filter_customer_id;
 		$data['filter_customer_contact'] = $filter_customer_contact;
 		$data['filter_customer_contact_id'] = $filter_customer_contact_id;

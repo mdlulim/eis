@@ -12,6 +12,10 @@ class ModelReplogicOrderQuotes extends Model {
 		
 		if (isset($data['filter_order_status'])) {
 			$sql .= " AND status = '" . (int)$data['filter_order_status'] . "'";
+		}
+		else
+		{
+			$sql .= " AND status != 1";
 		} 
 
 		if (!empty($data['filter_quote_id'])) {
@@ -132,6 +136,10 @@ class ModelReplogicOrderQuotes extends Model {
 		
 		if (isset($data['filter_order_status'])) {
 			$sql .= " AND status = '" . (int)$data['filter_order_status'] . "'";
+		} 
+		else
+		{
+			$sql .= " AND status != 1";
 		} 
 		
 		if (!empty($data['filter_salesrep_id'])) {
