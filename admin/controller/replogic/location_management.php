@@ -122,7 +122,7 @@ class ControllerReplogicLocationManagement extends Controller {
 		}
 		else
 		{
-			$filter_team_id = NULL; 
+			//$filter_team_id = NULL; 
 		}
 		
 		$filter_data = array(
