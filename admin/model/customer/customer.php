@@ -700,4 +700,11 @@ class ModelCustomerCustomer extends Model {
 	public function deleteLoginAttempts($email) {
 		$this->db->query("DELETE FROM `" . DB_PREFIX . "customer_login` WHERE `email` = '" . $this->db->escape($email) . "'");
 	}
+	
+	public function getCustomerBySalesRep($salesrep_id) { 
+		$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "customer WHERE salesrep_id = '" . (int)$salesrep_id . "'");
+
+		return $query->rows;
+	}
+	
 }

@@ -137,5 +137,5 @@ class ModelReplogicLocationManagement extends Model {
 
 		return $query->row['total'];
 	}
-
+	
 }

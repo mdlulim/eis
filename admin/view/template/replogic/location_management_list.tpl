@@ -34,20 +34,6 @@
                 <input type="text" name="filter_address" value="<?php echo $filter_address; ?>" placeholder="Search Address" id="input-address" class="form-control" style="border-radius:25px;" />
               </div>
             </div>-->
-            <div class="col-sm-2">
-              <div class="form-group">
-                <select name="filter_salesrep_id" id="input-sales_manager" class="form-control">
-                        <option value="">Select Sales Rep</option>
-                        <?php foreach ($salesReps as $salesRep) { ?>
-                        <?php if ($salesRep['salesrep_id'] == $filter_salesrep_id) { ?>
-                        <option value="<?php echo $salesRep['salesrep_id']; ?>" selected="selected"><?php echo $salesRep['salesrep_name']; ?> <?php echo $salesRep['salesrep_lastname']; ?></option>
-                        <?php } else { ?>
-                        <option value="<?php echo $salesRep['salesrep_id']; ?>"><?php echo $salesRep['salesrep_name']; ?> <?php echo $salesRep['salesrep_lastname']; ?></option>
-                        <?php } ?>
-                        <?php } ?>
-                      </select>
-              </div>
-            </div>
             <div class="col-sm-3">
               <div class="form-group">
                 <select name="filter_team_id" id="input-team" class="form-control">
@@ -62,16 +48,38 @@
                       </select>
               </div>
             </div>
+            <div class="col-sm-2">
+              <div class="form-group">
+                <select name="filter_salesrep_id" id="input-sales_manager" class="form-control">
+                      		<option value="">Select Sales Rep</option> 
+                           <?php if($salesReps) { ?>
+                            <?php foreach ($salesReps as $salesRep) { ?>
+                                <?php if ($salesRep['salesrep_id'] == $filter_salesrep_id) { ?>
+                                <option value="<?php echo $salesRep['salesrep_id']; ?>" selected="selected"><?php echo $salesRep['salesrep_name']; ?> <?php echo $salesRep['salesrep_lastname']; ?></option>
+                                <?php } else { ?>
+                                <option value="<?php echo $salesRep['salesrep_id']; ?>"><?php echo $salesRep['salesrep_name']; ?> <?php echo $salesRep['salesrep_lastname']; ?></option>
+                                <?php } ?>
+                            <?php } ?>
+                          <?php } ?>
+                         
+                      </select>
+              </div>
+            </div>
             <div class="col-sm-3">
               <div class="form-group">
                 <select name="filter_customer_id" id="input-customer" class="form-control">
                         <option value="">Select Customer</option>
-                        <?php foreach ($customers as $customer) { ?>
-                        <?php if ($customer['customer_id'] == $filter_customer_id) { ?>
-                        <option value="<?php echo $customer['customer_id']; ?>" selected="selected"><?php echo $customer['firstname']; ?></option>
+                       	<?php if($customers) { ?>
+                            <?php foreach ($customers as $customer) { ?>
+                            <?php if ($customer['customer_id'] == $filter_customer_id) { ?>
+                            <option value="<?php echo $customer['customer_id']; ?>" selected="selected"><?php echo $customer['firstname']; ?></option>
+                            <?php } else { ?>
+                            <option value="<?php echo $customer['customer_id']; ?>"><?php echo $customer['firstname']; ?></option>
+                            <?php } ?>
+                            <?php } ?>
                         <?php } else { ?>
-                        <option value="<?php echo $customer['customer_id']; ?>"><?php echo $customer['firstname']; ?></option>
-                        <?php } ?>
+                        
+                        	<option value="">Not Found</option>
                         <?php } ?>
                       </select>
               </div>
@@ -79,6 +87,7 @@
             <div class="col-sm-1">
               <div class="form-group">
                 <button type="button" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-filter"></i> Search</button>
+                
               </div>
             </div>
             
@@ -331,63 +340,84 @@ $('#chkbx').on('click', function() {
 
 //--></script>
 
-
-  
-<!--<script type="text/javascript">
-  
-  var center = new google.maps.LatLng(59.76522, 18.35002);
- function initialize() {
-      var mapOptions = {
-          zoom: 4,
-          mapTypeId: google.maps.MapTypeId.ROADMAP,
-          center: center,
-		  gestureHandling: 'greedy'
-      };
-      map = new google.maps.Map(document.getElementById('popupmap'), mapOptions);
-      var marker = new google.maps.Marker({
-          map: map,
-          position: center
-      });
-  }
-  
-  
-
-  $('#button-locate-all').on('click', function () {  
-      $('#popupmyModal').modal({
-          backdrop: 'static',
-          keyboard: false
-      }).on('shown.bs.modal', function () {
-          
-		  google.maps.event.trigger(map, 'resize');
-          map.setCenter(center);
-		  
-		  var array = $.map($('input[name="selected[]"]:checked'), function(c){return c.value; })
-		  $('#checkin_id').val(array);
-		  
-		  $.ajax({
-		  url: 'index.php?route=replogic/location_management/Popupmap&token=<?php echo $token; ?>',
-		  type: 'post',
-		  data: $('#checkin_id'),
-		  dataType: 'json',
-		  success: function(json) { 
+<script type="text/javascript"><!--
+$('select[name=\'filter_team_id\']').on('change', function() {
+	$.ajax({ 
+		url: 'index.php?route=replogic/location_management/GetSalesRep&token=<?php echo $token; ?>&team_id=' + this.value,
+		dataType: 'json',
+		beforeSend: function() {
+			$('select[name=\'filter_team_id\']').after(' <i class="fa fa-circle-o-notch fa-spin"></i>');
+		},
+		complete: function() {
+			$('.fa-spin').remove();
+		},
+		success: function(json) {
 			
+			html = '<option value="">Select Sales Rep</option>';
+			
+			if (json && json != '') {
+				for (i = 0; i < json.length; i++) {
+					html += '<option value="' + json[i]['salesrep_id'] + '"';
+
+					html += '>' + json[i]['name'] + '</option>';
+				}
+			} else {
+				html += '<option value="0" selected="selected"><?php echo $text_none; ?></option>';
+			}
+
+			$('select[name=\'filter_salesrep_id\']').html(html);
+			
+			html1 = '<option value="">Select Customer</option>';
+			$('select[name=\'filter_customer_id\']').html(html1);
+		},
+		error: function(xhr, ajaxOptions, thrownError) {
+			alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+		}
+	});
+});
+
+//$('select[name=\'filter_team_id\']').trigger('change');
+//--></script>
+
+<script type="text/javascript"><!--
+$('select[name=\'filter_salesrep_id\']').on('change', function() {
+	$.ajax({ 
+		url: 'index.php?route=replogic/location_management/GetCustomerBySalesrep&token=<?php echo $token; ?>&salesrep_id=' + this.value,
+		dataType: 'json',
+		beforeSend: function() {
+			$('select[name=\'filter_salesrep_id\']').after(' <i class="fa fa-circle-o-notch fa-spin"></i>');
+		},
+		complete: function() {
+			$('.fa-spin').remove();
+		},
+		success: function(json) {
+			
+			html = '<option value="">Select Customer</option>';
+			
+			if (json && json != '') {
+				for (i = 0; i < json.length; i++) {
+					html += '<option value="' + json[i]['customer_id'] + '"';
+
+					html += '>' + json[i]['name'] + '</option>';
+				}
+			} else {
+				html += '<option value="" selected="selected">Not Found</option>';
+			}
+
+			$('select[name=\'filter_customer_id\']').html(html);
 			
 		},
 		error: function(xhr, ajaxOptions, thrownError) {
 			alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
 		}
 	});
-		  
-      });
-  });
-  
-  initialize();
-  
-</script>-->
-<script type="text/javascript">
-  
-  
+});
 
+//$('select[name=\'filter_team_id\']').trigger('change');
+//--></script>
+  
+<script type="text/javascript">
+ 
  // $('#button-locate-all').on('click', function () { 
  $(document).on('click', '#button-locate-all', function (e) {
   		  e.preventDefault();

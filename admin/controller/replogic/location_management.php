@@ -156,13 +156,33 @@ class ControllerReplogicLocationManagement extends Controller {
 			$current_user_id = $this->session->data['user_id'];
 			
 		}
-
+		
 		$location_total = $this->model_replogic_location_management->getTotalLocations($filter_data);
 		$results = $this->model_replogic_location_management->getLocations($filter_data);
 		
 		$this->load->model('replogic/sales_rep_management');
 		$this->load->model('customer/customer');
 		$this->load->model('user/team');
+		
+		if (isset($this->request->get['filter_team_id'])) {
+			
+			$filter_team_id = $this->request->get['filter_team_id'];
+			$data['salesReps'] = $this->model_replogic_sales_rep_management->getSalesRepByTeam($filter_team_id);
+			
+			if (isset($this->request->get['filter_salesrep_id'])) {
+			
+				$data['customers'] = $this->model_customer_customer->getCustomerBySalesRep($this->request->get['filter_salesrep_id']);
+			}
+			else
+			{
+				$data['customers'] = '';
+			}
+			
+			
+		} else {
+			$data['customers'] = '';
+			$data['salesReps'] = '';
+		}
 		
 		$this->load->model('user/team');
 		if($current_user_group['name'] == 'Sales Manager')
@@ -177,8 +197,7 @@ class ControllerReplogicLocationManagement extends Controller {
 		$filter_dataa = array('filter_salesrep_id' => $salesrep_id);
 		$data['teams'] = $this->model_user_team->getTeams($filter_dataa);
 		
-		$data['customers'] = $this->model_customer_customer->getCustomers(); ;
-		$data['salesReps'] = $this->model_replogic_sales_rep_management->getSalesRepsDropdown($allaccess, $current_user_id);
+		
 		$data['locations'] = array();
 		$locationsmaps = array();
 		foreach ($results as $result) {
@@ -502,5 +521,47 @@ class ControllerReplogicLocationManagement extends Controller {
 		$this->response->addHeader('Content-Type: application/json');
 		$this->response->setOutput(json_encode($locationsmaps));
 	}
+	
+	public function GetSalesRep() {
+		$json = array();
+
+		$this->load->model('replogic/sales_rep_management');
+
+		$salesrep_infos = $this->model_replogic_sales_rep_management->getSalesRepByTeam($this->request->get['team_id']);
+
+		if ($salesrep_infos) {
+			foreach($salesrep_infos as $salesrep_info)
+			{
+				$json[] = array(
+					'salesrep_id'        => $salesrep_info['salesrep_id'],
+					'name'              => $salesrep_info['salesrep_name']." ".$salesrep_info['salesrep_lastname']
+				);
+			}
+		}
+
+		$this->response->addHeader('Content-Type: application/json');
+		$this->response->setOutput(json_encode($json));
+	}
+	
+	public function GetCustomerBySalesrep() {
+		$json = array();
+
+		$this->load->model('customer/customer');
+
+		$customer_infos = $this->model_customer_customer->getCustomerBySalesRep($this->request->get['salesrep_id']);
+
+		if ($customer_infos) {
+			foreach($customer_infos as $customer_info)
+			{
+				$json[] = array(
+					'customer_id'        => $customer_info['customer_id'],
+					'name'              => $customer_info['firstname']
+				);
+			}
+		}
+
+		$this->response->addHeader('Content-Type: application/json');
+		$this->response->setOutput(json_encode($json));
+	}	
 
 }

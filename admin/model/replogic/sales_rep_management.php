@@ -118,6 +118,12 @@ class ModelReplogicSalesRepManagement extends Model {
 
 		return $query->row;
 	}
+	
+	public function getSalesRepByTeam($team_id) { 
+		$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "salesrep WHERE sales_team_id = '" . (int)$team_id . "'");
+
+		return $query->rows;
+	}
 
 	public function getSalesReps($data = array(), $allaccess, $current_user_id) { 
 		
