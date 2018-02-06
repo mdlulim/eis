@@ -147,6 +147,7 @@
         <table class="table table-bordered">
           <thead>
             <tr>
+              <td class="text-left"><?php echo $column_image; ?></td>
               <td class="text-left"><?php echo $column_product; ?></td>
               <td class="text-left"><?php echo $column_model; ?></td>
               <td class="text-right"><?php echo $column_quantity; ?></td>
@@ -157,6 +158,7 @@
           <tbody>
             <?php foreach ($products as $product) { ?>
             <tr>
+           	  <td class="text-left"><img src="<?php echo $product['image']; ?>" /></td>
               <td class="text-left"><a href="<?php echo $product['href']; ?>"><?php echo $product['name']; ?></a>
                 <?php foreach ($product['option'] as $option) { ?>
                 <br />

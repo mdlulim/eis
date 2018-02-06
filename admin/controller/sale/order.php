@@ -830,6 +830,7 @@ class ControllerSaleOrder extends Controller {
 			$data['text_history_add'] = $this->language->get('text_history_add');
 			$data['text_loading'] = $this->language->get('text_loading');
 
+			$data['column_image'] = $this->language->get('column_image');
 			$data['column_product'] = $this->language->get('column_product');
 			$data['column_model'] = $this->language->get('column_model');
 			$data['column_quantity'] = $this->language->get('column_quantity');
@@ -1077,6 +1078,15 @@ class ControllerSaleOrder extends Controller {
 						}
 					}
 				}
+				
+				$this->load->model('tool/image');
+				$iquery = $this->db->query("SELECT image FROM " . DB_PREFIX . "product WHERE product_id = '" . $product['product_id'] . "'");
+				
+				if (is_file(DIR_IMAGE . $iquery->row['image'])) {
+					$image = $this->model_tool_image->resize($iquery->row['image'], 40, 40);
+				} else {
+					$image = $this->model_tool_image->resize('no_image.png', 40, 40);
+				}
 
 				$data['products'][] = array(
 					'order_product_id' => $product['order_product_id'],
@@ -1084,6 +1094,7 @@ class ControllerSaleOrder extends Controller {
 					'name'    	 	   => $product['name'],
 					'model'    		   => $product['model'],
 					'option'   		   => $option_data,
+					'image'   		   => $image,
 					'quantity'		   => $product['quantity'],
 					'price'    		   => $this->currency->format($product['price'] + ($this->config->get('config_tax') ? $product['tax'] : 0), $order_info['currency_code'], $order_info['currency_value']),
 					'total'    		   => $this->currency->format($product['total'] + ($this->config->get('config_tax') ? ($product['tax'] * $product['quantity']) : 0), $order_info['currency_code'], $order_info['currency_value']),
@@ -1636,6 +1647,7 @@ class ControllerSaleOrder extends Controller {
 		$data['text_shipping_method'] = $this->language->get('text_shipping_method');
 		$data['text_comment'] = $this->language->get('text_comment');
 
+		
 		$data['column_product'] = $this->language->get('column_product');
 		$data['column_model'] = $this->language->get('column_model');
 		$data['column_quantity'] = $this->language->get('column_quantity');
@@ -1875,6 +1887,7 @@ class ControllerSaleOrder extends Controller {
 
 		$data['column_location'] = $this->language->get('column_location');
 		$data['column_reference'] = $this->language->get('column_reference');
+		
 		$data['column_product'] = $this->language->get('column_product');
 		$data['column_weight'] = $this->language->get('column_weight');
 		$data['column_model'] = $this->language->get('column_model');

@@ -1098,7 +1098,8 @@ class ControllerReplogicOrderQuotes extends Controller {
 			$data['text_history'] = $this->language->get('text_history');
 			$data['text_history_add'] = $this->language->get('text_history_add');
 			$data['text_loading'] = $this->language->get('text_loading');
-
+			
+			$data['column_image'] = $this->language->get('column_image');
 			$data['column_product'] = $this->language->get('column_product');
 			$data['column_model'] = $this->language->get('column_model');
 			$data['column_quantity'] = $this->language->get('column_quantity');
@@ -1358,6 +1359,15 @@ class ControllerReplogicOrderQuotes extends Controller {
 						}
 					}
 				}
+				
+				$this->load->model('tool/image');
+				$iquery = $this->db->query("SELECT image FROM " . DB_PREFIX . "product WHERE product_id = '" . $product['product_id'] . "'");
+				
+				if (is_file(DIR_IMAGE . $iquery->row['image'])) {
+					$image = $this->model_tool_image->resize($iquery->row['image'], 40, 40);
+				} else {
+					$image = $this->model_tool_image->resize('no_image.png', 40, 40);
+				}
 
 				$data['products'][] = array(
 					'order_product_id' => $product['order_product_id'],
@@ -1365,6 +1375,7 @@ class ControllerReplogicOrderQuotes extends Controller {
 					'name'    	 	   => $product['name'],
 					'model'    		   => $product['model'],
 					'option'   		   => $option_data,
+					'image'   		   => $image,
 					'quantity'		   => $product['quantity'],
 					'price'    		   => $this->currency->format($product['price'] + ($this->config->get('config_tax') ? $product['tax'] : 0), $order_info['currency_code'], $order_info['currency_value']),
 					'total'    		   => $this->currency->format($product['total'] + ($this->config->get('config_tax') ? ($product['tax'] * $product['quantity']) : 0), $order_info['currency_code'], $order_info['currency_value']),
@@ -1678,8 +1689,17 @@ class ControllerReplogicOrderQuotes extends Controller {
 			$array = (array) $objct;
 			//print_r($array); exit;
 			$products = $array['cart_items'];
+			
 			foreach ($products as $product) { 
 				$singleproduct = $this->model_catalog_product->getProduct($product->id);
+				
+				$this->load->model('tool/image');
+				$iquery = $this->db->query("SELECT image FROM " . DB_PREFIX . "product WHERE product_id = '" . $product->id . "'");
+				if (is_file(DIR_IMAGE . $iquery->row['image'])) {
+					$image = $this->model_tool_image->resize($iquery->row['image'], 40, 40);
+				} else {
+					$image = $this->model_tool_image->resize('no_image.png', 40, 40);
+				}
 				$data['products'][] = array(
 					'product_id' => $product->id,
 					'name'       => $product->name,
@@ -1687,6 +1707,7 @@ class ControllerReplogicOrderQuotes extends Controller {
 					'model'      => $singleproduct['model'],
 					'option'     => '',
 					'quantity'   => $product->qty,
+					'image'   		   => $image,
 					'price'      => $this->currency->format($product->unit_price, 'ZAR', '1.0000'),
 					'total'      => $this->currency->format($product->total_price, 'ZAR', '1.0000'),
 					'href'     		   => $this->url->link('catalog/product/edit', 'token=' . $this->session->data['token'] . '&product_id=' . $product->id, true),

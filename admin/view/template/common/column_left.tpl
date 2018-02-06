@@ -2,14 +2,32 @@
   <div id="profile">
     <div>
       <?php if ($image) { ?>
-      <img src="<?php echo $image; ?>" alt="<?php echo $firstname; ?> <?php echo $lastname; ?>" title="<?php echo $username; ?>" class="img-circle" />
+     <!-- <img src="<?php echo $image; ?>" alt="<?php echo $firstname; ?> <?php echo $lastname; ?>" title="<?php echo $username; ?>" class="img-circle" />-->
       <?php } else { ?>
-      <i class="fa fa-opencart"></i>
+      <!--<i class="fa fa-opencart"></i>-->
       <?php } ?>
     </div>
     <div>
       <h4><?php echo $firstname; ?> <?php echo $lastname; ?></h4>
-      <small><?php echo $user_group; ?></small></div>
+      <?php
+
+$hour = date('H');
+$time = date("H");
+	
+    if ($time < 12) {
+       $greetings = "Good morning";
+    } elseif ($time >= 12 && $time < 18) {
+       $greetings = "Good Afternoon";
+    } elseif ($time >= 18) {
+        $greetings = "Good Evening";
+    }
+?>
+
+
+<small><?php echo $greetings .' '.$firstname; ?></small>
+
+
+      <!--<small><?php echo $user_group; ?></small>--></div>
   </div>
   <ul id="menu">
     <?php foreach ($menus as $menu) { ?>
@@ -55,7 +73,7 @@
     </li>
     <?php } ?>
   </ul>
-  <div id="stats">
+  <!--<div id="stats">
     <ul>
       <li>
         <div><?php echo $text_complete_status; ?> <span class="pull-right"><?php echo $complete_status; ?>%</span></div>
@@ -76,5 +94,5 @@
         </div>
       </li>
     </ul>
-  </div>
+  </div>-->
 </nav>

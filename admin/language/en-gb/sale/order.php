@@ -67,6 +67,7 @@ $_['column_status']              = 'Status';
 $_['column_date_added']          = 'Date Added';
 $_['column_date_modified']       = 'Date Modified';
 $_['column_total']               = 'Total';
+$_['column_image']               = 'Images';
 $_['column_product']             = 'Product';
 $_['column_model']               = 'Model';
 $_['column_quantity']            = 'Quantity';
