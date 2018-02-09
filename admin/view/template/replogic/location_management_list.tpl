@@ -24,7 +24,7 @@
     <?php } ?>
     <div class="panel panel-default">
       <div class="panel-heading">
-        <h3 class="panel-title"><i class="fa fa-list"></i> <?php echo $text_list; ?></h3>
+        <h3 class="panel-title"><i class="fa fa-globe"></i> <?php //echo $text_list; ?>Sales rep Location Management</h3>
       </div>
       <div class="panel-body">
         
@@ -48,7 +48,7 @@
                       </select>
               </div>
             </div>
-            <div class="col-sm-2">
+            <div class="col-sm-3">
               <div class="form-group">
                 <select name="filter_salesrep_id" id="input-sales_manager" class="form-control">
                       		<option value="">Select Sales Rep</option> 
@@ -91,9 +91,9 @@
               </div>
             </div>
             
-            <div class="col-sm-3">
+            <div class="col-sm-2">
               <div class="form-group">
-                <button type="button" id="button-locate-all" class="btn btn-primary pull-right" style="float:left!important;margin-left:45px;" title="Select the sales rep/s you wish to locate from the table below and click on the Locate selected button."><i class="fa fa-filter"></i>Locate Selected</button>
+                <button type="button" id="button-locate-all" class="btn btn-primary pull-right" style="float:left!important;margin-left:-4px;" title="Select the sales rep/s you wish to locate from the table below and click on the Locate selected button."><i class="fa fa-filter"></i>Locate Selected</button>
                 <label class="col-sm-2 control-label" for="input-voucher-min" style="float:left;padding-left:0px;top:-3px;"><span data-toggle="tooltip" title="Select the sales rep/s you wish to locate from the table below and click on the Locate selected button." style="font-size:27px;"></span></label>
                 <input type="hidden" id="checkin_id" name="checkin_id" value=""  />
               </div>
@@ -200,19 +200,19 @@
               <thead style="background-color:#CCCCCC;">
                 <tr>
                   <td style="width: 1px;" class="text-center"><input type="checkbox" onclick="$('input[name*=\'selected\']').prop('checked', this.checked);" id="chkbx" /></td>
-                  <td class="text-center" >Sales Rep Name</td>
-                    <td class="text-left" ><?php if ($sort == 'name') { ?>
+                  <td class="text-center" width="200">Sales Rep Name</td>
+                    <td class="text-left" width="200"><?php if ($sort == 'name') { ?>
                     <a href="<?php echo $sort_name; ?>" class="<?php echo strtolower($order); ?>">Team</a>
                     <?php } else { ?>
                     <a href="<?php echo $sort_name; ?>">Team</a>
                     <?php } ?></td>
-                  <td class="text-left" >Last Check In</td>
-                  <td class="text-left" ><?php if ($sort == 'name') { ?>
+                  <td class="text-left" width="200">Last Check In</td>
+                  <td class="text-left" width="200"><?php if ($sort == 'name') { ?>
                     <a href="<?php echo $sort_name; ?>" class="<?php echo strtolower($order); ?>">Customer</a>
                     <?php } else { ?>
                     <a href="<?php echo $sort_name; ?>">Customer</a>
                     <?php } ?></td>
-                  <td class="text-left"><?php if ($sort == 'name') { ?>
+                  <td class="text-left" width="200"><?php if ($sort == 'name') { ?>
                     <a href="<?php echo $sort_name; ?>" class="<?php echo strtolower($order); ?>">Check In Location</a>
                     <?php } else { ?>
                     <a href="<?php echo $sort_name; ?>">Check In Location</a>
@@ -231,11 +231,11 @@
                                 <?php } else { ?>
                                 <input type="checkbox" name="selected[]" value="<?php echo $location['checkin_id']; ?>" />
                                 <?php } ?></td>
-                              <td class="text-center"><?php echo $location['sales_manager']; ?></td>
-                              <td class="text-left"><?php echo $location['team']; ?></td>
-                              <td class="text-left"><?php echo $location['last_check']; ?></td>
-                              <td class="text-left"><?php  echo $location['customer']; ?></td>
-                              <td class="text-left"><?php echo $location['checkin_location']; ?></td>
+                              <td class="text-center" width="200"><?php echo $location['sales_manager']; ?></td>
+                              <td class="text-left" width="200"><?php echo $location['team']; ?></td>
+                              <td class="text-left" width="200"><?php echo $location['last_check']; ?></td>
+                              <td class="text-left" width="200"><?php  echo $location['customer']; ?></td>
+                              <td class="text-left" width="200"><?php echo $location['checkin_location']; ?></td>
                               <td class="text-left" width="200"><?php  echo $location['current_location']; ?></td>
                             </tr>
                      <?php } ?>
