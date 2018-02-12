@@ -34,6 +34,7 @@
                 <input type="text" name="filter_address" value="<?php echo $filter_address; ?>" placeholder="Search Address" id="input-address" class="form-control" style="border-radius:25px;" />
               </div>
             </div>-->
+  <?php if($filtersales == 'yes') { ?>          
             <div class="col-sm-3">
               <div class="form-group">
                 <select name="filter_team_id" id="input-team" class="form-control">
@@ -84,6 +85,136 @@
                       </select>
               </div>
             </div>
+            
+            <script type="text/javascript"><!--
+$('select[name=\'filter_team_id\']').on('change', function() {
+	$.ajax({ 
+		url: 'index.php?route=replogic/location_management/GetSalesRep&token=<?php echo $token; ?>&team_id=' + this.value,
+		dataType: 'json',
+		beforeSend: function() {
+			$('select[name=\'filter_team_id\']').after(' <i class="fa fa-circle-o-notch fa-spin"></i>');
+		},
+		complete: function() {
+			$('.fa-spin').remove();
+		},
+		success: function(json) {
+			
+			html = '<option value="">Select Sales Rep</option>';
+			
+			if (json && json != '') {
+				for (i = 0; i < json.length; i++) {
+					html += '<option value="' + json[i]['salesrep_id'] + '"';
+
+					html += '>' + json[i]['name'] + '</option>';
+				}
+			} else {
+				html += '<option value="0" selected="selected"><?php echo $text_none; ?></option>';
+			}
+
+			$('select[name=\'filter_salesrep_id\']').html(html);
+			
+			html1 = '<option value="">Select Customer</option>';
+			$('select[name=\'filter_customer_id\']').html(html1);
+		},
+		error: function(xhr, ajaxOptions, thrownError) {
+			alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+		}
+	});
+});
+
+//$('select[name=\'filter_team_id\']').trigger('change');
+//--></script>
+
+			<script type="text/javascript"><!--
+$('select[name=\'filter_salesrep_id\']').on('change', function() {
+	$.ajax({ 
+		url: 'index.php?route=replogic/location_management/GetCustomerBySalesrep&token=<?php echo $token; ?>&salesrep_id=' + this.value,
+		dataType: 'json',
+		beforeSend: function() {
+			$('select[name=\'filter_salesrep_id\']').after(' <i class="fa fa-circle-o-notch fa-spin"></i>');
+		},
+		complete: function() {
+			$('.fa-spin').remove();
+		},
+		success: function(json) {
+			
+			html = '<option value="">Select Customer</option>';
+			
+			if (json && json != '') {
+				for (i = 0; i < json.length; i++) {
+					html += '<option value="' + json[i]['customer_id'] + '"';
+
+					html += '>' + json[i]['name'] + '</option>';
+				}
+			} else {
+				html += '<option value="" selected="selected">Not Found</option>';
+			}
+
+			$('select[name=\'filter_customer_id\']').html(html);
+			
+		},
+		error: function(xhr, ajaxOptions, thrownError) {
+			alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+		}
+	});
+});
+
+//$('select[name=\'filter_team_id\']').trigger('change');
+//--></script>
+
+            
+   <?php } else { ?>
+   			<div class="col-sm-3">
+              <div class="form-group">
+                <select name="filter_team_id" id="input-team" class="form-control">
+                        <option value="">Select Team</option>
+                        <?php foreach ($teams as $team) {  ?>
+                        <?php if ($team['team_id'] == $filter_team_id) { ?>
+                        <option value="<?php echo $team['team_id']; ?>" selected="selected"><?php echo $team['team_name']; ?></option>
+                        <?php } else { ?>
+                        <option value="<?php echo $team['team_id']; ?>"><?php echo $team['team_name']; ?></option>
+                        <?php } ?>
+                        <?php } ?>
+                      </select>
+              </div>
+            </div>
+            <div class="col-sm-3">
+              <div class="form-group">
+                <select name="filter_salesrep_id" id="input-sales_manager" class="form-control">
+                      		<option value="">Select Sales Rep</option> 
+                           <?php if($salesReps) { ?>
+                            <?php foreach ($salesReps as $salesRep) { ?>
+                                <?php if ($salesRep['salesrep_id'] == $filter_salesrep_id) { ?>
+                                <option value="<?php echo $salesRep['salesrep_id']; ?>" selected="selected"><?php echo $salesRep['salesrep_name']; ?> <?php echo $salesRep['salesrep_lastname']; ?></option>
+                                <?php } else { ?>
+                                <option value="<?php echo $salesRep['salesrep_id']; ?>"><?php echo $salesRep['salesrep_name']; ?> <?php echo $salesRep['salesrep_lastname']; ?></option>
+                                <?php } ?>
+                            <?php } ?>
+                          <?php } ?>
+                         
+                      </select>
+              </div>
+            </div>
+            <div class="col-sm-3">
+              <div class="form-group">
+                <select name="filter_customer_id" id="input-customer" class="form-control">
+                        <option value="">Select Customer</option>
+                       	<?php if($customers) { ?>
+                            <?php foreach ($customers as $customer) { ?>
+                            <?php if ($customer['customer_id'] == $filter_customer_id) { ?>
+                            <option value="<?php echo $customer['customer_id']; ?>" selected="selected"><?php echo $customer['firstname']; ?></option>
+                            <?php } else { ?>
+                            <option value="<?php echo $customer['customer_id']; ?>"><?php echo $customer['firstname']; ?></option>
+                            <?php } ?>
+                            <?php } ?>
+                        <?php } else { ?>
+                        
+                        	<option value="">Not Found</option>
+                        <?php } ?>
+                      </select>
+              </div>
+            </div>
+   <?php } ?>
             <div class="col-sm-1">
               <div class="form-group">
                 <button type="button" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-filter"></i> Search</button>
@@ -340,81 +471,6 @@ $('#chkbx').on('click', function() {
 
 //--></script>
 
-<script type="text/javascript"><!--
-$('select[name=\'filter_team_id\']').on('change', function() {
-	$.ajax({ 
-		url: 'index.php?route=replogic/location_management/GetSalesRep&token=<?php echo $token; ?>&team_id=' + this.value,
-		dataType: 'json',
-		beforeSend: function() {
-			$('select[name=\'filter_team_id\']').after(' <i class="fa fa-circle-o-notch fa-spin"></i>');
-		},
-		complete: function() {
-			$('.fa-spin').remove();
-		},
-		success: function(json) {
-			
-			html = '<option value="">Select Sales Rep</option>';
-			
-			if (json && json != '') {
-				for (i = 0; i < json.length; i++) {
-					html += '<option value="' + json[i]['salesrep_id'] + '"';
-
-					html += '>' + json[i]['name'] + '</option>';
-				}
-			} else {
-				html += '<option value="0" selected="selected"><?php echo $text_none; ?></option>';
-			}
-
-			$('select[name=\'filter_salesrep_id\']').html(html);
-			
-			html1 = '<option value="">Select Customer</option>';
-			$('select[name=\'filter_customer_id\']').html(html1);
-		},
-		error: function(xhr, ajaxOptions, thrownError) {
-			alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
-		}
-	});
-});
-
-//$('select[name=\'filter_team_id\']').trigger('change');
-//--></script>
-
-<script type="text/javascript"><!--
-$('select[name=\'filter_salesrep_id\']').on('change', function() {
-	$.ajax({ 
-		url: 'index.php?route=replogic/location_management/GetCustomerBySalesrep&token=<?php echo $token; ?>&salesrep_id=' + this.value,
-		dataType: 'json',
-		beforeSend: function() {
-			$('select[name=\'filter_salesrep_id\']').after(' <i class="fa fa-circle-o-notch fa-spin"></i>');
-		},
-		complete: function() {
-			$('.fa-spin').remove();
-		},
-		success: function(json) {
-			
-			html = '<option value="">Select Customer</option>';
-			
-			if (json && json != '') {
-				for (i = 0; i < json.length; i++) {
-					html += '<option value="' + json[i]['customer_id'] + '"';
-
-					html += '>' + json[i]['name'] + '</option>';
-				}
-			} else {
-				html += '<option value="" selected="selected">Not Found</option>';
-			}
-
-			$('select[name=\'filter_customer_id\']').html(html);
-			
-		},
-		error: function(xhr, ajaxOptions, thrownError) {
-			alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
-		}
-	});
-});
-
-//$('select[name=\'filter_team_id\']').trigger('change');
-//--></script>
   
 <script type="text/javascript">
  

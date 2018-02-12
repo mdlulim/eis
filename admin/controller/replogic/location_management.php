@@ -164,36 +164,51 @@ class ControllerReplogicLocationManagement extends Controller {
 		$this->load->model('customer/customer');
 		$this->load->model('user/team');
 		
-		if (isset($this->request->get['filter_team_id'])) {
-			
-			$filter_team_id = $this->request->get['filter_team_id'];
-			$data['salesReps'] = $this->model_replogic_sales_rep_management->getSalesRepByTeam($filter_team_id);
-			
-			if (isset($this->request->get['filter_salesrep_id'])) {
-			
-				$data['customers'] = $this->model_customer_customer->getCustomerBySalesRep($this->request->get['filter_salesrep_id']);
-			}
-			else
-			{
-				$data['customers'] = '';
-			}
-			
-			
-		} else {
-			$data['customers'] = '';
-			$data['salesReps'] = '';
-		}
-		
-		$this->load->model('user/team');
 		if($current_user_group['name'] == 'Sales Manager')
 		{
+			$data['filtersales'] = 'yes';
+			if (isset($this->request->get['filter_team_id']))
+			{
+			
+				$filter_team_id = $this->request->get['filter_team_id'];
+				$data['salesReps'] = $this->model_replogic_sales_rep_management->getSalesRepByTeam($filter_team_id);
+			
+				if (isset($this->request->get['filter_salesrep_id'])) {
+				
+					$data['customers'] = $this->model_customer_customer->getCustomerBySalesRep($this->request->get['filter_salesrep_id']);
+				}
+				else
+				{
+					$data['customers'] = '';
+				}
+			} else if (!empty($filter_team_id))
+			{
+			
+				$data['salesReps'] = $this->model_replogic_sales_rep_management->getSalesRepByTeam($filter_team_id);
+			
+				if (isset($this->request->get['filter_salesrep_id'])) {
+				
+					$data['customers'] = $this->model_customer_customer->getCustomerBySalesRep($this->request->get['filter_salesrep_id']);
+				}
+				else
+				{
+					$data['customers'] = '';
+				}
+			} else {
+				$data['customers'] = '';
+				$data['salesReps'] = '';
+			}
 			$salesrep_id = $current_user; 
 			
 		}
 		else
 		{
+			$data['filtersales'] = 'no';
+			$data['customers'] = $this->model_customer_customer->getCustomers();
+			$data['salesReps'] = $this->model_replogic_sales_rep_management->getSalesRepsDropdown($allaccess=true);
 			$salesrep_id = ''; 
 		}
+		
 		$filter_dataa = array('filter_salesrep_id' => $salesrep_id);
 		$data['teams'] = $this->model_user_team->getTeams($filter_dataa);
 		

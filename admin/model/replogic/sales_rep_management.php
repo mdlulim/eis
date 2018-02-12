@@ -125,7 +125,7 @@ class ModelReplogicSalesRepManagement extends Model {
 		return $query->rows;
 	}
 
-	public function getSalesReps($data = array(), $allaccess, $current_user_id) { 
+	public function getSalesReps($data = array(), $allaccess=false, $current_user_id) { 
 		
 		if($allaccess)
 		{
