@@ -34,6 +34,11 @@ class ModelReplogicScheduleManagement extends Model {
 
 	public function getScheduleManagement($data = array(), $allaccess, $current_user_id) {
 		
+		if($data['sort'] == '')
+		{
+			$data['sort'] = 'appointment_date';
+		}
+		
 		if($allaccess)
 		{
 		
@@ -47,6 +52,7 @@ class ModelReplogicScheduleManagement extends Model {
 			$salesrep_id = 'salesrep_id';
 			$customer_id = 'customer_id';
 			$appointment_date = 'appointment_date';
+			$sortby = $data['sort'];
 		}
 		else
 		{
@@ -56,6 +62,7 @@ class ModelReplogicScheduleManagement extends Model {
 			$salesrep_id = 'ap.salesrep_id';
 			$customer_id = 'ap.customer_id';
 			$appointment_date = 'ap.appointment_date';
+			$sortby = 'ap.'.$data['sort'];
 			
 		}
 		
@@ -78,7 +85,7 @@ class ModelReplogicScheduleManagement extends Model {
 		}
 
 		
-		$sql .= " ORDER BY ".$appointment_name."";
+		$sql .= " ORDER BY ".$sortby."";
 
 		if (isset($data['order']) && ($data['order'] == 'DESC')) {
 			$sql .= " DESC";

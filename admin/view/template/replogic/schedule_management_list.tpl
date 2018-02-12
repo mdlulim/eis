@@ -131,13 +131,17 @@
               <thead>
                 <tr>
                   <td style="width: 1px;" class="text-center"><input type="checkbox" onclick="$('input[name*=\'selected\']').prop('checked', this.checked);" /></td>
-                  <td class="text-left"><?php if ($sort == 'name') { ?>
+                  <td class="text-left"><?php if ($sort == 'appointment_name') { ?>
                     <a href="<?php echo $sort_name; ?>" class="<?php echo strtolower($order); ?>"><?php echo $column_name; ?></a>
                     <?php } else { ?>
                     <a href="<?php echo $sort_name; ?>"><?php echo $column_name; ?></a>
                     <?php } ?></td>
                   <td class="text-left">Sales Rep Name</td>
-                  <td class="text-left">Appointment Date</td>
+                  <td class="text-left"><?php if ($sort == 'appointment_date') { ?>
+                    <a href="<?php echo $sort_appointment_date; ?>" class="<?php echo strtolower($order); ?>">Appointment Date</a>
+                    <?php } else { ?>
+                    <a href="<?php echo $sort_appointment_date; ?>">Appointment Date</a>
+                    <?php } ?></td>
                   
                   <td class="text-right"><?php echo $column_action; ?></td>
                 </tr>

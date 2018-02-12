@@ -307,7 +307,7 @@
         <?php } ?>
           <div class="panel panel-default">
   		     <div class="panel-heading">
-                <h3 class="panel-title"><i class="fa fa-shopping-cart"></i> Latest Appointment</h3>
+                <h3 class="panel-title"><i class="fa fa-calendar"></i> Latest Appointment</h3>
                 <h3 class="panel-title" style="float:right;"><a href="<?php echo $viewmoreappo; ?>" >View more...</a></h3>
               </div>
   		     <div class="table-responsive">

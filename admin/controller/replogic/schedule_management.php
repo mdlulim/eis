@@ -205,13 +205,13 @@ class ControllerReplogicScheduleManagement extends Controller {
 		if (isset($this->request->get['sort'])) {
 			$sort = $this->request->get['sort'];
 		} else {
-			$sort = 'name';
+			$sort = 'appointment_date';
 		}
 
 		if (isset($this->request->get['order'])) {
 			$order = $this->request->get['order'];
 		} else {
-			$order = 'ASC';
+			$order = 'DESC';
 		}
 
 		if (isset($this->request->get['page'])) {
@@ -403,7 +403,8 @@ class ControllerReplogicScheduleManagement extends Controller {
 			$url .= '&page=' . $this->request->get['page'];
 		}
 
-		$data['sort_name'] = $this->url->link('replogic/schedule_management', 'token=' . $this->session->data['token'] . '&sort=name' . $url, true);
+		$data['sort_name'] = $this->url->link('replogic/schedule_management', 'token=' . $this->session->data['token'] . '&sort=appointment_name' . $url, true);
+		$data['sort_appointment_date'] = $this->url->link('replogic/schedule_management', 'token=' . $this->session->data['token'] . '&sort=appointment_date' . $url, true);
 
 		$url = '';
 		
