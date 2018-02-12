@@ -208,7 +208,7 @@
               <div class="form-group">
                 <label class="control-label" for="input-model">Appointment Date From</label>
                 <div class='input-group date' id='filter_appointment_from'>
-                    <input name="filter_appointment_from" type='text' value="<?php echo $filter_appointment_from; ?>"  placeholder="DD-MM-YYYY hh:mm A" class="form-control" data-date-format="DD-MM-YYYY hh:mm A" class="form-control"  />
+                    <input name="filter_appointment_from" type='text' value="<?php echo $filter_appointment_from; ?>"  placeholder="Date From" class="form-control" data-date-format="DD-MM-YYYY hh:mm A" class="form-control"  />
                     <span class="input-group-addon">
                         <span class="glyphicon glyphicon-calendar"></span>
                     </span>
@@ -227,7 +227,7 @@
               <div class="form-group">
                 <label class="control-label" for="input-quantity">Appointment Date To</label>
                 <div class='input-group date' id='filter_appointment_to'>
-                    <input name="filter_appointment_to" type='text' value="<?php echo $filter_appointment_to; ?>"  placeholder="DD-MM-YYYY hh:mm A" class="form-control" data-date-format="DD-MM-YYYY hh:mm A" class="form-control"  />
+                    <input name="filter_appointment_to" type='text' value="<?php echo $filter_appointment_to; ?>"  placeholder="Date To" class="form-control" data-date-format="DD-MM-YYYY hh:mm A" class="form-control"  />
                     <span class="input-group-addon">
                         <span class="glyphicon glyphicon-calendar"></span>
                     </span>
