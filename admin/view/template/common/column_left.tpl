@@ -8,7 +8,7 @@
       <?php } ?>
     </div>
     <div>
-      <h4><?php echo $firstname; ?> <?php echo $lastname; ?></h4>
+      <!--<h4><?php echo $firstname; ?> <?php echo $lastname; ?></h4>-->
       <?php
 
 $hour = date('H');
@@ -24,7 +24,7 @@ $time = date("H");
 ?>
 
 
-<small><?php echo $greetings .' '.$firstname; ?></small>
+<h4><?php echo $greetings .' ,&nbsp;&nbsp;'.$firstname; ?></h4>
 
 
       <!--<small><?php echo $user_group; ?></small>--></div>

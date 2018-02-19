@@ -108,7 +108,7 @@ $('select[name=\'filter_team_id\']').on('change', function() {
 					html += '>' + json[i]['name'] + '</option>';
 				}
 			} else {
-				html += '<option value="0" selected="selected"><?php echo $text_none; ?></option>';
+				html += '<option value="0" selected="selected">Not Found</option>';
 			}
 
 			$('select[name=\'filter_salesrep_id\']').html(html);

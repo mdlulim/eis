@@ -32,12 +32,36 @@ class ControllerCommonColumnLeft extends Controller {
 			// Level 2 can not have children
 			
 			// Menu
+			$dashb = array();
+			
+			/*$dashb[] = array(
+					'name'	   => $this->language->get('text_dashboard'),
+					'href'     => $this->url->link('common/dashboard', 'token=' . $this->session->data['token'], true),
+					'children' => array()		
+				);*/
+			
+			if ($this->user->hasPermission('access', 'catalog/category')) {
+				$dashb[] = array(
+						'name'	   => $this->language->get('text_sales_dashboard'),
+						'href'     => 'javascript:void();',
+						'children' => array()		
+					);
+			}
+			
+			if ($this->user->hasPermission('access', 'catalog/category')) {
+				$dashb[] = array(
+						'name'	   => $this->language->get('text_orders_dashboard'),
+						'href'     => $this->url->link('common/dashboard', 'token=' . $this->session->data['token'], true),
+						'children' => array()		
+					);
+			}
+			
 			$data['menus'][] = array(
 				'id'       => 'menu-dashboard',
 				'icon'	   => 'fa-dashboard',
 				'name'	   => $this->language->get('text_dashboard'),
-				'href'     => $this->url->link('common/dashboard', 'token=' . $this->session->data['token'], true),
-				'children' => array()
+				//'href'     => $this->url->link('common/dashboard', 'token=' . $this->session->data['token'], true),
+				'children' => $dashb
 			);
 			
 			// Catalog
@@ -59,13 +83,13 @@ class ControllerCommonColumnLeft extends Controller {
 				);
 			}
 			
-			if ($this->user->hasPermission('access', 'catalog/recurring')) {
+			/*if ($this->user->hasPermission('access', 'catalog/recurring')) {
 				$catalog[] = array(
 					'name'	   => $this->language->get('text_recurring'),
 					'href'     => $this->url->link('catalog/recurring', 'token=' . $this->session->data['token'], true),
 					'children' => array()		
 				);
-			}
+			}*/
 			
 			if ($this->user->hasPermission('access', 'catalog/filter')) {
 				$catalog[] = array(
@@ -126,13 +150,13 @@ class ControllerCommonColumnLeft extends Controller {
 				);
 			}
 			
-			if ($this->user->hasPermission('access', 'catalog/download')) {
+			/*if ($this->user->hasPermission('access', 'catalog/download')) {
 				$catalog[] = array(
 					'name'	   => $this->language->get('text_download'),
 					'href'     => $this->url->link('catalog/download', 'token=' . $this->session->data['token'], true),
 					'children' => array()		
 				);
-			}
+			}*/
 			
 			if ($this->user->hasPermission('access', 'catalog/review')) {		
 				$catalog[] = array(
@@ -140,14 +164,6 @@ class ControllerCommonColumnLeft extends Controller {
 					'href'     => $this->url->link('catalog/review', 'token=' . $this->session->data['token'], true),
 					'children' => array()		
 				);		
-			}
-			
-			if ($this->user->hasPermission('access', 'catalog/information')) {		
-				$catalog[] = array(
-					'name'	   => $this->language->get('text_information'),
-					'href'     => $this->url->link('catalog/information', 'token=' . $this->session->data['token'], true),
-					'children' => array()		
-				);					
 			}
 			
 			if ($catalog) {
@@ -214,6 +230,30 @@ class ControllerCommonColumnLeft extends Controller {
 				);		
 			}
 			
+			// Pages & Emails
+			$pages = array();
+			if ($this->user->hasPermission('access', 'pages/pages_and_emails')) {
+				
+				if ($this->user->hasPermission('access', 'catalog/information')) {		
+					$pages[] = array(
+						'name'	   => $this->language->get('text_information'),
+						'href'     => $this->url->link('catalog/information', 'token=' . $this->session->data['token'], true),
+						'children' => array()		
+					);					
+				}
+				
+				
+			}
+			
+			if ($pages) {					
+				$data['menus'][] = array(
+					'id'       => 'menu-pages',
+					'icon'	   => 'fa-file-text-o', 
+					'name'	   => $this->language->get('text_pages_emails'),
+					'href'     => '',
+					'children' => $pages
+				);		
+			}
 			// Design
 			$design = array();
 			
@@ -279,13 +319,21 @@ class ControllerCommonColumnLeft extends Controller {
 				);	
 			}
 			
-			if ($this->user->hasPermission('access', 'sale/recurring')) {	
+			if ($this->user->hasPermission('access', 'replogic/order_quotes')) {
+				$sale[] = array(
+					'name'	   => $this->language->get('text_order_quotes'),
+					'href'     => $this->url->link('replogic/order_quotes', 'token=' . $this->session->data['token'], true),
+					'children' => 	array()	
+				);	
+			}
+			
+			/*if ($this->user->hasPermission('access', 'sale/recurring')) {	
 				$sale[] = array(
 					'name'	   => $this->language->get('text_recurring'),
 					'href'     => $this->url->link('sale/recurring', 'token=' . $this->session->data['token'], true),
 					'children' => array()		
 				);	
-			}
+			}*/
 			
 			if ($this->user->hasPermission('access', 'sale/return')) {
 				$sale[] = array(
@@ -296,7 +344,7 @@ class ControllerCommonColumnLeft extends Controller {
 			}
 			
 			// Voucher
-			$voucher = array();
+			/*$voucher = array();
 			
 			if ($this->user->hasPermission('access', 'sale/voucher')) {
 				$voucher[] = array(
@@ -320,7 +368,7 @@ class ControllerCommonColumnLeft extends Controller {
 					'href'     => '',
 					'children' => $voucher		
 				);		
-			}
+			}*/
 			
 			if ($sale) {
 				$data['menus'][] = array(
@@ -815,7 +863,7 @@ class ControllerCommonColumnLeft extends Controller {
 			}
 			
 			// Report Marketing			
-			$report_marketing = array();			
+			/*$report_marketing = array();			
 			
 			if ($this->user->hasPermission('access', 'report/marketing')) {
 				$report_marketing[] = array(
@@ -847,6 +895,15 @@ class ControllerCommonColumnLeft extends Controller {
 					'href'     => '',
 					'children' => $report_marketing	
 				);		
+			}*/
+			
+			// Quick Report Menu
+			if ($this->user->hasPermission('access', 'catalog/category')) {
+				$report[] = array(
+					'name'	   => $this->language->get('text_quick_reports'),
+					'href'     => 'javascript:void();',
+					'children' => 	array()	
+				);	
 			}
 			
 			if ($report) {	
@@ -913,7 +970,7 @@ class ControllerCommonColumnLeft extends Controller {
 				);	
 			}*/
 			
-			$replogic_customer = array();	
+			/*$replogic_customer = array();	
 			
 			if ($this->user->hasPermission('access', 'customer/customer')) {
 				$replogic_customer[] = array(
@@ -937,15 +994,15 @@ class ControllerCommonColumnLeft extends Controller {
 					'href'     => '',
 					'children' => $replogic_customer	
 				);		
-			}
+			}*/
 			
-			if ($this->user->hasPermission('access', 'replogic/order_quotes')) {
+			/*if ($this->user->hasPermission('access', 'replogic/order_quotes')) {
 				$replogic[] = array(
 					'name'	   => $this->language->get('text_order_quotes'),
 					'href'     => $this->url->link('replogic/order_quotes', 'token=' . $this->session->data['token'], true),
 					'children' => 	array()	
 				);	
-			}
+			}*/
 			
 			if ($this->user->hasPermission('access', 'replogic/location_management')) {
 				$replogic[] = array(

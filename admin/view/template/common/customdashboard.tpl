@@ -86,33 +86,40 @@
         </div>-->
         
         <?php if($loginuser != 'Sales Manager') { ?>
+        <a href="<?php echo $addteambutton; ?>">
             <div class="col-lg-3 col-md-3 col-sm-6" >
               <div class="tile">
-              <div class="tile-footer" style="text-align: center; min-height: 45px; font-weight: bold; padding-top: 14px;"><a href="<?php echo $addteambutton; ?>"><i class="fa fa-users fw"></i> Add Team</a></div>
+              <div class="tile-footer" style="text-align: center; min-height: 45px; font-weight: bold; padding-top: 14px;"><i class="fa fa-users fw"></i> Add Team</div>
             </div>
             </div>
+            </a>
         <?php } ?>
         
-        <div <?php echo $cls; ?>>
-          <div class="tile">
-          <div class="tile-footer" style="text-align: center; min-height: 45px; font-weight: bold; padding-top: 14px;"><a href="<?php echo $addappointmentbutton; ?>"><i class="fa fa-calendar"></i> Add Appointment</a></div>
-        </div>
-        </div>
+        <a href="<?php echo $addappointmentbutton; ?>">
+            <div <?php echo $cls; ?>>
+              <div class="tile">
+              <div class="tile-footer" style="text-align: center; min-height: 45px; font-weight: bold; padding-top: 14px;"><i class="fa fa-calendar"></i> Add Appointment</div>
+            </div>
+            </div>
+        </a>
         
         <?php if($loginuser != 'Sales Manager') { ?>
+        <a href="<?php echo $addsalesmangebutton; ?>">
             <div class="col-lg-3 col-md-3 col-sm-6">
               <div class="tile">
-              <div class="tile-footer" style="text-align: center; min-height: 45px; font-weight: bold; padding-top: 14px;"><a href="<?php echo $addsalesmangebutton; ?>"><i class="fa fa-user"></i> Add Sales Manager</a></div>
+              <div class="tile-footer" style="text-align: center; min-height: 45px; font-weight: bold; padding-top: 14px;"><i class="fa fa-user"></i> Add Sales Manager</div>
             </div>
             </div>
+         </a>
         <?php } ?>
         
+        <a href="<?php echo $addsalesrepbutton; ?>">
         <div <?php echo $cls; ?>>
           <div class="tile">
-          <div class="tile-footer" style="text-align: center; min-height: 45px; font-weight: bold; padding-top: 14px;"><a href="<?php echo $addsalesrepbutton; ?>"><i class="fa fa-street-view"></i> Add Sales Rep</a></div>
+          <div class="tile-footer" style="text-align: center; min-height: 45px; font-weight: bold; padding-top: 14px;"><i class="fa fa-street-view"></i> Add Sales Rep</div>
         </div>
         </div>
-        
+        </a>
       </div>
       <div class="row">
         <div class="col-lg-12 col-md-12 col-sm-12">
