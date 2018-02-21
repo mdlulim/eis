@@ -40,7 +40,7 @@ class ControllerCommonColumnLeft extends Controller {
 					'children' => array()		
 				);*/
 			
-			if ($this->user->hasPermission('access', 'catalog/category')) {
+			if ($this->user->hasPermission('access', 'common/sales_dashboard')) {
 				$dashb[] = array(
 						'name'	   => $this->language->get('text_sales_dashboard'),
 						'href'     => 'javascript:void();',
@@ -48,7 +48,7 @@ class ControllerCommonColumnLeft extends Controller {
 					);
 			}
 			
-			if ($this->user->hasPermission('access', 'catalog/category')) {
+			if ($this->user->hasPermission('access', 'common/orders_dashboard')) {
 				$dashb[] = array(
 						'name'	   => $this->language->get('text_orders_dashboard'),
 						'href'     => $this->url->link('common/dashboard', 'token=' . $this->session->data['token'], true),
@@ -898,7 +898,7 @@ class ControllerCommonColumnLeft extends Controller {
 			}*/
 			
 			// Quick Report Menu
-			if ($this->user->hasPermission('access', 'catalog/category')) {
+			if ($this->user->hasPermission('access', 'report/quick_reports')) {
 				$report[] = array(
 					'name'	   => $this->language->get('text_quick_reports'),
 					'href'     => 'javascript:void();',
