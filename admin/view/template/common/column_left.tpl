@@ -11,16 +11,24 @@
       <!--<h4><?php echo $firstname; ?> <?php echo $lastname; ?></h4>-->
       <?php
 
-$hour = date('H');
-$time = date("H");
-	
-    if ($time < 12) {
-       $greetings = "Good morning";
-    } elseif ($time >= 12 && $time < 18) {
-       $greetings = "Good Afternoon";
-    } elseif ($time >= 18) {
-        $greetings = "Good Evening";
+  date_default_timezone_set('Africa/Johannesburg'); 
+  
+  	$time = date("H");
+    $timezone = date("e");
+    
+    if ($time < "12") {
+        $greetings = "Good morning";
+    } else
+    if ($time >= "12" && $time < "17") {
+        $greetings = "Good afternoon";
+    } else
+    if ($time >= "17" && $time < "19") {
+        $greetings = "Good evening";
+    } else
+    if ($time >= "19") {
+        $greetings = "Good night";
     }
+    
 ?>
 
 
