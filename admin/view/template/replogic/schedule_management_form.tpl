@@ -26,6 +26,47 @@
       <div class="panel-body">
         <form action="<?php echo $action; ?>" method="post" enctype="multipart/form-data" id="form-user" class="form-horizontal">
           <div class="form-group required">
+            <label class="col-sm-2 control-label" for="input-user-group">Business Type</label>
+            <div class="col-sm-10">
+              <?php if($type == 'New Business') { ?>
+				  <style>
+                    .newbusiness{display:block;}
+                    #custmr_id{display:none;}
+                  </style>
+              <?php } else if($type == 'Existing Business') { ?>
+              		<style>
+                    .newbusiness{display:none;}
+                    #custmr_id{display:block;}
+                  </style>
+              <?php } else  { ?>
+              		<style>
+                    .newbusiness{display:none;}
+                    #custmr_id{display:none;}
+                  </style>
+              <?php } ?>
+              
+              
+              <select name="type" id="input-type" class="form-control">
+                <option value="">Select Business Type</option>
+                <?php if($type == 'New Business') { ?>
+                	<option value="New Business" selected="selected">New Business</option>
+                <?php } else { ?>
+                	<option value="New Business">New Business</option>
+                <?php } ?>
+                <?php if($type == 'Existing Business') { ?>
+                	<option value="Existing Business" selected="selected">Existing Business</option>
+                <?php } else { ?>
+                	<option value="Existing Business">Existing Business</option>
+                <?php } ?>
+                
+              </select>
+               <?php if ($error_type) { ?>
+              <div class="text-danger"><?php echo $error_type; ?></div>
+              <?php } ?>
+            </div>
+          </div>
+          
+          <div class="form-group required">
             <label class="col-sm-2 control-label" for="input-username"><?php echo $entry_name; ?></label>
             <div class="col-sm-10">
               <input type="text" name="appointment_name" value="<?php echo $appointment_name; ?>" placeholder="<?php echo $entry_name; ?>" id="input-username" class="form-control" />
@@ -53,7 +94,7 @@
             </div>
           </div>
           
-          <div class="form-group required">
+          <div class="form-group required" id="custmr_id">
             <label class="col-sm-2 control-label" for="input-user-group"><?php echo $entry_customer; ?></label>
             <div class="col-sm-10">
               <select name="customer_id" id="input-sales_manager" class="form-control">
@@ -68,6 +109,26 @@
               </select>
                <?php if ($error_customer_id) { ?>
               <div class="text-danger"><?php echo $error_customer_id; ?></div>
+              <?php } ?>
+            </div>
+          </div>
+          
+          <div class="form-group required newbusiness">
+            <label class="col-sm-2 control-label" for="input-username">Customer Name</label>
+            <div class="col-sm-10">
+              <input type="text" name="bcustomer_name" value="<?php echo $bcustomer_name; ?>" placeholder="Enter Customer Name" id="input-bcustomer_name" class="form-control" />
+              <?php if ($error_bcustomer_name) { ?>
+              <div class="text-danger"><?php echo $error_bcustomer_name; ?></div>
+              <?php } ?>
+            </div>
+          </div>
+          
+          <div class="form-group required newbusiness">
+            <label class="col-sm-2 control-label" for="input-username">Address</label>
+            <div class="col-sm-10">
+              <input type="text" name="address" value="<?php echo $address; ?>" placeholder="Enter address" id="input-address" class="form-control" />
+              <?php if ($error_address) { ?>
+              <div class="text-danger"><?php echo $error_address; ?></div>
               <?php } ?>
             </div>
           </div>
@@ -180,6 +241,27 @@
       </div>
     </div>
   </div>
-  
+ <script type="text/javascript">
+ $(document.body).on('change',"#input-type",function (e) {
+   //doStuff
+   var optVal= $("#input-type option:selected").val();
+   if(optVal == 'New Business')
+   {
+   		$(".newbusiness").css("display", "block");
+		$("#custmr_id").css("display", "none");
+   }
+   else if(optVal == 'Existing Business')
+   {
+   		$("#custmr_id").css("display", "block");
+		$(".newbusiness").css("display", "none");
+   }
+   else
+   {
+   		$("#custmr_id").css("display", "none");
+		$(".newbusiness").css("display", "none");
+   }
+   
+});
+ </script> 
 </div>
 <?php echo $footer; ?> 

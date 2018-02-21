@@ -6,18 +6,47 @@ class ModelReplogicScheduleManagement extends Model {
 		$time = strtotime($data['appointment_date']);
 		$mysqltime = date ("Y-m-d H:i:s", $time);
 		
-		$this->db->query("INSERT INTO " . DB_PREFIX . "appointment SET appointment_name = '" . $this->db->escape($data['appointment_name']) . "', appointment_description = '" . $this->db->escape($data['appointment_description']) . "',salesrep_id = '" . $this->db->escape($data['salesrep_id']) . "',appointment_date = '" . $mysqltime . "',duration_hours = '" . $this->db->escape($data['hour']) . "',duration_minutes = '" . $this->db->escape($data['minutes']) . "',customer_id = '" . $this->db->escape($data['customer_id']) . "'");
-	
+		
+		if($data['type'] == 'New Business')
+		{
+			$this->db->query("INSERT INTO " . DB_PREFIX . "prospective_customer SET name = '" . $this->db->escape($data['bcustomer_name']) . "', address = '" . $this->db->escape($data['address']) . "', created = NOW()");
+			$customer_id = $this->db->getLastId();
+		}
+		else
+		{
+			$customer_id = $this->db->escape($data['customer_id']);
+		}
+		
+		
+		$this->db->query("INSERT INTO " . DB_PREFIX . "appointment SET appointment_name = '" . $this->db->escape($data['appointment_name']) . "', appointment_description = '" . $this->db->escape($data['appointment_description']) . "',salesrep_id = '" . $this->db->escape($data['salesrep_id']) . "',appointment_date = '" . $mysqltime . "',duration_hours = '" . $this->db->escape($data['hour']) . "',duration_minutes = '" . $this->db->escape($data['minutes']) . "',customer_id = '" . $customer_id . "', type = '".$this->db->escape($data['type'])."'");
+		
 		return $this->db->getLastId();
 	}
 
 	public function editScheduleManagement($appointment_id, $data) {
 		
+		$query = $this->db->query("SELECT DISTINCT * FROM " . DB_PREFIX . "appointment WHERE appointment_id = '" . (int)$appointment_id . "'");
+		$appinfo = $query->row;
+		if($appinfo['type'] == 'New Business')
+		{ 
+			$this->db->query("DELETE FROM " . DB_PREFIX . "prospective_customer WHERE prospect_id = '" . $appinfo['customer_id'] . "'");
+		}
+		
+		if($data['type'] == 'New Business')
+		{
+			$this->db->query("INSERT INTO " . DB_PREFIX . "prospective_customer SET name = '" . $this->db->escape($data['bcustomer_name']) . "', address = '" . $this->db->escape($data['address']) . "', created = NOW()");
+			$customer_id = $this->db->getLastId();
+		}
+		else
+		{
+			$customer_id = $this->db->escape($data['customer_id']);
+		}
+		
 		$appointment_date = $data['appointment_date'];
 		$time = strtotime($data['appointment_date']);
 		$mysqltime = date ("Y-m-d H:i:s", $time);
 		
-		$this->db->query("UPDATE " . DB_PREFIX . "appointment SET appointment_name = '" . $this->db->escape($data['appointment_name']) . "', appointment_description = '" . $this->db->escape($data['appointment_description']) . "',salesrep_id = '" . $this->db->escape($data['salesrep_id']) . "',appointment_date = '" . $mysqltime . "',duration_hours = '" . $this->db->escape($data['hour']) . "',duration_minutes = '" . $this->db->escape($data['minutes']) . "',customer_id = '" . $this->db->escape($data['customer_id']) . "' WHERE appointment_id = '" . (int)$appointment_id . "'");
+		$this->db->query("UPDATE " . DB_PREFIX . "appointment SET appointment_name = '" . $this->db->escape($data['appointment_name']) . "', appointment_description = '" . $this->db->escape($data['appointment_description']) . "',salesrep_id = '" . $this->db->escape($data['salesrep_id']) . "',appointment_date = '" . $mysqltime . "',duration_hours = '" . $this->db->escape($data['hour']) . "',duration_minutes = '" . $this->db->escape($data['minutes']) . "',customer_id = '" . $customer_id . "', type = '".$this->db->escape($data['type'])."' WHERE appointment_id = '" . (int)$appointment_id . "'");
 	}
 
 	public function deleteAppointment($appointment_id) {
@@ -30,6 +59,14 @@ class ModelReplogicScheduleManagement extends Model {
 		$query = $this->db->query("SELECT DISTINCT * FROM " . DB_PREFIX . "appointment WHERE appointment_id = '" . (int)$appointment_id . "'");
 
 		return $query->row;
+		
+	}
+	
+	public function getprospective($prospect_id) {
+		$query = $this->db->query("SELECT DISTINCT * FROM " . DB_PREFIX . "prospective_customer WHERE prospect_id = '" . (int)$prospect_id . "'");
+
+		return $query->row;
+		
 	}
 
 	public function getScheduleManagement($data = array(), $allaccess, $current_user_id) {
@@ -44,7 +81,7 @@ class ModelReplogicScheduleManagement extends Model {
 		
 			$sql = "SELECT * FROM " . DB_PREFIX . "appointment";
 			
-			if (!empty($data['filter_appointment_name']) || !empty($data['filter_salesrep_id']) || !empty($data['filter_appointment_from']) || !empty($data['filter_appointment_to']) || !empty($data['filter_customer_id'])) 		{
+			if (!empty($data['filter_appointment_name']) || !empty($data['filter_salesrep_id']) || !empty($data['filter_appointment_from']) || !empty($data['filter_appointment_to']) || !empty($data['filter_customer_id']) || !empty($data['filter_type'])) 		{
 				$sql .= " where appointment_id > '0'";
 			}
 			
@@ -52,6 +89,7 @@ class ModelReplogicScheduleManagement extends Model {
 			$salesrep_id = 'salesrep_id';
 			$customer_id = 'customer_id';
 			$appointment_date = 'appointment_date';
+			$type = 'type';
 			$sortby = $data['sort'];
 		}
 		else
@@ -62,8 +100,13 @@ class ModelReplogicScheduleManagement extends Model {
 			$salesrep_id = 'ap.salesrep_id';
 			$customer_id = 'ap.customer_id';
 			$appointment_date = 'ap.appointment_date';
+			$type = 'ap.type';
 			$sortby = 'ap.'.$data['sort'];
 			
+		}
+		
+		if (!empty($data['filter_type'])) {
+			$sql .= " AND ".$type." = '" . $this->db->escape($data['filter_type']) . "'";
 		}
 		
 		if (!empty($data['filter_appointment_name'])) {
@@ -118,7 +161,7 @@ class ModelReplogicScheduleManagement extends Model {
 		
 			$sql = "SELECT COUNT(*) AS total FROM " . DB_PREFIX . "appointment";
 			
-			if (!empty($data['filter_appointment_name']) || !empty($data['filter_salesrep_id']) || !empty($data['filter_appointment_from']) || !empty($data['filter_appointment_to']) || !empty($data['filter_customer_id'])) 		{
+			if (!empty($data['filter_appointment_name']) || !empty($data['filter_salesrep_id']) || !empty($data['filter_appointment_from']) || !empty($data['filter_appointment_to']) || !empty($data['filter_customer_id']) || !empty($data['filter_type'])) 		{
 				$sql .= " where appointment_id > '0'";
 			}
 			
@@ -126,6 +169,7 @@ class ModelReplogicScheduleManagement extends Model {
 			$salesrep_id = 'salesrep_id';
 			$customer_id = 'customer_id';
 			$appointment_date = 'appointment_date';
+			$type = 'type';
 		}
 		else
 		{
@@ -135,7 +179,12 @@ class ModelReplogicScheduleManagement extends Model {
 			$salesrep_id = 'ap.salesrep_id';
 			$customer_id = 'ap.customer_id';
 			$appointment_date = 'ap.appointment_date';
+			$type = 'ap.type';
 			
+		}
+		
+		if (!empty($data['filter_type'])) {
+			$sql .= " AND ".$type." = '" . $this->db->escape($data['filter_type']) . "'";
 		}
 		
 		if (!empty($data['filter_appointment_name'])) {

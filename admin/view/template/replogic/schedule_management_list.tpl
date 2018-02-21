@@ -33,7 +33,7 @@
         
         <div class="well">
           <div class="row">
-            <div class="col-sm-6">
+            <div class="col-sm-4">
               <!--<div class="form-group">
                 <label class="control-label" for="input-name">Appointment Name</label>
                 <input type="text" name="filter_appointment_name" value="<?php echo $filter_appointment_name; ?>" placeholder="Appointment Name" id="input-name" class="form-control" />
@@ -79,7 +79,7 @@
                
               </div>
             </div>
-            <div class="col-sm-6" style="margin-bottom:10px;">
+            <div class="col-sm-4">
               <div class="form-group">
                 <label class="control-label" for="input-price">Sales Rep Name</label>
                 
@@ -119,8 +119,30 @@
                   
               </div>
             </div>
-            <button type="button" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-filter"></i> Filter</button>
-            <button type="button" id="button-filter-reset" class="btn btn-primary pull-right" style="margin-right:10px;"><i class="fa fa-filter"></i> Reset</button>
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label class="control-label" for="input-price">Select Business Type</label>
+                
+                	<select name="filter_type" id="input-type" class="form-control">
+                        <option value="">Select Business Type</option>
+                        <?php if($filter_type == 'New Business') { ?>
+                            <option value="New Business" selected="selected">New Business</option>
+                        <?php } else { ?>
+                            <option value="New Business">New Business</option>
+                        <?php } ?>
+                        <?php if($filter_type == 'Existing Business') { ?>
+                            <option value="Existing Business" selected="selected">Existing Business</option>
+                        <?php } else { ?>
+                            <option value="Existing Business">Existing Business</option>
+                        <?php } ?>
+                      </select>
+              </div>
+              <div class="form-group" style="margin-top:23px;">
+            		<button type="button" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-filter"></i> Filter</button>
+            		<button type="button" id="button-filter-reset" class="btn btn-primary pull-right" style="margin-right:10px;"><i class="fa fa-filter"></i> Reset</button>  
+              </div>
+            </div>
+            
           </div>
            
         </div>
@@ -137,12 +159,12 @@
                     <a href="<?php echo $sort_name; ?>"><?php echo $column_name; ?></a>
                     <?php } ?></td>
                   <td class="text-left">Sales Rep Name</td>
+                  <td class="text-left">Business Type</td>
                   <td class="text-left"><?php if ($sort == 'appointment_date') { ?>
                     <a href="<?php echo $sort_appointment_date; ?>" class="<?php echo strtolower($order); ?>">Appointment Date</a>
                     <?php } else { ?>
                     <a href="<?php echo $sort_appointment_date; ?>">Appointment Date</a>
                     <?php } ?></td>
-                  
                   <td class="text-right"><?php echo $column_action; ?></td>
                 </tr>
               </thead>
@@ -159,6 +181,7 @@
                                 <?php } ?></td>
                               <td class="text-left"><?php echo $schedule_management['appointment_name']; ?></td>
                               <td class="text-left"><?php echo $schedule_management['sales_manager']; ?></td>
+                              <td class="text-left"><?php echo $schedule_management['type']; ?></td>
                               <td class="text-left"><?php  echo $schedule_management['appointment_date']; ?></td>
                               <td class="text-right"><!--<a href="<?php echo $schedule_management['tasks']; ?>" data-toggle="tooltip" title="Tasks" class="btn btn-primary"><i class="fa fa-tasks"></i></a>-->&nbsp;<a href="<?php echo $schedule_management['notes']; ?>" data-toggle="tooltip" title="Notes" class="btn btn-primary"><i class="fa fa-sticky-note"></i></a>&nbsp;<a href="<?php echo $schedule_management['edit']; ?>" data-toggle="tooltip" title="<?php echo $button_edit; ?>" class="btn btn-primary"><i class="fa fa-pencil"></i></a></td>
                             </tr>
@@ -219,7 +242,11 @@ $('#button-filter').on('click', function() {
 		url += '&filter_appointment_to=' + encodeURIComponent(filter_appointment_to);
 	}
 
-	var filter_appointment_to = $('input[name=\'filter_appointment_to\']').val();
+	var filter_type = $('select[name=\'filter_type\']').val();
+
+	if (filter_type) {
+		url += '&filter_type=' + encodeURIComponent(filter_type);
+	}
 //alert(url);
 	location = url;
 });

@@ -33,6 +33,10 @@ class ControllerReplogicScheduleManagement extends Controller {
 			if (isset($this->request->get['filter_customer_id'])) {
 				$url .= '&filter_customer_id=' . $this->request->get['filter_customer_id'];
 			}
+			
+			if (isset($this->request->get['filter_type'])) {
+				$url .= '&filter_type=' . $this->request->get['filter_type'];
+			}
 	
 			if (isset($this->request->get['filter_salesrep_id'])) {
 				$url .= '&filter_salesrep_id=' . $this->request->get['filter_salesrep_id'];
@@ -84,6 +88,10 @@ class ControllerReplogicScheduleManagement extends Controller {
 			
 			if (isset($this->request->get['filter_customer_id'])) {
 				$url .= '&filter_customer_id=' . $this->request->get['filter_customer_id'];
+			}
+			
+			if (isset($this->request->get['filter_type'])) {
+				$url .= '&filter_type=' . $this->request->get['filter_type'];
 			}
 	
 			if (isset($this->request->get['filter_salesrep_id'])) {
@@ -139,6 +147,10 @@ class ControllerReplogicScheduleManagement extends Controller {
 			if (isset($this->request->get['filter_customer_id'])) {
 				$url .= '&filter_customer_id=' . $this->request->get['filter_customer_id'];
 			}
+			
+			if (isset($this->request->get['filter_type'])) {
+				$url .= '&filter_type=' . $this->request->get['filter_type'];
+			}
 	
 			if (isset($this->request->get['filter_salesrep_id'])) {
 				$url .= '&filter_salesrep_id=' . $this->request->get['filter_salesrep_id'];
@@ -182,6 +194,12 @@ class ControllerReplogicScheduleManagement extends Controller {
 			$filter_customer_id = $this->request->get['filter_customer_id'];
 		} else {
 			$filter_customer_id = null;
+		}
+		
+		if (isset($this->request->get['filter_type'])) {
+			$filter_type = $this->request->get['filter_type'];
+		} else {
+			$filter_type = null;
 		}
 
 		if (isset($this->request->get['filter_appointment_from'])) {
@@ -228,6 +246,10 @@ class ControllerReplogicScheduleManagement extends Controller {
 		
 		if (isset($this->request->get['filter_customer_id'])) {
 			$url .= '&filter_customer_id=' . $this->request->get['filter_customer_id'];
+		}
+		
+		if (isset($this->request->get['filter_type'])) {
+			$url .= '&filter_type=' . $this->request->get['filter_type'];
 		}
 
 		if (isset($this->request->get['filter_salesrep_id'])) {
@@ -277,6 +299,7 @@ class ControllerReplogicScheduleManagement extends Controller {
 			'filter_appointment_from'	  => $filter_appointment_from,
 			'filter_appointment_to'	  => $filter_appointment_to,
 			'filter_salesrep_id' => $filter_salesrep_id,
+			'filter_type' => $filter_type,
 			'sort'  => $sort,
 			'order' => $order,
 			'start' => ($page - 1) * $this->config->get('config_limit_admin'),
@@ -321,6 +344,7 @@ class ControllerReplogicScheduleManagement extends Controller {
 		$data['schedule_managements'][] = array(
 				'appointment_id' => $result['appointment_id'],
 				'appointment_name'          => $result['appointment_name'],
+				'type'          => $result['type'],
 				'sales_manager'          => $sales_rep,
 				'appointment_date'          => $myFormatForView,
 				'tasks'          => $this->url->link('replogic/tasks', 'token=' . $this->session->data['token'] . '&appointment_id=' . $result['appointment_id'] . $url, true),
@@ -381,6 +405,10 @@ class ControllerReplogicScheduleManagement extends Controller {
 			$url .= '&filter_customer_id=' . $this->request->get['filter_customer_id'];
 		}
 		
+		if (isset($this->request->get['filter_type'])) {
+			$url .= '&filter_type=' . $this->request->get['filter_type'];
+		}
+		
 		if (isset($this->request->get['filter_salesrep_id'])) {
 			$url .= '&filter_salesrep_id=' . $this->request->get['filter_salesrep_id'];
 		}
@@ -414,6 +442,10 @@ class ControllerReplogicScheduleManagement extends Controller {
 		
 		if (isset($this->request->get['filter_customer_id'])) {
 			$url .= '&filter_customer_id=' . $this->request->get['filter_customer_id'];
+		}
+		
+		if (isset($this->request->get['filter_type'])) {
+			$url .= '&filter_type=' . $this->request->get['filter_type'];
 		}
 
 		if (isset($this->request->get['filter_salesrep_id'])) {
@@ -451,6 +483,7 @@ class ControllerReplogicScheduleManagement extends Controller {
 		$data['filter_appointment_from'] = $filter_appointment_from;
 		$data['filter_appointment_to'] = $filter_appointment_to;
 		$data['filter_salesrep_id'] = $filter_salesrep_id;
+		$data['filter_type'] = $filter_type;
 		$data['sort'] = $sort;
 		$data['order'] = $order;
 
@@ -510,6 +543,24 @@ class ControllerReplogicScheduleManagement extends Controller {
 			$data['error_salesrep_id'] = '';
 		}
 		
+		if (isset($this->error['type'])) {
+			$data['error_type'] = $this->error['type'];
+		} else {
+			$data['error_type'] = '';
+		}
+		
+		if (isset($this->error['bcustomer_name'])) {
+			$data['error_bcustomer_name'] = $this->error['bcustomer_name'];
+		} else {
+			$data['error_bcustomer_name'] = '';
+		}
+		
+		if (isset($this->error['address'])) {
+			$data['error_address'] = $this->error['address'];
+		} else {
+			$data['error_address'] = '';
+		}
+		
 		if (isset($this->error['customer_id'])) {
 			$data['error_customer_id'] = $this->error['customer_id'];
 		} else {
@@ -548,6 +599,10 @@ class ControllerReplogicScheduleManagement extends Controller {
 
 		if (isset($this->request->get['filter_appointment_to'])) {
 			$url .= '&filter_appointment_to=' . $this->request->get['filter_appointment_to'];
+		}
+		
+		if (isset($this->request->get['filter_type'])) {
+			$url .= '&filter_type=' . $this->request->get['filter_type'];
 		}
 		
 		if (isset($this->request->get['sort'])) {
@@ -611,6 +666,36 @@ class ControllerReplogicScheduleManagement extends Controller {
 			$data['salesrep_id'] = $appointment_info['salesrep_id'];
 		} else {
 			$data['salesrep_id'] = '';
+		}
+		
+		if (isset($this->request->post['type'])) {
+			$data['type'] = $this->request->post['type'];
+		} elseif (!empty($appointment_info)) {
+			$data['type'] = $appointment_info['type'];
+		} else {
+			$data['type'] = '';
+		}
+		
+		$prospect_info = array();
+		if($data['type'] === 'New Business')
+		{
+			$prospect_info = $this->model_replogic_schedule_management->getprospective($appointment_info['customer_id']);
+		}
+		
+		if (isset($this->request->post['bcustomer_name'])) {
+			$data['bcustomer_name'] = $this->request->post['bcustomer_name'];
+		} elseif (!empty($prospect_info)) {
+			$data['bcustomer_name'] = $prospect_info['name'];
+		} else {
+			$data['bcustomer_name'] = '';
+		}
+		
+		if (isset($this->request->post['address'])) {
+			$data['address'] = $this->request->post['address'];
+		} elseif (!empty($prospect_info)) {
+			$data['address'] = $prospect_info['address'];
+		} else {
+			$data['address'] = '';
 		}
 		
 		if (isset($this->request->post['customer_id'])) {
@@ -733,10 +818,28 @@ class ControllerReplogicScheduleManagement extends Controller {
 			$this->error['salesrep_id'] = $this->language->get('error_salesrep_id');
 		}
 		
-		if ($this->request->post['customer_id'] == '') {
-			$this->error['customer_id'] = $this->language->get('error_customer_id');
+		if ($this->request->post['type'] == '') {
+			$this->error['type'] = $this->language->get('error_type');
 		}
-
+		else if($this->request->post['type'] == 'New Business')
+		{
+			if ($this->request->post['bcustomer_name'] == '') 
+			{
+				$this->error['bcustomer_name'] = $this->language->get('error_bcustomer_name');
+			}
+			if ($this->request->post['address'] == '') 
+			{
+				$this->error['address'] = $this->language->get('error_address');
+			}
+		}
+		else if($this->request->post['type'] == 'Existing Business')
+		{
+			if ($this->request->post['customer_id'] == '') 
+			{
+				$this->error['customer_id'] = $this->language->get('error_customer_id');
+			}
+		}
+		
 		return !$this->error;
 	}
 
