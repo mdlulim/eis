@@ -1,10 +1,10 @@
 <?php
 // Heading
-$_['heading_title']    = 'Team';
+$_['heading_title']    = 'Teams';
 
 // Text
 $_['text_success']     = 'Success: You have modified Team!';
-$_['text_list']        = 'Team';
+$_['text_list']        = 'Teams';
 $_['text_add']         = 'Add Team';
 $_['text_edit']        = 'Edit Team';
 $_['text_confirm']        = 'Are you sure want to Delete Team ?';
