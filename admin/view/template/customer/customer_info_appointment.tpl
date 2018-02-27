@@ -112,7 +112,7 @@
               </div>
             </div>
             <button type="button" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-filter"></i> Filter</button>
-            <button type="button" id="button-filter-reset" class="btn btn-primary pull-right" style="margin-right:10px;"><i class="fa fa-filter"></i> Reset</button>
+            <button type="button" id="button-filter-reset" class="btn btn-primary pull-right" style="margin-right:10px;"><i class="fa fa-refresh"></i> Reset</button>
           </div>
            
         </div>
@@ -127,8 +127,22 @@
                     <?php } else { ?>
                     <a href="<?php echo $sort_name; ?>">Appointment Name</a>
                     <?php } ?></td>
-                  <td class="text-left">Sales Rep Name</td>
-                  <td class="text-left">Appointment Date</td>
+                  
+                  <td class="text-left"><?php if ($sort == 'salesrepname') { ?>
+                    <a href="<?php echo $sort_salesrepname; ?>" class="<?php echo strtolower($order); ?>">Sales Rep Name</a>
+                    <?php } else { ?>
+                    <a href="<?php echo $sort_salesrepname; ?>">Sales Rep Name</a>
+                    <?php } ?></td>
+                  <!--<td class="text-left"><?php if ($sort == 'type') { ?>
+                    <a href="<?php echo $sort_type; ?>" class="<?php echo strtolower($order); ?>">Business Type</a>
+                    <?php } else { ?>
+                    <a href="<?php echo $sort_type; ?>">Business Type</a>
+                    <?php } ?></td>-->
+                  <td class="text-left"><?php if ($sort == 'appointment_date') { ?>
+                    <a href="<?php echo $sort_appointment_date; ?>" class="<?php echo strtolower($order); ?>">Appointment Date</a>
+                    <?php } else { ?>
+                    <a href="<?php echo $sort_appointment_date; ?>">Appointment Date</a>
+                    <?php } ?></td>
                   
                   <td class="text-right"><?php echo $column_action; ?></td>
                 </tr>
@@ -141,6 +155,7 @@
                             <tr>
                               <td class="text-left"><?php echo $schedule_management['appointment_name']; ?></td>
                               <td class="text-left"><?php echo $schedule_management['sales_manager']; ?></td>
+                             <!-- <td class="text-left"><?php echo $schedule_management['type']; ?></td>-->
                               <td class="text-left"><?php  echo $schedule_management['appointment_date']; ?></td>
                               <td class="text-right"><a href="<?php echo $schedule_management['view']; ?>" data-toggle="tooltip" title="View" class="btn btn-info"><i class="fa fa-eye"></i></a></td>
                             </tr>

@@ -44,9 +44,9 @@
           <div class="row">
             <div class="col-sm-3">
               <div class="form-group">
-                <label class="control-label" for="input-price">Customer</label>
+                <label class="control-label" for="input-price">Customer Name</label>
                 <select name="filter_customer_id" class="form-control">
-                	<option value="">Select Customer</option>
+                	<option value="">Customer Name</option>
                     <?php foreach ($dropdowncustomers as $dropdowncustomer) {  ?>
                 <?php if ($dropdowncustomer['customer_id'] == $filter_customer_id) { ?>
                 <option value="<?php echo $dropdowncustomer['customer_id']; ?>" selected="selected"><?php echo $dropdowncustomer['firstname']; ?></option>
@@ -63,7 +63,7 @@
               <div class="form-group">
                 <label class="control-label" for="input-customer-group"><?php echo $entry_customer_group; ?></label>
                 <select name="filter_customer_group_id" id="input-customer-group" class="form-control">
-                  <option value="*"></option>
+                  <option value="*">Select Customer Group</option>
                   <?php foreach ($customer_groups as $customer_group) { ?>
                   <?php if ($customer_group['customer_group_id'] == $filter_customer_group_id) { ?>
                   <option value="<?php echo $customer_group['customer_group_id']; ?>" selected="selected"><?php echo $customer_group['name']; ?></option>
@@ -89,7 +89,7 @@
             <div class="col-sm-3">
               <div class="form-group" style="margin-top:23px;">
               	<button type="button" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-filter"></i> <?php echo $button_filter; ?></button>
-               	<button type="button" id="button-filter-reset" class="btn btn-primary pull-right" style="margin-right:10px;"><i class="fa fa-filter"></i> Reset</button>
+               	<button type="button" id="button-filter-reset" class="btn btn-primary pull-right" style="margin-right:10px;"><i class="fa fa-refresh"></i> Reset</button>
               </div>
             </div>
           </div>

@@ -51,7 +51,7 @@
                 <label class="control-label" for="input-model">Appointment Date From</label>
                 
                 <div class='input-group date' id='filter_appointment_from'>
-                    <input name="filter_appointment_from" type='text' value="<?php echo $filter_appointment_from; ?>"  placeholder="DD-MM-YYYY hh:mm A" class="form-control" data-date-format="DD-MM-YYYY hh:mm A" class="form-control"  />
+                    <input name="filter_appointment_from" type='text' value="<?php echo $filter_appointment_from; ?>"  placeholder="Date From" class="form-control" data-date-format="DD-MM-YYYY hh:mm A" class="form-control"  />
                     <span class="input-group-addon">
                         <span class="glyphicon glyphicon-calendar"></span>
                     </span>
@@ -70,9 +70,9 @@
                
               </div>
               <div class="form-group">
-                <label class="control-label" for="input-price">Customer</label>
+                <label class="control-label" for="input-price">Customer Name</label>
                 <select name="filter_customer_id" class="form-control">
-                	<option value="">Select Customer</option>
+                	<option value="">Customer Name</option>
                     <?php foreach ($customers as $customer) {  ?>
                 <?php if ($customer['customer_id'] == $filter_customer_id) { ?>
                 <option value="<?php echo $customer['customer_id']; ?>" selected="selected"><?php echo $customer['firstname']; ?></option>
@@ -94,7 +94,7 @@
                   </span>-->
                   
                   <div class='input-group date' id='filter_appointment_to'>
-                    <input name="filter_appointment_to" type='text' value="<?php echo $filter_appointment_to; ?>"  placeholder="DD-MM-YYYY hh:mm A" class="form-control" data-date-format="DD-MM-YYYY hh:mm A" class="form-control"  />
+                    <input name="filter_appointment_to" type='text' value="<?php echo $filter_appointment_to; ?>"  placeholder="Date To" class="form-control" data-date-format="DD-MM-YYYY hh:mm A" class="form-control"  />
                     <span class="input-group-addon">
                         <span class="glyphicon glyphicon-calendar"></span>
                     </span>
@@ -112,7 +112,7 @@
               </div>
             </div>
             <button type="button" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-filter"></i> Filter</button>
-            <button type="button" id="button-filter-reset" class="btn btn-primary pull-right" style="margin-right:10px;"><i class="fa fa-filter"></i> Reset</button>
+            <button type="button" id="button-filter-reset" class="btn btn-primary pull-right" style="margin-right:10px;"><i class="fa fa-refresh"></i> Reset</button>
           </div>
            
         </div>
@@ -127,10 +127,22 @@
                     <?php } else { ?>
                     <a href="<?php echo $sort_name; ?>">Appointment Name</a>
                     <?php } ?></td>
-                  <td class="text-left">Sales Rep Name</td>
-                  <td class="text-left">Customer Name</td>
-                  <td class="text-left">Appointment Date</td>
-                  
+                  <td class="text-left"><?php if ($sort == 'salesrepname') { ?>
+                    <a href="<?php echo $sort_salesrepname; ?>" class="<?php echo strtolower($order); ?>">Sales Rep Name</a>
+                    <?php } else { ?>
+                    <a href="<?php echo $sort_salesrepname; ?>">Sales Rep Name</a>
+                    <?php } ?></td>
+                   <!--<td class="text-left">Customer Name</td> -->
+                  <td class="text-left"><?php if ($sort == 'type') { ?>
+                    <a href="<?php echo $sort_type; ?>" class="<?php echo strtolower($order); ?>">Business Type</a>
+                    <?php } else { ?>
+                    <a href="<?php echo $sort_type; ?>">Business Type</a>
+                    <?php } ?></td>
+                  <td class="text-left"><?php if ($sort == 'appointment_date') { ?>
+                    <a href="<?php echo $sort_appointment_date; ?>" class="<?php echo strtolower($order); ?>">Appointment Date</a>
+                    <?php } else { ?>
+                    <a href="<?php echo $sort_appointment_date; ?>">Appointment Date</a>
+                    <?php } ?></td>
                   <td class="text-right"><?php echo $column_action; ?></td>
                 </tr>
               </thead>
@@ -142,7 +154,8 @@
                             <tr>
                               <td class="text-left"><?php echo $schedule_management['appointment_name']; ?></td>
                               <td class="text-left"><?php echo $schedule_management['sales_manager']; ?></td>
-                              <td class="text-left"><?php echo $schedule_management['customername']; ?></td>
+                              <!--<td class="text-left"><?php echo $schedule_management['customername']; ?></td>-->
+                              <td class="text-left"><?php echo $schedule_management['type']; ?></td>
                               <td class="text-left"><?php  echo $schedule_management['appointment_date']; ?></td>
                               <td class="text-right"><a href="<?php echo $schedule_management['view']; ?>" data-toggle="tooltip" title="View" class="btn btn-info"><i class="fa fa-eye"></i></a></td>
                             </tr>

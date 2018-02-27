@@ -99,5 +99,12 @@ class ModelUserTeam extends Model {
 
 		return $query->row;
 	}
+	
+	public function getTotalTeamBySalesmanager($sales_manager) {
+		
+		$sql = "SELECT * FROM " . DB_PREFIX . "team where sales_manager=".$sales_manager."";
+		$query = $this->db->query($sql);
+		return $query->row;
+	}
 
 }

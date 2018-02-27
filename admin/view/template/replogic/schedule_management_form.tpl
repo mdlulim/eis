@@ -31,17 +31,17 @@
               <?php if($type == 'New Business') { ?>
 				  <style>
                     .newbusiness{display:block;}
-                    #custmr_id{display:none;}
+                    .custmr_id{display:none;}
                   </style>
               <?php } else if($type == 'Existing Business') { ?>
               		<style>
                     .newbusiness{display:none;}
-                    #custmr_id{display:block;}
+                    .custmr_id{display:block;}
                   </style>
               <?php } else  { ?>
               		<style>
                     .newbusiness{display:none;}
-                    #custmr_id{display:none;}
+                    .custmr_id{display:none;}
                   </style>
               <?php } ?>
               
@@ -94,7 +94,7 @@
             </div>
           </div>
           
-          <div class="form-group required" id="custmr_id">
+          <div class="form-group required custmr_id">
             <label class="col-sm-2 control-label" for="input-user-group"><?php echo $entry_customer; ?></label>
             <div class="col-sm-10">
               <select name="customer_id" id="input-sales_manager" class="form-control">
@@ -109,6 +109,16 @@
               </select>
                <?php if ($error_customer_id) { ?>
               <div class="text-danger"><?php echo $error_customer_id; ?></div>
+              <?php } ?>
+            </div>
+          </div>
+          
+          <div class="form-group required custmr_id">
+            <label class="col-sm-2 control-label" for="input-username">Address</label>
+            <div class="col-sm-10">
+              <input type="text" name="appointment_address" value="<?php echo $appointment_address; ?>" placeholder="Plz Enter Address" id="input-appointment_address" class="form-control" />
+              <?php if ($error_appointment_address) { ?>
+              <div class="text-danger"><?php echo $error_appointment_address; ?></div>
               <?php } ?>
             </div>
           </div>
@@ -248,16 +258,16 @@
    if(optVal == 'New Business')
    {
    		$(".newbusiness").css("display", "block");
-		$("#custmr_id").css("display", "none");
+		$(".custmr_id").css("display", "none");
    }
    else if(optVal == 'Existing Business')
    {
-   		$("#custmr_id").css("display", "block");
+   		$(".custmr_id").css("display", "block");
 		$(".newbusiness").css("display", "none");
    }
    else
    {
-   		$("#custmr_id").css("display", "none");
+   		$(".custmr_id").css("display", "none");
 		$(".newbusiness").css("display", "none");
    }
    

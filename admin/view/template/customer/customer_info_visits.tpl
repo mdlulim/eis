@@ -81,7 +81,7 @@
             <div class="col-sm-3">
               <div class="form-group" style="margin-top:22px;">
                 <button type="button" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-filter"></i> Search</button>
-                <button type="button" id="button-filter-reset" class="btn btn-primary pull-right" style="margin-right:10px;"><i class="fa fa-filter"></i> Reset</button>
+                <button type="button" id="button-filter-reset" class="btn btn-primary pull-right" style="margin-right:10px;"><i class="fa fa-refresh"></i> Reset</button>
               </div>
             </div>
             

@@ -252,7 +252,7 @@ class ControllerReplogicNotes extends Controller {
 		$current_user_group_id = $this->model_user_user->getUser($current_user); ;
 		$current_user_group = $this->model_user_user_group->getUserGroup($current_user_group_id); ;
 		//print_r($current_user_group); exit;
-		if($current_user_group['name'] == 'Company admin' || $current_user_group['name'] == 'Administrator')
+		if($current_user_group['name'] == 'Company admin' || $current_user_group['name'] == 'System Administrator')
 		{
 			$data['access'] = 'yes';
 		}

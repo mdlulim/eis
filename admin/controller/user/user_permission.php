@@ -175,6 +175,7 @@ class ControllerUserUserPermission extends Controller {
 			$data['user_groups'][] = array(
 				'user_group_id' => $result['user_group_id'],
 				'name'          => $result['name'],
+				'menulinks'          => $this->url->link('user/menu_setting', 'token=' . $this->session->data['token'] . '&user_group_id=' . $result['user_group_id'] . $url, true),
 				'edit'          => $this->url->link('user/user_permission/edit', 'token=' . $this->session->data['token'] . '&user_group_id=' . $result['user_group_id'] . $url, true)
 			);
 		}

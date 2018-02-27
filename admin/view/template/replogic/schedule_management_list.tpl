@@ -39,9 +39,9 @@
                 <input type="text" name="filter_appointment_name" value="<?php echo $filter_appointment_name; ?>" placeholder="Appointment Name" id="input-name" class="form-control" />
               </div>-->
               <div class="form-group">
-                <label class="control-label" for="input-price">Customer</label>
+                <label class="control-label" for="input-price">Customer Name</label>
                 <select name="filter_customer_id" class="form-control">
-                	<option value="">Select Customer</option>
+                	<option value="">Customer Name</option>
                     <?php foreach ($customers as $customer) {  ?>
                 <?php if ($customer['customer_id'] == $filter_customer_id) { ?>
                 <option value="<?php echo $customer['customer_id']; ?>" selected="selected"><?php echo $customer['firstname']; ?></option>
@@ -121,7 +121,7 @@
             </div>
             <div class="col-sm-4">
               <div class="form-group">
-                <label class="control-label" for="input-price">Select Business Type</label>
+                <label class="control-label" for="input-price">Business Type</label>
                 
                 	<select name="filter_type" id="input-type" class="form-control">
                         <option value="">Select Business Type</option>
@@ -139,7 +139,7 @@
               </div>
               <div class="form-group" style="margin-top:23px;">
             		<button type="button" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-filter"></i> Filter</button>
-            		<button type="button" id="button-filter-reset" class="btn btn-primary pull-right" style="margin-right:10px;"><i class="fa fa-filter"></i> Reset</button>  
+            		<button type="button" id="button-filter-reset" class="btn btn-primary pull-right" style="margin-right:10px;"><i class="fa fa-refresh"></i> Reset</button>  
               </div>
             </div>
             
@@ -158,8 +158,16 @@
                     <?php } else { ?>
                     <a href="<?php echo $sort_name; ?>"><?php echo $column_name; ?></a>
                     <?php } ?></td>
-                  <td class="text-left">Sales Rep Name</td>
-                  <td class="text-left">Business Type</td>
+                  <td class="text-left"><?php if ($sort == 'salesrepname') { ?>
+                    <a href="<?php echo $sort_salesrepname; ?>" class="<?php echo strtolower($order); ?>">Sales Rep Name</a>
+                    <?php } else { ?>
+                    <a href="<?php echo $sort_salesrepname; ?>">Sales Rep Name</a>
+                    <?php } ?></td>
+                  <td class="text-left"><?php if ($sort == 'type') { ?>
+                    <a href="<?php echo $sort_type; ?>" class="<?php echo strtolower($order); ?>">Business Type</a>
+                    <?php } else { ?>
+                    <a href="<?php echo $sort_type; ?>">Business Type</a>
+                    <?php } ?></td>
                   <td class="text-left"><?php if ($sort == 'appointment_date') { ?>
                     <a href="<?php echo $sort_appointment_date; ?>" class="<?php echo strtolower($order); ?>">Appointment Date</a>
                     <?php } else { ?>

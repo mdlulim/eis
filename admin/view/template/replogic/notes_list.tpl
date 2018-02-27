@@ -62,7 +62,7 @@
             </div>-->
             <div style="margin-top:35px;">
             <button type="button" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-filter"></i> Filter</button>
-            <button type="button" id="button-filter-reset" class="btn btn-primary pull-right" style="margin-right:10px;"><i class="fa fa-filter"></i> Reset</button>
+            <button type="button" id="button-filter-reset" class="btn btn-primary pull-right" style="margin-right:10px;"><i class="fa fa-refresh"></i> Reset</button>
             </div>
           </div>
            
@@ -109,7 +109,7 @@
                     <?php } ?>
                 <?php } else { ?>
                 	<tr>
-                        <td class="text-center" colspan="5">You Don't have Permission to access the Manage Group.</td>
+                        <td class="text-center" colspan="5">You Don't have Permission to access the Notes Module.</td>
                     </tr>
                 <?php } ?>
               </tbody>

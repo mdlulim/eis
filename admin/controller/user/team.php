@@ -485,6 +485,21 @@ class ControllerUserTeam extends Controller {
 		if ($this->request->post['sales_manager'] == '') {
 			$this->error['sales_manager'] = $this->language->get('error_sales_manager');
 		}
+		else
+		{
+			$salesmanager = $this->model_user_team->getTotalTeamBySalesmanager($this->request->post['sales_manager']); 
+			
+			if(count($salesmanager) > 0 && isset($this->request->get['team_id']) && $salesmanager['team_id'] != $this->request->get['team_id'] )
+			{
+				$this->error['warning'] = $this->language->get('error_salesmanager_team_exit');
+			}
+			
+			if (count($salesmanager) > 0 && !isset($this->request->get['team_id']))
+			{
+				$this->error['warning'] = $this->language->get('error_salesmanager_team_exit');
+			}
+			
+		}
 
 		return !$this->error;
 	}

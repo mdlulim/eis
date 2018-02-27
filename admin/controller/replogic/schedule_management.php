@@ -329,15 +329,12 @@ class ControllerReplogicScheduleManagement extends Controller {
 		
 		$schedule_management_total = $this->model_replogic_schedule_management->getTotalScheduleManagement($filter_data, $allaccess, $current_user_id);
 		$results = $this->model_replogic_schedule_management->getScheduleManagement($filter_data, $allaccess, $current_user_id);
-		
+		//print_r($results); exit;
 		$this->load->model('replogic/sales_rep_management');
 		 $data['salesReps'] = $this->model_replogic_sales_rep_management->getSalesRepsDropdown($allaccess, $current_user_id);
 		
 		foreach ($results as $result) {
 			
-		$salesrep = $this->model_replogic_sales_rep_management->getsalesrep($result['salesrep_id']); ;
-		$sales_rep = $salesrep['salesrep_name'] ." ". $salesrep['salesrep_lastname'];
-		
 		$time = strtotime($result['appointment_date']);
 		$myFormatForView = date("d-m-Y g:i A", $time); 
 			
@@ -345,7 +342,7 @@ class ControllerReplogicScheduleManagement extends Controller {
 				'appointment_id' => $result['appointment_id'],
 				'appointment_name'          => $result['appointment_name'],
 				'type'          => $result['type'],
-				'sales_manager'          => $sales_rep,
+				'sales_manager'          => $result['salesrepname'],
 				'appointment_date'          => $myFormatForView,
 				'tasks'          => $this->url->link('replogic/tasks', 'token=' . $this->session->data['token'] . '&appointment_id=' . $result['appointment_id'] . $url, true),
 				'notes'          => $this->url->link('replogic/notes', 'token=' . $this->session->data['token'] . '&appointment_id=' . $result['appointment_id'] . $url, true),
@@ -433,6 +430,8 @@ class ControllerReplogicScheduleManagement extends Controller {
 
 		$data['sort_name'] = $this->url->link('replogic/schedule_management', 'token=' . $this->session->data['token'] . '&sort=appointment_name' . $url, true);
 		$data['sort_appointment_date'] = $this->url->link('replogic/schedule_management', 'token=' . $this->session->data['token'] . '&sort=appointment_date' . $url, true);
+		$data['sort_type'] = $this->url->link('replogic/schedule_management', 'token=' . $this->session->data['token'] . '&sort=type' . $url, true);
+		$data['sort_salesrepname'] = $this->url->link('replogic/schedule_management', 'token=' . $this->session->data['token'] . '&sort=salesrepname' . $url, true);
 
 		$url = '';
 		
@@ -559,6 +558,12 @@ class ControllerReplogicScheduleManagement extends Controller {
 			$data['error_address'] = $this->error['address'];
 		} else {
 			$data['error_address'] = '';
+		}
+		
+		if (isset($this->error['appointment_address'])) {
+			$data['error_appointment_address'] = $this->error['appointment_address'];
+		} else {
+			$data['error_appointment_address'] = '';
 		}
 		
 		if (isset($this->error['customer_id'])) {
@@ -696,6 +701,14 @@ class ControllerReplogicScheduleManagement extends Controller {
 			$data['address'] = $prospect_info['address'];
 		} else {
 			$data['address'] = '';
+		}
+		
+		if (isset($this->request->post['appointment_address'])) {
+			$data['appointment_address'] = $this->request->post['appointment_address'];
+		} elseif (!empty($appointment_info)) {
+			$data['appointment_address'] = $appointment_info['appointment_address'];
+		} else {
+			$data['appointment_address'] = '';
 		}
 		
 		if (isset($this->request->post['customer_id'])) {
@@ -838,6 +851,12 @@ class ControllerReplogicScheduleManagement extends Controller {
 			{
 				$this->error['customer_id'] = $this->language->get('error_customer_id');
 			}
+			
+			if ($this->request->post['appointment_address'] == '') 
+			{
+				$this->error['appointment_address'] = $this->language->get('error_appointment_address');
+			}
+			
 		}
 		
 		return !$this->error;

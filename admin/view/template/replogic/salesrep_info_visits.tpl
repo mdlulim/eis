@@ -39,13 +39,13 @@
             <li><a href="<?php echo $quotestab; ?>" >Quotes</a></li>
             
           </ul>
-        
+        <div class="well">
           <div class="row">
             <div class="col-sm-3">
               <div class="form-group">
-              	<label class="control-label" for="input-name">Select Customer</label>
+              	<label class="control-label" for="input-name">Customer Name</label>
                 <select name="filter_customer_id" id="input-customer" class="form-control">
-                        <option value="">Select Customer</option>
+                        <option value="">Customer Name</option>
                         <?php foreach ($customers as $customer) { ?>
                         <?php if ($customer['customer_id'] == $filter_customer_id) { ?>
                         <option value="<?php echo $customer['customer_id']; ?>" selected="selected"><?php echo $customer['firstname']; ?></option>
@@ -80,22 +80,23 @@
             </div>
             <div class="col-sm-3">
               <div class="form-group" style="margin-top:22px;">
-                <button type="button" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-filter"></i> Search</button>
-                <button type="button" id="button-filter-reset" class="btn btn-primary pull-right" style="margin-right:10px;"><i class="fa fa-filter"></i> Reset</button>
+                <button type="button" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-search"></i> Search</button>
+                <button type="button" id="button-filter-reset" class="btn btn-primary pull-right" style="margin-right:10px;"><i class="fa fa-refresh"></i> Reset</button>
               </div>
             </div>
             
             
           </div>  
+        </div>
          
           <div class="table-responsive" style="margin-bottom:15px;" >
             <table class="table table-bordered table-hover" style="margin-bottom:0px !important;">
-              <thead style="background-color:#CCCCCC;">
+              <thead>
                 <tr>
-                  <td class="text-left" width="120"><?php if ($sort == 'name') { ?>
-                    <a href="<?php echo $sort_name; ?>" class="<?php echo strtolower($order); ?>">Customer</a>
+                  <td class="text-left" width="140"><?php if ($sort == 'name') { ?>
+                    <a href="<?php echo $sort_name; ?>" class="<?php echo strtolower($order); ?>">Customer Name</a>
                     <?php } else { ?>
-                    <a href="<?php echo $sort_name; ?>">Customer</a>
+                    <a href="<?php echo $sort_name; ?>">Customer Name</a>
                     <?php } ?></td>
                   <td class="text-center" width="100" >Last Check in</td>
                     <td class="text-left" width="140" >Visit date</td>

@@ -162,7 +162,7 @@
 					$data['menus'][] = array(
 						'id'       => 'menu-magentech',
 						'icon'	   => 'fa-wrench icon-so', 
-						'name'	   => 'Magentech',
+						'name'	   => 'Theme Designs',
 						'href'     => '',
 						'children' => $magentech
 					);		

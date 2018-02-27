@@ -379,9 +379,6 @@ class ControllerReplogicSalesrepInfo extends Controller {
 		
 		foreach ($results as $result) {
 			
-		$salesrep = $this->model_replogic_sales_rep_management->getsalesrep($result['salesrep_id']); ;
-		$sales_rep = $salesrep['salesrep_name'] ." ". $salesrep['salesrep_lastname'];
-		
 		$customerdetail = $this->model_customer_customer->getCustomer($result['customer_id']); ;
 		$customername = $customerdetail['firstname'];
 		
@@ -391,7 +388,8 @@ class ControllerReplogicSalesrepInfo extends Controller {
 		$data['schedule_managements'][] = array(
 				'appointment_id' => $result['appointment_id'],
 				'appointment_name'          => $result['appointment_name'],
-				'sales_manager'          => $sales_rep,
+				'type'          => $result['type'],
+				'sales_manager'          => $result['salesrepname'],
 				'customername'          => $customername,
 				'appointment_date'          => $myFormatForView,
 				'tasks'          => $this->url->link('replogic/tasks', 'token=' . $this->session->data['token'] . '&appointment_id=' . $result['appointment_id'] . $url, true),
@@ -481,7 +479,10 @@ class ControllerReplogicSalesrepInfo extends Controller {
 			$url .= '&page=' . $this->request->get['page'];
 		}
 
-		$data['sort_name'] = $this->url->link('replogic/salesrep_info', 'token=' . $this->session->data['token'] . '&sort=name' . $url, true);
+		$data['sort_name'] = $this->url->link('replogic/salesrep_info', 'token=' . $this->session->data['token'] . '&sort=appointment_name' . $url, true);
+		$data['sort_appointment_date'] = $this->url->link('replogic/salesrep_info', 'token=' . $this->session->data['token'] . '&sort=appointment_date' . $url, true);
+		$data['sort_type'] = $this->url->link('replogic/salesrep_info', 'token=' . $this->session->data['token'] . '&sort=type' . $url, true);
+		$data['sort_salesrepname'] = $this->url->link('replogic/salesrep_info', 'token=' . $this->session->data['token'] . '&sort=salesrepname' . $url, true);
 
 		$url = '';
 		

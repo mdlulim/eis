@@ -28,15 +28,17 @@
       </div>
       <div class="panel-body">
         
-          <div class="row">
+            <div class="well">
+          		<div class="row">
             <!--<div class="col-sm-3">
               <div class="form-group">
                 <input type="text" name="filter_address" value="<?php echo $filter_address; ?>" placeholder="Search Address" id="input-address" class="form-control" style="border-radius:25px;" />
               </div>
             </div>-->
   <?php if($filtersales == 'yes') { ?>          
-            <div class="col-sm-3">
+            <div class="col-sm-6">
               <div class="form-group">
+              	<label class="control-label" for="input-price">Team Name</label>
                 <select name="filter_team_id" id="input-team" class="form-control">
                         <option value="">Select Team</option>
                         <?php foreach ($teams as $team) {  ?>
@@ -48,9 +50,8 @@
                         <?php } ?>
                       </select>
               </div>
-            </div>
-            <div class="col-sm-3">
               <div class="form-group">
+              	<label class="control-label" for="input-price">Sales Rep Name</label>
                 <select name="filter_salesrep_id" id="input-sales_manager" class="form-control">
                       		<option value="">Select Sales Rep</option> 
                            <?php if($salesReps) { ?>
@@ -66,8 +67,10 @@
                       </select>
               </div>
             </div>
-            <div class="col-sm-3">
+            
+            <div class="col-sm-6">
               <div class="form-group">
+              	<label class="control-label" for="input-price">Customer Name</label>
                 <select name="filter_customer_id" id="input-customer" class="form-control">
                         <option value="">Select Customer</option>
                        	<?php if($customers) { ?>
@@ -83,6 +86,14 @@
                         	<option value="">Not Found</option>
                         <?php } ?>
                       </select>
+              </div>
+              <div class="form-group">
+                
+                <button type="button" id="button-filter" class="btn btn-primary" style="float:left;"><i class="fa fa-search"></i> Search</button>
+                <button type="button" id="button-locate-all" class="btn btn-primary" style="float:left;margin-left:12px;" title="Select the sales reps you wish to locate from the table below and click on the Locate selected button."><i class="fa fa-filter"></i>Locate Selected</button>
+                <label class="col-sm-2 control-label" for="input-voucher-min" style="float:left;padding-left:0px;top:-3px;"><span data-toggle="tooltip" title="Select the sales reps you wish to locate from the table below and click on the Locate selected button." style="font-size:27px;"></span></label>
+                <input type="hidden" id="checkin_id" name="checkin_id" value=""  />
+                
               </div>
             </div>
             
@@ -164,8 +175,9 @@ $('select[name=\'filter_salesrep_id\']').on('change', function() {
 
             
    <?php } else { ?>
-   			<div class="col-sm-3">
+   			<div class="col-sm-6">
               <div class="form-group">
+              	<label class="control-label" for="input-price">Team Name</label>
                 <select name="filter_team_id" id="input-team" class="form-control">
                         <option value="">Select Team</option>
                         <?php foreach ($teams as $team) {  ?>
@@ -177,9 +189,8 @@ $('select[name=\'filter_salesrep_id\']').on('change', function() {
                         <?php } ?>
                       </select>
               </div>
-            </div>
-            <div class="col-sm-3">
               <div class="form-group">
+              	<label class="control-label" for="input-price">Sales Rep Name</label>
                 <select name="filter_salesrep_id" id="input-sales_manager" class="form-control">
                       		<option value="">Select Sales Rep</option> 
                            <?php if($salesReps) { ?>
@@ -195,8 +206,10 @@ $('select[name=\'filter_salesrep_id\']').on('change', function() {
                       </select>
               </div>
             </div>
-            <div class="col-sm-3">
+            
+            <div class="col-sm-6">
               <div class="form-group">
+              	<label class="control-label" for="input-price">Customer Name</label>
                 <select name="filter_customer_id" id="input-customer" class="form-control">
                         <option value="">Select Customer</option>
                        	<?php if($customers) { ?>
@@ -213,26 +226,19 @@ $('select[name=\'filter_salesrep_id\']').on('change', function() {
                         <?php } ?>
                       </select>
               </div>
-            </div>
-   <?php } ?>
-            <div class="col-sm-1">
               <div class="form-group">
-                <button type="button" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-filter"></i> Search</button>
+                
+                <button type="button" id="button-filter" class="btn btn-primary" style="float:left;margin-top:23px;"><i class="fa fa-search"></i> Search</button>
+                <button type="button" id="button-locate-all" class="btn btn-primary" style="float:left;margin-left:12px;margin-top:23px;" title="Select the sales reps you wish to locate from the table below and click on the Locate selected button."><i class="fa fa-filter"></i>Locate Selected</button>
+                <label class="col-sm-2 control-label" for="input-voucher-min" style="float:left;padding-left:0px;top:-3px;margin-top:23px;"><span data-toggle="tooltip" title="Select the sales reps you wish to locate from the table below and click on the Locate selected button." style="font-size:27px;"></span></label>
+                <input type="hidden" id="checkin_id" name="checkin_id" value=""  />
                 
               </div>
             </div>
-            
-            <div class="col-sm-2">
-              <div class="form-group">
-                <button type="button" id="button-locate-all" class="btn btn-primary pull-right" style="float:left!important;margin-left:-4px;" title="Select the sales rep/s you wish to locate from the table below and click on the Locate selected button."><i class="fa fa-filter"></i>Locate Selected</button>
-                <label class="col-sm-2 control-label" for="input-voucher-min" style="float:left;padding-left:0px;top:-3px;"><span data-toggle="tooltip" title="Select the sales rep/s you wish to locate from the table below and click on the Locate selected button." style="font-size:27px;"></span></label>
-                <input type="hidden" id="checkin_id" name="checkin_id" value=""  />
-              </div>
-              
+   <?php } ?>
             </div>
-            
-          </div>  
-         
+              
+         	</div>
           <div class="table-responsive">
             <table class="table table-bordered table-hover">
               
@@ -328,7 +334,7 @@ $('select[name=\'filter_salesrep_id\']').on('change', function() {
         
           <div class="table-responsive" style="margin-bottom:15px;" >
             <table class="table table-bordered table-hover" style="margin-bottom:0px !important;">
-              <thead style="background-color:#CCCCCC;">
+              <thead>
                 <tr>
                   <td style="width: 1px;" class="text-center"><input type="checkbox" onclick="$('input[name*=\'selected\']').prop('checked', this.checked);" id="chkbx" /></td>
                   <td class="text-center" width="200">Sales Rep Name</td>
@@ -339,17 +345,17 @@ $('select[name=\'filter_salesrep_id\']').on('change', function() {
                     <?php } ?></td>
                   <td class="text-left" width="200">Last Check In</td>
                   <td class="text-left" width="200"><?php if ($sort == 'name') { ?>
-                    <a href="<?php echo $sort_name; ?>" class="<?php echo strtolower($order); ?>">Customer</a>
+                    <a href="<?php echo $sort_name; ?>" class="<?php echo strtolower($order); ?>">Customer Name</a>
                     <?php } else { ?>
-                    <a href="<?php echo $sort_name; ?>">Customer</a>
+                    <a href="<?php echo $sort_name; ?>">Customer Name</a>
                     <?php } ?></td>
-                  <td class="text-left" width="200"><?php if ($sort == 'name') { ?>
-                    <a href="<?php echo $sort_name; ?>" class="<?php echo strtolower($order); ?>">Check In Location</a>
+                  <td class="text-left" width="215"><?php if ($sort == 'name') { ?>
+                    <a href="<?php echo $sort_name; ?>" class="<?php echo strtolower($order); ?>">Self Reported Location</a>
                     <?php } else { ?>
-                    <a href="<?php echo $sort_name; ?>">Check In Location</a>
+                    <a href="<?php echo $sort_name; ?>">Self Reported Location</a>
                     <?php } ?></td>  
                   
-                  <td class="text-left" width="200">Current Location</td>
+                  <td class="text-left" width="200">GPS Check In Location</td>
                 </tr>
               </thead>
               <tbody>

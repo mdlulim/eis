@@ -36,3 +36,4 @@ $_['error_minutes']       = 'Plz Select Minutes!';
 $_['error_bcustomer_name']       = 'Plz Enter Customer Name!';
 $_['error_address']       = 'Plz Enter Address!';
 $_['error_type']       = 'Plz Select Business Type!';
+$_['error_appointment_address']       = 'Plz Enter Address!';
