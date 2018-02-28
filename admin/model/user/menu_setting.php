@@ -35,5 +35,23 @@ class ModelUserMenuSetting extends Model {
 		return $query->rows;
 	}
 
+	public function getCAllMenuSettings($user_group_id) {
+		$sql = "SELECT ms.* FROM oc_menu_setting ms INNER JOIN oc_menu_setting_to_user_group mu ON mu.menu_id=ms.menu_id WHERE mu.user_group_id=".$user_group_id." AND ms.status = 1 ORDER BY ms.parent_id, ms.sort_order, ms.menu_id";
+		
+		$query = $this->db->query($sql);
+		return $query->rows;
+	}
+	
+	public function editmenusetting($user_group_id, $data) {
+		$menu_ids = $data['menu_id'];
+		
+		$this->db->query("DELETE from " . DB_PREFIX . "menu_setting_to_user_group where user_group_id = '".$user_group_id."'");
+		
+		foreach($menu_ids as $menu_id)
+		{ 
+			$this->db->query("INSERT into " . DB_PREFIX . "menu_setting_to_user_group SET menu_id = '" . $menu_id . "', user_group_id = '" . $user_group_id . "'");
+		}
+		
+	}
 	
 }

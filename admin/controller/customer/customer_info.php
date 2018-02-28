@@ -432,7 +432,7 @@ class ControllerCustomerCustomerInfo extends Controller {
 		if (isset($this->request->get['order'])) {
 			$order = $this->request->get['order'];
 		} else {
-			$order = 'ASC';
+			$order = 'DESC';
 		}
 
 		if (isset($this->request->get['page'])) {
@@ -857,10 +857,10 @@ class ControllerCustomerCustomerInfo extends Controller {
 		$data['customername'] = $customerdetails['firstname'];
 		$data['customer_id'] = $customer_id;
 		
-		if (isset($this->request->get['filter_name'])) {
-			$filter_name = $this->request->get['filter_name'];
+		if (isset($this->request->get['filter_customer_contact_id'])) {
+			$filter_customer_contact_id = $this->request->get['filter_customer_contact_id'];
 		} else {
-			$filter_name = null;
+			$filter_customer_contact_id = null;
 		}
 
 		if (isset($this->request->get['filter_email'])) {
@@ -945,7 +945,7 @@ class ControllerCustomerCustomerInfo extends Controller {
 		$data['customer_contacts'] = array();
 
 		$filter_data = array(
-			'filter_name'	  => $filter_name,
+			'filter_customer_contact_id'	  => $filter_customer_contact_id,
 			'filter_email'	  => $filter_email,
 			'filter_customer_id' => $customer_id,
 			'sort'  => $sort,
@@ -962,7 +962,6 @@ class ControllerCustomerCustomerInfo extends Controller {
 		
 	    $customers = $this->model_customer_customer->getCustomer($result['customer_id']); ;
 		
-		$sales_manag = $user['firstname'] ." ". $user['lastname']." (".$user['username'].")";
 			$data['customer_contacts'][] = array(
 				'customer_con_id' => $result['customer_con_id'],
 				'email' => $result['email'],
@@ -973,6 +972,7 @@ class ControllerCustomerCustomerInfo extends Controller {
 		}
 		
 		$data['customers'] = $this->model_customer_customer->getCustomers();
+		$data['allcustomer_contacts'] = $this->model_replogic_customer_contact->getcustomercontacts();
 		
 		$data['heading_title'] = $this->language->get('heading_title');
 		
@@ -1010,8 +1010,8 @@ class ControllerCustomerCustomerInfo extends Controller {
 
 		$url = '';
 		
-		if (isset($this->request->get['filter_name'])) {
-			$url .= '&filter_name=' . urlencode(html_entity_decode($this->request->get['filter_name'], ENT_QUOTES, 'UTF-8'));
+		if (isset($this->request->get['filter_customer_contact_id'])) {
+			$url .= '&filter_customer_contact_id=' . $this->request->get['filter_customer_contact_id'];
 		}
 
 		if (isset($this->request->get['type'])) {
@@ -1040,8 +1040,8 @@ class ControllerCustomerCustomerInfo extends Controller {
 
 		$url = '';
 		
-		if (isset($this->request->get['filter_name'])) {
-			$url .= '&filter_name=' . urlencode(html_entity_decode($this->request->get['filter_name'], ENT_QUOTES, 'UTF-8'));
+		if (isset($this->request->get['filter_customer_contact_id'])) {
+			$url .= '&filter_customer_contact_id=' . $this->request->get['filter_customer_contact_id'];
 		}
 
 		if (isset($this->request->get['type'])) {
@@ -1074,7 +1074,7 @@ class ControllerCustomerCustomerInfo extends Controller {
 
 		$data['results'] = sprintf($this->language->get('text_pagination'), ($customer_contact_total) ? (($page - 1) * $this->config->get('config_limit_admin')) + 1 : 0, ((($page - 1) * $this->config->get('config_limit_admin')) > ($customer_contact_total - $this->config->get('config_limit_admin'))) ? $customer_contact_total : ((($page - 1) * $this->config->get('config_limit_admin')) + $this->config->get('config_limit_admin')), $customer_contact_total, ceil($customer_contact_total / $this->config->get('config_limit_admin')));
 
-		$data['filter_name'] = $filter_name;
+		$data['filter_customer_contact_id'] = $filter_customer_contact_id;
 		$data['filter_email'] = $filter_email;
 		$data['sort'] = $sort;
 		$data['order'] = $order;

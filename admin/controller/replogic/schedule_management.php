@@ -811,9 +811,9 @@ class ControllerReplogicScheduleManagement extends Controller {
 			$this->error['appointment_name'] = $this->language->get('error_appointment_name');
 		}
 		
-		if ((utf8_strlen($this->request->post['appointment_description']) < 3) || (utf8_strlen($this->request->post['appointment_description']) > 64)) {
+		/*if ((utf8_strlen($this->request->post['appointment_description']) < 3) || (utf8_strlen($this->request->post['appointment_description']) > 64)) {
 			$this->error['appointment_description'] = $this->language->get('error_appointment_description');
-		}
+		}*/
 		
 		if ((utf8_strlen($this->request->post['appointment_date']) < 3) || (utf8_strlen($this->request->post['appointment_date']) > 64)) {
 			$this->error['appointment_date'] = $this->language->get('error_appointment_date');

@@ -2,8 +2,24 @@
 class ModelUserUserGroup extends Model {
 	public function addUserGroup($data) {
 		$this->db->query("INSERT INTO " . DB_PREFIX . "user_group SET name = '" . $this->db->escape($data['name']) . "', permission = '" . (isset($data['permission']) ? $this->db->escape(json_encode($data['permission'])) : '') . "'");
+		
+		$user_group_id = $this->db->getLastId();
+		$menuitems = $this->getAllMenuSetting();
+		
+		foreach($menuitems as $menuitem)
+		{
+			$menu_id = $menuitem['menu_id'];
+			$this->db->query("INSERT into " . DB_PREFIX . "menu_setting_to_user_group SET menu_id = '" . $menu_id . "', user_group_id = '" . $user_group_id . "'");
+		}
 	
 		return $this->db->getLastId();
+	}
+	
+	public function getAllMenuSetting() {
+		
+		$sql = "SELECT * FROM " . DB_PREFIX . "menu_setting WHERE status = 1";
+		$query = $this->db->query($sql);
+		return $query->rows;
 	}
 
 	public function editUserGroup($user_group_id, $data) {
@@ -11,6 +27,8 @@ class ModelUserUserGroup extends Model {
 	}
 
 	public function deleteUserGroup($user_group_id) {
+		
+		$this->db->query("DELETE from " . DB_PREFIX . "menu_setting_to_user_group where user_group_id = '". (int)$user_group_id ."'");
 		$this->db->query("DELETE FROM " . DB_PREFIX . "user_group WHERE user_group_id = '" . (int)$user_group_id . "'");
 	}
 

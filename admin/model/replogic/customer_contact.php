@@ -24,18 +24,16 @@ class ModelReplogicCustomerContact extends Model {
 	public function getcustomercontacts($data = array()) {
 		$sql = "SELECT * FROM " . DB_PREFIX . "customer_contact";
 		
-		if (!empty($data['filter_name']) || !empty($data['filter_customer_id']) || !empty($data['filter_email']) ) {
+		if (!empty($data['filter_customer_contact_id']) || !empty($data['filter_customer_id']) || !empty($data['filter_email']) ) {
 			$sql .= " where customer_con_id > '0'";
 		}
 		
-		if (!empty($data['filter_name'])) {
-			
-			$sql .= " AND CONCAT(first_name,' ',last_name) like '%" . $this->db->escape($data['filter_name']) . "%'";
-			
+		if (!empty($data['filter_customer_contact_id'])) {
+			$sql .= " AND customer_con_id = '" . $this->db->escape($data['filter_customer_contact_id']) . "'";
 		}
 		
 		if (!empty($data['filter_email'])) {
-			$sql .= " AND email LIKE '" . $this->db->escape($data['filter_email']) . "%'";
+			$sql .= " AND customer_con_id = '" . $this->db->escape($data['filter_email']) . "'";
 		}
 
 		if (!empty($data['filter_customer_id'])) {
@@ -71,18 +69,16 @@ class ModelReplogicCustomerContact extends Model {
 		
 		$sql = "SELECT COUNT(*) AS total FROM " . DB_PREFIX . "customer_contact";
 		
-		if (!empty($data['filter_name']) || !empty($data['filter_customer_id']) || !empty($data['filter_email']) ) {
+		if (!empty($data['filter_customer_contact_id']) || !empty($data['filter_customer_id']) || !empty($data['filter_email']) ) {
 			$sql .= " where customer_con_id > '0'";
 		}
 		
-		if (!empty($data['filter_name'])) {
-			
-			$sql .= " AND CONCAT(first_name,' ',last_name) like '%" . $this->db->escape($data['filter_name']) . "%'";
-			
+		if (!empty($data['filter_customer_contact_id'])) {
+			$sql .= " AND customer_con_id = '" . $this->db->escape($data['filter_customer_contact_id']) . "'";
 		}
 		
 		if (!empty($data['filter_email'])) {
-			$sql .= " AND email LIKE '" . $this->db->escape($data['filter_email']) . "%'";
+			$sql .= " AND customer_con_id = '" . $this->db->escape($data['filter_email']) . "'";
 		}
 
 		if (!empty($data['filter_customer_id'])) {

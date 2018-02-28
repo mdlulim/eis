@@ -46,6 +46,29 @@
                 <label class="control-label" for="input-name">Sales Rep Name</label>
                 <input type="text" name="filter_sales_rep_name" value="<?php echo $filter_sales_rep_name; ?>" placeholder="Sales Rep Name" id="input-name" class="form-control" />
               </div>
+              
+              <div class="form-group">
+                <label class="control-label" for="input-price">Customer Name</label>
+                <select name="filter_customer_id" class="form-control">
+                	<option value="">Customer Name</option>
+                    <?php foreach ($customers as $customer) {  ?>
+                <?php if ($customer['customer_id'] == $filter_customer_id) { ?>
+                <option value="<?php echo $customer['customer_id']; ?>" selected="selected"><?php echo $customer['firstname']; ?></option>
+                <?php } else { ?>
+                <option value="<?php echo $customer['customer_id']; ?>"><?php echo $customer['firstname']; ?></option>
+                <?php } ?>
+                <?php } ?>
+                    
+                </select>
+              </div>
+            </div>
+            <div class="col-sm-6" style="margin-bottom:10px;">
+              
+              
+              <div class="form-group">
+                <label class="control-label" for="input-name">Email</label>
+                <input type="text" name="filter_email" value="<?php echo $filter_email; ?>" placeholder="Email" id="input-name" class="form-control" />
+              </div>
               <?php if(!isset($team_id)) { ?>
               <div class="form-group">
                 <label class="control-label" for="input-price">Sales Team</label>
@@ -64,31 +87,14 @@
               <?php } else { ?>
               <input type="hidden" name="team_id" value="<?php echo $team_id; ?>"/>
               <?php } ?>
-            </div>
-            <div class="col-sm-6" style="margin-bottom:10px;">
-              
               
               <div class="form-group">
-                <label class="control-label" for="input-name">Email</label>
-                <input type="text" name="filter_email" value="<?php echo $filter_email; ?>" placeholder="Email" id="input-name" class="form-control" />
-              </div>
-              <div class="form-group">
-                <label class="control-label" for="input-price">Customer Name</label>
-                <select name="filter_customer_id" class="form-control">
-                	<option value="">Customer Name</option>
-                    <?php foreach ($customers as $customer) {  ?>
-                <?php if ($customer['customer_id'] == $filter_customer_id) { ?>
-                <option value="<?php echo $customer['customer_id']; ?>" selected="selected"><?php echo $customer['firstname']; ?></option>
-                <?php } else { ?>
-                <option value="<?php echo $customer['customer_id']; ?>"><?php echo $customer['firstname']; ?></option>
-                <?php } ?>
-                <?php } ?>
-                    
-                </select>
-              </div>
+            	<button type="button" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-filter"></i> Filter</button>
+            	<button type="button" id="button-filter-reset" class="btn btn-primary pull-right" style="margin-right:10px;"><i class="fa fa-refresh"></i> Reset</button>
             </div>
-            <button type="button" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-filter"></i> Filter</button>
-            <button type="button" id="button-filter-reset" class="btn btn-primary pull-right" style="margin-right:10px;"><i class="fa fa-refresh"></i> Reset</button>
+              
+            </div>
+            
           </div>
            
         </div>
@@ -181,11 +187,12 @@ $("#popupunassign").click(function () {
               <thead>
                 <tr>
                   <td style="width: 1px;" class="text-center"><input type="checkbox" onclick="$('input[name*=\'selected\']').prop('checked', this.checked);" /></td>
-                  <td class="text-left"><?php if ($sort == 'name') { ?>
+                  <!--<td class="text-left"><?php if ($sort == 'name') { ?>
                     <a href="<?php echo $sort_name; ?>" class="<?php echo strtolower($order); ?>"><?php echo $column_name; ?></a>
                     <?php } else { ?>
                     <a href="<?php echo $sort_name; ?>"><?php echo $column_name; ?></a>
-                    <?php } ?></td>
+                    <?php } ?></td>-->
+                    <td class="text-left"><?php echo $column_name; ?></td>
                   <td class="text-left">Sales Team</td>
                   <td class="text-left">Email</td>
                   

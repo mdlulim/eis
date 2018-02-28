@@ -39,8 +39,8 @@
                  <?php } ?>
                 <?php } ?>
               </select>
-              <?php if ($error_name) { ?>
-              <div class="text-danger"><?php echo $error_name; ?></div>
+              <?php if ($error_user_group_id) { ?>
+              <div class="text-danger"><?php echo $error_user_group_id; ?></div>
               <?php  } ?>
             </div>
           </div>
@@ -52,12 +52,13 @@
 				<?php $first = true; ?>
 				<?php if (is_array($menuitems) && !empty($menuitems)){ ?>
 					<?php foreach($menuitems as $k1 => $v1) { ?>
+
 					  	<?php if (isset($v1['children']) && is_array($v1['children']) && !empty($v1['children'])) { ?>
                         	
-                            <input type="checkbox" style="float: left; right: 8px; top:10px;" />
+                            <input name="menu_id[]" value="<?php echo $v1['menu_id']?>" type="checkbox" style="float: left; right: 8px; top:10px;" <?=(in_array($v1['menu_id'], $Cmenuitems)) ? "checked" : "" ?> />
                             
 					  		<li class="parent-item has-child <?=($first) ? "active" : "" ?>" style="margin-left: 5px;">
-                                <a href="<?=$v1['link']?>" class="parent" style="color:#000000;"><?=$v1['title']?>
+                                <a href="javascript:void()" class="parent" style="color:#000000;"><?=$v1['title']?>
                                 <?php if($first) { ?>
                                     <i class="fa fa-caret-down" style="margin-left:10px;font-size:15px;"></i> 
                                 <?php } else { ?>
@@ -67,24 +68,24 @@
 					  		<ul class="child-menu">
 					  		<?php foreach ($v1['children'] as $k2 => $v2) { ?>
 					  			<?php if (isset($v2['children']) && is_array($v2['children']) && !empty($v2['children'])) { ?>
-                                	<input type="checkbox" name="permission[access][]" value="<?php echo $permission; ?>" style="float: left; right: 12px; top:4px;"/>
-					  				<li class="child-item has-child"><a href="<?=$v2['link']?>" style="color:#000000;"><?=$v2['title']?><i class="fa fa-caret-up" style="margin-left:10px;font-size:15px;"></i> </a>
+                                	<input name="menu_id[]" value="<?php echo $v2['menu_id']?>" type="checkbox" name="permission[access][]" value="<?php echo $permission; ?>" style="float: left; right: 12px; top:4px;"<?=(in_array($v2['menu_id'], $Cmenuitems)) ? "checked" : "" ?>  />
+					  				<li class="child-item has-child"><a href="javascript:void()" style="color:#000000;"><?=$v2['title']?><i class="fa fa-caret-up" style="margin-left:10px;font-size:15px;"></i> </a>
 					  				<ul class="grandchild-menu">
 					  				<?php foreach ($v2['children'] as $k3 => $grandchild) { ?>
-                                    	<input type="checkbox" name="permission[access][]" value="<?php echo $permission; ?>" style="float: left; right: 12px; top:4px;" />
-					  					<li class="grandchild-item"><a href="<?=$grandchild['link']?>" style="color:#000000;"><?=$grandchild['title']?></a></li>
+                                    	<input name="menu_id[]" value="<?php echo $grandchild['menu_id']?>" type="checkbox" style="float: left; right: 12px; top:4px;" <?=(in_array($grandchild['menu_id'], $Cmenuitems)) ? "checked" : "" ?> />
+					  					<li class="grandchild-item"><a href="javascript:void()" style="color:#000000;"><?=$grandchild['title']?></a></li>
 					  				<?php } ?>
 					  				</ul>
 					  			<?php } else { ?>
-                                	<input type="checkbox" name="permission[access][]" value="<?php echo $permission; ?>" style="float: left; right: 12px; top:4px;"/>
-					  				<li class="child-item"><a href="<?=$v2['link']?>" style="color:#000000;"><?=$v2['title']?></a>
+                                	<input type="checkbox" name="menu_id[]" value="<?php echo $v2['menu_id']?>" style="float: left; right: 12px; top:4px;" <?=(in_array($v2['menu_id'], $Cmenuitems)) ? "checked" : "" ?>  />
+					  				<li class="child-item"><a href="javascript:void()" style="color:#000000;"><?=$v2['title']?></a>
 					  			<?php } ?>
 					  			</li>
 					  		<?php } ?>
 					  		</ul>
 					  	<?php } else { ?>
-                        	<input type="checkbox" style="float: left; right: 8px; top:10px;" />
-					  		<li class="parent-item <?=($first) ? "active" : "" ?>"><a class="parent" href="<?=$v1['link']?>" style="background:none;color:#000000;"><?=$v1['title']?></a>
+                        	<input type="checkbox" style="float: left; right: 8px; top:10px;" name="menu_id[]" value="<?php echo $v1['menu_id']?>" <?=(in_array($v1['menu_id'], $Cmenuitems)) ? "checked" : "" ?> />
+					  		<li class="parent-item <?=($first) ? "active" : "" ?>" style="margin-left: 5px;"><a class="parent" href="javascript:void()" style="background:none;color:#000000;"><?=$v1['title']?></a>
 					  	<?php } ?>
 					  	<?php $first = false; ?>
 					  	</li>

@@ -45,13 +45,35 @@
             <div class="col-sm-4">
               <div class="form-group">
                 <label class="control-label" for="input-name">Customer Contact Name</label>
-                <input type="text" name="filter_name" value="<?php echo $filter_name; ?>" placeholder="Customer Contact Name" id="input-name" class="form-control" />
-              </div>
+                
+                	<select name="filter_customer_contact_id" class="form-control">
+                	<option value="">Customer Contact Name</option>
+                    <?php foreach ($allcustomer_contacts as $allcustomer_contact) {  ?>
+                <?php if ($allcustomer_contact['customer_con_id'] == $filter_customer_contact_id) { ?>
+                <option value="<?php echo $allcustomer_contact['customer_con_id']; ?>" selected="selected"><?php echo $allcustomer_contact['first_name']; ?> <?php echo $allcustomer_contact['last_name']; ?></option>
+                <?php } else { ?>
+                <option value="<?php echo $allcustomer_contact['customer_con_id']; ?>"><?php echo $allcustomer_contact['first_name']; ?> <?php echo $allcustomer_contact['last_name']; ?></option>
+                <?php } ?>
+                <?php } ?>
+                    
+                </select>
+               </div> 
             </div>
             <div class="col-sm-4">  
               <div class="form-group">
-                <label class="control-label" for="input-name">Email</label>
-                <input type="text" name="filter_email" value="<?php echo $filter_email; ?>" placeholder="Email" id="input-name" class="form-control" />
+                <label class="control-label" for="input-name">Customer Contact Email</label>
+                
+                <select name="filter_email" class="form-control">
+                	<option value="">Customer Contact Email</option>
+                    <?php foreach ($allcustomer_contacts as $allcustomer_contact) {  ?>
+                <?php if ($allcustomer_contact['customer_con_id'] == $filter_email) { ?>
+                <option value="<?php echo $allcustomer_contact['customer_con_id']; ?>" selected="selected"><?php echo $allcustomer_contact['email']; ?></option>
+                <?php } else { ?>
+                <option value="<?php echo $allcustomer_contact['customer_con_id']; ?>"><?php echo $allcustomer_contact['email']; ?></option>
+                <?php } ?>
+                <?php } ?>
+                    
+                </select>
               </div>
             </div>
             <div class="col-sm-3" style="margin-top:38px;">
@@ -67,13 +89,9 @@
             <table class="table table-bordered table-hover">
               <thead>
                 <tr>
-                  <td class="text-left"><?php if ($sort == 'name') { ?>
-                    <a href="<?php echo $sort_name; ?>" class="<?php echo strtolower($order); ?>"><?php echo $column_name; ?></a>
-                    <?php } else { ?>
-                    <a href="<?php echo $sort_name; ?>"><?php echo $column_name; ?></a>
-                    <?php } ?></td>
-                  <td class="text-left">Customer</td>
-                  <td class="text-left">Email</td>
+                  <td class="text-left">CC Name</td>
+                  <td class="text-left">Customer Name</td>
+                  <td class="text-left">Customer Contact Email</td>
                   
                   <td class="text-right"><?php echo $column_action; ?></td>
                 </tr>
@@ -110,19 +128,18 @@
 $('#button-filter').on('click', function() {
 	var url = 'index.php?route=customer/customer_info&type=customercontact&customer_id=<?php echo $customer_id; ?>&token=<?php echo $token; ?>';
 
-	var filter_name = $('input[name=\'filter_name\']').val();
-	
-	var filter_name = $.trim(filter_name);
-	if (filter_name) {
-		url += '&filter_name=' + encodeURIComponent(filter_name);
-	}
+	var filter_customer_contact_id = $('select[name=\'filter_customer_contact_id\']').val();
 
-	var filter_email = $('input[name=\'filter_email\']').val();
-	var filter_email = $.trim(filter_email);
+	if (filter_customer_contact_id) {
+		url += '&filter_customer_contact_id=' + encodeURIComponent(filter_customer_contact_id);
+	}
+	
+	var filter_email = $('select[name=\'filter_email\']').val();
+
 	if (filter_email) {
 		url += '&filter_email=' + encodeURIComponent(filter_email);
 	}
-	
+
 //alert(url);
 	location = url;
 });

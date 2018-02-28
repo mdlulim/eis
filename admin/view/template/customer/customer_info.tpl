@@ -75,7 +75,7 @@
                       </div>
                       
                       <?php if($access == 'yes') { ?>
-                      <div class="form-group required">
+                      <div class="form-group">
                         <label class="col-sm-2 control-label" for="input-customer-group"><?php echo $entry_salesrep; ?></label>
                         <div class="col-sm-10">
                           <select name="salesrep_id" id="input-salesrep-id" class="form-control" disabled="disabled">
@@ -95,7 +95,7 @@
                       </div>
                       <?php } ?>
                       
-                      <div class="form-group required">
+                      <div class="form-group">
                         <label class="col-sm-2 control-label" for="input-firstname"><?php //echo $entry_firstname; ?>Company Name</label>
                         <div class="col-sm-10">
                           <input type="text" name="firstname" value="<?php echo $firstname; ?>" readonly="readonly" placeholder="<?php //echo $entry_firstname; ?>Company Name" id="input-firstname" class="form-control" />
@@ -105,7 +105,7 @@
                         </div>
                       </div>
                       
-                      <div class="form-group required">
+                      <div class="form-group">
                         <label class="col-sm-2 control-label" for="input-email"><?php echo $entry_email; ?></label>
                         <div class="col-sm-10">
                           <input type="text" name="email" value="<?php echo $email; ?>" readonly="readonly" placeholder="<?php echo $entry_email; ?>" id="input-email" class="form-control" />
@@ -114,7 +114,7 @@
                           <?php  } ?>
                         </div>
                       </div>
-                      <div class="form-group required">
+                      <div class="form-group">
                         <label class="col-sm-2 control-label" for="input-telephone"><?php echo $entry_telephone; ?></label>
                         <div class="col-sm-10">
                           <input type="text" name="telephone" maxlength="10" readonly="readonly" value="<?php echo $telephone; ?>" placeholder="<?php echo $entry_telephone; ?>" id="input-telephone" class="form-control" />
@@ -282,7 +282,7 @@
                       <?php } ?>
                       <?php } ?>
                       <?php } ?>
-                      <div class="form-group required">
+                      <div class="form-group">
                         <label class="col-sm-2 control-label" for="input-password"><?php echo $entry_password; ?></label>
                         <div class="col-sm-10">
                           <input type="password" readonly="readonly" name="password" value="<?php echo $password; ?>" placeholder="<?php echo $entry_password; ?>" id="input-password" class="form-control" autocomplete="off" />
@@ -291,7 +291,7 @@
                           <?php  } ?>
                         </div>
                       </div>
-                      <div class="form-group required">
+                      <div class="form-group">
                         <label class="col-sm-2 control-label" for="input-confirm"><?php echo $entry_confirm; ?></label>
                         <div class="col-sm-10">
                           <input type="password" readonly="readonly" name="confirm" value="<?php echo $confirm; ?>" placeholder="<?php echo $entry_confirm; ?>" autocomplete="off" id="input-confirm" class="form-control" />
@@ -385,7 +385,7 @@
                           <input type="text" name="address[<?php echo $address_row; ?>][company]" value="<?php echo $address['company']; ?>" placeholder="<?php echo $entry_company; ?>" id="input-company<?php echo $address_row; ?>" class="form-control" />
                         </div>
                       </div>-->
-                      <div class="form-group required">
+                      <div class="form-group">
                         <label class="col-sm-2 control-label" for="input-address-1<?php echo $address_row; ?>"><?php echo $entry_address_1; ?></label>
                         <div class="col-sm-10">
                           <input type="text" name="address[<?php echo $address_row; ?>][address_1]" readonly="readonly" value="<?php echo $address['address_1']; ?>" placeholder="<?php echo $entry_address_1; ?>" id="input-address-1<?php echo $address_row; ?>" class="form-control" />
@@ -400,7 +400,7 @@
                           <input type="text" name="address[<?php echo $address_row; ?>][address_2]" readonly="readonly" value="<?php echo $address['address_2']; ?>" placeholder="<?php echo $entry_address_2; ?>" id="input-address-2<?php echo $address_row; ?>" class="form-control" />
                         </div>
                       </div>
-                      <div class="form-group required">
+                      <div class="form-group">
                         <label class="col-sm-2 control-label" for="input-city<?php echo $address_row; ?>"><?php echo $entry_city; ?></label>
                         <div class="col-sm-10">
                           <input type="text" name="address[<?php echo $address_row; ?>][city]" readonly="readonly" value="<?php echo $address['city']; ?>" placeholder="<?php echo $entry_city; ?>" id="input-city<?php echo $address_row; ?>" class="form-control" />
@@ -409,7 +409,7 @@
                           <?php } ?>
                         </div>
                       </div>
-                      <div class="form-group required">
+                      <div class="form-group">
                         <label class="col-sm-2 control-label" for="input-postcode<?php echo $address_row; ?>"><?php echo $entry_postcode; ?></label>
                         <div class="col-sm-10">
                           <input type="text" name="address[<?php echo $address_row; ?>][postcode]" readonly="readonly" value="<?php echo $address['postcode']; ?>" placeholder="<?php echo $entry_postcode; ?>" id="input-postcode<?php echo $address_row; ?>" class="form-control" />
@@ -418,7 +418,7 @@
                           <?php } ?>
                         </div>
                       </div>
-                      <div class="form-group required">
+                      <div class="form-group">
                         <label class="col-sm-2 control-label" for="input-country<?php echo $address_row; ?>"><?php echo $entry_country; ?></label>
                         <div class="col-sm-10">
                           <select name="address[<?php echo $address_row; ?>][country_id]" id="input-country<?php echo $address_row; ?>" onchange="country(this, '<?php echo $address_row; ?>', '<?php echo $address['zone_id']; ?>');" class="form-control" disabled="disabled">
@@ -436,7 +436,7 @@
                           <?php } ?>
                         </div>
                       </div>
-                      <div class="form-group required">
+                      <div class="form-group">
                         <label class="col-sm-2 control-label" for="input-zone<?php echo $address_row; ?>"><?php echo $entry_zone; ?></label>
                         <div class="col-sm-10">
                           <select name="address[<?php echo $address_row; ?>][zone_id]" id="input-zone<?php echo $address_row; ?>" class="form-control" disabled="disabled">
@@ -618,59 +618,7 @@
                 </div>
               </div>
             </div>
-            <?php if ($customer_id) { ?>
-            <div class="tab-pane" id="tab-history">
-              <div id="history"></div>
-              <br />
-              <div class="form-group">
-                <label class="col-sm-2 control-label" for="input-comment"><?php echo $entry_comment; ?></label>
-                <div class="col-sm-10">
-                  <textarea name="comment" readonly="readonly" rows="8" placeholder="<?php echo $entry_comment; ?>" id="input-comment" class="form-control"></textarea>
-                </div>
-              </div>
-              <div class="text-right">
-                <button id="button-history" data-loading-text="<?php echo $text_loading; ?>" class="btn btn-primary"><i class="fa fa-plus-circle"></i> <?php echo $button_history_add; ?></button>
-              </div>
-            </div>
-            <div class="tab-pane" id="tab-transaction">
-              <div id="transaction"></div>
-              <br />
-              <div class="form-group">
-                <label class="col-sm-2 control-label" for="input-transaction-description"><?php echo $entry_description; ?></label>
-                <div class="col-sm-10">
-                  <input type="text" name="description" readonly="readonly" value="" placeholder="<?php echo $entry_description; ?>" id="input-transaction-description" class="form-control" />
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-2 control-label" for="input-amount"><?php echo $entry_amount; ?></label>
-                <div class="col-sm-10">
-                  <input type="text" name="amount" value="" readonly="readonly" placeholder="<?php echo $entry_amount; ?>" id="input-amount" class="form-control" />
-                </div>
-              </div>
-              <div class="text-right">
-                <button type="button" id="button-transaction" data-loading-text="<?php echo $text_loading; ?>" class="btn btn-primary"><i class="fa fa-plus-circle"></i> <?php echo $button_transaction_add; ?></button>
-              </div>
-            </div>
-            <div class="tab-pane" id="tab-reward">
-              <div id="reward"></div>
-              <br />
-              <div class="form-group">
-                <label class="col-sm-2 control-label" for="input-reward-description"><?php echo $entry_description; ?></label>
-                <div class="col-sm-10">
-                  <input type="text" name="description" value="" readonly="readonly" placeholder="<?php echo $entry_description; ?>" id="input-reward-description" class="form-control" />
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-2 control-label" for="input-points"><span data-toggle="tooltip" title="<?php echo $help_points; ?>"><?php echo $entry_points; ?></span></label>
-                <div class="col-sm-10">
-                  <input type="text" name="points" value="" readonly="readonly" placeholder="<?php echo $entry_points; ?>" id="input-points" class="form-control" />
-                </div>
-              </div>
-              <div class="text-right">
-                <button type="button" id="button-reward" data-loading-text="<?php echo $text_loading; ?>" class="btn btn-primary"><i class="fa fa-plus-circle"></i> <?php echo $button_reward_add; ?></button>
-              </div>
-            </div>
-            <?php } ?>
+           
             <div class="tab-pane" id="tab-ip">
               <div id="ip"></div>
             </div>

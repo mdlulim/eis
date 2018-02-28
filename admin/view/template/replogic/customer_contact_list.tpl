@@ -35,12 +35,32 @@
             <div class="col-sm-6">
               <div class="form-group">
                 <label class="control-label" for="input-name">Customer Contact Name</label>
-                <input type="text" name="filter_name" value="<?php echo $filter_name; ?>" placeholder="Customer Contact Name" id="input-name" class="form-control" />
+                <select name="filter_customer_contact_id" class="form-control">
+                	<option value="">Customer Contact Name</option>
+                    <?php foreach ($allcustomer_contacts as $allcustomer_contact) {  ?>
+                <?php if ($allcustomer_contact['customer_con_id'] == $filter_customer_contact_id) { ?>
+                <option value="<?php echo $allcustomer_contact['customer_con_id']; ?>" selected="selected"><?php echo $allcustomer_contact['first_name']; ?> <?php echo $allcustomer_contact['last_name']; ?></option>
+                <?php } else { ?>
+                <option value="<?php echo $allcustomer_contact['customer_con_id']; ?>"><?php echo $allcustomer_contact['first_name']; ?> <?php echo $allcustomer_contact['last_name']; ?></option>
+                <?php } ?>
+                <?php } ?>
+                    
+                </select>
               </div>
               
               <div class="form-group">
                 <label class="control-label" for="input-name">Email</label>
-                <input type="text" name="filter_email" value="<?php echo $filter_email; ?>" placeholder="Email" id="input-name" class="form-control" />
+                <select name="filter_email" class="form-control">
+                	<option value="">Customer Contact Email</option>
+                    <?php foreach ($allcustomer_contacts as $allcustomer_contact) {  ?>
+                <?php if ($allcustomer_contact['customer_con_id'] == $filter_email) { ?>
+                <option value="<?php echo $allcustomer_contact['customer_con_id']; ?>" selected="selected"><?php echo $allcustomer_contact['email']; ?></option>
+                <?php } else { ?>
+                <option value="<?php echo $allcustomer_contact['customer_con_id']; ?>"><?php echo $allcustomer_contact['email']; ?></option>
+                <?php } ?>
+                <?php } ?>
+                    
+                </select>
               </div>
               
             </div>
@@ -121,11 +141,16 @@
 $('#button-filter').on('click', function() {
 	var url = 'index.php?route=replogic/customer_contact&token=<?php echo $token; ?>';
 
-	var filter_name = $('input[name=\'filter_name\']').val();
+	var filter_customer_contact_id = $('select[name=\'filter_customer_contact_id\']').val();
+
+	if (filter_customer_contact_id) {
+		url += '&filter_customer_contact_id=' + encodeURIComponent(filter_customer_contact_id);
+	}
 	
-	var filter_name = $.trim(filter_name);
-	if (filter_name) {
-		url += '&filter_name=' + encodeURIComponent(filter_name);
+	var filter_email = $('select[name=\'filter_email\']').val();
+
+	if (filter_email) {
+		url += '&filter_email=' + encodeURIComponent(filter_email);
 	}
 
 	var filter_customer_id = $('select[name=\'filter_customer_id\']').val();
@@ -134,12 +159,6 @@ $('#button-filter').on('click', function() {
 		url += '&filter_customer_id=' + encodeURIComponent(filter_customer_id);
 	}
 
-	var filter_email = $('input[name=\'filter_email\']').val();
-	var filter_email = $.trim(filter_email);
-	if (filter_email) {
-		url += '&filter_email=' + encodeURIComponent(filter_email);
-	}
-	
 //alert(url);
 	location = url;
 });
