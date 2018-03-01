@@ -246,12 +246,13 @@ class ControllerReplogicCustomerContact extends Controller {
 				'email' => $result['email'],
 				'customer' => $customers['firstname'],
 				'name'          => $result['first_name'] . '&nbsp;' . $result['last_name'],
+				'view'          => $this->url->link('replogic/customer_contact/view', 'token=' . $this->session->data['token'] . '&customer_con_id=' . $result['customer_con_id'] . $url, true),
 				'edit'          => $this->url->link('replogic/customer_contact/edit', 'token=' . $this->session->data['token'] . '&customer_con_id=' . $result['customer_con_id'] . $url, true)
 			);
 		}
 		
 		$data['customers'] = $this->model_customer_customer->getCustomers();
-		$data['allcustomer_contacts'] = $this->model_replogic_customer_contact->getcustomercontacts();
+		$data['allcustomer_contacts'] = $this->model_replogic_customer_contact->getcustomercontacts($filter_data = array('filter_customer_id' => $customer_id));
 		
 		$data['heading_title'] = $this->language->get('heading_title');
 		
@@ -357,7 +358,97 @@ class ControllerReplogicCustomerContact extends Controller {
 
 		$this->response->setOutput($this->load->view('replogic/customer_contact_list', $data));
 	}
+	
+	public function View() { 
+	
+		$this->load->language('replogic/customer_contact');
+		$this->load->model('customer/customer');
+		$this->load->model('replogic/customer_contact');
+		
+		$customer_id = $this->request->get['customer_id'];
+		$customerdetails = $this->model_customer_customer->getCustomer($customer_id);
+		$data['customername'] = $customerdetails['firstname'];
+		$data['customer_id'] = $customer_id;
+		
+		$this->document->setTitle($this->language->get('heading_title'));
+		$data['heading_title'] = $this->language->get('heading_title');
+		
+		$data['text_form'] = !isset($this->request->get['customer_con_id']) ? $this->language->get('text_add') : $this->language->get('text_edit');
+		$data['text_select_all'] = $this->language->get('text_select_all');
+		$data['text_unselect_all'] = $this->language->get('text_unselect_all');
 
+		$data['entry_first_name'] = $this->language->get('entry_first_name');
+		$data['entry_last_name'] = $this->language->get('entry_last_name');
+		$data['entry_email'] = $this->language->get('entry_email');
+		$data['entry_cellphone_number'] = $this->language->get('entry_cellphone_number');
+		$data['entry_telephone_number'] = $this->language->get('entry_telephone_number');
+		$data['entry_customer'] = $this->language->get('entry_customer');
+		$data['entry_role'] = $this->language->get('entry_role');
+		
+		$data['entry_access'] = $this->language->get('entry_access');
+		$data['entry_modify'] = $this->language->get('entry_modify');
+
+		$data['button_cancel'] = $this->language->get('button_cancel');
+
+		$url = '';
+
+		if (isset($this->request->get['type'])) {
+			$url .= '&type=' . $this->request->get['type'];
+		}
+		
+		if (isset($this->request->get['customer_id'])) {
+			$url .= '&customer_id=' . $this->request->get['customer_id'];
+		}
+		
+		if (isset($this->request->get['sort'])) {
+			$url .= '&sort=' . $this->request->get['sort'];
+		}
+
+		if (isset($this->request->get['order'])) {
+			$url .= '&order=' . $this->request->get['order'];
+		}
+
+		if (isset($this->request->get['page'])) {
+			$url .= '&page=' . $this->request->get['page'];
+		}
+
+		$data['breadcrumbs'] = array();
+
+		$data['breadcrumbs'][] = array(
+			'text' => $this->language->get('text_home'),
+			'href' => $this->url->link('common/dashboard', 'token=' . $this->session->data['token'], true)
+		);
+
+		$data['breadcrumbs'][] = array(
+			'text' => $this->language->get('heading_title'),
+			'href' => $this->url->link('replogic/customer_contact', 'token=' . $this->session->data['token'] . $url, true)
+		);
+
+		$data['cancel'] = $this->url->link('replogic/customer_contact', 'token=' . $this->session->data['token'] . $url, true);
+
+		if (isset($this->request->get['customer_con_id']) && $this->request->server['REQUEST_METHOD'] != 'POST') {
+			$customer_contact_info = $this->model_replogic_customer_contact->getcustomercontact($this->request->get['customer_con_id']);
+		}
+
+		$data['first_name'] = $customer_contact_info['first_name']; 
+		$data['last_name'] = $customer_contact_info['last_name'];
+		$data['email'] = $customer_contact_info['email'];
+		$data['telephone_number'] = $customer_contact_info['telephone_number'];
+		$data['cellphone_number'] = $customer_contact_info['cellphone_number'];
+		$data['role'] = $customer_contact_info['role'];
+		$data['ccustomer_id'] = $customer_contact_info['customer_id'];
+		
+		$this->load->model('customer/customer');
+	   $data['customers'] = $this->model_customer_customer->getCustomers();
+		
+		$data['header'] = $this->load->controller('common/header');
+		$data['column_left'] = $this->load->controller('common/column_left');
+		$data['footer'] = $this->load->controller('common/footer');
+
+		$this->response->setOutput($this->load->view('replogic/customer_contact_view', $data));
+	
+	}
+	
 	protected function getForm() {
 		$data['heading_title'] = $this->language->get('heading_title');
 		

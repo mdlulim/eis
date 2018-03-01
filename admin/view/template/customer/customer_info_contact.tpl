@@ -89,8 +89,7 @@
             <table class="table table-bordered table-hover">
               <thead>
                 <tr>
-                  <td class="text-left">CC Name</td>
-                  <td class="text-left">Customer Name</td>
+                  <td class="text-left">Customer Contact Name</td>
                   <td class="text-left">Customer Contact Email</td>
                   
                   <td class="text-right"><?php echo $column_action; ?></td>
@@ -102,7 +101,6 @@
                         
                             <tr>
                               <td class="text-left"><?php echo $customer_contact['name']; ?></td>
-                              <td class="text-left"><?php echo $customer_contact['customer']; ?></td>
                               <td class="text-left"><?php echo $customer_contact['email']; ?></td>
                               <td class="text-right"><a href="<?php echo $customer_contact['view']; ?>" data-toggle="tooltip" title="View" class="btn btn-primary"><i class="fa fa-eye"></i></a></td>
                             </tr>

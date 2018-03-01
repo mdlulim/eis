@@ -960,19 +960,16 @@ class ControllerCustomerCustomerInfo extends Controller {
 		
 		foreach ($results as $result) {
 		
-	    $customers = $this->model_customer_customer->getCustomer($result['customer_id']); ;
-		
-			$data['customer_contacts'][] = array(
+	   		$data['customer_contacts'][] = array(
 				'customer_con_id' => $result['customer_con_id'],
 				'email' => $result['email'],
-				'customer' => $customers['firstname'],
 				'name'          => $result['first_name'] . '&nbsp;' . $result['last_name'],
 				'view'          => $this->url->link('customer/customer_info/CustomerContactView', 'token=' . $this->session->data['token'] . '&customer_con_id=' . $result['customer_con_id'] . $url, true)
 			);
 		}
 		
 		$data['customers'] = $this->model_customer_customer->getCustomers();
-		$data['allcustomer_contacts'] = $this->model_replogic_customer_contact->getcustomercontacts();
+		$data['allcustomer_contacts'] = $this->model_replogic_customer_contact->getcustomercontacts($filter_data = array('filter_customer_id' => $customer_id));
 		
 		$data['heading_title'] = $this->language->get('heading_title');
 		
@@ -2150,8 +2147,8 @@ class ControllerCustomerCustomerInfo extends Controller {
 		$locationsmaps = array();
 		foreach ($results as $result) {
 			
-		$customer = $this->model_customer_customer->getCustomer($result['customer_id']);
-		$customername = $customer['firstname'];
+		$salesrepinfo = $this->model_replogic_sales_rep_management->getsalesrep($result['salesrep_id']);
+		$salesrepname = $salesrepinfo['salesrep_name']." ".$salesrepinfo['salesrep_lastname'];
 		
 		$team = $this->model_user_team->getTeam($salesrep['sales_team_id']); ;
 		$teamname = $team['team_name'];
@@ -2172,7 +2169,7 @@ class ControllerCustomerCustomerInfo extends Controller {
 				'checkin_id' => $result['checkin_id'],
 				'visitdate'          => $visitdate,
 				'duration'          => $duration,
-				'customer'          => $customername,
+				'salesrepname'          => $salesrepname,
 				'last_check'          => $last_check_Ago,
 				'checkin_location'          => $result['checkin_location'],
 				'location'          => $result['location'],

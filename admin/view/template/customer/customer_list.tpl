@@ -34,18 +34,40 @@
             <div class="col-sm-3">
               <div class="form-group">
                 <label class="control-label" for="input-name"><?php echo $entry_name; ?></label>
-                <input type="text" name="filter_name" value="<?php echo $filter_name; ?>" placeholder="<?php echo $entry_name; ?>" id="input-name" class="form-control" />
+                <!--<input type="text" name="filter_name" value="<?php echo $filter_name; ?>" placeholder="<?php echo $entry_name; ?>" id="input-name" class="form-control" />-->
+                <select name="filter_customer_id" class="form-control">
+                	<option value="">Customer Name</option>
+                    <?php foreach ($customerdropdown as $customerd) {  ?>
+                <?php if ($customerd['customer_id'] == $filter_customer_id) { ?>
+                <option value="<?php echo $customerd['customer_id']; ?>" selected="selected"><?php echo $customerd['firstname']; ?></option>
+                <?php } else { ?>
+                <option value="<?php echo $customerd['customer_id']; ?>"><?php echo $customerd['firstname']; ?></option>
+                <?php } ?>
+                <?php } ?>
+                    
+                </select>
               </div>
               <div class="form-group">
                 <label class="control-label" for="input-email"><?php echo $entry_email; ?></label>
-                <input type="text" name="filter_email" value="<?php echo $filter_email; ?>" placeholder="<?php echo $entry_email; ?>" id="input-email" class="form-control" />
+                <!--<input type="text" name="filter_email" value="<?php echo $filter_email; ?>" placeholder="<?php echo $entry_email; ?>" id="input-email" class="form-control" />-->
+                <select name="filter_email_id" class="form-control">
+                	<option value="">Select E-Mail</option>
+                    <?php foreach ($customerdropdown as $customerd) {  ?>
+                <?php if ($customerd['customer_id'] == $filter_email_id) { ?>
+                <option value="<?php echo $customerd['customer_id']; ?>" selected="selected"><?php echo $customerd['email']; ?></option>
+                <?php } else { ?>
+                <option value="<?php echo $customerd['customer_id']; ?>"><?php echo $customerd['email']; ?></option>
+                <?php } ?>
+                <?php } ?>
+                    
+                </select>
               </div>
             </div>
             <div class="col-sm-3">
               <div class="form-group">
                 <label class="control-label" for="input-customer-group"><?php echo $entry_customer_group; ?></label>
                 <select name="filter_customer_group_id" id="input-customer-group" class="form-control">
-                  <option value="*"></option>
+                  <option value="*">Select Customer Group</option>
                   <?php foreach ($customer_groups as $customer_group) { ?>
                   <?php if ($customer_group['customer_group_id'] == $filter_customer_group_id) { ?>
                   <option value="<?php echo $customer_group['customer_group_id']; ?>" selected="selected"><?php echo $customer_group['name']; ?></option>
@@ -58,7 +80,7 @@
               <div class="form-group">
                 <label class="control-label" for="input-status"><?php echo $entry_status; ?></label>
                 <select name="filter_status" id="input-status" class="form-control">
-                  <option value="*"></option>
+                  <option value="*">Select Status</option>
                   <?php if ($filter_status) { ?>
                   <option value="1" selected="selected"><?php echo $text_enabled; ?></option>
                   <?php } else { ?>
@@ -76,7 +98,7 @@
               <div class="form-group">
                 <label class="control-label" for="input-approved"><?php echo $entry_approved; ?></label>
                 <select name="filter_approved" id="input-approved" class="form-control">
-                  <option value="*"></option>
+                  <option value="*">Select Approval Status</option>
                   <?php if ($filter_approved) { ?>
                   <option value="1" selected="selected"><?php echo $text_yes; ?></option>
                   <?php } else { ?>
@@ -229,11 +251,23 @@ $('#button-filter').on('click', function() {
 		url += '&filter_name=' + encodeURIComponent(filter_name);
 	}
 	
-	var filter_email = $('input[name=\'filter_email\']').val();
+	var filter_customer_id = $('select[name=\'filter_customer_id\']').val();
+
+	if (filter_customer_id) {
+		url += '&filter_customer_id=' + encodeURIComponent(filter_customer_id);
+	}
+	
+	var filter_email_id = $('select[name=\'filter_email_id\']').val();
+
+	if (filter_email_id) {
+		url += '&filter_email_id=' + encodeURIComponent(filter_email_id);
+	}
+	
+	/*var filter_email = $('input[name=\'filter_email\']').val();
 	
 	if (filter_email) {
 		url += '&filter_email=' + encodeURIComponent(filter_email);
-	}
+	}*/
 	
 	var filter_customer_group_id = $('select[name=\'filter_customer_group_id\']').val();
 	
@@ -319,5 +353,9 @@ $('input[name=\'filter_email\']').autocomplete({
 $('.date').datetimepicker({
 	pickTime: false
 });
-//--></script></div>
+//--></script>
+<style>
+.form-group + .form-group{border-top:none!important;}
+</style>
+</div>
 <?php echo $footer; ?> 

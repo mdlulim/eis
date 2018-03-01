@@ -40,6 +40,7 @@
             
           </ul>
         
+         <div class="well">
           <div class="row">
             <!--<div class="col-sm-3">
               <div class="form-group">
@@ -56,56 +57,45 @@
                       </select>
               </div>
             </div>-->
-            <div class="col-sm-3">
+            <div class="col-sm-6">
               <div class="form-group">
                 <label class="control-label" for="input-date-added">Visit Date From</label>
                 <div class="input-group date">
-                  <input type="text" name="filter_date_from" value="<?php echo $filter_date_from; ?>" placeholder="Visit Date From" data-date-format="DD-MM-YYYY hh:mm A" id="input-date-from" class="form-control" />
+                  <input type="text" name="filter_date_from" value="<?php echo $filter_date_from; ?>" placeholder="Date From" data-date-format="DD-MM-YYYY hh:mm A" id="input-date-from" class="form-control" />
                   <span class="input-group-btn">
                   <button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
                   </span></div>
               </div>
               
             </div>
-            <div class="col-sm-3">
+            <div class="col-sm-6">
               <div class="form-group">
                 <label class="control-label" for="input-date-added">Visit Date To</label>
                 <div class="input-group date">
-                  <input type="text" name="filter_date_to" value="<?php echo $filter_date_to; ?>" placeholder="Visit Date To" data-date-format="DD-MM-YYYY hh:mm A" id="input-date-to" class="form-control" />
+                  <input type="text" name="filter_date_to" value="<?php echo $filter_date_to; ?>" placeholder="Date To" data-date-format="DD-MM-YYYY hh:mm A" id="input-date-to" class="form-control" />
                   <span class="input-group-btn">
                   <button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
                   </span></div>
               </div>
-              
-            </div>
-            <div class="col-sm-3">
-              <div class="form-group" style="margin-top:22px;">
-                <button type="button" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-filter"></i> Search</button>
+              <div class="form-group">
+                <button type="button" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-search"></i> Search</button>
                 <button type="button" id="button-filter-reset" class="btn btn-primary pull-right" style="margin-right:10px;"><i class="fa fa-refresh"></i> Reset</button>
               </div>
             </div>
             
             
+            
           </div>  
-         
+         </div>
           <div class="table-responsive" style="margin-bottom:15px;" >
             <table class="table table-bordered table-hover" style="margin-bottom:0px !important;">
-              <thead style="background-color:#CCCCCC;">
+              <thead >
                 <tr>
-                  <td class="text-left" ><?php if ($sort == 'name') { ?>
-                    <a href="<?php echo $sort_name; ?>" class="<?php echo strtolower($order); ?>">Customer</a>
-                    <?php } else { ?>
-                    <a href="<?php echo $sort_name; ?>">Customer</a>
-                    <?php } ?></td>
-                  <td class="text-center" >Last Check in</td>
+                  <td class="text-left" >Sales Rep Name</td>
+                  <td class="text-left" >Last Check in</td>
                     <td class="text-left" >Visit date</td>
                   <td class="text-left" >Duration</td>
-                  <td class="text-left" width="236"><?php if ($sort == 'name') { ?>
-                    <a href="<?php echo $sort_name; ?>" class="<?php echo strtolower($order); ?>">Self reported location</a>
-                    <?php } else { ?>
-                    <a href="<?php echo $sort_name; ?>">Self reported location</a>
-                    <?php } ?></td>  
-                  
+                  <td class="text-left" width="236">Self reported location</td>  
                   <td class="text-left" width="200">GPS Check in Location</td>
                   <td class="text-right" width="110">Action</td>
                 </tr>
@@ -116,7 +106,7 @@
                     <?php foreach ($locations as $location) { ?>
                         
                             <tr>
-                              <td class="text-left"><?php  echo $location['customer']; ?></td>
+                              <td class="text-left"><?php  echo $location['salesrepname']; ?></td>
                               <td class="text-left"><?php echo $location['last_check']; ?></td>
                               <td class="text-center"><?php echo $location['visitdate']; ?></td>
                               <td class="text-left"><?php echo $location['duration']; ?></td>
