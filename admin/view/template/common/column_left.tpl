@@ -37,7 +37,61 @@
 
       <!--<small><?php echo $user_group; ?></small>--></div>
   </div>
+  
   <ul id="menu">
+    <?php foreach ($menuitems as $menuitem) { ?>
+    	<?php if(in_array($menuitem['menu_id'], $Cmenuitems)) { ?>
+        	<li id="<?php echo $menuitem['title']; ?>">
+              <?php if ($menuitem['link']) { ?>
+              <a href="<?php echo $base; ?><?php echo $menuitem['link']; ?><?php echo $token; ?>"><i class="fa <?php echo $menuitem['icon']; ?> fw"></i> <span><?php echo $menuitem['title']; ?></span></a>
+              <?php } else { ?>
+              <a class="parent"><i class="fa <?php echo $menuitem['icon']; ?> fw"></i> <span><?php echo $menuitem['title']; ?></span></a>
+              <?php } ?>
+              <?php if ($menuitem['children']) { ?>
+              <ul>
+                <?php foreach ($menuitem['children'] as $children_1) { ?>
+                	<?php if(in_array($children_1['menu_id'], $Cmenuitems)) { ?>
+                    	<li>
+                          <?php if ($children_1['link']) { ?>
+                          <a href="<?php echo $base; ?><?php echo $children_1['link']; ?><?php echo $token; ?>"><?php echo $children_1['title']; ?></a>
+                          <?php } else { ?>
+                          <a class="parent"><?php echo $children_1['title']; ?></a>
+                          <?php } ?>
+                          <?php if ($children_1['children']) { ?>
+                          <ul>
+                            <?php foreach ($children_1['children'] as $children_2) { ?>
+                           	 	<?php if(in_array($children_2['menu_id'], $Cmenuitems)) { ?>
+                                	<li>
+                                      <?php if ($children_2['link']) { ?>
+                                      <a href="<?php echo $base; ?><?php echo $children_2['link']; ?><?php echo $token; ?>"><?php echo $children_2['title']; ?></a>
+                                      <?php } else { ?>
+                                      <a class="parent"><?php echo $children_2['title']; ?></a>
+                                      <?php } ?>
+                                      <?php if ($children_2['children']) { ?>
+                                      <ul>
+                                        <?php foreach ($children_2['children'] as $children_3) { ?>
+                                        	<?php if(in_array($children_3['menu_id'], $Cmenuitems)) { ?>
+                                            	<li><a href="<?php echo $base; ?><?php echo $children_3['link']; ?><?php echo $token; ?>"><?php echo $children_3['title']; ?></a></li>
+                                            <?php } ?>
+                                        <?php } ?>
+                                      </ul>
+                                      <?php } ?>
+                                    </li>
+                            	<?php } ?>
+                            <?php } ?>
+                          </ul>
+                          <?php } ?>
+                        </li>
+                	<?php } ?>
+                <?php } ?>
+              </ul>
+              <?php } ?>
+            </li>
+    	<?php } ?>
+    <?php } ?>
+  </ul>
+  
+  <!--<ul id="menu">
     <?php foreach ($menus as $menu) { ?>
     <li id="<?php echo $menu['id']; ?>">
       <?php if ($menu['href']) { ?>
@@ -80,7 +134,7 @@
       <?php } ?>
     </li>
     <?php } ?>
-  </ul>
+  </ul>-->
   <!--<div id="stats">
     <ul>
       <li>

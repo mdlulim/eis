@@ -28,6 +28,53 @@ class ControllerCommonColumnLeft extends Controller {
 				$data['image'] = '';
 			}			
 		
+		// Custom Menu Create as per User Group Login		
+			if ($this->request->server['HTTPS']) {
+				$base = HTTPS_SERVER;
+			} else {
+				$base = HTTP_SERVER;
+			}
+			$data['base'] = $base.'index.php?route=';
+			
+			$data['token'] = '&token='.$this->session->data['token'];
+			$this->load->model('user/menu_setting');
+			$user_group_id = $user_info['user_group_id'];
+			
+			$menuitems = $this->model_user_menu_setting->getAllmenusetting();
+		
+			foreach($menuitems as $key => &$value){
+				$children = $this->model_user_menu_setting->getSubMenu($value['menu_id']);
+				if (is_array($children) && !empty($children)) {
+					$value['children'] = $children;
+					foreach ($value['children'] as $k => &$v) {
+						$grandchildren = $this->model_user_menu_setting->getSubMenu($v['menu_id']);
+						if (is_array($grandchildren) && !empty($grandchildren)) {
+							$v['children'] = $grandchildren;
+							
+							foreach ($v['children'] as $t => &$l) {
+								$lastchildren = $this->model_user_menu_setting->getSubMenu($l['menu_id']);
+								if (is_array($lastchildren) && !empty($lastchildren)) {
+									$l['children'] = $lastchildren;
+								}
+							}
+							
+						}
+					}
+				}
+			}
+			//print_r($menuitems); exit;
+			$data['menuitems'] = $menuitems;
+			
+			$Cmenuitems = $this->model_user_menu_setting->getCAllMenuSettings($user_group_id);
+		
+			$CmenuitemsCheckArray = [];
+			foreach ($Cmenuitems as $key => $value) {
+				$CmenuitemsCheckArray[] = $value['menu_id'];
+			}
+			$data['Cmenuitems'] = $CmenuitemsCheckArray;
+			
+	// End Custom Menu Create as per User Group Login	
+		
 			// Create a 3 level menu array
 			// Level 2 can not have children
 			
