@@ -120,17 +120,25 @@ class ControllerUserMenuSetting extends Controller {
 		$menuitems = $this->model_user_menu_setting->getAllmenusetting();
 		
 		foreach($menuitems as $key => &$value){
-			$children = $this->model_user_menu_setting->getSubMenu($value['menu_id']);
-			if (is_array($children) && !empty($children)) {
-				$value['children'] = $children;
-				foreach ($value['children'] as $k => &$v) {
-					$grandchildren = $this->model_user_menu_setting->getSubMenu($v['menu_id']);
-					if (is_array($grandchildren) && !empty($grandchildren)) {
-						$v['children'] = $grandchildren;
+				$children = $this->model_user_menu_setting->getSubMenu($value['menu_id']);
+				if (is_array($children) && !empty($children)) {
+					$value['children'] = $children;
+					foreach ($value['children'] as $k => &$v) {
+						$grandchildren = $this->model_user_menu_setting->getSubMenu($v['menu_id']);
+						if (is_array($grandchildren) && !empty($grandchildren)) {
+							$v['children'] = $grandchildren;
+							
+							foreach ($v['children'] as $t => &$l) {
+								$lastchildren = $this->model_user_menu_setting->getSubMenu($l['menu_id']);
+								if (is_array($lastchildren) && !empty($lastchildren)) {
+									$l['children'] = $lastchildren;
+								}
+							}
+							
+						}
 					}
 				}
 			}
-		}
 		// echo "<pre>";
 		// print_r($menuitems); 
 		// echo "</pre>";exit;

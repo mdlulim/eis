@@ -68,12 +68,36 @@
 					  		<ul class="child-menu">
 					  		<?php foreach ($v1['children'] as $k2 => $v2) { ?>
 					  			<?php if (isset($v2['children']) && is_array($v2['children']) && !empty($v2['children'])) { ?>
-                                	<input name="menu_id[]" value="<?php echo $v2['menu_id']?>" type="checkbox" name="permission[access][]" value="<?php echo $permission; ?>" style="float: left; right: 12px; top:4px;"<?=(in_array($v2['menu_id'], $Cmenuitems)) ? "checked" : "" ?>  />
+                                	<input name="menu_id[]" value="<?php echo $v2['menu_id']?>" type="checkbox" style="float: left; right: 12px; top:4px;"<?=(in_array($v2['menu_id'], $Cmenuitems)) ? "checked" : "" ?>  />
 					  				<li class="child-item has-child"><a href="javascript:void()" style="color:#000000;"><?=$v2['title']?><i class="fa fa-caret-up" style="margin-left:10px;font-size:15px;"></i> </a>
 					  				<ul class="grandchild-menu">
 					  				<?php foreach ($v2['children'] as $k3 => $grandchild) { ?>
                                     	<input name="menu_id[]" value="<?php echo $grandchild['menu_id']?>" type="checkbox" style="float: left; right: 12px; top:4px;" <?=(in_array($grandchild['menu_id'], $Cmenuitems)) ? "checked" : "" ?> />
-					  					<li class="grandchild-item"><a href="javascript:void()" style="color:#000000;"><?=$grandchild['title']?></a></li>
+					  					<li class="grandchild-item"><a href="javascript:void()" style="color:#000000;"><?=$grandchild['title']?></a>
+                                        
+                                        
+                              <!-- Last Menu Start -->        
+                              
+                                        <?php foreach ($grandchild['children'] as $k2 => $v2) { ?>
+                                            <?php if (isset($grandchild['children']) && is_array($grandchild['children']) && !empty($grandchild['children'])) { ?>
+                                                <input name="menu_id[]" value="<?php echo $grandchild['menu_id']?>" type="checkbox" style="float: left; right: 12px; top:4px;"<?=(in_array($v2['menu_id'], $Cmenuitems)) ? "checked" : "" ?>  />
+                                                <li class="lastchild-item has-child"><a href="javascript:void()" style="color:#000000;"><?=$v2['title']?><i class="fa fa-caret-up" style="margin-left:10px;font-size:15px;"></i> </a>
+                                                <ul class="lastgrandchild-menu">
+                                                <?php foreach ($grandchild['children'] as $k3 => $grandchild) { ?>
+                                                    <input name="menu_id[]" value="<?php echo $grandchild['menu_id']?>" type="checkbox" style="float: left; right: 12px; top:4px;" <?=(in_array($grandchild['menu_id'], $Cmenuitems)) ? "checked" : "" ?> />
+                                                    <li class="lastgrandchild-item"><a href="javascript:void()" style="color:#000000;"><?=$grandchild['title']?></a></li>
+                                                <?php } ?>
+                                                </ul>
+                                            <?php } else { ?>
+                                                <input type="checkbox" name="menu_id[]" value="<?php echo $v2['menu_id']?>" style="float: left; right: 12px; top:4px;" <?=(in_array($v2['menu_id'], $Cmenuitems)) ? "checked" : "" ?>  />
+                                                <li class="lastchild-item"><a href="javascript:void()" style="color:#000000;"><?=$v2['title']?></a>
+                                            <?php } ?>
+                                            </li>
+                                        <?php } ?>
+                                        
+                                <!-- Last Menu End -->        
+                                        
+                                        </li>
 					  				<?php } ?>
 					  				</ul>
 					  			<?php } else { ?>
@@ -146,6 +170,34 @@
 				
 			}
 		});
+		
+<!-- Last Child Menu Dropdown Start -->		
+
+		$('.nav li.parent-item li.child-item li.lastchild-item > a').on('click', function(e) {
+			if ($(this).parent('li.lastchild-item').hasClass('has-child')) {
+				e.preventDefault();
+				//$('.nav li.parent-item li.child-item').removeClass('active');
+				//$(this).parent('li.child-item').addClass('active');
+				
+				if($(this).parent('li.lastchild-item').hasClass('active'))
+				{
+					$('.nav li.parent-item li.child-item li.lastchild-item').removeClass('active');
+					$(this).children('a i').removeClass('fa-caret-down');
+					$(this).children('a i').addClass('fa-caret-up');
+				}
+				else
+				{
+					$('.nav li.parent-item li.child-item li.lastchild-item').removeClass('active');
+					$(this).parent('li.parent-item li.child-item li.lastchild-item').addClass('active');
+					$(this).children('a i').removeClass('fa-caret-up');
+					$(this).children('a i').addClass('fa-caret-down');
+				}
+				
+			}
+		});
+
+<!-- Last Child Menu Dropdown End -->	
+		
 	})(window.jQuery);
 	
 	$('input[type=checkbox]').click(function(){
@@ -169,7 +221,7 @@
 	
 </script>
 <style type="text/css">
-		.child-menu, .grandchild-menu {
+		.child-menu, .grandchild-menu, .lastgrandchild-menu {
 			display: none;
 			margin: 6px 0 10px -20px;
 		}
@@ -185,8 +237,11 @@
 		.parent-item.active > .child-menu {display: block !important}
 		.child-item.active > .grandchild-menu {display: block !important}
 		
+		.parent-item .child-menu.active > .child-menu {display: block !important}
+		.child-item .grandchild-menu.active > .grandchild-menu {display: block !important}
+		
 		.parent-item a.parent {font-weight:bold;}
-		.child-item, .grandchild-item{
+		.child-item, .grandchild-item, .lastchild-item, .lastgrandchild-item{
 			list-style:none;
 		}
 		.nav > li > a:hover, .nav > li > a.parent{background-color:#F5F5F5}
