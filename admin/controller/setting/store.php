@@ -735,6 +735,14 @@ class ControllerSettingStore extends Controller {
 		} else {
 			$data['config_secure'] = '';
 		}
+		
+		$this->load->model('user/user');
+		$this->load->model('user/user_group');
+		$current_user = $this->session->data['user_id'];
+		$current_user_group_id = $this->model_user_user->getUser($current_user); ;
+		$current_user_group = $this->model_user_user_group->getUserGroup($current_user_group_id['user_group_id']); ;
+		
+		$data['groupname'] = $current_user_group['name'];
 
 		$data['header'] = $this->load->controller('common/header');
 		$data['column_left'] = $this->load->controller('common/column_left');

@@ -22,7 +22,15 @@ class ControllerSettingSetting extends Controller {
 
 			$this->response->redirect($this->url->link('setting/store', 'token=' . $this->session->data['token'], true));
 		}
-
+		
+		$this->load->model('user/user');
+		$this->load->model('user/user_group');
+		$current_user = $this->session->data['user_id'];
+		$current_user_group_id = $this->model_user_user->getUser($current_user); ;
+		$current_user_group = $this->model_user_user_group->getUserGroup($current_user_group_id['user_group_id']); ;
+		
+		$data['groupname'] = $current_user_group['name'];
+		
 		$data['heading_title'] = $this->language->get('heading_title');
 
 		$data['text_edit'] = $this->language->get('text_edit');

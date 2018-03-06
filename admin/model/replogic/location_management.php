@@ -7,8 +7,13 @@ class ModelReplogicLocationManagement extends Model {
 		{
 			$sql = "SELECT * FROM " . DB_PREFIX . "salesrep_checkins";
 				
-			//$sql .= " where checkin_id > '0'";
-			$sql .= " WHERE checkin_id IN (SELECT MAX(checkin_id) FROM " . DB_PREFIX . "salesrep_checkins GROUP BY salesrep_id)";
+			if (isset($data['filter_groupby_salesrep'])) {
+				$sql .= " WHERE checkin_id IN (SELECT MAX(checkin_id) FROM " . DB_PREFIX . "salesrep_checkins GROUP BY salesrep_id)";
+			}
+			else
+			{
+				$sql .= " where checkin_id > '0'";
+			}
 			
 			if (isset($data['filter_address'])) {
 				$sql .= " AND location LIKE '%" . $data['filter_address'] . "%'";
@@ -35,7 +40,11 @@ class ModelReplogicLocationManagement extends Model {
 		else
 		{
 			$sql = "SELECT * FROM oc_salesrep_checkins ck left join oc_salesrep sr on ck.salesrep_id = sr.salesrep_id where sr.sales_team_id = ".$data['filter_team_id'].""; 
-			$sql .= " AND ck.checkin_id IN (SELECT MAX(ck.checkin_id) FROM " . DB_PREFIX . "salesrep_checkins GROUP BY ck.salesrep_id)";	
+			
+			if (isset($data['filter_groupby_salesrep'])) {
+				$sql .= " AND ck.checkin_id IN (SELECT MAX(ck.checkin_id) FROM " . DB_PREFIX . "salesrep_checkins GROUP BY ck.salesrep_id)";	
+			}
+			
 			if (isset($data['filter_address'])) {
 				$sql .= " AND ck.location LIKE '" . $data['filter_address'] . "'";
 			} 
@@ -112,7 +121,9 @@ class ModelReplogicLocationManagement extends Model {
 				$sql .= " AND checkin >= '" . $fromdate . "' AND checkin <= '" . $todate . "'";
 			}
 			
-			$sql .= " group by salesrep_id";
+			if (isset($data['filter_groupby_salesrep'])) {
+				$sql .= " group by salesrep_id";
+			}
 		
 		}
 		else
@@ -137,7 +148,9 @@ class ModelReplogicLocationManagement extends Model {
 				$sql .= " AND ck.checkin >= '" . $fromdate . "' AND ck.checkin <= '" . $todate . "'";
 			}
 			
-			$sql .= " group by ck.salesrep_id";
+			if (isset($data['filter_groupby_salesrep'])) {
+				$sql .= " group by ck.salesrep_id";
+			}
 		}
 //echo $sql; exit;
 		$query = $this->db->query($sql);

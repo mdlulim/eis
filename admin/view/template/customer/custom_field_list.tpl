@@ -29,28 +29,120 @@
         <h3 class="panel-title"><i class="fa fa-list"></i> <?php echo $text_list; ?></h3>
       </div>
       <div class="panel-body">
+      
+      	<div class="well">
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label class="control-label" for="input-name">Custom Field Name</label>
+                <input type="text" name="filter_name" value="<?php echo $filter_name; ?>" placeholder="Custom Field Name" id="input-name" class="form-control" />
+              </div>
+              
+              <div class="form-group">
+                <label class="control-label" for="input-price">Location</label>
+                <select name="filter_location" class="form-control">
+                	<option value="">Select Location</option>
+                     <?php if ($filter_location == 'account') { ?>
+                    <option value="account" selected="selected"><?php echo $text_account; ?></option>
+                    <?php } else { ?>
+                    <option value="account"><?php echo $text_account; ?></option>
+                    <?php } ?>
+                    <?php if ($filter_location == 'address') { ?>
+                    <option value="address" selected="selected"><?php echo $text_address; ?></option>
+                    <?php } else { ?>
+                    <option value="address"><?php echo $text_address; ?></option>
+                    <?php } ?>
+                    
+                </select>
+              </div>
+            </div>
+            <div class="col-sm-6" style="margin-bottom:10px;">
+              
+              <div class="form-group">
+                <label class="control-label" for="input-price">Type</label>
+                <select name="filter_type" id="input-type" class="form-control">
+                	<option value="">Select Type</option>
+                    <?php if ($filter_type == 'select') { ?>
+                    <option value="select" selected="selected"><?php echo $text_select; ?></option>
+                    <?php } else { ?>
+                    <option value="select"><?php echo $text_select; ?></option>
+                    <?php } ?>
+                    <?php if ($filter_type == 'radio') { ?>
+                    <option value="radio" selected="selected"><?php echo $text_radio; ?></option>
+                    <?php } else { ?>
+                    <option value="radio"><?php echo $text_radio; ?></option>
+                    <?php } ?>
+                    <?php if ($filter_type == 'checkbox') { ?>
+                    <option value="checkbox" selected="selected"><?php echo $text_checkbox; ?></option>
+                    <?php } else { ?>
+                    <option value="checkbox"><?php echo $text_checkbox; ?></option>
+                    <?php } ?>
+                    <?php if ($filter_type == 'text') { ?>
+                    <option value="text" selected="selected"><?php echo $text_text; ?></option>
+                    <?php } else { ?>
+                    <option value="text"><?php echo $text_text; ?></option>
+                    <?php } ?>
+                    <?php if ($filter_type == 'textarea') { ?>
+                    <option value="textarea" selected="selected"><?php echo $text_textarea; ?></option>
+                    <?php } else { ?>
+                    <option value="textarea"><?php echo $text_textarea; ?></option>
+                    <?php } ?>
+                    <?php if ($filter_type == 'file') { ?>
+                    <option value="file" selected="selected"><?php echo $text_file; ?></option>
+                    <?php } else { ?>
+                    <option value="file"><?php echo $text_file; ?></option>
+                    <?php } ?>
+                    <?php if ($filter_type == 'date') { ?>
+                    <option value="date" selected="selected"><?php echo $text_date; ?></option>
+                    <?php } else { ?>
+                    <option value="date"><?php echo $text_date; ?></option>
+                    <?php } ?>
+                    <?php if ($filter_type == 'time') { ?>
+                    <option value="time" selected="selected"><?php echo $text_time; ?></option>
+                    <?php } else { ?>
+                    <option value="time"><?php echo $text_time; ?></option>
+                    <?php } ?>
+                    <?php if ($filter_type == 'datetime') { ?>
+                    <option value="datetime" selected="selected"><?php echo $text_datetime; ?></option>
+                    <?php } else { ?>
+                    <option value="datetime"><?php echo $text_datetime; ?></option>
+                    <?php } ?>
+                
+              </select>
+              </div>
+              <div class="form-group">
+            	<button type="button" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-filter"></i> Filter</button>
+            	<button type="button" id="button-filter-reset" class="btn btn-primary pull-right" style="margin-right:10px;"><i class="fa fa-refresh"></i> Reset</button>
+            </div>
+              
+            </div>
+            
+          </div>
+           
+        </div>
+      
         <form action="<?php echo $delete; ?>" method="post" enctype="multipart/form-data" id="form-custom-field">
           <div class="table-responsive">
             <table class="table table-bordered table-hover">
               <thead>
                 <tr>
                   <td style="width: 1px;" class="text-center"><input type="checkbox" onclick="$('input[name*=\'selected\']').prop('checked', this.checked);" /></td>
-                  <td class="text-left"><?php if ($sort == 'cfd.name') { ?>
+                  <td class="text-left" width="230"><?php if ($sort == 'cfd.name') { ?>
                     <a href="<?php echo $sort_name; ?>" class="<?php echo strtolower($order); ?>"><?php echo $column_name; ?></a>
                     <?php } else { ?>
                     <a href="<?php echo $sort_name; ?>"><?php echo $column_name; ?></a>
                     <?php } ?></td>
-                  <td class="text-left"><?php if ($sort == 'cf.location') { ?>
+                  <td class="text-left" width="230"><?php if ($sort == 'cf.location') { ?>
                     <a href="<?php echo $sort_location; ?>" class="<?php echo strtolower($order); ?>"><?php echo $column_location; ?></a>
                     <?php } else { ?>
                     <a href="<?php echo $sort_location; ?>"><?php echo $column_location; ?></a>
                     <?php } ?></td>
-                  <td class="text-left"><?php if ($sort == 'cf.type') { ?>
+                  <td class="text-left" width="230"><?php if ($sort == 'cf.type') { ?>
                     <a href="<?php echo $sort_type; ?>" class="<?php echo strtolower($order); ?>"><?php echo $column_type; ?></a>
                     <?php } else { ?>
                     <a href="<?php echo $sort_type; ?>"><?php echo $column_type; ?></a>
                     <?php } ?></td>
-                  <td class="text-right"><?php if ($sort == 'cf.sort_order') { ?>
+                  <td class="text-left" width="230"><?php if ($sort == 'cf.sort_order') { ?>
                     <a href="<?php echo $sort_sort_order; ?>" class="<?php echo strtolower($order); ?>"><?php echo $column_sort_order; ?></a>
                     <?php } else { ?>
                     <a href="<?php echo $sort_sort_order; ?>"><?php echo $column_sort_order; ?></a>
@@ -70,7 +162,7 @@
                   <td class="text-left"><?php echo $custom_field['name']; ?></td>
                   <td class="text-left"><?php echo $custom_field['location']; ?></td>
                   <td class="text-left"><?php echo $custom_field['type']; ?></td>
-                  <td class="text-right"><?php echo $custom_field['sort_order']; ?></td>
+                  <td class="text-left"><?php echo $custom_field['sort_order']; ?></td>
                   <td class="text-right"><a href="<?php echo $custom_field['edit']; ?>" data-toggle="tooltip" title="<?php echo $button_edit; ?>" class="btn btn-primary"><i class="fa fa-pencil"></i></a></td>
                 </tr>
                 <?php } ?>
@@ -91,4 +183,35 @@
     </div>
   </div>
 </div>
+<script type="text/javascript"><!--
+$('#button-filter').on('click', function() {
+	var url = 'index.php?route=customer/custom_field&token=<?php echo $token; ?>';
+	
+	var filter_name = $('input[name=\'filter_name\']').val();
+	var filter_name = $.trim(filter_name);
+	if (filter_name) {
+		url += '&filter_name=' + encodeURIComponent(filter_name);
+	}
+	
+	var filter_location = $('select[name=\'filter_location\']').val();
+
+	if (filter_location) {
+		url += '&filter_location=' + encodeURIComponent(filter_location);
+	}
+	
+	var filter_type = $('select[name=\'filter_type\']').val();
+
+	if (filter_type) {
+		url += '&filter_type=' + encodeURIComponent(filter_type);
+	}
+	
+//alert(url);
+	location = url;
+});
+
+$('#button-filter-reset').on('click', function() {
+	var url = 'index.php?route=customer/custom_field&token=<?php echo $token; ?>';
+	location = url;
+});
+</script>
 <?php echo $footer; ?>

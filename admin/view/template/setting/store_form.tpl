@@ -34,9 +34,13 @@
             <li class="active"><a href="#tab-general" data-toggle="tab"><?php echo $tab_general; ?></a></li>
             <li><a href="#tab-store" data-toggle="tab"><?php echo $tab_store; ?></a></li>
             <li><a href="#tab-local" data-toggle="tab"><?php echo $tab_local; ?></a></li>
+        <?php if($groupname != 'System Administrator') { ?>    
             <li><a href="#tab-option" data-toggle="tab"><?php echo $tab_option; ?></a></li>
+        <?php } ?>
             <li><a href="#tab-image" data-toggle="tab"><?php echo $tab_image; ?></a></li>
+        <?php if($groupname != 'System Administrator') { ?>
             <li><a href="#tab-server" data-toggle="tab"><?php echo $tab_server; ?></a></li>
+        <?php } ?>
           </ul>
           <div class="tab-content">
             <div class="tab-pane active" id="tab-general">

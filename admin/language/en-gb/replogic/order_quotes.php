@@ -62,8 +62,8 @@ $_['text_picklist']              = 'Dispatch Note';
 
 // Column
 $_['column_quote_id']            = 'Quote ID';
-$_['column_customer']            = 'Customer';
-$_['column_customer_contact']            = 'Customer Contact';
+$_['column_customer']            = 'Customer Name';
+$_['column_customer_contact']    = 'Customer Contact Name';
 $_['column_status']              = 'Status';
 $_['column_date_added']          = 'Date Added';
 $_['column_date_modified']       = 'Date Modified';
@@ -82,7 +82,7 @@ $_['column_weight']              = 'Product Weight';
 
 // Entry
 $_['entry_store']                = 'Store';
-$_['entry_customer']             = 'Customer';
+$_['entry_customer']             = 'Customer Name';
 $_['entry_customer_group']       = 'Customer Group';
 $_['entry_firstname']            = 'First Name';
 $_['entry_lastname']             = 'Last Name';

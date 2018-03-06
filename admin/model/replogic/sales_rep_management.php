@@ -138,7 +138,7 @@ class ModelReplogicSalesRepManagement extends Model {
 			else
 			{
 				$sql = "SELECT * FROM " . DB_PREFIX . "salesrep";
-				if (!empty($data['filter_sales_rep_name']) || !empty($data['team_id']) || !empty($data['filter_email']) || !empty($data['filter_team_id']) ) 
+				if (!empty($data['filter_sales_rep_name']) || !empty($data['team_id']) || !empty($data['filter_email']) || !empty($data['filter_team_id']) || !empty($data['filter_salesrep_name_id']) )
 				{
 					$sql .= " where salesrep_id > '0'";
 				}
@@ -168,6 +168,10 @@ class ModelReplogicSalesRepManagement extends Model {
 
 		if (!empty($data['team_id'])) {
 			$sql .= " AND sales_team_id LIKE '" . $this->db->escape($data['team_id']) . "'";
+		}
+		
+		if (!empty($data['filter_salesrep_name_id'])) {
+			$sql .= " AND salesrep_id = '" . $this->db->escape($data['filter_salesrep_name_id']) . "'";
 		}
 		
 		if (!empty($data['filter_team_id'])) {
@@ -230,7 +234,7 @@ class ModelReplogicSalesRepManagement extends Model {
 			else
 			{
 				$sql = "SELECT COUNT(*) AS total FROM " . DB_PREFIX . "salesrep";
-				if (!empty($data['filter_sales_rep_name']) || !empty($data['team_id']) || !empty($data['filter_email']) || !empty($data['filter_team_id']) ) 
+				if (!empty($data['filter_sales_rep_name']) || !empty($data['team_id']) || !empty($data['filter_email']) || !empty($data['filter_team_id']) || !empty($data['filter_salesrep_name_id']) ) 
 				{
 					$sql .= " where salesrep_id > '0'";
 				}
@@ -259,6 +263,10 @@ class ModelReplogicSalesRepManagement extends Model {
 
 		if (!empty($data['team_id'])) {
 			$sql .= " AND sales_team_id LIKE '" . $this->db->escape($data['team_id']) . "'";
+		}
+		
+		if (!empty($data['filter_salesrep_name_id'])) {
+			$sql .= " AND salesrep_id = '" . $this->db->escape($data['filter_salesrep_name_id']) . "'";
 		}
 		
 		if (!empty($data['filter_team_id'])) {

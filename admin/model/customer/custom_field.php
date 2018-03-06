@@ -95,6 +95,14 @@ class ModelCustomerCustomField extends Model {
 		if (!empty($data['filter_name'])) {
 			$sql .= " AND cfd.name LIKE '" . $this->db->escape($data['filter_name']) . "%'";
 		}
+		
+		if (!empty($data['filter_location'])) {
+			$sql .= " AND cf.location = '" . $this->db->escape($data['filter_location']) . "'";
+		}
+		
+		if (!empty($data['filter_type'])) {
+			$sql .= " AND cf.type = '" . $this->db->escape($data['filter_type']) . "'";
+		}
 
 		if (!empty($data['filter_customer_group_id'])) {
 			$sql .= " AND cfcg.customer_group_id = '" . (int)$data['filter_customer_group_id'] . "'";
@@ -200,8 +208,20 @@ class ModelCustomerCustomField extends Model {
 		return $custom_field_value_data;
 	}
 
-	public function getTotalCustomFields() {
-		$query = $this->db->query("SELECT COUNT(*) AS total FROM `" . DB_PREFIX . "custom_field`");
+	public function getTotalCustomFields($data = array()) {
+		$sql = "SELECT COUNT(*) AS total FROM `" . DB_PREFIX . "custom_field`";
+		
+		$sql .= " where custom_field_id > '0'";
+		
+		if (!empty($data['filter_location'])) {
+			$sql .= " AND location = '" . $this->db->escape($data['filter_location']) . "'";
+		}
+		
+		if (!empty($data['filter_type'])) {
+			$sql .= " AND type = '" . $this->db->escape($data['filter_type']) . "'";
+		}
+		
+		$query = $this->db->query($sql);
 
 		return $query->row['total'];
 	}

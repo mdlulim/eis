@@ -42,6 +42,10 @@ class ControllerReplogicSalesRepManagement extends Controller {
 				$url .= '&filter_customer_id=' . $this->request->get['filter_customer_id'];
 			}
 			
+			if (isset($this->request->get['filter_salesrep_name_id'])) {
+				$url .= '&filter_salesrep_name_id=' . $this->request->get['filter_salesrep_name_id'];
+			}
+			
 			if (isset($this->request->get['filter_email'])) {
 				$url .= '&filter_email=' . $this->request->get['filter_email'];
 			}
@@ -94,6 +98,10 @@ class ControllerReplogicSalesRepManagement extends Controller {
 				$url .= '&filter_email=' . $this->request->get['filter_email'];
 			}
 			
+			if (isset($this->request->get['filter_salesrep_name_id'])) {
+				$url .= '&filter_salesrep_name_id=' . $this->request->get['filter_salesrep_name_id'];
+			}
+			
 			if (isset($this->request->get['filter_customer_id'])) {
 				$url .= '&filter_customer_id=' . $this->request->get['filter_customer_id'];
 			}
@@ -142,6 +150,10 @@ class ControllerReplogicSalesRepManagement extends Controller {
 			
 			if (isset($this->request->get['filter_team_id'])) {
 				$url .= '&filter_team_id=' . $this->request->get['filter_team_id'];
+			}
+			
+			if (isset($this->request->get['filter_salesrep_name_id'])) {
+				$url .= '&filter_salesrep_name_id=' . $this->request->get['filter_salesrep_name_id'];
 			}
 			
 			if (isset($this->request->get['filter_customer_id'])) {
@@ -206,6 +218,10 @@ class ControllerReplogicSalesRepManagement extends Controller {
 				$url .= '&filter_email=' . $this->request->get['filter_email'];
 			}
 			
+			if (isset($this->request->get['filter_salesrep_name_id'])) {
+				$url .= '&filter_salesrep_name_id=' . $this->request->get['filter_salesrep_name_id'];
+			}
+			
 			if (isset($this->request->get['filter_customer_id'])) {
 				$url .= '&filter_customer_id=' . $this->request->get['filter_customer_id'];
 			}
@@ -264,6 +280,10 @@ class ControllerReplogicSalesRepManagement extends Controller {
 				$url .= '&filter_email=' . $this->request->get['filter_email'];
 			}
 			
+			if (isset($this->request->get['filter_salesrep_name_id'])) {
+				$url .= '&filter_salesrep_name_id=' . $this->request->get['filter_salesrep_name_id'];
+			}
+			
 			if (isset($this->request->get['filter_customer_id'])) {
 				$url .= '&filter_customer_id=' . $this->request->get['filter_customer_id'];
 			}
@@ -318,6 +338,12 @@ class ControllerReplogicSalesRepManagement extends Controller {
 			$filter_customer_id = null;
 		} 
 		
+		if (isset($this->request->get['filter_salesrep_name_id'])) {
+			$filter_salesrep_name_id = $this->request->get['filter_salesrep_name_id'];
+		} else {
+			$filter_salesrep_name_id = null;
+		} 
+		
 		if (isset($this->request->get['sort'])) {
 			$sort = $this->request->get['sort'];
 		} else {
@@ -350,6 +376,10 @@ class ControllerReplogicSalesRepManagement extends Controller {
 			$url .= '&filter_customer_id=' . $this->request->get['filter_customer_id'];
 		}
 		
+		if (isset($this->request->get['filter_salesrep_name_id'])) {
+			$url .= '&filter_salesrep_name_id=' . $this->request->get['filter_salesrep_name_id'];
+		}
+		
 		if (isset($this->request->get['sort'])) {
 			$url .= '&sort=' . $this->request->get['sort'];
 		}
@@ -368,6 +398,15 @@ class ControllerReplogicSalesRepManagement extends Controller {
 			'text' => $this->language->get('text_home'),
 			'href' => $this->url->link('common/dashboard', 'token=' . $this->session->data['token'], true)
 		);
+		
+		if (isset($this->request->get['team_id'])) {
+		
+			$data['breadcrumbs'][] = array(
+			'text' => 'Teams',
+			'href' => $this->url->link('user/team', 'token=' . $this->session->data['token'], true)
+			);
+		
+		}
 
 		$data['breadcrumbs'][] = array(
 			'text' => $this->language->get('heading_title'),
@@ -393,6 +432,7 @@ class ControllerReplogicSalesRepManagement extends Controller {
 			'filter_email'	  => $filter_email,
 			'team_id' => $team_id,
 			'filter_customer_id' => $filter_customer_id,
+			'filter_salesrep_name_id' => $filter_salesrep_name_id,
 			'filter_team_id' => $filter_team_id,
 			'sort'  => $sort,
 			'order' => $order,
@@ -436,7 +476,7 @@ class ControllerReplogicSalesRepManagement extends Controller {
 		
 		
 		$sales_rep_management_total = $this->model_replogic_sales_rep_management->getTotalScheduleManagement($filter_data,$allaccess, $current_user_id);
-
+		
 		$results = $this->model_replogic_sales_rep_management->getSalesReps($filter_data,$allaccess, $current_user_id);
 		
 		$this->load->model('user/team');
@@ -457,6 +497,10 @@ class ControllerReplogicSalesRepManagement extends Controller {
 		}
 		
 		$data['team_id'] = $team_id;
+		
+		$filter_data1 = array('team_id' => $team_id);
+		$data['allsalesreps'] = $this->model_replogic_sales_rep_management->getSalesReps($filter_data1,$allaccess, $current_user_id);
+		
 		$data['heading_title'] = $this->language->get('heading_title');
 		
 		$data['text_list'] = $this->language->get('text_list');
@@ -509,6 +553,10 @@ class ControllerReplogicSalesRepManagement extends Controller {
 			$url .= '&filter_customer_id=' . $this->request->get['filter_customer_id'];
 		}
 		
+		if (isset($this->request->get['filter_salesrep_name_id'])) {
+			$url .= '&filter_salesrep_name_id=' . $this->request->get['filter_salesrep_name_id'];
+		}
+		
 		if (isset($this->request->get['filter_email'])) {
 			$url .= '&filter_email=' . $this->request->get['filter_email'];
 		}
@@ -537,6 +585,10 @@ class ControllerReplogicSalesRepManagement extends Controller {
 		
 		if (isset($this->request->get['filter_team_id'])) {
 			$url .= '&filter_team_id=' . $this->request->get['filter_team_id'];
+		}
+		
+		if (isset($this->request->get['filter_salesrep_name_id'])) {
+			$url .= '&filter_salesrep_name_id=' . $this->request->get['filter_salesrep_name_id'];
 		}
 		
 		if (isset($this->request->get['filter_customer_id'])) {
@@ -569,6 +621,7 @@ class ControllerReplogicSalesRepManagement extends Controller {
 		$data['filter_email'] = $filter_email;
 		$data['filter_team_id'] = $filter_team_id;
 		$data['filter_customer_id'] = $filter_customer_id;
+		$data['filter_salesrep_name_id'] = $filter_salesrep_name_id;
 		$data['team_id'] = $team_id;
 		$data['sort'] = $sort;
 		$data['order'] = $order;
@@ -664,6 +717,10 @@ class ControllerReplogicSalesRepManagement extends Controller {
 		
 		if (isset($this->request->get['filter_email'])) {
 			$url .= '&filter_email=' . $this->request->get['filter_email'];
+		}
+		
+		if (isset($this->request->get['filter_salesrep_name_id'])) {
+			$url .= '&filter_salesrep_name_id=' . $this->request->get['filter_salesrep_name_id'];
 		}
 		
 		if (isset($this->request->get['filter_customer_id'])) {

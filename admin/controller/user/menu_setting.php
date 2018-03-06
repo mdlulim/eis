@@ -117,54 +117,44 @@ class ControllerUserMenuSetting extends Controller {
 		
 		$data['token'] = $this->session->data['token'];
 		
+		/*******************************************************************
+		 *	Get menu settings for a specific user group
+		 *******************************************************************/
+
+		$groupMenuItems = $this->model_user_menu_setting->getCAllMenuSettings($this->request->get['user_group_id']);
+		
+		$userGroupMenuItems = [];
+		foreach ($groupMenuItems as $key => $value) {
+			$userGroupMenuItems[] = $value['menu_id'];
+		}
+		$data['userGroupMenuItems'] = $userGroupMenuItems;
+		
 		$menuitems = $this->model_user_menu_setting->getAllmenusetting();
 		
 		foreach($menuitems as $key => &$value){
-				$children = $this->model_user_menu_setting->getSubMenu($value['menu_id']);
-				if (is_array($children) && !empty($children)) {
-					$value['children'] = $children;
-					foreach ($value['children'] as $k => &$v) {
-						$grandchildren = $this->model_user_menu_setting->getSubMenu($v['menu_id']);
-						if (is_array($grandchildren) && !empty($grandchildren)) {
-							$v['children'] = $grandchildren;
-							
-							foreach ($v['children'] as $t => &$l) {
-								$lastchildren = $this->model_user_menu_setting->getSubMenu($l['menu_id']);
-								if (is_array($lastchildren) && !empty($lastchildren)) {
-									$l['children'] = $lastchildren;
-								}
+			$children = $this->model_user_menu_setting->getSubMenu($value['menu_id']);
+			if (is_array($children) && !empty($children)) {
+				$value['children'] = $children;
+				foreach ($value['children'] as $k => &$v) {
+					$grandchildren = $this->model_user_menu_setting->getSubMenu($v['menu_id']);
+					if (is_array($grandchildren) && !empty($grandchildren)) {
+						$v['children'] = $grandchildren;
+						
+						foreach ($v['children'] as $t => &$l) {
+							$lastchildren = $this->model_user_menu_setting->getSubMenu($l['menu_id']);
+							if (is_array($lastchildren) && !empty($lastchildren)) {
+								$l['children'] = $lastchildren;
 							}
-							
 						}
+						
 					}
 				}
 			}
-		// echo "<pre>";
-		// print_r($menuitems); 
-		// echo "</pre>";exit;
-		$data['menuitems'] = $menuitems;
-		
-		$Cmenuitems = $this->model_user_menu_setting->getCAllMenuSettings($this->request->get['user_group_id']);
-		
-		$CmenuitemsCheckArray = [];
-		
-		// foreach($Cmenuitems as $key => &$value){
-		// 	$CmenuitemsCheckArray[] = $value['menu_id'];
-		// 	$children = $this->model_user_menu_setting->getCSubMenu($value['menu_id'], $this->request->get['user_group_id']);
-		// 	if (is_array($children) && !empty($children)) {
-		// 		$value['children'] = $children;
-		// 		foreach ($value['children'] as $k => &$v) {
-		// 			$grandchildren = $this->model_user_menu_setting->getCSubMenu($v['menu_id'], $this->request->get['user_group_id']);
-		// 			if (is_array($grandchildren) && !empty($grandchildren)) {
-		// 				$v['children'] = $grandchildren;
-		// 			}
-		// 		}
-		// 	}
-		// }
-		foreach ($Cmenuitems as $key => $value) {
-			$CmenuitemsCheckArray[] = $value['menu_id'];
 		}
-		$data['Cmenuitems'] = $CmenuitemsCheckArray;
+		$data['menuitems'] = $menuitems;
+		// echo "<pre>";
+		// print_r($data['menuitems']); 
+		// echo "</pre>";exit;
 		
 		$ignore = array(
 			'common/dashboard',

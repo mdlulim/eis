@@ -55,6 +55,10 @@ class ControllerSaleOrder extends Controller {
 			if (isset($this->request->get['filter_customer'])) {
 				$url .= '&filter_customer=' . urlencode(html_entity_decode($this->request->get['filter_customer'], ENT_QUOTES, 'UTF-8'));
 			}
+			
+			if (isset($this->request->get['filter_customer_id'])) {
+				$url .= '&filter_customer_id=' . $this->request->get['filter_customer_id'];
+			}
 	
 			if (isset($this->request->get['filter_order_status'])) {
 				$url .= '&filter_order_status=' . $this->request->get['filter_order_status'];
@@ -89,6 +93,12 @@ class ControllerSaleOrder extends Controller {
 			$filter_customer = $this->request->get['filter_customer'];
 		} else {
 			$filter_customer = null;
+		}
+		
+		if (isset($this->request->get['filter_customer_id'])) {
+			$filter_customer_id = $this->request->get['filter_customer_id'];
+		} else {
+			$filter_customer_id = null;
 		}
 
 		if (isset($this->request->get['filter_order_status'])) {
@@ -142,7 +152,11 @@ class ControllerSaleOrder extends Controller {
 		if (isset($this->request->get['filter_customer'])) {
 			$url .= '&filter_customer=' . urlencode(html_entity_decode($this->request->get['filter_customer'], ENT_QUOTES, 'UTF-8'));
 		}
-
+		
+		if (isset($this->request->get['filter_customer_id'])) {
+			$url .= '&filter_customer_id=' . $this->request->get['filter_customer_id'];
+		}
+		
 		if (isset($this->request->get['filter_order_status'])) {
 			$url .= '&filter_order_status=' . $this->request->get['filter_order_status'];
 		}
@@ -193,6 +207,7 @@ class ControllerSaleOrder extends Controller {
 		$filter_data = array(
 			'filter_order_id'      => $filter_order_id,
 			'filter_customer'	   => $filter_customer,
+			'filter_customer_id'	   => $filter_customer_id,
 			'filter_order_status'  => $filter_order_status,
 			'filter_total'         => $filter_total,
 			'filter_date_added'    => $filter_date_added,
@@ -228,7 +243,9 @@ class ControllerSaleOrder extends Controller {
 				'edit'          => $this->url->link('sale/order/edit', 'token=' . $this->session->data['token'] . '&order_id=' . $result['order_id'] . $url, true)
 			);
 		}
-
+		
+		$data['customers'] = $this->model_customer_customer->getCustomers();
+		
 		$data['heading_title'] = $this->language->get('heading_title');
 
 		$data['text_list'] = $this->language->get('text_list');
@@ -292,6 +309,10 @@ class ControllerSaleOrder extends Controller {
 		if (isset($this->request->get['filter_customer'])) {
 			$url .= '&filter_customer=' . urlencode(html_entity_decode($this->request->get['filter_customer'], ENT_QUOTES, 'UTF-8'));
 		}
+		
+		if (isset($this->request->get['filter_customer_id'])) {
+			$url .= '&filter_customer_id=' . $this->request->get['filter_customer_id'];
+		}
 
 		if (isset($this->request->get['filter_order_status'])) {
 			$url .= '&filter_order_status=' . $this->request->get['filter_order_status'];
@@ -336,6 +357,10 @@ class ControllerSaleOrder extends Controller {
 		if (isset($this->request->get['filter_customer'])) {
 			$url .= '&filter_customer=' . urlencode(html_entity_decode($this->request->get['filter_customer'], ENT_QUOTES, 'UTF-8'));
 		}
+		
+		if (isset($this->request->get['filter_customer_id'])) {
+			$url .= '&filter_customer_id=' . $this->request->get['filter_customer_id'];
+		}
 
 		if (isset($this->request->get['filter_order_status'])) {
 			$url .= '&filter_order_status=' . $this->request->get['filter_order_status'];
@@ -373,6 +398,7 @@ class ControllerSaleOrder extends Controller {
 
 		$data['filter_order_id'] = $filter_order_id;
 		$data['filter_customer'] = $filter_customer;
+		$data['filter_customer_id'] = $filter_customer_id;
 		$data['filter_order_status'] = $filter_order_status;
 		$data['filter_total'] = $filter_total;
 		$data['filter_date_added'] = $filter_date_added;
@@ -478,6 +504,10 @@ class ControllerSaleOrder extends Controller {
 
 		if (isset($this->request->get['filter_customer'])) {
 			$url .= '&filter_customer=' . urlencode(html_entity_decode($this->request->get['filter_customer'], ENT_QUOTES, 'UTF-8'));
+		}
+		
+		if (isset($this->request->get['filter_customer_id'])) {
+			$url .= '&filter_customer_id=' . $this->request->get['filter_customer_id'];
 		}
 
 		if (isset($this->request->get['filter_order_status'])) {
@@ -590,13 +620,21 @@ class ControllerSaleOrder extends Controller {
 
 			// Products
 			$data['order_products'] = array();
-
+			$this->load->model('tool/image');
 			$products = $this->model_sale_order->getOrderProducts($this->request->get['order_id']);
 
 			foreach ($products as $product) {
+				
+				if (is_file(DIR_IMAGE . $product['image'])) {
+					$image = $this->model_tool_image->resize($product['image'], 40, 40);
+				} else {
+					$image = $this->model_tool_image->resize('tsc_image.png', 40, 40);
+				}
+				
 				$data['order_products'][] = array(
 					'product_id' => $product['product_id'],
 					'name'       => $product['name'],
+					'image'      => $image,
 					'model'      => $product['model'],
 					'option'     => $this->model_sale_order->getOrderOptions($this->request->get['order_id'], $product['order_product_id']),
 					'quantity'   => $product['quantity'],
@@ -868,6 +906,10 @@ class ControllerSaleOrder extends Controller {
 			if (isset($this->request->get['filter_customer'])) {
 				$url .= '&filter_customer=' . urlencode(html_entity_decode($this->request->get['filter_customer'], ENT_QUOTES, 'UTF-8'));
 			}
+			
+			if (isset($this->request->get['filter_customer_id'])) {
+				$url .= '&filter_customer_id=' . $this->request->get['filter_customer_id'];
+			}
 
 			if (isset($this->request->get['filter_order_status'])) {
 				$url .= '&filter_order_status=' . $this->request->get['filter_order_status'];
@@ -1085,7 +1127,7 @@ class ControllerSaleOrder extends Controller {
 				if (is_file(DIR_IMAGE . $iquery->row['image'])) {
 					$image = $this->model_tool_image->resize($iquery->row['image'], 40, 40);
 				} else {
-					$image = $this->model_tool_image->resize('no_image.png', 40, 40);
+					$image = $this->model_tool_image->resize('tsc_image.png', 40, 40);
 				}
 
 				$data['products'][] = array(

@@ -40,6 +40,14 @@ class ControllerCommonColumnLeft extends Controller {
 			$this->load->model('user/menu_setting');
 			$user_group_id = $user_info['user_group_id'];
 			
+			$Cmenuitems = $this->model_user_menu_setting->getCAllMenuSettings($user_group_id);
+		
+			$CmenuitemsCheckArray = [];
+			foreach ($Cmenuitems as $key => $value) {
+				$CmenuitemsCheckArray[] = $value['menu_id'];
+			}
+			$data['Cmenuitems'] = $CmenuitemsCheckArray;
+			
 			$menuitems = $this->model_user_menu_setting->getAllmenusetting();
 		
 			foreach($menuitems as $key => &$value){
@@ -65,13 +73,7 @@ class ControllerCommonColumnLeft extends Controller {
 			//print_r($menuitems); exit;
 			$data['menuitems'] = $menuitems;
 			
-			$Cmenuitems = $this->model_user_menu_setting->getCAllMenuSettings($user_group_id);
-		
-			$CmenuitemsCheckArray = [];
-			foreach ($Cmenuitems as $key => $value) {
-				$CmenuitemsCheckArray[] = $value['menu_id'];
-			}
-			$data['Cmenuitems'] = $CmenuitemsCheckArray;
+			
 			
 	// End Custom Menu Create as per User Group Login	
 		

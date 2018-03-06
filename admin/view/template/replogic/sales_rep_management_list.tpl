@@ -44,7 +44,18 @@
             <div class="col-sm-6">
               <div class="form-group">
                 <label class="control-label" for="input-name">Sales Rep Name</label>
-                <input type="text" name="filter_sales_rep_name" value="<?php echo $filter_sales_rep_name; ?>" placeholder="Sales Rep Name" id="input-name" class="form-control" />
+                <!--<input type="text" name="filter_sales_rep_name" value="<?php echo $filter_sales_rep_name; ?>" placeholder="Sales Rep Name" id="input-name" class="form-control" />-->
+                <select name="filter_salesrep_name_id" class="form-control">
+                	<option value="">Select Sales Rep Name</option>
+                    <?php foreach ($allsalesreps as $allsalesrep) {  ?>
+                <?php if ($allsalesrep['salesrep_id'] == $filter_salesrep_name_id) { ?>
+                <option value="<?php echo $allsalesrep['salesrep_id']; ?>" selected="selected"><?php echo $allsalesrep['salesrep_name']; ?> <?php echo $allsalesrep['salesrep_lastname']; ?></option>
+                <?php } else { ?>
+                <option value="<?php echo $allsalesrep['salesrep_id']; ?>"><?php echo $allsalesrep['salesrep_name']; ?> <?php echo $allsalesrep['salesrep_lastname']; ?></option>
+                <?php } ?>
+                <?php } ?>
+                    
+                </select>
               </div>
               
               <div class="form-group">
@@ -243,16 +254,28 @@ $('#button-filter').on('click', function() {
 		url += '&filter_sales_rep_name=' + encodeURIComponent(filter_sales_rep_name);
 	}
 
-	var team_id = $('select[name=\'filter_team_id\']').val();
+	var filter_team_id = $('select[name=\'filter_team_id\']').val();
+
+	if (filter_team_id) {
+		url += '&filter_team_id=' + encodeURIComponent(filter_team_id);
+	}
+	
+	var team_id = $('input[name=\'team_id\']').val();
 
 	if (team_id) {
-		url += '&filter_team_id=' + encodeURIComponent(team_id);
+		url += '&team_id=' + encodeURIComponent(team_id);
 	}
 	
 	var filter_customer_id = $('select[name=\'filter_customer_id\']').val();
 
 	if (filter_customer_id) {
 		url += '&filter_customer_id=' + encodeURIComponent(filter_customer_id);
+	}
+	
+	var filter_salesrep_name_id = $('select[name=\'filter_salesrep_name_id\']').val();
+
+	if (filter_salesrep_name_id) {
+		url += '&filter_salesrep_name_id=' + encodeURIComponent(filter_salesrep_name_id);
 	}
 
 	var filter_email = $('input[name=\'filter_email\']').val();

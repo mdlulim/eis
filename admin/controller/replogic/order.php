@@ -157,7 +157,7 @@ class ControllerReplogicOrder extends Controller {
 
 		$data['breadcrumbs'][] = array(
 			'text' => $this->language->get('heading_title'),
-			'href' => $this->url->link('replogic/order', 'token=' . $this->session->data['token'] . $url, true)
+			'href' => $this->url->link('replogic/order_quotes', 'token=' . $this->session->data['token'] . $url, true)
 		);
 
 		if(isset($this->request->get['type']))

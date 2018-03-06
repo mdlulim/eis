@@ -40,15 +40,26 @@
               </div>
               <div class="form-group">
                 <label class="control-label" for="input-customer"><?php echo $entry_customer; ?></label>
-                <input type="text" name="filter_customer" value="<?php echo $filter_customer; ?>" placeholder="<?php echo $entry_customer; ?>" id="input-customer" class="form-control" />
-   				   <input type="hidden" name="filter_customer_id" value="<?php echo $filter_customer_id; ?>" id="customer_id">          
+               <!-- <input type="text" name="filter_customer" value="<?php echo $filter_customer; ?>" placeholder="<?php echo $entry_customer; ?>" id="input-customer" class="form-control" />
+   				   <input type="hidden" name="filter_customer_id" value="<?php echo $filter_customer_id; ?>" id="customer_id">-->
+                   <select name="filter_customer_id" class="form-control">
+                	<option value="">Select Customer Name</option>
+                    <?php foreach ($customers as $customer) {  ?>
+                <?php if ($customer['customer_id'] == $filter_customer_id) { ?>
+                <option value="<?php echo $customer['customer_id']; ?>" selected="selected"><?php echo $customer['firstname']; ?></option>
+                <?php } else { ?>
+                <option value="<?php echo $customer['customer_id']; ?>"><?php echo $customer['firstname']; ?></option>
+                <?php } ?>
+                <?php } ?>
+                    
+                </select>          
               </div>
             </div>
             <div class="col-sm-4">
               <div class="form-group">
                 <label class="control-label" for="input-order-status"><?php echo $entry_order_status; ?></label>
                 <select name="filter_order_status" id="input-order-status" class="form-control">
-                  <option value="*"></option>
+                  <option value="*">Select Status</option>
                   <?php if ($filter_order_status == '0') { ?>
                   <option value="0" selected="selected">Awaiting Approval</option>
                   <?php } else { ?>
@@ -83,8 +94,19 @@
               </div>-->
               <div class="form-group">
                 <label class="control-label" for="input-customer">Customer Contact</label>
-                <input type="text" name="filter_customer_contact" value="<?php echo $filter_customer_contact; ?>" placeholder="Customer Contact" id="input-customer-contact" class="form-control" />
-   				   <input type="hidden" name="filter_customer_contact_id" value="<?php echo $filter_customer_contact_id; ?>" id="customer_contact_id">          
+                <!--<input type="text" name="filter_customer_contact" value="<?php echo $filter_customer_contact; ?>" placeholder="Customer Contact" id="input-customer-contact" class="form-control" />
+   				   <input type="hidden" name="filter_customer_contact_id" value="<?php echo $filter_customer_contact_id; ?>" id="customer_contact_id">--> 
+                   <select name="filter_customer_contact_id" class="form-control">
+                	<option value="">Customer Contact Name</option>
+                    <?php foreach ($allcustomer_contacts as $allcustomer_contact) {  ?>
+                <?php if ($allcustomer_contact['customer_con_id'] == $filter_customer_contact_id) { ?>
+                <option value="<?php echo $allcustomer_contact['customer_con_id']; ?>" selected="selected"><?php echo $allcustomer_contact['first_name']; ?> <?php echo $allcustomer_contact['last_name']; ?></option>
+                <?php } else { ?>
+                <option value="<?php echo $allcustomer_contact['customer_con_id']; ?>"><?php echo $allcustomer_contact['first_name']; ?> <?php echo $allcustomer_contact['last_name']; ?></option>
+                <?php } ?>
+                <?php } ?>
+                    
+                </select>         
               </div>
             </div>
             <div class="col-sm-4">
@@ -109,7 +131,7 @@
               <thead>
                 <tr>
                   <td style="width: 1px;" class="text-center"><input type="checkbox" onclick="$('input[name*=\'selected\']').prop('checked', this.checked);" /></td>
-                  <td class="text-right"><?php if ($sort == 'quote_id') { ?>
+                  <td class="text-left"><?php if ($sort == 'quote_id') { ?>
                     <a href="<?php echo $sort_order; ?>" class="<?php echo strtolower($order); ?>"><?php echo $column_quote_id; ?></a>
                     <?php } else { ?>
                     <a href="<?php echo $sort_order; ?>"><?php echo $column_quote_id; ?></a>
@@ -129,7 +151,7 @@
                     <?php } else { ?>
                     <a href="<?php echo $sort_status; ?>"><?php echo $column_status; ?></a>
                     <?php } ?></td>
-                  <td class="text-right"><?php if ($sort == 'total') { ?>
+                  <td class="text-left"><?php if ($sort == 'total') { ?>
                     <a href="<?php echo $sort_total; ?>" class="<?php echo strtolower($order); ?>"><?php echo $column_total; ?></a>
                     <?php } else { ?>
                     <a href="<?php echo $sort_total; ?>"><?php echo $column_total; ?></a>
@@ -152,11 +174,11 @@
                     <input type="checkbox" name="selected[]" value="<?php echo $order['quote_id']; ?>" />
                     <?php } ?>
                     <input type="hidden" name="shipping_code[]" value="<?php echo $order['shipping_code']; ?>" /></td>
-                  <td class="text-right"><?php echo $order['quote_id']; ?></td>
+                  <td class="text-left"><?php echo $order['quote_id']; ?></td>
                   <td class="text-left"><?php echo $order['customer']; ?></td>
                   <td class="text-left"><?php echo $order['customer_contact']; ?></td>
                   <td class="text-left"><?php echo $order['qstatus']; ?></td>
-                  <td class="text-right">
+                  <td class="text-left">
                   	<?php if($order['total'] != '') { ?>
                     	<?php echo $order['total']; ?>
                     <?php } else { ?>
@@ -263,30 +285,18 @@ $('#button-filter').on('click', function() {
 		url += '&filter_quote_id=' + encodeURIComponent(filter_quote_id);
 	}
 
-	var filter_customer_id = $('input[name=\'filter_customer_id\']').val();
+	var filter_customer_id = $('select[name=\'filter_customer_id\']').val();
 
 	if (filter_customer_id) {
 		url += '&filter_customer_id=' + encodeURIComponent(filter_customer_id);
 	}
 	
-	var filter_customer = $('input[name=\'filter_customer\']').val();
-
-	if (filter_customer) {
-		url += '&filter_customer=' + encodeURIComponent(filter_customer);
-	}
-	
-	var filter_customer_contact_id = $('input[name=\'filter_customer_contact_id\']').val();
+	var filter_customer_contact_id = $('select[name=\'filter_customer_contact_id\']').val();
 
 	if (filter_customer_contact_id) {
 		url += '&filter_customer_contact_id=' + encodeURIComponent(filter_customer_contact_id);
 	}
 	
-	var filter_customer_contact = $('input[name=\'filter_customer_contact\']').val();
-
-	if (filter_customer_contact) {
-		url += '&filter_customer_contact=' + encodeURIComponent(filter_customer_contact);
-	}
-
 	var filter_order_status = $('select[name=\'filter_order_status\']').val();
 
 	if (filter_order_status != '*') {
@@ -303,12 +313,6 @@ $('#button-filter').on('click', function() {
 
 	if (filter_date_added) {
 		url += '&filter_date_added=' + encodeURIComponent(filter_date_added);
-	}
-
-	var filter_date_modified = $('input[name=\'filter_date_modified\']').val();
-
-	if (filter_date_modified) {
-		url += '&filter_date_modified=' + encodeURIComponent(filter_date_modified);
 	}
 
 	location = url;
@@ -412,5 +416,9 @@ $('#button-delete').on('click', function(e) {
 $('.date').datetimepicker({
 	pickTime: false
 });
-//--></script></div>
+//--></script>
+<style>
+  .form-group + .form-group{border-top:none;}
+  </style>
+</div>
 <?php echo $footer; ?> 

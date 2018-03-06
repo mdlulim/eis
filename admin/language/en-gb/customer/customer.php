@@ -67,6 +67,7 @@ $_['error_lastname']        = 'Last Name must be between 1 and 32 characters!';
 $_['error_salesrep_id']     = 'Please Select Sales Rep!';
 $_['error_email']           = 'E-Mail Address does not appear to be valid!';
 $_['error_telephone']       = 'Telephone must be 10 characters Digits!';
+$_['error_fax']       = 'Fax must be Digits!';
 $_['error_password']        = 'Password must be between 4 and 20 characters!';
 $_['error_confirm']         = 'Password and password confirmation do not match!';
 $_['error_address_1']       = 'Address 1 must be between 3 and 128 characters!';

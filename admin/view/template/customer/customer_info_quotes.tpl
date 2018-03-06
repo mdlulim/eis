@@ -57,7 +57,7 @@
               <div class="form-group">
                 <label class="control-label" for="input-order-status"><?php echo $entry_order_status; ?></label>
                 <select name="filter_order_status" id="input-order-status" class="form-control">
-                  <option value="*"></option>
+                  <option value="*">Select Status</option>
                   <?php if ($filter_order_status == '0') { ?>
                   <option value="0" selected="selected">Awaiting Approval</option>
                   <?php } else { ?>
@@ -83,9 +83,9 @@
             <div class="col-sm-3">
               
               <div class="form-group">
-                <label class="control-label" for="input-price">Customer Contact</label>
+                <label class="control-label" for="input-price">Customer Contact Name</label>
                 <select name="filter_customer_contact_id" class="form-control">
-                	<option value="">Select Customer Contact</option>
+                	<option value="">Select Customer Contact Name</option>
                     <?php foreach ($customercontacts as $customercontact) {  ?>
                         <?php if ($customercontact['customer_con_id'] == $filter_customer_contact_id) { ?>
                         <option value="<?php echo $customercontact['customer_con_id']; ?>" selected="selected"><?php echo $customercontact['first_name']; ?> <?php echo $customercontact['last_name']; ?></option>
@@ -119,36 +119,11 @@
             <table class="table table-bordered table-hover">
               <thead>
                 <tr>
-                  <td class="text-right"><?php if ($sort == 'quote_id') { ?>
-                    <a href="<?php echo $sort_order; ?>" class="<?php echo strtolower($order); ?>"><?php echo $column_quote_id; ?></a>
-                    <?php } else { ?>
-                    <a href="<?php echo $sort_order; ?>"><?php echo $column_quote_id; ?></a>
-                    <?php } ?></td>
-                  <td class="text-left"><?php if ($sort == 'customer') { ?>
-                    <a href="<?php echo $sort_customer; ?>" class="<?php echo strtolower($order); ?>"><?php echo $column_customer; ?></a>
-                    <?php } else { ?>
-                    <a href="<?php echo $sort_customer; ?>"><?php echo $column_customer; ?></a>
-                    <?php } ?></td>
-                    <td class="text-left"><?php if ($sort == 'customer_contact') { ?>
-                    <a href="<?php echo $sort_customer_contact; ?>" class="<?php echo strtolower($order); ?>"><?php echo $column_customer_contact; ?></a>
-                    <?php } else { ?>
-                    <a href="<?php echo $sort_customer_contact; ?>"><?php echo $column_customer_contact; ?></a>
-                    <?php } ?></td>
-                  <td class="text-left"><?php if ($sort == 'order_status') { ?>
-                    <a href="<?php echo $sort_status; ?>" class="<?php echo strtolower($order); ?>"><?php echo $column_status; ?></a>
-                    <?php } else { ?>
-                    <a href="<?php echo $sort_status; ?>"><?php echo $column_status; ?></a>
-                    <?php } ?></td>
-                  <td class="text-right"><?php if ($sort == 'total') { ?>
-                    <a href="<?php echo $sort_total; ?>" class="<?php echo strtolower($order); ?>"><?php echo $column_total; ?></a>
-                    <?php } else { ?>
-                    <a href="<?php echo $sort_total; ?>"><?php echo $column_total; ?></a>
-                    <?php } ?></td>
-                  <td class="text-left"><?php if ($sort == 'date_added') { ?>
-                    <a href="<?php echo $sort_date_added; ?>" class="<?php echo strtolower($order); ?>"><?php echo $column_date_added; ?></a>
-                    <?php } else { ?>
-                    <a href="<?php echo $sort_date_added; ?>"><?php echo $column_date_added; ?></a>
-                    <?php } ?></td>
+                  <td class="text-left"><?php echo $column_quote_id; ?></td>
+                  <td class="text-left"><?php echo $column_customer_contact; ?></td>
+                  <td class="text-left"><?php echo $column_status; ?></td>
+                  <td class="text-left"><?php echo $column_total; ?></td>
+                  <td class="text-left"><?php echo $column_date_added; ?></td>
                   <td class="text-right"><?php echo $column_action; ?></td>
                 </tr>
               </thead>
@@ -156,11 +131,10 @@
                 <?php if ($orders) { ?>
                 <?php foreach ($orders as $order) { ?>
                 <tr>
-                  <td class="text-right"><?php echo $order['quote_id']; ?></td>
-                  <td class="text-left"><?php echo $order['customer']; ?></td>
+                  <td class="text-left"><?php echo $order['quote_id']; ?></td>
                   <td class="text-left"><?php echo $order['customer_contact']; ?></td>
                   <td class="text-left"><?php echo $order['qstatus']; ?></td>
-                  <td class="text-right">
+                  <td class="text-left">
                   	<?php if($order['total'] != '') { ?>
                     	<?php echo $order['total']; ?>
                     <?php } else { ?>

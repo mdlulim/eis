@@ -25,7 +25,19 @@ class ControllerCustomerCustomField extends Controller {
 			$this->session->data['success'] = $this->language->get('text_success');
 
 			$url = '';
-
+			
+			if (isset($this->request->get['filter_name'])) {
+				$url .= '&filter_name=' . $this->request->get['filter_name'];
+			}
+			
+			if (isset($this->request->get['filter_type'])) {
+				$url .= '&filter_type=' . $this->request->get['filter_type'];
+			}
+			
+			if (isset($this->request->get['filter_location'])) {
+				$url .= '&filter_location=' . $this->request->get['filter_location'];
+			}
+			
 			if (isset($this->request->get['sort'])) {
 				$url .= '&sort=' . $this->request->get['sort'];
 			}
@@ -58,6 +70,18 @@ class ControllerCustomerCustomField extends Controller {
 
 			$url = '';
 
+			if (isset($this->request->get['filter_name'])) {
+				$url .= '&filter_name=' . $this->request->get['filter_name'];
+			}
+			
+			if (isset($this->request->get['filter_type'])) {
+				$url .= '&filter_type=' . $this->request->get['filter_type'];
+			}
+			
+			if (isset($this->request->get['filter_location'])) {
+				$url .= '&filter_location=' . $this->request->get['filter_location'];
+			}
+			
 			if (isset($this->request->get['sort'])) {
 				$url .= '&sort=' . $this->request->get['sort'];
 			}
@@ -91,7 +115,19 @@ class ControllerCustomerCustomField extends Controller {
 			$this->session->data['success'] = $this->language->get('text_success');
 
 			$url = '';
-
+			
+			if (isset($this->request->get['filter_name'])) {
+				$url .= '&filter_name=' . $this->request->get['filter_name'];
+			}
+			
+			if (isset($this->request->get['filter_type'])) {
+				$url .= '&filter_type=' . $this->request->get['filter_type'];
+			}
+			
+			if (isset($this->request->get['filter_location'])) {
+				$url .= '&filter_location=' . $this->request->get['filter_location'];
+			}
+			
 			if (isset($this->request->get['sort'])) {
 				$url .= '&sort=' . $this->request->get['sort'];
 			}
@@ -111,6 +147,25 @@ class ControllerCustomerCustomField extends Controller {
 	}
 
 	protected function getList() {
+		
+		if (isset($this->request->get['filter_name'])) {
+			$filter_name = $this->request->get['filter_name'];
+		} else {
+			$filter_name = null;
+		}
+		
+		if (isset($this->request->get['filter_type'])) {
+			$filter_type = $this->request->get['filter_type'];
+		} else {
+			$filter_type = null;
+		}
+	//	echo $filter_type; exit;
+		if (isset($this->request->get['filter_location'])) {
+			$filter_location = $this->request->get['filter_location'];
+		} else {
+			$filter_location = null;
+		}
+		
 		if (isset($this->request->get['sort'])) {
 			$sort = $this->request->get['sort'];
 		} else {
@@ -131,6 +186,18 @@ class ControllerCustomerCustomField extends Controller {
 
 		$url = '';
 
+		if (isset($this->request->get['filter_name'])) {
+			$url .= '&filter_name=' . $this->request->get['filter_name'];
+		}
+		
+		if (isset($this->request->get['filter_type'])) {
+			$url .= '&filter_type=' . $this->request->get['filter_type'];
+		}
+		
+		if (isset($this->request->get['filter_location'])) {
+			$url .= '&filter_location=' . $this->request->get['filter_location'];
+		}
+		
 		if (isset($this->request->get['sort'])) {
 			$url .= '&sort=' . $this->request->get['sort'];
 		}
@@ -161,13 +228,16 @@ class ControllerCustomerCustomField extends Controller {
 		$data['custom_fields'] = array();
 
 		$filter_data = array(
+			'filter_name'  => $filter_name,
+			'filter_type'  => $filter_type,
+			'filter_location'  => $filter_location,
 			'sort'  => $sort,
 			'order' => $order,
 			'start' => ($page - 1) * $this->config->get('config_limit_admin'),
 			'limit' => $this->config->get('config_limit_admin')
 		);
 
-		$custom_field_total = $this->model_customer_custom_field->getTotalCustomFields();
+		$custom_field_total = $this->model_customer_custom_field->getTotalCustomFields($filter_data);
 
 		$results = $this->model_customer_custom_field->getCustomFields($filter_data);
 
@@ -219,7 +289,25 @@ class ControllerCustomerCustomField extends Controller {
 		}
 
 		$data['heading_title'] = $this->language->get('heading_title');
-
+		
+		
+		$data['text_choose'] = $this->language->get('text_choose');
+		$data['text_select'] = $this->language->get('text_select');
+		$data['text_radio'] = $this->language->get('text_radio');
+		$data['text_checkbox'] = $this->language->get('text_checkbox');
+		$data['text_input'] = $this->language->get('text_input');
+		$data['text_text'] = $this->language->get('text_text');
+		$data['text_textarea'] = $this->language->get('text_textarea');
+		$data['text_file'] = $this->language->get('text_file');
+		$data['text_date'] = $this->language->get('text_date');
+		$data['text_datetime'] = $this->language->get('text_datetime');
+		$data['text_time'] = $this->language->get('text_time');
+		$data['text_account'] = $this->language->get('text_account');
+		$data['text_address'] = $this->language->get('text_address');
+		$data['text_enabled'] = $this->language->get('text_enabled');
+		$data['text_disabled'] = $this->language->get('text_disabled');
+		$data['text_regex'] = $this->language->get('text_regex');
+		
 		$data['text_list'] = $this->language->get('text_list');
 		$data['text_no_results'] = $this->language->get('text_no_results');
 		$data['text_confirm'] = $this->language->get('text_confirm');
@@ -234,6 +322,8 @@ class ControllerCustomerCustomField extends Controller {
 		$data['button_add'] = $this->language->get('button_add');
 		$data['button_edit'] = $this->language->get('button_edit');
 		$data['button_delete'] = $this->language->get('button_delete');
+		
+		$data['token'] = $this->session->data['token'];
 
 		if (isset($this->error['warning'])) {
 			$data['error_warning'] = $this->error['warning'];
@@ -256,7 +346,19 @@ class ControllerCustomerCustomField extends Controller {
 		}
 
 		$url = '';
-
+		
+		if (isset($this->request->get['filter_name'])) {
+			$url .= '&filter_name=' . $this->request->get['filter_name'];
+		}
+		
+		if (isset($this->request->get['filter_type'])) {
+			$url .= '&filter_type=' . $this->request->get['filter_type'];
+		}
+		
+		if (isset($this->request->get['filter_location'])) {
+			$url .= '&filter_location=' . $this->request->get['filter_location'];
+		}
+		
 		if ($order == 'ASC') {
 			$url .= '&order=DESC';
 		} else {
@@ -295,6 +397,9 @@ class ControllerCustomerCustomField extends Controller {
 
 		$data['sort'] = $sort;
 		$data['order'] = $order;
+		$data['filter_type'] = $filter_type;
+		$data['filter_name'] = $filter_name;
+		$data['filter_location'] = $filter_location;
 
 		$data['header'] = $this->load->controller('common/header');
 		$data['column_left'] = $this->load->controller('common/column_left');
@@ -363,6 +468,18 @@ class ControllerCustomerCustomField extends Controller {
 
 		$url = '';
 
+		if (isset($this->request->get['filter_name'])) {
+			$url .= '&filter_name=' . $this->request->get['filter_name'];
+		}
+		
+		if (isset($this->request->get['filter_type'])) {
+			$url .= '&filter_type=' . $this->request->get['filter_type'];
+		}
+		
+		if (isset($this->request->get['filter_location'])) {
+			$url .= '&filter_location=' . $this->request->get['filter_location'];
+		}
+		
 		if (isset($this->request->get['sort'])) {
 			$url .= '&sort=' . $this->request->get['sort'];
 		}

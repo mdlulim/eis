@@ -873,6 +873,12 @@ class ControllerCustomerCustomer extends Controller {
 		} else {
 			$data['error_telephone'] = '';
 		}
+		
+		if (isset($this->error['fax'])) {
+			$data['error_fax'] = $this->error['fax'];
+		} else {
+			$data['error_fax'] = '';
+		}
 
 		if (isset($this->error['password'])) {
 			$data['error_password'] = $this->error['password'];
@@ -1233,6 +1239,12 @@ class ControllerCustomerCustomer extends Controller {
 		if(!preg_match('/^[0-9]{10}$/', $tel))
 		{ 
 			$this->error['telephone'] = $this->language->get('error_telephone');
+		}
+		
+		$fax = $this->request->post['fax'];
+		if(!is_numeric($fax) && !empty($fax))
+		{ 
+			$this->error['fax'] = $this->language->get('error_fax');
 		}
 
 		// Custom field validation

@@ -377,7 +377,6 @@ class ControllerReplogicOrderQuotes extends Controller {
 		$order_quotes_total = $this->model_replogic_order_quotes->getTotalOrders($filter_data);
 		
 		$data['decline']  = $this->url->link('replogic/order_quotes/decline', 'token=' . $this->session->data['token'] . $url, true);
-				
 		
 		$results = $this->model_replogic_order_quotes->getOrders($filter_data);
 		$this->load->model('replogic/customer_contact');
@@ -437,7 +436,10 @@ class ControllerReplogicOrderQuotes extends Controller {
 				'edit'          => $this->url->link('replogic/order_quotes/edit', 'token=' . $this->session->data['token'] . '&quote_id=' . $result['quote_id'] . $url, true)
 			);
 		}
-
+		
+		$data['customers'] = $this->model_customer_customer->getCustomers();
+		$data['allcustomer_contacts'] = $this->model_replogic_customer_contact->getcustomercontacts();
+		
 		$data['heading_title'] = $this->language->get('heading_title');
 
 		$data['text_list'] = $this->language->get('text_list');

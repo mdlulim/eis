@@ -126,6 +126,7 @@ class ControllerReplogicLocationManagement extends Controller {
 		}
 		
 		$filter_data = array(
+			'filter_groupby_salesrep'	  => true,
 			'filter_address'	  => $filter_address,
 			'filter_customer_id'	  => $filter_customer_id,
 			'filter_team_id'	  => $filter_team_id,

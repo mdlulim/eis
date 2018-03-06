@@ -424,7 +424,7 @@ class ControllerCommonDashboard extends Controller {
 			$filter_team_id = NULL; 
 		}
 		
-		$filter_dataMap = array('filter_team_id'	  => $filter_team_id, 'order' => 'DESC', 'start' => 0, 'limit' => 5);
+		$filter_dataMap = array('filter_team_id'	  => $filter_team_id, 'order' => 'DESC', 'start' => 0, 'limit' => 5, 'filter_groupby_salesrep'	  => true);
 		$results = $this->model_replogic_location_management->getLocations($filter_dataMap);
 		$locationsmaps = array();
 		foreach ($results as $result) {

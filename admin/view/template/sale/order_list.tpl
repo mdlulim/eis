@@ -41,14 +41,25 @@
               </div>
               <div class="form-group">
                 <label class="control-label" for="input-customer"><?php echo $entry_customer; ?></label>
-                <input type="text" name="filter_customer" value="<?php echo $filter_customer; ?>" placeholder="<?php echo $entry_customer; ?>" id="input-customer" class="form-control" />
+                <!--<input type="text" name="filter_customer" value="<?php echo $filter_customer; ?>" placeholder="<?php echo $entry_customer; ?>" id="input-customer" class="form-control" />-->
+                <select name="filter_customer_id" class="form-control">
+                	<option value="">Select Customer Name</option>
+                    <?php foreach ($customers as $customer) {  ?>
+                <?php if ($customer['customer_id'] == $filter_customer_id) { ?>
+                <option value="<?php echo $customer['customer_id']; ?>" selected="selected"><?php echo $customer['firstname']; ?></option>
+                <?php } else { ?>
+                <option value="<?php echo $customer['customer_id']; ?>"><?php echo $customer['firstname']; ?></option>
+                <?php } ?>
+                <?php } ?>
+                    
+                </select>
               </div>
             </div>
             <div class="col-sm-4">
               <div class="form-group">
                 <label class="control-label" for="input-order-status"><?php echo $entry_order_status; ?></label>
                 <select name="filter_order_status" id="input-order-status" class="form-control">
-                  <option value="*"></option>
+                  <option value="*">Select Status</option>
                   <?php if ($filter_order_status == '0') { ?>
                   <option value="0" selected="selected"><?php echo $text_missing; ?></option>
                   <?php } else { ?>
@@ -96,7 +107,7 @@
               <thead>
                 <tr>
                   <td style="width: 1px;" class="text-center"><input type="checkbox" onclick="$('input[name*=\'selected\']').prop('checked', this.checked);" /></td>
-                  <td class="text-right"><?php if ($sort == 'o.order_id') { ?>
+                  <td class="text-left"><?php if ($sort == 'o.order_id') { ?>
                     <a href="<?php echo $sort_order; ?>" class="<?php echo strtolower($order); ?>"><?php echo $column_order_id; ?></a>
                     <?php } else { ?>
                     <a href="<?php echo $sort_order; ?>"><?php echo $column_order_id; ?></a>
@@ -116,7 +127,7 @@
                     <?php } else { ?>
                     <a href="<?php echo $sort_status; ?>"><?php echo $column_status; ?></a>
                     <?php } ?></td>
-                  <td class="text-right"><?php if ($sort == 'o.total') { ?>
+                  <td class="text-left"><?php if ($sort == 'o.total') { ?>
                     <a href="<?php echo $sort_total; ?>" class="<?php echo strtolower($order); ?>"><?php echo $column_total; ?></a>
                     <?php } else { ?>
                     <a href="<?php echo $sort_total; ?>"><?php echo $column_total; ?></a>
@@ -144,11 +155,11 @@
                     <input type="checkbox" name="selected[]" value="<?php echo $order['order_id']; ?>" />
                     <?php } ?>
                     <input type="hidden" name="shipping_code[]" value="<?php echo $order['shipping_code']; ?>" /></td>
-                  <td class="text-right"><?php echo $order['order_id']; ?></td>
+                  <td class="text-left"><?php echo $order['order_id']; ?></td>
                   <td class="text-left"><?php echo $order['customer']; ?></td>
                   <td class="text-left"><?php echo $order['salesrep']; ?></td>
                   <td class="text-left"><?php echo $order['order_status']; ?></td>
-                  <td class="text-right"><?php echo $order['total']; ?></td>
+                  <td class="text-left"><?php echo $order['total']; ?></td>
                   <td class="text-left"><?php echo $order['date_added']; ?></td>
                   <td class="text-left"><?php echo $order['date_modified']; ?></td>
                   <td class="text-right"><a href="<?php echo $order['view']; ?>" data-toggle="tooltip" title="<?php echo $button_view; ?>" class="btn btn-info"><i class="fa fa-eye"></i></a> <a href="<?php echo $order['edit']; ?>" data-toggle="tooltip" title="<?php echo $button_edit; ?>" class="btn btn-primary"><i class="fa fa-pencil"></i></a></td>
@@ -170,6 +181,9 @@
       </div>
     </div>
   </div>
+  <style>
+  .form-group + .form-group{border-top:none;}
+  </style>
  <script type="text/javascript"><!--
 $('input[name^=\'selected\']').on('change', function() {
 	
@@ -202,6 +216,12 @@ $('#button-filter').on('click', function() {
 
 	if (filter_customer) {
 		url += '&filter_customer=' + encodeURIComponent(filter_customer);
+	}
+	
+	var filter_customer_id = $('select[name=\'filter_customer_id\']').val();
+
+	if (filter_customer_id) {
+		url += '&filter_customer_id=' + encodeURIComponent(filter_customer_id);
 	}
 
 	var filter_order_status = $('select[name=\'filter_order_status\']').val();
