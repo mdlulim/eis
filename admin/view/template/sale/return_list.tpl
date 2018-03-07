@@ -59,7 +59,7 @@
               <div class="form-group">
                 <label class="control-label" for="input-return-status"><?php echo $entry_return_status; ?></label>
                 <select name="filter_return_status_id" id="input-return-status" class="form-control">
-                  <option value="*"></option>
+                  <option value="*">Select Status</option>
                   <?php foreach ($return_statuses as $return_status) { ?>
                   <?php if ($return_status['return_status_id'] == $filter_return_status_id) { ?>
                   <option value="<?php echo $return_status['return_status_id']; ?>" selected="selected"><?php echo $return_status['name']; ?></option>
@@ -88,6 +88,7 @@
                   </span></div>
               </div>
               <button type="button" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-filter"></i> <?php echo $button_filter; ?></button>
+              <button type="button" id="button-filter-reset" class="btn btn-primary pull-right" style="margin-right:10px;"><i class="fa fa-refresh"></i> Reset</button>
             </div>
           </div>
         </div>
@@ -97,12 +98,12 @@
               <thead>
                 <tr>
                   <td style="width: 1px;" class="text-center"><input type="checkbox" onclick="$('input[name*=\'selected\']').prop('checked', this.checked);" /></td>
-                  <td class="text-right"><?php if ($sort == 'r.return_id') { ?>
+                  <td class="text-left"><?php if ($sort == 'r.return_id') { ?>
                     <a href="<?php echo $sort_return_id; ?>" class="<?php echo strtolower($order); ?>"><?php echo $column_return_id; ?></a>
                     <?php } else { ?>
                     <a href="<?php echo $sort_return_id; ?>"><?php echo $column_return_id; ?></a>
                     <?php } ?></td>
-                  <td class="text-right"><?php if ($sort == 'r.order_id') { ?>
+                  <td class="text-left"><?php if ($sort == 'r.order_id') { ?>
                     <a href="<?php echo $sort_order_id; ?>" class="<?php echo strtolower($order); ?>"><?php echo $column_order_id; ?></a>
                     <?php } else { ?>
                     <a href="<?php echo $sort_order_id; ?>"><?php echo $column_order_id; ?></a>
@@ -149,8 +150,8 @@
                     <?php } else { ?>
                     <input type="checkbox" name="selected[]" value="<?php echo $return['return_id']; ?>" />
                     <?php } ?></td>
-                  <td class="text-right"><?php echo $return['return_id']; ?></td>
-                  <td class="text-right"><?php echo $return['order_id']; ?></td>
+                  <td class="text-left"><?php echo $return['return_id']; ?></td>
+                  <td class="text-left"><?php echo $return['order_id']; ?></td>
                   <td class="text-left"><?php echo $return['customer']; ?></td>
                   <td class="text-left"><?php echo $return['product']; ?></td>
                   <td class="text-left"><?php echo $return['model']; ?></td>
@@ -230,6 +231,12 @@ $('#button-filter').on('click', function() {
 			
 	location = url;
 });
+
+$('#button-filter-reset').on('click', function() {
+	url = 'index.php?route=sale/return&token=<?php echo $token; ?>';
+	location = url;
+});
+
 //--></script> 
   <script type="text/javascript"><!--
 $('input[name=\'filter_customer\']').autocomplete({

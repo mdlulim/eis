@@ -16,7 +16,7 @@ $_['text_history']        = 'Add Return History';
 // Column
 $_['column_return_id']     = 'Return ID';
 $_['column_order_id']      = 'Order ID';
-$_['column_customer']      = 'Customer';
+$_['column_customer']      = 'Customer Name';
 $_['column_product']       = 'Product';
 $_['column_model']         = 'Model';
 $_['column_status']        = 'Status';
@@ -27,7 +27,7 @@ $_['column_notify']        = 'Customer Notified';
 $_['column_action']        = 'Action';
 
 // Entry
-$_['entry_customer']      = 'Customer';
+$_['entry_customer']      = 'Customer Name';
 $_['entry_order_id']      = 'Order ID';
 $_['entry_date_ordered']  = 'Order Date';
 $_['entry_firstname']     = 'First Name';
@@ -41,7 +41,7 @@ $_['entry_opened']        = 'Opened';
 $_['entry_comment']       = 'Comment';
 $_['entry_return_reason'] = 'Return Reason';
 $_['entry_return_action'] = 'Return Action';
-$_['entry_return_status'] = 'Return Status';
+$_['entry_return_status'] = 'Status';
 $_['entry_notify']        = 'Notify Customer';
 $_['entry_return_id']     = 'Return ID';
 $_['entry_date_added']    = 'Date Added';
