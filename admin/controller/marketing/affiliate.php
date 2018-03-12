@@ -29,6 +29,10 @@ class ControllerMarketingAffiliate extends Controller {
 			if (isset($this->request->get['filter_name'])) {
 				$url .= '&filter_name=' . urlencode(html_entity_decode($this->request->get['filter_name'], ENT_QUOTES, 'UTF-8'));
 			}
+			
+			if (isset($this->request->get['filter_affiliate_id'])) {
+				$url .= '&filter_affiliate_id=' . $this->request->get['filter_affiliate_id'];
+			}
 
 			if (isset($this->request->get['filter_email'])) {
 				$url .= '&filter_email=' . urlencode(html_entity_decode($this->request->get['filter_email'], ENT_QUOTES, 'UTF-8'));
@@ -80,6 +84,10 @@ class ControllerMarketingAffiliate extends Controller {
 
 			if (isset($this->request->get['filter_name'])) {
 				$url .= '&filter_name=' . urlencode(html_entity_decode($this->request->get['filter_name'], ENT_QUOTES, 'UTF-8'));
+			}
+			
+			if (isset($this->request->get['filter_affiliate_id'])) {
+				$url .= '&filter_affiliate_id=' . $this->request->get['filter_affiliate_id'];
 			}
 
 			if (isset($this->request->get['filter_email'])) {
@@ -135,6 +143,10 @@ class ControllerMarketingAffiliate extends Controller {
 			if (isset($this->request->get['filter_name'])) {
 				$url .= '&filter_name=' . urlencode(html_entity_decode($this->request->get['filter_name'], ENT_QUOTES, 'UTF-8'));
 			}
+			
+			if (isset($this->request->get['filter_affiliate_id'])) {
+				$url .= '&filter_affiliate_id=' . $this->request->get['filter_affiliate_id'];
+			}
 
 			if (isset($this->request->get['filter_email'])) {
 				$url .= '&filter_email=' . urlencode(html_entity_decode($this->request->get['filter_email'], ENT_QUOTES, 'UTF-8'));
@@ -186,6 +198,10 @@ class ControllerMarketingAffiliate extends Controller {
 
 			if (isset($this->request->get['filter_name'])) {
 				$url .= '&filter_name=' . urlencode(html_entity_decode($this->request->get['filter_name'], ENT_QUOTES, 'UTF-8'));
+			}
+			
+			if (isset($this->request->get['filter_affiliate_id'])) {
+				$url .= '&filter_affiliate_id=' . $this->request->get['filter_affiliate_id'];
 			}
 
 			if (isset($this->request->get['filter_email'])) {
@@ -239,6 +255,10 @@ class ControllerMarketingAffiliate extends Controller {
 			if (isset($this->request->get['filter_name'])) {
 				$url .= '&filter_name=' . urlencode(html_entity_decode($this->request->get['filter_name'], ENT_QUOTES, 'UTF-8'));
 			}
+			
+			if (isset($this->request->get['filter_affiliate_id'])) {
+				$url .= '&filter_affiliate_id=' . $this->request->get['filter_affiliate_id'];
+			}
 
 			if (isset($this->request->get['filter_email'])) {
 				$url .= '&filter_email=' . urlencode(html_entity_decode($this->request->get['filter_email'], ENT_QUOTES, 'UTF-8'));
@@ -279,6 +299,12 @@ class ControllerMarketingAffiliate extends Controller {
 			$filter_name = $this->request->get['filter_name'];
 		} else {
 			$filter_name = null;
+		}
+		
+		if (isset($this->request->get['filter_affiliate_id'])) {
+			$filter_affiliate_id = $this->request->get['filter_affiliate_id'];
+		} else {
+			$filter_affiliate_id = null;
 		}
 
 		if (isset($this->request->get['filter_email'])) {
@@ -327,6 +353,10 @@ class ControllerMarketingAffiliate extends Controller {
 
 		if (isset($this->request->get['filter_name'])) {
 			$url .= '&filter_name=' . urlencode(html_entity_decode($this->request->get['filter_name'], ENT_QUOTES, 'UTF-8'));
+		}
+		
+		if (isset($this->request->get['filter_affiliate_id'])) {
+			$url .= '&filter_affiliate_id=' . $this->request->get['filter_affiliate_id'];
 		}
 
 		if (isset($this->request->get['filter_email'])) {
@@ -377,6 +407,7 @@ class ControllerMarketingAffiliate extends Controller {
 
 		$filter_data = array(
 			'filter_name'       => $filter_name,
+			'filter_affiliate_id'       => $filter_affiliate_id,
 			'filter_email'      => $filter_email,
 			'filter_status'     => $filter_status,
 			'filter_approved'   => $filter_approved,
@@ -418,7 +449,9 @@ class ControllerMarketingAffiliate extends Controller {
 				'edit'         => $this->url->link('marketing/affiliate/edit', 'token=' . $this->session->data['token'] . '&affiliate_id=' . $result['affiliate_id'] . $url, true)
 			);
 		}
-
+		
+		$data['Dropdownaffiliates'] = $this->model_marketing_affiliate->getAffiliates();
+		
 		$data['heading_title'] = $this->language->get('heading_title');
 
 		$data['text_list'] = $this->language->get('text_list');
@@ -477,6 +510,10 @@ class ControllerMarketingAffiliate extends Controller {
 		if (isset($this->request->get['filter_name'])) {
 			$url .= '&filter_name=' . urlencode(html_entity_decode($this->request->get['filter_name'], ENT_QUOTES, 'UTF-8'));
 		}
+		
+		if (isset($this->request->get['filter_affiliate_id'])) {
+			$url .= '&filter_affiliate_id=' . $this->request->get['filter_affiliate_id'];
+		}
 
 		if (isset($this->request->get['filter_email'])) {
 			$url .= '&filter_email=' . urlencode(html_entity_decode($this->request->get['filter_email'], ENT_QUOTES, 'UTF-8'));
@@ -514,6 +551,10 @@ class ControllerMarketingAffiliate extends Controller {
 		if (isset($this->request->get['filter_name'])) {
 			$url .= '&filter_name=' . urlencode(html_entity_decode($this->request->get['filter_name'], ENT_QUOTES, 'UTF-8'));
 		}
+		
+		if (isset($this->request->get['filter_affiliate_id'])) {
+			$url .= '&filter_affiliate_id=' . $this->request->get['filter_affiliate_id'];
+		}
 
 		if (isset($this->request->get['filter_email'])) {
 			$url .= '&filter_email=' . urlencode(html_entity_decode($this->request->get['filter_email'], ENT_QUOTES, 'UTF-8'));
@@ -550,6 +591,7 @@ class ControllerMarketingAffiliate extends Controller {
 		$data['results'] = sprintf($this->language->get('text_pagination'), ($affiliate_total) ? (($page - 1) * $this->config->get('config_limit_admin')) + 1 : 0, ((($page - 1) * $this->config->get('config_limit_admin')) > ($affiliate_total - $this->config->get('config_limit_admin'))) ? $affiliate_total : ((($page - 1) * $this->config->get('config_limit_admin')) + $this->config->get('config_limit_admin')), $affiliate_total, ceil($affiliate_total / $this->config->get('config_limit_admin')));
 
 		$data['filter_name'] = $filter_name;
+		$data['filter_affiliate_id'] = $filter_affiliate_id;
 		$data['filter_email'] = $filter_email;
 		$data['filter_status'] = $filter_status;
 		$data['filter_approved'] = $filter_approved;
@@ -675,6 +717,12 @@ class ControllerMarketingAffiliate extends Controller {
 		} else {
 			$data['error_telephone'] = '';
 		}
+		
+		if (isset($this->error['fax'])) {
+			$data['error_fax'] = $this->error['fax'];
+		} else {
+			$data['error_fax'] = '';
+		}
 
 		if (isset($this->error['password'])) {
 			$data['error_password'] = $this->error['password'];
@@ -728,6 +776,10 @@ class ControllerMarketingAffiliate extends Controller {
 
 		if (isset($this->request->get['filter_name'])) {
 			$url .= '&filter_name=' . urlencode(html_entity_decode($this->request->get['filter_name'], ENT_QUOTES, 'UTF-8'));
+		}
+		
+		if (isset($this->request->get['filter_affiliate_id'])) {
+			$url .= '&filter_affiliate_id=' . $this->request->get['filter_affiliate_id'];
 		}
 
 		if (isset($this->request->get['filter_email'])) {
@@ -883,7 +935,7 @@ class ControllerMarketingAffiliate extends Controller {
 		} elseif (!empty($affiliate_info)) {
 			$data['country_id'] = $affiliate_info['country_id'];
 		} else {
-			$data['country_id'] = '';
+			$data['country_id'] = '193';
 		}
 
 		$this->load->model('localisation/country');
@@ -1060,8 +1112,21 @@ class ControllerMarketingAffiliate extends Controller {
 			}
 		}
 
-		if ((utf8_strlen($this->request->post['telephone']) < 3) || (utf8_strlen($this->request->post['telephone']) > 32)) {
+		if (utf8_strlen($this->request->post['telephone']) < 10) { 
 			$this->error['telephone'] = $this->language->get('error_telephone');
+			
+		}
+		
+		$tel = $this->request->post['telephone'];
+		if(!preg_match('/^[0-9]{10}$/', $tel))
+		{ 
+			$this->error['telephone'] = $this->language->get('error_telephone');
+		}
+		
+		$fax = $this->request->post['fax'];
+		if(!is_numeric($fax) && !empty($fax))
+		{ 
+			$this->error['fax'] = $this->language->get('error_fax');
 		}
 
 		if ($this->request->post['password'] || (!isset($this->request->get['affiliate_id']))) {
@@ -1085,8 +1150,10 @@ class ControllerMarketingAffiliate extends Controller {
 		$this->load->model('localisation/country');
 
 		$country_info = $this->model_localisation_country->getCountry($this->request->post['country_id']);
-
-		if ($country_info && $country_info['postcode_required'] && (utf8_strlen(trim($this->request->post['postcode'])) < 2 || utf8_strlen(trim($this->request->post['postcode'])) > 10)) {
+		$postcodechk = $this->request->post['postcode'];
+		 
+		//if ($country_info && $country_info['postcode_required'] && (utf8_strlen(trim($this->request->post['postcode'])) < 2 || utf8_strlen(trim($this->request->post['postcode'])) > 10)) {
+		if ($country_info && $country_info['postcode_required'] && !preg_match('/^[0-9]{4}$/', $postcodechk) ) {
 			$this->error['postcode'] = $this->language->get('error_postcode');
 		}
 

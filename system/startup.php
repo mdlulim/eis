@@ -26,9 +26,11 @@ if (ini_get('magic_quotes_gpc')) {
 	$_COOKIE = clean($_COOKIE);
 }
 
-if (!ini_get('date.timezone')) {
+/*if (!ini_get('date.timezone')) {
 	date_default_timezone_set('UTC');
-}
+}*/
+
+date_default_timezone_set('Africa/Johannesburg'); 
 
 // Windows IIS Compatibility
 if (!isset($_SERVER['DOCUMENT_ROOT'])) {

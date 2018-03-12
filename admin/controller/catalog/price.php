@@ -235,8 +235,8 @@ class ControllerCatalogPrice extends Controller {
             $url .= '&page=' . $this->request->get['page'];
         }
 
-        $data['sort_name'] = $this->url->link('catalog/filter', 'token=' . $this->session->data['token'] . '&sort=fgd.name' . $url, 'SSL');
-        $data['sort_sort_order'] = $this->url->link('catalog/filter', 'token=' . $this->session->data['token'] . '&sort=fg.sort_order' . $url, 'SSL');
+        $data['sort_name'] = $this->url->link('catalog/price', 'token=' . $this->session->data['token'] . '&sort=fgd.name' . $url, 'SSL');
+        $data['sort_sort_order'] = $this->url->link('catalog/price', 'token=' . $this->session->data['token'] . '&sort=fg.sort_order' . $url, 'SSL');
 
         $url = '';
 
@@ -252,7 +252,7 @@ class ControllerCatalogPrice extends Controller {
         $pagination->total 		= $filter_total;
         $pagination->page 		= $page;
         $pagination->limit 		= $this->config->get('config_limit_admin');
-        $pagination->url 		= $this->url->link('catalog/filter', 'token=' . $this->session->data['token'] . $url . '&page={page}', 'SSL');
+        $pagination->url 		= $this->url->link('catalog/price', 'token=' . $this->session->data['token'] . $url . '&page={page}', 'SSL');
 
         $data['pagination'] 	= $pagination->render();
 

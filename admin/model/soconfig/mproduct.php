@@ -418,6 +418,10 @@ class ModelSoconfigMproduct extends Model {
 		if (!empty($data['filter_name'])) {
 			$sql .= " AND pd.name LIKE '" . $this->db->escape($data['filter_name']) . "%'";
 		}
+		
+		if (!empty($data['filter_product_id'])) {
+			$sql .= " AND p.product_id = '" . (int)$data['filter_product_id'] . "'";
+		}
 
 		if (!empty($data['filter_model'])) {
 			$sql .= " AND p.model LIKE '" . $this->db->escape($data['filter_model']) . "%'";
@@ -686,6 +690,10 @@ class ModelSoconfigMproduct extends Model {
 
 		if (!empty($data['filter_name'])) {
 			$sql .= " AND pd.name LIKE '" . $this->db->escape($data['filter_name']) . "%'";
+		}
+		
+		if (!empty($data['filter_product_id'])) {
+			$sql .= " AND p.product_id = '" . (int)$data['filter_product_id'] . "'";
 		}
 
 		if (!empty($data['filter_model'])) {

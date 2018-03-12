@@ -51,6 +51,7 @@
                   </span></div>
               </div>
               <button type="button" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-filter"></i> <?php echo $button_filter; ?></button>
+              <button type="button" id="button-filter-reset" class="btn btn-primary pull-right" style="margin-right:10px;"><i class="fa fa-refresh"></i> Reset</button>
             </div>
           </div>
         </div>
@@ -70,14 +71,14 @@
                     <?php } else { ?>
                     <a href="<?php echo $sort_code; ?>"><?php echo $column_code; ?></a>
                     <?php } ?></td>
-                  <td class="text-right"><?php echo $column_clicks; ?></td>
-                  <td class="text-right"><?php echo $column_orders; ?></td>
+                  <td class="text-left"><?php echo $column_clicks; ?></td>
+                  <td class="text-left"><?php echo $column_orders; ?></td>
                   <td class="text-left"><?php if ($sort == 'm.date_added') { ?>
                     <a href="<?php echo $sort_date_added; ?>" class="<?php echo strtolower($order); ?>"><?php echo $column_date_added; ?></a>
                     <?php } else { ?>
                     <a href="<?php echo $sort_date_added; ?>"><?php echo $column_date_added; ?></a>
                     <?php } ?></td>
-                  <td class="text-right"><?php echo $column_action; ?></td>
+                  <td class="text-left"><?php echo $column_action; ?></td>
                 </tr>
               </thead>
               <tbody>
@@ -91,10 +92,10 @@
                     <?php } ?></td>
                   <td class="text-left"><?php echo $marketing['name']; ?></td>
                   <td class="text-left"><?php echo $marketing['code']; ?></td>
-                  <td class="text-right"><?php echo $marketing['clicks']; ?></td>
-                  <td class="text-right"><?php echo $marketing['orders']; ?></td>
+                  <td class="text-left"><?php echo $marketing['clicks']; ?></td>
+                  <td class="text-left"><?php echo $marketing['orders']; ?></td>
                   <td class="text-left"><?php echo $marketing['date_added']; ?></td>
-                  <td class="text-right"><a href="<?php echo $marketing['edit']; ?>" data-toggle="tooltip" title="<?php echo $button_edit; ?>" class="btn btn-primary"><i class="fa fa-pencil"></i></a></td>
+                  <td class="text-left"><a href="<?php echo $marketing['edit']; ?>" data-toggle="tooltip" title="<?php echo $button_edit; ?>" class="btn btn-primary"><i class="fa fa-pencil"></i></a></td>
                 </tr>
                 <?php } ?>
                 <?php } else { ?>
@@ -142,5 +143,14 @@ $('#button-filter').on('click', function() {
 $('.date').datetimepicker({
 	pickTime: false
 });
-//--></script></div>
+//--></script>
+<script>
+$('#button-filter-reset').on('click', function() {
+	
+	var url = 'index.php?route=marketing/marketing&token=<?php echo $token; ?>';
+
+	location = url;
+});
+</script>
+</div>
 <?php echo $footer; ?>

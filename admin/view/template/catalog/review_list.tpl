@@ -34,18 +34,18 @@
             <div class="col-sm-6">
               <div class="form-group">
                 <label class="control-label" for="input-product"><?php echo $entry_product; ?></label>
-                <input type="text" name="filter_product" value="<?php echo $filter_product; ?>" placeholder="<?php echo $entry_product; ?>" id="input-product" class="form-control" />
+                <input type="text" name="filter_product" value="<?php echo $filter_product; ?>" placeholder="<?php echo $entry_product_default; ?>" id="input-product" class="form-control" />
               </div>
               <div class="form-group">
                 <label class="control-label" for="input-author"><?php echo $entry_author; ?></label>
-                <input type="text" name="filter_author" value="<?php echo $filter_author; ?>" placeholder="<?php echo $entry_author; ?>" id="input-author" class="form-control" />
+                <input type="text" name="filter_author" value="<?php echo $filter_author; ?>" placeholder="<?php echo $entry_author_default; ?>" id="input-author" class="form-control" />
               </div>
             </div>
             <div class="col-sm-6">
               <div class="form-group">
                 <label class="control-label" for="input-status"><?php echo $entry_status; ?></label>
                 <select name="filter_status" id="input-status" class="form-control">
-                  <option value="*"></option>
+                  <option value="*">Select Status</option>
                   <?php if ($filter_status) { ?>
                   <option value="1" selected="selected"><?php echo $text_enabled; ?></option>
                   <?php } else { ?>
@@ -67,6 +67,7 @@
                   </span></div>
               </div>
               <button type="button" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-filter"></i> <?php echo $button_filter; ?></button>
+              <button type="button" id="button-filter-reset" class="btn btn-primary pull-right" style="margin-right:10px;"><i class="fa fa-refresh"></i> Reset</button>
             </div>
           </div>
         </div>
@@ -76,7 +77,7 @@
               <thead>
                 <tr>
                   <td style="width: 1px;" class="text-center"><input type="checkbox" onclick="$('input[name*=\'selected\']').prop('checked', this.checked);" /></td>
-                  <td class="text-left"><?php if ($sort == 'pd.name') { ?>
+                  <td class="text-left" width="310"><?php if ($sort == 'pd.name') { ?>
                     <a href="<?php echo $sort_product; ?>" class="<?php echo strtolower($order); ?>"><?php echo $column_product; ?></a>
                     <?php } else { ?>
                     <a href="<?php echo $sort_product; ?>"><?php echo $column_product; ?></a>
@@ -172,5 +173,19 @@ $('#button-filter').on('click', function() {
 $('.date').datetimepicker({
 	pickTime: false
 });
-//--></script></div>
+//--></script>
+<script>
+$('#button-filter-reset').on('click', function() {
+	
+	var url = 'index.php?route=catalog/review&token=<?php echo $token; ?>';
+
+	location = url;
+});
+</script>
+<style>
+/*.table thead > tr > td {width:20%;}
+.table thead > tr > td:first-child {width:auto;}*/
+
+</style>
+</div>
 <?php echo $footer; ?>

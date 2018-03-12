@@ -4,7 +4,7 @@ $_['heading_title']         = 'Customer Orders Report';
 
 // Text
 $_['text_list']             = 'Customer Orders List';
-$_['text_all_status']       = 'All Statuses';
+$_['text_all_status']       = 'Select Status';
 
 // Column
 $_['column_customer']       = 'Customer Name';
@@ -17,7 +17,7 @@ $_['column_total']          = 'Total';
 $_['column_action']         = 'Action';
 
 // Entry
-$_['entry_date_start']      = 'Date Start';
-$_['entry_date_end']        = 'Date End';
-$_['entry_customer']		= 'Customer';
-$_['entry_status']          = 'Order Status';
+$_['entry_date_start']      = 'Date From';
+$_['entry_date_end']        = 'Date To';
+$_['entry_customer']		= 'Customer Name';
+$_['entry_status']          = 'Status';

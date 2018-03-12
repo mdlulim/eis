@@ -37,6 +37,14 @@ class ModelSaleReturn extends Model {
 		if (!empty($data['filter_customer'])) {
 			$implode[] = "CONCAT(r.firstname, ' ', r.lastname) LIKE '" . $this->db->escape($data['filter_customer']) . "%'";
 		}
+		
+		if (!empty($data['filter_customer_id'])) {
+			$implode[] = "r.customer_id = '" . (int)$data['filter_customer_id'] . "'";
+		}
+		
+		if (!empty($data['filter_product_id'])) {
+			$implode[] = "r.product_id = '" . (int)$data['filter_product_id'] . "'";
+		}
 
 		if (!empty($data['filter_product'])) {
 			$implode[] = "r.product = '" . $this->db->escape($data['filter_product']) . "'";
@@ -118,7 +126,15 @@ class ModelSaleReturn extends Model {
 		if (!empty($data['filter_order_id'])) {
 			$implode[] = "r.order_id = '" . $this->db->escape($data['filter_order_id']) . "'";
 		}
-
+		
+		if (!empty($data['filter_customer_id'])) {
+			$implode[] = "r.customer_id = '" . (int)$data['filter_customer_id'] . "'";
+		}
+		
+		if (!empty($data['filter_product_id'])) {
+			$implode[] = "r.product_id = '" . (int)$data['filter_product_id'] . "'";
+		}
+		
 		if (!empty($data['filter_product'])) {
 			$implode[] = "r.product = '" . $this->db->escape($data['filter_product']) . "'";
 		}

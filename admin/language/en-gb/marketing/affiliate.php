@@ -76,13 +76,15 @@ $_['error_cheque']              = 'Cheque Payee Name required!';
 $_['error_paypal']              = 'PayPal Email Address does not appear to be valid!';
 $_['error_bank_account_name']   = 'Account Name required!';
 $_['error_bank_account_number'] = 'Account Number required!';
-$_['error_telephone']           = 'Telephone must be between 3 and 32 characters!';
+$_['error_telephone']       = 'Telephone must be 10 characters Digits!';
 $_['error_password']            = 'Password must be between 4 and 20 characters!';
 $_['error_confirm']             = 'Password and password confirmation do not match!';
 $_['error_address_1']           = 'Address 1 must be between 3 and 128 characters!';
 $_['error_city']                = 'City must be between 2 and 128 characters!';
-$_['error_postcode']            = 'Postcode must be between 2 and 10 characters for this country!';
+$_['error_postcode']            = 'Postcode must be 4 Digits!';
 $_['error_country']             = 'Please select a country!';
 $_['error_zone']                = 'Please select a region / state!';
 $_['error_code']                = 'Tracking Code required!';
 $_['error_code_exists']         = 'Tracking code is being used by another affiliate!';
+
+$_['error_fax']       = 'Fax must be Digits!';

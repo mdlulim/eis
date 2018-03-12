@@ -2,7 +2,8 @@
 <div id="content">
   <div class="page-header">
     <div class="container-fluid">
-      <div class="pull-right"><a href="<?php echo $add; ?>" data-toggle="tooltip" title="<?php echo $button_add; ?>" class="btn btn-primary"><i class="fa fa-plus"></i></a> <a href="<?php echo $repair; ?>" data-toggle="tooltip" title="<?php echo $button_rebuild; ?>" class="btn btn-default"><i class="fa fa-refresh"></i></a>
+      <div class="pull-right"><a href="<?php echo $add; ?>" data-toggle="tooltip" title="<?php echo $button_add; ?>" class="btn btn-primary"><i class="fa fa-plus"></i></a> 
+      <!--<a href="<?php echo $repair; ?>" data-toggle="tooltip" title="<?php echo $button_rebuild; ?>" class="btn btn-default"><i class="fa fa-refresh"></i></a>-->
         <button type="button" data-toggle="tooltip" title="<?php echo $button_delete; ?>" class="btn btn-danger" onclick="confirm('<?php echo $text_confirm; ?>') ? $('#form-category').submit() : false;"><i class="fa fa-trash-o"></i></button>
       </div>
       <h1><?php echo $heading_title; ?></h1>
@@ -48,7 +49,8 @@
                 <label class="control-label" for="input-quantity"><?php echo $column_views; ?></label>
                 <input type="text" name="filter_view" value="<?php echo $filter_view; ?>" placeholder="<?php echo $column_views; ?>" id="filter_view" class="form-control" />
               </div>
-              <button type="button" id="button-filter" class="btn btn-primary pull-right" onclick="filter();"><i class="fa fa-search"></i> <?php echo $button_filter; ?></button>
+              <button type="button" id="button-filter" class="btn btn-primary pull-right" onclick="filter();"><i class="fa fa-filter"></i> <?php echo $button_filter; ?></button>
+              <button type="button" id="button-filter-reset" class="btn btn-primary pull-right" style="margin-right:10px;"><i class="fa fa-refresh"></i> Reset</button>
             </div>
           </div>
         </div>
@@ -58,13 +60,13 @@
               <thead>
                 <tr>
                   <td style="width: 1px;" class="text-center"><input type="checkbox" onclick="$('input[name*=\'selected\']').prop('checked', this.checked);" /></td>
-                  <td width="10"class="left"><?php echo $column_id; ?></td>
+                  <td width="100"class="left"><?php echo $column_id; ?></td>
                   <td class="text-left"><?php if ($sort == 'name') { ?>
                     <a href="<?php echo $sort_name; ?>" class="<?php echo strtolower($order); ?>"><?php echo $column_name; ?></a>
                     <?php } else { ?>
                     <a href="<?php echo $sort_name; ?>"><?php echo $column_name; ?></a>
                     <?php } ?></td>
-                  <td class="center"><?php echo $column_views; ?></td>
+                  <td class="center" width="100"><?php echo $column_views; ?></td>
                   <td class="text-right"><?php if ($sort == 'sort_order') { ?>
                     <a href="<?php echo $sort_sort_order; ?>" class="<?php echo strtolower($order); ?>"><?php echo $column_sort_order; ?></a>
                     <?php } else { ?>
@@ -211,5 +213,13 @@ function getproducts(id,name) {
 <link rel="stylesheet" type="text/css" href="view/stylesheet/catview.css">
 <script type="text/javascript">
 function handleSelect(a){$(".popupcontent").html("");$(".boxpopup").remove();$(".popupcontent").remove();console.log(a);getproducts(a.value,a.options[a.selectedIndex].text)}function CatSelect(b,a){CatAjax(b.value,a);if(b.value==1){$("tr."+a).removeClass("catdis")}else{$("tr."+a).addClass("catdis")}}function CatAjax(a,b){$.ajax({url:"index.php?route=catalog/category/setstatus&token=<?php echo $token; ?>&id="+b+"&value="+a,dataType:"json",success:function(c){console.log("status set")}})};
+</script>
+<script>
+$('#button-filter-reset').on('click', function() {
+	
+	var url = 'index.php?route=catalog/category&token=<?php echo $token; ?>';
+
+	location = url;
+});
 </script>
 <?php echo $footer; ?>

@@ -13,7 +13,7 @@
   <div class="container-fluid">
     <div class="panel panel-default">
       <div class="panel-heading">
-        <h3 class="panel-title"><i class="fa fa-bar-chart"></i> <?php echo $text_list; ?></h3>
+        <h3 class="panel-title"><i class="fa fa-list"></i> <?php echo $text_list; ?></h3>
       </div>
       <div class="panel-body">
         <div class="well">
@@ -38,6 +38,7 @@
                   </span></div>
               </div>
               <button type="button" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-filter"></i> <?php echo $button_filter; ?></button>
+               <button type="button" id="button-filter-reset" class="btn btn-primary pull-right" style="margin-right:10px;"><i class="fa fa-refresh"></i> Reset</button>
             </div>
           </div>
         </div>
@@ -47,9 +48,9 @@
               <tr>
                 <td class="text-left"><?php echo $column_name; ?></td>
                 <td class="text-left"><?php echo $column_code; ?></td>
-                <td class="text-right"><?php echo $column_orders; ?></td>
-                <td class="text-right"><?php echo $column_total; ?></td>
-                <td class="text-right"><?php echo $column_action; ?></td>
+                <td class="text-left"><?php echo $column_orders; ?></td>
+                <td class="text-left"><?php echo $column_total; ?></td>
+                <td class="text-left"><?php echo $column_action; ?></td>
               </tr>
             </thead>
             <tbody>
@@ -58,9 +59,9 @@
               <tr>
                 <td class="text-left"><?php echo $coupon['name']; ?></td>
                 <td class="text-left"><?php echo $coupon['code']; ?></td>
-                <td class="text-right"><?php echo $coupon['orders']; ?></td>
-                <td class="text-right"><?php echo $coupon['total']; ?></td>
-                <td class="text-right"><a href="<?php echo $coupon['edit']; ?>" data-toggle="tooltip" title="<?php echo $button_edit; ?>" class="btn btn-primary"><i class="fa fa-pencil"></i></a></td>
+                <td class="text-left"><?php echo $coupon['orders']; ?></td>
+                <td class="text-left"><?php echo $coupon['total']; ?></td>
+                <td class="text-left"><a href="<?php echo $coupon['edit']; ?>" data-toggle="tooltip" title="<?php echo $button_edit; ?>" class="btn btn-primary"><i class="fa fa-pencil"></i></a></td>
               </tr>
               <?php } ?>
               <?php } else { ?>
@@ -101,5 +102,14 @@ $('#button-filter').on('click', function() {
 $('.date').datetimepicker({
 	pickTime: false
 });
-//--></script> </div>
+//--></script> 
+<script>
+$('#button-filter-reset').on('click', function() {
+	
+	var url = 'index.php?route=report/sale_coupon&token=<?php echo $token; ?>';
+
+	location = url;
+});
+</script>
+</div>
 <?php echo $footer; ?>

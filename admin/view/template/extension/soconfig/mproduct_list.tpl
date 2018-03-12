@@ -35,11 +35,33 @@
             <div class="col-sm-4">
               <div class="form-group">
                 <label class="control-label" for="input-name"><?php echo $entry_name; ?></label>
-                <input type="text" name="filter_name" value="<?php echo $filter_name; ?>" placeholder="<?php echo $entry_name; ?>" id="input-name" class="form-control" />
+                <!--<input type="text" name="filter_name" value="<?php echo $filter_name; ?>" placeholder="<?php echo $entry_name; ?>" id="input-name" class="form-control" />-->
+                <select name="filter_product_id" class="form-control">
+                	<option value="">Select Product</option>
+                    <?php foreach ($Dropdownproducts as $Dproduct) {  ?>
+                <?php if ($Dproduct['product_id'] == $filter_product_id) { ?>
+                <option value="<?php echo $Dproduct['product_id']; ?>" selected="selected"><?php echo $Dproduct['name']; ?></option>
+                <?php } else { ?>
+                <option value="<?php echo $Dproduct['product_id']; ?>"><?php echo $Dproduct['name']; ?></option>
+                <?php } ?>
+                <?php } ?>
+                    
+                </select>
               </div>
               <div class="form-group">
                 <label class="control-label" for="input-model"><?php echo $entry_model; ?></label>
-                <input type="text" name="filter_model" value="<?php echo $filter_model; ?>" placeholder="<?php echo $entry_model; ?>" id="input-model" class="form-control" />
+                <!--<input type="text" name="filter_model" value="<?php echo $filter_model; ?>" placeholder="<?php echo $entry_model; ?>" id="input-model" class="form-control" />-->
+                <select name="filter_model" class="form-control">
+                	<option value="">Select Model</option>
+                    <?php foreach ($Dropdownmodels as $Dmodel) {  ?>
+                <?php if ($Dmodel['model'] == $filter_model) { ?>
+                <option value="<?php echo $Dmodel['model']; ?>" selected="selected"><?php echo $Dmodel['model']; ?></option>
+                <?php } else { ?>
+                <option value="<?php echo $Dmodel['model']; ?>"><?php echo $Dmodel['model']; ?></option>
+                <?php } ?>
+                <?php } ?>
+                    
+                </select>
               </div>
             </div>
             <div class="col-sm-4">
@@ -56,7 +78,7 @@
               <div class="form-group">
                 <label class="control-label" for="input-status"><?php echo $entry_status; ?></label>
                 <select name="filter_status" id="input-status" class="form-control">
-                  <option value="*"></option>
+                  <option value="*">Select Status</option>
                   <?php if ($filter_status) { ?>
                   <option value="1" selected="selected"><?php echo $text_enabled; ?></option>
                   <?php } else { ?>
@@ -70,6 +92,7 @@
                 </select>
               </div>
               <button type="button" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-search"></i> <?php echo $button_filter; ?></button>
+              <button type="button" id="button-filter-reset" class="btn btn-primary pull-right" style="margin-right:10px;"><i class="fa fa-refresh"></i> Reset</button>
             </div>
           </div>
         </div>
@@ -80,8 +103,8 @@
               <thead>
                 <tr>
                   <td style="width: 1px;" class="text-center"><input type="checkbox" onclick="$('input[name*=\'selected\']').prop('checked', this.checked);" /></td>
-                  <td class="text-center"> <?php echo $column_image; ?></td>
-                  <td class="text-left"><?php if ($sort == 'pd.name') { ?>
+                  <td class="text-center" width="70"> <?php echo $column_image; ?></td>
+                  <td class="text-left" width="330"><?php if ($sort == 'pd.name') { ?>
                     <a href="<?php echo $sort_name; ?>" class="<?php echo strtolower($order); ?>"><?php echo $column_name; ?></a>
                     <?php } else { ?>
                     <a href="<?php echo $sort_name; ?>"><?php echo $column_name; ?></a>
@@ -169,8 +192,20 @@ $('#button-filter').on('click', function() {
 	if (filter_name) {
 		url += '&filter_name=' + encodeURIComponent(filter_name);
 	}
+	
+	var filter_product_id = $('select[name=\'filter_product_id\']').val();
 
-	var filter_model = $('input[name=\'filter_model\']').val();
+	if (filter_product_id) {
+		url += '&filter_product_id=' + encodeURIComponent(filter_product_id);
+	}
+
+	/*var filter_model = $('input[name=\'filter_model\']').val();
+	
+	if (filter_model) {
+		url += '&filter_model=' + encodeURIComponent(filter_model);
+	}*/
+	
+	var filter_model = $('select[name=\'filter_model\']').val();
 
 	if (filter_model) {
 		url += '&filter_model=' + encodeURIComponent(filter_model);
@@ -196,6 +231,12 @@ $('#button-filter').on('click', function() {
 
 	location = url;
 });
+
+$('#button-filter-reset').on('click', function() {
+	url = 'index.php?route=catalog/mproduct&token=<?php echo $token; ?>';
+	location = url;
+});
+
 //--></script>
   <script type="text/javascript"><!--
 $('input[name=\'filter_name\']').autocomplete({

@@ -13,7 +13,7 @@
   <div class="container-fluid">
     <div class="panel panel-default">
       <div class="panel-heading">
-        <h3 class="panel-title"><i class="fa fa-bar-chart"></i> <?php echo $text_list; ?></h3>
+        <h3 class="panel-title"><i class="fa fa-list"></i> <?php echo $text_list; ?></h3>
       </div>
       <div class="panel-body">
         <div class="well">
@@ -51,6 +51,7 @@
                 </select>
               </div>
               <button type="button" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-filter"></i> <?php echo $button_filter; ?></button>
+               <button type="button" id="button-filter-reset" class="btn btn-primary pull-right" style="margin-right:10px;"><i class="fa fa-refresh"></i> Reset</button>
             </div>
           </div>
         </div>
@@ -60,8 +61,8 @@
               <tr>
                 <td class="text-left"><?php echo $column_name; ?></td>
                 <td class="text-left"><?php echo $column_model; ?></td>
-                <td class="text-right"><?php echo $column_quantity; ?></td>
-                <td class="text-right"><?php echo $column_total; ?></td>
+                <td class="text-left"><?php echo $column_quantity; ?></td>
+                <td class="text-left"><?php echo $column_total; ?></td>
               </tr>
             </thead>
             <tbody>
@@ -70,8 +71,8 @@
               <tr>
                 <td class="text-left"><?php echo $product['name']; ?></td>
                 <td class="text-left"><?php echo $product['model']; ?></td>
-                <td class="text-right"><?php echo $product['quantity']; ?></td>
-                <td class="text-right"><?php echo $product['total']; ?></td>
+                <td class="text-left"><?php echo $product['quantity']; ?></td>
+                <td class="text-left"><?php echo $product['total']; ?></td>
               </tr>
               <?php } ?>
               <?php } else { ?>
@@ -118,6 +119,14 @@ $('#button-filter').on('click', function() {
 $('.date').datetimepicker({
 	pickTime: false
 });
-//--></script> 
+//--></script>
+<script>
+$('#button-filter-reset').on('click', function() {
+	
+	var url = 'index.php?route=report/product_purchased&token=<?php echo $token; ?>';
+
+	location = url;
+});
+</script> 
 </div>
 <?php echo $footer; ?>

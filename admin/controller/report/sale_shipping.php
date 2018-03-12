@@ -20,7 +20,7 @@ class ControllerReportSaleShipping extends Controller {
 		if (isset($this->request->get['filter_group'])) {
 			$filter_group = $this->request->get['filter_group'];
 		} else {
-			$filter_group = 'week';
+			$filter_group = '';
 		}
 
 		if (isset($this->request->get['filter_order_status_id'])) {

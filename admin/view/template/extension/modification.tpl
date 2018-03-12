@@ -38,6 +38,114 @@
         </ul>
         <div class="tab-content">
           <div class="tab-pane active" id="tab-general">
+          
+          	<div class="well">
+          <div class="row">
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label class="control-label" for="input-name">Modification Name</label>
+                <!--<input type="text" name="filter_sales_rep_name" value="<?php echo $filter_sales_rep_name; ?>" placeholder="Sales Rep Name" id="input-name" class="form-control" />-->
+                <select name="filter_modification_id" class="form-control">
+                	<option value="">Select Modification Name</option>
+                    <?php foreach ($Dropdownmodification as $Dmodification) {  ?>
+                <?php if ($Dmodification['modification_id'] == $filter_modification_id) { ?>
+                <option value="<?php echo $Dmodification['modification_id']; ?>" selected="selected"><?php echo $Dmodification['name']; ?></option>
+                <?php } else { ?>
+                <option value="<?php echo $Dmodification['modification_id']; ?>"><?php echo $Dmodification['name']; ?></option>
+                <?php } ?>
+                <?php } ?>
+                    
+                </select>
+              </div>
+              
+              <div class="form-group">
+                <label class="control-label" for="input-price">Author Name</label>
+                <select name="filter_author_name" class="form-control">
+                	<option value="">Select Author Name</option>
+                    <?php foreach ($DropdownAuthors as $DAuthor) {  ?>
+                <?php if ($DAuthor['author'] == $filter_author_name) { ?>
+                <option value="<?php echo $DAuthor['author']; ?>" selected="selected"><?php echo $DAuthor['author']; ?></option>
+                <?php } else { ?>
+                <option value="<?php echo $DAuthor['author']; ?>"><?php echo $DAuthor['author']; ?></option>
+                <?php } ?>
+                <?php } ?>
+                    
+                </select>
+              </div>
+            </div>
+            <div class="col-sm-4">
+              
+              <div class="form-group">
+                <label class="control-label" for="input-price">Version</label>
+                <select name="filter_version" class="form-control">
+                	<option value="">Select Version</option>
+                    <?php foreach ($DropdownVersions as $DVersion) {  ?>
+                <?php if ($DVersion['version'] == $filter_version) { ?>
+                <option value="<?php echo $DVersion['version']; ?>" selected="selected"><?php echo $DVersion['version']; ?></option>
+                <?php } else { ?>
+                <option value="<?php echo $DVersion['version']; ?>"><?php echo $DVersion['version']; ?></option>
+                <?php } ?>
+                <?php } ?>
+                    
+                </select>
+              </div>
+              
+              <div class="form-group">
+                <label class="control-label" for="input-price">Status</label>
+                <select name="filter_status" id="input-status" class="form-control">
+                  <option value="*"> Select Status</option>
+                  <?php if ($filter_status) { ?>
+                  <option value="1" selected="selected"><?php echo $text_enabled; ?></option>
+                  <?php } else { ?>
+                  <option value="1"><?php echo $text_enabled; ?></option>
+                  <?php } ?>
+                  <?php if (!$filter_status && !is_null($filter_status)) { ?>
+                  <option value="0" selected="selected"><?php echo $text_disabled; ?></option>
+                  <?php } else { ?>
+                  <option value="0"><?php echo $text_disabled; ?></option>
+                  <?php } ?>
+                </select>
+              </div>
+              
+              
+            </div>
+            
+            <div class="col-sm-4" style="margin-bottom:10px;">
+              
+              <div class="form-group dateadded">
+                <label class="control-label" for="input-model">Date Added</label>
+                
+                <div class='input-group date' id='filter_date_added'>
+                    <input name="filter_date_added" type='text' value="<?php echo $filter_date_added; ?>"  placeholder="Date Added" class="form-control" data-date-format="DD-MM-YYYY" class="form-control"  />
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+           <style>
+		   .glyphicon-calendar:before {content: "\e109" !important; }
+		   </style>
+            	<script type="text/javascript">
+            $(function () {
+                $('#filter_date_added').datetimepicker({
+                     //defaultDate: new Date(),
+					pickTime: false
+                });
+            });
+        </script>  
+               
+              </div>
+              
+              <div class="form-group">
+            	<button type="button" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-filter"></i> Filter</button>
+            	<button type="button" id="button-filter-reset" class="btn btn-primary pull-right" style="margin-right:10px;"><i class="fa fa-refresh"></i> Reset</button>
+            </div>
+              
+            </div>
+            
+          </div>
+           
+        </div>
+          
             <form action="<?php echo $delete; ?>" method="post" enctype="multipart/form-data" id="form-modification">
               <div class="table-responsive">
                 <table class="table table-bordered table-hover">
@@ -123,4 +231,48 @@
     </div>
   </div>
 </div>
+<script type="text/javascript"><!--
+$('#button-filter').on('click', function() {
+	var url = 'index.php?route=extension/modification&token=<?php echo $token; ?>';
+
+	var filter_modification_id = $('select[name=\'filter_modification_id\']').val();
+
+	if (filter_modification_id) {
+		url += '&filter_modification_id=' + encodeURIComponent(filter_modification_id);
+	}
+	
+	var filter_author_name = $('select[name=\'filter_author_name\']').val();
+
+	if (filter_author_name) {
+		url += '&filter_author_name=' + encodeURIComponent(filter_author_name);
+	}
+	
+	var filter_version = $('select[name=\'filter_version\']').val();
+
+	if (filter_version) {
+		url += '&filter_version=' + encodeURIComponent(filter_version);
+	}
+
+	var filter_status = $('select[name=\'filter_status\']').val();
+
+	if (filter_status != '*') {
+		url += '&filter_status=' + encodeURIComponent(filter_status);
+	}
+	
+	var filter_date_added = $('input[name=\'filter_date_added\']').val();
+	
+	if (filter_date_added) {
+		url += '&filter_date_added=' + encodeURIComponent(filter_date_added);
+	}
+	
+//alert(url);
+	location = url;
+});
+$('#button-filter-reset').on('click', function() {
+	
+	var url = 'index.php?route=extension/modification&token=<?php echo $token; ?>';
+	
+	location = url;
+});
+//--></script>
 <?php echo $footer; ?>

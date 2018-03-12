@@ -33,6 +33,26 @@ class ControllerExtensionModification extends Controller {
 
 			$url = '';
 
+			if (isset($this->request->get['filter_modification_id'])) {
+				$url .= '&filter_modification_id=' . $this->request->get['filter_modification_id'];
+			}
+			
+			if (isset($this->request->get['filter_author_name'])) {
+				$url .= '&filter_author_name=' . $this->request->get['filter_author_name'];
+			}
+			
+			if (isset($this->request->get['filter_version'])) {
+				$url .= '&filter_version=' . $this->request->get['filter_version'];
+			}
+			
+			if (isset($this->request->get['filter_status'])) {
+				$url .= '&filter_status=' . $this->request->get['filter_status'];
+			}
+			
+			if (isset($this->request->get['filter_date_added'])) {
+				$url .= '&filter_date_added=' . $this->request->get['filter_date_added'];
+			}
+		
 			if (isset($this->request->get['sort'])) {
 				$url .= '&sort=' . $this->request->get['sort'];
 			}
@@ -429,6 +449,26 @@ class ControllerExtensionModification extends Controller {
 
 			$url = '';
 
+			if (isset($this->request->get['filter_modification_id'])) {
+				$url .= '&filter_modification_id=' . $this->request->get['filter_modification_id'];
+			}
+			
+			if (isset($this->request->get['filter_author_name'])) {
+				$url .= '&filter_author_name=' . $this->request->get['filter_author_name'];
+			}
+			
+			if (isset($this->request->get['filter_version'])) {
+				$url .= '&filter_version=' . $this->request->get['filter_version'];
+			}
+			
+			if (isset($this->request->get['filter_status'])) {
+				$url .= '&filter_status=' . $this->request->get['filter_status'];
+			}
+			
+			if (isset($this->request->get['filter_date_added'])) {
+				$url .= '&filter_date_added=' . $this->request->get['filter_date_added'];
+			}
+			
 			if (isset($this->request->get['sort'])) {
 				$url .= '&sort=' . $this->request->get['sort'];
 			}
@@ -496,6 +536,26 @@ class ControllerExtensionModification extends Controller {
 
 			$url = '';
 
+			if (isset($this->request->get['filter_modification_id'])) {
+				$url .= '&filter_modification_id=' . $this->request->get['filter_modification_id'];
+			}
+			
+			if (isset($this->request->get['filter_author_name'])) {
+				$url .= '&filter_author_name=' . $this->request->get['filter_author_name'];
+			}
+			
+			if (isset($this->request->get['filter_version'])) {
+				$url .= '&filter_version=' . $this->request->get['filter_version'];
+			}
+			
+			if (isset($this->request->get['filter_status'])) {
+				$url .= '&filter_status=' . $this->request->get['filter_status'];
+			}
+			
+			if (isset($this->request->get['filter_date_added'])) {
+				$url .= '&filter_date_added=' . $this->request->get['filter_date_added'];
+			}
+			
 			if (isset($this->request->get['sort'])) {
 				$url .= '&sort=' . $this->request->get['sort'];
 			}
@@ -528,6 +588,26 @@ class ControllerExtensionModification extends Controller {
 
 			$url = '';
 
+			if (isset($this->request->get['filter_modification_id'])) {
+				$url .= '&filter_modification_id=' . $this->request->get['filter_modification_id'];
+			}
+			
+			if (isset($this->request->get['filter_author_name'])) {
+				$url .= '&filter_author_name=' . $this->request->get['filter_author_name'];
+			}
+			
+			if (isset($this->request->get['filter_version'])) {
+				$url .= '&filter_version=' . $this->request->get['filter_version'];
+			}
+			
+			if (isset($this->request->get['filter_status'])) {
+				$url .= '&filter_status=' . $this->request->get['filter_status'];
+			}
+			
+			if (isset($this->request->get['filter_date_added'])) {
+				$url .= '&filter_date_added=' . $this->request->get['filter_date_added'];
+			}
+			
 			if (isset($this->request->get['sort'])) {
 				$url .= '&sort=' . $this->request->get['sort'];
 			}
@@ -560,6 +640,26 @@ class ControllerExtensionModification extends Controller {
 
 			$url = '';
 
+			if (isset($this->request->get['filter_modification_id'])) {
+				$url .= '&filter_modification_id=' . $this->request->get['filter_modification_id'];
+			}
+			
+			if (isset($this->request->get['filter_author_name'])) {
+				$url .= '&filter_author_name=' . $this->request->get['filter_author_name'];
+			}
+			
+			if (isset($this->request->get['filter_version'])) {
+				$url .= '&filter_version=' . $this->request->get['filter_version'];
+			}
+			
+			if (isset($this->request->get['filter_status'])) {
+				$url .= '&filter_status=' . $this->request->get['filter_status'];
+			}
+			
+			if (isset($this->request->get['filter_date_added'])) {
+				$url .= '&filter_date_added=' . $this->request->get['filter_date_added'];
+			}
+			
 			if (isset($this->request->get['sort'])) {
 				$url .= '&sort=' . $this->request->get['sort'];
 			}
@@ -590,6 +690,26 @@ class ControllerExtensionModification extends Controller {
 
 			$url = '';
 
+			if (isset($this->request->get['filter_modification_id'])) {
+				$url .= '&filter_modification_id=' . $this->request->get['filter_modification_id'];
+			}
+			
+			if (isset($this->request->get['filter_author_name'])) {
+				$url .= '&filter_author_name=' . $this->request->get['filter_author_name'];
+			}
+			
+			if (isset($this->request->get['filter_version'])) {
+				$url .= '&filter_version=' . $this->request->get['filter_version'];
+			}
+			
+			if (isset($this->request->get['filter_status'])) {
+				$url .= '&filter_status=' . $this->request->get['filter_status'];
+			}
+			
+			if (isset($this->request->get['filter_date_added'])) {
+				$url .= '&filter_date_added=' . $this->request->get['filter_date_added'];
+			}
+			
 			if (isset($this->request->get['sort'])) {
 				$url .= '&sort=' . $this->request->get['sort'];
 			}
@@ -609,6 +729,37 @@ class ControllerExtensionModification extends Controller {
 	}
 
 	protected function getList() {
+		
+		if (isset($this->request->get['filter_modification_id'])) {
+			$filter_modification_id = $this->request->get['filter_modification_id'];
+		} else {
+			$filter_modification_id = null;
+		}
+		
+		if (isset($this->request->get['filter_author_name'])) {
+			$filter_author_name = $this->request->get['filter_author_name'];
+		} else {
+			$filter_author_name = null;
+		}
+		
+		if (isset($this->request->get['filter_version'])) {
+			$filter_version = $this->request->get['filter_version'];
+		} else {
+			$filter_version = null;
+		}
+		
+		if (isset($this->request->get['filter_status'])) {
+			$filter_status = $this->request->get['filter_status'];
+		} else {
+			$filter_status = null;
+		}
+		
+		if (isset($this->request->get['filter_date_added'])) {
+			$filter_date_added = $this->request->get['filter_date_added'];
+		} else {
+			$filter_date_added = null;
+		}
+		
 		if (isset($this->request->get['sort'])) {
 			$sort = $this->request->get['sort'];
 		} else {
@@ -629,6 +780,26 @@ class ControllerExtensionModification extends Controller {
 
 		$url = '';
 
+		if (isset($this->request->get['filter_modification_id'])) {
+			$url .= '&filter_modification_id=' . $this->request->get['filter_modification_id'];
+		}
+		
+		if (isset($this->request->get['filter_author_name'])) {
+			$url .= '&filter_author_name=' . $this->request->get['filter_author_name'];
+		}
+		
+		if (isset($this->request->get['filter_version'])) {
+			$url .= '&filter_version=' . $this->request->get['filter_version'];
+		}
+		
+		if (isset($this->request->get['filter_status'])) {
+			$url .= '&filter_status=' . $this->request->get['filter_status'];
+		}
+		
+		if (isset($this->request->get['filter_date_added'])) {
+			$url .= '&filter_date_added=' . $this->request->get['filter_date_added'];
+		}
+		
 		if (isset($this->request->get['sort'])) {
 			$url .= '&sort=' . $this->request->get['sort'];
 		}
@@ -660,16 +831,21 @@ class ControllerExtensionModification extends Controller {
 		$data['modifications'] = array();
 
 		$filter_data = array(
+			'filter_modification_id'  => $filter_modification_id,
+			'filter_author_name'  => $filter_author_name,
+			'filter_version'  => $filter_version,
+			'filter_status'  => $filter_status,
+			'filter_date_added'  => $filter_date_added,
 			'sort'  => $sort,
 			'order' => $order,
 			'start' => ($page - 1) * $this->config->get('config_limit_admin'),
 			'limit' => $this->config->get('config_limit_admin')
 		);
 
-		$modification_total = $this->model_extension_modification->getTotalModifications();
+		$modification_total = $this->model_extension_modification->getTotalModifications($filter_data);
 
 		$results = $this->model_extension_modification->getModifications($filter_data);
-
+//print_r($results); exit;
 		foreach ($results as $result) {
 			$data['modifications'][] = array(
 				'modification_id' => $result['modification_id'],
@@ -684,6 +860,10 @@ class ControllerExtensionModification extends Controller {
 				'enabled'         => $result['status']
 			);
 		}
+		
+		$data['Dropdownmodification'] = $this->model_extension_modification->getModifications();
+		$data['DropdownAuthors'] = $this->model_extension_modification->getModificationsByGroup('author');
+		$data['DropdownVersions'] = $this->model_extension_modification->getModificationsByGroup('version');
 
 		$data['heading_title'] = $this->language->get('heading_title');
 
@@ -691,6 +871,8 @@ class ControllerExtensionModification extends Controller {
 		$data['text_no_results'] = $this->language->get('text_no_results');
 		$data['text_confirm'] = $this->language->get('text_confirm');
 		$data['text_refresh'] = $this->language->get('text_refresh');
+		$data['text_enabled'] = $this->language->get('text_enabled');
+		$data['text_disabled'] = $this->language->get('text_disabled');
 
 		$data['column_name'] = $this->language->get('column_name');
 		$data['column_author'] = $this->language->get('column_author');
@@ -750,7 +932,27 @@ class ControllerExtensionModification extends Controller {
 		$data['sort_date_added'] = $this->url->link('extension/modification', 'token=' . $this->session->data['token'] . '&sort=date_added' . $url, true);
 
 		$url = '';
-
+		
+		if (isset($this->request->get['filter_modification_id'])) {
+			$url .= '&filter_modification_id=' . $this->request->get['filter_modification_id'];
+		}
+		
+		if (isset($this->request->get['filter_author_name'])) {
+			$url .= '&filter_author_name=' . $this->request->get['filter_author_name'];
+		}
+		
+		if (isset($this->request->get['filter_version'])) {
+			$url .= '&filter_version=' . $this->request->get['filter_version'];
+		}
+		
+		if (isset($this->request->get['filter_status'])) {
+			$url .= '&filter_status=' . $this->request->get['filter_status'];
+		}
+		
+		if (isset($this->request->get['filter_date_added'])) {
+			$url .= '&filter_date_added=' . $this->request->get['filter_date_added'];
+		}
+		
 		if (isset($this->request->get['sort'])) {
 			$url .= '&sort=' . $this->request->get['sort'];
 		}
@@ -769,6 +971,11 @@ class ControllerExtensionModification extends Controller {
 
 		$data['results'] = sprintf($this->language->get('text_pagination'), ($modification_total) ? (($page - 1) * $this->config->get('config_limit_admin')) + 1 : 0, ((($page - 1) * $this->config->get('config_limit_admin')) > ($modification_total - $this->config->get('config_limit_admin'))) ? $modification_total : ((($page - 1) * $this->config->get('config_limit_admin')) + $this->config->get('config_limit_admin')), $modification_total, ceil($modification_total / $this->config->get('config_limit_admin')));
 
+		$data['filter_modification_id'] = $filter_modification_id;
+		$data['filter_author_name'] = $filter_author_name;
+		$data['filter_status'] = $filter_status;
+		$data['filter_status'] = $filter_status;
+		$data['filter_date_added'] = $filter_date_added;
 		$data['sort'] = $sort;
 		$data['order'] = $order;
 

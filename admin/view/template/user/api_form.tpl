@@ -76,7 +76,7 @@
                   <thead>
                     <tr>
                       <td class="text-left"><?php echo $entry_ip; ?></td>
-                      <td class="text-left"></td>
+                      <td class="text-left">Action</td>
                     </tr>
                   </thead>
                   <tbody>

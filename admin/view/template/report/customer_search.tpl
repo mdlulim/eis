@@ -13,7 +13,7 @@
   <div class="container-fluid">
     <div class="panel panel-default">
       <div class="panel-heading">
-        <h3 class="panel-title"><i class="fa fa-bar-chart"></i> <?php echo $text_list; ?></h3>
+        <h3 class="panel-title"><i class="fa fa-list"></i> <?php echo $text_list; ?></h3>
       </div>
       <div class="panel-body">
         <div class="well">
@@ -29,7 +29,18 @@
               </div>
               <div class="form-group">
                 <label class="control-label" for="input-customer"><?php echo $entry_customer; ?></label>
-                <input type="text" name="filter_customer" value="<?php echo $filter_customer; ?>" placeholder="<?php echo $entry_customer; ?>" id="input-customer" class="form-control" />
+                <!--<input type="text" name="filter_customer" value="<?php echo $filter_customer; ?>" placeholder="<?php echo $entry_customer; ?>" id="input-customer" class="form-control" />-->
+                <select name="filter_customer_id" class="form-control">
+                	<option value="">Select Customer Name</option>
+                    <?php foreach ($Dropdowncustomers as $Dcustomer) {  ?>
+                <?php if ($Dcustomer['customer_id'] == $filter_customer_id) { ?>
+                <option value="<?php echo $Dcustomer['customer_id']; ?>" selected="selected"><?php echo $Dcustomer['firstname']; ?></option>
+                <?php } else { ?>
+                <option value="<?php echo $Dcustomer['customer_id']; ?>"><?php echo $Dcustomer['firstname']; ?></option>
+                <?php } ?>
+                <?php } ?>
+                    
+                </select>
               </div>
             </div>
             <div class="col-sm-4">
@@ -52,6 +63,7 @@
                 <input type="text" name="filter_keyword" value="<?php echo $filter_keyword; ?>" placeholder="<?php echo $entry_keyword; ?>" id="input-keyword" class="form-control" />
               </div>
               <button type="button" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-filter"></i> <?php echo $button_filter; ?></button>
+              <button type="button" id="button-filter-reset" class="btn btn-primary pull-right" style="margin-right:10px;"><i class="fa fa-refresh"></i> Reset</button>
             </div>
           </div>
         </div>
@@ -121,6 +133,12 @@ $('#button-filter').on('click', function() {
 	if (filter_customer) {
 		url += '&filter_customer=' + encodeURIComponent(filter_customer);
 	}
+	
+	var filter_customer_id = $('select[name=\'filter_customer_id\']').val();
+
+	if (filter_customer_id) {
+		url += '&filter_customer_id=' + encodeURIComponent(filter_customer_id);
+	}
 
 	var filter_ip = $('input[name=\'filter_ip\']').val();
 
@@ -156,5 +174,15 @@ $('input[name=\'filter_customer\']').autocomplete({
     $('input[name=\'filter_customer\']').val(item['label']);
   }
 });
-//--></script></div>
+//--></script>
+<script>
+$('#button-filter-reset').on('click', function() {
+	
+	var url = 'index.php?route=report/customer_search&token=<?php echo $token; ?>';
+
+	location = url;
+});
+</script> 
+
+</div>
 <?php echo $footer; ?>

@@ -39,6 +39,10 @@ class ModelCatalogAttribute extends Model {
 		if (!empty($data['filter_name'])) {
 			$sql .= " AND ad.name LIKE '" . $this->db->escape($data['filter_name']) . "%'";
 		}
+		
+		if (!empty($data['filter_attribute_id'])) {
+			$sql .= " AND a.attribute_id = '" . $this->db->escape($data['filter_attribute_id']) . "'";
+		}
 
 		if (!empty($data['filter_attribute_group_id'])) {
 			$sql .= " AND a.attribute_group_id = '" . $this->db->escape($data['filter_attribute_group_id']) . "'";
@@ -91,8 +95,19 @@ class ModelCatalogAttribute extends Model {
 		return $attribute_data;
 	}
 
-	public function getTotalAttributes() {
-		$query = $this->db->query("SELECT COUNT(*) AS total FROM " . DB_PREFIX . "attribute");
+	public function getTotalAttributes($data = array()) {
+		$sql = "SELECT COUNT(*) AS total FROM " . DB_PREFIX . "attribute as a";
+		$sql .= " where a.attribute_id > '0'";
+		
+		if (!empty($data['filter_attribute_id'])) {
+			$sql .= " AND a.attribute_id = '" . $this->db->escape($data['filter_attribute_id']) . "'";
+		}
+
+		if (!empty($data['filter_attribute_group_id'])) {
+			$sql .= " AND a.attribute_group_id = '" . $this->db->escape($data['filter_attribute_group_id']) . "'";
+		}
+		
+		$query = $this->db->query($sql);
 
 		return $query->row['total'];
 	}

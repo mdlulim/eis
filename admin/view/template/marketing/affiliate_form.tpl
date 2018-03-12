@@ -66,7 +66,7 @@
                 <div class="form-group required">
                   <label class="col-sm-2 control-label" for="input-telephone"><?php echo $entry_telephone; ?></label>
                   <div class="col-sm-10">
-                    <input type="text" name="telephone" value="<?php echo $telephone; ?>" placeholder="<?php echo $entry_telephone; ?>" id="input-telephone" class="form-control" />
+                    <input type="text" name="telephone" maxlength="10" value="<?php echo $telephone; ?>" placeholder="<?php echo $entry_telephone; ?>" id="input-telephone" class="form-control" />
                     <?php if ($error_telephone) { ?>
                     <div class="text-danger"><?php echo $error_telephone; ?></div>
                     <?php  } ?>
@@ -76,6 +76,9 @@
                   <label class="col-sm-2 control-label" for="input-fax"><?php echo $entry_fax; ?></label>
                   <div class="col-sm-10">
                     <input type="text" name="fax" value="<?php echo $fax; ?>" placeholder="<?php echo $entry_fax; ?>" id="input-fax" class="form-control" />
+                    <?php if ($error_fax) { ?>
+                    <div class="text-danger"><?php echo $error_fax; ?></div>
+                    <?php  } ?>
                   </div>
                 </div>
                 <div class="form-group required">
@@ -161,7 +164,7 @@
                 <div class="form-group required">
                   <label class="col-sm-2 control-label" for="input-postcode"><?php echo $entry_postcode; ?></label>
                   <div class="col-sm-10">
-                    <input type="text" name="postcode" value="<?php echo $postcode; ?>" placeholder="<?php echo $entry_postcode; ?>" id="input-postcode" class="form-control" />
+                    <input type="text" name="postcode" maxlength="4" value="<?php echo $postcode; ?>" placeholder="<?php echo $entry_postcode; ?>" id="input-postcode" class="form-control" />
                     <?php if ($error_postcode) { ?>
                     <div class="text-danger"><?php echo $error_postcode; ?></div>
                     <?php  } ?>

@@ -33,6 +33,14 @@ class ControllerSaleReturn extends Controller {
 			if (isset($this->request->get['filter_order_id'])) {
 				$url .= '&filter_order_id=' . $this->request->get['filter_order_id'];
 			}
+			
+			if (isset($this->request->get['filter_customer_id'])) {
+			$url .= '&filter_customer_id=' . $this->request->get['filter_customer_id'];
+			}
+			
+			if (isset($this->request->get['filter_product_id'])) {
+				$url .= '&filter_product_id=' . $this->request->get['filter_product_id'];
+			}
 
 			if (isset($this->request->get['filter_customer'])) {
 				$url .= '&filter_customer=' . urlencode(html_entity_decode($this->request->get['filter_customer'], ENT_QUOTES, 'UTF-8'));
@@ -96,6 +104,14 @@ class ControllerSaleReturn extends Controller {
 
 			if (isset($this->request->get['filter_order_id'])) {
 				$url .= '&filter_order_id=' . $this->request->get['filter_order_id'];
+			}
+			
+			if (isset($this->request->get['filter_customer_id'])) {
+				$url .= '&filter_customer_id=' . $this->request->get['filter_customer_id'];
+			}
+			
+			if (isset($this->request->get['filter_product_id'])) {
+				$url .= '&filter_product_id=' . $this->request->get['filter_product_id'];
 			}
 
 			if (isset($this->request->get['filter_customer'])) {
@@ -163,6 +179,14 @@ class ControllerSaleReturn extends Controller {
 			if (isset($this->request->get['filter_order_id'])) {
 				$url .= '&filter_order_id=' . $this->request->get['filter_order_id'];
 			}
+			
+			if (isset($this->request->get['filter_customer_id'])) {
+				$url .= '&filter_customer_id=' . $this->request->get['filter_customer_id'];
+			}
+			
+			if (isset($this->request->get['filter_product_id'])) {
+				$url .= '&filter_product_id=' . $this->request->get['filter_product_id'];
+			}
 
 			if (isset($this->request->get['filter_customer'])) {
 				$url .= '&filter_customer=' . urlencode(html_entity_decode($this->request->get['filter_customer'], ENT_QUOTES, 'UTF-8'));
@@ -224,6 +248,18 @@ class ControllerSaleReturn extends Controller {
 		} else {
 			$filter_customer = null;
 		}
+		
+		if (isset($this->request->get['filter_customer_id'])) {
+			$filter_customer_id = $this->request->get['filter_customer_id'];
+		} else {
+			$filter_customer_id = null;
+		}
+		
+		if (isset($this->request->get['filter_product_id'])) {
+			$filter_product_id = $this->request->get['filter_product_id'];
+		} else {
+			$filter_product_id = null;
+		}
 
 		if (isset($this->request->get['filter_product'])) {
 			$filter_product = $this->request->get['filter_product'];
@@ -282,6 +318,14 @@ class ControllerSaleReturn extends Controller {
 		if (isset($this->request->get['filter_order_id'])) {
 			$url .= '&filter_order_id=' . $this->request->get['filter_order_id'];
 		}
+		
+		if (isset($this->request->get['filter_customer_id'])) {
+			$url .= '&filter_customer_id=' . $this->request->get['filter_customer_id'];
+		}
+		
+		if (isset($this->request->get['filter_product_id'])) {
+			$url .= '&filter_product_id=' . $this->request->get['filter_product_id'];
+		}
 
 		if (isset($this->request->get['filter_customer'])) {
 			$url .= '&filter_customer=' . urlencode(html_entity_decode($this->request->get['filter_customer'], ENT_QUOTES, 'UTF-8'));
@@ -339,6 +383,8 @@ class ControllerSaleReturn extends Controller {
 		$filter_data = array(
 			'filter_return_id'        => $filter_return_id,
 			'filter_order_id'         => $filter_order_id,
+			'filter_customer_id'      => $filter_customer_id,
+			'filter_product_id'       => $filter_product_id,
 			'filter_customer'         => $filter_customer,
 			'filter_product'          => $filter_product,
 			'filter_model'            => $filter_model,
@@ -368,7 +414,14 @@ class ControllerSaleReturn extends Controller {
 				'edit'          => $this->url->link('sale/return/edit', 'token=' . $this->session->data['token'] . '&return_id=' . $result['return_id'] . $url, true)
 			);
 		}
-
+		
+		$this->load->model('customer/customer');
+		$data['customers'] = $this->model_customer_customer->getCustomers();
+		
+		$this->load->model('catalog/product');
+		$data['products'] = $this->model_catalog_product->getProducts();
+		$data['models'] = $this->model_catalog_product->getProductsModel();
+		
 		$data['heading_title'] = $this->language->get('heading_title');
 
 		$data['text_list'] = $this->language->get('text_list');
@@ -389,8 +442,11 @@ class ControllerSaleReturn extends Controller {
 		$data['entry_return_id'] = $this->language->get('entry_return_id');
 		$data['entry_order_id'] = $this->language->get('entry_order_id');
 		$data['entry_customer'] = $this->language->get('entry_customer');
+		$data['entry_customer_default'] = $this->language->get('entry_customer_default');
 		$data['entry_product'] = $this->language->get('entry_product');
+		$data['entry_product_default'] = $this->language->get('entry_product_default');
 		$data['entry_model'] = $this->language->get('entry_model');
+		$data['entry_model_default'] = $this->language->get('entry_model_default');
 		$data['entry_return_status'] = $this->language->get('entry_return_status');
 		$data['entry_date_added'] = $this->language->get('entry_date_added');
 		$data['entry_date_modified'] = $this->language->get('entry_date_modified');
@@ -434,6 +490,14 @@ class ControllerSaleReturn extends Controller {
 
 		if (isset($this->request->get['filter_order_id'])) {
 			$url .= '&filter_order_id=' . $this->request->get['filter_order_id'];
+		}
+		
+		if (isset($this->request->get['filter_customer_id'])) {
+			$url .= '&filter_customer_id=' . $this->request->get['filter_customer_id'];
+		}
+		
+		if (isset($this->request->get['filter_product_id'])) {
+			$url .= '&filter_product_id=' . $this->request->get['filter_product_id'];
 		}
 
 		if (isset($this->request->get['filter_customer'])) {
@@ -488,6 +552,14 @@ class ControllerSaleReturn extends Controller {
 		if (isset($this->request->get['filter_order_id'])) {
 			$url .= '&filter_order_id=' . $this->request->get['filter_order_id'];
 		}
+		
+		if (isset($this->request->get['filter_customer_id'])) {
+			$url .= '&filter_customer_id=' . $this->request->get['filter_customer_id'];
+		}
+		
+		if (isset($this->request->get['filter_product_id'])) {
+			$url .= '&filter_product_id=' . $this->request->get['filter_product_id'];
+		}
 
 		if (isset($this->request->get['filter_customer'])) {
 			$url .= '&filter_customer=' . urlencode(html_entity_decode($this->request->get['filter_customer'], ENT_QUOTES, 'UTF-8'));
@@ -534,6 +606,8 @@ class ControllerSaleReturn extends Controller {
 		$data['filter_return_id'] = $filter_return_id;
 		$data['filter_order_id'] = $filter_order_id;
 		$data['filter_customer'] = $filter_customer;
+		$data['filter_customer_id'] = $filter_customer_id;
+		$data['filter_product_id'] = $filter_product_id;
 		$data['filter_product'] = $filter_product;
 		$data['filter_model'] = $filter_model;
 		$data['filter_return_status_id'] = $filter_return_status_id;
@@ -567,6 +641,7 @@ class ControllerSaleReturn extends Controller {
 		$data['text_loading'] = $this->language->get('text_loading');
 
 		$data['entry_customer'] = $this->language->get('entry_customer');
+		$data['entry_customer_default'] = $this->language->get('entry_customer_default');
 		$data['entry_order_id'] = $this->language->get('entry_order_id');
 		$data['entry_date_ordered'] = $this->language->get('entry_date_ordered');
 		$data['entry_firstname'] = $this->language->get('entry_firstname');
@@ -574,7 +649,9 @@ class ControllerSaleReturn extends Controller {
 		$data['entry_email'] = $this->language->get('entry_email');
 		$data['entry_telephone'] = $this->language->get('entry_telephone');
 		$data['entry_product'] = $this->language->get('entry_product');
+		$data['entry_product_default'] = $this->language->get('entry_product_default');
 		$data['entry_model'] = $this->language->get('entry_model');
+		$data['entry_model_default'] = $this->language->get('entry_model_default');
 		$data['entry_quantity'] = $this->language->get('entry_quantity');
 		$data['entry_opened'] = $this->language->get('entry_opened');
 		$data['entry_return_reason'] = $this->language->get('entry_return_reason');
@@ -656,6 +733,14 @@ class ControllerSaleReturn extends Controller {
 
 		if (isset($this->request->get['filter_order_id'])) {
 			$url .= '&filter_order_id=' . $this->request->get['filter_order_id'];
+		}
+		
+		if (isset($this->request->get['filter_customer_id'])) {
+			$url .= '&filter_customer_id=' . $this->request->get['filter_customer_id'];
+		}
+		
+		if (isset($this->request->get['filter_product_id'])) {
+			$url .= '&filter_product_id=' . $this->request->get['filter_product_id'];
 		}
 
 		if (isset($this->request->get['filter_customer'])) {

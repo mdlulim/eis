@@ -28,6 +28,7 @@ $_['column_action']        = 'Action';
 
 // Entry
 $_['entry_customer']      = 'Customer Name';
+$_['entry_customer_default']      = 'Select Customer';
 $_['entry_order_id']      = 'Order ID';
 $_['entry_date_ordered']  = 'Order Date';
 $_['entry_firstname']     = 'First Name';
@@ -35,7 +36,9 @@ $_['entry_lastname']      = 'Last Name';
 $_['entry_email']         = 'E-Mail';
 $_['entry_telephone']     = 'Telephone';
 $_['entry_product']       = 'Product';
+$_['entry_product_default']       = 'Select Product';
 $_['entry_model']         = 'Model';
+$_['entry_model_default']         = 'Select Model';
 $_['entry_quantity']      = 'Quantity';
 $_['entry_opened']        = 'Opened';
 $_['entry_comment']       = 'Comment';

@@ -10,9 +10,29 @@ class ControllerReportProductViewed extends Controller {
 		} else {
 			$page = 1;
 		}
-
+		
+		if (isset($this->request->get['filter_product_id'])) {
+			$filter_product_id = $this->request->get['filter_product_id'];
+		} else {
+			$filter_product_id = null;
+		}
+		
+		if (isset($this->request->get['filter_model'])) {
+			$filter_model = $this->request->get['filter_model'];
+		} else {
+			$filter_model = null;
+		}
+		
 		$url = '';
-
+		
+		if (isset($this->request->get['filter_product_id'])) {
+			$url .= '&filter_product_id=' . $this->request->get['filter_product_id'];
+		}
+		
+		if (isset($this->request->get['filter_model'])) {
+			$url .= '&filter_model=' . urlencode(html_entity_decode($this->request->get['filter_model'], ENT_QUOTES, 'UTF-8'));
+		}
+		
 		if (isset($this->request->get['page'])) {
 			$url .= '&page=' . $this->request->get['page'];
 		}
@@ -32,6 +52,8 @@ class ControllerReportProductViewed extends Controller {
 		$this->load->model('report/product');
 
 		$filter_data = array(
+			'filter_product_id'       => $filter_product_id,
+			'filter_model'            => $filter_model,
 			'start' => ($page - 1) * $this->config->get('config_limit_admin'),
 			'limit' => $this->config->get('config_limit_admin')
 		);
@@ -40,7 +62,7 @@ class ControllerReportProductViewed extends Controller {
 
 		$product_viewed_total = $this->model_report_product->getTotalProductViews();
 
-		$product_total = $this->model_report_product->getTotalProductsViewed();
+		$product_total = $this->model_report_product->getTotalProductsViewed($filter_data);
 
 		$results = $this->model_report_product->getProductsViewed($filter_data);
 
@@ -58,6 +80,10 @@ class ControllerReportProductViewed extends Controller {
 				'percent' => $percent . '%'
 			);
 		}
+		
+		$this->load->model('catalog/product');
+		$data['Dorpdownproducts'] = $this->model_catalog_product->getProducts();
+		$data['dropdownmodels'] = $this->model_catalog_product->getProductsModel();
 
 		$data['heading_title'] = $this->language->get('heading_title');
 
@@ -71,9 +97,18 @@ class ControllerReportProductViewed extends Controller {
 		$data['column_percent'] = $this->language->get('column_percent');
 
 		$data['button_reset'] = $this->language->get('button_reset');
+		$data['token'] = $this->session->data['token'];
 
 		$url = '';
-
+		
+		if (isset($this->request->get['filter_product_id'])) {
+			$url .= '&filter_product_id=' . $this->request->get['filter_product_id'];
+		}
+		
+		if (isset($this->request->get['filter_model'])) {
+			$url .= '&filter_model=' . urlencode(html_entity_decode($this->request->get['filter_model'], ENT_QUOTES, 'UTF-8'));
+		}
+		
 		if (isset($this->request->get['page'])) {
 			$url .= '&page=' . $this->request->get['page'];
 		}
@@ -107,7 +142,10 @@ class ControllerReportProductViewed extends Controller {
 		$data['pagination'] = $pagination->render();
 
 		$data['results'] = sprintf($this->language->get('text_pagination'), ($product_total) ? (($page - 1) * $this->config->get('config_limit_admin')) + 1 : 0, ((($page - 1) * $this->config->get('config_limit_admin')) > ($product_total - $this->config->get('config_limit_admin'))) ? $product_total : ((($page - 1) * $this->config->get('config_limit_admin')) + $this->config->get('config_limit_admin')), $product_total, ceil($product_total / $this->config->get('config_limit_admin')));
-
+		
+		$data['filter_product_id'] = $filter_product_id;
+		$data['filter_model'] = $filter_model;
+		
 		$data['header'] = $this->load->controller('common/header');
 		$data['column_left'] = $this->load->controller('common/column_left');
 		$data['footer'] = $this->load->controller('common/footer');

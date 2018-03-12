@@ -44,17 +44,52 @@
             <div class="col-sm-3">
               <div class="form-group">
                 <label class="control-label" for="input-customer"><?php echo $entry_customer; ?></label>
-                <input type="text" name="filter_customer" value="<?php echo $filter_customer; ?>" placeholder="<?php echo $entry_customer; ?>" id="input-customer" class="form-control" />
+                <!--<input type="text" name="filter_customer" value="<?php echo $filter_customer; ?>" placeholder="<?php echo $entry_customer; ?>" id="input-customer" class="form-control" />-->
+                <select name="filter_customer_id" class="form-control">
+                	<option value=""><?php echo $entry_customer; ?></option>
+                    <?php foreach ($customers as $customer) {  ?>
+                <?php if ($customer['customer_id'] == $filter_customer_id) { ?>
+                <option value="<?php echo $customer['customer_id']; ?>" selected="selected"><?php echo $customer['firstname']; ?></option>
+                <?php } else { ?>
+                <option value="<?php echo $customer['customer_id']; ?>"><?php echo $customer['firstname']; ?></option>
+                <?php } ?>
+                <?php } ?>
+                    
+                </select>
               </div>
               <div class="form-group">
                 <label class="control-label" for="input-product"><?php echo $entry_product; ?></label>
-                <input type="text" name="filter_product" value="<?php echo $filter_product; ?>" placeholder="<?php echo $entry_product; ?>" id="input-product" class="form-control" />
+                <!--<input type="text" name="filter_product" value="<?php echo $filter_product; ?>" placeholder="<?php echo $entry_product; ?>" id="input-product" class="form-control" />-->
+                <select name="filter_product_id" class="form-control">
+                	<option value="">Select Product</option>
+                    <?php foreach ($products as $product) {  ?>
+                <?php if ($product['product_id'] == $filter_product_id) { ?>
+                <option value="<?php echo $product['product_id']; ?>" selected="selected"><?php echo $product['name']; ?></option>
+                <?php } else { ?>
+                <option value="<?php echo $product['product_id']; ?>"><?php echo $product['name']; ?></option>
+                <?php } ?>
+                <?php } ?>
+                    
+                </select>
+                
               </div>
             </div>
             <div class="col-sm-3">
               <div class="form-group">
                 <label class="control-label" for="input-model"><?php echo $entry_model; ?></label>
-                <input type="text" name="filter_model" value="<?php echo $filter_model; ?>" placeholder="<?php echo $entry_model; ?>" id="input-model" class="form-control" />
+                <!--<input type="text" name="filter_model" value="<?php echo $filter_model; ?>" placeholder="<?php echo $entry_model; ?>" id="input-model" class="form-control" />-->
+                <select name="filter_model" class="form-control">
+                	<option value="">Select Model</option>
+                    <?php foreach ($models as $model) {  ?>
+                <?php if ($model['model'] == $filter_model) { ?>
+                <option value="<?php echo $model['model']; ?>" selected="selected"><?php echo $model['model']; ?></option>
+                <?php } else { ?>
+                <option value="<?php echo $model['model']; ?>"><?php echo $model['model']; ?></option>
+                <?php } ?>
+                <?php } ?>
+                    
+                </select>
+                
               </div>
               <div class="form-group">
                 <label class="control-label" for="input-return-status"><?php echo $entry_return_status; ?></label>
@@ -113,7 +148,7 @@
                     <?php } else { ?>
                     <a href="<?php echo $sort_customer; ?>"><?php echo $column_customer; ?></a>
                     <?php } ?></td>
-                  <td class="text-left"><?php if ($sort == 'r.product') { ?>
+                  <td class="text-left" width="150"><?php if ($sort == 'r.product') { ?>
                     <a href="<?php echo $sort_product; ?>" class="<?php echo strtolower($order); ?>"><?php echo $column_product; ?></a>
                     <?php } else { ?>
                     <a href="<?php echo $sort_product; ?>"><?php echo $column_product; ?></a>
@@ -199,14 +234,32 @@ $('#button-filter').on('click', function() {
 		url += '&filter_customer=' + encodeURIComponent(filter_customer);
 	}
 	
+	var filter_customer_id = $('select[name=\'filter_customer_id\']').val();
+
+	if (filter_customer_id) {
+		url += '&filter_customer_id=' + encodeURIComponent(filter_customer_id);
+	}
+	
 	var filter_product = $('input[name=\'filter_product\']').val();
 	
 	if (filter_product) {
 		url += '&filter_product=' + encodeURIComponent(filter_product);
 	}
-
-	var filter_model = $('input[name=\'filter_model\']').val();
 	
+	var filter_product_id = $('select[name=\'filter_product_id\']').val();
+
+	if (filter_product_id) {
+		url += '&filter_product_id=' + encodeURIComponent(filter_product_id);
+	}
+
+	/*var filter_model = $('input[name=\'filter_model\']').val();
+	
+	if (filter_model) {
+		url += '&filter_model=' + encodeURIComponent(filter_model);
+	}*/
+	
+	var filter_model = $('select[name=\'filter_model\']').val();
+
 	if (filter_model) {
 		url += '&filter_model=' + encodeURIComponent(filter_model);
 	}

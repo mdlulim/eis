@@ -22,6 +22,12 @@ class ControllerReportCustomerSearch extends Controller {
 		} else {
 			$filter_keyword = null;
 		}
+		
+		if (isset($this->request->get['filter_customer_id'])) {
+			$filter_customer_id = $this->request->get['filter_customer_id'];
+		} else {
+			$filter_customer_id = null;
+		}
 
 		if (isset($this->request->get['filter_customer'])) {
 			$filter_customer = $this->request->get['filter_customer'];
@@ -53,6 +59,10 @@ class ControllerReportCustomerSearch extends Controller {
 
 		if (isset($this->request->get['filter_keyword'])) {
 			$url .= '&filter_keyword=' . urlencode($this->request->get['filter_keyword']);
+		}
+		
+		if (isset($this->request->get['filter_customer_id'])) {
+			$url .= '&filter_customer_id=' . $this->request->get['filter_customer_id'];
 		}
 
 		if (isset($this->request->get['filter_customer'])) {
@@ -89,6 +99,7 @@ class ControllerReportCustomerSearch extends Controller {
 			'filter_date_end'	=> $filter_date_end,
 			'filter_keyword'    => $filter_keyword,
 			'filter_customer'   => $filter_customer,
+			'filter_customer_id'   => $filter_customer_id,
 			'filter_ip'         => $filter_ip,
 			'start'             => ($page - 1) * 20,
 			'limit'             => 20
@@ -122,7 +133,10 @@ class ControllerReportCustomerSearch extends Controller {
 				'date_added'  => date($this->language->get('datetime_format'), strtotime($result['date_added']))
 			);
 		}
-
+		
+		$this->load->model('customer/customer');
+		$data['Dropdowncustomers'] = $this->model_customer_customer->getCustomers();
+		
 		$data['heading_title'] = $this->language->get('heading_title');
 
 		$data['text_list'] = $this->language->get('text_list');
@@ -159,6 +173,10 @@ class ControllerReportCustomerSearch extends Controller {
 		if (isset($this->request->get['filter_keyword'])) {
 			$url .= '&filter_keyword=' . urlencode($this->request->get['filter_keyword']);
 		}
+		
+		if (isset($this->request->get['filter_customer_id'])) {
+			$url .= '&filter_customer_id=' . $this->request->get['filter_customer_id'];
+		}
 
 		if (isset($this->request->get['filter_customer'])) {
 			$url .= '&filter_customer=' . urlencode($this->request->get['filter_customer']);
@@ -186,6 +204,7 @@ class ControllerReportCustomerSearch extends Controller {
 		$data['filter_date_end'] = $filter_date_end;
 		$data['filter_keyword'] = $filter_keyword;
 		$data['filter_customer'] = $filter_customer;
+		$data['filter_customer_id'] = $filter_customer_id;
 		$data['filter_ip'] = $filter_ip;
 
 		$data['header'] = $this->load->controller('common/header');

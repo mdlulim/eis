@@ -1,8 +1,18 @@
 <?php
 class ModelReportProduct extends Model {
 	public function getProductsViewed($data = array()) {
-		$sql = "SELECT pd.name, p.model, p.viewed FROM " . DB_PREFIX . "product p LEFT JOIN " . DB_PREFIX . "product_description pd ON (p.product_id = pd.product_id) WHERE pd.language_id = '" . (int)$this->config->get('config_language_id') . "' AND p.viewed > 0 ORDER BY p.viewed DESC";
+		$sql = "SELECT pd.name, p.model, p.viewed FROM " . DB_PREFIX . "product p LEFT JOIN " . DB_PREFIX . "product_description pd ON (p.product_id = pd.product_id) WHERE pd.language_id = '" . (int)$this->config->get('config_language_id') . "' AND p.viewed > 0";
 
+		if (!empty($data['filter_product_id'])) {
+			$sql .= " AND p.product_id = '" . (int)$data['filter_product_id'] . "'";
+		}
+
+		if (!empty($data['filter_model'])) {
+			$sql .= " AND p.model = '" . $this->db->escape($data['filter_model']) . "'";
+		}
+		
+		$sql .= " ORDER BY p.viewed DESC";
+		
 		if (isset($data['start']) || isset($data['limit'])) {
 			if ($data['start'] < 0) {
 				$data['start'] = 0;
@@ -14,7 +24,7 @@ class ModelReportProduct extends Model {
 
 			$sql .= " LIMIT " . (int)$data['start'] . "," . (int)$data['limit'];
 		}
-
+//echo $sql; exit;
 		$query = $this->db->query($sql);
 
 		return $query->rows;
@@ -26,9 +36,20 @@ class ModelReportProduct extends Model {
 		return $query->row['total'];
 	}
 
-	public function getTotalProductsViewed() {
-		$query = $this->db->query("SELECT COUNT(*) AS total FROM " . DB_PREFIX . "product WHERE viewed > 0");
+	public function getTotalProductsViewed($data = array()) {
+		
+		$sql = "SELECT COUNT(*) AS total FROM " . DB_PREFIX . "product as p WHERE viewed > 0";
+		
+		if (!empty($data['filter_product_id'])) {
+			$sql .= " AND p.product_id = '" . (int)$data['filter_product_id'] . "'";
+		}
 
+		if (!empty($data['filter_model'])) {
+			$sql .= " AND p.model = '" . $this->db->escape($data['filter_model']) . "'";
+		}
+		
+		$query = $this->db->query($sql);
+		
 		return $query->row['total'];
 	}
 

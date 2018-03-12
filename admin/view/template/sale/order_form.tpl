@@ -2,7 +2,7 @@
 <div id="content">
   <div class="page-header">
     <div class="container-fluid">
-      <div class="pull-right"><a href="<?php echo $cancel; ?>" class="btn btn-default"><i class="fa fa-reply"></i> <?php echo $button_cancel; ?></a></div>
+      <div class="pull-right"><a href="<?php echo $cancel; ?>" class="btn btn-default"><i class="fa fa-reply"></i> <?php //echo $button_cancel; ?></a></div>
       <h1><?php echo $heading_title; ?></h1>
       <ul class="breadcrumb">
         <?php foreach ($breadcrumbs as $breadcrumb) { ?>
@@ -76,7 +76,7 @@
                   </select>
                 </div>
               </div>
-              <div class="form-group required">
+              <!--<div class="form-group required">
                 <label class="col-sm-2 control-label" for="input-firstname"><?php echo $entry_firstname; ?></label>
                 <div class="col-sm-10">
                   <input type="text" name="firstname" value="<?php echo $firstname; ?>" id="input-firstname" class="form-control" />
@@ -87,7 +87,7 @@
                 <div class="col-sm-10">
                   <input type="text" name="lastname" value="<?php echo $lastname; ?>" id="input-lastname" class="form-control" />
                 </div>
-              </div>
+              </div>-->
               <div class="form-group required">
                 <label class="col-sm-2 control-label" for="input-email"><?php echo $entry_email; ?></label>
                 <div class="col-sm-10">
@@ -422,7 +422,7 @@
                   </select>
                 </div>
               </div>
-              <div class="form-group required">
+             <!-- <div class="form-group required">
                 <label class="col-sm-2 control-label" for="input-payment-firstname"><?php echo $entry_firstname; ?></label>
                 <div class="col-sm-10">
                   <input type="text" name="firstname" value="<?php echo $payment_firstname; ?>" id="input-payment-firstname" class="form-control" />
@@ -433,7 +433,7 @@
                 <div class="col-sm-10">
                   <input type="text" name="lastname" value="<?php echo $payment_lastname; ?>" id="input-payment-lastname" class="form-control" />
                 </div>
-              </div>
+              </div>-->
               <div class="form-group">
                 <label class="col-sm-2 control-label" for="input-payment-company"><?php echo $entry_company; ?></label>
                 <div class="col-sm-10">
@@ -844,6 +844,7 @@
                 <table class="table table-bordered">
                   <thead>
                     <tr>
+                      <td class="text-left">Image</td>
                       <td class="text-left"><?php echo $column_product; ?></td>
                       <td class="text-left"><?php echo $column_model; ?></td>
                       <td class="text-right"><?php echo $column_quantity; ?></td>
@@ -853,7 +854,7 @@
                   </thead>
                   <tbody id="total">
                     <tr>
-                      <td class="text-center" colspan="5"><?php echo $text_no_results; ?></td>
+                      <td class="text-center" colspan="6"><?php echo $text_no_results; ?></td>
                     </tr>
                   </tbody>
                 </table>
@@ -1186,6 +1187,7 @@ $('#button-refresh').on('click', function() {
 					product = json['products'][i];
 
 					html += '<tr>';
+					html += '  <td class="text-left"><img src="' + product['image'] + '" alt="' + product['name'] + '" class="img-thumbnail" /></td>';
 					html += '  <td class="text-left">' + product['name'] + ' ' + (!product['stock'] ? '<span class="text-danger">***</span>' : '') + '<br />';
 
 					if (product['option']) {
@@ -1224,7 +1226,7 @@ $('#button-refresh').on('click', function() {
 					total = json['totals'][i];
 
 					html += '<tr>';
-					html += '  <td class="text-right" colspan="4">' + total['title'] + ':</td>';
+					html += '  <td class="text-right" colspan="5">' + total['title'] + ':</td>';
 					html += '  <td class="text-right">' + total['text'] + '</td>';
 					html += '</tr>';
 				}
@@ -1357,7 +1359,7 @@ $('select[name=\'customer_group_id\']').trigger('change');
 
 $('#button-customer').on('click', function() {
 	$.ajax({
-		url: '<?php echo $catalog; ?>index.php?route=api/customer&token=' + token + '&store_id=' + $('select[name=\'store_id\'] option:selected').val(),
+		url: '<?php echo $catalog; ?>index.php?route=api/customer&callfrom=orderform&token=' + token + '&store_id=' + $('select[name=\'store_id\'] option:selected').val(),
 		type: 'post',
 		data: $('#tab-customer input[type=\'text\'], #tab-customer input[type=\'hidden\'], #tab-customer input[type=\'radio\']:checked, #tab-customer input[type=\'checkbox\']:checked, #tab-customer select, #tab-customer textarea'),
 		dataType: 'json',
@@ -1925,7 +1927,7 @@ $('#tab-payment select[name=\'country_id\']').trigger('change');
 
 $('#button-payment-address').on('click', function() {
 	$.ajax({
-		url: '<?php echo $catalog; ?>index.php?route=api/payment/address&token=' + token + '&store_id=' + $('select[name=\'store_id\'] option:selected').val(),
+		url: '<?php echo $catalog; ?>index.php?route=api/payment/address&callfrom=orderform&token=' + token + '&store_id=' + $('select[name=\'store_id\'] option:selected').val(),
 		type: 'post',
 		data: $('#tab-payment input[type=\'text\'], #tab-payment input[type=\'hidden\'], #tab-payment input[type=\'radio\']:checked, #tab-payment input[type=\'checkbox\']:checked, #tab-payment select, #tab-payment textarea'),
 		dataType: 'json',
@@ -2446,10 +2448,14 @@ $('#button-save').on('click', function() {
 			}
 
 			if (json['success']) {
-				$('#content > .container-fluid').prepend('<div class="alert alert-success"><i class="fa fa-check-circle"></i> ' + json['success'] + '  <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+				//$('#content > .container-fluid').prepend('<div class="alert alert-success"><i class="fa fa-check-circle"></i> ' + json['success'] + '  <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
 
                 // Refresh products, vouchers and totals
-				$('#button-refresh').trigger('click');
+				//$('#button-refresh').trigger('click');
+				
+				var url = 'index.php?route=sale/order&token=<?php echo $token; ?>';
+				window.location = url;
+				
             }
 
 			if (json['order_id']) {

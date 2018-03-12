@@ -291,6 +291,8 @@ class ControllerCatalogReview extends Controller {
 		$data['column_action'] = $this->language->get('column_action');
 
 		$data['entry_product'] = $this->language->get('entry_product');
+		$data['entry_product_default'] = $this->language->get('entry_product_default');
+		$data['entry_author_default'] = $this->language->get('entry_author_default');
 		$data['entry_author'] = $this->language->get('entry_author');
 		$data['entry_rating'] = $this->language->get('entry_rating');
 		$data['entry_status'] = $this->language->get('entry_status');
@@ -416,6 +418,8 @@ class ControllerCatalogReview extends Controller {
 		$data['text_disabled'] = $this->language->get('text_disabled');
 
 		$data['entry_product'] = $this->language->get('entry_product');
+		$data['entry_product_default'] = $this->language->get('entry_product_default');
+		$data['entry_author_default'] = $this->language->get('entry_author_default');
 		$data['entry_author'] = $this->language->get('entry_author');
 		$data['entry_rating'] = $this->language->get('entry_rating');
 		$data['entry_date_added'] = $this->language->get('entry_date_added');

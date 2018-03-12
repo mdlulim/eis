@@ -93,11 +93,11 @@
                   </span></div>
               </div>-->
               <div class="form-group">
-                <label class="control-label" for="input-customer">Customer Contact</label>
+                <label class="control-label" for="input-customer">Customer Contact Name</label>
                 <!--<input type="text" name="filter_customer_contact" value="<?php echo $filter_customer_contact; ?>" placeholder="Customer Contact" id="input-customer-contact" class="form-control" />
    				   <input type="hidden" name="filter_customer_contact_id" value="<?php echo $filter_customer_contact_id; ?>" id="customer_contact_id">--> 
                    <select name="filter_customer_contact_id" class="form-control">
-                	<option value="">Customer Contact Name</option>
+                	<option value="">Select Customer Contact Name</option>
                     <?php foreach ($allcustomer_contacts as $allcustomer_contact) {  ?>
                 <?php if ($allcustomer_contact['customer_con_id'] == $filter_customer_contact_id) { ?>
                 <option value="<?php echo $allcustomer_contact['customer_con_id']; ?>" selected="selected"><?php echo $allcustomer_contact['first_name']; ?> <?php echo $allcustomer_contact['last_name']; ?></option>

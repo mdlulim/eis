@@ -26,6 +26,14 @@ class ControllerCatalogAttribute extends Controller {
 
 			$url = '';
 
+			if (isset($this->request->get['filter_attribute_id'])) {
+				$url .= '&filter_attribute_id=' . $this->request->get['filter_attribute_id'];
+			}
+			
+			if (isset($this->request->get['filter_attribute_group_id'])) {
+				$url .= '&filter_attribute_group_id=' . $this->request->get['filter_attribute_group_id'];
+			}
+			
 			if (isset($this->request->get['sort'])) {
 				$url .= '&sort=' . $this->request->get['sort'];
 			}
@@ -58,6 +66,14 @@ class ControllerCatalogAttribute extends Controller {
 
 			$url = '';
 
+			if (isset($this->request->get['filter_attribute_id'])) {
+				$url .= '&filter_attribute_id=' . $this->request->get['filter_attribute_id'];
+			}
+			
+			if (isset($this->request->get['filter_attribute_group_id'])) {
+				$url .= '&filter_attribute_group_id=' . $this->request->get['filter_attribute_group_id'];
+			}
+			
 			if (isset($this->request->get['sort'])) {
 				$url .= '&sort=' . $this->request->get['sort'];
 			}
@@ -92,6 +108,14 @@ class ControllerCatalogAttribute extends Controller {
 
 			$url = '';
 
+			if (isset($this->request->get['filter_attribute_id'])) {
+				$url .= '&filter_attribute_id=' . $this->request->get['filter_attribute_id'];
+			}
+			
+			if (isset($this->request->get['filter_attribute_group_id'])) {
+				$url .= '&filter_attribute_group_id=' . $this->request->get['filter_attribute_group_id'];
+			}
+			
 			if (isset($this->request->get['sort'])) {
 				$url .= '&sort=' . $this->request->get['sort'];
 			}
@@ -111,6 +135,19 @@ class ControllerCatalogAttribute extends Controller {
 	}
 
 	protected function getList() {
+		
+		if (isset($this->request->get['filter_attribute_id'])) {
+			$filter_attribute_id = $this->request->get['filter_attribute_id'];
+		} else {
+			$filter_attribute_id = null;
+		}
+		
+		if (isset($this->request->get['filter_attribute_group_id'])) {
+			$filter_attribute_group_id = $this->request->get['filter_attribute_group_id'];
+		} else {
+			$filter_attribute_group_id = null;
+		}
+		
 		if (isset($this->request->get['sort'])) {
 			$sort = $this->request->get['sort'];
 		} else {
@@ -131,6 +168,14 @@ class ControllerCatalogAttribute extends Controller {
 
 		$url = '';
 
+		if (isset($this->request->get['filter_attribute_id'])) {
+			$url .= '&filter_attribute_id=' . $this->request->get['filter_attribute_id'];
+		}
+		
+		if (isset($this->request->get['filter_attribute_group_id'])) {
+			$url .= '&filter_attribute_group_id=' . $this->request->get['filter_attribute_group_id'];
+		}
+		
 		if (isset($this->request->get['sort'])) {
 			$url .= '&sort=' . $this->request->get['sort'];
 		}
@@ -161,13 +206,15 @@ class ControllerCatalogAttribute extends Controller {
 		$data['attributes'] = array();
 
 		$filter_data = array(
+			'filter_attribute_id'  => $filter_attribute_id,
+			'filter_attribute_group_id'  => $filter_attribute_group_id,
 			'sort'  => $sort,
 			'order' => $order,
 			'start' => ($page - 1) * $this->config->get('config_limit_admin'),
 			'limit' => $this->config->get('config_limit_admin')
 		);
 
-		$attribute_total = $this->model_catalog_attribute->getTotalAttributes();
+		$attribute_total = $this->model_catalog_attribute->getTotalAttributes($filter_data);
 
 		$results = $this->model_catalog_attribute->getAttributes($filter_data);
 
@@ -180,6 +227,10 @@ class ControllerCatalogAttribute extends Controller {
 				'edit'            => $this->url->link('catalog/attribute/edit', 'token=' . $this->session->data['token'] . '&attribute_id=' . $result['attribute_id'] . $url, true)
 			);
 		}
+		
+		$this->load->model('catalog/attribute_group');
+		$data['attribute_groups'] = $this->model_catalog_attribute_group->getAttributeGroups();
+		$data['Allattributes'] = $this->model_catalog_attribute->getAttributes();
 
 		$data['heading_title'] = $this->language->get('heading_title');
 
@@ -195,6 +246,8 @@ class ControllerCatalogAttribute extends Controller {
 		$data['button_add'] = $this->language->get('button_add');
 		$data['button_edit'] = $this->language->get('button_edit');
 		$data['button_delete'] = $this->language->get('button_delete');
+		
+		$data['token'] = $this->session->data['token'];
 
 		if (isset($this->error['warning'])) {
 			$data['error_warning'] = $this->error['warning'];
@@ -217,7 +270,7 @@ class ControllerCatalogAttribute extends Controller {
 		}
 
 		$url = '';
-
+		
 		if ($order == 'ASC') {
 			$url .= '&order=DESC';
 		} else {
@@ -233,7 +286,15 @@ class ControllerCatalogAttribute extends Controller {
 		$data['sort_sort_order'] = $this->url->link('catalog/attribute', 'token=' . $this->session->data['token'] . '&sort=a.sort_order' . $url, true);
 
 		$url = '';
-
+		
+		if (isset($this->request->get['filter_attribute_id'])) {
+			$url .= '&filter_attribute_id=' . $this->request->get['filter_attribute_id'];
+		}
+		
+		if (isset($this->request->get['filter_attribute_group_id'])) {
+			$url .= '&filter_attribute_group_id=' . $this->request->get['filter_attribute_group_id'];
+		}
+		
 		if (isset($this->request->get['sort'])) {
 			$url .= '&sort=' . $this->request->get['sort'];
 		}
@@ -254,6 +315,8 @@ class ControllerCatalogAttribute extends Controller {
 
 		$data['sort'] = $sort;
 		$data['order'] = $order;
+		$data['filter_attribute_id'] = $filter_attribute_id;
+		$data['filter_attribute_group_id'] = $filter_attribute_group_id;
 
 		$data['header'] = $this->load->controller('common/header');
 		$data['column_left'] = $this->load->controller('common/column_left');
@@ -294,6 +357,14 @@ class ControllerCatalogAttribute extends Controller {
 
 		$url = '';
 
+		if (isset($this->request->get['filter_attribute_id'])) {
+			$url .= '&filter_attribute_id=' . $this->request->get['filter_attribute_id'];
+		}
+		
+		if (isset($this->request->get['filter_attribute_group_id'])) {
+			$url .= '&filter_attribute_group_id=' . $this->request->get['filter_attribute_group_id'];
+		}
+		
 		if (isset($this->request->get['sort'])) {
 			$url .= '&sort=' . $this->request->get['sort'];
 		}

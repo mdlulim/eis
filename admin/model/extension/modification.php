@@ -24,6 +24,33 @@ class ModelExtensionModification extends Model {
 
 	public function getModifications($data = array()) {
 		$sql = "SELECT * FROM " . DB_PREFIX . "modification";
+		
+		$sql .=" where modification_id > 0";
+		
+		if (!empty($data['filter_modification_id'])) {
+			$sql .= " AND modification_id = '" . $this->db->escape($data['filter_modification_id']) . "'";
+		}
+		
+		if (!empty($data['filter_author_name'])) {
+			$sql .= " AND author = '" . $this->db->escape($data['filter_author_name']) . "'";
+		}
+		
+		if (!empty($data['filter_version'])) {
+			$sql .= " AND version = '" . $this->db->escape($data['filter_version']) . "'";
+		}
+		
+		if (isset($data['filter_status']) && !is_null($data['filter_status'])) {
+			$sql .= " AND status = '" . (int)$data['filter_status'] . "'";
+		}
+		
+		if (isset($data['filter_date_added'])) {
+			
+			$fromdate = date('Y-m-d H:i:s', strtotime($data['filter_date_added'])); 
+			$todate1 = date('Y-m-d', strtotime($data['filter_date_added'])); 
+			$todate = $todate1." 23:59:59"; 
+			$sql .= " AND date_added >= '" . $fromdate . "' AND date_added <= '" . $todate . "'";
+			
+		}
 
 		$sort_data = array(
 			'name',
@@ -56,14 +83,50 @@ class ModelExtensionModification extends Model {
 
 			$sql .= " LIMIT " . (int)$data['start'] . "," . (int)$data['limit'];
 		}
-
+//echo $sql; exit;
 		$query = $this->db->query($sql);
 
 		return $query->rows;
 	}
+	
+	public function getModificationsByGroup($group) {
+		
+		$sql = "SELECT * FROM " . DB_PREFIX . "modification group by ".$group."";
+		$query = $this->db->query($sql);
 
-	public function getTotalModifications() {
-		$query = $this->db->query("SELECT COUNT(*) AS total FROM " . DB_PREFIX . "modification");
+		return $query->rows;
+		
+	}
+	
+	public function getTotalModifications($data = array()) {
+		$sql = "SELECT COUNT(*) AS total FROM " . DB_PREFIX . "modification";
+		
+		$sql .=" where modification_id > 0";
+		
+		if (!empty($data['filter_modification_id'])) {
+			$sql .= " AND modification_id = '" . $this->db->escape($data['filter_modification_id']) . "'";
+		}
+		
+		if (!empty($data['filter_author_name'])) {
+			$sql .= " AND author = '" . $this->db->escape($data['filter_author_name']) . "'";
+		}
+		
+		if (!empty($data['filter_version'])) {
+			$sql .= " AND version = '" . $this->db->escape($data['filter_version']) . "'";
+		}
+		
+		if (isset($data['filter_status']) && !is_null($data['filter_status'])) {
+			$sql .= " AND status = '" . (int)$data['filter_status'] . "'";
+		}
+		
+		if (isset($data['filter_date_added'])) {
+			$fromdate = date('Y-m-d H:i:s', strtotime($data['filter_date_added'])); 
+			$todate1 = date('Y-m-d', strtotime($data['filter_date_added'])); 
+			$todate = $todate1." 23:59:59"; 
+			$sql .= " AND date_added >= '" . $fromdate . "' AND date_added <= '" . $todate . "'";
+		}
+		
+		$query = $this->db->query($sql);
 
 		return $query->row['total'];
 	}

@@ -29,6 +29,53 @@
         <h3 class="panel-title"><i class="fa fa-list"></i> <?php echo $text_list; ?></h3>
       </div>
       <div class="panel-body">
+      
+      	<div class="well">
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label class="control-label" for="input-name"><?php echo $column_name; ?></label>
+                <select name="filter_attribute_id" id="input-type" class="form-control">
+                	<option value="">Select Attribute Name</option>
+                     <?php foreach ($Allattributes as $Allattribute) { ?>
+                        <?php if ($Allattribute['attribute_id'] == $filter_attribute_id) { ?>
+                        <option value="<?php echo $Allattribute['attribute_id']; ?>" selected="selected"><?php echo $Allattribute['name']; ?></option>
+                        <?php } else { ?>
+                        <option value="<?php echo $Allattribute['attribute_id']; ?>"><?php echo $Allattribute['name']; ?></option>
+                        <?php } ?>
+                     <?php } ?>
+                   
+              </select>
+              </div>
+              
+            </div>
+            <div class="col-sm-6" style="margin-bottom:10px;">
+              
+              <div class="form-group">
+                <label class="control-label" for="input-price">Attribute Group</label>
+                <select name="filter_attribute_group_id" id="input-type" class="form-control">
+                	<option value="">Select Attribute Group</option>
+                     <?php foreach ($attribute_groups as $attribute_group) { ?>
+                        <?php if ($attribute_group['attribute_group_id'] == $filter_attribute_group_id) { ?>
+                        <option value="<?php echo $attribute_group['attribute_group_id']; ?>" selected="selected"><?php echo $attribute_group['name']; ?></option>
+                        <?php } else { ?>
+                        <option value="<?php echo $attribute_group['attribute_group_id']; ?>"><?php echo $attribute_group['name']; ?></option>
+                        <?php } ?>
+                     <?php } ?>
+                   
+              </select>
+              </div>
+              <div class="form-group">
+            	<button type="button" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-filter"></i> Filter</button>
+            	<button type="button" id="button-filter-reset" class="btn btn-primary pull-right" style="margin-right:10px;"><i class="fa fa-refresh"></i> Reset</button>
+            </div>
+              
+            </div>
+            
+          </div>
+           
+        </div>
+      
         <form action="<?php echo $delete; ?>" method="post" enctype="multipart/form-data" id="form-attribute">
           <div class="table-responsive">
             <table class="table table-bordered table-hover">
@@ -85,4 +132,32 @@
     </div>
   </div>
 </div>
+<style>
+  .form-group + .form-group{border-top:none;}
+  </style>
+  <script type="text/javascript"><!--
+$('#button-filter').on('click', function() {
+	var url = 'index.php?route=catalog/attribute&token=<?php echo $token; ?>';
+	
+	var filter_attribute_id = $('select[name=\'filter_attribute_id\']').val();
+
+	if (filter_attribute_id) {
+		url += '&filter_attribute_id=' + encodeURIComponent(filter_attribute_id);
+	}
+	
+	var filter_attribute_group_id = $('select[name=\'filter_attribute_group_id\']').val();
+
+	if (filter_attribute_group_id) {
+		url += '&filter_attribute_group_id=' + encodeURIComponent(filter_attribute_group_id);
+	}
+	
+//alert(url);
+	location = url;
+});
+
+$('#button-filter-reset').on('click', function() {
+	var url = 'index.php?route=catalog/attribute&token=<?php echo $token; ?>';
+	location = url;
+});
+</script>
 <?php echo $footer; ?>

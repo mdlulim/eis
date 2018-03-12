@@ -34,7 +34,18 @@
             <div class="col-sm-4">
               <div class="form-group">
                 <label class="control-label" for="input-name"><?php echo $entry_name; ?></label>
-                <input type="text" name="filter_name" value="<?php echo $filter_name; ?>" placeholder="<?php echo $entry_name; ?>" id="input-name" class="form-control" />
+               <!-- <input type="text" name="filter_name" value="<?php echo $filter_name; ?>" placeholder="<?php echo $entry_name; ?>" id="input-name" class="form-control" />-->
+               <select name="filter_affiliate_id" class="form-control">
+                	<option value="">Select Affiliate Name</option>
+                    <?php foreach ($Dropdownaffiliates as $Daffiliate) {  ?>
+                <?php if ($Daffiliate['affiliate_id'] == $filter_affiliate_id) { ?>
+                <option value="<?php echo $Daffiliate['affiliate_id']; ?>" selected="selected"><?php echo $Daffiliate['name']; ?></option>
+                <?php } else { ?>
+                <option value="<?php echo $Daffiliate['affiliate_id']; ?>"><?php echo $Daffiliate['name']; ?></option>
+                <?php } ?>
+                <?php } ?>
+                    
+                </select>
               </div>
               <div class="form-group">
                 <label class="control-label" for="input-email"><?php echo $entry_email; ?></label>
@@ -45,7 +56,7 @@
               <div class="form-group">
                 <label class="control-label" for="input-status"><?php echo $entry_status; ?></label>
                 <select name="filter_status" id="input-status" class="form-control">
-                  <option value="*"></option>
+                  <option value="*"> Select Status</option>
                   <?php if ($filter_status) { ?>
                   <option value="1" selected="selected"><?php echo $text_enabled; ?></option>
                   <?php } else { ?>
@@ -61,7 +72,7 @@
               <div class="form-group">
                 <label class="control-label" for="input-approved"><?php echo $entry_approved; ?></label>
                 <select name="filter_approved" id="input-approved" class="form-control">
-                  <option value="*"></option>
+                  <option value="*">Select Approval</option>
                   <?php if ($filter_approved) { ?>
                   <option value="1" selected="selected"><?php echo $text_yes; ?></option>
                   <?php } else { ?>
@@ -86,6 +97,7 @@
               </div>
               <div class="form-group">
                 <button type="button" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-filter"></i> <?php echo $button_filter; ?></button>
+                <button type="button" id="button-filter-reset" class="btn btn-primary pull-right" style="margin-right:10px;"><i class="fa fa-refresh"></i> Reset</button>
               </div>
             </div>
           </div>
@@ -106,7 +118,7 @@
                     <?php } else { ?>
                     <a href="<?php echo $sort_email; ?>"><?php echo $column_email; ?></a>
                     <?php } ?></td>
-                  <td class="text-right"><?php echo $column_balance; ?></td>
+                  <td class="text-left"><?php echo $column_balance; ?></td>
                   <td class="text-left"><?php if ($sort == 'a.status') { ?>
                     <a href="<?php echo $sort_status; ?>" class="<?php echo strtolower($order); ?>"><?php echo $column_status; ?></a>
                     <?php } else { ?>
@@ -131,7 +143,7 @@
                     <?php } ?></td>
                   <td class="text-left"><?php echo $affiliate['name']; ?></td>
                   <td class="text-left"><?php echo $affiliate['email']; ?></td>
-                  <td class="text-right"><?php echo $affiliate['balance']; ?></td>
+                  <td class="text-left"><?php echo $affiliate['balance']; ?></td>
                   <td class="text-left"><?php echo $affiliate['status']; ?></td>
                   <td class="text-left"><?php echo $affiliate['date_added']; ?></td>
                   <td class="text-right"><?php if ($affiliate['approve']) { ; ?>
@@ -173,6 +185,12 @@ $('#button-filter').on('click', function() {
 		url += '&filter_name=' + encodeURIComponent(filter_name);
 	}
 	
+	var filter_affiliate_id = $('select[name=\'filter_affiliate_id\']').val();
+
+	if (filter_affiliate_id) {
+		url += '&filter_affiliate_id=' + encodeURIComponent(filter_affiliate_id);
+	}
+	
 	var filter_email = $('input[name=\'filter_email\']').val();
 	
 	if (filter_email) {
@@ -199,6 +217,14 @@ $('#button-filter').on('click', function() {
 	
 	location = url;
 });
+
+$('#button-filter-reset').on('click', function() {
+	
+	var url = 'index.php?route=marketing/affiliate&token=<?php echo $token; ?>';
+
+	location = url;
+});
+
 //--></script> 
   <script type="text/javascript"><!--
 $('input[name=\'filter_name\']').autocomplete({

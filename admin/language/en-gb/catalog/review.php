@@ -9,7 +9,7 @@ $_['text_add']          = 'Add Review';
 $_['text_edit']         = 'Edit Review';
 
 // Column
-$_['column_product']    = 'Product';
+$_['column_product']    = 'Product Name';
 $_['column_author']     = 'Author';
 $_['column_rating']     = 'Rating';
 $_['column_status']     = 'Status';
@@ -17,8 +17,10 @@ $_['column_date_added'] = 'Date Added';
 $_['column_action']     = 'Action';
 
 // Entry
-$_['entry_product']     = 'Product';
+$_['entry_product']     = 'Product Name';
+$_['entry_product_default']     = 'Enter Product Name';
 $_['entry_author']      = 'Author';
+$_['entry_author_default']      = 'Enter Author';
 $_['entry_rating']      = 'Rating';
 $_['entry_status']      = 'Status';
 $_['entry_text']        = 'Text';

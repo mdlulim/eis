@@ -46,6 +46,10 @@ class ModelMarketingAffiliate extends Model {
 		if (!empty($data['filter_name'])) {
 			$implode[] = "CONCAT(a.firstname, ' ', a.lastname) LIKE '" . $this->db->escape($data['filter_name']) . "%'";
 		}
+		
+		if (!empty($data['filter_affiliate_id'])) {
+			$implode[] = "a.affiliate_id = '" . $this->db->escape($data['filter_affiliate_id']) . "'";
+		}
 
 		if (!empty($data['filter_email'])) {
 			$implode[] = "LCASE(a.email) = '" . $this->db->escape(utf8_strtolower($data['filter_email'])) . "'";
@@ -155,6 +159,10 @@ class ModelMarketingAffiliate extends Model {
 
 		if (!empty($data['filter_name'])) {
 			$implode[] = "CONCAT(firstname, ' ', lastname) LIKE '%" . $this->db->escape($data['filter_name']) . "%'";
+		}
+		
+		if (!empty($data['filter_affiliate_id'])) {
+			$implode[] = "affiliate_id = '" . $this->db->escape($data['filter_affiliate_id']) . "'";
 		}
 
 		if (!empty($data['filter_email'])) {

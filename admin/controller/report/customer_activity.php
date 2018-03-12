@@ -10,6 +10,12 @@ class ControllerReportCustomerActivity extends Controller {
 		} else {
 			$filter_customer = null;
 		}
+		
+		if (isset($this->request->get['filter_customer_id'])) {
+			$filter_customer_id = $this->request->get['filter_customer_id'];
+		} else {
+			$filter_customer_id = null;
+		}
 
 		if (isset($this->request->get['filter_ip'])) {
 			$filter_ip = $this->request->get['filter_ip'];
@@ -41,6 +47,10 @@ class ControllerReportCustomerActivity extends Controller {
 			$url .= '&filter_customer=' . urlencode($this->request->get['filter_customer']);
 		}
 
+		if (isset($this->request->get['filter_customer_id'])) {
+			$url .= '&filter_customer_id=' . $this->request->get['filter_customer_id'];
+		}
+		
 		if (isset($this->request->get['filter_ip'])) {
 			$url .= '&filter_ip=' . $this->request->get['filter_ip'];
 		}
@@ -75,6 +85,7 @@ class ControllerReportCustomerActivity extends Controller {
 
 		$filter_data = array(
 			'filter_customer'   => $filter_customer,
+			'filter_customer_id'   => $filter_customer_id,
 			'filter_ip'         => $filter_ip,
 			'filter_date_start'	=> $filter_date_start,
 			'filter_date_end'	=> $filter_date_end,
@@ -105,6 +116,9 @@ class ControllerReportCustomerActivity extends Controller {
 				'date_added' => date($this->language->get('datetime_format'), strtotime($result['date_added']))
 			);
 		}
+		
+		$this->load->model('customer/customer');
+		$data['customers'] = $this->model_customer_customer->getCustomers();
 
 		$data['heading_title'] = $this->language->get('heading_title');
 
@@ -130,6 +144,10 @@ class ControllerReportCustomerActivity extends Controller {
 		if (isset($this->request->get['filter_customer'])) {
 			$url .= '&filter_customer=' . urlencode($this->request->get['filter_customer']);
 		}
+		
+		if (isset($this->request->get['filter_customer_id'])) {
+			$url .= '&filter_customer_id=' . $this->request->get['filter_customer_id'];
+		}
 
 		if (isset($this->request->get['filter_ip'])) {
 			$url .= '&filter_ip=' . $this->request->get['filter_ip'];
@@ -154,6 +172,7 @@ class ControllerReportCustomerActivity extends Controller {
 		$data['results'] = sprintf($this->language->get('text_pagination'), ($activity_total) ? (($page - 1) * $this->config->get('config_limit_admin')) + 1 : 0, ((($page - 1) * $this->config->get('config_limit_admin')) > ($activity_total - $this->config->get('config_limit_admin'))) ? $activity_total : ((($page - 1) * $this->config->get('config_limit_admin')) + $this->config->get('config_limit_admin')), $activity_total, ceil($activity_total / $this->config->get('config_limit_admin')));
 
 		$data['filter_customer'] = $filter_customer;
+		$data['filter_customer_id'] = $filter_customer_id;
 		$data['filter_ip'] = $filter_ip;
 		$data['filter_date_start'] = $filter_date_start;
 		$data['filter_date_end'] = $filter_date_end;

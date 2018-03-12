@@ -358,6 +358,10 @@ class ModelCatalogProduct extends Model {
 		if (isset($data['filter_quantity']) && !is_null($data['filter_quantity'])) {
 			$sql .= " AND p.quantity = '" . (int)$data['filter_quantity'] . "'";
 		}
+		
+		if (!empty($data['filter_product_id'])) {
+			$sql .= " AND p.product_id = '" . (int)$data['filter_product_id'] . "'";
+		}
 
 		if (isset($data['filter_status']) && !is_null($data['filter_status'])) {
 			$sql .= " AND p.status = '" . (int)$data['filter_status'] . "'";
@@ -545,6 +549,12 @@ class ModelCatalogProduct extends Model {
 
 		return $query->rows;
 	}
+	
+	public function getProductsModel() { 
+		$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "product GROUP By model");
+
+		return $query->rows;
+	}
 
 	public function getProductRewards($product_id) {
 		$product_reward_data = array();
@@ -627,6 +637,10 @@ class ModelCatalogProduct extends Model {
 
 		if (isset($data['filter_price']) && !is_null($data['filter_price'])) {
 			$sql .= " AND p.price LIKE '" . $this->db->escape($data['filter_price']) . "%'";
+		}
+		
+		if (!empty($data['filter_product_id'])) {
+			$sql .= " AND p.product_id = '" . (int)$data['filter_product_id'] . "'";
 		}
 
 		if (isset($data['filter_quantity']) && !is_null($data['filter_quantity'])) {

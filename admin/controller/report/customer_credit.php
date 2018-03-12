@@ -22,6 +22,12 @@ class ControllerReportCustomerCredit extends Controller {
 		} else {
 			$filter_customer = null;
 		}
+		
+		if (isset($this->request->get['filter_customer_id'])) {
+			$filter_customer_id = $this->request->get['filter_customer_id'];
+		} else {
+			$filter_customer_id = null;
+		}
 
 		if (isset($this->request->get['page'])) {
 			$page = $this->request->get['page'];
@@ -41,6 +47,10 @@ class ControllerReportCustomerCredit extends Controller {
 
 		if (isset($this->request->get['filter_customer'])) {
 			$url .= '&filter_customer=' . urlencode($this->request->get['filter_customer']);
+		}
+		
+		if (isset($this->request->get['filter_customer_id'])) {
+			$url .= '&filter_customer_id=' . $this->request->get['filter_customer_id'];
 		}
 
 		if (isset($this->request->get['page'])) {
@@ -67,6 +77,7 @@ class ControllerReportCustomerCredit extends Controller {
 			'filter_date_start'	=> $filter_date_start,
 			'filter_date_end'	=> $filter_date_end,
 			'filter_customer'	=> $filter_customer,
+			'filter_customer_id' => $filter_customer_id,
 			'start'				=> ($page - 1) * $this->config->get('config_limit_admin'),
 			'limit'				=> $this->config->get('config_limit_admin')
 		);
@@ -86,6 +97,9 @@ class ControllerReportCustomerCredit extends Controller {
 			);
 		}
 
+		$this->load->model('customer/customer');
+		$data['Dropdowncustomers'] = $this->model_customer_customer->getCustomers();
+		
 		$data['heading_title'] = $this->language->get('heading_title');
 
 		$data['text_list'] = $this->language->get('text_list');
@@ -121,6 +135,10 @@ class ControllerReportCustomerCredit extends Controller {
 		if (isset($this->request->get['filter_customer'])) {
 			$url .= '&filter_customer=' . urlencode($this->request->get['filter_customer']);
 		}
+		
+		if (isset($this->request->get['filter_customer_id'])) {
+			$url .= '&filter_customer_id=' . $this->request->get['filter_customer_id'];
+		}
 
 		$pagination = new Pagination();
 		$pagination->total = $customer_total;
@@ -135,6 +153,7 @@ class ControllerReportCustomerCredit extends Controller {
 		$data['filter_date_start'] = $filter_date_start;
 		$data['filter_date_end'] = $filter_date_end;
 		$data['filter_customer'] = $filter_customer;
+		$data['filter_customer_id'] = $filter_customer_id;
 
 		$data['header'] = $this->load->controller('common/header');
 		$data['column_left'] = $this->load->controller('common/column_left');

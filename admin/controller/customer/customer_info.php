@@ -2502,7 +2502,7 @@ class ControllerCustomerCustomerInfo extends Controller {
     }
 	
 	public function getHowLongAgo($date, $display = array('Year', 'Month', 'Day', 'Hour', 'Minute', 'Second'), $ago = '') {
-        date_default_timezone_set('Australia/Sydney');
+        date_default_timezone_set('Africa/Johannesburg'); 
         $timestamp = strtotime($date);
         $timestamp = (int) $timestamp;
         $current_time = time();

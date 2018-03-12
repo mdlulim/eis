@@ -209,6 +209,10 @@ class ModelReportCustomer extends Model {
 		if (!empty($data['filter_customer'])) {
 			$sql .= " AND CONCAT(c.firstname, ' ', c.lastname) LIKE '" . $this->db->escape($data['filter_customer']) . "'";
 		}
+		
+		if (!empty($data['filter_customer_id'])) {
+			$sql .= " AND o.customer_id = '" . $this->db->escape($data['filter_customer_id']) . "'";
+		}
 
 		if (!empty($data['filter_order_status_id'])) {
 			$sql .= " AND o.order_status_id = '" . (int)$data['filter_order_status_id'] . "'";
@@ -231,7 +235,7 @@ class ModelReportCustomer extends Model {
 
 			$sql .= " LIMIT " . (int)$data['start'] . "," . (int)$data['limit'];
 		}
-
+//echo $sql; exit;
 		$query = $this->db->query($sql);
 
 		return $query->rows;
@@ -251,6 +255,10 @@ class ModelReportCustomer extends Model {
 		if (!empty($data['filter_customer'])) {
 			$sql .= " AND CONCAT(c.firstname, ' ', c.lastname) LIKE '" . $this->db->escape($data['filter_customer']) . "'";
 		}
+		
+		if (!empty($data['filter_customer_id'])) {
+			$sql .= " AND o.customer_id = '" . $this->db->escape($data['filter_customer_id']) . "'";
+		}
 
 		if (!empty($data['filter_order_status_id'])) {
 			$sql .= " AND o.order_status_id = '" . (int)$data['filter_order_status_id'] . "'";
@@ -264,7 +272,7 @@ class ModelReportCustomer extends Model {
 	}
 
 	public function getRewardPoints($data = array()) {
-		$sql = "SELECT cr.customer_id, CONCAT(c.firstname, ' ', c.lastname) AS customer, c.email, cgd.name AS customer_group, c.status, SUM(cr.points) AS points, COUNT(o.order_id) AS orders, SUM(o.total) AS total FROM " . DB_PREFIX . "customer_reward cr LEFT JOIN `" . DB_PREFIX . "customer` c ON (cr.customer_id = c.customer_id) LEFT JOIN " . DB_PREFIX . "customer_group_description cgd ON (c.customer_group_id = cgd.customer_group_id) LEFT JOIN `" . DB_PREFIX . "order` o ON (cr.order_id = o.order_id) WHERE cgd.language_id = '" . (int)$this->config->get('config_language_id') . "'";
+		$sql = "SELECT cr.customer_id, CONCAT(c.firstname) AS customer, c.email, cgd.name AS customer_group, c.status, SUM(cr.points) AS points, COUNT(o.order_id) AS orders, SUM(o.total) AS total FROM " . DB_PREFIX . "customer_reward cr LEFT JOIN `" . DB_PREFIX . "customer` c ON (cr.customer_id = c.customer_id) LEFT JOIN " . DB_PREFIX . "customer_group_description cgd ON (c.customer_group_id = cgd.customer_group_id) LEFT JOIN `" . DB_PREFIX . "order` o ON (cr.order_id = o.order_id) WHERE cgd.language_id = '" . (int)$this->config->get('config_language_id') . "'";
 
 		if (!empty($data['filter_date_start'])) {
 			$sql .= " AND DATE(cr.date_added) >= '" . $this->db->escape($data['filter_date_start']) . "'";
@@ -276,6 +284,10 @@ class ModelReportCustomer extends Model {
 
 		if (!empty($data['filter_customer'])) {
 			$sql .= " AND CONCAT(c.firstname, ' ', c.lastname) LIKE '" . $this->db->escape($data['filter_customer']) . "'";
+		}
+		
+		if (!empty($data['filter_customer_id'])) {
+			$sql .= " AND cr.customer_id = '" . $this->db->escape($data['filter_customer_id']) . "'";
 		}
 
 		$sql .= " GROUP BY cr.customer_id ORDER BY points DESC";
@@ -313,6 +325,10 @@ class ModelReportCustomer extends Model {
 		if (!empty($data['filter_customer'])) {
 			$implode[] = "CONCAT(c.firstname, ' ', c.lastname) LIKE '" . $this->db->escape($data['filter_customer']) . "'";
 		}
+		
+		if (!empty($data['filter_customer_id'])) {
+			$implode[] = "cr.customer_id = '" . $this->db->escape($data['filter_customer_id']) . "'";
+		}
 
 		if ($implode) {
 			$sql .= " WHERE " . implode(" AND ", $implode);
@@ -324,7 +340,7 @@ class ModelReportCustomer extends Model {
 	}
 
 	public function getCredit($data = array()) {
-		$sql = "SELECT ct.customer_id, CONCAT(c.firstname, ' ', c.lastname) AS customer, c.email, cgd.name AS customer_group, c.status, SUM(ct.amount) AS total FROM `" . DB_PREFIX . "customer_transaction` ct LEFT JOIN `" . DB_PREFIX . "customer` c ON (ct.customer_id = c.customer_id) LEFT JOIN `" . DB_PREFIX . "customer_group_description` cgd ON (c.customer_group_id = cgd.customer_group_id) WHERE cgd.language_id = '" . (int)$this->config->get('config_language_id') . "'";
+		$sql = "SELECT ct.customer_id, CONCAT(c.firstname) AS customer, c.email, cgd.name AS customer_group, c.status, SUM(ct.amount) AS total FROM `" . DB_PREFIX . "customer_transaction` ct LEFT JOIN `" . DB_PREFIX . "customer` c ON (ct.customer_id = c.customer_id) LEFT JOIN `" . DB_PREFIX . "customer_group_description` cgd ON (c.customer_group_id = cgd.customer_group_id) WHERE cgd.language_id = '" . (int)$this->config->get('config_language_id') . "'";
 
 		if (!empty($data['filter_date_start'])) {
 			$sql .= " AND DATE(ct.date_added) >= '" . $this->db->escape($data['filter_date_start']) . "'";
@@ -336,6 +352,10 @@ class ModelReportCustomer extends Model {
 
 		if (!empty($data['filter_customer'])) {
 			$sql .= " AND CONCAT(c.firstname, ' ', c.lastname) LIKE '" . $this->db->escape($data['filter_customer']) . "'";
+		}
+		
+		if (!empty($data['filter_customer_id'])) {
+			$sql .= " AND ct.customer_id = '" . $this->db->escape($data['filter_customer_id']) . "'";
 		}
 
 		$sql .= " GROUP BY ct.customer_id ORDER BY total DESC";
@@ -373,6 +393,10 @@ class ModelReportCustomer extends Model {
 		if (!empty($data['filter_customer'])) {
 			$implode[] = "CONCAT(c.firstname, ' ', c.lastname) LIKE '" . $this->db->escape($data['filter_customer']) . "'";
 		}
+		
+		if (!empty($data['filter_customer_id'])) {
+			$implode[] = "ct.customer_id = '" . $this->db->escape($data['filter_customer_id']) . "'";
+		}
 
 		if ($implode) {
 			$sql .= " WHERE " . implode(" AND ", $implode);
@@ -390,6 +414,10 @@ class ModelReportCustomer extends Model {
 
 		if (!empty($data['filter_ip'])) {
 			$implode[] = "co.ip LIKE '" . $this->db->escape($data['filter_ip']) . "'";
+		}
+		
+		if (!empty($data['filter_customer_id'])) {
+			$implode[] = "co.customer_id = '" . $this->db->escape($data['filter_customer_id']) . "'";
 		}
 
 		if (!empty($data['filter_customer'])) {
@@ -413,7 +441,7 @@ class ModelReportCustomer extends Model {
 
 			$sql .= " LIMIT " . (int)$data['start'] . "," . (int)$data['limit'];
 		}
-
+//echo $sql; exit;
 		$query = $this->db->query($sql);
 
 		return $query->rows;
@@ -426,6 +454,10 @@ class ModelReportCustomer extends Model {
 
 		if (!empty($data['filter_ip'])) {
 			$implode[] = "co.ip LIKE '" . $this->db->escape($data['filter_ip']) . "'";
+		}
+		
+		if (!empty($data['filter_customer_id'])) {
+			$implode[] = "co.customer_id = '" . $this->db->escape($data['filter_customer_id']) . "'";
 		}
 
 		if (!empty($data['filter_customer'])) {
@@ -452,6 +484,10 @@ class ModelReportCustomer extends Model {
 
 		if (!empty($data['filter_date_end'])) {
 			$implode[] = "DATE(ca.date_added) <= '" . $this->db->escape($data['filter_date_end']) . "'";
+		}
+		
+		if (!empty($data['filter_customer_id'])) {
+			$implode[] = "ca.customer_id = '" . $this->db->escape($data['filter_customer_id']) . "'";
 		}
 
 		if (!empty($data['filter_customer'])) {
@@ -501,6 +537,10 @@ class ModelReportCustomer extends Model {
 		if (!empty($data['filter_customer'])) {
 			$implode[] = "CONCAT(c.firstname, ' ', c.lastname) LIKE '" . $this->db->escape($data['filter_customer']) . "'";
 		}
+		
+		if (!empty($data['filter_customer_id'])) {
+			$implode[] = "ca.customer_id = '" . $this->db->escape($data['filter_customer_id']) . "'";
+		}
 
 		if (!empty($data['filter_ip'])) {
 			$implode[] = "ca.ip LIKE '" . $this->db->escape($data['filter_ip']) . "'";
@@ -530,6 +570,10 @@ class ModelReportCustomer extends Model {
 
 		if (!empty($data['filter_keyword'])) {
 			$implode[] = "cs.keyword LIKE '" . $this->db->escape($data['filter_keyword']) . "%'";
+		}
+		
+		if (!empty($data['filter_customer_id'])) {
+			$implode[] = "cs.customer_id = '" . $this->db->escape($data['filter_customer_id']) . "'";
 		}
 
 		if (!empty($data['filter_customer'])) {
@@ -582,6 +626,10 @@ class ModelReportCustomer extends Model {
 
 		if (!empty($data['filter_customer'])) {
 			$implode[] = "CONCAT(c.firstname, ' ', c.lastname) LIKE '" . $this->db->escape($data['filter_customer']) . "'";
+		}
+		
+		if (!empty($data['filter_customer_id'])) {
+			$implode[] = "cs.customer_id = '" . $this->db->escape($data['filter_customer_id']) . "'";
 		}
 
 		if (!empty($data['filter_ip'])) {

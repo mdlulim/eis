@@ -1,10 +1,10 @@
 <?php
 // Heading
-$_['heading_title']          = 'Products Option';
+$_['heading_title']          = 'Products';
 
 // Text
 $_['text_success']           = 'Success: You have modified products!';
-$_['text_list']              = 'Set additional options for products';
+$_['text_list']              = 'Products';
 $_['text_add']               = 'Add Product';
 $_['text_edit']              = 'Edit Product';
 $_['text_plus']              = '+';
