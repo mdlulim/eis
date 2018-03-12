@@ -42,6 +42,22 @@ class ModelUserApi extends Model {
 
 	public function getApis($data = array()) {
 		$sql = "SELECT * FROM `" . DB_PREFIX . "api`";
+		
+		$sql .= " where api_id > 0";
+		
+		if (!empty($data['filter_name'])) {
+			$sql .= " AND name = '" . $this->db->escape($data['filter_name']) . "'";
+		}
+		
+		if (!empty($data['filter_status'])) {
+			$sql .= " AND status = '" . $this->db->escape($data['filter_status']) . "'";
+		}
+		
+		if (!empty($data['filter_dateadded'])) { 
+			$fromdate = date('Y-m-d H:i:s', strtotime($data['filter_dateadded'])); 
+			$todate = date('Y-m-d 23:59:59', strtotime($data['filter_dateadded'])); 
+			$sql .= " AND date_added >= '" . $fromdate . "' AND date_added <= '" . $todate . "'";
+		}
 
 		$sort_data = array(
 			'name',
@@ -79,8 +95,26 @@ class ModelUserApi extends Model {
 		return $query->rows;
 	}
 
-	public function getTotalApis() {
-		$query = $this->db->query("SELECT COUNT(*) AS total FROM `" . DB_PREFIX . "api`");
+	public function getTotalApis($data = array()) {
+		$sql = "SELECT COUNT(*) AS total FROM `" . DB_PREFIX . "api`";
+		
+		$sql .= " where api_id > 0";
+		
+		if (!empty($data['filter_name'])) {
+			$sql .= " AND name = '" . $this->db->escape($data['filter_name']) . "'";
+		}
+		
+		if (!empty($data['filter_status'])) {
+			$sql .= " AND status = '" . $this->db->escape($data['filter_status']) . "'";
+		}
+		
+		if (!empty($data['filter_dateadded'])) { 
+			$fromdate = date('Y-m-d H:i:s', strtotime($data['filter_dateadded'])); 
+			$todate = date('Y-m-d 23:59:59', strtotime($data['filter_dateadded'])); 
+			$sql .= " AND date_added >= '" . $fromdate . "' AND date_added <= '" . $todate . "'";
+		}
+		
+		$query = $this->db->query($sql);
 
 		return $query->row['total'];
 	}

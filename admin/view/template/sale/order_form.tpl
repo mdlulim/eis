@@ -88,6 +88,10 @@
                   <input type="text" name="lastname" value="<?php echo $lastname; ?>" id="input-lastname" class="form-control" />
                 </div>
               </div>-->
+              
+              <input type="hidden" name="firstname" value="<?php echo $firstname; ?>" id="input-firstname" class="form-control" />
+              <input type="hidden" name="lastname" value="<?php echo $lastname; ?>" id="input-lastname" class="form-control" />
+              
               <div class="form-group required">
                 <label class="col-sm-2 control-label" for="input-email"><?php echo $entry_email; ?></label>
                 <div class="col-sm-10">
@@ -411,12 +415,12 @@
                     <option value="0" selected="selected"><?php echo $text_none; ?></option>
                     <?php foreach ($addresses as $address) { ?>
                     <?php 
-                    $add = $address['firstname']. ' ' .$address['lastname'];
-                    $selectadd = $payment_firstname. ' ' .$payment_lastname;
+                    $add = $address['firstname'];
+                    $selectadd = $payment_firstname;
                     if($add == $selectadd) { ?>
-                    <option selected="selected" value="<?php echo $address['address_id']; ?>"><?php echo $address['firstname'] . ' ' . $address['lastname'] . ', ' . $address['address_1'] . ', ' . $address['city'] . ', ' . $address['country']; ?></option>
+                    <option selected="selected" value="<?php echo $address['address_id']; ?>"><?php echo $address['firstname'] . ' , ' . $address['address_1'] . ', ' . $address['city'] . ', ' . $address['country']; ?></option>
                     <?php } else { ?>
-                    <option value="<?php echo $address['address_id']; ?>"><?php echo $address['firstname'] . ' ' . $address['lastname'] . ', ' . $address['address_1'] . ', ' . $address['city'] . ', ' . $address['country']; ?></option>
+                    <option value="<?php echo $address['address_id']; ?>"><?php echo $address['firstname'] . ' , ' . $address['address_1'] . ', ' . $address['city'] . ', ' . $address['country']; ?></option>
                     <?php } ?>
                     <?php } ?>
                   </select>
@@ -434,7 +438,11 @@
                   <input type="text" name="lastname" value="<?php echo $payment_lastname; ?>" id="input-payment-lastname" class="form-control" />
                 </div>
               </div>-->
-              <div class="form-group">
+              
+              <input type="hidden" name="firstname" value="<?php echo $payment_firstname; ?>" id="input-payment-firstname" class="form-control" />
+              <input type="hidden" name="lastname" value="<?php echo $payment_lastname; ?>" id="input-payment-lastname" class="form-control" />
+              
+              <div class="form-group required">
                 <label class="col-sm-2 control-label" for="input-payment-company"><?php echo $entry_company; ?></label>
                 <div class="col-sm-10">
                   <input type="text" name="company" value="<?php echo $payment_company; ?>" id="input-payment-company" class="form-control" />
@@ -629,18 +637,18 @@
                     <option value="0" selected="selected"><?php echo $text_none; ?></option>
                     <?php foreach ($addresses as $address) { ?>
                     <?php 
-                    $Sadd = $address['firstname']. ' ' .$address['lastname'];
-                    $Sselectadd = $shipping_firstname. ' ' .$shipping_lastname;
+                    $Sadd = $address['firstname'];
+                    $Sselectadd = $shipping_firstname;
                     if($Sadd == $Sselectadd) { ?>
-                    <option selected="selected" value="<?php echo $address['address_id']; ?>"><?php echo $address['firstname'] . ' ' . $address['lastname'] . ', ' . $address['address_1'] . ', ' . $address['city'] . ', ' . $address['country']; ?></option>
+                    <option selected="selected" value="<?php echo $address['address_id']; ?>"><?php echo $address['firstname'] . ', ' . $address['address_1'] . ', ' . $address['city'] . ', ' . $address['country']; ?></option>
                     <?php } else { ?>
-                    <option value="<?php echo $address['address_id']; ?>"><?php echo $address['firstname'] . ' ' . $address['lastname'] . ', ' . $address['address_1'] . ', ' . $address['city'] . ', ' . $address['country']; ?></option>
+                    <option value="<?php echo $address['address_id']; ?>"><?php echo $address['firstname'] . ', ' . $address['address_1'] . ', ' . $address['city'] . ', ' . $address['country']; ?></option>
                     <?php } ?>
                     <?php } ?>
                   </select>
                 </div>
               </div>
-              <div class="form-group required">
+              <!--<div class="form-group required">
                 <label class="col-sm-2 control-label" for="input-shipping-firstname"><?php echo $entry_firstname; ?></label>
                 <div class="col-sm-10">
                   <input type="text" name="firstname" value="<?php echo $shipping_firstname; ?>" id="input-shipping-firstname" class="form-control" />
@@ -651,8 +659,11 @@
                 <div class="col-sm-10">
                   <input type="text" name="lastname" value="<?php echo $shipping_lastname; ?>" id="input-shipping-lastname" class="form-control" />
                 </div>
-              </div>
-              <div class="form-group">
+              </div>-->
+              <input type="hidden" name="firstname" value="<?php echo $shipping_firstname; ?>" id="input-shipping-firstname" class="form-control" />
+              <input type="hidden" name="lastname" value="<?php echo $shipping_lastname; ?>" id="input-shipping-lastname" class="form-control" />
+              
+              <div class="form-group required">
                 <label class="col-sm-2 control-label" for="input-shipping-company"><?php echo $entry_company; ?></label>
                 <div class="col-sm-10">
                   <input type="text" name="company" value="<?php echo $shipping_company; ?>" id="input-shipping-company" class="form-control" />

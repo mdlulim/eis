@@ -51,6 +51,13 @@ class ControllerApiPayment extends Controller {
 					}
 				}
 			}
+			
+			if(isset($this->request->post['company']))
+			{
+				if ((utf8_strlen(trim($this->request->post['company'])) < 1) || (utf8_strlen(trim($this->request->post['company'])) > 32)) {
+					$json['error']['company'] = $this->language->get('error_company');
+				}
+			}
 
 			if ((utf8_strlen(trim($this->request->post['address_1'])) < 3) || (utf8_strlen(trim($this->request->post['address_1'])) > 128)) {
 				$json['error']['address_1'] = $this->language->get('error_address_1');

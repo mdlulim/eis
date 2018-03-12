@@ -61,6 +61,22 @@ class ModelMarketingCoupon extends Model {
 
 	public function getCoupons($data = array()) {
 		$sql = "SELECT coupon_id, name, code, discount, date_start, date_end, status FROM " . DB_PREFIX . "coupon";
+		
+		$sql .= " where coupon_id > 0";
+		
+		if (!empty($data['filter_code'])) {
+			$sql .= " AND code LIKE '" . $this->db->escape($data['filter_code']) . "%'";
+		}
+		
+		if (!empty($data['filter_status'])) {
+			$sql .= " AND status = '" . $this->db->escape($data['filter_status']) . "'";
+		}
+		
+		if (!empty($data['filter_date_from']) && !empty($data['filter_date_to'])) { 
+			$fromdate = date('Y-m-d H:i:s', strtotime($data['filter_date_from'])); 
+			$todate = date('Y-m-d H:i:s', strtotime($data['filter_date_to'])); 
+			$sql .= " AND date_start >= '" . $fromdate . "' AND date_end <= '" . $todate . "'";
+		}
 
 		$sort_data = array(
 			'name',
@@ -124,8 +140,26 @@ class ModelMarketingCoupon extends Model {
 		return $coupon_category_data;
 	}
 
-	public function getTotalCoupons() {
-		$query = $this->db->query("SELECT COUNT(*) AS total FROM " . DB_PREFIX . "coupon");
+	public function getTotalCoupons($data = array()) {
+		$sql = "SELECT COUNT(*) AS total FROM " . DB_PREFIX . "coupon";
+		
+		$sql .= " where coupon_id > 0";
+		
+		if (!empty($data['filter_code'])) {
+			$sql .= " AND code LIKE '" . $this->db->escape($data['filter_code']) . "%'";
+		}
+		
+		if (!empty($data['filter_status'])) {
+			$sql .= " AND status = '" . $this->db->escape($data['filter_status']) . "'";
+		}
+		
+		if (!empty($data['filter_date_from']) && !empty($data['filter_date_to'])) { 
+			$fromdate = date('Y-m-d H:i:s', strtotime($data['filter_date_from'])); 
+			$todate = date('Y-m-d H:i:s', strtotime($data['filter_date_to'])); 
+			$sql .= " AND date_start >= '" . $fromdate . "' AND date_end <= '" . $todate . "'";
+		}
+		
+		$query = $this->db->query($sql);
 
 		return $query->row['total'];
 	}

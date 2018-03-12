@@ -26,6 +26,22 @@ class ControllerMarketingCoupon extends Controller {
 
 			$url = '';
 
+			if (isset($this->request->get['filter_code'])) {
+				$url .= '&filter_code=' . $this->request->get['filter_code'];
+			}
+			
+			if (isset($this->request->get['filter_status'])) {
+				$url .= '&filter_status=' . $this->request->get['filter_status'];
+			}
+			
+			if (isset($this->request->get['filter_date_from'])) {
+				$url .= '&filter_date_from=' . $this->request->get['filter_date_from'];
+			}
+			
+			if (isset($this->request->get['filter_date_to'])) {
+				$url .= '&filter_date_to=' . $this->request->get['filter_date_to'];
+			}
+			
 			if (isset($this->request->get['sort'])) {
 				$url .= '&sort=' . $this->request->get['sort'];
 			}
@@ -58,6 +74,22 @@ class ControllerMarketingCoupon extends Controller {
 
 			$url = '';
 
+			if (isset($this->request->get['filter_code'])) {
+				$url .= '&filter_code=' . $this->request->get['filter_code'];
+			}
+			
+			if (isset($this->request->get['filter_status'])) {
+				$url .= '&filter_status=' . $this->request->get['filter_status'];
+			}
+			
+			if (isset($this->request->get['filter_date_from'])) {
+				$url .= '&filter_date_from=' . $this->request->get['filter_date_from'];
+			}
+			
+			if (isset($this->request->get['filter_date_to'])) {
+				$url .= '&filter_date_to=' . $this->request->get['filter_date_to'];
+			}
+			
 			if (isset($this->request->get['sort'])) {
 				$url .= '&sort=' . $this->request->get['sort'];
 			}
@@ -92,6 +124,22 @@ class ControllerMarketingCoupon extends Controller {
 
 			$url = '';
 
+			if (isset($this->request->get['filter_code'])) {
+				$url .= '&filter_code=' . $this->request->get['filter_code'];
+			}
+			
+			if (isset($this->request->get['filter_status'])) {
+				$url .= '&filter_status=' . $this->request->get['filter_status'];
+			}
+			
+			if (isset($this->request->get['filter_date_from'])) {
+				$url .= '&filter_date_from=' . $this->request->get['filter_date_from'];
+			}
+			
+			if (isset($this->request->get['filter_date_to'])) {
+				$url .= '&filter_date_to=' . $this->request->get['filter_date_to'];
+			}
+			
 			if (isset($this->request->get['sort'])) {
 				$url .= '&sort=' . $this->request->get['sort'];
 			}
@@ -111,6 +159,31 @@ class ControllerMarketingCoupon extends Controller {
 	}
 
 	protected function getList() {
+		
+		if (isset($this->request->get['filter_code'])) {
+			$filter_code = $this->request->get['filter_code'];
+		} else {
+			$filter_code = null;
+		}
+		
+		if (isset($this->request->get['filter_status'])) {
+			$filter_status = $this->request->get['filter_status'];
+		} else {
+			$filter_status = null;
+		}
+		
+		if (isset($this->request->get['filter_date_from'])) {
+			$filter_date_from = $this->request->get['filter_date_from'];
+		} else {
+			$filter_date_from = null;
+		}
+		
+		if (isset($this->request->get['filter_date_to'])) {
+			$filter_date_to = $this->request->get['filter_date_to'];
+		} else {
+			$filter_date_to = null;
+		}
+		
 		if (isset($this->request->get['sort'])) {
 			$sort = $this->request->get['sort'];
 		} else {
@@ -161,13 +234,17 @@ class ControllerMarketingCoupon extends Controller {
 		$data['coupons'] = array();
 
 		$filter_data = array(
+			'filter_code'  => $filter_code,
+			'filter_status'  => $filter_status,
+			'filter_date_from'  => $filter_date_from,
+			'filter_date_to'  => $filter_date_to,
 			'sort'  => $sort,
 			'order' => $order,
 			'start' => ($page - 1) * $this->config->get('config_limit_admin'),
 			'limit' => $this->config->get('config_limit_admin')
 		);
 
-		$coupon_total = $this->model_marketing_coupon->getTotalCoupons();
+		$coupon_total = $this->model_marketing_coupon->getTotalCoupons($filter_data);
 
 		$results = $this->model_marketing_coupon->getCoupons($filter_data);
 
@@ -189,6 +266,8 @@ class ControllerMarketingCoupon extends Controller {
 		$data['text_list'] = $this->language->get('text_list');
 		$data['text_no_results'] = $this->language->get('text_no_results');
 		$data['text_confirm'] = $this->language->get('text_confirm');
+		$data['text_enabled'] = $this->language->get('text_enabled');
+		$data['text_disabled'] = $this->language->get('text_disabled');
 
 		$data['column_name'] = $this->language->get('column_name');
 		$data['column_code'] = $this->language->get('column_code');
@@ -201,6 +280,8 @@ class ControllerMarketingCoupon extends Controller {
 		$data['button_add'] = $this->language->get('button_add');
 		$data['button_edit'] = $this->language->get('button_edit');
 		$data['button_delete'] = $this->language->get('button_delete');
+		
+		$data['token'] = $this->session->data['token'];
 
 		if (isset($this->error['warning'])) {
 			$data['error_warning'] = $this->error['warning'];
@@ -243,6 +324,22 @@ class ControllerMarketingCoupon extends Controller {
 
 		$url = '';
 
+		if (isset($this->request->get['filter_code'])) {
+			$url .= '&filter_code=' . $this->request->get['filter_code'];
+		}
+		
+		if (isset($this->request->get['filter_status'])) {
+			$url .= '&filter_status=' . $this->request->get['filter_status'];
+		}
+		
+		if (isset($this->request->get['filter_date_from'])) {
+			$url .= '&filter_date_from=' . $this->request->get['filter_date_from'];
+		}
+		
+		if (isset($this->request->get['filter_date_to'])) {
+			$url .= '&filter_date_to=' . $this->request->get['filter_date_to'];
+		}
+		
 		if (isset($this->request->get['sort'])) {
 			$url .= '&sort=' . $this->request->get['sort'];
 		}
@@ -261,6 +358,10 @@ class ControllerMarketingCoupon extends Controller {
 
 		$data['results'] = sprintf($this->language->get('text_pagination'), ($coupon_total) ? (($page - 1) * $this->config->get('config_limit_admin')) + 1 : 0, ((($page - 1) * $this->config->get('config_limit_admin')) > ($coupon_total - $this->config->get('config_limit_admin'))) ? $coupon_total : ((($page - 1) * $this->config->get('config_limit_admin')) + $this->config->get('config_limit_admin')), $coupon_total, ceil($coupon_total / $this->config->get('config_limit_admin')));
 
+		$data['filter_code'] = $filter_code;
+		$data['filter_status'] = $filter_status;
+		$data['filter_date_from'] = $filter_date_from;
+		$data['filter_date_to'] = $filter_date_to;
 		$data['sort'] = $sort;
 		$data['order'] = $order;
 
