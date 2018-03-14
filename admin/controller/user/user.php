@@ -26,6 +26,18 @@ class ControllerUserUser extends Controller {
 
 			$url = '';
 
+			if (isset($this->request->get['filter_name'])) {
+				$url .= '&filter_name=' . $this->request->get['filter_name'];
+			}
+			
+			if (isset($this->request->get['filter_status'])) {
+				$url .= '&filter_status=' . $this->request->get['filter_status'];
+			}
+			
+			if (isset($this->request->get['filter_dateadded'])) {
+				$url .= '&filter_dateadded=' . $this->request->get['filter_dateadded'];
+			}
+			
 			if (isset($this->request->get['sort'])) {
 				$url .= '&sort=' . $this->request->get['sort'];
 			}
@@ -58,6 +70,18 @@ class ControllerUserUser extends Controller {
 
 			$url = '';
 
+			if (isset($this->request->get['filter_name'])) {
+				$url .= '&filter_name=' . $this->request->get['filter_name'];
+			}
+			
+			if (isset($this->request->get['filter_status'])) {
+				$url .= '&filter_status=' . $this->request->get['filter_status'];
+			}
+			
+			if (isset($this->request->get['filter_dateadded'])) {
+				$url .= '&filter_dateadded=' . $this->request->get['filter_dateadded'];
+			}
+			
 			if (isset($this->request->get['sort'])) {
 				$url .= '&sort=' . $this->request->get['sort'];
 			}
@@ -92,6 +116,18 @@ class ControllerUserUser extends Controller {
 
 			$url = '';
 
+			if (isset($this->request->get['filter_name'])) {
+				$url .= '&filter_name=' . $this->request->get['filter_name'];
+			}
+			
+			if (isset($this->request->get['filter_status'])) {
+				$url .= '&filter_status=' . $this->request->get['filter_status'];
+			}
+			
+			if (isset($this->request->get['filter_dateadded'])) {
+				$url .= '&filter_dateadded=' . $this->request->get['filter_dateadded'];
+			}
+			
 			if (isset($this->request->get['sort'])) {
 				$url .= '&sort=' . $this->request->get['sort'];
 			}
@@ -111,6 +147,25 @@ class ControllerUserUser extends Controller {
 	}
 
 	protected function getList() {
+		
+		if (isset($this->request->get['filter_name'])) {
+			$filter_name = $this->request->get['filter_name'];
+		} else {
+			$filter_name = null;
+		}
+		
+		if (isset($this->request->get['filter_status'])) {
+			$filter_status = $this->request->get['filter_status'];
+		} else {
+			$filter_status = null;
+		}
+		
+		if (isset($this->request->get['filter_dateadded'])) {
+			$filter_dateadded = $this->request->get['filter_dateadded'];
+		} else {
+			$filter_dateadded = null;
+		}
+		
 		if (isset($this->request->get['sort'])) {
 			$sort = $this->request->get['sort'];
 		} else {
@@ -131,6 +186,18 @@ class ControllerUserUser extends Controller {
 
 		$url = '';
 
+		if (isset($this->request->get['filter_name'])) {
+			$url .= '&filter_name=' . $this->request->get['filter_name'];
+		}
+		
+		if (isset($this->request->get['filter_status'])) {
+			$url .= '&filter_status=' . $this->request->get['filter_status'];
+		}
+		
+		if (isset($this->request->get['filter_dateadded'])) {
+			$url .= '&filter_dateadded=' . $this->request->get['filter_dateadded'];
+		}
+		
 		if (isset($this->request->get['sort'])) {
 			$url .= '&sort=' . $this->request->get['sort'];
 		}
@@ -161,13 +228,16 @@ class ControllerUserUser extends Controller {
 		$data['users'] = array();
 
 		$filter_data = array(
+			'filter_name'  => $filter_name,
+			'filter_status'  => $filter_status,
+			'filter_dateadded'  => $filter_dateadded,
 			'sort'  => $sort,
 			'order' => $order,
 			'start' => ($page - 1) * $this->config->get('config_limit_admin'),
 			'limit' => $this->config->get('config_limit_admin')
 		);
 
-		$user_total = $this->model_user_user->getTotalUsers();
+		$user_total = $this->model_user_user->getTotalUsers($filter_data);
 
 		$results = $this->model_user_user->getUsers($filter_data);
 
@@ -180,12 +250,16 @@ class ControllerUserUser extends Controller {
 				'edit'       => $this->url->link('user/user/edit', 'token=' . $this->session->data['token'] . '&user_id=' . $result['user_id'] . $url, true)
 			);
 		}
+		
+		$data['Dropdownnames'] = $this->model_user_user->getUsers();
 
 		$data['heading_title'] = $this->language->get('heading_title');
 		
 		$data['text_list'] = $this->language->get('text_list');
 		$data['text_no_results'] = $this->language->get('text_no_results');
 		$data['text_confirm'] = $this->language->get('text_confirm');
+		$data['text_enabled'] = $this->language->get('text_enabled');
+		$data['text_disabled'] = $this->language->get('text_disabled');
 
 		$data['column_username'] = $this->language->get('column_username');
 		$data['column_status'] = $this->language->get('column_status');
@@ -195,6 +269,8 @@ class ControllerUserUser extends Controller {
 		$data['button_add'] = $this->language->get('button_add');
 		$data['button_edit'] = $this->language->get('button_edit');
 		$data['button_delete'] = $this->language->get('button_delete');
+		
+		$data['token'] = $this->session->data['token'];
 
 		if (isset($this->error['warning'])) {
 			$data['error_warning'] = $this->error['warning'];
@@ -252,6 +328,9 @@ class ControllerUserUser extends Controller {
 
 		$data['results'] = sprintf($this->language->get('text_pagination'), ($user_total) ? (($page - 1) * $this->config->get('config_limit_admin')) + 1 : 0, ((($page - 1) * $this->config->get('config_limit_admin')) > ($user_total - $this->config->get('config_limit_admin'))) ? $user_total : ((($page - 1) * $this->config->get('config_limit_admin')) + $this->config->get('config_limit_admin')), $user_total, ceil($user_total / $this->config->get('config_limit_admin')));
 
+		$data['filter_name'] = $filter_name;
+		$data['filter_status'] = $filter_status;
+		$data['filter_dateadded'] = $filter_dateadded;
 		$data['sort'] = $sort;
 		$data['order'] = $order;
 
@@ -326,6 +405,18 @@ class ControllerUserUser extends Controller {
 
 		$url = '';
 
+		if (isset($this->request->get['filter_name'])) {
+			$url .= '&filter_name=' . $this->request->get['filter_name'];
+		}
+		
+		if (isset($this->request->get['filter_status'])) {
+			$url .= '&filter_status=' . $this->request->get['filter_status'];
+		}
+		
+		if (isset($this->request->get['filter_dateadded'])) {
+			$url .= '&filter_dateadded=' . $this->request->get['filter_dateadded'];
+		}
+		
 		if (isset($this->request->get['sort'])) {
 			$url .= '&sort=' . $this->request->get['sort'];
 		}

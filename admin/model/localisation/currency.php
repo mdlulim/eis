@@ -42,6 +42,22 @@ class ModelLocalisationCurrency extends Model {
 		if ($data) {
 			$sql = "SELECT * FROM " . DB_PREFIX . "currency";
 
+			$sql .= " where currency_id > 0";
+		
+			if (!empty($data['filter_title'])) {
+				$sql .= " AND title = '" . $this->db->escape($data['filter_title']) . "'";
+			}
+			
+			if (!empty($data['filter_code'])) {
+				$sql .= " AND code = '" . $this->db->escape($data['filter_code']) . "'";
+			}
+			
+			if (!empty($data['filter_dateupdated'])) { 
+				$fromdate = date('Y-m-d H:i:s', strtotime($data['filter_dateupdated'])); 
+				$todate = date('Y-m-d 23:59:59', strtotime($data['filter_dateupdated'])); 
+				$sql .= " AND date_modified >= '" . $fromdate . "' AND date_modified <= '" . $todate . "'";
+			}
+			
 			$sort_data = array(
 				'title',
 				'code',
@@ -146,8 +162,26 @@ class ModelLocalisationCurrency extends Model {
 		$this->cache->delete('currency');
 	}
 
-	public function getTotalCurrencies() {
-		$query = $this->db->query("SELECT COUNT(*) AS total FROM " . DB_PREFIX . "currency");
+	public function getTotalCurrencies($data = array()) {
+		$sql = "SELECT COUNT(*) AS total FROM " . DB_PREFIX . "currency";
+		
+		$sql .= " where currency_id > 0";
+		
+		if (!empty($data['filter_title'])) {
+			$sql .= " AND title = '" . $this->db->escape($data['filter_title']) . "'";
+		}
+		
+		if (!empty($data['filter_code'])) {
+			$sql .= " AND code = '" . $this->db->escape($data['filter_code']) . "'";
+		}
+		
+		if (!empty($data['filter_dateupdated'])) { 
+			$fromdate = date('Y-m-d H:i:s', strtotime($data['filter_dateupdated'])); 
+			$todate = date('Y-m-d 23:59:59', strtotime($data['filter_dateupdated'])); 
+			$sql .= " AND date_modified >= '" . $fromdate . "' AND date_modified <= '" . $todate . "'";
+		}
+		
+		$query = $this->db->query($sql);
 
 		return $query->row['total'];
 	}

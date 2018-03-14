@@ -44,6 +44,17 @@ class ModelCatalogPrice extends Model {
 
         // $sql = "SELECT p2c.*, c.id AS c_id, c.contract_name AS c_name FROM oc_price_to_contract p2c INNER JOIN oc_contracts c ON p2c.contract_id = c.id ";
         $sql = "SELECT p2c.*,cgd.name AS c_name, pd.sku AS sku, cgd.customer_group_id AS c_id FROM oc_product_to_customer_group_prices p2c inner join oc_customer_group_description cgd ON p2c.customer_group_id = cgd.customer_group_id INNER JOIN oc_product pd ON p2c.product_id = pd.product_id ";
+		
+		$sql .= "where p2c.product_id > 0";
+		
+		if (!empty($data['filter_sku'])) {
+			$sql .= " AND pd.sku = '" . $this->db->escape($data['filter_sku']) . "'";
+		}
+		
+		if (!empty($data['filter_customer_group_id'])) {
+			$sql .= " AND cgd.customer_group_id = '" . $this->db->escape($data['filter_customer_group_id']) . "'";
+		}
+		
         /*
         $sort_data = array(
             'fgd.name',
@@ -78,8 +89,22 @@ class ModelCatalogPrice extends Model {
 
         return $query->rows;
     }
-    public function getTotalPrice() {
-        $query = $this->db->query("SELECT COUNT(*) AS total FROM `" . DB_PREFIX . "product_to_customer_group_prices`");
+    public function getTotalPrice($data= array()) {
+        //$query = $this->db->query("SELECT COUNT(*) AS total FROM `" . DB_PREFIX . "product_to_customer_group_prices`");
+		
+		$sql = "SELECT COUNT(*) AS total FROM oc_product_to_customer_group_prices p2c inner join oc_customer_group_description cgd ON p2c.customer_group_id = cgd.customer_group_id INNER JOIN oc_product pd ON p2c.product_id = pd.product_id ";
+		
+		$sql .= "where p2c.product_id > 0";
+		
+		if (!empty($data['filter_sku'])) {
+			$sql .= " AND pd.sku = '" . $this->db->escape($data['filter_sku']) . "'";
+		}
+		
+		if (!empty($data['filter_customer_group_id'])) {
+			$sql .= " AND cgd.customer_group_id = '" . $this->db->escape($data['filter_customer_group_id']) . "'";
+		}
+		
+		$query = $this->db->query($sql);
 
         return $query->row['total'];
     }
@@ -97,9 +122,17 @@ class ModelCatalogPrice extends Model {
 
 
     }
-
-    public function getCustomerGroups(){
+	
+	public function getCustomerGroups(){
         $sql = "SELECT * FROM `" . DB_PREFIX . "customer_group_description`";
+
+        $query = $this->db->query($sql);
+
+        return $query->rows;
+    }
+	
+    public function getPricesByGroupSku(){
+        $sql = "SELECT p2c.*,cgd.name AS c_name, pd.sku AS sku, cgd.customer_group_id AS c_id FROM oc_product_to_customer_group_prices p2c inner join oc_customer_group_description cgd ON p2c.customer_group_id = cgd.customer_group_id INNER JOIN oc_product pd ON p2c.product_id = pd.product_id group by pd.sku";
 
         $query = $this->db->query($sql);
 

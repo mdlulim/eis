@@ -26,6 +26,18 @@ class ControllerLocalisationCurrency extends Controller {
 
 			$url = '';
 
+			if (isset($this->request->get['filter_title'])) {
+				$url .= '&filter_title=' . $this->request->get['filter_title'];
+			}
+			
+			if (isset($this->request->get['filter_code'])) {
+				$url .= '&filter_code=' . $this->request->get['filter_code'];
+			}
+			
+			if (isset($this->request->get['filter_updated'])) {
+				$url .= '&filter_updated=' . $this->request->get['filter_updated'];
+			}
+			
 			if (isset($this->request->get['sort'])) {
 				$url .= '&sort=' . $this->request->get['sort'];
 			}
@@ -58,6 +70,18 @@ class ControllerLocalisationCurrency extends Controller {
 
 			$url = '';
 
+			if (isset($this->request->get['filter_title'])) {
+				$url .= '&filter_title=' . $this->request->get['filter_title'];
+			}
+			
+			if (isset($this->request->get['filter_code'])) {
+				$url .= '&filter_code=' . $this->request->get['filter_code'];
+			}
+			
+			if (isset($this->request->get['filter_updated'])) {
+				$url .= '&filter_updated=' . $this->request->get['filter_updated'];
+			}
+			
 			if (isset($this->request->get['sort'])) {
 				$url .= '&sort=' . $this->request->get['sort'];
 			}
@@ -92,6 +116,18 @@ class ControllerLocalisationCurrency extends Controller {
 
 			$url = '';
 
+			if (isset($this->request->get['filter_title'])) {
+				$url .= '&filter_title=' . $this->request->get['filter_title'];
+			}
+			
+			if (isset($this->request->get['filter_code'])) {
+				$url .= '&filter_code=' . $this->request->get['filter_code'];
+			}
+			
+			if (isset($this->request->get['filter_updated'])) {
+				$url .= '&filter_updated=' . $this->request->get['filter_updated'];
+			}
+			
 			if (isset($this->request->get['sort'])) {
 				$url .= '&sort=' . $this->request->get['sort'];
 			}
@@ -124,6 +160,18 @@ class ControllerLocalisationCurrency extends Controller {
 
 			$url = '';
 
+			if (isset($this->request->get['filter_title'])) {
+				$url .= '&filter_title=' . $this->request->get['filter_title'];
+			}
+			
+			if (isset($this->request->get['filter_code'])) {
+				$url .= '&filter_code=' . $this->request->get['filter_code'];
+			}
+			
+			if (isset($this->request->get['filter_updated'])) {
+				$url .= '&filter_updated=' . $this->request->get['filter_updated'];
+			}
+			
 			if (isset($this->request->get['sort'])) {
 				$url .= '&sort=' . $this->request->get['sort'];
 			}
@@ -143,6 +191,25 @@ class ControllerLocalisationCurrency extends Controller {
 	}
 
 	protected function getList() {
+		
+		if (isset($this->request->get['filter_title'])) {
+			$filter_title = $this->request->get['filter_title'];
+		} else {
+			$filter_title = null;
+		}
+		
+		if (isset($this->request->get['filter_code'])) {
+			$filter_code = $this->request->get['filter_code'];
+		} else {
+			$filter_code = null;
+		}
+		
+		if (isset($this->request->get['filter_updated'])) {
+			$filter_updated = $this->request->get['filter_updated'];
+		} else {
+			$filter_updated = null;
+		}
+		
 		if (isset($this->request->get['sort'])) {
 			$sort = $this->request->get['sort'];
 		} else {
@@ -163,6 +230,18 @@ class ControllerLocalisationCurrency extends Controller {
 
 		$url = '';
 
+		if (isset($this->request->get['filter_title'])) {
+			$url .= '&filter_title=' . $this->request->get['filter_title'];
+		}
+		
+		if (isset($this->request->get['filter_code'])) {
+			$url .= '&filter_code=' . $this->request->get['filter_code'];
+		}
+		
+		if (isset($this->request->get['filter_updated'])) {
+			$url .= '&filter_updated=' . $this->request->get['filter_updated'];
+		}
+		
 		if (isset($this->request->get['sort'])) {
 			$url .= '&sort=' . $this->request->get['sort'];
 		}
@@ -194,13 +273,16 @@ class ControllerLocalisationCurrency extends Controller {
 		$data['currencies'] = array();
 
 		$filter_data = array(
+			'filter_title'  => $filter_title,
+			'filter_code'  => $filter_code,
+			'filter_updated'  => $filter_updated,
 			'sort'  => $sort,
 			'order' => $order,
 			'start' => ($page - 1) * $this->config->get('config_limit_admin'),
 			'limit' => $this->config->get('config_limit_admin')
 		);
 
-		$currency_total = $this->model_localisation_currency->getTotalCurrencies();
+		$currency_total = $this->model_localisation_currency->getTotalCurrencies($filter_data);
 
 		$results = $this->model_localisation_currency->getCurrencies($filter_data);
 
@@ -214,6 +296,8 @@ class ControllerLocalisationCurrency extends Controller {
 				'edit'          => $this->url->link('localisation/currency/edit', 'token=' . $this->session->data['token'] . '&currency_id=' . $result['currency_id'] . $url, true)
 			);
 		}
+		
+		$data['DropdownCurrencys'] = $this->model_localisation_currency->getCurrencies();
 
 		$data['heading_title'] = $this->language->get('heading_title');
 
@@ -231,6 +315,8 @@ class ControllerLocalisationCurrency extends Controller {
 		$data['button_edit'] = $this->language->get('button_edit');
 		$data['button_delete'] = $this->language->get('button_delete');
 		$data['button_currency'] = $this->language->get('button_currency');
+		
+		$data['token'] = $this->session->data['token'];
 
 		if (isset($this->error['warning'])) {
 			$data['error_warning'] = $this->error['warning'];
@@ -271,6 +357,18 @@ class ControllerLocalisationCurrency extends Controller {
 
 		$url = '';
 
+		if (isset($this->request->get['filter_title'])) {
+			$url .= '&filter_title=' . $this->request->get['filter_title'];
+		}
+		
+		if (isset($this->request->get['filter_code'])) {
+			$url .= '&filter_code=' . $this->request->get['filter_code'];
+		}
+		
+		if (isset($this->request->get['filter_updated'])) {
+			$url .= '&filter_updated=' . $this->request->get['filter_updated'];
+		}
+		
 		if (isset($this->request->get['sort'])) {
 			$url .= '&sort=' . $this->request->get['sort'];
 		}
@@ -289,6 +387,9 @@ class ControllerLocalisationCurrency extends Controller {
 
 		$data['results'] = sprintf($this->language->get('text_pagination'), ($currency_total) ? (($page - 1) * $this->config->get('config_limit_admin')) + 1 : 0, ((($page - 1) * $this->config->get('config_limit_admin')) > ($currency_total - $this->config->get('config_limit_admin'))) ? $currency_total : ((($page - 1) * $this->config->get('config_limit_admin')) + $this->config->get('config_limit_admin')), $currency_total, ceil($currency_total / $this->config->get('config_limit_admin')));
 
+		$data['filter_title'] = $filter_title;
+		$data['filter_code'] = $filter_code;
+		$data['filter_updated'] = $filter_updated;
 		$data['sort'] = $sort;
 		$data['order'] = $order;
 
@@ -343,6 +444,18 @@ class ControllerLocalisationCurrency extends Controller {
 
 		$url = '';
 
+		if (isset($this->request->get['filter_title'])) {
+			$url .= '&filter_title=' . $this->request->get['filter_title'];
+		}
+		
+		if (isset($this->request->get['filter_code'])) {
+			$url .= '&filter_code=' . $this->request->get['filter_code'];
+		}
+		
+		if (isset($this->request->get['filter_updated'])) {
+			$url .= '&filter_updated=' . $this->request->get['filter_updated'];
+		}
+		
 		if (isset($this->request->get['sort'])) {
 			$url .= '&sort=' . $this->request->get['sort'];
 		}

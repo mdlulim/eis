@@ -29,7 +29,18 @@ class ModelLocalisationCountry extends Model {
 	public function getCountries($data = array()) {
 		if ($data) {
 			$sql = "SELECT * FROM " . DB_PREFIX . "country";
-
+			
+			$sql .= " where country_id > 0";
+		
+			if (!empty($data['filter_name'])) {
+				$sql .= " AND name = '" . $this->db->escape($data['filter_name']) . "'";
+			}
+			
+			if (!empty($data['filter_code'])) {
+				$sql .= " AND CONCAT_WS('', iso_code_2, iso_code_3) LIKE '%" . $this->db->escape($data['filter_code']) . "%'";
+				
+			}
+			
 			$sort_data = array(
 				'name',
 				'iso_code_2',
@@ -59,7 +70,7 @@ class ModelLocalisationCountry extends Model {
 
 				$sql .= " LIMIT " . (int)$data['start'] . "," . (int)$data['limit'];
 			}
-
+//echo $sql; exit;
 			$query = $this->db->query($sql);
 
 			return $query->rows;
@@ -78,8 +89,20 @@ class ModelLocalisationCountry extends Model {
 		}
 	}
 
-	public function getTotalCountries() {
-		$query = $this->db->query("SELECT COUNT(*) AS total FROM " . DB_PREFIX . "country");
+	public function getTotalCountries($data = array()) {
+		$sql = "SELECT COUNT(*) AS total FROM " . DB_PREFIX . "country";
+		
+		$sql .= " where country_id > 0";
+		
+		if (!empty($data['filter_name'])) {
+			$sql .= " AND name = '" . $this->db->escape($data['filter_name']) . "'";
+		}
+		
+		if (!empty($data['filter_code'])) {
+			$sql .= " AND CONCAT_WS('', iso_code_2, iso_code_3) LIKE '%" . $this->db->escape($data['filter_code']) . "%'";
+		}
+		
+		$query = $this->db->query($sql);
 
 		return $query->row['total'];
 	}

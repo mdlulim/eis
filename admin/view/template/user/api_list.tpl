@@ -49,7 +49,7 @@
               <div class="form-group fromdate">
                 <label class="control-label" for="input-model">Date Added</label>
                 <div class='input-group date' id='filter_dateadded'>
-                    <input name="filter_dateadded" type='text' value="<?php echo $filter_dateadded; ?>"  placeholder="Date From" class="form-control" data-date-format="DD-MM-YYYY" class="form-control"  />
+                    <input name="filter_dateadded" type='text' value="<?php echo $filter_dateadded; ?>"  placeholder="Date Added" class="form-control" data-date-format="DD-MM-YYYY" class="form-control"  />
                     <span class="input-group-addon">
                         <span class="glyphicon glyphicon-calendar"></span>
                     </span>

@@ -363,8 +363,8 @@ class ControllerCustomerCustomer extends Controller {
 			if(!empty($adds))
 			{
 				foreach($adds as $add)
-				{
-					$this->db->query("update " . DB_PREFIX . "address set firstname='".$firstname."' WHERE address_id = '" . (int)$add['address_id'] . "'");
+				{ 
+					$this->db->query("update " . DB_PREFIX . "address set firstname='".$firstname."', lastname='".$firstname."', company='".$firstname."' WHERE address_id = '" . (int)$add['address_id'] . "'");
 				}
 			}
 			
@@ -983,6 +983,10 @@ class ControllerCustomerCustomer extends Controller {
 			$data['cancel'] = $this->url->link('replogic/salesrep_info', 'token=' . $this->session->data['token'] . '&type=customers&salesrep_id='.$this->request->get['csalesrep_id'], true);
 			$data['type'] = $this->request->get['type'];
 			$data['csalesrep_id'] = $this->request->get['csalesrep_id'];
+		}
+		else if(isset($this->request->get['order_report']))
+		{
+			$data['cancel'] = $this->url->link('report/customer_order', 'token=' . $this->session->data['token'], true);
 		}
 		else
 		{

@@ -26,6 +26,26 @@ class ControllerLocalisationTaxRate extends Controller {
 
 			$url = '';
 
+			if (isset($this->request->get['filter_name'])) {
+				$url .= '&filter_name=' . $this->request->get['filter_name'];
+			}
+			
+			if (isset($this->request->get['filter_type'])) {
+				$url .= '&filter_type=' . $this->request->get['filter_type'];
+			}
+			
+			if (isset($this->request->get['filter_geozone'])) {
+				$url .= '&filter_geozone=' . $this->request->get['filter_geozone'];
+			}
+			
+			if (isset($this->request->get['filter_date_added'])) {
+				$url .= '&filter_date_added=' . $this->request->get['filter_date_added'];
+			}
+			
+			if (isset($this->request->get['filter_date_modified'])) {
+				$url .= '&filter_date_modified=' . $this->request->get['filter_date_modified'];
+			}
+			
 			if (isset($this->request->get['sort'])) {
 				$url .= '&sort=' . $this->request->get['sort'];
 			}
@@ -58,6 +78,26 @@ class ControllerLocalisationTaxRate extends Controller {
 
 			$url = '';
 
+			if (isset($this->request->get['filter_name'])) {
+				$url .= '&filter_name=' . $this->request->get['filter_name'];
+			}
+			
+			if (isset($this->request->get['filter_type'])) {
+				$url .= '&filter_type=' . $this->request->get['filter_type'];
+			}
+			
+			if (isset($this->request->get['filter_geozone'])) {
+				$url .= '&filter_geozone=' . $this->request->get['filter_geozone'];
+			}
+			
+			if (isset($this->request->get['filter_date_added'])) {
+				$url .= '&filter_date_added=' . $this->request->get['filter_date_added'];
+			}
+			
+			if (isset($this->request->get['filter_date_modified'])) {
+				$url .= '&filter_date_modified=' . $this->request->get['filter_date_modified'];
+			}
+			
 			if (isset($this->request->get['sort'])) {
 				$url .= '&sort=' . $this->request->get['sort'];
 			}
@@ -92,6 +132,26 @@ class ControllerLocalisationTaxRate extends Controller {
 
 			$url = '';
 
+			if (isset($this->request->get['filter_name'])) {
+				$url .= '&filter_name=' . $this->request->get['filter_name'];
+			}
+			
+			if (isset($this->request->get['filter_type'])) {
+				$url .= '&filter_type=' . $this->request->get['filter_type'];
+			}
+			
+			if (isset($this->request->get['filter_geozone'])) {
+				$url .= '&filter_geozone=' . $this->request->get['filter_geozone'];
+			}
+			
+			if (isset($this->request->get['filter_date_added'])) {
+				$url .= '&filter_date_added=' . $this->request->get['filter_date_added'];
+			}
+			
+			if (isset($this->request->get['filter_date_modified'])) {
+				$url .= '&filter_date_modified=' . $this->request->get['filter_date_modified'];
+			}
+			
 			if (isset($this->request->get['sort'])) {
 				$url .= '&sort=' . $this->request->get['sort'];
 			}
@@ -111,6 +171,37 @@ class ControllerLocalisationTaxRate extends Controller {
 	}
 
 	protected function getList() {
+		
+		if (isset($this->request->get['filter_name'])) {
+			$filter_name = $this->request->get['filter_name'];
+		} else {
+			$filter_name = null;
+		}
+		
+		if (isset($this->request->get['filter_type'])) {
+			$filter_type = $this->request->get['filter_type'];
+		} else {
+			$filter_type = null;
+		}
+		
+		if (isset($this->request->get['filter_geozone'])) {
+			$filter_geozone = $this->request->get['filter_geozone'];
+		} else {
+			$filter_geozone = null;
+		}
+		
+		if (isset($this->request->get['filter_date_added'])) {
+			$filter_date_added = $this->request->get['filter_date_added'];
+		} else {
+			$filter_date_added = null;
+		}
+		
+		if (isset($this->request->get['filter_date_modified'])) {
+			$filter_date_modified = $this->request->get['filter_date_modified'];
+		} else {
+			$filter_date_modified = null;
+		}
+		
 		if (isset($this->request->get['sort'])) {
 			$sort = $this->request->get['sort'];
 		} else {
@@ -131,6 +222,26 @@ class ControllerLocalisationTaxRate extends Controller {
 
 		$url = '';
 
+		if (isset($this->request->get['filter_name'])) {
+			$url .= '&filter_name=' . $this->request->get['filter_name'];
+		}
+		
+		if (isset($this->request->get['filter_type'])) {
+			$url .= '&filter_type=' . $this->request->get['filter_type'];
+		}
+		
+		if (isset($this->request->get['filter_geozone'])) {
+			$url .= '&filter_geozone=' . $this->request->get['filter_geozone'];
+		}
+		
+		if (isset($this->request->get['filter_date_added'])) {
+			$url .= '&filter_date_added=' . $this->request->get['filter_date_added'];
+		}
+		
+		if (isset($this->request->get['filter_date_modified'])) {
+			$url .= '&filter_date_modified=' . $this->request->get['filter_date_modified'];
+		}
+		
 		if (isset($this->request->get['sort'])) {
 			$url .= '&sort=' . $this->request->get['sort'];
 		}
@@ -161,13 +272,18 @@ class ControllerLocalisationTaxRate extends Controller {
 		$data['tax_rates'] = array();
 
 		$filter_data = array(
+			'filter_name'  => $filter_name,
+			'filter_type'  => $filter_type,
+			'filter_geozone'  => $filter_geozone,
+			'filter_date_added'  => $filter_date_added,
+			'filter_date_modified'  => $filter_date_modified,
 			'sort'  => $sort,
 			'order' => $order,
 			'start' => ($page - 1) * $this->config->get('config_limit_admin'),
 			'limit' => $this->config->get('config_limit_admin')
 		);
 
-		$tax_rate_total = $this->model_localisation_tax_rate->getTotalTaxRates();
+		$tax_rate_total = $this->model_localisation_tax_rate->getTotalTaxRates($filter_data);
 
 		$results = $this->model_localisation_tax_rate->getTaxRates($filter_data);
 
@@ -183,7 +299,12 @@ class ControllerLocalisationTaxRate extends Controller {
 				'edit'          => $this->url->link('localisation/tax_rate/edit', 'token=' . $this->session->data['token'] . '&tax_rate_id=' . $result['tax_rate_id'] . $url, true)
 			);
 		}
-
+		
+		$this->load->model('localisation/geo_zone');
+		$data['Dropdown_geozones'] = $this->model_localisation_geo_zone->getGeoZones();
+		
+		$data['Dropdownnames'] = $this->model_localisation_tax_rate->getTaxRates();
+		
 		$data['heading_title'] = $this->language->get('heading_title');
 
 		$data['text_list'] = $this->language->get('text_list');
@@ -201,6 +322,12 @@ class ControllerLocalisationTaxRate extends Controller {
 		$data['button_add'] = $this->language->get('button_add');
 		$data['button_edit'] = $this->language->get('button_edit');
 		$data['button_delete'] = $this->language->get('button_delete');
+		
+		$data['text_percent'] = $this->language->get('text_percent');
+		$data['text_amount'] = $this->language->get('text_amount');
+		$data['button_filter'] = $this->language->get('button_filter');
+		
+		$data['token'] = $this->session->data['token'];
 
 		if (isset($this->error['warning'])) {
 			$data['error_warning'] = $this->error['warning'];
@@ -243,6 +370,26 @@ class ControllerLocalisationTaxRate extends Controller {
 
 		$url = '';
 
+		if (isset($this->request->get['filter_name'])) {
+			$url .= '&filter_name=' . $this->request->get['filter_name'];
+		}
+		
+		if (isset($this->request->get['filter_type'])) {
+			$url .= '&filter_type=' . $this->request->get['filter_type'];
+		}
+		
+		if (isset($this->request->get['filter_geozone'])) {
+			$url .= '&filter_geozone=' . $this->request->get['filter_geozone'];
+		}
+		
+		if (isset($this->request->get['filter_date_added'])) {
+			$url .= '&filter_date_added=' . $this->request->get['filter_date_added'];
+		}
+		
+		if (isset($this->request->get['filter_date_modified'])) {
+			$url .= '&filter_date_modified=' . $this->request->get['filter_date_modified'];
+		}
+		
 		if (isset($this->request->get['sort'])) {
 			$url .= '&sort=' . $this->request->get['sort'];
 		}
@@ -261,6 +408,11 @@ class ControllerLocalisationTaxRate extends Controller {
 
 		$data['results'] = sprintf($this->language->get('text_pagination'), ($tax_rate_total) ? (($page - 1) * $this->config->get('config_limit_admin')) + 1 : 0, ((($page - 1) * $this->config->get('config_limit_admin')) > ($tax_rate_total - $this->config->get('config_limit_admin'))) ? $tax_rate_total : ((($page - 1) * $this->config->get('config_limit_admin')) + $this->config->get('config_limit_admin')), $tax_rate_total, ceil($tax_rate_total / $this->config->get('config_limit_admin')));
 
+		$data['filter_name'] = $filter_name;
+		$data['filter_type'] = $filter_type;
+		$data['filter_geozone'] = $filter_geozone;
+		$data['filter_date_added'] = $filter_date_added;
+		$data['filter_date_modified'] = $filter_date_modified;
 		$data['sort'] = $sort;
 		$data['order'] = $order;
 
@@ -307,6 +459,26 @@ class ControllerLocalisationTaxRate extends Controller {
 
 		$url = '';
 
+		if (isset($this->request->get['filter_name'])) {
+			$url .= '&filter_name=' . $this->request->get['filter_name'];
+		}
+		
+		if (isset($this->request->get['filter_type'])) {
+			$url .= '&filter_type=' . $this->request->get['filter_type'];
+		}
+		
+		if (isset($this->request->get['filter_geozone'])) {
+			$url .= '&filter_geozone=' . $this->request->get['filter_geozone'];
+		}
+		
+		if (isset($this->request->get['filter_date_added'])) {
+			$url .= '&filter_date_added=' . $this->request->get['filter_date_added'];
+		}
+		
+		if (isset($this->request->get['filter_date_modified'])) {
+			$url .= '&filter_date_modified=' . $this->request->get['filter_date_modified'];
+		}
+		
 		if (isset($this->request->get['sort'])) {
 			$url .= '&sort=' . $this->request->get['sort'];
 		}

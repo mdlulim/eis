@@ -7,7 +7,7 @@ $_['text_success']          = 'Success: You have modified customers!';
 $_['text_list']             = 'Customer List';
 $_['text_add']              = 'Add Customer';
 $_['text_edit']             = 'Edit Customer';
-$_['text_default']          = 'Default';
+$_['text_default']          = 'Online';
 $_['text_balance']          = 'Balance';
 
 // Column

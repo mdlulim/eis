@@ -15,6 +15,8 @@ $_['text_option_value']      = 'Option Value';
 $_['text_percent']           = 'Percentage';
 $_['text_amount']            = 'Fixed Amount';
 
+$_['text_confirm']            = 'Are you sure you want to delete the Product?';
+
 // Column
 $_['column_name']            = 'Product Name';
 $_['column_model']           = 'Model';

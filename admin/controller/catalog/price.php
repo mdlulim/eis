@@ -33,7 +33,15 @@ class ControllerCatalogPrice extends Controller {
 
             $url = '';
 
-            if (isset($this->request->get['sort'])) {
+            if (isset($this->request->get['filter_sku'])) {
+				$url .= '&filter_sku=' . $this->request->get['filter_sku'];
+			}
+			
+			if (isset($this->request->get['filter_customer_group_id'])) {
+				$url .= '&filter_customer_group_id=' . $this->request->get['filter_customer_group_id'];
+			}
+			
+			if (isset($this->request->get['sort'])) {
                 $url .= '&sort=' . $this->request->get['sort'];
             }
 
@@ -65,7 +73,15 @@ class ControllerCatalogPrice extends Controller {
 
             $url = '';
 
-            if (isset($this->request->get['sort'])) {
+            if (isset($this->request->get['filter_sku'])) {
+				$url .= '&filter_sku=' . $this->request->get['filter_sku'];
+			}
+			
+			if (isset($this->request->get['filter_customer_group_id'])) {
+				$url .= '&filter_customer_group_id=' . $this->request->get['filter_customer_group_id'];
+			}
+			
+			if (isset($this->request->get['sort'])) {
                 $url .= '&sort=' . $this->request->get['sort'];
             }
 
@@ -98,7 +114,15 @@ class ControllerCatalogPrice extends Controller {
 
             $url = '';
 
-            if (isset($this->request->get['sort'])) {
+            if (isset($this->request->get['filter_sku'])) {
+				$url .= '&filter_sku=' . $this->request->get['filter_sku'];
+			}
+			
+			if (isset($this->request->get['filter_customer_group_id'])) {
+				$url .= '&filter_customer_group_id=' . $this->request->get['filter_customer_group_id'];
+			}
+			
+			if (isset($this->request->get['sort'])) {
                 $url .= '&sort=' . $this->request->get['sort'];
             }
 
@@ -117,7 +141,20 @@ class ControllerCatalogPrice extends Controller {
     }
 
     protected function getList() {
-        if (isset($this->request->get['sort'])) {
+        
+		if (isset($this->request->get['filter_sku'])) {
+            $filter_sku = $this->request->get['filter_sku'];
+        } else {
+            $filter_sku = null;
+        }
+		
+		if (isset($this->request->get['filter_customer_group_id'])) {
+            $filter_customer_group_id = $this->request->get['filter_customer_group_id'];
+        } else {
+            $filter_customer_group_id = null;
+        }
+		
+		if (isset($this->request->get['sort'])) {
             $sort = $this->request->get['sort'];
         } else {
             $sort = 'fgd.name';
@@ -137,7 +174,15 @@ class ControllerCatalogPrice extends Controller {
 
         $url = '';
 
-        if (isset($this->request->get['sort'])) {
+        if (isset($this->request->get['filter_sku'])) {
+            $url .= '&filter_sku=' . $this->request->get['filter_sku'];
+        }
+		
+		if (isset($this->request->get['filter_customer_group_id'])) {
+            $url .= '&filter_customer_group_id=' . $this->request->get['filter_customer_group_id'];
+        }
+		
+		if (isset($this->request->get['sort'])) {
             $url .= '&sort=' . $this->request->get['sort'];
         }
 
@@ -168,17 +213,17 @@ class ControllerCatalogPrice extends Controller {
         $data['prices'] = array();
 
         $filter_data = array(
-            'sort'  => $sort,
+            'filter_sku'  => $filter_sku,
+			'filter_customer_group_id'  => $filter_customer_group_id,
+			'sort'  => $sort,
             'order' => $order,
             'start' => ($page - 1) * $this->config->get('config_limit_admin'),
             'limit' => $this->config->get('config_limit_admin')
         );
 
-        $filter_total = $this->model_catalog_price->getTotalPrice();
+        $filter_total = $this->model_catalog_price->getTotalPrice($filter_data);
 
         $results = $this->model_catalog_price->getPrices($filter_data);
-
-
 
         foreach ($results as $result) {
             $data['prices'][] = array(
@@ -189,7 +234,10 @@ class ControllerCatalogPrice extends Controller {
                 'edit'          => $this->url->link('catalog/price/edit', 'token=' . $this->session->data['token'] . '&price_id=' . $result['product_id'] .'&customer_group_id=' . $result['c_id'] . $url, 'SSL')
             );
         }
-
+		
+		$data['Dropdownskus'] = $this->model_catalog_price->getPricesByGroupSku();
+		$data['Dropdowncustomergroup'] = $this->model_catalog_price->getCustomerGroups();
+		
         $data['heading_title'] 			= $this->language->get('heading_title');
 
         $data['text_list'] 				= $this->language->get('text_list');
@@ -202,6 +250,8 @@ class ControllerCatalogPrice extends Controller {
         $data['button_add'] 			= $this->language->get('button_add');
         $data['button_edit']	 		= $this->language->get('button_edit');
         $data['button_delete'] 			= $this->language->get('button_delete');
+		
+		$data['token'] = $this->session->data['token'];
 
         if (isset($this->error['warning'])) {
             $data['error_warning'] = $this->error['warning'];
@@ -240,7 +290,15 @@ class ControllerCatalogPrice extends Controller {
 
         $url = '';
 
-        if (isset($this->request->get['sort'])) {
+        if (isset($this->request->get['filter_sku'])) {
+            $url .= '&filter_sku=' . $this->request->get['filter_sku'];
+        }
+		
+		if (isset($this->request->get['filter_customer_group_id'])) {
+            $url .= '&filter_customer_group_id=' . $this->request->get['filter_customer_group_id'];
+        }
+		
+		if (isset($this->request->get['sort'])) {
             $url .= '&sort=' . $this->request->get['sort'];
         }
 
@@ -258,8 +316,10 @@ class ControllerCatalogPrice extends Controller {
 
         $data['results'] 		= sprintf($this->language->get('text_pagination'), ($filter_total) ? (($page - 1) * $this->config->get('config_limit_admin')) + 1 : 0, ((($page - 1) * $this->config->get('config_limit_admin')) > ($filter_total - $this->config->get('config_limit_admin'))) ? $filter_total : ((($page - 1) * $this->config->get('config_limit_admin')) + $this->config->get('config_limit_admin')), $filter_total, ceil($filter_total / $this->config->get('config_limit_admin')));
 
-        $data['sort'] 			= $sort;
-        $data['order'] 			= $order;
+        $data['filter_sku'] 			   = $filter_sku;
+		$data['filter_customer_group_id']  = $filter_customer_group_id;
+		$data['sort'] 			           = $sort;
+        $data['order'] 			           = $order;
 
         $data['header'] 		= $this->load->controller('common/header');
         $data['column_left'] 	= $this->load->controller('common/column_left');
@@ -303,7 +363,15 @@ class ControllerCatalogPrice extends Controller {
 
         $url = '';
 
-        if (isset($this->request->get['sort'])) {
+        if (isset($this->request->get['filter_sku'])) {
+            $url .= '&filter_sku=' . $this->request->get['filter_sku'];
+        }
+		
+		if (isset($this->request->get['filter_customer_group_id'])) {
+            $url .= '&filter_customer_group_id=' . $this->request->get['filter_customer_group_id'];
+        }
+		
+		if (isset($this->request->get['sort'])) {
             $url .= '&sort=' . $this->request->get['sort'];
         }
 

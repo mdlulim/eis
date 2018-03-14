@@ -52,6 +52,22 @@ class ModelUserUser extends Model {
 
 	public function getUsers($data = array()) {
 		$sql = "SELECT * FROM `" . DB_PREFIX . "user`";
+		
+		$sql .= " where user_id > 0";
+		
+		if (!empty($data['filter_name'])) {
+			$sql .= " AND username = '" . $this->db->escape($data['filter_name']) . "'";
+		}
+		
+		if (isset($data['filter_status']) && !is_null($data['filter_status'])) {
+			$sql .= " AND status = '" . $this->db->escape($data['filter_status']) . "'";
+		}
+		
+		if (!empty($data['filter_dateadded'])) { 
+			$fromdate = date('Y-m-d H:i:s', strtotime($data['filter_dateadded'])); 
+			$todate = date('Y-m-d 23:59:59', strtotime($data['filter_dateadded'])); 
+			$sql .= " AND date_added >= '" . $fromdate . "' AND date_added <= '" . $todate . "'";
+		}
 
 		$sort_data = array(
 			'username',
@@ -82,14 +98,32 @@ class ModelUserUser extends Model {
 
 			$sql .= " LIMIT " . (int)$data['start'] . "," . (int)$data['limit'];
 		}
-
+//echo $sql; exit;
 		$query = $this->db->query($sql);
 
 		return $query->rows;
 	}
 
-	public function getTotalUsers() {
-		$query = $this->db->query("SELECT COUNT(*) AS total FROM `" . DB_PREFIX . "user`");
+	public function getTotalUsers($data= array()) {
+		$sql = "SELECT COUNT(*) AS total FROM `" . DB_PREFIX . "user`";
+		
+		$sql .= " where user_id > 0";
+		
+		if (!empty($data['filter_name'])) {
+			$sql .= " AND username = '" . $this->db->escape($data['filter_name']) . "'";
+		}
+		
+		if (isset($data['filter_status']) && !is_null($data['filter_status'])) {
+			$sql .= " AND status = '" . $this->db->escape($data['filter_status']) . "'";
+		}
+		
+		if (!empty($data['filter_dateadded'])) { 
+			$fromdate = date('Y-m-d H:i:s', strtotime($data['filter_dateadded'])); 
+			$todate = date('Y-m-d 23:59:59', strtotime($data['filter_dateadded'])); 
+			$sql .= " AND date_added >= '" . $fromdate . "' AND date_added <= '" . $todate . "'";
+		}
+		
+		$query = $this->db->query($sql);
 
 		return $query->row['total'];
 	}

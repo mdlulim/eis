@@ -49,7 +49,7 @@ class ModelUserApi extends Model {
 			$sql .= " AND name = '" . $this->db->escape($data['filter_name']) . "'";
 		}
 		
-		if (!empty($data['filter_status'])) {
+		if (isset($data['filter_status']) && !is_null($data['filter_status'])) {
 			$sql .= " AND status = '" . $this->db->escape($data['filter_status']) . "'";
 		}
 		
@@ -104,7 +104,7 @@ class ModelUserApi extends Model {
 			$sql .= " AND name = '" . $this->db->escape($data['filter_name']) . "'";
 		}
 		
-		if (!empty($data['filter_status'])) {
+		if (isset($data['filter_status']) && !is_null($data['filter_status'])) {
 			$sql .= " AND status = '" . $this->db->escape($data['filter_status']) . "'";
 		}
 		

@@ -29,6 +29,40 @@
         <h3 class="panel-title"><i class="fa fa-list"></i> <?php echo $text_list; ?></h3>
       </div>
       <div class="panel-body">
+        
+        <div class="well">
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label class="control-label" for="input-name">Country Name</label>
+                <select name="filter_name" id="input-name" class="form-control">
+                  <option value="*">Select User Name</option>
+                  <?php foreach($Dropdownnames as $Dname) { ?>
+                  	<?php if($Dname['name'] == $filter_name ) { ?>
+                      <option value="<?php echo $Dname['name']; ?>" selected="selected"><?php echo $Dname['name']; ?></option>
+                      <?php } else { ?>
+                      <option value="<?php echo $Dname['name']; ?>"><?php echo $Dname['name']; ?></option>
+                      <?php } ?>
+                  <?php } ?>
+                </select>
+              </div>
+              
+            </div>
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label class="control-label" for="input-name">Country Code</label>
+                <input name="filter_code" type='text' value="<?php echo $filter_code; ?>"  placeholder="Country Code" class="form-control" class="form-control"  />
+              </div>
+              <div class="form-group">
+            		<button type="button" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-filter"></i> Filter</button>
+            		<button type="button" id="button-filter-reset" class="btn btn-primary pull-right" style="margin-right:10px;"><i class="fa fa-refresh"></i> Reset</button>  
+              </div>
+            </div>
+            
+          </div>
+           
+        </div>
+        
         <form action="<?php echo $delete; ?>" method="post" enctype="multipart/form-data" id="form-country">
           <div class="table-responsive">
             <table class="table table-bordered table-hover">
@@ -85,4 +119,34 @@
     </div>
   </div>
 </div>
+<style>
+  .form-group + .form-group{border-top:none;}
+</style>
+<script type="text/javascript"><!--
+$('#button-filter').on('click', function() {
+	var url = 'index.php?route=localisation/country&token=<?php echo $token; ?>';
+
+	var filter_name = $('select[name=\'filter_name\']').val();
+
+	if (filter_name != '*') {
+		url += '&filter_name=' + encodeURIComponent(filter_name);
+	}
+	
+	var filter_code = $('input[name=\'filter_code\']').val();
+
+	if (filter_code) {
+		url += '&filter_code=' + encodeURIComponent(filter_code);
+	}
+	
+	location = url;
+});
+
+$('#button-filter-reset').on('click', function() {
+	
+	var url = 'index.php?route=localisation/country&token=<?php echo $token; ?>';
+
+	location = url;
+});
+
+//--></script>
 <?php echo $footer; ?>

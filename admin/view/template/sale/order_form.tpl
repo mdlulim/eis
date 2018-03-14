@@ -1330,7 +1330,7 @@ $('input[name=\'customer\']').autocomplete({
 		html = '<option value="0"><?php echo $text_none; ?></option>';
 
 		for (i in  item['address']) {
-			html += '<option value="' + item['address'][i]['address_id'] + '">' + item['address'][i]['firstname'] + ' ' + item['address'][i]['lastname'] + ', ' + item['address'][i]['address_1'] + ', ' + item['address'][i]['city'] + ', ' + item['address'][i]['country'] + '</option>';
+			html += '<option value="' + item['address'][i]['address_id'] + '">' + item['address'][i]['firstname'] + ', ' + item['address'][i]['address_1'] + ', ' + item['address'][i]['city'] + ', ' + item['address'][i]['country'] + '</option>';
 		}
 
 		$('select[name=\'payment_address\']').html(html);
@@ -2123,7 +2123,7 @@ $('#tab-shipping select[name=\'country_id\']').trigger('change');
 
 $('#button-shipping-address').on('click', function() {
 	$.ajax({
-		url: '<?php echo $catalog; ?>index.php?route=api/shipping/address&token=' + token + '&store_id=' + $('select[name=\'store_id\'] option:selected').val(),
+		url: '<?php echo $catalog; ?>index.php?route=api/shipping/address&callfrom=orderform&token=' + token + '&store_id=' + $('select[name=\'store_id\'] option:selected').val(),
 		type: 'post',
 		data: $('#tab-shipping input[type=\'text\'], #tab-shipping input[type=\'hidden\'], #tab-shipping input[type=\'radio\']:checked, #tab-shipping input[type=\'checkbox\']:checked, #tab-shipping select, #tab-shipping textarea'),
 		dataType: 'json',

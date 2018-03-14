@@ -30,6 +30,50 @@
                 <h3 class="panel-title"><i class="fa fa-list"></i> <?php echo $text_list; ?></h3>
             </div>
             <div class="panel-body">
+            
+            	<div class="well">
+          			<div class="row">
+                        <div class="col-sm-6">
+                          <div class="form-group">
+                            <label class="control-label" for="input-name">SKU</label>
+                            <select name="filter_sku" id="input-name" class="form-control">
+                              <option value="*">Select Sku</option>
+                              <?php foreach($Dropdownskus as $Dsku) { ?>
+                                <?php if($Dsku['sku']) { ?>
+                                <?php if($Dsku['sku'] == $filter_sku) { ?>
+                                  <option value="<?php echo $Dsku['sku']; ?>" selected="selected"><?php echo $Dsku['sku']; ?></option>
+                                  <?php } else { ?>
+                                  <option value="<?php echo $Dsku['sku']; ?>"><?php echo $Dsku['sku']; ?></option>
+                                  <?php } ?>
+                              <?php } } ?>
+                            </select>
+                          </div>
+                          
+                        </div>
+                        <div class="col-sm-6">
+                          <div class="form-group">
+                            <label class="control-label" for="input-name">Customer Group</label>
+                            <select name="filter_customer_group_id" id="input-name" class="form-control">
+                              <option value="*">Select Customer Group</option>
+                              <?php foreach($Dropdowncustomergroup as $customergroup) { ?>
+                                <?php if($customergroup['customer_group_id'] == $filter_customer_group_id ) { ?>
+                                  <option value="<?php echo $customergroup['customer_group_id']; ?>" selected="selected"><?php echo $customergroup['name']; ?></option>
+                                  <?php } else { ?>
+                                  <option value="<?php echo $customergroup['customer_group_id']; ?>"><?php echo $customergroup['name']; ?></option>
+                                  <?php } ?>
+                              <?php } ?>
+                            </select>
+                          </div>
+                          <div class="form-group">
+                                <button type="button" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-filter"></i> Filter</button>
+                                <button type="button" id="button-filter-reset" class="btn btn-primary pull-right" style="margin-right:10px;"><i class="fa fa-refresh"></i> Reset</button>  
+                          </div>
+                        </div>
+                        
+                      </div>
+           
+        		</div>
+            
                 <form action="<?php echo $delete; ?>" method="post" enctype="multipart/form-data" id="form-filter">
                     <div class="table-responsive">
                         <table class="table table-bordered table-hover">
@@ -77,4 +121,34 @@
         </div>
     </div>
 </div>
+<style>
+  .form-group + .form-group{border-top:none;}
+  </style>
+<script type="text/javascript"><!--
+$('#button-filter').on('click', function() {
+	var url = 'index.php?route=catalog/price&token=<?php echo $token; ?>';
+
+	var filter_sku = $('select[name=\'filter_sku\']').val();
+
+	if (filter_sku != '*') {
+		url += '&filter_sku=' + encodeURIComponent(filter_sku);
+	}
+	
+	var filter_customer_group_id = $('select[name=\'filter_customer_group_id\']').val();
+
+	if (filter_customer_group_id != '*') {
+		url += '&filter_customer_group_id=' + encodeURIComponent(filter_customer_group_id);
+	}
+
+	location = url;
+});
+
+$('#button-filter-reset').on('click', function() {
+	
+	var url = 'index.php?route=catalog/price&token=<?php echo $token; ?>';
+
+	location = url;
+});
+
+//--></script>
 <?php echo $footer; ?>
