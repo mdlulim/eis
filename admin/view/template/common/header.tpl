@@ -60,7 +60,7 @@
         <li><a href="<?php echo $affiliate_approval; ?>"><span class="label label-danger pull-right"><?php echo $affiliate_total; ?></span><?php echo $text_approval; ?></a></li>
       </ul>
     </li>
-    <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" style="padding-right:3px;"><i class="fa fa-life-ring fa-lg" style="margin-right:12px;"></i>View Stores<img src="view/image/down-arrow.png" height="23" width="19" style="margin-left:15px;"></a>
+    <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" style="padding-right:3px;"><i class="fa fa-shopping-cart fa-lg" style="margin-right:12px;"></i>View Stores<img src="view/image/down-arrow.png" height="23" width="19" style="margin-left:15px;"></a>
       <ul class="dropdown-menu dropdown-menu-right">
         <!--<li class="dropdown-header"><?php echo $text_store; ?></li>-->
         <?php foreach ($stores as $store) { ?>

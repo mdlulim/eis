@@ -472,6 +472,13 @@ class ControllerUserUser extends Controller {
 		$this->load->model('user/user_group');
 
 		$data['user_groups'] = $this->model_user_user_group->getUserGroups();
+		
+		$this->load->model('user/user');
+		$current_user = $this->session->data['user_id'];
+		$current_user_group_id = $this->model_user_user->getUser($current_user); ;
+		$current_user_group = $this->model_user_user_group->getUserGroup($current_user_group_id['user_group_id']);
+		$data['current_user_group'] = $current_user_group;
+		
 
 		if (isset($this->request->post['password'])) {
 			$data['password'] = $this->request->post['password'];

@@ -2590,5 +2590,26 @@ $('#tab-shipping .form-group[data-sort]').detach().each(function() {
 		$('#tab-shipping .form-group:first').before(this);
 	}
 });
-</script></div>
+
+// use javascript to auto-select "South Africa" (193) by default
+<?php if(empty($payment_country_id)) { ?>
+	$(document).on("click", "#button-cart", function () { 
+	  $("#input-payment-country").val('193').trigger('change');
+	});
+<?php } else { ?>
+	$(document).on("click", "#button-cart", function () { 
+	  $("#input-payment-country").val(<?php echo $payment_country_id; ?>).trigger('change');
+	});
+<?php } ?>
+<?php if(empty($shipping_country_id)) { ?>
+	$(document).on("click", "#button-payment-address", function () {
+	  $("#input-shipping-country").val('193').trigger('change');
+	});
+<?php } else { ?>
+	$(document).on("click", "#button-payment-address", function () { 
+	  $("#input-shipping-country").val(<?php echo $shipping_country_id; ?>).trigger('change');
+	});
+<?php } ?>
+</script>
+</div>
 <?php echo $footer; ?> 

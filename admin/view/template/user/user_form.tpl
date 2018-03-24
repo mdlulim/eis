@@ -39,11 +39,22 @@
             <div class="col-sm-10">
               <select name="user_group_id" id="input-user-group" class="form-control">
                 <?php foreach ($user_groups as $user_group) { ?>
-                <?php if ($user_group['user_group_id'] == $user_group_id) { ?>
-                <option value="<?php echo $user_group['user_group_id']; ?>" selected="selected"><?php echo $user_group['name']; ?></option>
-                <?php } else { ?>
-                <option value="<?php echo $user_group['user_group_id']; ?>"><?php echo $user_group['name']; ?></option>
-                <?php } ?>
+                
+                    <?php if($current_user_group['name'] == 'System Administrator') {  ?>
+                       <?php if($user_group['name'] != 'Administrator' && $user_group['name'] != 'Company admin') { ?>
+                            <?php if ($user_group['user_group_id'] == $user_group_id) { ?>
+                            <option value="<?php echo $user_group['user_group_id']; ?>" selected="selected"><?php echo $user_group['name']; ?></option>
+                            <?php } else { ?>
+                            <option value="<?php echo $user_group['user_group_id']; ?>"><?php echo $user_group['name']; ?></option>
+                            <?php } ?>
+                        <?php } ?>
+                    <?php } else { ?>
+                    	<?php if ($user_group['user_group_id'] == $user_group_id) { ?>
+                        <option value="<?php echo $user_group['user_group_id']; ?>" selected="selected"><?php echo $user_group['name']; ?></option>
+                        <?php } else { ?>
+                        <option value="<?php echo $user_group['user_group_id']; ?>"><?php echo $user_group['name']; ?></option>
+                        <?php } ?>
+                    <?php } ?>
                 <?php } ?>
               </select>
             </div>

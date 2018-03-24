@@ -1414,7 +1414,7 @@ $('select[name=\'customer_group_id\']').trigger('change');
 
 $('#button-customer').on('click', function() {
 	$.ajax({
-		url: '<?php echo $catalog; ?>index.php?route=api/customer&token=' + token + '&store_id=' + $('select[name=\'store_id\'] option:selected').val(),
+		url: '<?php echo $catalog; ?>index.php?route=api/customer&callfrom=orderform&token=' + token + '&store_id=' + $('select[name=\'store_id\'] option:selected').val(),
 		type: 'post',
 		data: $('#tab-customer input[type=\'text\'], #tab-customer input[type=\'hidden\'], #tab-customer input[type=\'radio\']:checked, #tab-customer input[type=\'checkbox\']:checked, #tab-customer select, #tab-customer textarea'),
 		dataType: 'json',
@@ -1993,7 +1993,7 @@ $('#tab-payment select[name=\'country_id\']').trigger('change');
 
 $('#button-payment-address').on('click', function() {
 	$.ajax({
-		url: '<?php echo $catalog; ?>index.php?route=api/payment/address&token=' + token + '&store_id=' + $('select[name=\'store_id\'] option:selected').val(),
+		url: '<?php echo $catalog; ?>index.php?route=api/payment/address&callfrom=orderform&token=' + token + '&store_id=' + $('select[name=\'store_id\'] option:selected').val(),
 		type: 'post',
 		data: $('#tab-payment input[type=\'text\'], #tab-payment input[type=\'hidden\'], #tab-payment input[type=\'radio\']:checked, #tab-payment input[type=\'checkbox\']:checked, #tab-payment select, #tab-payment textarea'),
 		dataType: 'json',
@@ -2178,7 +2178,7 @@ $('#tab-shipping select[name=\'country_id\']').trigger('change');
 
 $('#button-shipping-address').on('click', function() {
 	$.ajax({
-		url: '<?php echo $catalog; ?>index.php?route=api/shipping/address&token=' + token + '&store_id=' + $('select[name=\'store_id\'] option:selected').val(),
+		url: '<?php echo $catalog; ?>index.php?route=api/shipping/address&callfrom=orderform&token=' + token + '&store_id=' + $('select[name=\'store_id\'] option:selected').val(),
 		type: 'post',
 		data: $('#tab-shipping input[type=\'text\'], #tab-shipping input[type=\'hidden\'], #tab-shipping input[type=\'radio\']:checked, #tab-shipping input[type=\'checkbox\']:checked, #tab-shipping select, #tab-shipping textarea'),
 		dataType: 'json',
@@ -2643,5 +2643,26 @@ $('#tab-shipping .form-group[data-sort]').detach().each(function() {
 		$('#tab-shipping .form-group:first').before(this);
 	}
 });
+
+// use javascript to auto-select "South Africa" (193) by default
+<?php if(empty($payment_country_id)) { ?>
+	$(document).on("click", "#button-cart", function () { 
+	  $("#input-payment-country").val('193').trigger('change');
+	});
+<?php } else { ?>
+	$(document).on("click", "#button-cart", function () { 
+	  $("#input-payment-country").val(<?php echo $payment_country_id; ?>).trigger('change');
+	});
+<?php } ?>
+<?php if(empty($shipping_country_id)) { ?>
+	$(document).on("click", "#button-payment-address", function () {
+	  $("#input-shipping-country").val('193').trigger('change');
+	});
+<?php } else { ?>
+	$(document).on("click", "#button-payment-address", function () { 
+	  $("#input-shipping-country").val(<?php echo $shipping_country_id; ?>).trigger('change');
+	});
+<?php } ?>
+
 </script></div>
 <?php echo $footer; ?> 

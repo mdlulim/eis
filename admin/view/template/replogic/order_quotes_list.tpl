@@ -228,7 +228,7 @@
                 <h4 class="modal-title">Confirm Decline</h4>
               </div>
               <div class="modal-body">
-                <p><strong>Please Enter your reasons for declining the quote inside the following box</strong> </p>
+                <p><strong>Please Enter reason</strong> </p>
                 <textarea name="reason" rows="5" placeholder="Plz Enter Reason" id="reason" class="form-control"></textarea>
               </div>
               <div class="modal-footer">

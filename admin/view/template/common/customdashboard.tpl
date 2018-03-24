@@ -252,7 +252,7 @@
               
             </div>
             <button type="button" id="button-filter" class="btn btn-primary pull-right" style="margin-right:18px;"><i class="fa fa-filter"></i> Filter</button>
-            <button type="button" id="button-filter-reset" class="btn btn-primary pull-right" style="margin-right:10px;"><i class="fa fa-filter"></i> Reset</button>
+            <button type="button" id="button-filter-reset" class="btn btn-primary pull-right" style="margin-right:10px;"><i class="fa fa-refresh"></i> Reset</button>
           </div>
       <div class="row">
         <div class="col-lg-4 col-md-12 col-sm-12">
@@ -274,7 +274,7 @@
               </ul>
           </div>-->    
       <?php } else { ?>
-      	<div class="panel panel-default" style="border-right:5px solid;">
+      	<!--<div class="panel panel-default" style="border-right:5px solid;">
       	<div class="panel-heading">
           <h3 class="panel-title"><i class="fa fa-calendar"></i> Appointment Tasks</h3>
        	</div>
@@ -303,14 +303,15 @@
                   </tbody>
                 </table>
   		</div>
-        </div>
+        </div>-->
       <?php } ?>
           
         </div>
         <?php if($loginuser != 'Sales Manager' ) { ?>   
         <div class="col-lg-12 col-md-12 col-sm-12">
         <?php } else { ?>
-        <div class="col-lg-8 col-md-12 col-sm-12">
+        <!--<div class="col-lg-8 col-md-12 col-sm-12">-->
+        <div class="col-lg-12 col-md-12 col-sm-12">
         <?php } ?>
           <div class="panel panel-default">
   		     <div class="panel-heading">
