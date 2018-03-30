@@ -40,6 +40,14 @@ class ControllerCommonHeader extends Controller {
 		$data['text_support'] = $this->language->get('text_support');
 		$data['text_logged'] = sprintf($this->language->get('text_logged'), $this->user->getUserName());
 		$data['text_logout'] = $this->language->get('text_logout');
+		
+		$this->load->model('user/user_group');
+		$luser_group_id = $this->user->getGroupId();
+		$current_user_group = $this->model_user_user_group->getUserGroup($luser_group_id);
+		$data['login_user_group_name'] = $current_user_group['name'];
+		
+		$data['text_quotes'] = $this->language->get('text_quotes');
+		$data['text_approvedquotes'] = $this->language->get('text_approvedquotes');
 
 		if (!isset($this->request->get['token']) || !isset($this->session->data['token']) || ($this->request->get['token'] != $this->session->data['token'])) {
 			$data['logged'] = '';
@@ -77,6 +85,17 @@ class ControllerCommonHeader extends Controller {
 			$data['online_total'] = $this->model_report_customer->getTotalCustomersOnline();
 
 			$data['online'] = $this->url->link('report/customer_online', 'token=' . $this->session->data['token'], true);
+			
+			//Order Quotes
+			$this->load->model('replogic/order_quotes');
+			$order_quotes_total = $this->model_replogic_order_quotes->getOrderTotalsApproval();
+			$data['order_quotes_total_all'] = $order_quotes_total[0]['total'];
+			
+			$order_quotes_total_waiting = $this->model_replogic_order_quotes->getOrderTotalsAwaitingApproval();
+			$data['order_quotes_total_all_waiting'] = $order_quotes_total_waiting[0]['total'];
+			
+			$data['quotes_header'] = $this->url->link('replogic/order_quotes', 'token=' . $this->session->data['token'] . '&filter_order_status=1', true);
+			$data['quotes_waiting_header'] = $this->url->link('replogic/order_quotes', 'token=' . $this->session->data['token'] . '&filter_order_status=0', true);
 
 			$this->load->model('customer/customer');
 
@@ -111,7 +130,14 @@ class ControllerCommonHeader extends Controller {
 			$data['affiliate_total'] = $affiliate_total;
 			$data['affiliate_approval'] = $this->url->link('marketing/affiliate', 'token=' . $this->session->data['token'] . '&filter_approved=1', true);
 
-			$data['alerts'] = $customer_total + $product_total + $review_total + $return_total + $affiliate_total;
+			if($data['login_user_group_name'] == 'Sales Manager')
+			{ 
+				$data['alerts'] = $customer_total + $product_total + $review_total + $return_total + $order_quotes_total_waiting['total'];
+			}
+			else
+			{ 
+				$data['alerts'] = $customer_total + $product_total + $review_total + $return_total + $affiliate_total;
+			}
 
 			// Online Stores
 			$data['stores'] = array();

@@ -446,6 +446,13 @@ class ControllerUserUser extends Controller {
 		} else {
 			$data['action'] = $this->url->link('user/user/edit', 'token=' . $this->session->data['token'] . '&user_id=' . $this->request->get['user_id'] . $url, true);
 		}
+		
+		if (!isset($this->request->get['dashboard'])) {
+			$data['dashboard'] = '';
+		} else {
+			$data['dashboard'] = trim($this->request->get['dashboard']);
+		}
+		
 
 		$data['cancel'] = $this->url->link('user/user', 'token=' . $this->session->data['token'] . $url, true);
 

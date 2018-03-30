@@ -422,6 +422,7 @@ class ControllerReplogicOrderQuotes extends Controller {
 			
 			$data['orders'][] = array(
 				'quote_id'      => $result['quote_id'],
+				'order_id'      => $result['order_id'],
 				'customer'      => $customer_nm,
 				'customer_contact'      => $customer_contact,
 				'approve'      => $this->url->link('replogic/order/add', 'token=' . $this->session->data['token'] . '&quote_id=' . $result['quote_id'] . $url, true),
@@ -540,6 +541,7 @@ class ControllerReplogicOrderQuotes extends Controller {
 		}
 
 		$data['sort_order'] = $this->url->link('replogic/order_quotes', 'token=' . $this->session->data['token'] . '&sort=quote_id' . $url, true);
+		$data['sort_order_id'] = $this->url->link('replogic/order_quotes', 'token=' . $this->session->data['token'] . '&sort=order_id' . $url, true);
 		$data['sort_customer'] = $this->url->link('replogic/order_quotes', 'token=' . $this->session->data['token'] . '&sort=customer' . $url, true);
 		$data['sort_customer_contact'] = $this->url->link('replogic/order_quotes', 'token=' . $this->session->data['token'] . '&sort=customer_contact' . $url, true);
 		$data['sort_status'] = $this->url->link('replogic/order_quotes', 'token=' . $this->session->data['token'] . '&sort=order_status' . $url, true);

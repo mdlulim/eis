@@ -161,13 +161,13 @@
         <?php if($access) { ?>    
             <?php foreach ($totals as $total) { ?>
             <tr>
-              <td colspan="4" class="text-right"><?php echo $total['title']; ?></td>
+              <td colspan="5" class="text-right"><?php echo $total['title']; ?></td>
               <td class="text-right"><?php echo $total['text']; ?></td>
             </tr>
             <?php } ?>
          <?php } else { ?>
          	 <tr>
-              <td colspan="4" class="text-right">Total</td>
+              <td colspan="5" class="text-right">Total</td>
               <td class="text-right"><?php echo $totals; ?></td>
             </tr>
          <?php } ?>
@@ -189,8 +189,8 @@
         <?php } ?>
         <?php if($qstatus == '0') { ?>
         <div style="width:100%;">
-        <a href="javascript:void();" data-toggle="tooltip" title="Decline" onclick="onpopup(<?php echo $_GET['quote_id']; ?>);" style="float: right; font-family: Calibri;" class="btn btn-danger decline"><i class="fa fa-times"> Decline</i></a>
-        <a href="<?php echo $approvelink; ?>" data-toggle="tooltip" title="Approve" class="btn btn-success" style="float:right;margin-right:8px;font-family: Calibri;"><i class="fa fa-check"></i> Approve</a>
+        <!--<a href="javascript:void();" data-toggle="tooltip" title="Decline" onclick="onpopup(<?php echo $_GET['quote_id']; ?>);" style="float: right; font-family: Calibri;" class="btn btn-danger decline"><i class="fa fa-times"> Decline</i></a>-->
+        <a href="<?php echo $approvelink; ?>" data-toggle="tooltip" title="Convert to Order" class="btn btn-success" style="float:right;margin-right:8px;font-family: Calibri;"><i class="fa fa-check"></i> Convert</a>
         </div>
         <?php } ?>
       </div>

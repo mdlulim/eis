@@ -47,17 +47,31 @@
         <li><a href="<?php echo $processing_status; ?>" style="display: block; overflow: auto;"><span class="label label-warning pull-right"><?php echo $processing_status_total; ?></span><?php echo $text_processing_status; ?></a></li>
         <li><a href="<?php echo $complete_status; ?>"><span class="label label-success pull-right"><?php echo $complete_status_total; ?></span><?php echo $text_complete_status; ?></a></li>
         <li><a href="<?php echo $return; ?>"><span class="label label-danger pull-right"><?php echo $return_total; ?></span><?php echo $text_return; ?></a></li>
+       
+        <?php if($login_user_group_name == "Sales Manager") { ?>
         <li class="divider"></li>
+        <li class="dropdown-header"><?php echo $text_quotes; ?></li>
+        <li><a href="<?php echo $quotes_header; ?>"><span class="label label-success pull-right"><?php echo $order_quotes_total_all; ?></span><?php echo $text_approvedquotes; ?></a></li>
+        <li><a href="<?php echo $quotes_waiting_header; ?>"><span class="label label-danger pull-right"><?php echo $order_quotes_total_all_waiting; ?></span><?php echo $text_approval; ?></a></li>
+        
+        <?php } else { ?>
+        
+         <li class="divider"></li>
         <li class="dropdown-header"><?php echo $text_customer; ?></li>
         <li><a href="<?php echo $online; ?>"><span class="label label-success pull-right"><?php echo $online_total; ?></span><?php echo $text_online; ?></a></li>
         <li><a href="<?php echo $customer_approval; ?>"><span class="label label-danger pull-right"><?php echo $customer_total; ?></span><?php echo $text_approval; ?></a></li>
+        
+        <?php } ?>
+        
         <li class="divider"></li>
         <li class="dropdown-header"><?php echo $text_product; ?></li>
         <li><a href="<?php echo $product; ?>"><span class="label label-danger pull-right"><?php echo $product_total; ?></span><?php echo $text_stock; ?></a></li>
         <li><a href="<?php echo $review; ?>"><span class="label label-danger pull-right"><?php echo $review_total; ?></span><?php echo $text_review; ?></a></li>
+         <?php if($login_user_group_name != "Sales Manager") { ?>
         <li class="divider"></li>
         <li class="dropdown-header"><?php echo $text_affiliate; ?></li>
         <li><a href="<?php echo $affiliate_approval; ?>"><span class="label label-danger pull-right"><?php echo $affiliate_total; ?></span><?php echo $text_approval; ?></a></li>
+        <?php } ?>
       </ul>
     </li>
     <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" style="padding-right:3px;"><i class="fa fa-shopping-cart fa-lg" style="margin-right:12px;"></i>View Stores<img src="view/image/down-arrow.png" height="23" width="19" style="margin-left:15px;"></a>

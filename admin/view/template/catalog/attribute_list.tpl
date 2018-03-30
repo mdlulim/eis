@@ -31,6 +31,7 @@
       <div class="panel-body">
       
       	<div class="well">
+        	<h3>Filters</h3>
           <div class="row">
             <div class="col-sm-6">
               <div class="form-group">
@@ -66,7 +67,7 @@
               </select>
               </div>
               <div class="form-group">
-            	<button type="button" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-filter"></i> Filter</button>
+            	<button type="button" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-search"></i> Search</button>
             	<button type="button" id="button-filter-reset" class="btn btn-primary pull-right" style="margin-right:10px;"><i class="fa fa-refresh"></i> Reset</button>
             </div>
               

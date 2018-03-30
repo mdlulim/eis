@@ -406,7 +406,7 @@ class ControllerCommonDashboard extends Controller {
 		
 		$data['addteambutton'] = $this->url->link('user/team/add', 'token=' . $this->session->data['token'], true);
 		$data['addappointmentbutton'] = $this->url->link('replogic/schedule_management/add', 'token=' . $this->session->data['token'], true);
-		$data['addsalesmangebutton'] = $this->url->link('user/user/add', 'token=' . $this->session->data['token'], true);
+		$data['addsalesmangebutton'] = $this->url->link('user/user/add', 'dashboard=Sales Manager&token=' . $this->session->data['token'], true);
 		$data['addsalesrepbutton'] = $this->url->link('replogic/sales_rep_management/add', 'token=' . $this->session->data['token'], true);
 		// Button End //
 		

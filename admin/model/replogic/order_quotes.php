@@ -15,7 +15,7 @@ class ModelReplogicOrderQuotes extends Model {
 		}
 		else
 		{
-			$sql .= " AND status != 1";
+			//$sql .= " AND status != 1";
 		} 
 
 		if (!empty($data['filter_quote_id'])) {
@@ -44,6 +44,7 @@ class ModelReplogicOrderQuotes extends Model {
 
 		$sort_data = array(
 			'quote_id',
+			'order_id',
 			'customer_id',
 			'status',
 			'date_added',
@@ -127,6 +128,22 @@ class ModelReplogicOrderQuotes extends Model {
 		$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "replogic_order_quote WHERE quote_id = '" . (int)$quote_id . "' ORDER BY sort_order");
 
 		return $query->rows;
+	}
+	
+	public function getOrderTotalsApproval() {
+		$query = $this->db->query("SELECT COUNT(quote_id) AS total FROM " . DB_PREFIX . "replogic_order_quote WHERE status = 1 ");
+		
+		return $query->rows;
+		//return $query->row['total'];
+		
+	}
+	
+	public function getOrderTotalsAwaitingApproval() {
+		$query = $this->db->query("SELECT COUNT(quote_id) AS total FROM " . DB_PREFIX . "replogic_order_quote WHERE status = 0 ");
+		
+		return $query->rows;
+		//return $query->row['total'];
+		
 	}
 
 	public function getTotalOrders($data = array()) {

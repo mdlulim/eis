@@ -117,8 +117,15 @@ class ControllerReplogicScheduleManagement extends Controller {
 			if (isset($this->request->get['page'])) {
 				$url .= '&page=' . $this->request->get['page'];
 			}
-
-			$this->response->redirect($this->url->link('replogic/schedule_management', 'token=' . $this->session->data['token'] . $url, true));
+			
+			if (isset($this->request->get['type'])) 
+			{ 
+				$this->response->redirect($this->url->link('customer/customer_info/appointmentView', 'appointment_id='.$this->request->get['appointment_id'].'&type='.$this->request->get['type'].'&customer_id='.$this->request->get['customer_id'].'&token=' . $this->session->data['token'], true));
+			}
+			else
+			{ 
+				$this->response->redirect($this->url->link('replogic/schedule_management', 'token=' . $this->session->data['token'] . $url, true));
+			}
 		}
 
 		$this->getForm();
@@ -610,6 +617,14 @@ class ControllerReplogicScheduleManagement extends Controller {
 			$url .= '&filter_type=' . $this->request->get['filter_type'];
 		}
 		
+		if (isset($this->request->get['type'])) {
+			$url .= '&type=' . $this->request->get['type'];
+		}
+		
+		if (isset($this->request->get['customer_id'])) {
+			$url .= '&customer_id=' . $this->request->get['customer_id'];
+		}
+		
 		if (isset($this->request->get['sort'])) {
 			$url .= '&sort=' . $this->request->get['sort'];
 		}
@@ -640,7 +655,14 @@ class ControllerReplogicScheduleManagement extends Controller {
 			$data['action'] = $this->url->link('replogic/schedule_management/edit', 'token=' . $this->session->data['token'] . '&appointment_id=' . $this->request->get['appointment_id'] . $url, true);
 		}
 
-		$data['cancel'] = $this->url->link('replogic/schedule_management', 'token=' . $this->session->data['token'] . $url, true);
+		if(isset($this->request->get['type']))
+		{
+			$data['cancel'] = $this->url->link('customer/customer_info/appointmentView', 'appointment_id='.$this->request->get['appointment_id'].'&type='.$this->request->get['type'].'&customer_id='.$this->request->get['customer_id'].'&token=' . $this->session->data['token'], true);
+		}
+		else
+		{
+			$data['cancel'] = $this->url->link('replogic/schedule_management', 'token=' . $this->session->data['token'] . $url, true);
+		}
 
 		if (isset($this->request->get['appointment_id']) && $this->request->server['REQUEST_METHOD'] != 'POST') {
 			$appointment_info = $this->model_replogic_schedule_management->getappointment($this->request->get['appointment_id']);

@@ -17,6 +17,7 @@
       </div>
       <div class="panel-body">
         <div class="well">
+        	<h3>Filters</h3>
           <div class="row">
             <div class="col-sm-6">
               <div class="form-group">
@@ -45,7 +46,7 @@
                 <label class="control-label" for="input-ip"><?php echo $entry_ip; ?></label>
                 <input type="text" name="filter_ip" value="<?php echo $filter_ip; ?>" placeholder="<?php echo $entry_ip; ?>" id="input-ip" class="form-control" />
               </div>
-              <button type="button" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-filter"></i> <?php echo $button_filter; ?></button>
+              <button type="button" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-search"></i> Search</button>
             </div>
           </div>
         </div>

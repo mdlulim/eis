@@ -111,7 +111,15 @@ class ControllerReplogicCustomerContact extends Controller {
 				$url .= '&page=' . $this->request->get['page'];
 			}
 
-			$this->response->redirect($this->url->link('replogic/customer_contact', 'token=' . $this->session->data['token'] . $url, true));
+			if (isset($this->request->get['type'])) 
+			{ 
+				$this->response->redirect($this->url->link('customer/customer_info/CustomerContactView', 'customer_con_id='.$this->request->get['customer_con_id'].'&type='.$this->request->get['type'].'&customer_id='.$this->request->get['customer_id'].'&token=' . $this->session->data['token'], true));
+				
+			}
+			else
+			{ 
+				$this->response->redirect($this->url->link('replogic/customer_contact', 'token=' . $this->session->data['token'] . $url, true));
+			}
 		}
 
 		$this->getForm();
@@ -425,6 +433,7 @@ class ControllerReplogicCustomerContact extends Controller {
 		);
 
 		$data['cancel'] = $this->url->link('replogic/customer_contact', 'token=' . $this->session->data['token'] . $url, true);
+		$data['editurl'] = $this->url->link('replogic/customer_contact/edit', 'customer_con_id='.$this->request->get['customer_con_id'].'&token=' . $this->session->data['token'] . $url, true);
 
 		if (isset($this->request->get['customer_con_id']) && $this->request->server['REQUEST_METHOD'] != 'POST') {
 			$customer_contact_info = $this->model_replogic_customer_contact->getcustomercontact($this->request->get['customer_con_id']);
@@ -531,6 +540,14 @@ class ControllerReplogicCustomerContact extends Controller {
 		if (isset($this->request->get['page'])) {
 			$url .= '&page=' . $this->request->get['page'];
 		}
+		
+		if (isset($this->request->get['type'])) {
+			$url .= '&type=' . $this->request->get['type'];
+		}
+		
+		if (isset($this->request->get['customer_id'])) {
+			$url .= '&customer_id=' . $this->request->get['customer_id'];
+		}
 
 		$data['breadcrumbs'] = array();
 
@@ -550,7 +567,14 @@ class ControllerReplogicCustomerContact extends Controller {
 			$data['action'] = $this->url->link('replogic/customer_contact/edit', 'token=' . $this->session->data['token'] . '&customer_con_id=' . $this->request->get['customer_con_id'] . $url, true);
 		}
 
-		$data['cancel'] = $this->url->link('replogic/customer_contact', 'token=' . $this->session->data['token'] . $url, true);
+		if(isset($this->request->get['type']))
+		{
+			$data['cancel'] = $this->url->link('customer/customer_info/CustomerContactView', 'customer_con_id='.$this->request->get['customer_con_id'].'&type='.$this->request->get['type'].'&customer_id='.$this->request->get['customer_id'].'&token=' . $this->session->data['token'], true);
+		}
+		else
+		{
+			$data['cancel'] = $this->url->link('replogic/customer_contact', 'token=' . $this->session->data['token'] . $url, true);
+		}
 
 		if (isset($this->request->get['customer_con_id']) && $this->request->server['REQUEST_METHOD'] != 'POST') {
 			$customer_contact_info = $this->model_replogic_customer_contact->getcustomercontact($this->request->get['customer_con_id']);

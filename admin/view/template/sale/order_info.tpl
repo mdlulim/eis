@@ -13,7 +13,7 @@
   </div>
   <div class="container-fluid">
     <div class="row">
-      <div class="col-md-4">
+      <div class="col-md-6">
         <div class="panel panel-default">
           <div class="panel-heading">
             <h3 class="panel-title"><i class="fa fa-shopping-cart"></i> <?php echo $text_order_detail; ?></h3>
@@ -42,7 +42,7 @@
           </table>
         </div>
       </div>
-      <div class="col-md-4">
+      <div class="col-md-6">
         <div class="panel panel-default">
           <div class="panel-heading">
             <h3 class="panel-title"><i class="fa fa-user"></i> <?php echo $text_customer_detail; ?></h3>
@@ -71,7 +71,7 @@
           </table>
         </div>
       </div>
-      <div class="col-md-4">
+      <!--<div class="col-md-4">
         <div class="panel panel-default">
           <div class="panel-heading">
             <h3 class="panel-title"><i class="fa fa-cog"></i> <?php echo $text_option; ?></h3>
@@ -119,7 +119,7 @@
             </tbody>
           </table>
         </div>
-      </div>
+      </div>-->
     </div>
     <div class="panel panel-default">
       <div class="panel-heading">

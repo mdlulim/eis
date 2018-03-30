@@ -32,6 +32,7 @@
       </div>
       <div class="panel-body">
         <div class="well">
+        	<h3>Filters</h3>
           <div class="row">
             <div class="col-sm-4">
               <div class="form-group">
@@ -119,7 +120,7 @@
                   </span></div>
               </div>
               <div style="margin-top:15px;">
-              <button type="button" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-filter"></i> <?php echo $button_filter; ?></button>
+              <button type="button" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-search"></i> Search</button>
               <button type="button" id="button-filter-reset" class="btn btn-primary pull-right" style="margin-right:10px;"><i class="fa fa-refresh"></i> Reset</button>
               </div>
             </div>
@@ -136,6 +137,11 @@
                     <?php } else { ?>
                     <a href="<?php echo $sort_order; ?>"><?php echo $column_quote_id; ?></a>
                     <?php } ?></td>
+                  <td class="text-left"><?php if ($sort == 'order_id') { ?>
+                    <a href="<?php echo $sort_order_id; ?>" class="<?php echo strtolower($order); ?>">Order Id</a>
+                    <?php } else { ?>
+                    <a href="<?php echo $sort_order_id; ?>">Order Id</a>
+                    <?php } ?></td>  
                   <td class="text-left"><?php if ($sort == 'customer') { ?>
                     <a href="<?php echo $sort_customer; ?>" class="<?php echo strtolower($order); ?>"><?php echo $column_customer; ?></a>
                     <?php } else { ?>
@@ -175,6 +181,7 @@
                     <?php } ?>
                     <input type="hidden" name="shipping_code[]" value="<?php echo $order['shipping_code']; ?>" /></td>
                   <td class="text-left"><?php echo $order['quote_id']; ?></td>
+                  <td class="text-left"><?php echo $order['order_id']; ?></td>
                   <td class="text-left"><?php echo $order['customer']; ?></td>
                   <td class="text-left"><?php echo $order['customer_contact']; ?></td>
                   <td class="text-left"><?php echo $order['qstatus']; ?></td>
@@ -192,13 +199,13 @@
                         <a href="<?php echo $order['view']; ?>" data-toggle="tooltip" title="View Quote" class="btn btn-info"><i class="fa fa-eye"></i></a>
                    		<?php } ?>
                         <?php if($order['order_id'] == '' && $order['status'] != '2') { ?>
-                        	<a href="<?php echo $order['approve']; ?>" data-toggle="tooltip" title="Approve" class="btn btn-success"><i class="fa fa-check"></i></a>
-                        	<a href="javascript:void();" data-toggle="tooltip" title="Decline" onclick="onpopup(<?php echo $order['quote_id']; ?>);" class="btn btn-danger decline"><i class="fa fa-times"></i></a>
-                           <!-- <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#myModal" data-whatever="@getbootstrap"><i class="fa fa-times"></i>Decline</button>-->
+                        	<a href="<?php echo $order['approve']; ?>" data-toggle="tooltip" title="Convert to Order" class="btn btn-success"><i class="fa fa-check"></i></a>
+                        	<!--<a href="javascript:void();" data-toggle="tooltip" title="Decline" onclick="onpopup(<?php echo $order['quote_id']; ?>);" class="btn btn-danger decline"><i class="fa fa-times"></i></a>-->
+                           
                         <?php } else { ?>
                         	
-                            <a href="javascript:void();" disabled  data-toggle="tooltip" title="Approve" class="btn btn-success"><i class="fa fa-check"></i></a>
-                            <a href="javascript:void();" data-toggle="tooltip" title="Decline" disabled class="btn btn-danger decline"><i class="fa fa-times"></i></a>
+                            <a href="javascript:void();" disabled  data-toggle="tooltip" title="Converted to Order" class="btn btn-success"><i class="fa fa-check"></i></a>
+                            <!--<a href="javascript:void();" data-toggle="tooltip" title="Decline" disabled class="btn btn-danger decline"><i class="fa fa-times"></i></a>-->
                         	
                         <?php } ?>
                     

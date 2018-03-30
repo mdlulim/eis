@@ -889,7 +889,7 @@
                 </table>
               </div>
               <fieldset>
-                <legend><?php echo $text_order_detail; ?></legend>
+                <legend><?php //echo $text_order_detail; ?>Order Confirmation</legend>
                 <div class="form-group required">
                   <label class="col-sm-2 control-label" for="input-shipping-method"><?php echo $entry_shipping_method; ?></label>
                   <div class="col-sm-10">
@@ -920,7 +920,7 @@
                       </span></div>
                   </div>
                 </div>
-                <div class="form-group">
+              <!--  <div class="form-group">
                   <label class="col-sm-2 control-label" for="input-coupon"><?php echo $entry_coupon; ?></label>
                   <div class="col-sm-10">
                     <div class="input-group">
@@ -949,7 +949,7 @@
                       <button type="button" id="button-reward" data-loading-text="<?php echo $text_loading; ?>" class="btn btn-primary"><?php echo $button_apply; ?></button>
                       </span></div>
                   </div>
-                </div>
+                </div>-->
                 <div class="form-group">
                   <label class="col-sm-2 control-label" for="input-order-status"><?php echo $entry_order_status; ?></label>
                   <div class="col-sm-10">
@@ -971,13 +971,13 @@
                     <textarea name="comment" rows="5" id="input-comment" class="form-control"><?php echo $comment; ?></textarea>
                   </div>
                 </div>
-                <div class="form-group">
+                <!--<div class="form-group">
                   <label class="col-sm-2 control-label" for="input-affiliate"><?php echo $entry_affiliate; ?></label>
                   <div class="col-sm-10">
                     <input type="text" name="affiliate" value="<?php echo $affiliate; ?>" id="input-affiliate" class="form-control" />
                     <input type="hidden" name="affiliate_id" value="<?php echo $affiliate_id; ?>" />
                   </div>
-                </div>
+                </div>-->
               </fieldset>
               <div class="row">
                 <div class="col-sm-6 text-left">
@@ -1189,6 +1189,23 @@ $('#button-refresh').on('click', function() {
 
 					if (product['shipping'] != 0) {
 						shipping = true;
+					}
+				}
+				$('#button-cart').removeAttr('disabled');
+			}
+			
+			if (json['error']) {
+				if (json['error']['warning']) {
+					$('#button-cart').attr('disabled','disabled');
+				}
+
+				if (json['error']['stock']) {
+					$('#button-cart').attr('disabled','disabled');
+				}
+
+				if (json['error']['minimum']) {
+					for (i in json['error']['minimum']) {
+						$('#button-cart').attr('disabled','disabled');
 					}
 				}
 			}
@@ -2662,6 +2679,10 @@ $('#tab-shipping .form-group[data-sort]').detach().each(function() {
 	$(document).on("click", "#button-payment-address", function () { 
 	  $("#input-shipping-country").val(<?php echo $shipping_country_id; ?>).trigger('change');
 	});
+<?php } ?>
+
+<?php if(empty($order_products)) { ?>
+	$('#button-cart').attr('disabled','disabled');
 <?php } ?>
 
 </script></div>

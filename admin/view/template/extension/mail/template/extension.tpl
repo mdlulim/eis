@@ -8,7 +8,7 @@
 			<h1><?php echo $heading_title; ?> <small style="vertical-align:middle"><?php echo $version; ?></small></h1>
 
 			<div class="pull-right">
-				<a href="<?php echo $action_insert_template; ?>" class="btn btn-success" data-toggle="tooltip" title="<?php echo $text_create_template; ?>"><i class="fa fa-plus"></i><span class="hidden-xs hidden-sm"> <?php echo $text_create_template; ?></span></a>
+				<a href="<?php echo $action_insert_template; ?>" class="btn btn-primary" data-toggle="tooltip" title="<?php echo $text_create_template; ?>"><i class="fa fa-plus"></i><span class="hidden-xs hidden-sm"> <?php //echo $text_create_template; ?></span></a>
 
 				<a href="<?php echo $config_url; ?>" class="btn btn-info" data-toggle="tooltip" title="<?php echo $heading_config; ?>"><i class="fa fa-cogs"></i><span class="hidden-xs hidden-sm"> <?php echo $heading_config; ?></span></a>
 

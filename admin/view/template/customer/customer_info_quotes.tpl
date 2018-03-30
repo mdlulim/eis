@@ -41,6 +41,7 @@
           </ul>
       
         <div class="well">
+        	<h3>Filters</h3>
           <div class="row">
             <div class="col-sm-3">
               <div class="form-group">
@@ -108,7 +109,7 @@
                   </span></div>
               </div>
               <div style="margin-top:15px;">
-              <button type="button" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-filter"></i> <?php echo $button_filter; ?></button>
+              <button type="button" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-search"></i> Search</button>
               <button type="button" id="button-filter-reset" class="btn btn-primary pull-right" style="margin-right:10px;"><i class="fa fa-refresh"></i> Reset</button>
               </div>
             </div>

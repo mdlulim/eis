@@ -11,7 +11,7 @@
 				<?php if ($emailtemplate['emailtemplate_id'] != 1) { ?>
 					<a href="<?php echo $action; ?>&action=delete" data-confirm="<?php echo $text_confirm; ?>" class="btn btn-danger" data-toggle="tooltip" title="<?php echo $button_delete; ?>"><i class="fa fa-trash-o"></i></a>
 
-					<a href="<?php echo $action_insert_template; ?>" class="btn btn-success" data-toggle="tooltip" title="<?php echo $text_create_template; ?>"><i class="fa fa-plus"></i><span class="hidden-xs hidden-sm"> <?php echo $text_create_template; ?></span></a>
+					<a href="<?php echo $action_insert_template; ?>" class="btn btn-primary" data-toggle="tooltip" title="<?php echo $text_create_template; ?>"><i class="fa fa-plus"></i><span class="hidden-xs hidden-sm"> <?php //echo $text_create_template; ?></span></a>
 				<?php } ?>
 
 				<a href="<?php echo $config_url; ?>" data-toggle="tooltip" title="<?php echo $text_config; ?>" class="btn btn-info"><i class="fa fa-cog"></i><span class="hidden-xs hidden-sm"> <?php echo $text_config; ?></span></a>

@@ -41,6 +41,7 @@
           </ul>
         <div class="well">
           <div class="row">
+          	<h3>Filters</h3>
             <div class="col-sm-3">
               <div class="form-group">
               	<label class="control-label" for="input-name">Customer Name</label>

@@ -41,6 +41,7 @@
           </ul>
         
          <div class="well">
+         	<h3>Filters</h3>
           <div class="row">
             <!--<div class="col-sm-3">
               <div class="form-group">

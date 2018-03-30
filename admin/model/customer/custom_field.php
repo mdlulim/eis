@@ -103,6 +103,10 @@ class ModelCustomerCustomField extends Model {
 		if (!empty($data['filter_type'])) {
 			$sql .= " AND cf.type = '" . $this->db->escape($data['filter_type']) . "'";
 		}
+		
+		if (isset($data['filter_status']) && !is_null($data['filter_status'])) {
+			$sql .= " AND cf.status = '" . (int)$data['filter_status'] . "'";
+		}
 
 		if (!empty($data['filter_customer_group_id'])) {
 			$sql .= " AND cfcg.customer_group_id = '" . (int)$data['filter_customer_group_id'] . "'";

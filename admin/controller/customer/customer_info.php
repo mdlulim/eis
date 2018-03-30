@@ -182,6 +182,8 @@ class ControllerCustomerCustomerInfo extends Controller {
 			$data['cancel'] = $this->url->link('customer/customer', 'token=' . $this->session->data['token'] . $url, true);
 		}
 		
+		$data['editurl'] = $this->url->link('customer/customer/edit', 'token=' . $this->session->data['token'] . $url, true);
+		
 		$data['generaltab'] = $this->url->link('customer/customer_info', 'type=general&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
 		$data['appointmenttab'] = $this->url->link('customer/customer_info', 'type=appointment&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
 		$data['customerstab'] = $this->url->link('customer/customer_info', 'type=customercontact&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
@@ -791,6 +793,7 @@ class ControllerCustomerCustomerInfo extends Controller {
 
 		
 		$data['cancel'] = $this->url->link('customer/customer_info', 'token=' . $this->session->data['token'] . $url, true);
+		$data['editurl'] = $this->url->link('replogic/schedule_management/edit', 'appointment_id='.$this->request->get['appointment_id'].'&token=' . $this->session->data['token'] . $url, true);
 
 		$appointment_info = $this->model_replogic_schedule_management->getappointment($this->request->get['appointment_id']);
 			
@@ -1155,6 +1158,7 @@ class ControllerCustomerCustomerInfo extends Controller {
 		);
 
 		$data['cancel'] = $this->url->link('customer/customer_info', 'token=' . $this->session->data['token'] . $url, true);
+		$data['editurl'] = $this->url->link('replogic/customer_contact/edit', 'customer_con_id='.$this->request->get['customer_con_id'].'&token=' . $this->session->data['token'] . $url, true);
 
 		if (isset($this->request->get['customer_con_id']) && $this->request->server['REQUEST_METHOD'] != 'POST') {
 			$customer_contact_info = $this->model_replogic_customer_contact->getcustomercontact($this->request->get['customer_con_id']);

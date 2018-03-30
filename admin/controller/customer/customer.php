@@ -152,7 +152,14 @@ class ControllerCustomerCustomer extends Controller {
 
 			if(!empty($this->request->post['type']))
 			{
-				$this->response->redirect($this->url->link('replogic/salesrep_info', 'token=' . $this->session->data['token'] . '&type=customers&salesrep_id='.$this->request->post['csalesrep_id'], true));
+				if($this->request->post['type'] == 'general')
+				{
+					$this->response->redirect($this->url->link('customer/customer_info', 'type='.$this->request->get['type'].'&customer_id='.$this->request->get['customer_id'].'&token=' . $this->session->data['token'], true));
+				}
+				else
+				{
+					$this->response->redirect($this->url->link('replogic/salesrep_info', 'token=' . $this->session->data['token'] . '&type=customers&salesrep_id='.$this->request->post['csalesrep_id'], true));
+				}
 			}
 			else
 			{
@@ -980,7 +987,14 @@ class ControllerCustomerCustomer extends Controller {
 
 		if(isset($this->request->get['type']))
 		{
-			$data['cancel'] = $this->url->link('replogic/salesrep_info', 'token=' . $this->session->data['token'] . '&type=customers&salesrep_id='.$this->request->get['csalesrep_id'], true);
+			if($this->request->get['type'] == 'general')
+			{
+				$data['cancel'] = $this->url->link('customer/customer_info', 'type='.$this->request->get['type'].'&customer_id='.$this->request->get['customer_id'].'&token=' . $this->session->data['token'], true);
+			}
+			else
+			{
+				$data['cancel'] = $this->url->link('replogic/salesrep_info', 'token=' . $this->session->data['token'] . '&type=customers&salesrep_id='.$this->request->get['csalesrep_id'], true);
+			}
 			$data['type'] = $this->request->get['type'];
 			$data['csalesrep_id'] = $this->request->get['csalesrep_id'];
 		}
@@ -1099,6 +1113,7 @@ class ControllerCustomerCustomer extends Controller {
 		$data['custom_fields'] = array();
 
 		$filter_data = array(
+			'filter_status' => '1',
 			'sort'  => 'cf.sort_order',
 			'order' => 'ASC'
 		);
@@ -1245,11 +1260,11 @@ class ControllerCustomerCustomer extends Controller {
 			$this->error['telephone'] = $this->language->get('error_telephone');
 		}
 		
-		$fax = $this->request->post['fax'];
+		/*$fax = $this->request->post['fax'];
 		if(!is_numeric($fax) && !empty($fax))
 		{ 
 			$this->error['fax'] = $this->language->get('error_fax');
-		}
+		}*/
 
 		// Custom field validation
 		$this->load->model('customer/custom_field');
@@ -1264,7 +1279,7 @@ class ControllerCustomerCustomer extends Controller {
 			}
 		}
 
-		if ($this->request->post['password'] || (!isset($this->request->get['customer_id']))) {
+		/*if ($this->request->post['password'] || (!isset($this->request->get['customer_id']))) {
 			if ((utf8_strlen($this->request->post['password']) < 4) || (utf8_strlen($this->request->post['password']) > 20)) {
 				$this->error['password'] = $this->language->get('error_password');
 			}
@@ -1272,7 +1287,7 @@ class ControllerCustomerCustomer extends Controller {
 			if ($this->request->post['password'] != $this->request->post['confirm']) {
 				$this->error['confirm'] = $this->language->get('error_confirm');
 			}
-		}
+		}*/
 
 		if (isset($this->request->post['address'])) {
 			foreach ($this->request->post['address'] as $key => $value) {

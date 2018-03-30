@@ -131,7 +131,7 @@
             
             
           </div>
-          <div class="form-group required">
+         <div class="form-group">
             <label class="col-sm-2 control-label" for="input-username"><?php echo $entry_appointment_description; ?></label>
             <div class="col-sm-10">
               <textarea name="appointment_description" id="input-description" class="form-control" cols="10" rows="10" readonly="readonly" placeholder="<?php echo $entry_appointment_description; ?>"><?php echo $appointment_description; ?></textarea>

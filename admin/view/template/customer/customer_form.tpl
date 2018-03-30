@@ -54,7 +54,7 @@
                 <div class="col-sm-10">
                   <div class="tab-content">
                     <div class="tab-pane active" id="tab-customer">
-                      <div class="form-group">
+                      <!--<div class="form-group">
                         <label class="col-sm-2 control-label" for="input-customer-group"><?php echo $entry_customer_group; ?></label>
                         <div class="col-sm-10">
                           <select name="customer_group_id" id="input-customer-group" class="form-control">
@@ -67,7 +67,7 @@
                             <?php } ?>
                           </select>
                         </div>
-                      </div>
+                      </div>-->
                       
                       <?php if($access == 'yes') { ?>
                       <div class="form-group required">
@@ -126,7 +126,7 @@
                           <?php  } ?>
                         </div>
                       </div>
-                      <div class="form-group">
+                      <!--<div class="form-group">
                         <label class="col-sm-2 control-label" for="input-fax"><?php echo $entry_fax; ?></label>
                         <div class="col-sm-10">
                           <input type="text" name="fax" value="<?php echo $fax; ?>" placeholder="<?php echo $entry_fax; ?>" id="input-fax" class="form-control" />
@@ -134,7 +134,7 @@
                           <div class="text-danger"><?php echo $error_fax; ?></div>
                           <?php  } ?>
                         </div>
-                      </div>
+                      </div>-->
                       <?php foreach ($custom_fields as $custom_field) { ?>
                       <?php if ($custom_field['location'] == 'account') { ?>
                       <?php if ($custom_field['type'] == 'select') { ?>
@@ -288,7 +288,7 @@
                       <?php } ?>
                       <?php } ?>
                       <?php } ?>
-                      <div class="form-group required">
+                     <!-- <div class="form-group required">
                         <label class="col-sm-2 control-label" for="input-password"><?php echo $entry_password; ?></label>
                         <div class="col-sm-10">
                           <input type="password" name="password" value="<?php echo $password; ?>" placeholder="<?php echo $entry_password; ?>" id="input-password" class="form-control" autocomplete="off" />
@@ -319,7 +319,7 @@
                             <?php } ?>
                           </select>
                         </div>
-                      </div>
+                      </div>-->
                       <div class="form-group">
                         <label class="col-sm-2 control-label" for="input-status"><?php echo $entry_status; ?></label>
                         <div class="col-sm-10">
@@ -348,7 +348,7 @@
                           </select>
                         </div>
                       </div>
-                      <div class="form-group">
+                      <!--<div class="form-group">
                         <label class="col-sm-2 control-label" for="input-safe"><?php echo $entry_safe; ?></label>
                         <div class="col-sm-10">
                           <select name="safe" id="input-safe" class="form-control">
@@ -361,7 +361,7 @@
                             <?php } ?>
                           </select>
                         </div>
-                      </div>
+                      </div>-->
                     </div>
                     <?php $address_row = 1; ?>
                     <?php foreach ($addresses as $address) { ?>

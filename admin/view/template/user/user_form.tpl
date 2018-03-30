@@ -43,16 +43,20 @@
                     <?php if($current_user_group['name'] == 'System Administrator') {  ?>
                        <?php if($user_group['name'] != 'Administrator' && $user_group['name'] != 'Company admin') { ?>
                             <?php if ($user_group['user_group_id'] == $user_group_id) { ?>
-                            <option value="<?php echo $user_group['user_group_id']; ?>" selected="selected"><?php echo $user_group['name']; ?></option>
-                            <?php } else { ?>
-                            <option value="<?php echo $user_group['user_group_id']; ?>"><?php echo $user_group['name']; ?></option>
+                            	<option value="<?php echo $user_group['user_group_id']; ?>" selected="selected"><?php echo $user_group['name']; ?></option>
+                            <?php } else if ($user_group['name'] == $dashboard){  ?>
+                        		<option value="<?php echo $user_group['user_group_id']; ?>" selected="selected"><?php echo $user_group['name']; ?></option>
+                        	<?php } else { ?>
+                           		<option value="<?php echo $user_group['user_group_id']; ?>"><?php echo $user_group['name']; ?></option>
                             <?php } ?>
                         <?php } ?>
-                    <?php } else { ?>
+                    <?php } else {  ?>
                     	<?php if ($user_group['user_group_id'] == $user_group_id) { ?>
-                        <option value="<?php echo $user_group['user_group_id']; ?>" selected="selected"><?php echo $user_group['name']; ?></option>
+                       		<option value="<?php echo $user_group['user_group_id']; ?>" selected="selected"><?php echo $user_group['name']; ?></option>
+                        <?php } else if ($user_group['name'] == $dashboard){  ?>
+                        	<option value="<?php echo $user_group['user_group_id']; ?>" selected="selected"><?php echo $user_group['name']; ?></option>
                         <?php } else { ?>
-                        <option value="<?php echo $user_group['user_group_id']; ?>"><?php echo $user_group['name']; ?></option>
+                        	<option value="<?php echo $user_group['user_group_id']; ?>"><?php echo $user_group['name']; ?></option>
                         <?php } ?>
                     <?php } ?>
                 <?php } ?>
@@ -86,12 +90,12 @@
               <?php } ?>
             </div>
           </div>
-          <div class="form-group">
+         <!-- <div class="form-group">
             <label class="col-sm-2 control-label" for="input-image"><?php echo $entry_image; ?></label>
             <div class="col-sm-10"><a href="" id="thumb-image" data-toggle="image" class="img-thumbnail"><img src="<?php echo $thumb; ?>" alt="" title="" data-placeholder="<?php echo $placeholder; ?>" /></a>
               <input type="hidden" name="image" value="<?php echo $image; ?>" id="input-image" />
             </div>
-          </div>
+          </div>-->
           <div class="form-group required">
             <label class="col-sm-2 control-label" for="input-password"><?php echo $entry_password; ?></label>
             <div class="col-sm-10">
