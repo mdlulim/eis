@@ -76,7 +76,7 @@ class ModelCustomerCustomer extends Model {
 		$data['customer_group_id'] = 1;
 		
 		if(isset($data['salesrep_id']))
-		{
+		{ echo "UPDATE " . DB_PREFIX . "customer SET customer_group_id = '" . (int)$data['customer_group_id'] . "', salesrep_id = '" . (int)$data['salesrep_id'] . "', firstname = '" . $this->db->escape($data['firstname']) . "', lastname = '" . $this->db->escape($data['firstname']) . "', email = '" . $this->db->escape($data['email']) . "', telephone = '" . $this->db->escape($data['telephone']) . "', fax = '" . $this->db->escape($data['fax']) . "', custom_field = '" . $this->db->escape(isset($data['custom_field']) ? json_encode($data['custom_field']) : '') . "', newsletter = '" . (int)$data['newsletter'] . "', status = '" . (int)$data['status'] . "', approved = '" . (int)$data['approved'] . "', safe = '" . (int)$data['safe'] . "' WHERE customer_id = '" . (int)$customer_id . "'"; exit; 
 			$this->db->query("UPDATE " . DB_PREFIX . "customer SET customer_group_id = '" . (int)$data['customer_group_id'] . "', salesrep_id = '" . (int)$data['salesrep_id'] . "', firstname = '" . $this->db->escape($data['firstname']) . "', lastname = '" . $this->db->escape($data['firstname']) . "', email = '" . $this->db->escape($data['email']) . "', telephone = '" . $this->db->escape($data['telephone']) . "', fax = '" . $this->db->escape($data['fax']) . "', custom_field = '" . $this->db->escape(isset($data['custom_field']) ? json_encode($data['custom_field']) : '') . "', newsletter = '" . (int)$data['newsletter'] . "', status = '" . (int)$data['status'] . "', approved = '" . (int)$data['approved'] . "', safe = '" . (int)$data['safe'] . "' WHERE customer_id = '" . (int)$customer_id . "'");
 		
 		}
@@ -722,4 +722,10 @@ class ModelCustomerCustomer extends Model {
 		return $query->rows;
 	}
 	
+	public function getCustomerAddressDefault($customer_id) { 
+	
+	$query = $this->db->query("SELECT *, CONCAT(ad.address_1, ' ', ad.address_2) as address FROM " . DB_PREFIX . "customer as cs left join oc_address ad on (cs.address_id = ad.address_id) where cs.customer_id = ".$customer_id."");
+
+		return $query->row;
+	}
 }

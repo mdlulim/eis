@@ -875,31 +875,31 @@
                 <div class="form-group required">
                   <label class="col-sm-2 control-label" for="input-shipping-method"><?php echo $entry_shipping_method; ?></label>
                   <div class="col-sm-10">
-                    <div class="input-group">
+                    <div class="input-group" style="width:100%;">
                       <select name="shipping_method" id="input-shipping-method" class="form-control">
                         <option value=""><?php echo $text_select; ?></option>
                         <?php if ($shipping_code) { ?>
                         <option value="<?php echo $shipping_code; ?>" selected="selected"><?php echo $shipping_method; ?></option>
                         <?php } ?>
                       </select>
-                      <span class="input-group-btn">
+                      <!--<span class="input-group-btn">
                       <button type="button" id="button-shipping-method" data-loading-text="<?php echo $text_loading; ?>" class="btn btn-primary"><?php echo $button_apply; ?></button>
-                      </span></div>
+                      </span>--></div>
                   </div>
                 </div>
                 <div class="form-group required">
                   <label class="col-sm-2 control-label" for="input-payment-method"><?php echo $entry_payment_method; ?></label>
                   <div class="col-sm-10">
-                    <div class="input-group">
+                    <div class="input-group" style="width:100%;">
                       <select name="payment_method" id="input-payment-method" class="form-control">
                         <option value=""><?php echo $text_select; ?></option>
                         <?php if ($payment_code) { ?>
                         <option value="<?php echo $payment_code; ?>" selected="selected"><?php echo $payment_method; ?></option>
                         <?php } ?>
                       </select>
-                      <span class="input-group-btn">
+                      <!--<span class="input-group-btn">
                       <button type="button" id="button-payment-method" data-loading-text="<?php echo $text_loading; ?>" class="btn btn-primary"><?php echo $button_apply; ?></button>
-                      </span></div>
+                      </span>--></div>
                   </div>
                 </div>
                <!-- <div class="form-group">
@@ -940,7 +940,11 @@
                       <?php if ($order_status['order_status_id'] == $order_status_id) { ?>
                       <option value="<?php echo $order_status['order_status_id']; ?>" selected="selected"><?php echo $order_status['name']; ?></option>
                       <?php } else { ?>
-                      <option value="<?php echo $order_status['order_status_id']; ?>"><?php echo $order_status['name']; ?></option>
+                      	<?php if ($order_status['order_status_id'] == '15') { ?>
+                        	<option value="<?php echo $order_status['order_status_id']; ?>" selected="selected"><?php echo $order_status['name']; ?></option>
+                        <?php } else { ?>    
+                            <option value="<?php echo $order_status['order_status_id']; ?>"><?php echo $order_status['name']; ?></option>
+                        <?php } ?>    
                       <?php } ?>
                       <?php } ?>
                     </select>
@@ -961,7 +965,7 @@
                   </div>
                 </div>-->
               </fieldset>
-              <div class="row">
+              <div class="row" style="margin-top:10px;">
                 <div class="col-sm-6 text-left">
                   <button type="button" onclick="$('select[name=\'shipping_method\']').prop('disabled') ? $('a[href=\'#tab-payment\']').tab('show') : $('a[href=\'#tab-shipping\']').tab('show');" class="btn btn-default"><i class="fa fa-arrow-left"></i> <?php echo $button_back; ?></button>
                 </div>
@@ -2233,7 +2237,46 @@ $('#button-shipping-address').on('click', function() {
 });
 
 // Shipping Method
-$('#button-shipping-method').on('click', function() {
+$('select[name=\'shipping_method\']').on('change', function() {
+	
+	$.ajax({
+				url: '<?php echo $catalog; ?>index.php?route=api/shipping/method&token=' + token + '&store_id=' + $('select[name=\'store_id\'] option:selected').val(),
+				type: 'post',
+				data: 'shipping_method=' + $('select[name=\'shipping_method\'] option:selected').val(),
+				dataType: 'json',
+				crossDomain: true,
+				beforeSend: function() {
+					$('#button-shipping-method').button('loading');
+				},
+				complete: function() {
+					$('#button-shipping-method').button('reset');
+				},
+				success: function(json) {
+					$('.alert, .text-danger').remove();
+					$('.form-group').removeClass('has-error');
+		
+					if (json['error']) {
+						$('#content > .container-fluid').prepend('<div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> ' + json['error'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+		
+						// Highlight any found errors
+						$('select[name=\'shipping_method\']').closest('.form-group').addClass('has-error');
+					}
+		
+					if (json['success']) {
+						$('#content > .container-fluid').prepend('<div class="alert alert-success"><i class="fa fa-check-circle"></i> ' + json['success'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+		
+						// Refresh products, vouchers and totals
+						$('#button-refresh').trigger('click');
+					}
+				},
+				error: function(xhr, ajaxOptions, thrownError) {
+					alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+				}
+			});
+	
+});
+
+/*$('#button-shipping-method').on('click', function() {
 	$.ajax({
 		url: '<?php echo $catalog; ?>index.php?route=api/shipping/method&token=' + token + '&store_id=' + $('select[name=\'store_id\'] option:selected').val(),
 		type: 'post',
@@ -2268,10 +2311,12 @@ $('#button-shipping-method').on('click', function() {
 			alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
 		}
 	});
-});
+});*/
 
 // Payment Method
-$('#button-payment-method').on('click', function() {
+
+$('select[name=\'payment_method\']').on('change', function() {
+//$('#button-payment-method').on('click', function() {
 	$.ajax({
 		url: '<?php echo $catalog; ?>index.php?route=api/payment/method&token=' + token + '&store_id=' + $('select[name=\'store_id\'] option:selected').val(),
 		type: 'post',

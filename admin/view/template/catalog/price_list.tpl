@@ -94,9 +94,9 @@
                             <?php foreach ($prices as $price) { ?>
                             <tr>
                                 <td class="text-center"><?php if (in_array($price['price_id'], $selected)) { ?>
-                                    <input type="checkbox" name="selected[]" value="<?php echo $price['price_id']; ?>" checked="checked" />
+                                    <input type="checkbox" name="selected[]" value="<?php echo $price['price_id']; ?>-<?php echo $price['customer_group_id']; ?>" checked="checked" />
                                     <?php } else { ?>
-                                    <input type="checkbox" name="selected[]" value="<?php echo $price['price_id']; ?>" />
+                                    <input type="checkbox" name="selected[]" value="<?php echo $price['price_id']; ?>-<?php echo $price['customer_group_id']; ?>" />
                                     <?php } ?></td>
                                 <td class="text-left"><?php echo $price['sku']; ?></td>
                                 <td class="text-left"><?php echo $price['contract']; ?></td>

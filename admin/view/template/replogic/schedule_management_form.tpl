@@ -95,7 +95,7 @@
           </div>
           
           <div class="form-group required custmr_id">
-            <label class="col-sm-2 control-label" for="input-user-group"><?php echo $entry_customer; ?></label>
+            <label class="col-sm-2 control-label" for="input-user-group"><span data-toggle="tooltip" title="Customer List as per Selection of the Sales Rep Name"><?php echo $entry_customer; ?></span></label>
             <div class="col-sm-10">
               <select name="customer_id" id="input-sales_manager" class="form-control">
                 <option value="">Select Customer</option>
@@ -116,7 +116,7 @@
           <div class="form-group required custmr_id">
             <label class="col-sm-2 control-label" for="input-username">Address</label>
             <div class="col-sm-10">
-              <input type="text" name="appointment_address" value="<?php echo $appointment_address; ?>" placeholder="Plz Enter Address" id="input-appointment_address" class="form-control" />
+              <input type="text" name="appointment_address" value="<?php echo $appointment_address; ?>" placeholder="Please Enter Address" id="input-appointment_address" class="form-control" />
               <?php if ($error_appointment_address) { ?>
               <div class="text-danger"><?php echo $error_appointment_address; ?></div>
               <?php } ?>
@@ -136,7 +136,7 @@
           <div class="form-group required newbusiness">
             <label class="col-sm-2 control-label" for="input-username">Address</label>
             <div class="col-sm-10">
-              <input type="text" name="address" value="<?php echo $address; ?>" placeholder="Enter address" id="input-address" class="form-control" />
+              <input type="text" name="address" value="<?php echo $address; ?>" placeholder="Please Enter address" id="input-address" class="form-control" />
               <?php if ($error_address) { ?>
               <div class="text-danger"><?php echo $error_address; ?></div>
               <?php } ?>
@@ -273,5 +273,56 @@
    
 });
  </script> 
+ <script type="text/javascript">
+ 	$('select[name=\'salesrep_id\']').on('change', function() {
+		$('select[name=\'salesrep_id\']').html();
+		$.ajax({
+		url: 'index.php?route=replogic/schedule_management/getCustomer&token=<?php echo $token; ?>',
+		type: 'post',
+		data: 'salesrep_id=' + $('select[name=\'salesrep_id\'] option:selected').val(),
+		dataType: 'json',
+		crossDomain: true,
+		success: function(json) {
+			
+			html = '<option value="">Select Customer</option>';
+			
+			if (json&& json != '') {
+				for (i = 0; i < json.length; i++) {
+					html += '<option value="' + json[i]['customer_id'] + '">' + json[i]['firstname'] + '</option>';
+
+				}
+			} else {
+				html += '<option value="">No Found Customer</option>';
+			}
+
+			$('select[name=\'customer_id\']').html(html);
+			
+		},
+		error: function(xhr, ajaxOptions, thrownError) {
+			alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+		}
+	});
+	
+	});
+	
+	$('select[name=\'customer_id\']').on('change', function() {
+	
+		$.ajax({
+		url: 'index.php?route=replogic/schedule_management/getaddress&token=<?php echo $token; ?>',
+		type: 'post',
+		data: 'customer_id=' + $('select[name=\'customer_id\'] option:selected').val(),
+		dataType: 'json',
+		crossDomain: true,
+		success: function(json) {
+			
+			$('#input-appointment_address').val(json);
+		},
+		error: function(xhr, ajaxOptions, thrownError) {
+			alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+		}
+	});
+	
+	});
+ </script>
 </div>
 <?php echo $footer; ?> 

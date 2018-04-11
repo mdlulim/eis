@@ -187,9 +187,9 @@
           </tbody>
         </table>
         <?php } ?>
-        <?php if($qstatus == '0') { ?>
+        <?php if($qstatus == '0' || $qstatus == '3') { ?>
         <div style="width:100%;">
-        <!--<a href="javascript:void();" data-toggle="tooltip" title="Decline" onclick="onpopup(<?php echo $_GET['quote_id']; ?>);" style="float: right; font-family: Calibri;" class="btn btn-danger decline"><i class="fa fa-times"> Decline</i></a>-->
+        <a href="javascript:void();" data-toggle="tooltip" title="Decline" onclick="onpopup(<?php echo $_GET['quote_id']; ?>);" style="float: right; font-family: Calibri;" class="btn btn-danger decline"><i class="fa fa-times"> Decline</i></a>
         <a href="<?php echo $approvelink; ?>" data-toggle="tooltip" title="Convert to Order" class="btn btn-success" style="float:right;margin-right:8px;font-family: Calibri;"><i class="fa fa-check"></i> Convert</a>
         </div>
         <?php } ?>
@@ -211,7 +211,7 @@
               </div>
               <div class="modal-body">
                 <p><strong>Please Enter your reasons for declining the quote inside the following box</strong> </p>
-                <textarea name="reason" rows="5" placeholder="Plz Enter Reason" id="reason" class="form-control"></textarea>
+                <textarea name="reason" rows="5" placeholder="Please Enter Reason" id="reason" class="form-control"></textarea>
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-primary" id="Decline">Confirm</button>

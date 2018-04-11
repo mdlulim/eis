@@ -94,4 +94,11 @@ class ModelCustomerCustomerGroup extends Model {
 
 		return $query->row['total'];
 	}
+	
+	public function getCustomerGroupByName($name) { 
+		$query = $this->db->query("SELECT DISTINCT * FROM " . DB_PREFIX . "customer_group_description WHERE name = '".$name."'");
+
+		return $query->row;
+	}
+	
 }

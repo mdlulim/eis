@@ -518,6 +518,7 @@ class ControllerReplogicScheduleManagement extends Controller {
 
 		$data['button_save'] = $this->language->get('button_save');
 		$data['button_cancel'] = $this->language->get('button_cancel');
+		$data['token'] = $this->session->data['token'];
 
 		if (isset($this->error['warning'])) {
 			$data['error_warning'] = $this->error['warning'];
@@ -792,14 +793,34 @@ class ControllerReplogicScheduleManagement extends Controller {
 	   $data['salesReps'] = $this->model_replogic_sales_rep_management->getSalesRepsDropdown($allaccess, $current_user_id);
 	   
 	   $this->load->model('customer/customer');
-	   $data['customers'] = $this->model_customer_customer->getCustomers(); ;
-	
-		if (isset($this->request->post['salesrep_id'])) {
+	   
+	   if (isset($this->request->post['salesrep_id'])) {
 			$data['sales_manager'] = $this->request->post['salesrep_id'];
 		} elseif (!empty($appointment_info)) {
 			$data['sales_manager'] = $appointment_info['salesrep_id'];
 		} else {
 			$data['sales_manager'] = '';
+		}
+		
+		if($data['sales_manager'])
+		{
+			if($current_user_group['name'] == 'Sales Manager' )
+			{ 
+				$allaccess = true;
+				$current_user_id = $this->session->data['user_id'];
+			}
+			else
+			{
+				$allaccess = false;
+				$current_user_id = 0;
+			}
+			$filter_customerdata = array('filter_salesrep_id' => $data['sales_manager']);
+	   		$data['customers'] = $this->model_customer_customer->getCustomers($filter_customerdata,$allaccess,$current_user_id);
+			
+		}
+		else
+		{
+			$data['customers'] = '';
 		}
 
 		$ignore = array(
@@ -883,5 +904,47 @@ class ControllerReplogicScheduleManagement extends Controller {
 		
 		return !$this->error;
 	}
+	
+	public function getaddress() {
+		
+		$this->load->model('customer/customer');
+		$customer_id = $this->request->post['customer_id'];
+		if($customer_id)
+		{
+			$cust = $this->model_customer_customer->getCustomerAddressDefault($customer_id);
+			$address = $cust['address']; 
+		}
+		else
+		{
+			$address = '';
+		}
+		
+		$this->response->addHeader('Content-Type: application/json');
+		$this->response->setOutput(json_encode($address));
+	}
+	
+	public function getCustomer() {
+		
+		$this->load->model('customer/customer');
+		$salesrep_id = $this->request->post['salesrep_id'];
+		
+		if($current_user_group['name'] == 'Sales Manager' )
+		{ 
+			$allaccess = true;
+			$current_user_id = $this->session->data['user_id'];
+		}
+		else
+		{
+			$allaccess = false;
+			$current_user_id = 0;
+		}
+		
+		$filter_data = array('filter_salesrep_id' => $salesrep_id);
+		
+		$customer = $this->model_customer_customer->getCustomers($filter_data,$allaccess,$current_user_id);
+		
+		$this->response->addHeader('Content-Type: application/json');
+		$this->response->setOutput(json_encode($customer));
+	}	
 
 }

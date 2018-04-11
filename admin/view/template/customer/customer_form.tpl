@@ -68,7 +68,33 @@
                           </select>
                         </div>
                       </div>-->
-                      
+                      <div class="form-group required">
+                        <label class="col-sm-2 control-label" for="input-firstname"><?php //echo $entry_firstname; ?>Company Name</label>
+                        <div class="col-sm-10">
+                          <input type="text" name="firstname" value="<?php echo $firstname; ?>" placeholder="<?php //echo $entry_firstname; ?>Company Name" id="input-firstname" class="form-control" />
+                          <?php if ($error_firstname) { ?>
+                          <div class="text-danger"><?php //echo $error_firstname; ?>Plz Enter Company Name</div>
+                          <?php } ?>
+                        </div>
+                      </div>
+                      <div class="form-group required">
+                        <label class="col-sm-2 control-label" for="input-telephone"><?php echo $entry_telephone; ?></label>
+                        <div class="col-sm-10">
+                          <input type="text" name="telephone" maxlength="10" value="<?php echo $telephone; ?>" placeholder="<?php echo $entry_telephone; ?>" id="input-telephone" class="form-control" />
+                          <?php if ($error_telephone) { ?>
+                          <div class="text-danger"><?php echo $error_telephone; ?></div>
+                          <?php  } ?>
+                        </div>
+                      </div>
+                      <div class="form-group required">
+                        <label class="col-sm-2 control-label" for="input-email"><?php echo $entry_email; ?></label>
+                        <div class="col-sm-10">
+                          <input type="text" name="email" value="<?php echo $email; ?>" placeholder="<?php echo $entry_email; ?>" id="input-email" class="form-control" />
+                          <?php if ($error_email) { ?>
+                          <div class="text-danger"><?php echo $error_email; ?></div>
+                          <?php  } ?>
+                        </div>
+                      </div>
                       <?php if($access == 'yes') { ?>
                       <div class="form-group required">
                         <label class="col-sm-2 control-label" for="input-customer-group"><?php echo $entry_salesrep; ?></label>
@@ -90,15 +116,6 @@
                       </div>
                       <?php } ?>
                       
-                      <div class="form-group required">
-                        <label class="col-sm-2 control-label" for="input-firstname"><?php //echo $entry_firstname; ?>Company Name</label>
-                        <div class="col-sm-10">
-                          <input type="text" name="firstname" value="<?php echo $firstname; ?>" placeholder="<?php //echo $entry_firstname; ?>Company Name" id="input-firstname" class="form-control" />
-                          <?php if ($error_firstname) { ?>
-                          <div class="text-danger"><?php //echo $error_firstname; ?>Plz Enter Company Name</div>
-                          <?php } ?>
-                        </div>
-                      </div>
                       <!--<div class="form-group required">
                         <label class="col-sm-2 control-label" for="input-lastname"><?php echo $entry_lastname; ?></label>
                         <div class="col-sm-10">
@@ -108,24 +125,7 @@
                           <?php } ?>
                         </div>
                       </div>-->
-                      <div class="form-group required">
-                        <label class="col-sm-2 control-label" for="input-email"><?php echo $entry_email; ?></label>
-                        <div class="col-sm-10">
-                          <input type="text" name="email" value="<?php echo $email; ?>" placeholder="<?php echo $entry_email; ?>" id="input-email" class="form-control" />
-                          <?php if ($error_email) { ?>
-                          <div class="text-danger"><?php echo $error_email; ?></div>
-                          <?php  } ?>
-                        </div>
-                      </div>
-                      <div class="form-group required">
-                        <label class="col-sm-2 control-label" for="input-telephone"><?php echo $entry_telephone; ?></label>
-                        <div class="col-sm-10">
-                          <input type="text" name="telephone" maxlength="10" value="<?php echo $telephone; ?>" placeholder="<?php echo $entry_telephone; ?>" id="input-telephone" class="form-control" />
-                          <?php if ($error_telephone) { ?>
-                          <div class="text-danger"><?php echo $error_telephone; ?></div>
-                          <?php  } ?>
-                        </div>
-                      </div>
+                      
                       <!--<div class="form-group">
                         <label class="col-sm-2 control-label" for="input-fax"><?php echo $entry_fax; ?></label>
                         <div class="col-sm-10">
@@ -334,7 +334,8 @@
                           </select>
                         </div>
                       </div>
-                      <div class="form-group">
+                      <input type="hidden" name="approved" value="1"  />
+                      <!--<div class="form-group">
                         <label class="col-sm-2 control-label" for="input-approved"><?php echo $entry_approved; ?></label>
                         <div class="col-sm-10">
                           <select name="approved" id="input-approved" class="form-control">
@@ -347,7 +348,7 @@
                             <?php } ?>
                           </select>
                         </div>
-                      </div>
+                      </div>-->
                       <!--<div class="form-group">
                         <label class="col-sm-2 control-label" for="input-safe"><?php echo $entry_safe; ?></label>
                         <div class="col-sm-10">

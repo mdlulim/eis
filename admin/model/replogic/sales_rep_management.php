@@ -288,5 +288,11 @@ class ModelReplogicSalesRepManagement extends Model {
 
 		return $query->row;
 	}
+	
+	public function getSalesrepByName($name) {
+		$query = $this->db->query("SELECT DISTINCT * FROM " . DB_PREFIX . "salesrep WHERE CONCAT(salesrep_name, ' ', salesrep_lastname) LIKE '%" . $name . "%'");
+
+		return $query->row;
+	}
 
 }

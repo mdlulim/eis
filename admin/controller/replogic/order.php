@@ -112,6 +112,10 @@ class ControllerReplogicOrder extends Controller {
 
 		$url = '';
 
+		if (isset($this->request->get['quote_id'])) {
+			$url .= '&quote_id=' . $this->request->get['quote_id'];
+		}
+		
 		if (isset($this->request->get['filter_order_id'])) {
 			$url .= '&filter_order_id=' . $this->request->get['filter_order_id'];
 		}
@@ -168,6 +172,16 @@ class ControllerReplogicOrder extends Controller {
 		else
 		{
 			$data['cancel'] = $this->url->link('replogic/order_quotes', 'token=' . $this->session->data['token'] . $url, true);
+		}
+		
+		if(isset($this->request->get['type']))
+		{
+			$data['cancelstatus'] = $this->url->link('replogic/order_quotes/CancelQuotes', 'token=' . $this->session->data['token'] . '&type=quotes&salesrep_id='.$this->request->get['salesrep_id'] .  $url, true);
+			
+		}
+		else
+		{
+			$data['cancelstatus'] = $this->url->link('replogic/order_quotes/CancelQuotes', 'token=' . $this->session->data['token'] . $url, true);
 		}
 
 		$data['token'] = $this->session->data['token'];

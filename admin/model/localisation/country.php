@@ -106,4 +106,17 @@ class ModelLocalisationCountry extends Model {
 
 		return $query->row['total'];
 	}
+	
+	public function getCountriesByName($name) {
+	
+		$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "country where name = '" . $this->db->escape($name) . "'");
+		return $query->row;
+	}
+	
+	public function getRegionByName($name) {
+	
+		$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "zone where name = '" . $this->db->escape($name) . "'");
+		return $query->row;
+	}
+	
 }

@@ -30,8 +30,11 @@ class ModelCatalogPrice extends Model {
 
     }
 
-    public function deletePrice($id) {
-        $this->db->query("DELETE FROM `" . DB_PREFIX . "price_to_contract` WHERE price_id = '" . $id . "'");
+    public function deletePrice($id) { 
+        $val = explode("-",$id);
+		$pid = $val[0];
+		$cid = $val[1];
+		$this->db->query("DELETE FROM `" . DB_PREFIX . "product_to_customer_group_prices` WHERE product_id = '" . $pid . "' and customer_group_id = '" . $cid . "'");
     }
 
     public function getPrice($id,$customer_id) {

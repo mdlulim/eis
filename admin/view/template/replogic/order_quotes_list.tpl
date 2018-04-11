@@ -79,6 +79,12 @@
                   <option value="2">Declined</option>
                   <?php } ?>
                   
+                  <?php if ($filter_order_status == '3') { ?>
+                  <option value="3" selected="selected">Cancelled</option>
+                  <?php } else { ?>
+                  <option value="3">Cancelled</option>
+                  <?php } ?>
+                  
                 </select>
               </div>
               <!--<div class="form-group">

@@ -230,6 +230,7 @@ class ControllerCatalogPrice extends Controller {
                 'price_id'=> $result['product_id'],
                 'sku' 	=> $result['sku'],
                 'contract'   => $result['c_name'],
+				'customer_group_id'   => $result['customer_group_id'],
                 'price'   => $result['price'],
                 'edit'          => $this->url->link('catalog/price/edit', 'token=' . $this->session->data['token'] . '&price_id=' . $result['product_id'] .'&customer_group_id=' . $result['c_id'] . $url, 'SSL')
             );
