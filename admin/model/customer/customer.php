@@ -263,7 +263,24 @@ class ModelCustomerCustomer extends Model {
 
 		return $query->rows;
 	}
+	
+	public function getCustomersCustomerExportImport($min,$max) {
+		
+		$sql = "SELECT c.customer_id AS customer_id, c.firstname AS firstname, c.lastname AS lastname, c.email AS email, c.telephone AS telephone, c.newsletter AS newsletter, c.status AS status, c.approved AS approved, c.password AS password, cgd.name AS customer_group, ad.company AS companyname, ad.address_1 AS address_1, ad.address_2 AS address_2, ad.city AS city, ad.postcode AS postcode, CONCAT(sr.salesrep_name, ' ', sr.salesrep_lastname) AS salesrep, co.name as country, zn.name as region FROM " . DB_PREFIX . "customer c LEFT JOIN " . DB_PREFIX . "customer_group_description cgd ON (c.customer_group_id = cgd.customer_group_id) left join ".DB_PREFIX."salesrep sr ON (c.salesrep_id = sr.salesrep_id) left join ".DB_PREFIX."address ad ON (c.address_id = ad.address_id) left join ".DB_PREFIX."country co on (ad.country_id = co.country_id) left join ".DB_PREFIX."zone zn on (ad.zone_id = zn.zone_id) WHERE cgd.language_id = '" . (int)$this->config->get('config_language_id') . "'";
+		
+		if($min !='' && $max != '')
+		{
+			$sql .= " and c.customer_id BETWEEN ".$min." AND ".$max."";
+		}
+		
+		$sql .= " order by c.customer_id ASC";
+		//echo $sql; exit;
+		$query = $this->db->query($sql);
 
+		return $query->rows;
+		
+	
+	}
 	public function approve($customer_id) {
 		$customer_info = $this->getCustomer($customer_id);
 

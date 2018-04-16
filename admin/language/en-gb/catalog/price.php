@@ -15,6 +15,7 @@ $_['text_list']         		= 'Price Lists';
 $_['text_add']          		= 'Add Price';
 $_['text_edit']         		= 'Edit Price';
 $_['text_import']               = 'Import Price';
+$_['text_confirm']               = 'Are you sure that you want to delete this contract price?';
 
 // Column
 $_['column_sku']   	= 'SKU';

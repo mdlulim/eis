@@ -21,12 +21,16 @@ class ControllerCustomerCustomerExportImport extends Controller {
 				$this->load->model('customer/customer_group');
 				$this->load->model('localisation/country');
 				
+				set_time_limit(0);
+				ini_set('memory_limit', '1G');
+				ini_set("auto_detect_line_endings", true);
+				
 				$file = $_FILES['upload']['tmp_name'];
 				$handle = fopen($file,"r");
 				$i = 1;
 				while ($data = fgetcsv($handle,1000,",","'")) // parses the line it reads for fields in CSV format and returns an array containing the fields read.
 				{ 
-					if($i == 3)
+					if($i == 2)
 					{ 
 						$customer_id = trim($data[0]);
 						$firstname = trim($data[1]);
@@ -134,29 +138,6 @@ class ControllerCustomerCustomerExportImport extends Controller {
 	}
 
 	
-	protected function return_bytes($val)
-	{
-		$val = trim($val);
-	
-		switch (strtolower(substr($val, -1)))
-		{
-			case 'm': $val = (int)substr($val, 0, -1) * 1048576; break;
-			case 'k': $val = (int)substr($val, 0, -1) * 1024; break;
-			case 'g': $val = (int)substr($val, 0, -1) * 1073741824; break;
-			case 'b':
-				switch (strtolower(substr($val, -2, 1)))
-				{
-					case 'm': $val = (int)substr($val, 0, -2) * 1048576; break;
-					case 'k': $val = (int)substr($val, 0, -2) * 1024; break;
-					case 'g': $val = (int)substr($val, 0, -2) * 1073741824; break;
-					default : break;
-				} break;
-			default: break;
-		}
-		return $val;
-	}
-
-
 	public function download() {
 		$this->load->language( 'customer/customer_export_import' );
 		$this->document->setTitle($this->language->get('heading_title'));
@@ -174,8 +155,8 @@ class ControllerCustomerCustomerExportImport extends Controller {
 					
 					if (($min==null) || ($max==null)) {
 						$this->model_customer_customer_export_import->downloadCsv();
-					} else {
-						$this->model_customer_customer_export_import->download($export_type, $min*($max-1-1), $min, null, null);
+					} elseif(($min!=null) || ($max!=null)) {
+						$this->model_customer_customer_export_import->downloadCsv($min, $max);
 					}
 					
 			}
@@ -204,8 +185,6 @@ class ControllerCustomerCustomerExportImport extends Controller {
 		$data = array();
 		$data['heading_title'] = $this->language->get('heading_title');
 		
-		$data['exist_filter'] = $this->model_customer_customer_export_import->existFilter();
-
 		$data['text_export_type_category'] = ($data['exist_filter']) ? $this->language->get('text_export_type_category') : $this->language->get('text_export_type_category_old');
 		$data['text_export_type_product'] = ($data['exist_filter']) ? $this->language->get('text_export_type_product') : $this->language->get('text_export_type_product_old');
 		$data['text_export_type_poa'] = $this->language->get('text_export_type_poa');
@@ -303,8 +282,6 @@ class ControllerCustomerCustomerExportImport extends Controller {
 		$data['import'] = $this->url->link('customer/customer_export_import/upload', 'token=' . $this->session->data['token'], $this->ssl);
 		$data['export'] = $this->url->link('customer/customer_export_import/download', 'token=' . $this->session->data['token'], $this->ssl);
 		$data['settings'] = $this->url->link('customer/customer_export_import/settings', 'token=' . $this->session->data['token'], $this->ssl);
-		$data['post_max_size'] = $this->return_bytes( ini_get('post_max_size') );
-		$data['upload_max_filesize'] = $this->return_bytes( ini_get('upload_max_filesize') );
 
 		if (isset($this->request->post['export_type'])) {
 			$data['export_type'] = $this->request->post['export_type'];
@@ -480,14 +457,7 @@ class ControllerCustomerCustomerExportImport extends Controller {
 			$data['settings_status'] = '0';
 		}
 
-		$min_customer_id = $this->model_customer_customer_export_import->getMinCustomerId();
-		$max_customer_id = $this->model_customer_customer_export_import->getMaxCustomerId();
-		$count_customer = $this->model_customer_customer_export_import->getCountCustomer();
 		
-		$data['min_customer_id'] = $min_customer_id;
-		$data['max_customer_id'] = $max_customer_id;
-		$data['count_customer'] = $count_customer;
-
 		$data['token'] = $this->session->data['token'];
 
 		$this->document->addStyle('view/stylesheet/export_import.css');
@@ -504,66 +474,6 @@ class ControllerCustomerCustomerExportImport extends Controller {
 		if (!$this->user->hasPermission('access', 'customer/customer_export_import')) {
 			$this->error['warning'] = $this->language->get('error_permission');
 			return false;
-		}
-
-		if (!$this->config->get( 'export_import_settings_use_option_id' )) {
-			$option_names = $this->model_customer_customer_export_import->getOptionNameCounts();
-			foreach ($option_names as $option_name) {
-				if ($option_name['count'] > 1) {
-					$this->error['warning'] = str_replace( '%1', $option_name['name'], $this->language->get( 'error_option_name' ) );
-					return false;
-				}
-			}
-		}
-
-		if (!$this->config->get( 'export_import_settings_use_option_value_id' )) {
-			$option_value_names = $this->model_customer_customer_export_import->getOptionValueNameCounts();
-			foreach ($option_value_names as $option_value_name) {
-				if ($option_value_name['count'] > 1) {
-					$this->error['warning'] = str_replace( '%1', $option_value_name['name'], $this->language->get( 'error_option_value_name' ) );
-					return false;
-				}
-			}
-		}
-
-		if (!$this->config->get( 'export_import_settings_use_attribute_group_id' )) {
-			$attribute_group_names = $this->model_customer_customer_export_import->getAttributeGroupNameCounts();
-			foreach ($attribute_group_names as $attribute_group_name) {
-				if ($attribute_group_name['count'] > 1) {
-					$this->error['warning'] = str_replace( '%1', $attribute_group_name['name'], $this->language->get( 'error_attribute_group_name' ) );
-					return false;
-				}
-			}
-		}
-
-		if (!$this->config->get( 'export_import_settings_use_attribute_id' )) {
-			$attribute_names = $this->model_customer_customer_export_import->getAttributeNameCounts();
-			foreach ($attribute_names as $attribute_name) {
-				if ($attribute_name['count'] > 1) {
-					$this->error['warning'] = str_replace( '%1', $attribute_name['name'], $this->language->get( 'error_attribute_name' ) );
-					return false;
-				}
-			}
-		}
-
-		if (!$this->config->get( 'export_import_settings_use_filter_group_id' )) {
-			$filter_group_names = $this->model_customer_customer_export_import->getFilterGroupNameCounts();
-			foreach ($filter_group_names as $filter_group_name) {
-				if ($filter_group_name['count'] > 1) {
-					$this->error['warning'] = str_replace( '%1', $filter_group_name['name'], $this->language->get( 'error_filter_group_name' ) );
-					return false;
-				}
-			}
-		}
-
-		if (!$this->config->get( 'export_import_settings_use_filter_id' )) {
-			$filter_names = $this->model_customer_customer_export_import->getFilterNameCounts();
-			foreach ($filter_names as $filter_name) {
-				if ($filter_name['count'] > 1) {
-					$this->error['warning'] = str_replace( '%1', $filter_name['name'], $this->language->get( 'error_filter_name' ) );
-					return false;
-				}
-			}
 		}
 
 		return true;
@@ -616,20 +526,6 @@ class ControllerCustomerCustomerExportImport extends Controller {
 	}
 
 
-	public function getNotifications() {
-		sleep(1); // give the data some "feel" that its not in our system
-		$this->load->model('customer/customer_export_import');
-		$this->load->language( 'customer/customer_export_import' );
-		$response = $this->model_customer_customer_export_import->getNotifications();
-		$json = array();
-		if ($response===false) {
-			$json['message'] = '';
-			$json['error'] = $this->language->get( 'error_notifications' );
-		} else {
-			$json['message'] = $response;
-			$json['error'] = '';
-		}
-		$this->response->setOutput(json_encode($json));
-	}
+	
 }
 ?>
