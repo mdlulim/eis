@@ -354,7 +354,7 @@ class ModelCustomerCustomerExportImport extends Model {
 
 		// set customer export/import configuration settings
 		$firstnameExportSettings 	= $this->config->get( 'customer_export_import_settings_firstname' );
-		$lastExportSettings 		= $this->config->get( 'customer_export_import_settings_lastname' );
+		$lastnameExportSettings 		= $this->config->get( 'customer_export_import_settings_lastname' );
 		$emailExportSettings 		= $this->config->get( 'customer_export_import_settings_email' );
 		$telephoneExportSettings 	= $this->config->get( 'customer_export_import_settings_telephone' );
 		$salesRepExportSettings 	= $this->config->get( 'customer_export_import_settings_salesrep' );
@@ -370,25 +370,48 @@ class ModelCustomerCustomerExportImport extends Model {
 		$countryExportSettings 		= $this->config->get( 'customer_export_import_settings_country' );
 		$regionExportSettings 		= $this->config->get( 'customer_export_import_settings_region' );
 		$companyNameExportSettings 	= $this->config->get( 'customer_export_import_settings_companyname' );
+		$paymentmethodExportSettings 	= $this->config->get( 'customer_export_import_settings_paymentmethod' );
 
 		// create a file pointer
     	$f = fopen('php://memory', 'w');
 
     	// set column headers
-    	$fields = array('Customer ID', 'First Name', 'Last Name', 'Email', 'Telephone', 'Company Name', 'Address 1', 'Address 2', 'City', 'Postcode', 'Country', 'Region/State', 'Password', 'Newsletter', 'Company Group', 'Approved', 'Payment Method', 'Sales Rep', 'Status');
-    	fputcsv($f, $fields, $delimiter);
+    	//$fields = array('Customer ID', 'First Name', 'Last Name', 'Email', 'Telephone', 'Company Name', 'Address 1', 'Address 2', 'City', 'Postcode', 'Country', 'Region/State', 'Password', 'Newsletter', 'Company Group', 'Approved', 'Payment Method', 'Sales Rep', 'Status');
+    	
+		$fields = array('Customer ID');
+		
+		$firstnameExportSettings 	? array_push($fields, 'First Name') : '';
+		$lastnameExportSettings 	? array_push($fields, 'Last Name') : '';
+		$emailExportSettings 	? array_push($fields, 'Email') : '';
+		$telephoneExportSettings 	? array_push($fields, 'Telephone') : '';
+		$companyNameExportSettings 	? array_push($fields, 'Company Name') : '';
+		$address1ExportSettings 	? array_push($fields, 'Address 1') : '';
+		$address2ExportSettings 	? array_push($fields, 'Address 2') : '';
+		$cityExportSettings 	? array_push($fields, 'City') : '';
+		$postCodeExportSettings 	? array_push($fields, 'Postcode') : '';
+		$countryExportSettings 	? array_push($fields, 'Country') : '';
+		$regionExportSettings 	? array_push($fields, 'Region/State') : '';
+		$passwordExportSettings 	? array_push($fields, 'Password') : '';
+		$newsletterExportSettings 	? array_push($fields, 'Newsletter') : '';
+		$companyGroupExportSettings 	? array_push($fields, 'Company Group') : '';
+		$approvedExportSettings 	? array_push($fields, 'Approved') : '';
+		$paymentmethodExportSettings 	? array_push($fields, 'Payment Method') : '';
+		$salesRepExportSettings 	? array_push($fields, 'Sales Rep') : '';
+		$statusExportSettings 	? array_push($fields, 'Status') : '';
+		
+		fputcsv($f, $fields, $delimiter);
 
     	// output each row of the data, format line as csv and write to file pointer
+		//print_r($customers); exit;
     	foreach ($customers as $key => $customer) {
-    		
     		$customerID 	= $customer['customer_id'];
     		$firstname 		= ($firstnameExportSettings) 	? $customer['firstname'] : '';
     		$lastname 		= ($lastnameExportSettings) 	? $customer['lastname'] : '';
     		$email 			= ($emailExportSettings) 		? $customer['email'] : '';
     		$telephone 		= ($telephoneExportSettings) 	? $customer['telephone'] : '';
     		$companyname 	= ($companyNameExportSettings) 	? $customer['companyname'] : '';
-    		$address1 		= ($address1ExportSettings) 	? $customer['address1'] : '';
-    		$address2 		= ($address2ExportSettings) 	? $customer['address2'] : '';
+    		$address1 		= ($address1ExportSettings) 	? $customer['address_1'] : '';
+    		$address2 		= ($address2ExportSettings) 	? $customer['address_2'] : '';
     		$city 			= ($cityExportSettings) 		? $customer['city'] : '';
     		$postcode 		= ($postCodeExportSettings) 	? $customer['postcode'] : '';
     		$country 		= ($countryExportSettings) 		? $customer['country'] : '';
@@ -411,7 +434,8 @@ class ModelCustomerCustomerExportImport extends Model {
     		} else {
     			$approved = '';
     		}
-    		$lineData = array(
+			$payment_method	= '';
+			/*$lineData = array(
     			$customerID,
     			$firstname,
     			$lastname,
@@ -431,7 +455,29 @@ class ModelCustomerCustomerExportImport extends Model {
 				'',
 				$salesrep,
 				$status
-			);
+			);*/
+			
+			$lineData = array($customerID);
+			
+			$firstnameExportSettings 	? array_push($lineData, $firstname) : '';
+			$lastnameExportSettings 	? array_push($lineData, $lastname) : '';
+			$emailExportSettings 	? array_push($lineData, $email) : '';
+			$telephoneExportSettings 	? array_push($lineData, $telephone) : '';
+			$companyNameExportSettings 	? array_push($lineData, $companyname) : '';
+			$address1ExportSettings 	? array_push($lineData, $address1) : '';
+			$address2ExportSettings 	? array_push($lineData, $address2) : '';
+			$cityExportSettings 	? array_push($lineData, $city) : '';
+			$postCodeExportSettings 	? array_push($lineData, $postcode) : '';
+			$countryExportSettings 	? array_push($lineData, $country) : '';
+			$regionExportSettings 	? array_push($lineData, $region) : '';
+			$passwordExportSettings 	? array_push($lineData, $password) : '';
+			$newsletterExportSettings 	? array_push($lineData, $newsletter) : '';
+			$companyGroupExportSettings 	? array_push($lineData, $customer_group) : '';
+			$approvedExportSettings 	? array_push($lineData, $approved) : '';
+			$paymentmethodExportSettings 	? array_push($lineData, $payment_method) : '';
+			$salesRepExportSettings 	? array_push($lineData, $salesrep) : '';
+			$statusExportSettings 	? array_push($lineData, $status) : '';
+			
 			fputcsv($f, $lineData, $delimiter);
     	}
 

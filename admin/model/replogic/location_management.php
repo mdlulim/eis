@@ -1,6 +1,10 @@
 <?php
 class ModelReplogicLocationManagement extends Model {
 	
+	public function deletelocation($checkin_id) { 
+		$this->db->query("DELETE FROM " . DB_PREFIX . "salesrep_checkins WHERE checkin_id = '" . (int)$checkin_id . "'");
+	}
+	
 	public function getLocations($data = array()) {
 		
 		if(!isset($data['filter_team_id']))

@@ -12,6 +12,9 @@ class ControllerCustomerCustomer extends Controller {
 		$this->getList();
 	}
 
+	public function invitation() { echo "Still this Function is Not created"; exit;
+	
+	}
 	public function add() {
 		$this->load->language('customer/customer');
 
@@ -170,7 +173,7 @@ class ControllerCustomerCustomer extends Controller {
 		$this->getForm();
 	}
 
-	public function delete() {
+	public function delete() { 
 		$this->load->language('customer/customer');
 
 		$this->document->setTitle($this->language->get('heading_title'));
@@ -513,6 +516,7 @@ class ControllerCustomerCustomer extends Controller {
 
 		$data['add'] = $this->url->link('customer/customer/add', 'token=' . $this->session->data['token'] . $url, true);
 		$data['delete'] = $this->url->link('customer/customer/delete', 'token=' . $this->session->data['token'] . $url, true);
+		$data['invitation'] = $this->url->link('customer/customer/invitation', 'token=' . $this->session->data['token'] . $url, true);
 
 		$data['customers'] = array();
 
@@ -580,6 +584,7 @@ class ControllerCustomerCustomer extends Controller {
 				'date_added'     => date($this->language->get('date_format_short'), strtotime($result['date_added'])),
 				'approve'        => $approve,
 				'unlock'         => $unlock,
+				'wholesale_activity'         => '',
 				'view'          => $this->url->link('customer/customer_info', 'token=' . $this->session->data['token'] . '&type=general&customer_id=' . $result['customer_id'] . $url, true),
 				'edit'           => $this->url->link('customer/customer/edit', 'token=' . $this->session->data['token'] . '&customer_id=' . $result['customer_id'] . $url, true)
 			);
@@ -881,6 +886,12 @@ class ControllerCustomerCustomer extends Controller {
 			$data['error_telephone'] = '';
 		}
 		
+		if (isset($this->error['payment_method'])) {
+			$data['error_payment_method'] = $this->error['payment_method'];
+		} else {
+			$data['error_payment_method'] = '';
+		}
+		
 		if (isset($this->error['fax'])) {
 			$data['error_fax'] = $this->error['fax'];
 		} else {
@@ -1039,10 +1050,41 @@ class ControllerCustomerCustomer extends Controller {
 			$current_user_id = $this->session->data['user_id'];
 		}
 		
+		if (isset($this->request->post['salesrep_id'])) {
+			$data['salesrep_id'] = $this->request->post['salesrep_id'];
+		} elseif (!empty($customer_info)) {
+			$data['salesrep_id'] = $customer_info['salesrep_id'];
+		}elseif(isset($this->request->get['type']) && $this->request->get['type'] == 'customers') {
+			$data['salesrep_id'] = $this->request->get['csalesrep_id'];
+		} 
+		else {
+			$data['salesrep_id'] = '';
+		}
+		
 		$this->load->model('replogic/sales_rep_management');
-
-		$data['salesreps'] = $this->model_replogic_sales_rep_management->getSalesRepsDropdown($allaccess, $current_user_id);
-		//$data['salesreps'] = '';
+		
+		if (isset($this->request->post['team_id'])) {
+			$data['team_id'] = $this->request->post['team_id'];
+		} else {
+			if($customer_info['salesrep_id'])
+			{
+				$salesrepbyid = $this->model_replogic_sales_rep_management->getsalesrep($customer_info['salesrep_id']);
+				$data['team_id'] = $salesrepbyid['sales_team_id'];
+			}
+			else
+			{
+				$data['team_id'] = '';
+			}
+		}
+		
+		$this->load->model('user/team');
+		$data['teams'] = $this->model_user_team->getTeams();
+		
+		$data['salesreps'] = '';
+		if($data['team_id'])
+		{
+			$data['salesreps'] = $this->model_replogic_sales_rep_management->getSalesRepByTeam($data['team_id']);
+		}
 		
 		$this->load->model('customer/customer_group');
 
@@ -1056,17 +1098,6 @@ class ControllerCustomerCustomer extends Controller {
 			$data['customer_group_id'] = $this->config->get('config_customer_group_id');
 		}
 		
-		if (isset($this->request->post['salesrep_id'])) {
-			$data['salesrep_id'] = $this->request->post['salesrep_id'];
-		} elseif (!empty($customer_info)) {
-			$data['salesrep_id'] = $customer_info['salesrep_id'];
-		}elseif(isset($this->request->get['type']) && $this->request->get['type'] == 'customers') {
-			$data['salesrep_id'] = $this->request->get['csalesrep_id'];
-		} 
-		else {
-			$data['salesrep_id'] = '';
-		}
-
 		if (isset($this->request->post['firstname'])) {
 			$data['firstname'] = $this->request->post['firstname'];
 		} elseif (!empty($customer_info)) {
@@ -1105,6 +1136,14 @@ class ControllerCustomerCustomer extends Controller {
 			$data['fax'] = $customer_info['fax'];
 		} else {
 			$data['fax'] = '';
+		}
+		
+		if (isset($this->request->post['payment_method'])) {
+			$data['payment_method'] = $this->request->post['payment_method'];
+		} elseif (!empty($customer_info)) {
+			$data['payment_method'] = $customer_info['payment_method'];
+		} else {
+			$data['payment_method'] = '';
 		}
 
 		// Custom Fields
@@ -1163,6 +1202,12 @@ class ControllerCustomerCustomer extends Controller {
 		} else {
 			$data['approved'] = true;
 		}
+		
+		if (!empty($customer_info)) {
+			$data['adrs_id'] = $customer_info['address_id'];
+		} else {
+			$data['adrs_id'] = '';
+		}
 
 		if (isset($this->request->post['safe'])) {
 			$data['safe'] = $this->request->post['safe'];
@@ -1208,7 +1253,12 @@ class ControllerCustomerCustomer extends Controller {
 		$data['column_left'] = $this->load->controller('common/column_left');
 		$data['footer'] = $this->load->controller('common/footer');
 
-		$this->response->setOutput($this->load->view('customer/customer_form', $data));
+		if (!isset($this->request->get['customer_id'])) {
+			$this->response->setOutput($this->load->view('customer/customer_add_form', $data));
+		} else {
+			$this->response->setOutput($this->load->view('customer/customer_form', $data));
+		}
+		
 	}
 
 	protected function validateForm() {
@@ -1240,11 +1290,20 @@ class ControllerCustomerCustomer extends Controller {
 			}
 		}
 		
-		if (isset($this->request->post['salesrep_id'])) { 
+		/*if (isset($this->request->post['salesrep_id'])) { 
 		
 			if($this->request->post['salesrep_id'] == '')
 			{
 				$this->error['salesrep_id'] = $this->language->get('error_salesrep_id');
+			}
+		
+		}*/
+		
+		if (isset($this->request->post['payment_method'])) { 
+		
+			if($this->request->post['payment_method'] == '')
+			{
+				$this->error['payment_method'] = 'Please Select Preferred Payment Method';
 			}
 		
 		}

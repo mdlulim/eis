@@ -3,7 +3,8 @@
   <div class="page-header">
     <div class="container-fluid">
       <div class="pull-right"><a href="<?php echo $add; ?>" data-toggle="tooltip" title="<?php echo $button_add; ?>" class="btn btn-primary"><i class="fa fa-plus"></i></a>
-        <button id="button-delete" type="button" data-toggle="tooltip" title="<?php echo $button_delete; ?>" class="btn btn-danger" onclick="confirm('<?php echo $text_confirm; ?>') ? $('#form-customer').submit() : false;"><i class="fa fa-trash-o"></i></button>
+        <button id="button-invitation" type="button" data-toggle="tooltip" title="Send Invitation" class="btn btn-primary" onclick="Confirminvitation('invitation','Are you sure want to Send Invitation ?')"><i class="fa fa-paper-plane"></i></button>
+        <button id="button-delete" type="button" data-toggle="tooltip" title="<?php echo $button_delete; ?>" class="btn btn-danger" onclick="Confirminvitation('delete','Are you sure want to Delete Customer ?')"><i class="fa fa-trash-o"></i></button>
       </div>
       <h1><?php echo $heading_title; ?></h1>
       <ul class="breadcrumb">
@@ -66,9 +67,9 @@
             </div>
             <div class="col-sm-3">
               <div class="form-group">
-                <label class="control-label" for="input-customer-group">Contract Pricing Group</label>
+                <label class="control-label" for="input-customer-group">Contract Pricing</label>
                 <select name="filter_customer_group_id" id="input-customer-group" class="form-control">
-                  <option value="*">Select Contract Pricing Group</option>
+                  <option value="*">Select Contract Pricing</option>
                   <?php foreach ($customer_groups as $customer_group) { ?>
                   <?php if ($customer_group['customer_group_id'] == $filter_customer_group_id) { ?>
                   <option value="<?php echo $customer_group['customer_group_id']; ?>" selected="selected"><?php echo $customer_group['name']; ?></option>
@@ -167,6 +168,11 @@
                     <?php } else { ?>
                     <a href="<?php echo $sort_date_added; ?>"><?php echo $column_date_added; ?></a>
                     <?php } ?></td>
+                    <td class="text-left"><?php if ($sort == 'c.status') { ?>
+                    <a href="<?php echo $sort_status; ?>" class="<?php echo strtolower($order); ?>">Wholesale Activity</a>
+                    <?php } else { ?>
+                    <a href="<?php echo $sort_status; ?>">Wholesale Activity</a>
+                    <?php } ?></td>
                   <td class="text-right"><?php echo $column_action; ?></td>
                 </tr>
               </thead>
@@ -185,6 +191,7 @@
                   <td class="text-left"><?php echo $customer['status']; ?></td>
                   <!--<td class="text-left"><?php echo $customer['ip']; ?></td>-->
                   <td class="text-left"><?php echo $customer['date_added']; ?></td>
+                  <td class="text-left"><?php echo $customer['wholesale_activity']; ?></td>
                   <td class="text-right"><!--<?php if ($customer['approve']) { ?>
                     <a href="<?php echo $customer['approve']; ?>" data-toggle="tooltip" title="<?php echo $button_approve; ?>" class="btn btn-success"><i class="fa fa-thumbs-o-up"></i></a>
                     <?php } else { ?>
@@ -225,21 +232,71 @@
     </div>
   </div>
  <script type="text/javascript"><!--
-$('input[name^=\'selected\']').on('change', function() {
+$('input[name^=\'selected\']').on('change', function() { 
 	
 	var selected = $('input[name^=\'selected\']:checked');
 
 	if (selected.length) {
 		$('#button-delete').prop('disabled', false);
+		$('#button-invitation').prop('disabled', false);
 	}
 	else
 	{
 		$('#button-delete').prop('disabled', true);
+		$('#button-invitation').prop('disabled', true);
 	}
 
 });
 
 $('#button-delete').prop('disabled', true);
+$('#button-invitation').prop('disabled', true);
+$('input[name^=\'selected\']:first').trigger('change');
+
+$('input:checkbox').change(function () {
+   var selected = $('input[name^=\'selected\']:checked');
+
+	if (selected.length) {
+		$('#button-delete').prop('disabled', false);
+		$('#button-invitation').prop('disabled', false);
+	}
+	else
+	{
+		$('#button-delete').prop('disabled', true);
+		$('#button-invitation').prop('disabled', true);
+	}
+})
+
+$('#button-delete').click(function(){
+   $('#form-customer').attr('action', '<?php echo $delete; ?>');
+});
+
+$('#button-invitation').click(function(){
+   $('#form-customer').attr('action', '<?php echo $button-invitation; ?>');
+});
+
+function Confirminvitation(action, msg)
+{
+  var x = confirm(msg);
+  if (x)
+  {
+      if(action == 'delete')
+	  {
+	  	var faction = '<?php echo $delete; ?>';
+	  }
+	  else
+	  {
+	  	var faction = '<?php echo $invitation; ?>';
+	  }
+	  var newul = faction.replace(/&amp;/g, "&");
+	  $('#form-customer').attr('action', newul);
+	  $('#form-customer').submit()
+	  return true;
+	}
+  else {
+    return false;
+ }
+}
+
 
 //--></script>  
   <script type="text/javascript"><!--

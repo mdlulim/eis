@@ -40,23 +40,59 @@
           <div class="tab-content">
             <div class="tab-pane active" id="tab-general">
               <div class="row">
-                <div class="col-sm-2">
-                  <ul class="nav nav-pills nav-stacked" id="address">
-                    <li class="active"><a href="#tab-customer" data-toggle="tab"><?php echo $tab_general; ?></a></li>
-                    <?php $address_row = 1; ?>
-                    <?php foreach ($addresses as $address) { ?>
-                    <li><a href="#tab-address<?php echo $address_row; ?>" data-toggle="tab"><i class="fa fa-minus-circle" onclick="$('#address a:first').tab('show'); $('#address a[href=\'#tab-address<?php echo $address_row; ?>\']').parent().remove(); $('#tab-address<?php echo $address_row; ?>').remove();"></i> <?php echo $tab_address . ' ' . $address_row; ?></a></li>
-                    <?php $address_row++; ?>
-                    <?php } ?>
-                    <li id="address-add"><a onclick="addAddress();"><i class="fa fa-plus-circle"></i> <?php echo $button_address_add; ?></a></li>
-                  </ul>
+                <div class="col-sm-1">
+                  
                 </div>
-                <div class="col-sm-10">
+                <div class="col-sm-11">
                   <div class="tab-content">
                     <div class="tab-pane active" id="tab-customer">
-                      <!--<div class="form-group">
-                        <label class="col-sm-2 control-label" for="input-customer-group"><?php echo $entry_customer_group; ?></label>
-                        <div class="col-sm-10">
+                      
+                      <div class="form-group required">
+                        <label class="col-sm-3 control-label" for="input-firstname"><?php //echo $entry_firstname; ?>Company Name</label>
+                        <div class="col-sm-9">
+                          <input type="text" name="firstname" value="<?php echo $firstname; ?>" placeholder="<?php //echo $entry_firstname; ?>Company Name" id="input-firstname" class="form-control" />
+                          <?php if ($error_firstname) { ?>
+                          <div class="text-danger"><?php //echo $error_firstname; ?>Please Enter Company Name</div>
+                          <?php } ?>
+                        </div>
+                      </div>
+                      <div class="form-group required">
+                        <label class="col-sm-3 control-label" for="input-telephone"><?php echo $entry_telephone; ?></label>
+                        <div class="col-sm-9">
+                          <input type="text" name="telephone" maxlength="10" value="<?php echo $telephone; ?>" placeholder="<?php echo $entry_telephone; ?>" id="input-telephone" class="form-control" />
+                          <?php if ($error_telephone) { ?>
+                          <div class="text-danger"><?php echo $error_telephone; ?></div>
+                          <?php  } ?>
+                        </div>
+                      </div>
+                      <div class="form-group required">
+                        <label class="col-sm-3 control-label" for="input-email"><?php echo $entry_email; ?></label>
+                        <div class="col-sm-9">
+                          <input type="text" name="email" value="<?php echo $email; ?>" placeholder="<?php echo $entry_email; ?>" id="input-email" class="form-control" />
+                          <?php if ($error_email) { ?>
+                          <div class="text-danger"><?php echo $error_email; ?></div>
+                          <?php  } ?>
+                        </div>
+                      </div>
+                      
+                      <h2 class="drawline"></h2>
+                      
+                      <div class="form-group" <?php if($customer_group_id != '3') { ?> style="display:none;" <?php } ?> id="wholesal"  >
+                        <label class="col-sm-3 control-label" for="input-customer-group">Wholesale Invitation Status</label>
+                        <div class="col-sm-9">
+                          <div style="float:left;">	
+                            <input type="text" value="Not Invited" disabled="disabled" class="form-control" style="width:100px;" />
+                          </div>
+                          <a href="javascript:void()">
+                          <div style="float:left;width:150px;padding:8px 5px 8px 15px;margin-left:10px;" class="form-control">
+                          	<i class="fa fa-paper-plane"></i> (Re)Send Invitation
+                          </div></a>
+                        </div>
+                      </div>
+                      
+                      <div class="form-group">
+                        <label class="col-sm-3 control-label" for="input-customer-group">Contract Pricing</label>
+                        <div class="col-sm-9">
                           <select name="customer_group_id" id="input-customer-group" class="form-control">
                             <?php foreach ($customer_groups as $customer_group) { ?>
                             <?php if ($customer_group['customer_group_id'] == $customer_group_id) { ?>
@@ -67,38 +103,58 @@
                             <?php } ?>
                           </select>
                         </div>
-                      </div>-->
+                      </div>
+                      
                       <div class="form-group required">
-                        <label class="col-sm-2 control-label" for="input-firstname"><?php //echo $entry_firstname; ?>Company Name</label>
-                        <div class="col-sm-10">
-                          <input type="text" name="firstname" value="<?php echo $firstname; ?>" placeholder="<?php //echo $entry_firstname; ?>Company Name" id="input-firstname" class="form-control" />
-                          <?php if ($error_firstname) { ?>
-                          <div class="text-danger"><?php //echo $error_firstname; ?>Plz Enter Company Name</div>
+                        <label class="col-sm-3 control-label" for="input-customer-group">Preferred Payment Method</label>
+                        <div class="col-sm-9">
+                          <select name="payment_method" id="input-customer-group" class="form-control">
+                            <option value="">Select Preferred Payment Method</option>
+                            <?php if($payment_method == 'Quotation') { ?>
+                            	<option value="Quotation" selected="selected">Quotation</option>
+                            <?php } else { ?>
+                            	<option value="Quotation">Quotation</option>
+                            <?php } ?>
+                            <?php if($payment_method == 'Cash On delivery') { ?>
+                            	<option value="Cash On delivery" selected="selected">Cash On delivery</option>
+                            <?php } else { ?>
+                            	<option value="Cash On delivery">Cash On delivery</option>
+                            <?php } ?>
+                            <?php if($payment_method == 'Pay now using') { ?>
+                            	<option value="Pay now using" selected="selected">Pay now using</option>
+                            <?php } else { ?>
+                            	<option value="Pay now using">Pay now using</option>
+                            <?php } ?>
+                           
+                          </select>
+                          <?php if ($error_payment_method) { ?>
+                          <div class="text-danger"><?php echo $error_payment_method; ?></div>
                           <?php } ?>
                         </div>
                       </div>
-                      <div class="form-group required">
-                        <label class="col-sm-2 control-label" for="input-telephone"><?php echo $entry_telephone; ?></label>
-                        <div class="col-sm-10">
-                          <input type="text" name="telephone" maxlength="10" value="<?php echo $telephone; ?>" placeholder="<?php echo $entry_telephone; ?>" id="input-telephone" class="form-control" />
-                          <?php if ($error_telephone) { ?>
-                          <div class="text-danger"><?php echo $error_telephone; ?></div>
-                          <?php  } ?>
-                        </div>
-                      </div>
-                      <div class="form-group required">
-                        <label class="col-sm-2 control-label" for="input-email"><?php echo $entry_email; ?></label>
-                        <div class="col-sm-10">
-                          <input type="text" name="email" value="<?php echo $email; ?>" placeholder="<?php echo $entry_email; ?>" id="input-email" class="form-control" />
-                          <?php if ($error_email) { ?>
-                          <div class="text-danger"><?php echo $error_email; ?></div>
-                          <?php  } ?>
-                        </div>
-                      </div>
+                      
+                      <h2 class="drawline"></h2>
+                      
                       <?php if($access == 'yes') { ?>
-                      <div class="form-group required">
-                        <label class="col-sm-2 control-label" for="input-customer-group"><?php echo $entry_salesrep; ?></label>
-                        <div class="col-sm-10">
+                      <div class="form-group">
+                        <label class="col-sm-3 control-label" for="input-customer-group">Sales Team</label>
+                        <div class="col-sm-9">
+                          <select name="team_id" id="input-team_id" class="form-control">
+                            <option value="">Select Sales Team</option>
+                            <?php foreach ($teams as $team) { ?>
+                            <?php if ($team['team_id'] == $team_id) { ?>
+                            <option value="<?php echo $team['team_id']; ?>" selected="selected"><?php echo $team['team_name']; ?></option>
+                            <?php } else { ?>
+                            <option value="<?php echo $team['team_id']; ?>"><?php echo $team['team_name']; ?></option>
+                            <?php } ?>
+                            <?php } ?>
+                          </select>
+                           
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-3 control-label" for="input-customer-group"><span data-toggle="tooltip" title="Sales Rep List as per Selection of the Sales Team"><?php echo $entry_salesrep; ?></span></label>
+                        <div class="col-sm-9">
                           <select name="salesrep_id" id="input-salesrep-id" class="form-control">
                             <option value="">Select Sales Rep</option>
                             <?php foreach ($salesreps as $salesrep) { ?>
@@ -115,6 +171,8 @@
                         </div>
                       </div>
                       <?php } ?>
+                     
+                     <h2 class="drawline"></h2>
                       
                       <!--<div class="form-group required">
                         <label class="col-sm-2 control-label" for="input-lastname"><?php echo $entry_lastname; ?></label>
@@ -320,9 +378,9 @@
                           </select>
                         </div>
                       </div>-->
-                      <div class="form-group">
-                        <label class="col-sm-2 control-label" for="input-status"><?php echo $entry_status; ?></label>
-                        <div class="col-sm-10">
+                      <div class="form-group required">
+                        <label class="col-sm-3 control-label" for="input-status"><?php echo $entry_status; ?></label>
+                        <div class="col-sm-9">
                           <select name="status" id="input-status" class="form-control">
                             <?php if ($status) { ?>
                             <option value="1" selected="selected"><?php echo $text_enabled; ?></option>
@@ -363,10 +421,48 @@
                           </select>
                         </div>
                       </div>-->
-                    </div>
+             </div> 
+             </div>
+             </div>
+             <fieldset style="margin: 0px 18px;">        
+                  <legend style="width: 100px; padding-top: 24px; padding-left: 14px;">Address</legend>
+          		<div class="tab-content">
+            <div class="tab-pane active" id="tab-general1">
+              <div class="row">
+                <div class="col-sm-2">
+                  <ul class="nav nav-pills nav-stacked" id="address">
                     <?php $address_row = 1; ?>
                     <?php foreach ($addresses as $address) { ?>
-                    <div class="tab-pane" id="tab-address<?php echo $address_row; ?>">
+                     <?php if(($address['address_id'] == $adrs_id) && $adrs_id !='0') { ?>
+                     	<?php $df = 'class="active"'; ?>
+                     <?php } else if($address_row == '1' && $adrs_id =='0') { ?>
+                     	<?php $df = 'class="active"'; ?>
+                     <?php } else { ?>
+                     	<?php $df = ''; ?>
+                     <?php } ?>
+                    <li <?php echo $df; ?> ><a href="#tab-address<?php echo $address_row; ?>" data-toggle="tab"><i class="fa fa-minus-circle" onclick="$('#address a:first').tab('show'); $('#address a[href=\'#tab-address<?php echo $address_row; ?>\']').parent().remove(); $('#tab-address<?php echo $address_row; ?>').remove();"></i> <?php echo $tab_address . ' ' . $address_row; ?></a></li>
+                    <?php $address_row++; ?>
+                    <?php } ?>
+                   
+                    	<li id="address-add"><a onclick="addAddress();"><i class="fa fa-plus-circle"></i> <?php echo $button_address_add; ?></a></li>
+                   
+                  </ul>
+                </div>
+                <div class="col-sm-10" >
+                  <div class="tab-content">
+                    
+                    <?php $address_row = 1; ?>
+                    <?php foreach ($addresses as $address) { ?>
+                    
+                    <?php if (($address['address_id'] == $adrs_id) && $adrs_id !='0') { ?>
+                     	<?php $cls = 'class="tab-pane active"'; ?>
+                    <?php } else if($address_row == '1' && $adrs_id =='0') { ?>
+                     	<?php $cls = 'class="tab-pane active"'; ?>
+                     <?php } else { ?>
+                     	<?php $cls = 'class="tab-pane"'; ?>
+                     <?php } ?>
+                    
+                    <div <?php echo $cls; ?> id="tab-address<?php echo $address_row; ?>">
                       <input type="hidden" name="address[<?php echo $address_row; ?>][address_id]" value="<?php echo $address['address_id']; ?>" />
                      <!-- <div class="form-group required">
                         <label class="col-sm-2 control-label" for="input-firstname<?php echo $address_row; ?>"><?php echo $entry_firstname; ?></label>
@@ -611,9 +707,9 @@
                         <div class="col-sm-10">
                           <label class="radio">
                             <?php if (($address['address_id'] == $address_id) || !$addresses) { ?>
-                            <input type="radio" name="address[<?php echo $address_row; ?>][default]" value="<?php echo $address_row; ?>" checked="checked" />
+                            <input type="checkbox" name="address[<?php echo $address_row; ?>][default]" value="<?php echo $address_row; ?>" checked="checked" />
                             <?php } else { ?>
-                            <input type="radio" name="address[<?php echo $address_row; ?>][default]" value="<?php echo $address_row; ?>" />
+                            <input type="checkbox" name="address[<?php echo $address_row; ?>][default]" value="<?php echo $address_row; ?>" />
                             <?php } ?>
                           </label>
                         </div>
@@ -623,6 +719,19 @@
                     <?php } ?>
                   </div>
                 </div>
+              </div>
+            </div>
+            
+          </div>
+          </fieldset>
+                      
+ <style>
+  #tab-customer .form-group + .form-group{border-top:none;}
+  .drawline{border-top:1px solid #ededed;margin:10px 0px;}
+  </style>                   
+                    
+                  
+                
               </div>
             </div>
             <?php if ($customer_id) { ?>
@@ -682,6 +791,9 @@
               <div id="ip"></div>
             </div>
           </div>
+          
+          
+          
         </form>
       </div>
     </div>
@@ -717,6 +829,7 @@ $('select[name=\'customer_group_id\']').trigger('change');
 var address_row = <?php echo $address_row; ?>;
 
 function addAddress() {
+	
 	html  = '<div class="tab-pane" id="tab-address' + address_row + '">';
 	html += '  <input type="hidden" name="address[' + address_row + '][address_id]" value="" />';
 
@@ -760,7 +873,11 @@ function addAddress() {
 	html += '    <div class="col-sm-10"><select name="address[' + address_row + '][country_id]" id="input-country' + address_row + '" onchange="country(this, \'' + address_row + '\', \'0\');" class="form-control">';
     html += '         <option value=""><?php echo $text_select; ?></option>';
     <?php foreach ($countries as $country) { ?>
-    html += '         <option value="<?php echo $country['country_id']; ?>"><?php echo addslashes($country['name']); ?></option>';
+	<?php if($country['country_id'] == '193') { ?>
+    	html += '         <option value="<?php echo $country['country_id']; ?>" selected="selected"><?php echo addslashes($country['name']); ?></option>';
+	<?php } else { ?>	
+		html += '         <option value="<?php echo $country['country_id']; ?>"><?php echo addslashes($country['name']); ?></option>';
+	<?php } ?>	
     <?php } ?>
     html += '      </select></div>';
 	html += '  </div>';
@@ -880,18 +997,20 @@ function addAddress() {
 
 	html += '  <div class="form-group">';
 	html += '    <label class="col-sm-2 control-label"><?php echo $entry_default; ?></label>';
-	html += '    <div class="col-sm-10"><label class="radio"><input type="radio" name="address[' + address_row + '][default]" value="1" /></label></div>';
+	html += '    <div class="col-sm-10"><label class="radio"><input type="checkbox" name="address[' + address_row + '][default]" value="1" /></label></div>';
 	html += '  </div>';
 
     html += '</div>';
 
-	$('#tab-general .tab-content').append(html);
+	$('#tab-general1 .tab-content').append(html);
 
 	$('select[name=\'customer_group_id\']').trigger('change');
 
 	$('select[name=\'address[' + address_row + '][country_id]\']').trigger('change');
 
 	$('#address-add').before('<li><a href="#tab-address' + address_row + '" data-toggle="tab"><i class="fa fa-minus-circle" onclick="$(\'#address a:first\').tab(\'show\'); $(\'a[href=\\\'#tab-address' + address_row + '\\\']\').parent().remove(); $(\'#tab-address' + address_row + '\').remove();"></i> <?php echo $tab_address; ?> ' + address_row + '</a></li>');
+	
+	//$('#address-add').before('<li><a href="#tab-address' + address_row + '" data-toggle="tab"><?php echo $tab_address; ?> ' + address_row + '</a></li>');
 
 	$('#address a[href=\'#tab-address' + address_row + '\']').tab('show');
 
@@ -1204,5 +1323,53 @@ $('#tab-customer .form-group[data-sort]').detach().each(function() {
 	}
 });
 <?php } ?>
-//--></script></div>
+//--></script>
+<script type="text/javascript">
+ 	$('select[name=\'team_id\']').on('change', function() {
+		$('select[name=\'salesrep_id\']').html();
+		$.ajax({
+		url: 'index.php?route=replogic/sales_rep_management/getsalesrepByteamId&token=<?php echo $token; ?>',
+		type: 'post',
+		data: 'team_id=' + $('select[name=\'team_id\'] option:selected').val(),
+		dataType: 'json',
+		crossDomain: true,
+		success: function(json) {
+			
+			html = '<option value="">Select Sales Rep</option>';
+			
+			if (json&& json != '') {
+				for (i = 0; i < json.length; i++) {
+					html += '<option value="' + json[i]['salesrep_id'] + '">' + json[i]['salesrep_name'] + json[i]['salesrep_lastname'] + '</option>';
+
+				}
+			} else {
+				html += '<option value="">No Found Sales Rep</option>';
+			}
+
+			$('select[name=\'salesrep_id\']').html(html);
+			
+		},
+		error: function(xhr, ajaxOptions, thrownError) {
+			alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+		}
+	});
+	
+	});
+    
+    $('select[name=\'customer_group_id\']').on('change', function() {
+	
+		var grp_id = $('select[name=\'customer_group_id\'] option:selected').val()
+		
+		if(grp_id == '3')
+		{
+			$("#wholesal").css("display", "block");
+		}
+		else
+		{
+			$("#wholesal").css("display", "none");
+		}
+	
+	});
+    </script>
+    </div>
 <?php echo $footer; ?>

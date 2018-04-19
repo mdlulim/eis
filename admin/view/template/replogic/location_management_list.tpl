@@ -3,6 +3,11 @@
 <div id="content">
   <div class="page-header">
     <div class="container-fluid">
+    	<?php if($deletebutton) { ?>
+        <div class="pull-right">
+        	<button type="button" data-toggle="tooltip" title="<?php echo $button_delete; ?>" id="button-delete" class="btn btn-danger" onclick="confirm('<?php echo $text_confirm; ?>') ? $('#form-user').submit() : false;"><i class="fa fa-trash-o"></i></button>
+      	</div>
+       <?php } ?>
       <h1><?php echo $heading_title; ?></h1>
       <ul class="breadcrumb">
         <?php foreach ($breadcrumbs as $breadcrumb) { ?>
@@ -240,6 +245,7 @@ $('select[name=\'filter_salesrep_id\']').on('change', function() {
             </div>
               
          	</div>
+           
           <div class="table-responsive">
             <table class="table table-bordered table-hover">
               
@@ -332,7 +338,8 @@ $('select[name=\'filter_salesrep_id\']').on('change', function() {
               </tbody>
             </table>
           </div>
-        
+          
+          <form action="<?php echo $delete; ?>" method="post" enctype="multipart/form-data" id="form-user">  
           <div class="table-responsive" style="margin-bottom:15px;" >
             <table class="table table-bordered table-hover" style="margin-bottom:0px !important;">
               <thead>
@@ -386,6 +393,7 @@ $('select[name=\'filter_salesrep_id\']').on('change', function() {
               </tbody>
             </table>
           </div>
+          </form>
   
         <div class="row">
           <div class="col-sm-6 text-left"><?php echo $pagination; ?></div>
@@ -551,4 +559,35 @@ $('#chkbx').on('click', function() {
       };
   
 </script>
+<script type="text/javascript"><!--
+$('input[name^=\'selected\']').on('change', function() { 
+	
+	var selected = $('input[name^=\'selected\']:checked');
+
+	if (selected.length) {
+		$('#button-delete').prop('disabled', false);
+	}
+	else
+	{
+		$('#button-delete').prop('disabled', true);
+	}
+
+});
+
+$('#button-delete').prop('disabled', true);
+$('input[name^=\'selected\']:first').trigger('change');
+
+$('input:checkbox').change(function () {
+   var selected = $('input[name^=\'selected\']:checked');
+
+	if (selected.length) {
+		$('#button-delete').prop('disabled', false);
+	}
+	else
+	{
+		$('#button-delete').prop('disabled', true);
+	}
+})
+
+//--></script> 
 <?php echo $footer; ?> 
