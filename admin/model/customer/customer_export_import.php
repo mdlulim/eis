@@ -21,8 +21,12 @@ class ModelCustomerCustomerExportImport extends Model {
 			}
 		}
 		
-		if ($this->config->get( 'customer_export_import_settings_telephone' ) && ($data['telphone'] != '')) {
-			$sql .= "telephone = '".$data['telphone']."', ";
+		if ($this->config->get( 'customer_export_import_settings_paymentmethod' ) && ($data['paymentmethod'] != '') ) {
+			$sql .= "payment_method = '".$data['paymentmethod']."', ";
+		}
+		
+		if ($this->config->get( 'customer_export_import_settings_telephone' ) && ($data['telephone'] != '')) {
+			$sql .= "telephone = '".$data['telephone']."', ";
 		}
 		
 		if ($this->config->get( 'customer_export_import_settings_salesrep' ) && ($data['salesrep'] != '')) {
@@ -30,7 +34,14 @@ class ModelCustomerCustomerExportImport extends Model {
 		}
 		
 		if ($this->config->get( 'customer_export_import_settings_companygroup' ) && ($data['companygroup'] != '')) {
-			$sql .= "customer_group_id = '". (int)$data['companygroup']."', ";
+			if($data['companygroup'] == 0)
+			{ 
+				$sql .= "customer_group_id = '1', ";
+			}
+			else
+			{
+				$sql .= "customer_group_id = '". (int)$data['companygroup']."', ";
+			}
 		}
 	
 		if ($this->config->get( 'customer_export_import_settings_newsletter' ) && ($data['newsletter'] != '')) {
@@ -139,7 +150,7 @@ class ModelCustomerCustomerExportImport extends Model {
 		
 	}
 	
-	public function importCsvCustomerDataInsert($data) {
+	public function importCsvCustomerDataInsert($data) { 
 	
 		$sel = "SELECT * from ".DB_PREFIX."customer where email = '".$data['email']."'";
 		$query = $this->db->query($sel);
@@ -160,6 +171,7 @@ class ModelCustomerCustomerExportImport extends Model {
 		else
 		{
 			$sql = "INSERT INTO ".DB_PREFIX."customer SET ";
+			$sql .= "date_added = NOW(), ";
 		}
 		
 		if ($this->config->get( 'customer_export_import_settings_firstname' ) && ($data['firstname'] != '') ) {
@@ -177,8 +189,12 @@ class ModelCustomerCustomerExportImport extends Model {
 			}
 		}
 		
-		if ($this->config->get( 'customer_export_import_settings_telephone' ) && ($data['telphone'] != '')) {
-			$sql .= "telephone = '".$data['telphone']."', ";
+		if ($this->config->get( 'customer_export_import_settings_paymentmethod' ) && ($data['paymentmethod'] != '') ) {
+			$sql .= "payment_method = '".$data['paymentmethod']."', ";
+		}
+		
+		if ($this->config->get( 'customer_export_import_settings_telephone' ) && ($data['telephone'] != '')) {
+			$sql .= "telephone = '".$data['telephone']."', ";
 		}
 		
 		if ($this->config->get( 'customer_export_import_settings_salesrep' ) && ($data['salesrep'] != '')) {
@@ -186,7 +202,14 @@ class ModelCustomerCustomerExportImport extends Model {
 		}
 		
 		if ($this->config->get( 'customer_export_import_settings_companygroup' ) && ($data['companygroup'] != '')) {
-			$sql .= "customer_group_id = '". (int)$data['companygroup']."', ";
+			if($data['companygroup'] == 0)
+			{
+				$sql .= "customer_group_id = '1', ";
+			}
+			else
+			{
+				$sql .= "customer_group_id = '". (int)$data['companygroup']."', ";
+			}
 		}
 	
 		if ($this->config->get( 'customer_export_import_settings_newsletter' ) && ($data['newsletter'] != '')) {
@@ -419,7 +442,9 @@ class ModelCustomerCustomerExportImport extends Model {
     		$password 		= ($passwordExportSettings) 	? $customer['password'] : '';
     		$customer_group = ($companyGroupExportSettings) ? $customer['customer_group'] : '';
     		$salesrep 		= ($salesRepExportSettings) ? $customer['salesrep'] : '';
-    		if ($newsletterExportSettings) {
+			$payment_method = ($paymentmethodExportSettings) ? $customer['payment_method'] : '';
+    		
+			if ($newsletterExportSettings) {
     			$newsletter = ($customer['newsletter'] == '1') ? 'True' : 'False';
     		} else {
     			$newsletter = '';
@@ -434,7 +459,6 @@ class ModelCustomerCustomerExportImport extends Model {
     		} else {
     			$approved = '';
     		}
-			$payment_method	= '';
 			/*$lineData = array(
     			$customerID,
     			$firstname,

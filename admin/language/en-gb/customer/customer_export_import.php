@@ -23,8 +23,8 @@ $_['text_loading_notifications']            = 'Getting messages';
 $_['text_retry']                            = 'Retry';
 
 // Entry
-$_['entry_import']                          = 'Import from a XLS, XLSX or ODS spreadsheet file';
-$_['entry_export']                          = 'Export requested data to a XLSX spreadsheet file.';
+$_['entry_import']                          = 'Import from a CSV file';
+$_['entry_export']                          = 'Export requested data to a CSV spreadsheet file.';
 $_['entry_export_type']                     = 'Select what data you want to export:';
 $_['entry_range_type']                      = 'Please select the data range you want to export:';
 $_['entry_start_id']                        = 'Start id:';

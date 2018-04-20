@@ -28,8 +28,12 @@ class ControllerCustomerCustomerExportImport extends Controller {
 				$file = $_FILES['upload']['tmp_name'];
 				$handle = fopen($file,"r");
 				$i = 1;
-				while ($data = fgetcsv($handle,1000,",","'")) // parses the line it reads for fields in CSV format and returns an array containing the fields read.
+				/*while ($data = fgetcsv($handle,1000,",","'")) // parses the line it reads for fields in CSV format and returns an array containing the fields read.
 				{ 
+					if($i == 1)
+					{
+						
+					}
 					if($i == 2)
 					{ 
 						$customer_id = trim($data[0]);
@@ -128,8 +132,173 @@ class ControllerCustomerCustomerExportImport extends Controller {
 					}
 					
 					$i++;
+				}*/
+				
+				$all_rows = array();
+				$header = fgetcsv($handle,1000,",","'");
+				//print_r($header); exit;
+				
+				// set customer export/import configuration settings
+				$firstnameExportSettings 	= $this->config->get( 'customer_export_import_settings_firstname' );
+				$lastnameExportSettings 		= $this->config->get( 'customer_export_import_settings_lastname' );
+				$emailExportSettings 		= $this->config->get( 'customer_export_import_settings_email' );
+				$telephoneExportSettings 	= $this->config->get( 'customer_export_import_settings_telephone' );
+				$salesRepExportSettings 	= $this->config->get( 'customer_export_import_settings_salesrep' );
+				$companyGroupExportSettings = $this->config->get( 'customer_export_import_settings_companygroup' );
+				$newsletterExportSettings 	= $this->config->get( 'customer_export_import_settings_newsletter' );
+				$statusExportSettings 		= $this->config->get( 'customer_export_import_settings_status' );
+				$passwordExportSettings 	= $this->config->get( 'customer_export_import_settings_password' );
+				$approvedExportSettings 	= $this->config->get( 'customer_export_import_settings_approved' );
+				$address1ExportSettings 	= $this->config->get( 'customer_export_import_settings_address1' );
+				$address2ExportSettings 	= $this->config->get( 'customer_export_import_settings_address2' );
+				$cityExportSettings 		= $this->config->get( 'customer_export_import_settings_city' );
+				$postCodeExportSettings 	= $this->config->get( 'customer_export_import_settings_postcode' );
+				$countryExportSettings 		= $this->config->get( 'customer_export_import_settings_country' );
+				$regionExportSettings 		= $this->config->get( 'customer_export_import_settings_region' );
+				$companyNameExportSettings 	= $this->config->get( 'customer_export_import_settings_companyname' );
+				$paymentmethodExportSettings 	= $this->config->get( 'customer_export_import_settings_paymentmethod' );
+				
+				$fields = array('Customer ID');
+		
+				$firstnameExportSettings 	? array_push($fields, 'First Name') : '';
+				$lastnameExportSettings 	? array_push($fields, 'Last Name') : '';
+				$emailExportSettings 	? array_push($fields, 'Email') : '';
+				$telephoneExportSettings 	? array_push($fields, 'Telephone') : '';
+				$companyNameExportSettings 	? array_push($fields, 'Company Name') : '';
+				$address1ExportSettings 	? array_push($fields, 'Address 1') : '';
+				$address2ExportSettings 	? array_push($fields, 'Address 2') : '';
+				$cityExportSettings 	? array_push($fields, 'City') : '';
+				$postCodeExportSettings 	? array_push($fields, 'Postcode') : '';
+				$countryExportSettings 	? array_push($fields, 'Country') : '';
+				$regionExportSettings 	? array_push($fields, 'Region/State') : '';
+				$passwordExportSettings 	? array_push($fields, 'Password') : '';
+				$newsletterExportSettings 	? array_push($fields, 'Newsletter') : '';
+				$companyGroupExportSettings 	? array_push($fields, 'Company Group') : '';
+				$approvedExportSettings 	? array_push($fields, 'Approved') : '';
+				$paymentmethodExportSettings 	? array_push($fields, 'Payment Method') : '';
+				$salesRepExportSettings 	? array_push($fields, 'Sales Rep') : '';
+				$statusExportSettings 	? array_push($fields, 'Status') : '';
+			//print_r($fields); exit;	
+			
+			$array1 = $header;
+			$array2 = $fields;
+			//print_r($array2); exit;
+			if($array1 === array_intersect($array1, $array2) && $array2 === array_intersect($array2, $array1)) 
+			{
+				//echo 'Equal';
+				
+				while ($row = fgetcsv($handle,1000,",","'")) {
+					$all_rows[] = array_combine($header, $row);
 				}
-				$this->session->data['success'] = 'CSV Successfully Imported!';
+				//print_r($all_rows); exit;
+				$customer_id = '';
+				foreach($all_rows as $all_row)
+				{
+					if(!empty($all_row) && count($all_row) > 0)
+					{
+					$customer_id = $all_row['Customer ID'] ? $all_row['Customer ID'] : '';
+					$firstname = $all_row['First Name'] ? $all_row['First Name'] : '';
+					$lastname = $all_row['Last Name'] ? $all_row['Last Name'] : '';
+					$email = $all_row['Email'] ? $all_row['Email'] : '';
+					$telephone = $all_row['Telephone'] ? $all_row['Telephone'] : '';
+					$companyname = $all_row['Company Name'] ? $all_row['Company Name'] : '';
+					$address1 = $all_row['Address 1'] ? $all_row['Address 1'] : '';
+					$address2 = $all_row['Address 2'] ? $all_row['Address 2'] : '';
+					$city = $all_row['City'] ? $all_row['City'] : '';
+					$postcode = $all_row['Postcode'] ? $all_row['Postcode'] : '';
+					$country = $all_row['Country'] ? $all_row['Country'] : '';
+					$region = $all_row['Region/State'] ? $all_row['Region/State'] : '';
+					$password = $all_row['Password'] ? $all_row['Password'] : '';
+					$newsletter = $all_row['Newsletter'] ? $all_row['Newsletter'] : '';
+					$companygroup = $all_row['Company Group'] ? $all_row['Company Group'] : '';
+					$approved = $all_row['Approved'] ? $all_row['Approved'] : '';
+					$paymentmethod = $all_row['Payment Method'] ? $all_row['Payment Method'] : '';
+					$salesrep = $all_row['Sales Rep'] ? $all_row['Sales Rep'] : '';
+					$status = $all_row['Status'] ? $all_row['Status'] : '';
+					
+					if(!empty($salesrep))
+						{
+							$sales = $this->model_replogic_sales_rep_management->getSalesrepByName($salesrep);
+							$salesrep_id = $sales['salesrep_id'];
+						}
+						else
+						{
+							$salesrep_id = '';
+						}
+						
+						if(!empty($companygroup))
+						{
+							$groupname = $this->model_customer_customer_group->getCustomerGroupByName($companygroup);
+							$customer_group_id = $groupname['customer_group_id'];
+						}
+						else
+						{
+							$customer_group_id = '';
+						}
+						
+						if(!empty($country))
+						{ 
+							$countryname = $this->model_localisation_country->getCountriesByName($country);
+							
+							$country_id = $countryname['country_id'];
+						}
+						else
+						{
+							$country_id = '';
+						}
+						
+						if(!empty($region))
+						{
+							$zonename = $this->model_localisation_country->getRegionByName($region);
+							$zone_id = $zonename['zone_id'];
+						}
+						else
+						{
+							$zone_id = '';
+						}
+						
+						$data_array = array(
+										'customer_id' => $customer_id,
+										'firstname' => $firstname,
+										'lastname' => $lastname,
+										'email' => $email,
+										'telephone' => $telephone,
+										'companyname' => $companyname,
+										'address1' => $address1,
+										'address2' => $address2,
+										'city' => $city,
+										'postcode' => $postcode,
+										'country' => $country_id,
+										'region' => $zone_id,
+										'password' => $password,
+										'newsletter' => $newsletter,
+										'companygroup' => $customer_group_id,
+										'approved' => $approved,
+										'paymentmethod' => $paymentmethod,
+										'salesrep' => $salesrep_id,
+										'status' => $status
+									);
+						//echo $customer_id; exit;
+						//print_r($data_array); exit;
+						if (!empty($customer_id)) // if column 1 is not empty
+						{ 
+							$this->model_customer_customer_export_import->importCsvCustomerDataUpdate($data_array);  // parse the data to model
+							
+						}
+						else
+						{
+							$this->model_customer_customer_export_import->importCsvCustomerDataInsert($data_array); 
+						}
+					}
+				}
+					
+					$this->session->data['success'] = 'CSV Successfully Imported!';	
+				
+			} else 
+			{
+				$this->session->data['import_error'] = 'CSV Not Imported! <br> File Header Not Set Proper or Missing some Column on Csv or Speling mismatch on csv Header section as per Setting Tab. <br> Better to Export First to View Exact Csv Format!';	
+			}
+				
 				
 			}
 		}
@@ -255,7 +424,12 @@ class ControllerCustomerCustomerExportImport extends Controller {
 		} else {
 			$data['error_warning'] = '';
 		}
+		
+		if (!empty($this->session->data['import_error'])) {
+				$data['error_warning'] .= $this->session->data['import_error'];
+			}
 
+		unset($this->session->data['import_error']);
 		unset($this->session->data['export_import_error']);
 		unset($this->session->data['export_import_nochange']);
 

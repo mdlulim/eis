@@ -15,7 +15,8 @@ class ControllerCustomerCustomerInfo extends Controller {
 		}
 		else if($this->request->get['type'] == 'customercontact')
 		{
-			$this->getCustomercontactTab();
+			//$this->getCustomercontactTab();   // This method to get all customer contact using customer id
+			$this->getCustomercontactFormTab();
 		}
 		else if($this->request->get['type'] == 'appointment')
 		{
@@ -32,6 +33,22 @@ class ControllerCustomerCustomerInfo extends Controller {
 		else if($this->request->get['type'] == 'general')
 		{
 			$this->getGeneralTab();
+		}
+		else if($this->request->get['type'] == 'history')
+		{
+			$this->getHistoryTab();
+		}
+		else if($this->request->get['type'] == 'transactions')
+		{
+			$this->getTransactionsTab();
+		}
+		else if($this->request->get['type'] == 'rewardpoints')
+		{
+			$this->getRewardpointsTab();
+		}
+		else if($this->request->get['type'] == 'ipaddresses')
+		{
+			$this->getIpaddressesTab();
 		}
 	}
 
@@ -190,6 +207,11 @@ class ControllerCustomerCustomerInfo extends Controller {
 		$data['visitstab'] = $this->url->link('customer/customer_info', 'type=visits&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
 		$data['orderstab'] = $this->url->link('customer/customer_info', 'type=orders&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
 		$data['quotestab'] = $this->url->link('customer/customer_info', 'type=quotes&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
+		$data['historytab'] = $this->url->link('customer/customer_info', 'type=history&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
+		$data['transactionstab'] = $this->url->link('customer/customer_info', 'type=transactions&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
+		$data['rewardpointstab'] = $this->url->link('customer/customer_info', 'type=rewardpoints&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
+		$data['ipaddressestab'] = $this->url->link('customer/customer_info', 'type=ipaddresses&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
+		
 
 		if (isset($this->request->get['customer_id']) && ($this->request->server['REQUEST_METHOD'] != 'POST')) {
 			$customer_info = $this->model_customer_customer->getCustomer($this->request->get['customer_id']);
@@ -223,8 +245,39 @@ class ControllerCustomerCustomerInfo extends Controller {
 		
 		$this->load->model('replogic/sales_rep_management');
 
-		$data['salesreps'] = $this->model_replogic_sales_rep_management->getSalesRepsDropdown($allaccess, $current_user_id);
-		//$data['salesreps'] = '';
+		if (isset($this->request->post['salesrep_id'])) {
+			$data['salesrep_id'] = $this->request->post['salesrep_id'];
+		} elseif (!empty($customer_info)) {
+			$data['salesrep_id'] = $customer_info['salesrep_id'];
+		}
+		else {
+			$data['salesrep_id'] = '';
+		}
+		
+		$this->load->model('replogic/sales_rep_management');
+		
+		if (isset($this->request->post['team_id'])) {
+			$data['team_id'] = $this->request->post['team_id'];
+		} else {
+			if($customer_info['salesrep_id'])
+			{
+				$salesrepbyid = $this->model_replogic_sales_rep_management->getsalesrep($customer_info['salesrep_id']);
+				$data['team_id'] = $salesrepbyid['sales_team_id'];
+			}
+			else
+			{
+				$data['team_id'] = '';
+			}
+		}
+		
+		$this->load->model('user/team');
+		$data['teams'] = $this->model_user_team->getTeams();
+		
+		$data['salesreps'] = '';
+		if($data['team_id'])
+		{
+			$data['salesreps'] = $this->model_replogic_sales_rep_management->getSalesRepByTeam($data['team_id']);
+		}
 		
 		$this->load->model('customer/customer_group');
 
@@ -277,6 +330,14 @@ class ControllerCustomerCustomerInfo extends Controller {
 			$data['telephone'] = $customer_info['telephone'];
 		} else {
 			$data['telephone'] = '';
+		}
+		
+		if (isset($this->request->post['payment_method'])) {
+			$data['payment_method'] = $this->request->post['payment_method'];
+		} elseif (!empty($customer_info)) {
+			$data['payment_method'] = $customer_info['payment_method'];
+		} else {
+			$data['payment_method'] = '';
 		}
 
 		if (isset($this->request->post['fax'])) {
@@ -511,6 +572,10 @@ class ControllerCustomerCustomerInfo extends Controller {
 		$data['visitstab'] = $this->url->link('customer/customer_info', 'type=visits&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
 		$data['orderstab'] = $this->url->link('customer/customer_info', 'type=orders&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
 		$data['quotestab'] = $this->url->link('customer/customer_info', 'type=quotes&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
+		$data['historytab'] = $this->url->link('customer/customer_info', 'type=history&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
+		$data['transactionstab'] = $this->url->link('customer/customer_info', 'type=transactions&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
+		$data['rewardpointstab'] = $this->url->link('customer/customer_info', 'type=rewardpoints&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
+		$data['ipaddressestab'] = $this->url->link('customer/customer_info', 'type=ipaddresses&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
 
 		$data['schedule_managements'] = array();
 
@@ -944,6 +1009,10 @@ class ControllerCustomerCustomerInfo extends Controller {
 		$data['visitstab'] = $this->url->link('customer/customer_info', 'type=visits&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
 		$data['orderstab'] = $this->url->link('customer/customer_info', 'type=orders&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
 		$data['quotestab'] = $this->url->link('customer/customer_info', 'type=quotes&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
+		$data['historytab'] = $this->url->link('customer/customer_info', 'type=history&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
+		$data['transactionstab'] = $this->url->link('customer/customer_info', 'type=transactions&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
+		$data['rewardpointstab'] = $this->url->link('customer/customer_info', 'type=rewardpoints&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
+		$data['ipaddressestab'] = $this->url->link('customer/customer_info', 'type=ipaddresses&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
 
 		$data['customer_contacts'] = array();
 
@@ -1084,6 +1153,139 @@ class ControllerCustomerCustomerInfo extends Controller {
 		$data['footer'] = $this->load->controller('common/footer');
 
 		$this->response->setOutput($this->load->view('customer/customer_info_contact', $data));
+		}
+		
+	protected function getCustomercontactFormTab() {
+		
+		$this->load->language('replogic/customer_contact');
+		$this->load->language('customer/customer_info');
+		$this->load->model('customer/customer');
+		$this->load->model('replogic/customer_contact');
+		
+		$customer_id = $this->request->get['customer_id'];
+		$customerdetails = $this->model_customer_customer->getCustomer($customer_id);
+		$data['customername'] = $customerdetails['firstname'];
+		$data['customer_id'] = $customer_id;
+		
+		$url = '';
+
+		if (isset($this->request->get['type'])) {
+			$url .= '&type=' . $this->request->get['type'];
+		}
+		
+		if (isset($this->request->get['customer_id'])) {
+			$url .= '&customer_id=' . $this->request->get['customer_id'];
+		}
+
+		$data['breadcrumbs'] = array();
+
+		$data['breadcrumbs'][] = array(
+			'text' => $this->language->get('text_home'),
+			'href' => $this->url->link('common/dashboard', 'token=' . $this->session->data['token'], true)
+		);
+
+		$data['breadcrumbs'][] = array(
+			'text' => 'Customer Management',
+			'href' => $this->url->link('customer/customer', 'token=' . $this->session->data['token'] . $url, true)
+		);
+		
+		$data['breadcrumbs'][] = array(
+			'text' => $this->language->get('breadcrum_title'),
+			'href' => $this->url->link('customer/customer_info', 'token=' . $this->session->data['token'] . $url, true)
+		);
+
+		if (isset($this->request->get['csalesrep_id'])) 
+		{
+			$data['cancel'] = $this->url->link('replogic/salesrep_info', 'type=customers&salesrep_id='.$this->request->get['csalesrep_id'].'&token=' . $this->session->data['token'], true);
+		}
+		else
+		{
+			$data['cancel'] = $this->url->link('customer/customer', 'token=' . $this->session->data['token'] . $url, true);
+		}
+		
+		$data['action'] = $this->url->link('replogic/customer_contact/edit', 'token=' . $this->session->data['token'] . $url, true);
+		
+		$data['generaltab'] = $this->url->link('customer/customer_info', 'type=general&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
+		$data['appointmenttab'] = $this->url->link('customer/customer_info', 'type=appointment&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
+		$data['customerstab'] = $this->url->link('customer/customer_info', 'type=customercontact&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
+		$data['visitstab'] = $this->url->link('customer/customer_info', 'type=visits&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
+		$data['orderstab'] = $this->url->link('customer/customer_info', 'type=orders&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
+		$data['quotestab'] = $this->url->link('customer/customer_info', 'type=quotes&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
+		$data['historytab'] = $this->url->link('customer/customer_info', 'type=history&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
+		$data['transactionstab'] = $this->url->link('customer/customer_info', 'type=transactions&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
+		$data['rewardpointstab'] = $this->url->link('customer/customer_info', 'type=rewardpoints&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
+		$data['ipaddressestab'] = $this->url->link('customer/customer_info', 'type=ipaddresses&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
+
+		$data['customer_contacts'] = array();
+
+		$filter_data = array(
+			'filter_customer_contact_id'	  => $filter_customer_contact_id,
+			'filter_email'	  => $filter_email,
+			'filter_customer_id' => $customer_id
+		);
+
+		$customer_contact_total = $this->model_replogic_customer_contact->getTotalCustomercontact($filter_data);
+
+		$data['customer_contacts'] = $this->model_replogic_customer_contact->getcustomercontacts($filter_data);
+		 
+		$data['customers'] = $this->model_customer_customer->getCustomers();
+		$data['allcustomer_contacts'] = $this->model_replogic_customer_contact->getcustomercontacts($filter_data = array('filter_customer_id' => $customer_id));
+		
+		$data['heading_title'] = $this->language->get('heading_title');
+		
+		$data['text_list'] = $this->language->get('text_list');
+		$data['text_no_results'] = $this->language->get('text_no_results');
+		$data['text_confirm'] = $this->language->get('text_confirm');
+
+		$data['entry_first_name'] = $this->language->get('entry_first_name');
+		$data['entry_last_name'] = $this->language->get('entry_last_name');
+		$data['entry_email'] = $this->language->get('entry_email');
+		$data['entry_cellphone_number'] = $this->language->get('entry_cellphone_number');
+		$data['entry_telephone_number'] = $this->language->get('entry_telephone_number');
+		$data['entry_customer'] = $this->language->get('entry_customer');
+		$data['entry_role'] = $this->language->get('entry_role');
+		
+		$data['entry_access'] = $this->language->get('entry_access');
+		$data['entry_modify'] = $this->language->get('entry_modify');
+
+		$data['button_cancel'] = $this->language->get('button_cancel');
+		
+		$data['token'] = $this->session->data['token'];
+
+		if (isset($this->error['warning'])) {
+			$data['error_warning'] = $this->error['warning'];
+		} else {
+			$data['error_warning'] = '';
+		}
+
+		if (isset($this->session->data['success'])) {
+			$data['success'] = $this->session->data['success'];
+
+			unset($this->session->data['success']);
+		} else {
+			$data['success'] = '';
+		}
+
+		$url = '';
+		
+		if (isset($this->request->get['type'])) {
+			$url .= '&type=' . $this->request->get['type'];
+		}
+		
+		if (isset($this->request->get['customer_id'])) {
+			$url .= '&customer_id=' . $this->request->get['customer_id'];
+		}
+		
+		$data['filter_customer_contact_id'] = $filter_customer_contact_id;
+		$data['filter_email'] = $filter_email;
+		$data['sort'] = $sort;
+		$data['order'] = $order;
+
+		$data['header'] = $this->load->controller('common/header');
+		$data['column_left'] = $this->load->controller('common/column_left');
+		$data['footer'] = $this->load->controller('common/footer');
+
+		$this->response->setOutput($this->load->view('customer/customer_info_contactform', $data));
 		}
 		
 	public function CustomerContactView() { 
@@ -1320,6 +1522,10 @@ class ControllerCustomerCustomerInfo extends Controller {
 		$data['visitstab'] = $this->url->link('customer/customer_info', 'type=visits&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
 		$data['orderstab'] = $this->url->link('customer/customer_info', 'type=orders&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
 		$data['quotestab'] = $this->url->link('customer/customer_info', 'type=quotes&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
+		$data['historytab'] = $this->url->link('customer/customer_info', 'type=history&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
+		$data['transactionstab'] = $this->url->link('customer/customer_info', 'type=transactions&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
+		$data['rewardpointstab'] = $this->url->link('customer/customer_info', 'type=rewardpoints&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
+		$data['ipaddressestab'] = $this->url->link('customer/customer_info', 'type=ipaddresses&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
 		
 		
 		$data['orders'] = array();
@@ -1677,6 +1883,10 @@ class ControllerCustomerCustomerInfo extends Controller {
 		$data['visitstab'] = $this->url->link('customer/customer_info', 'type=visits&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
 		$data['orderstab'] = $this->url->link('customer/customer_info', 'type=orders&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
 		$data['quotestab'] = $this->url->link('customer/customer_info', 'type=quotes&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
+		$data['historytab'] = $this->url->link('customer/customer_info', 'type=history&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
+		$data['transactionstab'] = $this->url->link('customer/customer_info', 'type=transactions&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
+		$data['rewardpointstab'] = $this->url->link('customer/customer_info', 'type=rewardpoints&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
+		$data['ipaddressestab'] = $this->url->link('customer/customer_info', 'type=ipaddresses&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
 		
 		$data['breadcrumbs'] = array();
 
@@ -2075,6 +2285,10 @@ class ControllerCustomerCustomerInfo extends Controller {
 		$data['visitstab'] = $this->url->link('customer/customer_info', 'type=visits&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
 		$data['orderstab'] = $this->url->link('customer/customer_info', 'type=orders&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
 		$data['quotestab'] = $this->url->link('customer/customer_info', 'type=quotes&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
+		$data['historytab'] = $this->url->link('customer/customer_info', 'type=history&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
+		$data['transactionstab'] = $this->url->link('customer/customer_info', 'type=transactions&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
+		$data['rewardpointstab'] = $this->url->link('customer/customer_info', 'type=rewardpoints&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
+		$data['ipaddressestab'] = $this->url->link('customer/customer_info', 'type=ipaddresses&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
 		
 		$this->load->model('user/user_group');
 		$this->load->model('user/user');
@@ -2556,6 +2770,391 @@ class ControllerCustomerCustomerInfo extends Controller {
             return $diff == 1 ? $diff . ' year ago ' : $diff . ' years ago ';
         }
     }
+	
+	public function getHistoryTab()
+	{
+		$this->load->language('customer/customer');
+		$this->load->language('customer/customer_info');
+
+		$this->load->model('customer/customer');
+		
+		$customer_id = $this->request->get['customer_id'];
+		$data['customer_id'] = $customer_id;
+		$customerdetails = $this->model_customer_customer->getCustomer($customer_id);
+		$data['customername'] = $customerdetails['firstname'];
+		$data['heading_title'] = $this->language->get('heading_title');
+		
+		$data['cancel'] = $this->url->link('customer/customer', 'token=' . $this->session->data['token'] . $url, true);
+		
+		$url = '';
+		
+		if (isset($this->request->get['type'])) {
+			$url .= '&type=' . $this->request->get['type'];
+		}
+		if (isset($this->request->get['customer_id'])) {
+			$url .= '&customer_id=' . $this->request->get['customer_id'];
+		}
+		
+		$data['generaltab'] = $this->url->link('customer/customer_info', 'type=general&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
+		$data['appointmenttab'] = $this->url->link('customer/customer_info', 'type=appointment&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
+		$data['customerstab'] = $this->url->link('customer/customer_info', 'type=customercontact&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
+		$data['visitstab'] = $this->url->link('customer/customer_info', 'type=visits&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
+		$data['orderstab'] = $this->url->link('customer/customer_info', 'type=orders&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
+		$data['quotestab'] = $this->url->link('customer/customer_info', 'type=quotes&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
+		$data['historytab'] = $this->url->link('customer/customer_info', 'type=history&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
+		$data['transactionstab'] = $this->url->link('customer/customer_info', 'type=transactions&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
+		$data['rewardpointstab'] = $this->url->link('customer/customer_info', 'type=rewardpoints&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
+		$data['ipaddressestab'] = $this->url->link('customer/customer_info', 'type=ipaddresses&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
+		
+		$data['text_no_results'] = $this->language->get('text_no_results');
+
+		$data['column_date_added'] = $this->language->get('column_date_added');
+		$data['column_comment'] = $this->language->get('column_comment');
+		
+		$data['breadcrumbs'] = array();
+
+		$data['breadcrumbs'][] = array(
+			'text' => $this->language->get('text_home'),
+			'href' => $this->url->link('common/dashboard', 'token=' . $this->session->data['token'], true)
+		);
+
+		$data['breadcrumbs'][] = array(
+			'text' => 'Customer Management',
+			'href' => $this->url->link('customer/customer', 'token=' . $this->session->data['token'] . $url, true)
+		);
+		
+		$data['breadcrumbs'][] = array(
+			'text' => $this->language->get('breadcrum_title'),
+			'href' => $this->url->link('customer/customer_info', 'token=' . $this->session->data['token'] . $url, true)
+		);
+		
+		if (isset($this->request->get['page'])) {
+			$page = $this->request->get['page'];
+		} else {
+			$page = 1;
+		}
+
+		$data['histories'] = array();
+
+		$results = $this->model_customer_customer->getHistories($this->request->get['customer_id'], ($page - 1) * $this->config->get('config_limit_admin'), $this->config->get('config_limit_admin'));
+
+		foreach ($results as $result) {
+			$data['histories'][] = array(
+				'comment'    => $result['comment'],
+				'date_added' => date($this->language->get('date_format_short'), strtotime($result['date_added']))
+			);
+		}
+
+		$history_total = $this->model_customer_customer->getTotalHistories($this->request->get['customer_id']);
+
+		$pagination = new Pagination();
+		$pagination->total = $history_total;
+		$pagination->page = $page;
+		$pagination->limit = $this->config->get('config_limit_admin');
+		$pagination->url = $this->url->link('customer/customer_info', 'token=' . $this->session->data['token'] . $url . '&page={page}', true);
+
+		$data['pagination'] = $pagination->render();
+
+		$data['results'] = sprintf($this->language->get('text_pagination'), ($history_total) ? (($page - 1) * $this->config->get('config_limit_admin')) + 1 : 0, ((($page - 1) * $this->config->get('config_limit_admin')) > ($history_total - $this->config->get('config_limit_admin'))) ? $history_total : ((($page - 1) * $this->config->get('config_limit_admin')) + $this->config->get('config_limit_admin')), $history_total, ceil($history_total / $this->config->get('config_limit_admin')));
+
+		$data['header'] = $this->load->controller('common/header');
+		$data['column_left'] = $this->load->controller('common/column_left');
+		$data['footer'] = $this->load->controller('common/footer');
+		
+		$this->response->setOutput($this->load->view('customer/customer_info_history', $data));
+	}
+	
+	public function getTransactionsTab()
+	{
+		$this->load->language('customer/customer');
+		$this->load->language('customer/customer_info');
+
+		$this->load->model('customer/customer');
+		
+		$customer_id = $this->request->get['customer_id'];
+		$data['customer_id'] = $customer_id;
+		$customerdetails = $this->model_customer_customer->getCustomer($customer_id);
+		$data['customername'] = $customerdetails['firstname'];
+		$data['heading_title'] = $this->language->get('heading_title');
+		
+		$data['cancel'] = $this->url->link('customer/customer', 'token=' . $this->session->data['token'] . $url, true);
+		
+		$url = '';
+		
+		if (isset($this->request->get['type'])) {
+			$url .= '&type=' . $this->request->get['type'];
+		}
+		if (isset($this->request->get['customer_id'])) {
+			$url .= '&customer_id=' . $this->request->get['customer_id'];
+		}
+		
+		$data['generaltab'] = $this->url->link('customer/customer_info', 'type=general&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
+		$data['appointmenttab'] = $this->url->link('customer/customer_info', 'type=appointment&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
+		$data['customerstab'] = $this->url->link('customer/customer_info', 'type=customercontact&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
+		$data['visitstab'] = $this->url->link('customer/customer_info', 'type=visits&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
+		$data['orderstab'] = $this->url->link('customer/customer_info', 'type=orders&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
+		$data['quotestab'] = $this->url->link('customer/customer_info', 'type=quotes&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
+		$data['historytab'] = $this->url->link('customer/customer_info', 'type=history&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
+		$data['transactionstab'] = $this->url->link('customer/customer_info', 'type=transactions&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
+		$data['rewardpointstab'] = $this->url->link('customer/customer_info', 'type=rewardpoints&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
+		$data['ipaddressestab'] = $this->url->link('customer/customer_info', 'type=ipaddresses&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
+		
+		$data['text_no_results'] = $this->language->get('text_no_results');
+		$data['text_balance'] = $this->language->get('text_balance');
+
+		$data['column_date_added'] = $this->language->get('column_date_added');
+		$data['column_description'] = $this->language->get('column_description');
+		$data['column_amount'] = $this->language->get('column_amount');
+		
+		$data['breadcrumbs'] = array();
+
+		$data['breadcrumbs'][] = array(
+			'text' => $this->language->get('text_home'),
+			'href' => $this->url->link('common/dashboard', 'token=' . $this->session->data['token'], true)
+		);
+
+		$data['breadcrumbs'][] = array(
+			'text' => 'Customer Management',
+			'href' => $this->url->link('customer/customer', 'token=' . $this->session->data['token'] . $url, true)
+		);
+		
+		$data['breadcrumbs'][] = array(
+			'text' => $this->language->get('breadcrum_title'),
+			'href' => $this->url->link('customer/customer_info', 'token=' . $this->session->data['token'] . $url, true)
+		);
+		
+		if (isset($this->request->get['page'])) {
+			$page = $this->request->get['page'];
+		} else {
+			$page = 1;
+		}
+
+		$data['transactions'] = array();
+
+		$results = $this->model_customer_customer->getTransactions($this->request->get['customer_id'], ($page - 1) * 10, 10);
+
+		foreach ($results as $result) {
+			$data['transactions'][] = array(
+				'amount'      => $this->currency->format($result['amount'], $this->config->get('config_currency')),
+				'description' => $result['description'],
+				'date_added'  => date($this->language->get('date_format_short'), strtotime($result['date_added']))
+			);
+		}
+
+		$data['balance'] = $this->currency->format($this->model_customer_customer->getTransactionTotal($this->request->get['customer_id']), $this->config->get('config_currency'));
+
+		$transaction_total = $this->model_customer_customer->getTotalTransactions($this->request->get['customer_id']);
+
+		$pagination = new Pagination();
+		$pagination->total = $transaction_total;
+		$pagination->page = $page;
+		$pagination->limit = $this->config->get('config_limit_admin');
+		$pagination->url = $this->url->link('customer/customer_info', 'token=' . $this->session->data['token'] . $url . '&page={page}', true);
+
+		$data['pagination'] = $pagination->render();
+
+		$data['results'] = sprintf($this->language->get('text_pagination'), ($transaction_total) ? (($page - 1) * $this->config->get('config_limit_admin')) + 1 : 0, ((($page - 1) * $this->config->get('config_limit_admin')) > ($transaction_total - $this->config->get('config_limit_admin'))) ? $transaction_total : ((($page - 1) * $this->config->get('config_limit_admin')) + $this->config->get('config_limit_admin')), $transaction_total, ceil($transaction_total / $this->config->get('config_limit_admin')));
+
+		$data['header'] = $this->load->controller('common/header');
+		$data['column_left'] = $this->load->controller('common/column_left');
+		$data['footer'] = $this->load->controller('common/footer');
+		
+		$this->response->setOutput($this->load->view('customer/customer_info_transaction', $data));
+	}
+	
+	public function getRewardpointsTab()
+	{
+		$this->load->language('customer/customer');
+		$this->load->language('customer/customer_info');
+
+		$this->load->model('customer/customer');
+		
+		$customer_id = $this->request->get['customer_id'];
+		$data['customer_id'] = $customer_id;
+		$customerdetails = $this->model_customer_customer->getCustomer($customer_id);
+		$data['customername'] = $customerdetails['firstname'];
+		$data['heading_title'] = $this->language->get('heading_title');
+		
+		$data['cancel'] = $this->url->link('customer/customer', 'token=' . $this->session->data['token'] . $url, true);
+		
+		$url = '';
+		
+		if (isset($this->request->get['type'])) {
+			$url .= '&type=' . $this->request->get['type'];
+		}
+		if (isset($this->request->get['customer_id'])) {
+			$url .= '&customer_id=' . $this->request->get['customer_id'];
+		}
+		
+		$data['generaltab'] = $this->url->link('customer/customer_info', 'type=general&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
+		$data['appointmenttab'] = $this->url->link('customer/customer_info', 'type=appointment&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
+		$data['customerstab'] = $this->url->link('customer/customer_info', 'type=customercontact&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
+		$data['visitstab'] = $this->url->link('customer/customer_info', 'type=visits&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
+		$data['orderstab'] = $this->url->link('customer/customer_info', 'type=orders&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
+		$data['quotestab'] = $this->url->link('customer/customer_info', 'type=quotes&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
+		$data['historytab'] = $this->url->link('customer/customer_info', 'type=history&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
+		$data['transactionstab'] = $this->url->link('customer/customer_info', 'type=transactions&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
+		$data['rewardpointstab'] = $this->url->link('customer/customer_info', 'type=rewardpoints&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
+		$data['ipaddressestab'] = $this->url->link('customer/customer_info', 'type=ipaddresses&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
+		
+		$data['text_no_results'] = $this->language->get('text_no_results');
+		$data['text_balance'] = $this->language->get('text_balance');
+
+		$data['column_date_added'] = $this->language->get('column_date_added');
+		$data['column_description'] = $this->language->get('column_description');
+		$data['column_points'] = $this->language->get('column_points');
+		
+		$data['breadcrumbs'] = array();
+
+		$data['breadcrumbs'][] = array(
+			'text' => $this->language->get('text_home'),
+			'href' => $this->url->link('common/dashboard', 'token=' . $this->session->data['token'], true)
+		);
+
+		$data['breadcrumbs'][] = array(
+			'text' => 'Customer Management',
+			'href' => $this->url->link('customer/customer', 'token=' . $this->session->data['token'] . $url, true)
+		);
+		
+		$data['breadcrumbs'][] = array(
+			'text' => $this->language->get('breadcrum_title'),
+			'href' => $this->url->link('customer/customer_info', '&token=' . $this->session->data['token'] . $url, true)
+		);
+		
+		if (isset($this->request->get['page'])) {
+			$page = $this->request->get['page'];
+		} else {
+			$page = 1;
+		}
+
+		$data['rewards'] = array();
+
+		$results = $this->model_customer_customer->getRewards($this->request->get['customer_id'], ($page - 1) * $this->config->get('config_limit_admin'), $this->config->get('config_limit_admin'));
+
+		foreach ($results as $result) {
+			$data['rewards'][] = array(
+				'points'      => $result['points'],
+				'description' => $result['description'],
+				'date_added'  => date($this->language->get('date_format_short'), strtotime($result['date_added']))
+			);
+		}
+
+		$data['balance'] = $this->model_customer_customer->getRewardTotal($this->request->get['customer_id']);
+
+		$reward_total = $this->model_customer_customer->getTotalRewards($this->request->get['customer_id']);
+
+		$pagination = new Pagination();
+		$pagination->total = $reward_total;
+		$pagination->page = $page;
+		$pagination->limit = $this->config->get('config_limit_admin');
+		$pagination->url = $this->url->link('customer/customer_info', 'token=' . $this->session->data['token'] . $url . '&page={page}', true);
+
+		$data['pagination'] = $pagination->render();
+
+		$data['results'] = sprintf($this->language->get('text_pagination'), ($reward_total) ? (($page - 1) * $this->config->get('config_limit_admin')) + 1 : 0, ((($page - 1) * $this->config->get('config_limit_admin')) > ($reward_total - $this->config->get('config_limit_admin'))) ? $reward_total : ((($page - 1) * $this->config->get('config_limit_admin')) + $this->config->get('config_limit_admin')), $reward_total, ceil($reward_total / $this->config->get('config_limit_admin')));
+
+		$data['header'] = $this->load->controller('common/header');
+		$data['column_left'] = $this->load->controller('common/column_left');
+		$data['footer'] = $this->load->controller('common/footer');
+		
+		$this->response->setOutput($this->load->view('customer/customer_info_reward', $data));
+	}
+	
+	public function getIpaddressesTab()
+	{
+		$this->load->language('customer/customer');
+		$this->load->language('customer/customer_info');
+
+		$this->load->model('customer/customer');
+		
+		$customer_id = $this->request->get['customer_id'];
+		$data['customer_id'] = $customer_id;
+		$customerdetails = $this->model_customer_customer->getCustomer($customer_id);
+		$data['customername'] = $customerdetails['firstname'];
+		$data['heading_title'] = $this->language->get('heading_title');
+		
+		$data['cancel'] = $this->url->link('customer/customer', 'token=' . $this->session->data['token'] . $url, true);
+		
+		$url = '';
+		
+		if (isset($this->request->get['type'])) {
+			$url .= '&type=' . $this->request->get['type'];
+		}
+		
+		if (isset($this->request->get['customer_id'])) {
+			$url .= '&customer_id=' . $this->request->get['customer_id'];
+		}
+		
+		$data['generaltab'] = $this->url->link('customer/customer_info', 'type=general&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
+		$data['appointmenttab'] = $this->url->link('customer/customer_info', 'type=appointment&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
+		$data['customerstab'] = $this->url->link('customer/customer_info', 'type=customercontact&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
+		$data['visitstab'] = $this->url->link('customer/customer_info', 'type=visits&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
+		$data['orderstab'] = $this->url->link('customer/customer_info', 'type=orders&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
+		$data['quotestab'] = $this->url->link('customer/customer_info', 'type=quotes&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
+		$data['historytab'] = $this->url->link('customer/customer_info', 'type=history&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
+		$data['transactionstab'] = $this->url->link('customer/customer_info', 'type=transactions&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
+		$data['rewardpointstab'] = $this->url->link('customer/customer_info', 'type=rewardpoints&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
+		$data['ipaddressestab'] = $this->url->link('customer/customer_info', 'type=ipaddresses&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
+		
+		$data['text_no_results'] = $this->language->get('text_no_results');
+		$data['column_ip'] = $this->language->get('column_ip');
+		$data['column_total'] = $this->language->get('column_total');
+		$data['column_date_added'] = $this->language->get('column_date_added');
+		
+		$data['breadcrumbs'] = array();
+
+		$data['breadcrumbs'][] = array(
+			'text' => $this->language->get('text_home'),
+			'href' => $this->url->link('common/dashboard', 'token=' . $this->session->data['token'], true)
+		);
+
+		$data['breadcrumbs'][] = array(
+			'text' => 'Customer Management',
+			'href' => $this->url->link('customer/customer', 'token=' . $this->session->data['token'] . $url, true)
+		);
+		
+		$data['breadcrumbs'][] = array(
+			'text' => $this->language->get('breadcrum_title'),
+			'href' => $this->url->link('customer/customer_info', 'token=' . $this->session->data['token'] . $url, true)
+		);
+		
+		if (isset($this->request->get['page'])) {
+			$page = $this->request->get['page'];
+		} else {
+			$page = 1;
+		}
+
+		$data['ips'] = array();
+
+		$results = $this->model_customer_customer->getIps($this->request->get['customer_id'], ($page - 1) * $this->config->get('config_limit_admin'), $this->config->get('config_limit_admin'));
+
+		foreach ($results as $result) {
+			$data['ips'][] = array(
+				'ip'         => $result['ip'],
+				'total'      => $this->model_customer_customer->getTotalCustomersByIp($result['ip']),
+				'date_added' => date('d/m/y', strtotime($result['date_added'])),
+				'filter_ip'  => $this->url->link('customer/customer', 'token=' . $this->session->data['token'] . '&filter_ip=' . $result['ip'], true)
+			);
+		}
+
+		$ip_total = $this->model_customer_customer->getTotalIps($this->request->get['customer_id']);
+
+		$pagination = new Pagination();
+		$pagination->total = $ip_total;
+		$pagination->page = $page;
+		$pagination->limit = $this->config->get('config_limit_admin');
+		$pagination->url = $this->url->link('customer/customer_info', 'token=' . $this->session->data['token'] . $url . '&page={page}', true);
+
+		$data['pagination'] = $pagination->render();
+
+		$data['results'] = sprintf($this->language->get('text_pagination'), ($ip_total) ? (($page - 1) * $this->config->get('config_limit_admin')) + 1 : 0, ((($page - 1) * $this->config->get('config_limit_admin')) > ($ip_total - $this->config->get('config_limit_admin'))) ? $ip_total : ((($page - 1) * $this->config->get('config_limit_admin')) + $this->config->get('config_limit_admin')), $ip_total, ceil($ip_total / $this->config->get('config_limit_admin')));
+
+		$data['header'] = $this->load->controller('common/header');
+		$data['column_left'] = $this->load->controller('common/column_left');
+		$data['footer'] = $this->load->controller('common/footer');
+		
+		$this->response->setOutput($this->load->view('customer/customer_info_ip', $data));
+	}
 	
 	
 }
