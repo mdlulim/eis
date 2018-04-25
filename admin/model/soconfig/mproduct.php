@@ -413,7 +413,10 @@ class ModelSoconfigMproduct extends Model {
 	}
 
 	public function getProducts($data = array()) {
-		$sql = "SELECT * FROM " . DB_PREFIX . "product p LEFT JOIN " . DB_PREFIX . "product_description pd ON (p.product_id = pd.product_id) WHERE pd.language_id = '" . (int)$this->config->get('config_language_id') . "'";
+		$sql  = "SELECT p.*, IF(p.image='','',CONCAT(s.value,'image/',p.image)) AS product_image_src ";
+		$sql .= "FROM " . DB_PREFIX . "setting s, " . DB_PREFIX . "product p ";
+		$sql .= "LEFT JOIN " . DB_PREFIX . "product_description pd ON (p.product_id=pd.product_id) ";
+		$sql .= "WHERE pd.language_id='" . (int)$this->config->get('config_language_id') . "' AND s.key='config_url'";
 
 		if (!empty($data['filter_name'])) {
 			$sql .= " AND pd.name LIKE '" . $this->db->escape($data['filter_name']) . "%'";

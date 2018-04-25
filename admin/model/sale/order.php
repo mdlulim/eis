@@ -177,7 +177,7 @@ class ModelSaleOrder extends Model {
 		}
 		else
 		{
-			$sql = "SELECT o.order_id, (select c.firstname from " . DB_PREFIX . "customer as c where o.customer_id = c.customer_id) AS customer, (SELECT os.name FROM " . DB_PREFIX . "order_status os WHERE os.order_status_id = o.order_status_id AND os.language_id = '" . (int)$this->config->get('config_language_id') . "') AS order_status, o.shipping_code, o.total, o.currency_code, o.currency_value, o.date_added, o.date_modified FROM `" . DB_PREFIX . "order` o";
+			$sql = "SELECT o.order_id, o.customer_id, (select c.firstname from " . DB_PREFIX . "customer as c where o.customer_id = c.customer_id) AS customer, (SELECT os.name FROM " . DB_PREFIX . "order_status os WHERE os.order_status_id = o.order_status_id AND os.language_id = '" . (int)$this->config->get('config_language_id') . "') AS order_status, o.shipping_code, o.total, o.currency_code, o.currency_value, o.date_added, o.date_modified FROM `" . DB_PREFIX . "order` o";
 		}
 
 		if (isset($data['filter_order_status'])) {
@@ -292,6 +292,273 @@ class ModelSaleOrder extends Model {
 		return $query->rows;
 	}
 
+
+	/**
+	 * Get total orders [revenue]
+	 * @param  array $filters 	an array of filters
+	 * @return float          	total orders [revenue]
+	 */
+	public function getTotalRevenue($filters) {
+		$sql = "SELECT SUM(od.total) AS total,IF(cr.symbol_left='',cr.symbol_right,cr.symbol_left) AS currency ";
+		$sql.= "FROM ".DB_PREFIX."order od ";
+		$sql.= "LEFT JOIN ".DB_PREFIX."customer ct ON ct.customer_id=od.customer_id ";
+		$sql.= "LEFT JOIN ".DB_PREFIX."salesrep sr ON sr.salesrep_id=ct.salesrep_id ";
+		$sql.= "LEFT JOIN ".DB_PREFIX."team tm on tm.team_id=sr.sales_team_id ";
+		$sql.= "LEFT JOIN ".DB_PREFIX."currency cr on cr.currency_id=od.currency_id ";
+		$sql.= "WHERE order_status_id=5";
+
+		/*===============================
+		=            Filters            =
+		===============================*/
+		
+		switch (TRUE) {
+			case (isset($filters['filter_date'])):
+				# filter by date...
+				$sql .= " AND DATE_FORMAT(od.date_added,'%Y-%m-%d')='".$filters['filter_date']."'";
+				break;
+
+			case (isset($filters['filter_month'])):
+				# filter by month...
+				$sql .= " AND DATE_FORMAT(od.date_added,'%Y-%m')='".$filters['filter_month']."'";
+				break;
+
+			case (isset($filters['filter_year'])):
+				# filter by year...
+				$sql .= " AND DATE_FORMAT(od.date_added,'%Y')='".$filters['filter_year']."'";
+				break;
+
+			case (isset($filters['filter_date_from']) && isset($filters['filter_date_to'])):
+				# filter by date range...
+				$sql .= " AND DATE_FORMAT(od.date_added,'%Y-%m-%d')>='".$filters['filter_date_from']."'";
+				$sql .= " AND DATE_FORMAT(od.date_added,'%Y-%m-%d')<='".$filters['filter_date_to']."'";
+				break;
+		}
+
+		if (isset($filters['filter_user'])) {
+			# filter by user [role]...
+			$sql .= " AND tm.sales_manager=".$filters['filter_user'];
+		}
+		
+		/*=====  End of Filters  ======*/
+
+		$query = $this->db->query($sql);
+		return $query->row;
+	}
+
+
+	/**
+	 * Get number of completed orders
+	 * @param  array $filters 	an array of filters
+	 * @return int          	number of completed orders
+	 */
+	public function getOrdersInProgressCount($filters) {
+		$sql = "SELECT COUNT(*) AS qty FROM ".DB_PREFIX."order od ";
+		$sql.= "LEFT JOIN ".DB_PREFIX."customer ct ON ct.customer_id=od.customer_id ";
+		$sql.= "LEFT JOIN ".DB_PREFIX."salesrep sr ON sr.salesrep_id=ct.salesrep_id ";
+		$sql.= "LEFT JOIN ".DB_PREFIX."team tm on tm.team_id=sr.sales_team_id ";
+		$sql.= "WHERE od.order_status_id=2";
+
+		/*===============================
+		=            Filters            =
+		===============================*/
+		
+		switch (TRUE) {
+			case (isset($filters['filter_date'])):
+				# filter by date...
+				$sql .= " AND DATE_FORMAT(od.date_added,'%Y-%m-%d')='".$filters['filter_date']."'";
+				break;
+
+			case (isset($filters['filter_month'])):
+				# filter by month...
+				$sql .= " AND DATE_FORMAT(od.date_added,'%Y-%m')='".$filters['filter_month']."'";
+				break;
+
+			case (isset($filters['filter_year'])):
+				# filter by year...
+				$sql .= " AND DATE_FORMAT(od.date_added,'%Y')='".$filters['filter_year']."'";
+				break;
+
+			case (isset($filters['filter_date_from']) && isset($filters['filter_date_to'])):
+				# filter by date range...
+				$sql .= " AND DATE_FORMAT(od.date_added,'%Y-%m-%d')>='".$filters['filter_date_from']."'";
+				$sql .= " AND DATE_FORMAT(od.date_added,'%Y-%m-%d')<='".$filters['filter_date_to']."'";
+				break;
+		}
+
+		if (isset($filters['filter_user'])) {
+			# filter by user [role]...
+			$sql .= " AND tm.sales_manager=".$filters['filter_user'];
+		}
+		
+		/*=====  End of Filters  ======*/
+
+		$query = $this->db->query($sql);
+		return $query->row['qty'];
+	}
+
+
+	/**
+	 * Get number of orders
+	 * @param  array $filters 	an array of filters
+	 * @return int          	number of orders
+	 */
+	public function getTotalOrdersCount($filters) {
+		$sql = "SELECT COUNT(*) AS qty FROM ".DB_PREFIX."order od ";
+		$sql.= "LEFT JOIN ".DB_PREFIX."customer ct ON ct.customer_id=od.customer_id ";
+		$sql.= "LEFT JOIN ".DB_PREFIX."salesrep sr ON sr.salesrep_id=ct.salesrep_id ";
+		$sql.= "LEFT JOIN ".DB_PREFIX."team tm on tm.team_id=sr.sales_team_id ";
+		$sql.= "WHERE od.order_status_id > 0";
+
+		/*===============================
+		=            Filters            =
+		===============================*/
+		
+		switch (TRUE) {
+			case (isset($filters['filter_date'])):
+				# filter by date...
+				$sql .= " AND DATE_FORMAT(od.date_added,'%Y-%m-%d')='".$filters['filter_date']."'";
+				break;
+
+			case (isset($filters['filter_month'])):
+				# filter by month...
+				$sql .= " AND DATE_FORMAT(od.date_added,'%Y-%m')='".$filters['filter_month']."'";
+				break;
+
+			case (isset($filters['filter_year'])):
+				# filter by year...
+				$sql .= " AND DATE_FORMAT(od.date_added,'%Y')='".$filters['filter_year']."'";
+				break;
+
+			case (isset($filters['filter_date_from']) && isset($filters['filter_date_to'])):
+				# filter by date range...
+				$sql .= " AND DATE_FORMAT(od.date_added,'%Y-%m-%d')>='".$filters['filter_date_from']."'";
+				$sql .= " AND DATE_FORMAT(od.date_added,'%Y-%m-%d')<='".$filters['filter_date_to']."'";
+				break;
+		}
+
+		if (isset($filters['filter_user'])) {
+			# filter by user [role]...
+			$sql .= " AND tm.sales_manager=".$filters['filter_user'];
+		}
+		
+		/*=====  End of Filters  ======*/
+
+		$query = $this->db->query($sql);
+		return $query->row['qty'];
+	}
+
+
+	/**
+	 * Get number of completed orders
+	 * @param  array $filters 	an array of filters
+	 * @return int          	number of completed orders
+	 */
+	public function getOrdersCompletedCount($filters) {
+		$sql = "SELECT COUNT(*) AS qty FROM ".DB_PREFIX."order od ";
+		$sql.= "LEFT JOIN ".DB_PREFIX."customer ct ON ct.customer_id=od.customer_id ";
+		$sql.= "LEFT JOIN ".DB_PREFIX."salesrep sr ON sr.salesrep_id=ct.salesrep_id ";
+		$sql.= "LEFT JOIN ".DB_PREFIX."team tm on tm.team_id=sr.sales_team_id ";
+		$sql.= "WHERE od.order_status_id=5";
+
+		/*===============================
+		=            Filters            =
+		===============================*/
+		
+		switch (TRUE) {
+			case (isset($filters['filter_date'])):
+				# filter by date...
+				$sql .= " AND DATE_FORMAT(od.date_added,'%Y-%m-%d')='".$filters['filter_date']."'";
+				break;
+
+			case (isset($filters['filter_month'])):
+				# filter by month...
+				$sql .= " AND DATE_FORMAT(od.date_added,'%Y-%m')='".$filters['filter_month']."'";
+				break;
+
+			case (isset($filters['filter_year'])):
+				# filter by year...
+				$sql .= " AND DATE_FORMAT(od.date_added,'%Y')='".$filters['filter_year']."'";
+				break;
+
+			case (isset($filters['filter_date_from']) && isset($filters['filter_date_to'])):
+				# filter by date range...
+				$sql .= " AND DATE_FORMAT(od.date_added,'%Y-%m-%d')>='".$filters['filter_date_from']."'";
+				$sql .= " AND DATE_FORMAT(od.date_added,'%Y-%m-%d')<='".$filters['filter_date_to']."'";
+				break;
+		}
+
+		if (isset($filters['filter_user'])) {
+			# filter by user [role]...
+			$sql .= " AND tm.sales_manager=".$filters['filter_user'];
+		}
+		
+		/*=====  End of Filters  ======*/
+
+		$query = $this->db->query($sql);
+		return $query->row['qty'];
+	}
+
+
+	/**
+	 * Get customers by orders
+	 * @param  array $filters an array of filters
+	 * @return array          an array with customers by orders
+	 */
+	public function getCustomersByOrders($filters) {
+		$sql = "SELECT od.order_id,od.customer_id,SUM(od.total) AS total_value,od.date_added AS last_order_date, ";
+		$sql.= "(SELECT cs.firstname FROM ".DB_PREFIX."customer cs WHERE od.customer_id=cs.customer_id) AS customer,od.currency_code,od.currency_value ";
+		$sql.= "FROM ".DB_PREFIX."order od ";
+		$sql.= "LEFT JOIN ".DB_PREFIX."customer ct ON ct.customer_id=od.customer_id ";
+		$sql.= "LEFT JOIN ".DB_PREFIX."salesrep sr ON sr.salesrep_id=ct.salesrep_id ";
+		$sql.= "LEFT JOIN ".DB_PREFIX."team tm on tm.team_id=sr.sales_team_id";
+
+		/*===============================
+		=            Filters            =
+		===============================*/
+
+		$condition = false;
+		
+		switch (TRUE) {
+			case (isset($filters['filter_date'])):
+				# filter by date...
+				$sql .= " WHERE DATE_FORMAT(od.date_added,'%Y-%m-%d')='".$filters['filter_date']."'";
+				$condition = true;
+				break;
+
+			case (isset($filters['filter_month'])):
+				# filter by month...
+				$sql .= " WHERE DATE_FORMAT(od.date_added,'%Y-%m')='".$filters['filter_month']."'";
+				$condition = true;
+				break;
+
+			case (isset($filters['filter_year'])):
+				# filter by year...
+				$sql .= " WHERE DATE_FORMAT(od.date_added,'%Y')='".$filters['filter_year']."'";
+				$condition = true;
+				break;
+
+			case (isset($filters['filter_date_from']) && isset($filters['filter_date_to'])):
+				# filter by date range...
+				$sql .= " WHERE DATE_FORMAT(od.date_added,'%Y-%m-%d')>='".$filters['filter_date_from']."'";
+				$sql .= " AND DATE_FORMAT(od.date_added,'%Y-%m-%d')<='".$filters['filter_date_to']."'";
+				$condition = true;
+				break;
+		}
+
+		if (isset($filters['filter_user'])) {
+			# filter by user [role]...
+			$sql .= ($condition) ? " AND " : " WHERE ";
+			$sql .= "tm.sales_manager=".$filters['filter_user'];
+		}
+		
+		/*=====  End of Filters  ======*/
+
+		$sql.= " GROUP BY od.customer_id ";
+		$sql.= " ORDER BY od.order_id DESC";
+		$query = $this->db->query($sql);
+		return $query->rows;
+	}
+
 	public function getTotalOrdersDash($data = array(), $current_user_id) {
 		
 		$sql = "SELECT COUNT(*) AS total FROM oc_order ord left join oc_customer ct on ct.customer_id = ord.customer_id left join oc_salesrep sr on sr.salesrep_id = ct.salesrep_id left join oc_team tm on tm.team_id = sr.sales_team_id where tm.sales_manager = ".$current_user_id." AND order_status_id > '0'"; 
@@ -308,12 +575,9 @@ class ModelSaleOrder extends Model {
 	
 	public function getTotalOrders($data = array()) {
 		
-		if (!empty($data['filter_salesrep_id']) || !empty($data['filter_customer_id'])) 
-		{
+		if (!empty($data['filter_salesrep_id']) || !empty($data['filter_customer_id'])) {
 			$sql = "SELECT COUNT(*) AS total FROM `" . DB_PREFIX . "order` o left join oc_customer as c on o.customer_id = c.customer_id";
-		}
-		else
-		{
+		} else {
 			$sql = "SELECT COUNT(*) AS total FROM `" . DB_PREFIX . "order` o";
 		}
 

@@ -31,7 +31,7 @@
 <?php } ?>
 <link href="http://dashbundle.co.za/image/catalog/Dashlogic-icon-2.png" rel="icon" />
 </head>
-<body>
+<body class="teee">
 <div id="container">
 <header id="header" class="navbar navbar-static-top">
   <div class="navbar-header">

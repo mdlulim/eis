@@ -239,6 +239,14 @@ class ControllerCatalogMproduct extends Controller {
 		$this->getList();
 	}
 
+	public function getProductImagePath($product, $resize=true, $width=40, $height=40) {
+		if (is_file(DIR_IMAGE . $product['image'])) {
+			return ($resize) ? $this->model_tool_image->resize($product['image'], $width, $height) : $product['image'];
+		} else {
+			return ($resize) ? $this->model_tool_image->resize('no_image.png', $width, $height) : DIR_IMAGE . 'no_image.png';
+		}
+	}
+
 	protected function getList() {
 		if (isset($this->request->get['filter_name'])) {
 			$filter_name = $this->request->get['filter_name'];
@@ -370,11 +378,17 @@ class ControllerCatalogMproduct extends Controller {
 		$results = $this->model_soconfig_mproduct->getProducts($filter_data);
 		
 		foreach ($results as $result) {
-			if (is_file(DIR_IMAGE . $result['image'])) {
-				$image = $this->model_tool_image->resize($result['image'], 40, 40);
-			} else {
-				$image = $this->model_tool_image->resize('no_image.png', 40, 40);
-			}
+			// if (is_file(DIR_IMAGE . $result['image'])) {
+			// 	$image = $this->model_tool_image->resize($result['image'], 40, 40);
+			// } else {
+			// 	$image = $this->model_tool_image->resize('no_image.png', 40, 40);
+			// }
+			
+			// get product image path
+			$image = $this->getProductImagePath($result);
+			// echo "<pre>";
+			// print_r($image);
+			// echo "</pre>";
 
 			$special = false;
 
