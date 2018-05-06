@@ -789,7 +789,7 @@ $('.cstm').each(function(){ //alert(this.value);
   <script type="text/javascript"><!--
 var address_row = <?php echo $address_row; ?>;
 
-function addAddress() {
+function addAddress() { 
 	
 	html  = '<div class="tab-pane" id="tab-address' + address_row + '">';
 	html += '  <input type="hidden" name="address[' + address_row + '][address_id]" value="" />';

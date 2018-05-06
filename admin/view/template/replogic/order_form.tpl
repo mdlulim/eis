@@ -296,8 +296,8 @@
                       <td class="text-left"><?php echo $order_product['model']; ?></td>
                       <td class="text-right"><?php echo $order_product['quantity']; ?>
                         <input type="hidden" name="product[<?php echo $product_row; ?>][quantity]" value="<?php echo $order_product['quantity']; ?>" /></td>
-                      <td class="text-right"></td>
-                      <td class="text-right"></td>
+                      <td class="text-right"><?php echo $currency['code']; ?> <?php echo $order_product['price']; ?></td>
+                      <td class="text-right"><?php echo $currency['code']; ?> <?php echo $order_product['total']; ?></td>
                       <td class="text-center"></td>
                     </tr>
                     <?php $product_row++; ?>

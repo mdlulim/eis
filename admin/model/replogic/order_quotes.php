@@ -89,6 +89,14 @@ class ModelReplogicOrderQuotes extends Model {
 		return $query->row;
 	
 	}
+	public function getOrderquotemodel($product_id) {
+	
+		$sql = "SELECT model FROM " . DB_PREFIX . "product where product_id = ".$product_id;
+		$query = $this->db->query($sql);
+
+		return $query->row;
+	
+	}
 	
 	public function statuschange($quote_id, $stats) {
 		$query = $this->db->query("UPDATE " . DB_PREFIX . "replogic_order_quote set status = '". $stats ."' WHERE quote_id = '" . (int)$quote_id . "'");
@@ -156,7 +164,7 @@ class ModelReplogicOrderQuotes extends Model {
 		} 
 		else
 		{
-			$sql .= " AND status != 1";
+			//$sql .= " AND status != 1";
 		} 
 		
 		if (!empty($data['filter_salesrep_id'])) {

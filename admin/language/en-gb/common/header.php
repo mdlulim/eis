@@ -7,6 +7,9 @@ $_['text_order']             = 'Orders';
 $_['text_processing_status'] = 'Processing';
 $_['text_complete_status']   = 'Completed';
 $_['text_customer']          = 'Customers';
+$_['text_quotes']            = 'Quotes';
+$_['text_approvedquotes']    = 'Approved Quotes';
+
 $_['text_online']            = 'Customers Online';
 $_['text_approval']          = 'Pending approval';
 $_['text_product']           = 'Products';

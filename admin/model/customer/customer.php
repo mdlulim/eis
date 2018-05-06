@@ -745,4 +745,5 @@ class ModelCustomerCustomer extends Model {
 
 		return $query->row;
 	}
+	
 }

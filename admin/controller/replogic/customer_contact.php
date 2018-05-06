@@ -52,6 +52,16 @@ class ControllerReplogicCustomerContact extends Controller {
 		$this->response->addHeader('Content-Type: application/json');
 		$this->response->setOutput(json_encode($json));
 	}
+	
+	public function AjaxDelete() {
+		$this->load->model('replogic/customer_contact');
+		$id = $this->request->get['id'];
+		$this->model_replogic_customer_contact->deleteCustomercontact($id);
+		
+		$json = 'success';
+		$this->response->addHeader('Content-Type: application/json');
+		$this->response->setOutput(json_encode($json));
+	}
 
 	public function add() {
 		$this->load->language('replogic/customer_contact');

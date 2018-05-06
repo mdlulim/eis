@@ -61,11 +61,10 @@
 								<tr id="range_type">
 									<td style="vertical-align:top;"><?php echo $entry_range_type; ?><span class="help"><?php echo $help_range_type; ?></span><br />
 										<input type="hidden" name="range_type" value="id" id="range_type_id" checked="checked">
-										<span class="id" style="margin-right: 5px;"><?php echo $entry_start_id; ?></span>
-										<input type="text" name="min" value="<?php echo $min; ?>" />
-										<br />
-										<span class="id" style="margin-right: 10px;"><?php echo $entry_end_id; ?></span>
-										<input type="text" name="max" value="<?php echo $max; ?>" style="margin-top: 10px;" />
+										<span class="id" style="margin-right: 5px;float:left;margin-top:7px;"><?php echo $entry_start_id; ?></span>
+										<input type="text" name="min" value="<?php echo $min; ?>" placeholder="Id From" class="form-control" style="float:left;width:150px;" />
+										<span class="id" style="margin-right: 10px;margin-left:10px;float:left;margin-top:7px;"><?php echo $entry_end_id; ?></span>
+										<input type="text" name="max" value="<?php echo $max; ?>" placeholder="Id To" class="form-control" style="float:left;width:150px;" />
 									</td>
 								</tr>
 

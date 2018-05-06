@@ -125,7 +125,21 @@
                   <button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
                   </span></div>
               </div>
-              <div style="margin-top:15px;">
+              <div class="form-group">
+                <label class="control-label" for="input-customer">Sales Rep Name</label>
+                   <select name="filter_salesrepid" class="form-control">
+                	<option value="">Select Sales Rep Name</option>
+                    <?php foreach ($salesrepnames as $salesrepname) {  ?>
+                <?php if ($salesrepname['salesrep_id'] == $filter_salesrepid) { ?>
+                <option value="<?php echo $salesrepname['salesrep_id']; ?>" selected="selected"><?php echo $salesrepname['salesrep_name']; ?> <?php echo $salesrepname['salesrep_lastname']; ?></option>
+                <?php } else { ?>
+                <option value="<?php echo $salesrepname['salesrep_id']; ?>"><?php echo $salesrepname['salesrep_name']; ?> <?php echo $salesrepname['salesrep_lastname']; ?></option>
+                <?php } ?>
+                <?php } ?>
+                    
+                </select>         
+              </div>
+              <div>
               <button type="button" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-search"></i> Search</button>
               <button type="button" id="button-filter-reset" class="btn btn-primary pull-right" style="margin-right:10px;"><i class="fa fa-refresh"></i> Reset</button>
               </div>
@@ -158,20 +172,25 @@
                     <?php } else { ?>
                     <a href="<?php echo $sort_customer_contact; ?>"><?php echo $column_customer_contact; ?></a>
                     <?php } ?></td>
-                  <td class="text-left"><?php if ($sort == 'order_status') { ?>
-                    <a href="<?php echo $sort_status; ?>" class="<?php echo strtolower($order); ?>"><?php echo $column_status; ?></a>
+                    <td class="text-left"><?php if ($sort == 'sort_salesrep_id') { ?>
+                    <a href="<?php echo $sort_salesrep_id; ?>" class="<?php echo strtolower($order); ?>">Sales Rep Name</a>
                     <?php } else { ?>
-                    <a href="<?php echo $sort_status; ?>"><?php echo $column_status; ?></a>
+                    <a href="<?php echo $sort_salesrep_id; ?>">Sales Rep Name</a>
+                    <?php } ?></td>
+                    <td class="text-left"><?php if ($sort == 'date_added') { ?>
+                    <a href="<?php echo $sort_date_added; ?>" class="<?php echo strtolower($order); ?>"><?php echo $column_date_added; ?></a>
+                    <?php } else { ?>
+                    <a href="<?php echo $sort_date_added; ?>"><?php echo $column_date_added; ?></a>
                     <?php } ?></td>
                   <td class="text-left"><?php if ($sort == 'total') { ?>
                     <a href="<?php echo $sort_total; ?>" class="<?php echo strtolower($order); ?>"><?php echo $column_total; ?></a>
                     <?php } else { ?>
                     <a href="<?php echo $sort_total; ?>"><?php echo $column_total; ?></a>
                     <?php } ?></td>
-                  <td class="text-left"><?php if ($sort == 'date_added') { ?>
-                    <a href="<?php echo $sort_date_added; ?>" class="<?php echo strtolower($order); ?>"><?php echo $column_date_added; ?></a>
+                  <td class="text-left"><?php if ($sort == 'order_status') { ?>
+                    <a href="<?php echo $sort_status; ?>" class="<?php echo strtolower($order); ?>"><?php echo $column_status; ?></a>
                     <?php } else { ?>
-                    <a href="<?php echo $sort_date_added; ?>"><?php echo $column_date_added; ?></a>
+                    <a href="<?php echo $sort_status; ?>"><?php echo $column_status; ?></a>
                     <?php } ?></td>
                   <td class="text-right"><?php echo $column_action; ?></td>
                 </tr>
@@ -190,7 +209,8 @@
                   <td class="text-left"><?php echo $order['order_id']; ?></td>
                   <td class="text-left"><?php echo $order['customer']; ?></td>
                   <td class="text-left"><?php echo $order['customer_contact']; ?></td>
-                  <td class="text-left"><?php echo $order['qstatus']; ?></td>
+                  <td class="text-left"><?php echo $order['salesrepname']; ?></td>
+                  <td class="text-left"><?php echo $order['date_added']; ?></td>
                   <td class="text-left">
                   	<?php if($order['total'] != '') { ?>
                     	<?php echo $order['total']; ?>
@@ -198,7 +218,7 @@
                      Null
                     <?php } ?>	
                     </td>
-                  <td class="text-left"><?php echo $order['date_added']; ?></td>
+                  <td class="text-left"><?php echo $order['qstatus']; ?></td>
                   <td class="text-right">
                     
                     	<?php if($order['view']) { ?>
@@ -308,6 +328,12 @@ $('#button-filter').on('click', function() {
 
 	if (filter_customer_contact_id) {
 		url += '&filter_customer_contact_id=' + encodeURIComponent(filter_customer_contact_id);
+	}
+	
+	var filter_salesrepid = $('select[name=\'filter_salesrepid\']').val();
+
+	if (filter_salesrepid) {
+		url += '&filter_salesrepid=' + encodeURIComponent(filter_salesrepid);
 	}
 	
 	var filter_order_status = $('select[name=\'filter_order_status\']').val();

@@ -14,7 +14,7 @@ class ControllerCustomerCustomerInfo extends Controller {
 			$this->getQuotesTab();
 		}
 		else if($this->request->get['type'] == 'customercontact')
-		{
+		{ 
 			//$this->getCustomercontactTab();   // This method to get all customer contact using customer id
 			$this->getCustomercontactFormTab();
 		}
@@ -51,7 +51,217 @@ class ControllerCustomerCustomerInfo extends Controller {
 			$this->getIpaddressesTab();
 		}
 	}
+	
+	public function customercontact()
+	{
+		//print_r($_POST); exit;
+		//echo "123"; exit;
+		
+		$this->load->language('customer/customer');
+		$this->load->model('replogic/customer_contact');
+		$this->load->model('customer/customer');
+		$this->load->language('replogic/customer_contact');
+		$this->load->language('customer/customer_info');
+		
+		$this->document->setTitle($this->language->get('heading_title'));
 
+		if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validateCustomercontactForm()) {
+			
+			$this->model_replogic_customer_contact->addMultiCustomercontact($this->request->post);
+			
+			$this->session->data['success'] = $this->language->get('text_success');
+			$customer_id = $this->request->post['customer_id'];
+			
+			$this->response->redirect($this->url->link('customer/customer_info', 'type=customercontact&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true));
+		}
+		
+		
+		$customer_id = $this->request->get['customer_id'];
+		$customerdetails = $this->model_customer_customer->getCustomer($customer_id);
+		$data['customername'] = $customerdetails['firstname'];
+		$data['customer_id'] = $customer_id;
+		
+		$url = '';
+
+		if (isset($this->request->get['type'])) {
+			$url .= '&type=' . $this->request->get['type'];
+		}
+		
+		if (isset($this->request->get['customer_id'])) {
+			$url .= '&customer_id=' . $this->request->get['customer_id'];
+		}
+
+		$data['breadcrumbs'] = array();
+
+		$data['breadcrumbs'][] = array(
+			'text' => $this->language->get('text_home'),
+			'href' => $this->url->link('common/dashboard', 'token=' . $this->session->data['token'], true)
+		);
+
+		$data['breadcrumbs'][] = array(
+			'text' => 'Customer Management',
+			'href' => $this->url->link('customer/customer', 'token=' . $this->session->data['token'] . $url, true)
+		);
+		
+		$data['breadcrumbs'][] = array(
+			'text' => $this->language->get('breadcrum_title'),
+			'href' => $this->url->link('customer/customer_info', 'token=' . $this->session->data['token'] . $url, true)
+		);
+
+		if (isset($this->request->get['csalesrep_id'])) 
+		{
+			$data['cancel'] = $this->url->link('replogic/salesrep_info', 'type=customers&salesrep_id='.$this->request->get['csalesrep_id'].'&token=' . $this->session->data['token'], true);
+		}
+		else
+		{
+			$data['cancel'] = $this->url->link('customer/customer', 'token=' . $this->session->data['token'] . $url, true);
+		}
+		
+		$data['action'] = $this->url->link('customer/customer_info/customercontact', 'token=' . $this->session->data['token'] . $url, true);
+		
+		$data['generaltab'] = $this->url->link('customer/customer_info', 'type=general&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
+		$data['appointmenttab'] = $this->url->link('customer/customer_info', 'type=appointment&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
+		$data['customerstab'] = $this->url->link('customer/customer_info', 'type=customercontact&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
+		$data['visitstab'] = $this->url->link('customer/customer_info', 'type=visits&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
+		$data['orderstab'] = $this->url->link('customer/customer_info', 'type=orders&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
+		$data['quotestab'] = $this->url->link('customer/customer_info', 'type=quotes&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
+		$data['historytab'] = $this->url->link('customer/customer_info', 'type=history&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
+		$data['transactionstab'] = $this->url->link('customer/customer_info', 'type=transactions&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
+		$data['rewardpointstab'] = $this->url->link('customer/customer_info', 'type=rewardpoints&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
+		$data['ipaddressestab'] = $this->url->link('customer/customer_info', 'type=ipaddresses&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
+
+		$data['customer_contacts'] = array();
+
+		$filter_data = array(
+			'filter_customer_id' => $customer_id
+		);
+
+		$customer_contact_total = $this->model_replogic_customer_contact->getTotalCustomercontact($filter_data);
+
+		$data['customer_contacts'] = $this->model_replogic_customer_contact->getcustomercontacts($filter_data);
+		 
+		$data['customers'] = $this->model_customer_customer->getCustomers();
+		$data['allcustomer_contacts'] = $this->model_replogic_customer_contact->getcustomercontacts($filter_data = array('filter_customer_id' => $customer_id));
+		
+		$data['heading_title'] = $this->language->get('heading_title');
+		
+		$data['text_list'] = $this->language->get('text_list');
+		$data['text_no_results'] = $this->language->get('text_no_results');
+		$data['text_confirm'] = $this->language->get('text_confirm');
+
+		$data['entry_first_name'] = $this->language->get('entry_first_name');
+		$data['entry_last_name'] = $this->language->get('entry_last_name');
+		$data['entry_email'] = $this->language->get('entry_email');
+		$data['entry_cellphone_number'] = $this->language->get('entry_cellphone_number');
+		$data['entry_telephone_number'] = $this->language->get('entry_telephone_number');
+		$data['entry_customer'] = $this->language->get('entry_customer');
+		$data['entry_role'] = $this->language->get('entry_role');
+		
+		$data['entry_access'] = $this->language->get('entry_access');
+		$data['entry_modify'] = $this->language->get('entry_modify');
+
+		$data['button_cancel'] = $this->language->get('button_cancel');
+		
+		$data['token'] = $this->session->data['token'];
+
+		if (isset($this->error['warning'])) {
+			$data['error_warning'] = $this->error['warning'];
+		} else {
+			$data['error_warning'] = '';
+		}
+		
+		if (isset($this->error['customer_contact'])) {
+			$data['error_customer_contact'] = $this->error['customer_contact'];
+		} else {
+			$data['error_address'] = array();
+		}
+		
+		if (isset($this->session->data['success'])) {
+			$data['success'] = $this->session->data['success'];
+
+			unset($this->session->data['success']);
+		} else {
+			$data['success'] = '';
+		}
+
+		$url = '';
+		
+		if (isset($this->request->get['type'])) {
+			$url .= '&type=' . $this->request->get['type'];
+		}
+		
+		if (isset($this->request->get['customer_id'])) {
+			$url .= '&customer_id=' . $this->request->get['customer_id'];
+		}
+
+		if (isset($this->request->post['customer_contact'])) {
+			$data['customer_contacts'] = $this->request->post['customer_contact'];
+		} elseif (isset($this->request->get['customer_id'])) { 
+			$data['customer_contacts'] = $this->model_replogic_customer_contact->getcustomercontacts($filter_data);
+		} else {
+			$data['customer_contacts'] = array();
+		}
+		//print_r($data['customer_contacts']); exit;
+		$data['filter_customer_contact_id'] = $filter_customer_contact_id;
+		$data['filter_email'] = $filter_email;
+		$data['sort'] = $sort;
+		$data['order'] = $order;
+
+		$data['header'] = $this->load->controller('common/header');
+		$data['column_left'] = $this->load->controller('common/column_left');
+		$data['footer'] = $this->load->controller('common/footer');
+
+		$this->response->setOutput($this->load->view('customer/customer_info_contactform', $data));
+		
+	}
+	
+	public function validateCustomercontactForm()
+	{
+		if (isset($this->request->post['customer_contact'])) {
+			foreach ($this->request->post['customer_contact'] as $key => $value) {
+				
+				if ((utf8_strlen($value['first_name']) < 1) || (utf8_strlen($value['first_name']) > 128)) {
+					$this->error['customer_contact'][$key]['first_name'] = $this->language->get('error_first_name');
+				}
+				
+				if ((utf8_strlen($value['last_name']) < 1) || (utf8_strlen($value['last_name']) > 128)) {
+					$this->error['customer_contact'][$key]['last_name'] = $this->language->get('error_last_name');
+				}
+				
+				if ((utf8_strlen($value['email']) > 96) || !filter_var($value['email'], FILTER_VALIDATE_EMAIL)) {
+					$this->error['customer_contact'][$key]['email'] = $this->language->get('error_email');
+				}
+				
+				if(!empty($value['telephone_number']))
+				{
+					if( !preg_match("/^[0-9]{3}[0-9]{3}[0-9]{4}$/i", $value['telephone_number']) ) {
+						$this->error['customer_contact'][$key]['telephone_number'] = $this->language->get('error_telephone_number');
+					}
+				}
+				
+				if(!empty($value['cellphone_number']))
+				{
+					if( !preg_match("/^[0-9]{3}[0-9]{3}[0-9]{4}$/i", $value['cellphone_number']) ) {
+						$this->error['customer_contact'][$key]['cellphone_number'] = $this->language->get('error_cellphone_number');
+					}	
+				}
+				
+				/*if ((utf8_strlen($value['telephone_number']) < 1) || (utf8_strlen($value['telephone_number']) > 128)) {
+					$this->error['customer_contact'][$key]['telephone_number'] = $this->language->get('error_telephone_number');
+				}
+				if ((utf8_strlen($value['cellphone_number']) < 1) || (utf8_strlen($value['cellphone_number']) > 128)) {
+					$this->error['customer_contact'][$key]['cellphone_number'] = $this->language->get('error_cellphone_number');
+				}*/
+			}
+		}
+
+		if ($this->error && !isset($this->error['warning'])) {
+			$this->error['warning'] = $this->language->get('error_warning');
+		}
+
+		return !$this->error;
+	}
+	
 	public function getGeneralTab() { 
 		
 		$this->load->language('customer/customer');
@@ -1155,7 +1365,7 @@ class ControllerCustomerCustomerInfo extends Controller {
 		$this->response->setOutput($this->load->view('customer/customer_info_contact', $data));
 		}
 		
-	protected function getCustomercontactFormTab() {
+	protected function getCustomercontactFormTab() { 
 		
 		$this->load->language('replogic/customer_contact');
 		$this->load->language('customer/customer_info');
@@ -1203,7 +1413,7 @@ class ControllerCustomerCustomerInfo extends Controller {
 			$data['cancel'] = $this->url->link('customer/customer', 'token=' . $this->session->data['token'] . $url, true);
 		}
 		
-		$data['action'] = $this->url->link('replogic/customer_contact/edit', 'token=' . $this->session->data['token'] . $url, true);
+		$data['action'] = $this->url->link('customer/customer_info/customercontact', 'token=' . $this->session->data['token'] . $url, true);
 		
 		$data['generaltab'] = $this->url->link('customer/customer_info', 'type=general&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
 		$data['appointmenttab'] = $this->url->link('customer/customer_info', 'type=appointment&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
@@ -1219,8 +1429,8 @@ class ControllerCustomerCustomerInfo extends Controller {
 		$data['customer_contacts'] = array();
 
 		$filter_data = array(
-			'filter_customer_contact_id'	  => $filter_customer_contact_id,
-			'filter_email'	  => $filter_email,
+			//'filter_customer_contact_id'	  => $filter_customer_contact_id,
+			//'filter_email'	  => $filter_email,
 			'filter_customer_id' => $customer_id
 		);
 

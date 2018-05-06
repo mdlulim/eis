@@ -3,6 +3,7 @@
   <div class="page-header">
     <div class="container-fluid">
       <div class="pull-right">
+      	<button type="submit" form="form-mproduct" data-toggle="tooltip" title="" class="btn btn-primary" data-original-title="Save"><i class="fa fa-save"></i></button>
         <a href="<?php echo $cancel; ?>" data-toggle="tooltip" title="<?php echo $button_cancel; ?>" class="btn btn-default"><i class="fa fa-reply"></i></a>
       </div>
       <h1><?php echo $heading_title; ?></h1>
@@ -45,7 +46,7 @@
         
         <form action="<?php echo $action; ?>" method="post" enctype="multipart/form-data" id="form-customer" class="form-horizontal">
         	<input type="hidden" name="type" value="<?php echo $type; ?>" />
-            <input type="hidden" name="csalesrep_id" value="<?php echo $csalesrep_id; ?>" />
+            <input type="hidden" name="customer_id" value="<?php echo $customer_id; ?>" />
             
           
           
@@ -64,7 +65,23 @@
                      <?php } else { ?>
                      	<?php $df = ''; ?>
                      <?php } ?>
-                    <li <?php echo $df; ?> ><a href="#tab-address<?php echo $address_row; ?>" data-toggle="tab"><?php echo $customer_contact['first_name'].' '.$customer_contact['last_name']; ?></a></li>
+                    <li <?php echo $df; ?> >
+                    <!--<a href="#tab-address<?php echo $address_row; ?>" data-toggle="tab"><i class="fa fa-minus-circle" onclick="$('#address a:first').tab('show'); $('#address a[href=\'#tab-address<?php echo $address_row; ?>\']').parent().remove(); $('#tab-address<?php echo $address_row; ?>').remove();"></i> <?php if ($customer_contact['first_name']=='') { ?><?php echo 'Customer Contact ';?> <?php echo $address_row; ?><?php } else { ?><?php echo $customer_contact['first_name'].' '.$customer_contact['last_name']; ?><?php } ?></a>-->
+                    <?php if($customer_contact['customer_con_id']) { ?>
+                    	<?php if (isset($error_customer_contact[$address_row]['first_name']) || isset($error_customer_contact[$address_row]['last_name']) || isset($error_customer_contact[$address_row]['email']) || isset($error_customer_contact[$address_row]['telephone_number']) || isset($error_customer_contact[$address_row]['cellphone_number'])) { ?>
+                        <a style="color:#f56b6b;" href="#tab-address<?php echo $address_row; ?>" data-toggle="tab"><i class="fa fa-minus-circle" onclick="confirm('<?php echo $text_confirm; ?>') ? delt(<?php echo $customer_contact['customer_con_id']; ?>,<?php echo $customer_id; ?>) : false;"></i> <?php if ($customer_contact['first_name']=='') { ?><?php echo 'Customer Contact ';?> <?php echo $address_row; ?><?php } else { ?><?php echo $customer_contact['first_name'].' '.$customer_contact['last_name']; ?><?php } ?></a>
+                        <?php } else { ?>
+                        <a href="#tab-address<?php echo $address_row; ?>" data-toggle="tab"><i class="fa fa-minus-circle" onclick="confirm('<?php echo $text_confirm; ?>') ? delt(<?php echo $customer_contact['customer_con_id']?>,<?php echo $customer_id; ?>) : false;"></i> <?php if ($customer_contact['first_name']=='') { ?><?php echo 'Customer Contact ';?> <?php echo $address_row; ?><?php } else { ?><?php echo $customer_contact['first_name'].' '.$customer_contact['last_name']; ?><?php } ?></a>
+                        <?php } ?>
+                    <?php } else { ?>
+                        <?php if (isset($error_customer_contact[$address_row]['first_name']) || isset($error_customer_contact[$address_row]['last_name']) || isset($error_customer_contact[$address_row]['email']) || isset($error_customer_contact[$address_row]['telephone_number']) || isset($error_customer_contact[$address_row]['cellphone_number'])) { ?>
+                        <a style="color:#f56b6b;" href="#tab-address<?php echo $address_row; ?>" data-toggle="tab"><i class="fa fa-minus-circle" onclick="$('#address a:first').tab('show'); $('#address a[href=\'#tab-address<?php echo $address_row; ?>\']').parent().remove(); $('#tab-address<?php echo $address_row; ?>').remove();"></i> <?php if ($customer_contact['first_name']=='') { ?><?php echo 'Customer Contact ';?> <?php echo $address_row; ?><?php } else { ?><?php echo $customer_contact['first_name'].' '.$customer_contact['last_name']; ?><?php } ?></a>
+                        <?php } else { ?>
+                        <a href="#tab-address<?php echo $address_row; ?>" data-toggle="tab"><i class="fa fa-minus-circle" onclick="$('#address a:first').tab('show'); $('#address a[href=\'#tab-address<?php echo $address_row; ?>\']').parent().remove(); $('#tab-address<?php echo $address_row; ?>').remove();"></i> <?php if ($customer_contact['first_name']=='') { ?><?php echo 'Customer Contact ';?> <?php echo $address_row; ?><?php } else { ?><?php echo $customer_contact['first_name'].' '.$customer_contact['last_name']; ?><?php } ?></a>
+                        <?php } ?>
+                     <?php } ?>
+                    
+                    <!--<a href="#tab-address<?php echo $address_row; ?>" data-toggle="tab"><?php echo $customer_contact['first_name'].' '.$customer_contact['last_name']; ?></a></li>-->
                     <?php $address_row++; ?>
                     <?php } ?>
                     
@@ -85,94 +102,71 @@
                      <?php } ?>
                     
                     <div <?php echo $cls; ?> id="tab-address<?php echo $address_row; ?>">
-                      <input type="hidden" name="customer[<?php echo $address_row; ?>][customer_con_id]" value="<?php echo $customer_contact['customer_con_id']; ?>" />
-                     
-                      <!--<div class="form-group required">
-                        <label class="col-sm-2 control-label" for="input-address-1<?php echo $address_row; ?>"><?php echo $entry_address_1; ?></label>
-                        <div class="col-sm-10">
-                          <input type="text" name="address[<?php echo $address_row; ?>][address_1]" value="<?php echo $address['address_1']; ?>" placeholder="<?php echo $entry_address_1; ?>" id="input-address-1<?php echo $address_row; ?>" class="form-control cstm" />
-                          <?php if (isset($error_address[$address_row]['address_1'])) { ?>
-                          <div class="text-danger"><?php echo $error_address[$address_row]['address_1']; ?></div>
-                          <?php } ?>
-                        </div>
-                      </div>-->
+                      <input type="hidden" name="customer_contact[<?php echo $address_row; ?>][customer_con_id]" value="<?php echo $customer_contact['customer_con_id']; ?>" />
+                     <input type="hidden" name="customer_contact[<?php echo $address_row; ?>][customer_id]" value="<?php echo $customer_id ?>" id="input-customer_id" />
+                      
                       
                       <div class="form-group required">
                         <label class="col-sm-2 control-label" for="input-username"><?php echo $entry_first_name; ?></label>
                         <div class="col-sm-10">
-                          <input type="text" name="first_name" value="<?php echo $customer_contact['first_name']; ?>" placeholder="<?php echo $entry_first_name; ?>" id="input-username" class="form-control" />
-                         <?php if (isset($error_customer_contact[$address_row]['first_name'])) { ?>
+                          <input type="text" name="customer_contact[<?php echo $address_row; ?>][first_name]" value="<?php echo $customer_contact['first_name']; ?>" placeholder="<?php echo $entry_first_name; ?>" id="input-username" class="form-control cstm" />
+                          <?php if (isset($error_customer_contact[$address_row]['first_name'])) { ?>
                           <div class="text-danger"><?php echo $error_customer_contact[$address_row]['first_name']; ?></div>
                           <?php } ?>
+                        
                         </div>
                       </div>
+                      
                       <div class="form-group required">
                         <label class="col-sm-2 control-label" for="input-username"><?php echo $entry_last_name; ?></label>
                         <div class="col-sm-10">
-                          <input type="text" name="last_name" value="<?php echo $last_name; ?>" placeholder="<?php echo $entry_last_name; ?>" id="input-username" class="form-control" />
-                         <?php if ($error_last_name) { ?>
-                          <div class="text-danger"><?php echo $error_last_name; ?></div>
-                          <?php } ?>
-                        </div>
-                      </div>
-                      <div class="form-group">
-                        <label class="col-sm-2 control-label" for="input-user-group"><?php echo $entry_customer; ?></label>
-                        <div class="col-sm-10">
-                          <select name="customer_id" id="input-sales_manager" class="form-control">
-                            <option value="">Select Customer</option>
-                            <?php foreach ($customers as $customer) {  ?>
-                            <?php if ($customer['customer_id'] == $customer_id) { ?>
-                            <option value="<?php echo $customer['customer_id']; ?>" selected="selected"><?php echo $customer['firstname']; ?></option>
-                            <?php } else { ?>
-                            <option value="<?php echo $customer['customer_id']; ?>"><?php echo $customer['firstname']; ?></option>
-                            <?php } ?>
-                            <?php } ?>
-                          </select>
-                          <?php if ($error_customer_id) { ?>
-                          <div class="text-danger"><?php echo $error_customer_id; ?></div>
+                          <input type="text" name="customer_contact[<?php echo $address_row; ?>][last_name]" value="<?php echo $customer_contact['last_name']; ?>" placeholder="<?php echo $entry_last_name; ?>" id="input-username" class="form-control cstm" />
+                          
+                          <?php if (isset($error_customer_contact[$address_row]['last_name'])) { ?>
+                          <div class="text-danger"><?php echo $error_customer_contact[$address_row]['last_name']; ?></div>
                           <?php } ?>
                         </div>
                       </div>
                       
                       <div class="form-group required">
-                        <label class="col-sm-2 control-label" for="input-username"><?php echo $entry_email; ?></label>
+                        <label class="col-sm-2 control-label" for="input-email"><?php echo $entry_email; ?></label>
                         <div class="col-sm-10">
-                          <input type="text" name="email" value="<?php echo $email; ?>" placeholder="<?php echo $entry_email; ?>" id="input-email" class="form-control" />
-                          <?php if ($error_email) { ?>
-                          <div class="text-danger"><?php echo $error_email; ?></div>
+                          <input type="text" name="customer_contact[<?php echo $address_row; ?>][email]" value="<?php echo $customer_contact['email']; ?>" placeholder="<?php echo $entry_email; ?>" id="input-email" class="form-control cstm" />
+                          
+                          <?php if (isset($error_customer_contact[$address_row]['email'])) { ?>
+                          <div class="text-danger"><?php echo $error_customer_contact[$address_row]['email']; ?></div>
                           <?php } ?>
                         </div>
                       </div>
                       
                       <div class="form-group">
-                        <label class="col-sm-2 control-label" for="input-username"><?php echo $entry_telephone_number; ?></label>
+                        <label class="col-sm-2 control-label" for="input-telephone_number"><?php echo $entry_telephone_number; ?></label>
                         <div class="col-sm-10">
-                          <input type="text" name="telephone_number" value="<?php echo $telephone_number; ?>" maxlength="10" placeholder="<?php echo $entry_telephone_number; ?>" id="input-tel" class="form-control" />
-                          <?php if ($error_telephone_number) { ?>
-                          <div class="text-danger"><?php echo $error_telephone_number; ?></div>
+                          <input type="text" name="customer_contact[<?php echo $address_row; ?>][telephone_number]" value="<?php echo $customer_contact['telephone_number']; ?>" placeholder="<?php echo $entry_telephone_number; ?>" id="input-telephone_number" class="form-control" maxlength="10" />
+                           <?php if (isset($error_customer_contact[$address_row]['telephone_number'])) { ?>
+                          <div class="text-danger"><?php echo $error_customer_contact[$address_row]['telephone_number']; ?></div>
+                          <?php } ?>
+                          
+                        </div>
+                      </div>
+                      
+                      <div class="form-group">
+                        <label class="col-sm-2 control-label" for="input-cellphone_number"><?php echo $entry_cellphone_number; ?></label>
+                        <div class="col-sm-10">
+                          <input type="text" name="customer_contact[<?php echo $address_row; ?>][cellphone_number]" value="<?php echo $customer_contact['cellphone_number']; ?>" placeholder="<?php echo $entry_cellphone_number; ?>" id="input-cellphone_number" class="form-control" maxlength="10" />
+                          <?php if (isset($error_customer_contact[$address_row]['cellphone_number'])) { ?>
+                          <div class="text-danger"><?php echo $error_customer_contact[$address_row]['cellphone_number']; ?></div>
                           <?php } ?>
                         </div>
                       </div>
                       
                       <div class="form-group">
-                        <label class="col-sm-2 control-label" for="input-username"><?php echo $entry_cellphone_number; ?></label>
+                        <label class="col-sm-2 control-label" for="input-role"><?php echo $entry_role; ?></label>
                         <div class="col-sm-10">
-                          <input type="text" name="cellphone_number" value="<?php echo $cellphone_number; ?>" maxlength="10" placeholder="<?php echo $entry_cellphone_number; ?>" id="input-cell" class="form-control" />
-                          <?php if ($error_cellphone_number) { ?>
-                          <div class="text-danger"><?php echo $error_cellphone_number; ?></div>
-                          <?php } ?>
+                          <input type="text" name="customer_contact[<?php echo $address_row; ?>][role]" value="<?php echo $customer_contact['role']; ?>" placeholder="<?php echo $entry_role; ?>" id="input-role" class="form-control" />
                         </div>
                       </div>
                       
-                      <div class="form-group">
-                        <label class="col-sm-2 control-label" for="input-username"><?php echo $entry_role; ?></label>
-                        <div class="col-sm-10">
-                          <input type="text" name="role" value="<?php echo $role; ?>" placeholder="<?php echo $entry_role; ?>" id="input-cell" class="form-control" />
-                          <?php if ($error_role) { ?>
-                          <div class="text-danger"><?php echo $error_role; ?></div>
-                          <?php } ?>
-                        </div>
-                      </div>
                     </div>
                     <?php $address_row++; ?>
                     <?php } ?>
@@ -191,23 +185,89 @@
     </div>
   </div>
 </div>
+<script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function ($) {
+ $('#tab-general1').on('change',function(e){ 
+//e.preventDefault()
+
+//var flag =false; 
+$('.cstm').each(function(){ //alert(this.value);
+ 
+  if(this.value)
+  {
+  	$('#address-add').show();
+  }
+  else
+  {
+  	$('#address-add').hide();
+  }
+  
+});
+
+});
+});
+</script>
+<script type="text/javascript">
+ function delt(id,cid) { 
+ 
+ $.ajax({ 
+		url: 'index.php?route=replogic/customer_contact/AjaxDelete&token=<?php echo $token; ?>&id=' + id,
+		dataType: 'json',
+		success: function(json) {
+			
+			window.location.href = 'index.php?route=customer/customer_info&type=customercontact&customer_id='+ cid +'&token=<?php echo $token; ?>';
+			
+		},
+		error: function(xhr, ajaxOptions, thrownError) {
+			alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+		}
+	});
+ 
+ }
+</script>
 <script type="text/javascript"><!--
 var address_row = <?php echo $address_row; ?>;
 
 function addAddress() {
 	
+	$('#address-add').hide();
+	
 	html  = '<div class="tab-pane" id="tab-address' + address_row + '">';
-	html += '  <input type="hidden" name="address[' + address_row + '][address_id]" value="" />';
+	html += '  <input type="hidden" name="customer_contact[' + address_row + '][customer_con_id]" value="" />';
+	html += '  <input type="hidden" name="customer_contact[<?php echo $address_row; ?>][customer_id]" value="<?php echo $customer_id ?>" id="input-customer_id" />';
 
 	html += '  <div class="form-group required">';
-	html += '    <label class="col-sm-2 control-label" for="input-address-1' + address_row + '"><?php echo $entry_address_1; ?></label>';
-	html += '    <div class="col-sm-10"><input type="text" name="address[' + address_row + '][address_1]" value="" placeholder="<?php echo $entry_address_1; ?>" id="input-address-1' + address_row + '" class="form-control cstm" /></div>';
+	html += '    <label class="col-sm-2 control-label" for="input-firstname"><?php echo $entry_first_name; ?></label>';
+	html += '    <div class="col-sm-10"><input type="text" name="customer_contact[' + address_row + '][first_name]" placeholder="<?php echo $entry_first_name; ?>" id="input-firstname' + address_row + '" class="form-control cstm" /></div>';
+	html += '  </div>';
+	
+	html += '  <div class="form-group required">';
+	html += '    <label class="col-sm-2 control-label" for="input-lastname"><?php echo $entry_last_name; ?></label>';
+	html += '    <div class="col-sm-10"><input type="text" name="customer_contact[' + address_row + '][last_name]" placeholder="<?php echo $entry_last_name; ?>" id="input-lastname' + address_row + '" class="form-control cstm" /></div>';
+	html += '  </div>';
+	
+	html += '  <div class="form-group required">';
+	html += '    <label class="col-sm-2 control-label" for="input-email"><?php echo $entry_email; ?></label>';
+	html += '    <div class="col-sm-10"><input type="text" name="customer_contact[' + address_row + '][email]" placeholder="<?php echo $entry_email; ?>" id="input-email' + address_row + '" class="form-control cstm" /></div>';
+	html += '  </div>';
+	
+	html += '  <div class="form-group">';
+	html += '    <label class="col-sm-2 control-label" for="input-telephone_number"><?php echo $entry_telephone_number; ?></label>';
+	html += '    <div class="col-sm-10"><input type="text" name="customer_contact[' + address_row + '][telephone_number]" placeholder="<?php echo $entry_telephone_number; ?>" id="input-telephone_number' + address_row + '" class="form-control" maxlength="10" /></div>';
+	html += '  </div>';
+	
+	html += '  <div class="form-group">';
+	html += '    <label class="col-sm-2 control-label" for="input-cellphone_number"><?php echo $entry_cellphone_number; ?></label>';
+	html += '    <div class="col-sm-10"><input type="text" name="customer_contact[' + address_row + '][cellphone_number]" placeholder="<?php echo $entry_cellphone_number; ?>" id="input-email' + address_row + '" class="form-control" maxlength="10" /></div>';
+	html += '  </div>';
+	
+	html += '  <div class="form-group">';
+	html += '    <label class="col-sm-2 control-label" for="input-role"><?php echo $entry_role; ?></label>';
+	html += '    <div class="col-sm-10"><input type="text" name="customer_contact[' + address_row + '][role]" placeholder="<?php echo $entry_role; ?>" id="input-role' + address_row + '" class="form-control" /></div>';
 	html += '  </div>';
 
-	html += '  <div class="form-group">';
-	html += '    <label class="col-sm-2 control-label"><?php echo $entry_default; ?></label>';
-	html += '    <div class="col-sm-10"><label class="radio"><input type="checkbox" name="address[' + address_row + '][default]" value="" /></label></div>';
-	html += '  </div>';
+	
 
     html += '</div>';
 
@@ -240,5 +300,45 @@ function addAddress() {
 	address_row++;
 }
 //--></script>
+
+
+<script type="text/javascript">
+  (function ($, W, D)
+  {
+  var JQUERY4U = {};
+  JQUERY4U.UTIL =
+      {
+          setupFormValidation: function ()
+          {
+          //form validation rules
+          $("#form-customer").validate({ 
+              rules: {
+              'first_name[]': "required"
+             
+              },
+              messages: {
+              'first_name[]': "Please Enter Name"
+              },
+              submitHandler: function (form) {
+              form.submit();
+              }
+          });
+        }
+      }
+  //when the dom has loaded setup form validation rules
+  $(D).ready(function ($) {
+      JQUERY4U.UTIL.setupFormValidation();
+  });
+  })(jQuery, window, document);
+</script>
+<style type="text/css">
+    #form-customer .form-group label.error {
+    color: #FB3A3A;
+    display: inline-block;
+    margin: 0px 0 0px 0px;
+    padding: 0;
+    text-align: left;
+    }
+</style>
   
 <?php echo $footer; ?> 
