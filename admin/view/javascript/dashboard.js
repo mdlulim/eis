@@ -6,9 +6,17 @@
         $(document).ready(function() {
             if ($('.loader-wrapper').length > 0) {
                 $('.loader-wrapper').hide();
-            }    
+            }
         });
-    }
+    };
+
+    var initMenuEvents = function () {
+        $(document).on("click", '#Dashboard li a', function () {
+            if ($('.loader-wrapper').length > 0) {
+                $('.loader-wrapper').show();
+            }
+        });
+    };
 
     var initDataTables = function () {
         $(document).ready(function() {
@@ -79,6 +87,7 @@
         });
     };
     initLoader();
+    initMenuEvents();
     initDateFilter();
     initDataTables();
 
