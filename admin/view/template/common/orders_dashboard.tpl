@@ -75,7 +75,7 @@
                 </div>
               </div>
               <div class="tile-footer">
-                <a href="<?=$order_view_more?>">View more...</a>
+                <a href="<?=$orders_processing_view_more?>">View more...</a>
               </div>
             </div>
         </div>
@@ -94,7 +94,7 @@
                 </div>
               </div>
               <div class="tile-footer">
-                <a href="<?=$order_view_more?>">View more...</a>
+                <a href="<?=$orders_completed_view_more?>">View more...</a>
               </div>
           </div>
         </div>
