@@ -270,6 +270,7 @@ class ControllerCommonOrdersDashboard extends Controller {
 		$data['unapproved_quotes'] = $this->model_replogic_order_quotes->getQuotesAwaitingApprovalCount($filters);		
 		
 		# View more link(s)
+		$data['order_view_more'] = $this->url->link('sale/order', "token=$token", true);
 		$data['orders_processing_view_more'] = $this->url->link('sale/order', "token=$token&filter_order_status=2", true);
 		$data['orders_completed_view_more'] = $this->url->link('sale/order', "token=$token&filter_order_status=5", true);
 		$data['stock_alert_view_more'] = $this->url->link('catalog/product', "token=$token&filter_quantity=0", true);
