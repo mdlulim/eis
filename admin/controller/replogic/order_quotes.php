@@ -228,6 +228,63 @@ class ControllerReplogicOrderQuotes extends Controller {
 		}
 		
 	}
+	public function deny() {
+		$this->load->language('replogic/order_quotes');
+
+		$this->document->setTitle($this->language->get('heading_title'));
+
+		$this->load->model('replogic/order_quotes');
+
+		if (isset($this->request->post['selected']) && $this->validate()) {
+			foreach ($this->request->post['selected'] as $quote_id) {
+				$this->model_replogic_order_quotes->Declinestatuschange($quote_id);
+			}
+
+			$this->session->data['success'] = $this->language->get('text_success');
+
+			$url = '';
+
+			if (isset($this->request->get['filter_quote_id'])) {
+				$url .= '&filter_quote_id=' . $this->request->get['filter_quote_id'];
+			}
+	
+			if (isset($this->request->get['filter_customer'])) {
+				$url .= '&filter_customer=' . urlencode(html_entity_decode($this->request->get['filter_customer'], ENT_QUOTES, 'UTF-8'));
+			}
+			
+			if (isset($this->request->get['filter_customer_id'])) {
+			$url .= '&filter_customer_id=' . $this->request->get['filter_customer_id'];
+			}
+			
+			if (isset($this->request->get['filter_salesrepid'])) {
+				$url .= '&filter_salesrepid=' . $this->request->get['filter_salesrepid'];
+			}
+			
+			if (isset($this->request->get['filter_customer_contact_id'])) {
+			$url .= '&filter_customer_contact_id=' . $this->request->get['filter_customer_contact_id'];
+			}
+			
+			if (isset($this->request->get['filter_customer_contact'])) {
+				$url .= '&filter_customer_contact=' . urlencode(html_entity_decode($this->request->get['filter_customer_contact'], ENT_QUOTES, 'UTF-8'));
+			}
+	
+			if (isset($this->request->get['filter_order_status'])) {
+				$url .= '&filter_order_status=' . $this->request->get['filter_order_status'];
+			}
+	
+			if (isset($this->request->get['filter_date_added'])) {
+				$url .= '&filter_date_added=' . $this->request->get['filter_date_added'];
+			}
+	
+			if (isset($this->request->get['filter_date_modified'])) {
+				$url .= '&filter_date_modified=' . $this->request->get['filter_date_modified'];
+			}
+
+			$this->response->redirect($this->url->link('replogic/order_quotes', 'token=' . $this->session->data['token'] . $url, true));
+		}
+
+		$this->getList();
+	}
 	public function delete() {
 		$this->load->language('replogic/order_quotes');
 
@@ -440,6 +497,8 @@ class ControllerReplogicOrderQuotes extends Controller {
 			$data['delete'] = '';
 			
 		}
+		
+		$data['deny'] = $this->url->link('replogic/order_quotes/deny', 'token=' . $this->session->data['token'], true);
 
 		$data['orders'] = array();
 
@@ -501,14 +560,25 @@ class ControllerReplogicOrderQuotes extends Controller {
 			$cust = $this->model_customer_customer->getCustomer($result['customer_id']);
 			$customer_nm = $cust['firstname'];
 			
-			if($current_user_group['name'] == 'Company admin' || $current_user_group['name'] == 'Administrator')
+			if($current_user_group['name'] == 'Company admin' || $current_user_group['name'] == 'Administrator' || $current_user_group['name'] == 'Sales Manager')
 			{
-				$view_button = $this->url->link('replogic/order_quotes/info', 'quote_id='.$result['quote_id'].'&token=' . $this->session->data['token'] . $url, true);
+				//$view_button = $this->url->link('replogic/order_quotes/info', 'quote_id='.$result['quote_id'].'&token=' . $this->session->data['token'] . $url, true);
+				if($result['order_id'])
+				{
+					$view_button = $this->url->link('sale/order/info', 'order_id='.$result['order_id'].'&token=' . $this->session->data['token'] . $url, true);
+				}
+				else
+				{
+					$view_button = $this->url->link('replogic/quotes_info', 'quote_id='.$result['quote_id'].'&token=' . $this->session->data['token'] . $url, true);
+				}
 			}
 			else
 			{ 
 				$view_button = '';
 			}
+			
+			$time = strtotime($result['date_added']);
+			$myFormatForView = date("d F, Y g:i A", $time); 
 			
 			$data['orders'][] = array(
 				'quote_id'      => $result['quote_id'],
@@ -522,7 +592,7 @@ class ControllerReplogicOrderQuotes extends Controller {
 				'order_id'      => $result['order_id'],
 				'order_status'  => $result['order_status'] ? $result['order_status'] : $this->language->get('text_missing'),
 				'total'         => $this->currency->format($total, 'ZAR', '1.0000'),
-				'date_added'    => date($this->language->get('date_format_short'), strtotime($result['date_added'])),
+				'date_added'    => $myFormatForView,
 				'shipping_code' => $result['shipping_code'],
 				'view'          => $view_button,
 				'edit'          => $this->url->link('replogic/order_quotes/edit', 'token=' . $this->session->data['token'] . '&quote_id=' . $result['quote_id'] . $url, true)

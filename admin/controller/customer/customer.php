@@ -1145,7 +1145,7 @@ class ControllerCustomerCustomer extends Controller {
 		} else {
 			$data['payment_method'] = '';
 		}
-
+//echo $data['payment_method']; exit;
 		// Custom Fields
 		$this->load->model('customer/custom_field');
 
@@ -1832,5 +1832,35 @@ class ControllerCustomerCustomer extends Controller {
 
 		$this->response->addHeader('Content-Type: application/json');
 		$this->response->setOutput(json_encode($json));
+	}
+	
+	public function addaddress() {
+	
+	$this->load->model('customer/customer');
+	
+	$json = array();
+	
+	$json['address_id'] = $this->model_customer_customer->addnewaddress($this->request->post);
+	
+	$addresses = $this->model_customer_customer->getAddresses($this->request->post['customer_id']);
+	
+	$json['addresses'] = array();
+	foreach ($addresses as $address) {
+	
+		$json['addresses'][] = array(
+				'address_id' => $address['address_id'],
+				'firstname' => $address['firstname'],
+				'address_1' => $address['address_1'],
+				'address_2' => $address['address_2'],
+				'city' => $address['city'],
+				'zone' => $address['zone'],
+				'country' => $address['country']
+		);
+	
+	}
+	
+	$this->response->addHeader('Content-Type: application/json');
+	$this->response->setOutput(json_encode($json));
+	
 	}
 }

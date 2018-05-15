@@ -4,8 +4,9 @@
     <div class="container-fluid">
       <div class="pull-right">
         <?php if($delete) { ?>
-        <button type="button" id="button-delete" form="form-order" formaction="<?php echo $delete; ?>" data-toggle="tooltip" title="<?php echo $button_delete; ?>" class="btn btn-danger"><i class="fa fa-trash-o"></i></button>
+        <button type="button" id="button-delete" form="form-order" data-toggle="tooltip" title="<?php echo $button_delete; ?>" class="btn btn-danger" onclick="Confirmbtn('delete','Are you sure want to Delete Quotes ?')"><i class="fa fa-trash-o"></i></button>
         <?php } ?>
+        <button type="button" id="button-deny" form="form-order" onclick="Confirmbtn('deny','Are you sure want to Deny Quotes ?')" data-toggle="tooltip" title="Deny Quote(s)" class="btn btn-danger"><i class="fa fa-times"></i> Deny Quote(s)</button>
       </div>
       <h1><?php echo $heading_title; ?></h1>
       <ul class="breadcrumb">
@@ -152,12 +153,12 @@
               <thead>
                 <tr>
                   <td style="width: 1px;" class="text-center"><input type="checkbox" onclick="$('input[name*=\'selected\']').prop('checked', this.checked);" /></td>
-                  <td class="text-left"><?php if ($sort == 'quote_id') { ?>
+                  <td class="text-left" width="85"><?php if ($sort == 'quote_id') { ?>
                     <a href="<?php echo $sort_order; ?>" class="<?php echo strtolower($order); ?>"><?php echo $column_quote_id; ?></a>
                     <?php } else { ?>
                     <a href="<?php echo $sort_order; ?>"><?php echo $column_quote_id; ?></a>
                     <?php } ?></td>
-                  <td class="text-left"><?php if ($sort == 'order_id') { ?>
+                  <td class="text-left" width="82"><?php if ($sort == 'order_id') { ?>
                     <a href="<?php echo $sort_order_id; ?>" class="<?php echo strtolower($order); ?>">Order Id</a>
                     <?php } else { ?>
                     <a href="<?php echo $sort_order_id; ?>">Order Id</a>
@@ -187,7 +188,7 @@
                     <?php } else { ?>
                     <a href="<?php echo $sort_total; ?>"><?php echo $column_total; ?></a>
                     <?php } ?></td>
-                  <td class="text-left"><?php if ($sort == 'order_status') { ?>
+                  <td class="text-left" width="130"><?php if ($sort == 'order_status') { ?>
                     <a href="<?php echo $sort_status; ?>" class="<?php echo strtolower($order); ?>"><?php echo $column_status; ?></a>
                     <?php } else { ?>
                     <a href="<?php echo $sort_status; ?>"><?php echo $column_status; ?></a>
@@ -218,19 +219,30 @@
                      Null
                     <?php } ?>	
                     </td>
-                  <td class="text-left"><?php echo $order['qstatus']; ?></td>
+                  <td class="text-left">
+                  <?php //echo $order['qstatus']; ?>
+                  		<?php if($order['qstatus'] == 'Approved') { ?>
+                        <a class="btn-success" style="padding:2px 5px;border-radius:5px;">Order Confirmed</a>
+                        <?php } elseif($order['qstatus'] == 'Declined') { ?>
+                        <a class="btn-danger" style="padding:2px 5px;border-radius:5px;">Denied</a>
+                        <?php } elseif($order['qstatus'] == 'Awaiting Approval') { ?>
+                        <a class="btn-warning" style="padding:2px 5px;border-radius:5px;">Pending</a>
+                        <?php } else { ?>
+                        	<?php echo $order['qstatus']; ?>
+                        <?php } ?>
+                  </td>
                   <td class="text-right">
                     
                     	<?php if($order['view']) { ?>
                         <a href="<?php echo $order['view']; ?>" data-toggle="tooltip" title="View Quote" class="btn btn-info"><i class="fa fa-eye"></i></a>
                    		<?php } ?>
                         <?php if($order['order_id'] == '' && $order['status'] != '2') { ?>
-                        	<a href="<?php echo $order['approve']; ?>" data-toggle="tooltip" title="Convert to Order" class="btn btn-success"><i class="fa fa-check"></i></a>
+                        	<!--<a href="<?php echo $order['approve']; ?>" data-toggle="tooltip" title="Convert to Order" class="btn btn-success"><i class="fa fa-check"></i></a>-->
                         	<!--<a href="javascript:void();" data-toggle="tooltip" title="Decline" onclick="onpopup(<?php echo $order['quote_id']; ?>);" class="btn btn-danger decline"><i class="fa fa-times"></i></a>-->
                            
                         <?php } else { ?>
                         	
-                            <a href="javascript:void();" disabled  data-toggle="tooltip" title="Converted to Order" class="btn btn-success"><i class="fa fa-check"></i></a>
+                           <!-- <a href="javascript:void();" disabled  data-toggle="tooltip" title="Converted to Order" class="btn btn-success"><i class="fa fa-check"></i></a>-->
                             <!--<a href="javascript:void();" data-toggle="tooltip" title="Decline" disabled class="btn btn-danger decline"><i class="fa fa-times"></i></a>-->
                         	
                         <?php } ?>
@@ -455,6 +467,74 @@ $('#button-delete').on('click', function(e) {
 $('.date').datetimepicker({
 	pickTime: false
 });
+//--></script>
+<script type="text/javascript"><!--
+$('input[name^=\'selected\']').on('change', function() { 
+	
+	var selected = $('input[name^=\'selected\']:checked');
+
+	if (selected.length) {
+		$('#button-delete').prop('disabled', false);
+		$('#button-deny').prop('disabled', false);
+	}
+	else
+	{
+		$('#button-delete').prop('disabled', true);
+		$('#button-deny').prop('disabled', true);
+	}
+
+});
+
+$('#button-delete').prop('disabled', true);
+$('#button-deny').prop('disabled', true);
+$('input[name^=\'selected\']:first').trigger('change');
+
+$('input:checkbox').change(function () {
+   var selected = $('input[name^=\'selected\']:checked');
+
+	if (selected.length) {
+		$('#button-delete').prop('disabled', false);
+		$('#button-deny').prop('disabled', false);
+	}
+	else
+	{
+		$('#button-delete').prop('disabled', true);
+		$('#button-deny').prop('disabled', true);
+	}
+})
+
+$('#button-delete').click(function(){
+   $('#form-order').attr('action', '<?php echo $delete; ?>');
+});
+
+$('#button-deny').click(function(){
+   $('#form-order').attr('action', '<?php echo $button-deny; ?>');
+});
+
+function Confirmbtn(action, msg)
+{
+  var x = confirm(msg);
+  if (x)
+  {
+      if(action == 'delete')
+	  {
+	  	var faction = '<?php echo $delete; ?>';
+	  }
+	  else
+	  {
+	  	var faction = '<?php echo $deny; ?>';
+	  }
+	  var newul = faction.replace(/&amp;/g, "&");
+	  $('#form-order').attr('action', newul);
+	  $('#form-order').submit()
+	  return true;
+	}
+  else {
+    return false;
+ }
+}
+
+
 //--></script>
 <style>
   .form-group + .form-group{border-top:none;}

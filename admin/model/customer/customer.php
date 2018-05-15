@@ -3,7 +3,7 @@ class ModelCustomerCustomer extends Model {
 	public function addCustomer($data) {
 		
 		// Hide Customer Group
-		$data['customer_group_id'] = 1;
+		//$data['customer_group_id'] = 1;
 		
 		if(isset($data['salesrep_id']))
 		{
@@ -67,17 +67,17 @@ class ModelCustomerCustomer extends Model {
 		return $customer_id;
 	}
 
-	public function editCustomer($customer_id, $data) {
+	public function editCustomer($customer_id, $data) { 
 		if (!isset($data['custom_field'])) {
 			$data['custom_field'] = array();
 		}
 		
 		// Hide Customer Group
-		$data['customer_group_id'] = 1;
+		//$data['customer_group_id'] = 1;
 		
 		if(isset($data['salesrep_id']))
 		{ 
-			$this->db->query("UPDATE " . DB_PREFIX . "customer SET customer_group_id = '" . (int)$data['customer_group_id'] . "', salesrep_id = '" . (int)$data['salesrep_id'] . "', firstname = '" . $this->db->escape($data['firstname']) . "', lastname = '" . $this->db->escape($data['firstname']) . "', email = '" . $this->db->escape($data['email']) . "', telephone = '" . $this->db->escape($data['telephone']) . "', fax = '" . $this->db->escape($data['fax']) . "', custom_field = '" . $this->db->escape(isset($data['custom_field']) ? json_encode($data['custom_field']) : '') . "', newsletter = '" . (int)$data['newsletter'] . "', status = '" . (int)$data['status'] . "', approved = '" . (int)$data['approved'] . "', safe = '" . (int)$data['safe'] . "' WHERE customer_id = '" . (int)$customer_id . "'");
+			$this->db->query("UPDATE " . DB_PREFIX . "customer SET customer_group_id = '" . (int)$data['customer_group_id'] . "', salesrep_id = '" . (int)$data['salesrep_id'] . "', firstname = '" . $this->db->escape($data['firstname']) . "', lastname = '" . $this->db->escape($data['firstname']) . "', payment_method = '" . $this->db->escape($data['payment_method']) . "', email = '" . $this->db->escape($data['email']) . "', telephone = '" . $this->db->escape($data['telephone']) . "', fax = '" . $this->db->escape($data['fax']) . "', custom_field = '" . $this->db->escape(isset($data['custom_field']) ? json_encode($data['custom_field']) : '') . "', newsletter = '" . (int)$data['newsletter'] . "', status = '" . (int)$data['status'] . "', approved = '" . (int)$data['approved'] . "', safe = '" . (int)$data['safe'] . "' WHERE customer_id = '" . (int)$customer_id . "'");
 		
 		}
 		else
@@ -744,6 +744,14 @@ class ModelCustomerCustomer extends Model {
 	$query = $this->db->query("SELECT *, CONCAT(ad.address_1, ' ', ad.address_2) as address FROM " . DB_PREFIX . "customer as cs left join oc_address ad on (cs.address_id = ad.address_id) where cs.customer_id = ".$customer_id."");
 
 		return $query->row;
+	}
+	
+	public function addnewaddress($data) { 
+	
+	$query = $this->db->query("INSERT INTO " . DB_PREFIX . "address SET customer_id = '" . $this->db->escape($data['customer_id']) . "', firstname = '" . $this->db->escape($data['firstname']) . "', lastname = '" . $this->db->escape($data['firstname']) . "', company = '" . $this->db->escape($data['firstname']) . "', address_1 = '" . $this->db->escape($data['address_1']) . "', address_2 = '" . $this->db->escape($data['address_2']) . "', city = '" . $this->db->escape($data['city']) . "', postcode = '" . $this->db->escape($data['postcode']) . "', country_id = '" . (int)$data['country_id'] . "', zone_id = '" . (int)$data['zone_id'] . "'");
+
+		$add_id = $this->db->getLastId();
+		return $add_id;
 	}
 	
 }

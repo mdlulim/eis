@@ -10,7 +10,7 @@ class ControllerApiShipping extends Controller {
 
 		$json = array();
 
-		if ($this->cart->hasShipping()) {
+		if ($this->cart->hasShipping()) { 
 			if (!isset($this->session->data['api_id'])) {
 				$json['error']['warning'] = $this->language->get('error_permission');
 			} else {
@@ -97,7 +97,7 @@ class ControllerApiShipping extends Controller {
 					}
 				}
 
-				if (!$json) {
+				if (!$json) { 
 					$this->load->model('localisation/country');
 
 					$country_info = $this->model_localisation_country->getCountry($this->request->post['country_id']);
