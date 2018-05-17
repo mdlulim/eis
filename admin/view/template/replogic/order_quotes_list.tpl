@@ -74,16 +74,16 @@
                   <option value="1">Approved</option>
                   <?php } ?>
                   
+                  <?php if ($filter_order_status == '3') { ?>
+                  <option value="3" selected="selected">Processing</option>
+                  <?php } else { ?>
+                  <option value="3">Processing</option>
+                  <?php } ?>
+                  
                   <?php if ($filter_order_status == '2') { ?>
                   <option value="2" selected="selected">Declined</option>
                   <?php } else { ?>
                   <option value="2">Declined</option>
-                  <?php } ?>
-                  
-                  <?php if ($filter_order_status == '3') { ?>
-                  <option value="3" selected="selected">Cancelled</option>
-                  <?php } else { ?>
-                  <option value="3">Cancelled</option>
                   <?php } ?>
                   
                 </select>
@@ -227,6 +227,8 @@
                         <a class="btn-danger" style="padding:2px 5px;border-radius:5px;">Denied</a>
                         <?php } elseif($order['qstatus'] == 'Awaiting Approval') { ?>
                         <a class="btn-warning" style="padding:2px 5px;border-radius:5px;">Pending</a>
+                        <?php } elseif($order['qstatus'] == 'Processing') { ?>
+                        <a class="btn-warning" style="background-color: white;border: 1px solid #000;border-radius: 5px;color: #666666;padding: 0 10px;">Processing</a>
                         <?php } else { ?>
                         	<?php echo $order['qstatus']; ?>
                         <?php } ?>

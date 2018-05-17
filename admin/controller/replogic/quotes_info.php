@@ -171,6 +171,11 @@ class ControllerReplogicQuotesInfo extends Controller {
 		$quote_id = $this->request->get['quote_id'];
 		$quote_info = $this->model_replogic_order_quotes->getOrderquote($this->request->get['quote_id']);
 		
+		if($quote_info['status'] == 0)
+		{
+			$this->model_replogic_order_quotes->statuschange($quote_id,3);
+		}
+		
 		$data['Qdate_added'] = date('d M, Y', strtotime($quote_info['date_added']));
 		$data['store_url'] = $this->request->server['HTTPS'] ? HTTPS_CATALOG : HTTP_CATALOG;
 		$data['store_name'] = $this->config->get('config_name');

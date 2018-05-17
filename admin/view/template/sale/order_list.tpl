@@ -89,13 +89,27 @@
                   <button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
                   </span></div>
               </div>
-              <div class="form-group">
+              <!--<div class="form-group">
                 <label class="control-label" for="input-date-modified"><?php echo $entry_date_modified; ?></label>
                 <div class="input-group date">
                   <input type="text" name="filter_date_modified" value="<?php echo $filter_date_modified; ?>" placeholder="<?php echo $entry_date_modified; ?>" data-date-format="YYYY-MM-DD" id="input-date-modified" class="form-control" />
                   <span class="input-group-btn">
                   <button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
                   </span></div>
+              </div>-->
+              <div class="form-group">
+                <label class="control-label" for="input-customer">Sales Rep Name</label>
+                   <select name="filter_salesrepid" class="form-control">
+                	<option value="">Select Sales Rep Name</option>
+                    <?php foreach ($salesrepnames as $salesrepname) {  ?>
+                <?php if ($salesrepname['salesrep_id'] == $filter_salesrepid) { ?>
+                <option value="<?php echo $salesrepname['salesrep_id']; ?>" selected="selected"><?php echo $salesrepname['salesrep_name']; ?> <?php echo $salesrepname['salesrep_lastname']; ?></option>
+                <?php } else { ?>
+                <option value="<?php echo $salesrepname['salesrep_id']; ?>"><?php echo $salesrepname['salesrep_name']; ?> <?php echo $salesrepname['salesrep_lastname']; ?></option>
+                <?php } ?>
+                <?php } ?>
+                    
+                </select>         
               </div>
               <button type="button" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-search"></i> Search</button>
               <button type="button" id="button-filter-reset" class="btn btn-primary pull-right" style="margin-right:10px;"><i class="fa fa-refresh"></i> Reset</button>
@@ -123,25 +137,25 @@
                     <?php } else { ?>
                     <a href="<?php echo $sort_salesrep; ?>">Sales Rep</a>
                     <?php } ?></td>
-                  <td class="text-left"><?php if ($sort == 'order_status') { ?>
-                    <a href="<?php echo $sort_status; ?>" class="<?php echo strtolower($order); ?>"><?php echo $column_status; ?></a>
+                  <td class="text-left"><?php if ($sort == 'o.date_added') { ?>
+                    <a href="<?php echo $sort_date_added; ?>" class="<?php echo strtolower($order); ?>"><?php echo $column_date_added; ?></a>
                     <?php } else { ?>
-                    <a href="<?php echo $sort_status; ?>"><?php echo $column_status; ?></a>
+                    <a href="<?php echo $sort_date_added; ?>"><?php echo $column_date_added; ?></a>
                     <?php } ?></td>
                   <td class="text-left"><?php if ($sort == 'o.total') { ?>
                     <a href="<?php echo $sort_total; ?>" class="<?php echo strtolower($order); ?>"><?php echo $column_total; ?></a>
                     <?php } else { ?>
                     <a href="<?php echo $sort_total; ?>"><?php echo $column_total; ?></a>
                     <?php } ?></td>
-                  <td class="text-left"><?php if ($sort == 'o.date_added') { ?>
-                    <a href="<?php echo $sort_date_added; ?>" class="<?php echo strtolower($order); ?>"><?php echo $column_date_added; ?></a>
-                    <?php } else { ?>
-                    <a href="<?php echo $sort_date_added; ?>"><?php echo $column_date_added; ?></a>
-                    <?php } ?></td>
                   <td class="text-left"><?php if ($sort == 'o.date_modified') { ?>
                     <a href="<?php echo $sort_date_modified; ?>" class="<?php echo strtolower($order); ?>"><?php echo $column_date_modified; ?></a>
                     <?php } else { ?>
                     <a href="<?php echo $sort_date_modified; ?>"><?php echo $column_date_modified; ?></a>
+                    <?php } ?></td>
+                    <td class="text-left"><?php if ($sort == 'order_status') { ?>
+                    <a href="<?php echo $sort_status; ?>" class="<?php echo strtolower($order); ?>"><?php echo $column_status; ?></a>
+                    <?php } else { ?>
+                    <a href="<?php echo $sort_status; ?>"><?php echo $column_status; ?></a>
                     <?php } ?></td>
                   <td class="text-right"><?php echo $column_action; ?></td>
                 </tr>
@@ -159,10 +173,24 @@
                   <td class="text-left"><?php echo $order['order_id']; ?></td>
                   <td class="text-left"><?php echo $order['customer']; ?></td>
                   <td class="text-left"><?php echo $order['salesrep']; ?></td>
-                  <td class="text-left"><?php echo $order['order_status']; ?></td>
-                  <td class="text-left"><?php echo $order['total']; ?></td>
                   <td class="text-left"><?php echo $order['date_added']; ?></td>
+                  <td class="text-left"><?php echo $order['total']; ?></td>
                   <td class="text-left"><?php echo $order['date_modified']; ?></td>
+                  <td class="text-left">
+                  	<?php //echo $order['order_status']; ?>
+                    <?php if($order['order_status'] == 'Complete') { ?>
+                    	<a class="btn-success" style="padding:2px 5px;border-radius:5px;">Order Confirmed</a>
+                    <?php } else if($order['order_status'] == 'Pending') { ?>
+                    	<a class="btn-warning" style="padding:2px 5px;border-radius:5px;">Pending</a>
+                    <?php } else if($order['order_status'] == 'Failed') { ?>
+                    	<a class="btn-warning" style="padding:2px 5px;border-radius:5px;background-color:#f56b6b;">Failed</a>
+                    <?php } else if($order['order_status'] == 'Processing') { ?>
+                    	<a class="btn-warning" style="background-color: white;border: 1px solid #000;border-radius: 5px;color: #666666;padding: 0 10px;">Processing</a>
+                    <?php } else { ?>
+                    	<?php echo $order['order_status']; ?>
+                    <?php } ?>
+                    
+                  </td>
                   <td class="text-right"><a href="<?php echo $order['view']; ?>" data-toggle="tooltip" title="<?php echo $button_view; ?>" class="btn btn-info"><i class="fa fa-eye"></i></a> <!--<a href="<?php echo $order['edit']; ?>" data-toggle="tooltip" title="<?php echo $button_edit; ?>" class="btn btn-primary"><i class="fa fa-pencil"></i></a>--></td>
                 </tr>
                 <?php } ?>
@@ -223,6 +251,12 @@ $('#button-filter').on('click', function() {
 
 	if (filter_customer_id) {
 		url += '&filter_customer_id=' + encodeURIComponent(filter_customer_id);
+	}
+	
+	var filter_salesrepid = $('select[name=\'filter_salesrepid\']').val();
+
+	if (filter_salesrepid) {
+		url += '&filter_salesrepid=' + encodeURIComponent(filter_salesrepid);
 	}
 
 	var filter_order_status = $('select[name=\'filter_order_status\']').val();

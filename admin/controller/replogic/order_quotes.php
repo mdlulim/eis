@@ -529,7 +529,7 @@ class ControllerReplogicOrderQuotes extends Controller {
 		$this->load->model('user/user');
 		$current_user = $this->session->data['user_id'];
 		$current_user_group_id = $this->model_user_user->getUser($current_user); ;
-		$current_user_group = $this->model_user_user_group->getUserGroup($current_user_group_id['user_group_id']); ;
+		$current_user_group = $this->model_user_user_group->getUserGroup($current_user_group_id['user_group_id']);
 		//print_r($current_user_group); exit;
 		
 		
@@ -544,7 +544,7 @@ class ControllerReplogicOrderQuotes extends Controller {
 				$qstatus = 'Declined';
 			}
 			elseif ($result['status'] == 3){
-				$qstatus = 'Cancelled';
+				$qstatus = 'Processing';
 			}
 			
 			$objct = json_decode($result['cart']);

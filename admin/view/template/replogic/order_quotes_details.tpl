@@ -71,23 +71,35 @@
     
     <div class="panel panel-default">
       <div class="panel-heading">
-        <h3 class="panel-title"><i class="fa fa-shopping-cart"></i> Quote Id : #123</h3>
+        <h3 class="panel-title"><i class="fa fa-shopping-cart"></i> Quote Id : <strong>#<?php echo $quote_id; ?></strong></h3>
       </div>
-      <div class="panel-body">
+      <div class="panel-body" style="padding-bottom:0px;">
     	
         <div class="row">
       <div class="col-md-4">
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <h3 class="panel-title"> Quote Information</h3>
+        <div class="panel panel-default" style="min-height:195px;">
+          <div class="panel-heading" style="padding-left:5px;">
+            <h4 class="panel-title"> Quote Information</h4>
           </div>
           <table class="table">
             <tr>
               <td style="text-align:center;">
-                <span class="ctm">Channel : <b> <a href="<?php echo $store_url; ?>" target="_blank"><?php echo $store_name; ?></a></b></span><br>
-                <span class="ctm">Sales Rep : <b> <?php echo $ssfirstname; ?> <?php echo $sslastname; ?></b></span><br>
-                <span class="ctm">Status : <a class="btn-warning" style="padding:2px 5px;border-radius:5px;">Processing</a></span><br>
-                <span class="ctm">Total(ZAR) : <b> <?php echo $totals; ?></b></span><br>
+                <span class="ctm">
+                	<div class="col-md-5 rightalign1">Channel :</div> 
+                    <div class="col-md-7 paddingleft1"><b> <a href="javascript:void(0)" style="color: #666;">Saleslogic Rep<?php //echo $store_name; ?></a></b></div>
+                    </span><br>
+                <span class="ctm">
+                	<div class="col-md-5 rightalign1">Sales Rep : </div>
+                    <div class="col-md-7 paddingleft1"><b> <?php echo $ssfirstname; ?> <?php echo $sslastname; ?></b></div>
+                    </span><br>
+                <span class="ctm">
+                	<div class="col-md-5 rightalign1">Status : </div>
+                    	<div class="col-md-7 paddingleft1"><b><a class="btn-warning1" style="">Processing</a></b></div>
+                        </span><br>
+                <span class="ctm">
+                	<div class="col-md-5 rightalign1">Total(ZAR) : </div> 
+                    <div class="col-md-7 paddingleft1"><b> <?php echo $totals; ?></b></div>
+                    </span><br>
                 
                </td>
             
@@ -97,18 +109,33 @@
         </div>
       </div>
       <div class="col-md-4">
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <h3 class="panel-title">Customer Information</h3>
+        <div class="panel panel-default" style="min-height:195px;">
+          <div class="panel-heading" style="padding-left:5px;">
+            <h4 class="panel-title">Customer Information</h4>
           </div>
           <table class="table">
             <tr>
               <td style="text-align:center;">
-                <span class="ctm">Customer : <b> <?php echo $firstname; ?></b></span><br>
-                <span class="ctm">Contract Pricing : <b> <?php echo $customer_group; ?></b></span><br>
-                <span class="ctm">Email : <b> <?php echo $email; ?></b></span><br>
-                <span class="ctm">Telephone : <b> <?php echo $telephone; ?></b></span><br>
-                <span class="ctm">Address : <b> <?php echo $shipaddress['address_1']; ?>, <?php echo $shipaddress['address_2']; ?> <?php echo $shipaddress['city']; ?>, <?php echo $shipaddress['zone']; ?>, <?php echo $shipaddress['country']; ?></b></span><br>
+                <span class="ctm">
+                	<div class="col-md-6 rightalign1">Customer : </div>
+                    <div class="col-md-6 paddingleft1"><b> <?php echo $firstname; ?></b></div>
+                </span><br>
+                <span class="ctm">
+                	<div class="col-md-6 rightalign1">Contract Pricing : </div>
+                    <div class="col-md-6 paddingleft1"><b> <?php echo $customer_group; ?></b></div>
+                </span><br>
+                <span class="ctm">
+                	<div class="col-md-6 rightalign1">Email : </div>
+                    <div class="col-md-6 paddingleft1"><b> <?php echo $email; ?></b></div>
+                </span><br>
+                <span class="ctm">
+                	<div class="col-md-6 rightalign1">Telephone : </div>
+                    <div class="col-md-6 paddingleft1"><b> <?php echo $telephone; ?></b></div>
+                </span><br>
+                <span class="ctm">
+                	<div class="col-md-6 rightalign1">Address : </div>
+                    <div class="col-md-6 paddingleft1" style="padding-right: 0px;"><b style="text-align: initial;"> <?php echo $shipaddress['address_1']; ?>, <?php echo $shipaddress['address_2']; ?> <?php echo $shipaddress['city']; ?>, <?php echo $shipaddress['zone']; ?>, <?php echo $shipaddress['country']; ?></b></div>
+                </span><br>
                 
                </td>
             
@@ -118,21 +145,41 @@
         </div>
       </div>
       <style>
-	  .ctm{line-height:20px;}
+		  .ctm{line-height:21px;}
+		  .rightalign1 {text-align: right;}
+		  .paddingleft1 {padding-left: 0px;}
+		  .paddingleft1 b{ float:left;}
+		  .btn-warning1{background-color: white;border: 1px solid #000;border-radius: 5px;color: #666666;padding: 0 10px;}
+		  .panel-heading h4{font-weight:bold;}
 	  </style>
       <div class="col-md-4">
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <h3 class="panel-title">Requested By</h3>
+        <div class="panel panel-default" style="min-height:195px;">
+          <div class="panel-heading" style="padding-left:5px;">
+            <h4 class="panel-title">Requested By</h4>
           </div>
           <table class="table">
             <tr>
               <td style="text-align:center;">
-                <span class="ctm">Customer Contact : <b> <?php echo $ccfirstname; ?> <?php echo $cclastname; ?></b></span><br>
-                <span class="ctm">Email : <b> <?php echo $ccemail; ?></b></span><br>
-                <span class="ctm">Telephone : <b> <?php echo $cctelephone; ?></b></span><br>
-                <span class="ctm">Quote Id : <b> #<?php echo $quote_id; ?></b></span><br>
-                <span class="ctm">Date Added : <b> <?php echo $Qdate_added; ?></b></span><br>
+                <span class="ctm">
+                	<div class="col-md-6 rightalign1">Customer Contact : </div>
+                    <div class="col-md-6 paddingleft1"><b> <?php echo $ccfirstname; ?> <?php echo $cclastname; ?></b></div>
+                </span><br>
+                <span class="ctm">
+                	<div class="col-md-6 rightalign1">Email : </div>
+                    <div class="col-md-6 paddingleft1"><b> <?php echo $ccemail; ?></b></div>
+                </span><br>
+                <span class="ctm">
+                	<div class="col-md-6 rightalign1">Telephone : </div>
+                    <div class="col-md-6 paddingleft1"><b> <?php echo $cctelephone; ?></b></div>
+                </span><br>
+                <span class="ctm">
+                	<div class="col-md-6 rightalign1">Quote Id : </div>
+                    <div class="col-md-6 paddingleft1"><b> #<?php echo $quote_id; ?></b></div>
+                </span><br>
+                <span class="ctm">
+                	<div class="col-md-6 rightalign1">Date Added : </div>
+                    <div class="col-md-6 paddingleft1"><b> <?php echo $Qdate_added; ?></b></div>
+                </span><br>
                 
                </td>
             
@@ -286,11 +333,11 @@
             <?php } ?>
          <?php } else { ?>
          	 <tr>
-              <td colspan="5" class="text-right">Sub-Total</td>
+              <td colspan="5" class="text-right">Sub-Total (Excl):</td>
               <td class="text-right" colspan="2" style="text-align:center;"><?php echo $totals; ?></td>
             </tr>
              <tr>
-              <td colspan="5" class="text-right">Total</td>
+              <td colspan="5" class="text-right">Total (Incl):</td>
               <td class="text-right" colspan="2" style="text-align:center;"><?php echo $totals; ?></td>
             </tr>
          <?php } ?>
@@ -604,6 +651,7 @@ $(document).delegate('#button-ip-add', 'click', function() {
 
 			if (json['success']) {
 				$('#content > .container-fluid').prepend('<div class="alert alert-success"><i class="fa fa-check-circle"></i> ' + json['success'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+				location.reload();
 			}
 		},
 		error: function(xhr, ajaxOptions, thrownError) {
@@ -647,7 +695,8 @@ $(document).ready(function(){
 
 setTimeout(function() {
        
-				
+if(token)
+{				
 				
 				$.ajax({
 					url: '<?php echo $catalog; ?>index.php?route=api/customer&callfrom=orderform&token=' + token + '&store_id=0',
@@ -758,7 +807,7 @@ setTimeout(function() {
 		
 		$('select[name=\'shippingaddress\']').trigger('change');
 		
-				
+	}			
 				
     }, 1000);
 

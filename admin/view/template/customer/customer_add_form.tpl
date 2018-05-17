@@ -34,7 +34,7 @@
               <div class="row">
                 
               <fieldset style="margin: 0px 18px;">        
-                  <legend style="width: 100px; padding-top: 24px; padding-left: 14px;"><?php echo $tab_general; ?></legend>
+                  <legend style="width: 173px; padding-top: 24px; padding-left: 14px;">Customer Details</legend>
                   <div class="col-sm-1">
                   
                 </div>
