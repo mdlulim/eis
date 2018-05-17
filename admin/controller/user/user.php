@@ -20,7 +20,14 @@ class ControllerUserUser extends Controller {
 		$this->load->model('user/user');
 
 		if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validateForm()) {
-			$this->model_user_user->addUser($this->request->post);
+
+
+			$addUserInfo = $this->request->post;
+			$addUserInfo['password'] = randomPassword();
+			$this->model_user_user->addUser($addUserInfo);
+
+			// send email invitation to user
+			$this->sendUserInvitation($addUserInfo);
 
 			$this->session->data['success'] = $this->language->get('text_success');
 
@@ -144,6 +151,36 @@ class ControllerUserUser extends Controller {
 		}
 
 		$this->getList();
+	}
+
+	protected function sendUserInvitation($user_info) {
+		# build data array
+		$data['subject'] = 'Welcome to Saleslogic';
+		$data['to']      = array('email'=>$user_info['email'], 'name'=>$user_info['firstname']);
+		$data['from']    = array('email'=>$this->config->get('config_email'), 'name'=>$this->config->get('config_name'));
+
+		$data['subject'] = 'Welcome to Saleslogic';
+		$data['message'] = 'Dear User. Welcome to Saleslogic. Your new password is: '.$user_info['password'].'. Regards, Saleslogic Team';
+
+		# build email message [html]
+		// $this->load->model('extension/mail/template');
+		// $tempData = array(
+		// 	'emailtemplate_key' => 'user.invitation'
+		// );
+		// $template                  = $this->model_extension_mail_template->load($tempData);
+		// $template->data['password']= $user_info['password'];
+
+		# smtp settings
+		$settings['protocol']      = $this->config->get('config_mail_protocol');
+		$settings['parameter']     = $this->config->get('config_mail_parameter');
+		$settings['smtp_hostname'] = $this->config->get('config_mail_smtp_hostname');
+		$settings['smtp_username'] = $this->config->get('config_mail_smtp_username');
+		$settings['smtp_password'] = $this->config->get('config_mail_smtp_password');
+		$settings['smtp_port']     = $this->config->get('config_mail_smtp_port');
+		$settings['smtp_timeout']  = $this->config->get('config_mail_smtp_timeout');
+
+		# send mail
+		sendEmail($data, $settings);
 	}
 
 	protected function getList() {
@@ -350,8 +387,8 @@ class ControllerUserUser extends Controller {
 
 		$data['entry_username'] = $this->language->get('entry_username');
 		$data['entry_user_group'] = $this->language->get('entry_user_group');
-		$data['entry_password'] = $this->language->get('entry_password');
-		$data['entry_confirm'] = $this->language->get('entry_confirm');
+		// $data['entry_password'] = $this->language->get('entry_password');
+		// $data['entry_confirm'] = $this->language->get('entry_confirm');
 		$data['entry_firstname'] = $this->language->get('entry_firstname');
 		$data['entry_lastname'] = $this->language->get('entry_lastname');
 		$data['entry_email'] = $this->language->get('entry_email');
@@ -373,11 +410,11 @@ class ControllerUserUser extends Controller {
 			$data['error_username'] = '';
 		}
 
-		if (isset($this->error['password'])) {
-			$data['error_password'] = $this->error['password'];
-		} else {
-			$data['error_password'] = '';
-		}
+		// if (isset($this->error['password'])) {
+		// 	$data['error_password'] = $this->error['password'];
+		// } else {
+		// 	$data['error_password'] = '';
+		// }
 
 		if (isset($this->error['confirm'])) {
 			$data['error_confirm'] = $this->error['confirm'];
@@ -487,11 +524,11 @@ class ControllerUserUser extends Controller {
 		$data['current_user_group'] = $current_user_group;
 		
 
-		if (isset($this->request->post['password'])) {
-			$data['password'] = $this->request->post['password'];
-		} else {
-			$data['password'] = '';
-		}
+		// if (isset($this->request->post['password'])) {
+		// 	$data['password'] = $this->request->post['password'];
+		// } else {
+		// 	$data['password'] = '';
+		// }
 
 		if (isset($this->request->post['confirm'])) {
 			$data['confirm'] = $this->request->post['confirm'];
@@ -603,15 +640,15 @@ class ControllerUserUser extends Controller {
 			}
 		}
 
-		if ($this->request->post['password'] || (!isset($this->request->get['user_id']))) {
-			if ((utf8_strlen($this->request->post['password']) < 4) || (utf8_strlen($this->request->post['password']) > 20)) {
-				$this->error['password'] = $this->language->get('error_password');
-			}
+		// if ($this->request->post['password'] || (!isset($this->request->get['user_id']))) {
+		// 	if ((utf8_strlen($this->request->post['password']) < 4) || (utf8_strlen($this->request->post['password']) > 20)) {
+		// 		$this->error['password'] = $this->language->get('error_password');
+		// 	}
 
-			if ($this->request->post['password'] != $this->request->post['confirm']) {
-				$this->error['confirm'] = $this->language->get('error_confirm');
-			}
-		}
+		// 	if ($this->request->post['password'] != $this->request->post['confirm']) {
+		// 		$this->error['confirm'] = $this->language->get('error_confirm');
+		// 	}
+		// }
 
 		return !$this->error;
 	}

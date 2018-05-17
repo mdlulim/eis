@@ -11,11 +11,15 @@ class ControllerCommonSalesDashboard extends Controller {
 		# stylesheets (CSS) files
 		$this->document->addStyle('view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.css');
 		$this->document->addStyle('view/javascript/datatables/datatables.min.css');
+		$this->document->addStyle('view/javascript/bootstrap-sweetalert/sweetalert.css');
 		$this->document->addStyle('view/stylesheet/custom.css');
 
 		# javascript (JS) files
 		$this->document->addScript('view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.js');
 		$this->document->addScript('view/javascript/datatables/datatables.min.js');
+		$this->document->addScript('view/javascript/bootstrap-sweetalert/sweetalert.min.js');
+		$this->document->addScript('view/javascript/bootstrap-sweetalert/sweetalert-data.js');
+		$this->document->addScript('view/javascript/common.js');
 		$this->document->addScript('view/javascript/dashboard.js');
 		
 		# controller(s)
@@ -262,6 +266,7 @@ class ControllerCommonSalesDashboard extends Controller {
 
 		/*----------  Quotes Awaiting Approval  ----------*/
 		$data['unapproved_quotes'] = $this->model_replogic_order_quotes->getQuotesAwaitingApprovalCount($filters);
+		$data['unapproved_quotes_tile'] = ($data['unapproved_quotes'] == 0) ? "tile-default" : "tile-danger";
 		
 		# View more link(s)
 		$data['order_view_more'] = $this->url->link('sale/order', "token=$token", true);

@@ -262,12 +262,14 @@ class ControllerCommonOrdersDashboard extends Controller {
 		$this->load->model('catalog/product');
 		$filters['filter_quantity'] = 0;
 		$data['stock_alerts'] = $this->model_catalog_product->getProductStockAlerts($filters);
+		$data['stock_alerts_tile'] = ($data['stock_alerts'] == 0) ? "tile-default" : "tile-warning";
 
 		/*----------  Quotes Awaiting Approval  ----------*/
 		$this->load->model('replogic/order_quotes');
 
 		# get number of quotes awaiting approval
 		$data['unapproved_quotes'] = $this->model_replogic_order_quotes->getQuotesAwaitingApprovalCount($filters);		
+		$data['unapproved_quotes_tile'] = ($data['unapproved_quotes'] == 0) ? "tile-default" : "tile-danger";
 		
 		# View more link(s)
 		$data['order_view_more'] = $this->url->link('sale/order', "token=$token", true);

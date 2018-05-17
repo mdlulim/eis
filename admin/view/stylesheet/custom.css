@@ -114,7 +114,7 @@ table#customersByOrdersTbl.no-footer {
 .tile > .tile-footer { text-align: right; }
 .tile > .tile-body { padding-top: 50px; padding-bottom: 0px; }
 
-.tile.tile-default { background-color: #FFFFFF; color: #FFFFFF; }
+.tile.tile-default { background-color: #FFFFFF; color: #666666; border: 1px solid #D2D2D2; }
 .tile.tile-primary { background-color: #1E91CF; color: #FFFFFF; }
 .tile.tile-info { background-color: #00BCAE; color: #FFFFFF; }
 .tile.tile-success { background-color: #2BB34B; color: #FFFFFF; }
@@ -128,16 +128,18 @@ table#customersByOrdersTbl.no-footer {
 .tile.tile-warning > .tile-heading, .tile.tile-warning > .tile-footer { background-color: #FAB739; }
 .tile.tile-danger > .tile-heading, .tile.tile-danger > .tile-footer { background-color: #EE625C; }
 
+.tile.tile-default > .tile-body { color: #666666; }
+.tile.tile-default:hover .tile-body i { color: #C3C3C3; }
 .tile > .tile-body i { opacity: 1; margin-left: 5px; }
 .tile > .tile-body i:hover { opacity: .3 }
-
 .tile > .tile-body h2 {
 	margin-bottom: 0;
-    padding-bottom: 0;
-    line-height: 24px;
-    font-size: 29px;
-    font-weight: 300;
+  padding-bottom: 0;
+  line-height: 24px;
+  font-size: 29px;
+  font-weight: 300;
 }
+.tile.tile-default a { color: #C3C3C3; }
 
 /*=====  End of Tiles  ======*/
 

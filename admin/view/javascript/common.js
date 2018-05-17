@@ -191,6 +191,10 @@ $(document).ready(function() {
 	$('[data-toggle=\'tooltip\']').on('remove', function() {
 		$(this).tooltip('destroy');
 	});
+
+	$('#button-login').on('click', function (e) {
+		$('.loader-wrapper').show();
+	});
 });
 
 // Autocomplete */
@@ -316,4 +320,5 @@ $(document).ready(function() {
 			$this.after($dropdown);
 		});
 	}
-})(window.jQuery);
+
+})(window.jQuery)

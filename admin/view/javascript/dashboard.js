@@ -10,6 +10,27 @@
         });
     };
 
+    var initPrompChangePassword = function () {
+        $(document).ready(function() {
+            if (location.search.indexOf('prompt_change_password=1') !== -1) {
+                swal({
+                    title: "Choose Your Password",
+                    text: "You logged in with a system generated password. You will now be asked to choose your own password.",
+                    type: "info",
+                    showCancelButton: false,
+                    confirmButtonClass: "btn btn-info",
+                    confirmButtonText: "Ok, proceed",
+                    closeOnConfirm: false
+                },
+                function() {
+                    var token = getURLVar('token');
+                    var redirect = "index.php?route=common/choose_password&token="+token;
+                    location.href = redirect;
+                });
+            }
+        });
+    };
+
     var initMenuEvents = function () {
         $(document).on("click", '#Dashboard li a', function () {
             if ($('.loader-wrapper').length > 0) {
@@ -87,6 +108,7 @@
         });
     };
     initLoader();
+    initPrompChangePassword();
     initMenuEvents();
     initDateFilter();
     initDataTables();

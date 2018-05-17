@@ -100,7 +100,7 @@
         </div>
 
         <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
-          <div class="tile tile-warning">
+          <div class="tile <?=$stock_alerts_tile?>">
             <div class="tile-body">
               <div class="row">
                 <div class="col-xs-3">
@@ -119,7 +119,7 @@
         </div>
 
         <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
-          <div class="tile tile-danger">
+          <div class="tile <?=$unapproved_quotes_tile?>">
             <div class="tile-body">
               <div class="row">
                 <div class="col-xs-3">
