@@ -1,6 +1,6 @@
 <?php echo $header; ?><?php echo $column_left; ?>
 
-<div id="content">
+<div id="content" class="menu-setting-wrapper">
   <div class="page-header">
     <div class="container-fluid">
       <div class="pull-right">
@@ -332,8 +332,8 @@
 			border-bottom: 1px dotted #e3e3e3;
 		}
 
-		.nav > li > a:hover, .nav > li > a.parent{background-color:#F5F5F5; color: #555;}
-		.nav > li > a:hover, .nav > li > a.parent:focus{background-color:#eee !important; color: #555;}
+		.menu-setting-wrapper .nav.nav-pills > li > a:hover, .menu-setting-wrapper .nav.nav-pills > li > a.parent{background-color:#F5F5F5; color: #555;}
+		.menu-setting-wrapper .nav.nav-pills > li > a:hover, .menu-setting-wrapper .nav.nav-pills > li > a.parent:focus{background-color:#eee !important; color: #555;}
 
 		.grandchild-menu, .lastgrandchild-menu {
 			margin: 0;
