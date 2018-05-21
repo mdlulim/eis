@@ -11,9 +11,9 @@
 		});
 		$(document).on('change', '#send_invitation', function () {
 			if ($(this).is(':checked')) {
-				$(this).val('1');
+				$(this).val('yes');
 			} else {
-				$(this).val('0');
+				$(this).val('no');
 			}
 		});
 		$(document).on('click', 'button[type="submit"]', function(e) {
@@ -120,8 +120,13 @@
     	});
     };
 
+    var initCustomerContact = function () {
+    	
+    };
+
     initStateChange();
     initSendInvitation();
     initBulkSendInvitation();
+    initCustomerContact();
 
 }(jQuery));

@@ -76,7 +76,7 @@
                         <label class="col-sm-3 control-label" for="send_invitation">Send Wholesale Invitation</label>
                         <div class="col-sm-9">
                           <label class="radio">
-                            <input type="checkbox" name="send_invitation" id="send_invitation" value="1" checked>
+                            <input type="checkbox" name="send_invitation" id="send_invitation" value="yes" checked>
                           </label>
                           <!-- <div style="float:left;">	
                             <input type="text" value="Not Invited" disabled="disabled" class="form-control" style="width:100px;" />
