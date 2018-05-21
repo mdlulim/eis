@@ -152,7 +152,33 @@
                                   <table width="100%" cellpadding="0" cellspacing="0" border="0">
                                     <tr>
                                       <td valign="top">
-                                        Your password was changed successfully!
+                                        Good day *|CUSTOMER_NAME|*
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td height="25" style="font-size:25px; line-height:25px;">&nbsp;</td>
+                                    </tr>
+                                    <tr>
+                                      <td>
+                                        *|COMPANY_NAME|* has invited you to purchase stock via their secure online wholesale portal.
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td height="25" style="font-size:25px; line-height:25px;">&nbsp;</td>
+                                    </tr>
+                                    <tr>
+                                      <td>
+                                        To access the portal, go to:<br/>
+                                        *|STORE_URL|*
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td height="25" style="font-size:25px; line-height:25px;">&nbsp;</td>
+                                    </tr>
+                                    <tr>
+                                      <td>
+                                        To log in, use this email address as your username.<br/>
+                                        Your password is : <strong>*|PASSWORD|*</strong>
                                       </td>
                                     </tr>
                                   </table>
@@ -191,10 +217,9 @@
                             <table width="560" cellpadding="0" cellspacing="0" border="0" class="container">
                               <tr>
                                 <td valign="top">
-                                  Urgent Notice!
+                                  Tip!
                                   <br/><br/>
-                                  If this wasn't you, contact support urgently! <br/>
-                                  <strong>Support:</strong> *|SUPPORT_EMAIL|*
+                                  Bookmark the website for quick and easy access in the future.
                                 </td>
                               </tr>
                             </table>
@@ -202,7 +227,43 @@
                           </td>
                         </tr>
                         <tr>
-                          <td height="60" style="font-size:10px; line-height:10px;">&nbsp;</td>
+                          <td height="10" style="font-size:10px; line-height:10px;">&nbsp;</td>
+                        </tr>
+                      </table>
+
+                      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                        <tr>
+                          <td height="10" style="font-size:10px; line-height:10px;">&nbsp;</td>
+                        </tr>
+                        <tr>
+                          <td align="center" valign="top">
+                            <hr style="border-top:1px solid #E9E9EA;" />
+                          </td>
+                        </tr>
+                        <tr>
+                          <td height="10" style="font-size:10px; line-height:10px;">&nbsp;</td>
+                        </tr>
+                      </table>
+
+                      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                        <tr>
+                          <td height="10" style="font-size:10px; line-height:10px;">&nbsp;</td>
+                        </tr>
+                        <tr>
+                          <td align="center" valign="top">
+
+                            <table width="560" cellpadding="0" cellspacing="0" border="0" class="container">
+                              <tr>
+                                <td valign="top" style="text-align:center">
+                                  
+                                </td>
+                              </tr>
+                            </table>
+
+                          </td>
+                        </tr>
+                        <tr>
+                          <td height="30" style="font-size:10px; line-height:10px;">&nbsp;</td>
                         </tr>
                       </table>
 
