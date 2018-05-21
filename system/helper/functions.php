@@ -44,14 +44,13 @@ function sendEmail($data, $settings, $template=false) {
 	$mail->setFrom($data['from']['email']);
 	$mail->setSender(html_entity_decode($data['from']['email'], ENT_QUOTES, 'UTF-8'));
 	$mail->setSubject(html_entity_decode($data['subject'], ENT_QUOTES, 'UTF-8'));
-	if ($template) {
+	if (is_object($template)) {
 		$mail->setText(html_entity_decode($data['message'], ENT_QUOTES, 'UTF-8'));
 		$mail = $template->hook($mail);
 	} else {
 		$mail->setText(html_entity_decode($data['message'], ENT_QUOTES, 'UTF-8'));
 	}
 	$mail->send();
-	($template) ? $template->sent() : "";
 
 	return true;
 

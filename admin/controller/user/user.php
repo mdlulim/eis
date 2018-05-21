@@ -160,15 +160,16 @@ class ControllerUserUser extends Controller {
 		$data['from']    = array('email'=>$this->config->get('config_email'), 'name'=>$this->config->get('config_name'));
 
 		$data['subject'] = 'Welcome to Saleslogic';
-		$data['message'] = 'Dear User. Welcome to Saleslogic. Your new password is: '.$user_info['password'].'. Regards, Saleslogic Team';
+		$data['message'] = 'Welcome to Saleslogic. Your new password is : '.$user_info['password'].'. To access the portal, go to: '.$this->config->get('config_url').' To log in, use this email address and your password.';
 
 		# build email message [html]
-		// $this->load->model('extension/mail/template');
-		// $tempData = array(
-		// 	'emailtemplate_key' => 'user.invitation'
-		// );
-		// $template                  = $this->model_extension_mail_template->load($tempData);
-		// $template->data['password']= $user_info['password'];
+		$this->load->model('extension/mail/template');
+		$tempData = array(
+			'emailtemplate_key' => 'user.invite'
+		);
+		$template                   = $this->model_extension_mail_template->load($tempData);
+		$template->data['password'] = $user_info['password'];
+		$template->data['store_url']= $this->config->get('config_url');
 
 		# smtp settings
 		$settings['protocol']      = $this->config->get('config_mail_protocol');
@@ -180,7 +181,7 @@ class ControllerUserUser extends Controller {
 		$settings['smtp_timeout']  = $this->config->get('config_mail_smtp_timeout');
 
 		# send mail
-		sendEmail($data, $settings);
+		sendEmail($data, $settings, $template);
 	}
 
 	protected function getList() {

@@ -3419,16 +3419,19 @@ class ControllerCustomerCustomerInfo extends Controller {
 		$data['to']      = array('email'=>$customer['email'], 'name'=>$customer['firstname']);
 		$data['from']    = array('email'=>$this->config->get('config_email'), 'name'=>$this->config->get('config_name'));
 
-		$data['subject'] = 'Welcome to Saleslogic';
-		$data['message'] = 'Dear Customer. Welcome to Saleslogic. Your new password is: '.$password.'. Regards, Saleslogic Team';
+		$data['subject'] = 'New Wholesale Account';
+		$data['message'] = 'Good day '.$customer['firstname'].', '.$this->config->get('config_owner').' has invited you to purchase stock via their secure online wholesale portal. To access the portal, go to: '.$this->config->get('config_url').'. To log in, use this email address as your username. Your password is : '.$password;
 
 		# build email message [html]
-		// $this->load->model('extension/mail/template');
-		// $tempData = array(
-		// 	'emailtemplate_key' => 'user.invitation'
-		// );
-		// $template                  = $this->model_extension_mail_template->load($tempData);
-		// $template->data['password']= $user_info['password'];
+		$this->load->model('extension/mail/template');
+		$tempData = array(
+			'emailtemplate_key' => 'customer.invite'
+		);
+		$template                        = $this->model_extension_mail_template->load($tempData);
+		$template->data['password']      = $user_info['password'];
+		$template->data['customer_name'] = $user_info['firstname'];
+		$template->data['company_name']  = $this->config->get('config_owner');
+		$template->data['store_url']     = $this->config->get('config_url');
 
 		# smtp settings
 		$settings['protocol']      = $this->config->get('config_mail_protocol');
@@ -3440,7 +3443,7 @@ class ControllerCustomerCustomerInfo extends Controller {
 		$settings['smtp_timeout']  = $this->config->get('config_mail_smtp_timeout');
 
 		# send mail and output JSON encoded results back to JS
-		$json['success'] = sendEmail($data, $settings);
+		$json['success'] = sendEmail($data, $settings, $template);;
 		echo json_encode($json);
 		die();
 	}

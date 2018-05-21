@@ -928,5 +928,17 @@ class ControllerReplogicSalesRepManagement extends Controller {
 
 		return !$this->error;
 	}
+	
+	function getsalesrepByteamId()
+	{
+	
+		$this->load->model('replogic/sales_rep_management');
+		$team_id = $this->request->post['team_id'];
+		
+		$salesrep = $this->model_replogic_sales_rep_management->getSalesRepByTeam($team_id);
+		$this->response->addHeader('Content-Type: application/json');
+		$this->response->setOutput(json_encode($salesrep));
+	
+	}
 
 }
