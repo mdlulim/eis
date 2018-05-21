@@ -144,7 +144,7 @@ class ModelReplogicScheduleManagement extends Model {
 			$sql .= "LEFT JOIN ".DB_PREFIX."salesrep_checkins sc ON sc.appointment_id=ap.appointment_id";
 			
 			if (!empty($data['filter_appointment_name']) || !empty($data['filter_salesrep_id']) || !empty($data['filter_appointment_from']) || !empty($data['filter_appointment_to']) || !empty($data['filter_customer_id']) || !empty($data['filter_type'])) 		{
-				$sql .= " where appointment_id > '0'";
+				$sql .= " where ap.appointment_id > '0'";
 			}
 			
 			$appointment_name = 'ap.appointment_name';

@@ -3,16 +3,16 @@ class ModelCustomerCustomer extends Model {
 	public function addCustomer($data) {
 		
 		// Hide Customer Group
-		$data['customer_group_id'] = 1;
+		//$data['customer_group_id'] = 1;
 		
 		if(isset($data['salesrep_id']))
 		{
-			$this->db->query("INSERT INTO " . DB_PREFIX . "customer SET customer_group_id = '" . (int)$data['customer_group_id'] . "', salesrep_id = '" . (int)$data['salesrep_id'] . "', firstname = '" . $this->db->escape($data['firstname']) . "', lastname = '" . $this->db->escape($data['firstname']) . "', email = '" . $this->db->escape($data['email']) . "', telephone = '" . $this->db->escape($data['telephone']) . "', fax = '" . $this->db->escape($data['fax']) . "', custom_field = '" . $this->db->escape(isset($data['custom_field']) ? json_encode($data['custom_field']) : '') . "', newsletter = '" . (int)$data['newsletter'] . "', salt = '" . $this->db->escape($salt = token(9)) . "', password = '', status = '" . (int)$data['status'] . "', approved = '" . (int)$data['approved'] . "', safe = '" . (int)$data['safe'] . "', date_added = NOW()");
+			$this->db->query("INSERT INTO " . DB_PREFIX . "customer SET customer_group_id = '" . (int)$data['customer_group_id'] . "', salesrep_id = '" . (int)$data['salesrep_id'] . "', firstname = '" . $this->db->escape($data['firstname']) . "', lastname = '" . $this->db->escape($data['firstname']) . "', payment_method = '" . $this->db->escape($data['payment_method']) . "', email = '" . $this->db->escape($data['email']) . "', telephone = '" . $this->db->escape($data['telephone']) . "', fax = '" . $this->db->escape($data['fax']) . "', custom_field = '" . $this->db->escape(isset($data['custom_field']) ? json_encode($data['custom_field']) : '') . "', newsletter = '" . (int)$data['newsletter'] . "', salt = '" . $this->db->escape($salt = token(9)) . "', password = '', status = '" . (int)$data['status'] . "', approved = '" . (int)$data['approved'] . "', safe = '" . (int)$data['safe'] . "', date_added = NOW()");
 		
 		}
 		else
 		{
-			$this->db->query("INSERT INTO " . DB_PREFIX . "customer SET customer_group_id = '" . (int)$data['customer_group_id'] . "', firstname = '" . $this->db->escape($data['firstname']) . "', lastname = '" . $this->db->escape($data['firstname']) . "', email = '" . $this->db->escape($data['email']) . "', telephone = '" . $this->db->escape($data['telephone']) . "', fax = '" . $this->db->escape($data['fax']) . "', custom_field = '" . $this->db->escape(isset($data['custom_field']) ? json_encode($data['custom_field']) : '') . "', newsletter = '" . (int)$data['newsletter'] . "', salt = '" . $this->db->escape($salt = token(9)) . "', password = '', status = '" . (int)$data['status'] . "', approved = '" . (int)$data['approved'] . "', safe = '" . (int)$data['safe'] . "', date_added = NOW()");
+			$this->db->query("INSERT INTO " . DB_PREFIX . "customer SET customer_group_id = '" . (int)$data['customer_group_id'] . "', firstname = '" . $this->db->escape($data['firstname']) . "', lastname = '" . $this->db->escape($data['firstname']) . "', payment_method = '" . $this->db->escape($data['payment_method']) . "', email = '" . $this->db->escape($data['email']) . "', telephone = '" . $this->db->escape($data['telephone']) . "', fax = '" . $this->db->escape($data['fax']) . "', custom_field = '" . $this->db->escape(isset($data['custom_field']) ? json_encode($data['custom_field']) : '') . "', newsletter = '" . (int)$data['newsletter'] . "', salt = '" . $this->db->escape($salt = token(9)) . "', password = '', status = '" . (int)$data['status'] . "', approved = '" . (int)$data['approved'] . "', safe = '" . (int)$data['safe'] . "', date_added = NOW()");
 			
 		}
 
@@ -67,22 +67,26 @@ class ModelCustomerCustomer extends Model {
 		return $customer_id;
 	}
 
-	public function editCustomer($customer_id, $data) {
+	public function addCustomerActivity($customer_id, $ip, $data) {
+		$this->db->query("INSERT INTO " . DB_PREFIX . "customer_activity SET customer_id = '" . (int)$customer_id . "', `key` = 'customer_invitation', data = '" . $this->db->escape(json_encode($data)) . "', ip = '" . $this->db->escape($ip) . "', date_added = NOW()");
+	}
+
+	public function editCustomer($customer_id, $data) { 
 		if (!isset($data['custom_field'])) {
 			$data['custom_field'] = array();
 		}
 		
 		// Hide Customer Group
-		$data['customer_group_id'] = 1;
+		//$data['customer_group_id'] = 1;
 		
 		if(isset($data['salesrep_id']))
-		{ echo "UPDATE " . DB_PREFIX . "customer SET customer_group_id = '" . (int)$data['customer_group_id'] . "', salesrep_id = '" . (int)$data['salesrep_id'] . "', firstname = '" . $this->db->escape($data['firstname']) . "', lastname = '" . $this->db->escape($data['firstname']) . "', email = '" . $this->db->escape($data['email']) . "', telephone = '" . $this->db->escape($data['telephone']) . "', fax = '" . $this->db->escape($data['fax']) . "', custom_field = '" . $this->db->escape(isset($data['custom_field']) ? json_encode($data['custom_field']) : '') . "', newsletter = '" . (int)$data['newsletter'] . "', status = '" . (int)$data['status'] . "', approved = '" . (int)$data['approved'] . "', safe = '" . (int)$data['safe'] . "' WHERE customer_id = '" . (int)$customer_id . "'"; exit; 
-			$this->db->query("UPDATE " . DB_PREFIX . "customer SET customer_group_id = '" . (int)$data['customer_group_id'] . "', salesrep_id = '" . (int)$data['salesrep_id'] . "', firstname = '" . $this->db->escape($data['firstname']) . "', lastname = '" . $this->db->escape($data['firstname']) . "', email = '" . $this->db->escape($data['email']) . "', telephone = '" . $this->db->escape($data['telephone']) . "', fax = '" . $this->db->escape($data['fax']) . "', custom_field = '" . $this->db->escape(isset($data['custom_field']) ? json_encode($data['custom_field']) : '') . "', newsletter = '" . (int)$data['newsletter'] . "', status = '" . (int)$data['status'] . "', approved = '" . (int)$data['approved'] . "', safe = '" . (int)$data['safe'] . "' WHERE customer_id = '" . (int)$customer_id . "'");
+		{ 
+			$this->db->query("UPDATE " . DB_PREFIX . "customer SET customer_group_id = '" . (int)$data['customer_group_id'] . "', salesrep_id = '" . (int)$data['salesrep_id'] . "', firstname = '" . $this->db->escape($data['firstname']) . "', lastname = '" . $this->db->escape($data['firstname']) . "', payment_method = '" . $this->db->escape($data['payment_method']) . "', email = '" . $this->db->escape($data['email']) . "', telephone = '" . $this->db->escape($data['telephone']) . "', fax = '" . $this->db->escape($data['fax']) . "', custom_field = '" . $this->db->escape(isset($data['custom_field']) ? json_encode($data['custom_field']) : '') . "', newsletter = '" . (int)$data['newsletter'] . "', status = '" . (int)$data['status'] . "', approved = '" . (int)$data['approved'] . "', safe = '" . (int)$data['safe'] . "' WHERE customer_id = '" . (int)$customer_id . "'");
 		
 		}
 		else
 		{
-			$this->db->query("UPDATE " . DB_PREFIX . "customer SET customer_group_id = '" . (int)$data['customer_group_id'] . "', firstname = '" . $this->db->escape($data['firstname']) . "', lastname = '" . $this->db->escape($data['firstname']) . "', email = '" . $this->db->escape($data['email']) . "', telephone = '" . $this->db->escape($data['telephone']) . "', fax = '" . $this->db->escape($data['fax']) . "', custom_field = '" . $this->db->escape(isset($data['custom_field']) ? json_encode($data['custom_field']) : '') . "', newsletter = '" . (int)$data['newsletter'] . "', status = '" . (int)$data['status'] . "', approved = '" . (int)$data['approved'] . "', safe = '" . (int)$data['safe'] . "' WHERE customer_id = '" . (int)$customer_id . "'");
+			$this->db->query("UPDATE " . DB_PREFIX . "customer SET customer_group_id = '" . (int)$data['customer_group_id'] . "', firstname = '" . $this->db->escape($data['firstname']) . "', lastname = '" . $this->db->escape($data['firstname']) . "', payment_method = '" . $this->db->escape($data['payment_method']) . "', email = '" . $this->db->escape($data['email']) . "', telephone = '" . $this->db->escape($data['telephone']) . "', fax = '" . $this->db->escape($data['fax']) . "', custom_field = '" . $this->db->escape(isset($data['custom_field']) ? json_encode($data['custom_field']) : '') . "', newsletter = '" . (int)$data['newsletter'] . "', status = '" . (int)$data['status'] . "', approved = '" . (int)$data['approved'] . "', safe = '" . (int)$data['safe'] . "' WHERE customer_id = '" . (int)$customer_id . "'");
 		}
 
 		/*if ($data['password']) {
@@ -139,6 +143,10 @@ class ModelCustomerCustomer extends Model {
 		}
 	}
 
+	public function updateCustomerPassword($customer_id, $password) {
+		$this->db->query("UPDATE " . DB_PREFIX . "customer SET salt = '" . $this->db->escape($salt = token(9)) . "', password = '" . $this->db->escape(sha1($salt . sha1($salt . sha1($password)))) . "', invited = 1, prompt_change_password = 1 WHERE customer_id = '" . (int)$customer_id . "'");
+	}
+
 	public function editToken($customer_id, $token) {
 		$this->db->query("UPDATE " . DB_PREFIX . "customer SET token = '" . $this->db->escape($token) . "' WHERE customer_id = '" . (int)$customer_id . "'");
 	}
@@ -167,12 +175,12 @@ class ModelCustomerCustomer extends Model {
 	public function getCustomers($data = array(), $allaccess=false, $current_user_id) {
 		if($allaccess)
 		{
-			$sql = "SELECT *, CONCAT(c.firstname) AS name, cgd.name AS customer_group FROM " . DB_PREFIX . "customer c LEFT JOIN " . DB_PREFIX . "customer_group_description cgd ON (c.customer_group_id = cgd.customer_group_id) LEFT JOIN oc_salesrep sr on sr.salesrep_id = c.salesrep_id left join oc_team tm on tm.team_id = sr.sales_team_id WHERE tm.sales_manager = '".$current_user_id."' and cgd.language_id = '" . (int)$this->config->get('config_language_id') . "'";
+			$sql = "SELECT c.*, CONCAT(c.firstname) AS name, cgd.name AS customer_group, ca.key, ca.data AS customer_activity FROM " . DB_PREFIX . "customer c LEFT JOIN " . DB_PREFIX . "customer_group_description cgd ON (c.customer_group_id = cgd.customer_group_id) LEFT JOIN " . DB_PREFIX . "customer_activity ca ON ca.customer_id = c.customer_id LEFT JOIN oc_salesrep sr on sr.salesrep_id = c.salesrep_id left join oc_team tm on tm.team_id = sr.sales_team_id WHERE tm.sales_manager = '".$current_user_id."' and cgd.language_id = '" . (int)$this->config->get('config_language_id') . "'";
 			
 		}
 		else
 		{
-			$sql = "SELECT *, CONCAT(c.firstname) AS name, cgd.name AS customer_group FROM " . DB_PREFIX . "customer c LEFT JOIN " . DB_PREFIX . "customer_group_description cgd ON (c.customer_group_id = cgd.customer_group_id) WHERE cgd.language_id = '" . (int)$this->config->get('config_language_id') . "'";
+			$sql = "SELECT c.*, CONCAT(c.firstname) AS name, cgd.name AS customer_group, ca.key, ca.data AS customer_activity FROM " . DB_PREFIX . "customer c LEFT JOIN " . DB_PREFIX . "customer_group_description cgd ON (c.customer_group_id = cgd.customer_group_id) LEFT JOIN " . DB_PREFIX . "customer_activity ca ON ca.customer_id = c.customer_id WHERE cgd.language_id = '" . (int)$this->config->get('config_language_id') . "'";
 		}
 
 		$implode = array();
@@ -235,6 +243,8 @@ class ModelCustomerCustomer extends Model {
 			'c.date_added'
 		);
 
+		$sql .= " GROUP BY c.customer_id";
+
 		if (isset($data['sort']) && in_array($data['sort'], $sort_data)) {
 			$sql .= " ORDER BY " . $data['sort'];
 		} else {
@@ -247,6 +257,12 @@ class ModelCustomerCustomer extends Model {
 			$sql .= " ASC";
 		}
 
+		if (preg_match('/ORDER BY/', $sql)) {
+			$sql .= " , customer_activity DESC";
+		} else {
+			$sql .= " ORDER customer_activity DESC";
+		}
+
 		if (isset($data['start']) || isset($data['limit'])) {
 			if ($data['start'] < 0) {
 				$data['start'] = 0;
@@ -255,15 +271,36 @@ class ModelCustomerCustomer extends Model {
 			if ($data['limit'] < 1) {
 				$data['limit'] = 20;
 			}
-
+			
 			$sql .= " LIMIT " . (int)$data['start'] . "," . (int)$data['limit'];
+		} else {
+
 		}
 //echo $sql; exit;
+
+
 		$query = $this->db->query($sql);
 
 		return $query->rows;
 	}
+	
+	public function getCustomersCustomerExportImport($min,$max) {
+		
+		$sql = "SELECT c.customer_id AS customer_id, c.firstname AS firstname, c.lastname AS lastname, c.payment_method AS payment_method, c.email AS email, c.telephone AS telephone, c.newsletter AS newsletter, c.status AS status, c.approved AS approved, c.password AS password, cgd.name AS customer_group, ad.company AS companyname, ad.address_1 AS address_1, ad.address_2 AS address_2, ad.city AS city, ad.postcode AS postcode, CONCAT(sr.salesrep_name, ' ', sr.salesrep_lastname) AS salesrep, co.name as country, zn.name as region FROM " . DB_PREFIX . "customer c LEFT JOIN " . DB_PREFIX . "customer_group_description cgd ON (c.customer_group_id = cgd.customer_group_id) left join ".DB_PREFIX."salesrep sr ON (c.salesrep_id = sr.salesrep_id) left join ".DB_PREFIX."address ad ON (c.address_id = ad.address_id) left join ".DB_PREFIX."country co on (ad.country_id = co.country_id) left join ".DB_PREFIX."zone zn on (ad.zone_id = zn.zone_id) WHERE cgd.language_id = '" . (int)$this->config->get('config_language_id') . "'";
+		
+		if($min !='' && $max != '')
+		{
+			$sql .= " and c.customer_id BETWEEN ".$min." AND ".$max."";
+		}
+		
+		$sql .= " order by c.customer_id ASC";
+		//echo $sql; exit;
+		$query = $this->db->query($sql);
 
+		return $query->rows;
+		
+	
+	}
 	public function approve($customer_id) {
 		$customer_info = $this->getCustomer($customer_id);
 
@@ -728,4 +765,13 @@ class ModelCustomerCustomer extends Model {
 
 		return $query->row;
 	}
+	
+	public function addnewaddress($data) { 
+	
+	$query = $this->db->query("INSERT INTO " . DB_PREFIX . "address SET customer_id = '" . $this->db->escape($data['customer_id']) . "', firstname = '" . $this->db->escape($data['firstname']) . "', lastname = '" . $this->db->escape($data['firstname']) . "', company = '" . $this->db->escape($data['firstname']) . "', address_1 = '" . $this->db->escape($data['address_1']) . "', address_2 = '" . $this->db->escape($data['address_2']) . "', city = '" . $this->db->escape($data['city']) . "', postcode = '" . $this->db->escape($data['postcode']) . "', country_id = '" . (int)$data['country_id'] . "', zone_id = '" . (int)$data['zone_id'] . "'");
+
+		$add_id = $this->db->getLastId();
+		return $add_id;
+	}
+	
 }

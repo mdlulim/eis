@@ -53,5 +53,7 @@ function sendEmail($data, $settings, $template=false) {
 	$mail->send();
 	($template) ? $template->sent() : "";
 
+	return true;
+
 	/*=====  End of Send mail  ======*/
 }

@@ -37,7 +37,10 @@
             <li><a href="<?php echo $visitstab; ?>" >Visits</a></li>
             <li class="active"><a href="javascript:void()" >Orders</a></li>
             <li><a href="<?php echo $quotestab; ?>" >Quotes</a></li>
-            
+            <li><a href="<?php echo $historytab; ?>" >History</a></li>
+            <li><a href="<?php echo $transactionstab; ?>" >Transactions</a></li>
+            <li><a href="<?php echo $rewardpointstab; ?>" >Reward Points</a></li>
+            <li><a href="<?php echo $ipaddressestab; ?>" >Ip Addresses</a></li>
           </ul>
       
         <div class="well">
@@ -153,7 +156,7 @@
                   <td class="text-right"><?php echo $order['total']; ?></td>
                   <td class="text-left"><?php echo $order['date_added']; ?></td>
                   <td class="text-left"><?php echo $order['date_modified']; ?></td>
-                  <td class="text-right"><a href="<?php echo $order['view']; ?>" data-toggle="tooltip" title="<?php echo $button_view; ?>" class="btn btn-info"><i class="fa fa-eye"></i></a> <a href="<?php echo $order['edit']; ?>" data-toggle="tooltip" title="<?php echo $button_edit; ?>" class="btn btn-primary"><i class="fa fa-pencil"></i></a></td>
+                  <td class="text-right"><a href="<?php echo $order['view']; ?>" data-toggle="tooltip" title="<?php echo $button_view; ?>" class="btn btn-info"><i class="fa fa-eye"></i></a> <!--<a href="<?php echo $order['edit']; ?>" data-toggle="tooltip" title="<?php echo $button_edit; ?>" class="btn btn-primary"><i class="fa fa-pencil"></i></a>--></td>
                 </tr>
                 <?php } ?>
                 <?php } else { ?>

@@ -37,7 +37,10 @@
             <li><a href="<?php echo $visitstab; ?>" >Visits</a></li>
             <li><a href="<?php echo $orderstab; ?>" >Orders</a></li>
             <li><a href="<?php echo $quotestab; ?>" >Quotes</a></li>
-            
+            <li><a href="<?php echo $historytab; ?>" >History</a></li>
+            <li><a href="<?php echo $transactionstab; ?>" >Transactions</a></li>
+            <li><a href="<?php echo $rewardpointstab; ?>" >Reward Points</a></li>
+            <li><a href="<?php echo $ipaddressestab; ?>" >Ip Addresses</a></li>
           </ul>
         
         <div class="well">
