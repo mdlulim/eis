@@ -1,6 +1,59 @@
 <?php
 class ModelReplogicLocationManagement extends Model {
 	
+	public function getLocationsDash($data = array()) {
+		$sql = "SELECT rc.*,CONCAT(sr.salesrep_name,' ',sr.salesrep_lastname) AS salesrep_name,CONCAT(cs.firstname,' ',cs.lastname) AS customer_name, ca.latitude AS customer_lat,ca.longitude AS customer_lng ";
+		$sql.= "FROM ".DB_PREFIX."salesrep_checkins rc ";
+		$sql.= "LEFT JOIN ".DB_PREFIX."customer cs ON cs.customer_id=rc.customer_id ";
+		$sql.= "LEFT JOIN ".DB_PREFIX."address ca ON ca.address_id=cs.address_id ";
+		$sql.= "LEFT JOIN ".DB_PREFIX."salesrep sr ON sr.salesrep_id=rc.salesrep_id ";
+		$sql.= "LEFT JOIN ".DB_PREFIX."team tm on tm.team_id=sr.sales_team_id";
+
+		/*===============================
+		=            Filters            =
+		===============================*/
+
+		$condition = false;
+		
+		switch (TRUE) {
+			case (isset($filters['filter_date'])):
+				# filter by date...
+				$sql .= " WHERE DATE_FORMAT(rc.checkin,'%Y-%m-%d')='".$filters['filter_date']."'";
+				$condition = true;
+				break;
+
+			case (isset($filters['filter_month'])):
+				# filter by month...
+				$sql .= " WHERE DATE_FORMAT(rc.checkin,'%Y-%m')='".$filters['filter_month']."'";
+				$condition = true;
+				break;
+
+			case (isset($filters['filter_year'])):
+				# filter by year...
+				$sql .= " WHERE DATE_FORMAT(rc.checkin,'%Y')='".$filters['filter_year']."'";
+				$condition = true;
+				break;
+
+			case (isset($filters['filter_date_from']) && isset($filters['filter_date_to'])):
+				# filter by date range...
+				$sql .= " WHERE DATE_FORMAT(rc.checkin,'%Y-%m-%d')>='".$filters['filter_date_from']."'";
+				$sql .= " AND DATE_FORMAT(rc.checkin,'%Y-%m-%d')<='".$filters['filter_date_to']."'";
+				$condition = true;
+				break;
+		}
+
+		if (isset($filters['filter_user'])) {
+			# filter by user [role]...
+			$sql .= ($condition) ? " AND " : " WHERE ";
+			$sql .= "tm.sales_manager=".$filters['filter_user'];
+		}
+		
+		/*=====  End of Filters  ======*/
+		
+		$query = $this->db->query($sql);
+		return $query->rows;
+	}
+	
 	public function getLocations($data = array()) {
 		
 		if(!isset($data['filter_team_id']))
@@ -90,6 +143,7 @@ class ModelReplogicLocationManagement extends Model {
 
 		return $query->rows;
 	}
+
 	public function getLocation($checkin_id) {
 		$query = $this->db->query("SELECT DISTINCT * FROM " . DB_PREFIX . "salesrep_checkins WHERE checkin_id = '" . (int)$checkin_id . "'");
 

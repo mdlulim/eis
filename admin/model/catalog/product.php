@@ -622,6 +622,24 @@ class ModelCatalogProduct extends Model {
 		return $query->rows;
 	}
 
+	public function getProductStockAlerts($filters) {
+		$sql = "SELECT COUNT(DISTINCT pr.product_id) AS total ";
+		$sql.= "FROM ".DB_PREFIX."product pr ";
+		$sql.= "LEFT JOIN ".DB_PREFIX."product_description pd ON pd.product_id=pr.product_id ";
+		$sql.= "WHERE pr.quantity=0 AND pd.language_id=".(int)$this->config->get('config_language_id');
+
+		/*===============================
+		=            Filters            =
+		===============================*/
+		
+		# Add code for filters here...
+		
+		/*=====  End of Filters  ======*/
+
+		$query = $this->db->query($sql);
+		return $query->row['total'];
+	}
+
 	public function getTotalProducts($data = array()) {
 		$sql = "SELECT COUNT(DISTINCT p.product_id) AS total FROM " . DB_PREFIX . "product p LEFT JOIN " . DB_PREFIX . "product_description pd ON (p.product_id = pd.product_id)";
 
@@ -660,7 +678,7 @@ class ModelCatalogProduct extends Model {
 		}
 
 		$query = $this->db->query($sql);
-
+		
 		return $query->row['total'];
 	}
 
