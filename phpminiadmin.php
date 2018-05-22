@@ -14,10 +14,10 @@
  #DEFAULT db connection settings
  # --- WARNING! --- if you set defaults - it's recommended to set $ACCESS_PWD to protect your db!
  $DBDEF=array(
- 'user'=>"dashbzewkk_3",#required
- 'pwd'=>"qDyMQ4ivei8", #required
- 'db'=>"dashbzewkk_db3",  #optional, default DB
- 'host'=>"sql10.jnb1.host-h.net",#optional
+ 'user'=>"root",#required
+ 'pwd'=>"R6V08zZhJt", #required
+ 'db'=>"rodney",  #optional, default DB
+ 'host'=>"139.59.187.168",#optional
  'port'=>"3306",#optional
  'chset'=>"utf8",#optional, default charset
  );

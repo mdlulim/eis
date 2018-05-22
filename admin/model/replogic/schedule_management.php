@@ -73,20 +73,78 @@ class ModelReplogicScheduleManagement extends Model {
 		
 	}
 
+	public function getAppointments($filters) {
+		$sql = "SELECT ap.appointment_id,ap.appointment_name,ap.appointment_description,ap.appointment_date,ap.type,IF(type='New Business',pc.prospect_id,cs.customer_id) AS customer_id,IF(type='New Business',pc.name,cs.firstname) AS customer_name,sc.checkin_id,sc.checkin,sc.checkout,CONCAT(sr.salesrep_name,' ',sr.salesrep_lastname) AS salesrep_name ";
+		$sql.= "FROM ".DB_PREFIX."appointment ap ";
+		$sql.= "LEFT JOIN ".DB_PREFIX."customer cs on cs.customer_id = ap.customer_id ";
+		$sql.= "LEFT JOIN ".DB_PREFIX."salesrep sr ON sr.salesrep_id=ap.salesrep_id ";
+		$sql.= "LEFT JOIN ".DB_PREFIX."team tm ON tm.team_id=sr.sales_team_id ";
+		$sql.= "LEFT JOIN ".DB_PREFIX."prospective_customer pc ON pc.prospect_id=ap.customer_id ";
+		$sql.= "LEFT JOIN ".DB_PREFIX."salesrep_checkins sc on sc.appointment_id=ap.appointment_id ";
+
+		/*===============================
+		=            Filters            =
+		===============================*/
+
+		$condition = false;
+		
+		switch (TRUE) {
+			case (isset($filters['filter_date'])):
+				# filter by date...
+				$sql .= " WHERE DATE_FORMAT(ap.appointment_date,'%Y-%m-%d')='".$filters['filter_date']."'";
+				$condition = true;
+				break;
+
+			case (isset($filters['filter_month'])):
+				# filter by month...
+				$sql .= " WHERE DATE_FORMAT(ap.appointment_date,'%Y-%m')='".$filters['filter_month']."'";
+				$condition = true;
+				break;
+
+			case (isset($filters['filter_year'])):
+				# filter by year...
+				$sql .= " WHERE DATE_FORMAT(ap.appointment_date,'%Y')='".$filters['filter_year']."'";
+				$condition = true;
+				break;
+
+			case (isset($filters['filter_date_from']) && isset($filters['filter_date_to'])):
+				# filter by date range...
+				$sql .= " WHERE DATE_FORMAT(ap.appointment_date,'%Y-%m-%d')>='".$filters['filter_date_from']."'";
+				$sql .= " AND DATE_FORMAT(ap.appointment_date,'%Y-%m-%d')<='".$filters['filter_date_to']."'";
+				$condition = true;
+				break;
+		}
+
+		if (isset($filters['filter_user'])) {
+			# filter by user [role]...
+			$sql .= ($condition) ? " AND " : " WHERE ";
+			$sql .= "tm.sales_manager=".$filters['filter_user'];
+		}
+		
+		/*=====  End of Filters  ======*/
+		
+		$sql .= " ORDER BY ap.appointment_date DESC";
+		$query = $this->db->query($sql);
+		return $query->rows;
+	}
+
 	public function getScheduleManagement($data = array(), $allaccess, $current_user_id) {
 		
-		if($data['sort'] == '')
+		if ($data['sort'] == '')
 		{
 			$data['sort'] = 'appointment_date';
 		}
 		
-		if($allaccess)
+		if ($allaccess)
 		{
-		
-			$sql = "SELECT *, CONCAT(sr.salesrep_name,' ',sr.salesrep_lastname) AS salesrepname FROM " . DB_PREFIX . "appointment ap LEFT JOIN " . DB_PREFIX . "salesrep sr ON (ap.salesrep_id = sr.salesrep_id)";
+			$sql  = "SELECT ap.*,CONCAT(sr.salesrep_name,' ',sr.salesrep_lastname) AS salesrepname,cs.firstname AS customer_name,sc.checkin "; 
+			$sql .= "FROM ".DB_PREFIX."appointment ap ";
+			$sql .= "LEFT JOIN ".DB_PREFIX."salesrep sr ON (ap.salesrep_id=sr.salesrep_id) ";
+			$sql .= "LEFT JOIN ".DB_PREFIX."customer cs ON cs.customer_id=ap.customer_id ";
+			$sql .= "LEFT JOIN ".DB_PREFIX."salesrep_checkins sc ON sc.appointment_id=ap.appointment_id";
 			
 			if (!empty($data['filter_appointment_name']) || !empty($data['filter_salesrep_id']) || !empty($data['filter_appointment_from']) || !empty($data['filter_appointment_to']) || !empty($data['filter_customer_id']) || !empty($data['filter_type'])) 		{
-				$sql .= " where appointment_id > '0'";
+				$sql .= " where ap.appointment_id > '0'";
 			}
 			
 			$appointment_name = 'ap.appointment_name';
@@ -98,7 +156,13 @@ class ModelReplogicScheduleManagement extends Model {
 		}
 		else
 		{
-			$sql = "SELECT *, CONCAT(sr.salesrep_name,' ',sr.salesrep_lastname) AS salesrepname FROM oc_appointment ap left join oc_salesrep sr on sr.salesrep_id = ap.salesrep_id left join oc_team tm on tm.team_id = sr.sales_team_id where tm.sales_manager = ".$current_user_id.""; 
+			$sql = "SELECT ap.*,CONCAT(sr.salesrep_name,' ',sr.salesrep_lastname) AS salesrepname,cs.firstname AS customer_name,sc.checkin ";
+			$sql .= "FROM ".DB_PREFIX."appointment ap ";
+			$sql .= "LEFT JOIN ".DB_PREFIX."salesrep sr ON sr.salesrep_id=ap.salesrep_id ";
+			$sql .= "LEFT JOIN ".DB_PREFIX."team tm ON tm.team_id=sr.sales_team_id ";
+			$sql .= "LEFT JOIN ".DB_PREFIX."customer cs ON cs.customer_id=ap.customer_id ";
+			$sql .= "LEFT JOIN ".DB_PREFIX."salesrep_checkins sc ON sc.appointment_id=ap.appointment_id ";
+			$sql .= "WHERE tm.sales_manager=".$current_user_id;
 			
 			$appointment_name = 'ap.appointment_name';
 			$salesrep_id = 'ap.salesrep_id';

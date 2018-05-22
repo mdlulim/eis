@@ -20,7 +20,13 @@ class ControllerUserUser extends Controller {
 		$this->load->model('user/user');
 
 		if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validateForm()) {
-			$this->model_user_user->addUser($this->request->post);
+
+			$addUserInfo = $this->request->post;
+			$addUserInfo['password'] = randomPassword();
+			$this->model_user_user->addUser($addUserInfo);
+
+			// send email invitation to user
+			$this->sendUserInvitation($addUserInfo);
 
 			$this->session->data['success'] = $this->language->get('text_success');
 
@@ -58,6 +64,21 @@ class ControllerUserUser extends Controller {
 
 	public function edit() {
 		$this->load->language('user/user');
+
+		/*==================================
+		=       Add Files (Includes)       =
+		==================================*/
+
+		# stylesheets (CSS) files
+		$this->document->addStyle('view/javascript/bootstrap-sweetalert/sweetalert.css');
+		$this->document->addStyle('view/stylesheet/custom.css');
+
+		# javascript (JS) files
+		$this->document->addScript('view/javascript/bootstrap-sweetalert/sweetalert.min.js');
+		$this->document->addScript('view/javascript/bootstrap-sweetalert/sweetalert-data.js');
+		$this->document->addScript('view/javascript/user.js');
+
+		/*=====  End of Add Files (Includes)  ======*/
 
 		$this->document->setTitle($this->language->get('heading_title'));
 
@@ -144,6 +165,56 @@ class ControllerUserUser extends Controller {
 		}
 
 		$this->getList();
+	}
+
+	public function resend_password() {
+		$this->load->model('user/user');
+		$json['success'] = false;
+		if (($this->request->server['REQUEST_METHOD'] == 'POST') && (isset($this->request->post['action']) && $this->request->post['action'] == "resend_password") && isset($this->request->post['user_id'])) {
+			# get user info
+			$userInfo = $this->model_user_user->getUser($this->request->post['user_id']);
+			# generate new [random] password
+			$userInfo['password'] = randomPassword();
+			# update user password
+			$this->model_user_user->editPassword($this->request->post['user_id'], $userInfo['password']);
+			# send new password to user
+			$json['success']  = $this->sendUserInvitation($userInfo);
+		}
+		echo json_encode($json);
+	}
+
+	protected function sendUserInvitation($user_info) {
+		# build data array
+		$data['subject'] = 'Welcome to Saleslogic';
+		$data['to']      = array('email'=>$user_info['email'], 'name'=>$user_info['firstname']);
+		$data['from']    = array('email'=>$this->config->get('config_email'), 'name'=>$this->config->get('config_name'));
+
+		$data['subject'] = 'Welcome to Saleslogic';
+		$data['message'] = 'Welcome to Saleslogic. Your new password is : '.$user_info['password'].'. To access the portal, go to: '.$this->config->get('config_url').' To log in, use this email address and your password.';
+
+		# build email message [html]
+		$this->load->model('extension/mail/template');
+		$tempData = array(
+			'emailtemplate_key' => 'user.invite'
+		);
+		$template                     = $this->model_extension_mail_template->load($tempData);
+		$template->data['password']   = $user_info['password'];
+		$template->data['_url']       = $this->config->get('config_url');
+		$template->data['_name']      = $this->config->get('config_owner');
+		$template->data['_email']     = $this->config->get('config_email');
+		$template->data['help_guide'] = $this->config->get('config_url');
+
+		# smtp settings
+		$settings['protocol']      = $this->config->get('config_mail_protocol');
+		$settings['parameter']     = $this->config->get('config_mail_parameter');
+		$settings['smtp_hostname'] = $this->config->get('config_mail_smtp_hostname');
+		$settings['smtp_username'] = $this->config->get('config_mail_smtp_username');
+		$settings['smtp_password'] = $this->config->get('config_mail_smtp_password');
+		$settings['smtp_port']     = $this->config->get('config_mail_smtp_port');
+		$settings['smtp_timeout']  = $this->config->get('config_mail_smtp_timeout');
+
+		# send mail
+		return sendEmail($data, $settings, $template);
 	}
 
 	protected function getList() {
@@ -350,8 +421,8 @@ class ControllerUserUser extends Controller {
 
 		$data['entry_username'] = $this->language->get('entry_username');
 		$data['entry_user_group'] = $this->language->get('entry_user_group');
-		$data['entry_password'] = $this->language->get('entry_password');
-		$data['entry_confirm'] = $this->language->get('entry_confirm');
+		// $data['entry_password'] = $this->language->get('entry_password');
+		// $data['entry_confirm'] = $this->language->get('entry_confirm');
 		$data['entry_firstname'] = $this->language->get('entry_firstname');
 		$data['entry_lastname'] = $this->language->get('entry_lastname');
 		$data['entry_email'] = $this->language->get('entry_email');
@@ -373,11 +444,11 @@ class ControllerUserUser extends Controller {
 			$data['error_username'] = '';
 		}
 
-		if (isset($this->error['password'])) {
-			$data['error_password'] = $this->error['password'];
-		} else {
-			$data['error_password'] = '';
-		}
+		// if (isset($this->error['password'])) {
+		// 	$data['error_password'] = $this->error['password'];
+		// } else {
+		// 	$data['error_password'] = '';
+		// }
 
 		if (isset($this->error['confirm'])) {
 			$data['error_confirm'] = $this->error['confirm'];
@@ -487,11 +558,11 @@ class ControllerUserUser extends Controller {
 		$data['current_user_group'] = $current_user_group;
 		
 
-		if (isset($this->request->post['password'])) {
-			$data['password'] = $this->request->post['password'];
-		} else {
-			$data['password'] = '';
-		}
+		// if (isset($this->request->post['password'])) {
+		// 	$data['password'] = $this->request->post['password'];
+		// } else {
+		// 	$data['password'] = '';
+		// }
 
 		if (isset($this->request->post['confirm'])) {
 			$data['confirm'] = $this->request->post['confirm'];
@@ -551,6 +622,10 @@ class ControllerUserUser extends Controller {
 			$data['status'] = 0;
 		}
 
+		$data['token'] = $this->session->data['token'];
+		$data['user_id'] = (isset($this->request->get['user_id'])) ? $this->request->get['user_id'] : '';
+		$data['show_resend_password'] = (isset($this->request->get['user_id']));
+
 		$data['header'] = $this->load->controller('common/header');
 		$data['column_left'] = $this->load->controller('common/column_left');
 		$data['footer'] = $this->load->controller('common/footer');
@@ -603,15 +678,15 @@ class ControllerUserUser extends Controller {
 			}
 		}
 
-		if ($this->request->post['password'] || (!isset($this->request->get['user_id']))) {
-			if ((utf8_strlen($this->request->post['password']) < 4) || (utf8_strlen($this->request->post['password']) > 20)) {
-				$this->error['password'] = $this->language->get('error_password');
-			}
+		// if ($this->request->post['password'] || (!isset($this->request->get['user_id']))) {
+		// 	if ((utf8_strlen($this->request->post['password']) < 4) || (utf8_strlen($this->request->post['password']) > 20)) {
+		// 		$this->error['password'] = $this->language->get('error_password');
+		// 	}
 
-			if ($this->request->post['password'] != $this->request->post['confirm']) {
-				$this->error['confirm'] = $this->language->get('error_confirm');
-			}
-		}
+		// 	if ($this->request->post['password'] != $this->request->post['confirm']) {
+		// 		$this->error['confirm'] = $this->language->get('error_confirm');
+		// 	}
+		// }
 
 		return !$this->error;
 	}

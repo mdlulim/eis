@@ -15,11 +15,15 @@ class ModelUserUser extends Model {
 	}
 
 	public function editPassword($user_id, $password) {
-		$this->db->query("UPDATE `" . DB_PREFIX . "user` SET salt = '" . $this->db->escape($salt = token(9)) . "', password = '" . $this->db->escape(sha1($salt . sha1($salt . sha1($password)))) . "', code = '' WHERE user_id = '" . (int)$user_id . "'");
+		$this->db->query("UPDATE `" . DB_PREFIX . "user` SET salt = '" . $this->db->escape($salt = token(9)) . "', password = '" . $this->db->escape(sha1($salt . sha1($salt . sha1($password)))) . "', code = '', prompt_change_password = '1' WHERE user_id = '" . (int)$user_id . "'");
 	}
 
 	public function editCode($email, $code) {
 		$this->db->query("UPDATE `" . DB_PREFIX . "user` SET code = '" . $this->db->escape($code) . "' WHERE LCASE(email) = '" . $this->db->escape(utf8_strtolower($email)) . "'");
+	}
+
+	public function changePassword($user_id, $password) {
+		$this->db->query("UPDATE `" . DB_PREFIX . "user` SET salt = '" . $this->db->escape($salt = token(9)) . "', password = '" . $this->db->escape(sha1($salt . sha1($salt . sha1($password)))) . "', code = '', prompt_change_password = '0' WHERE user_id = '" . (int)$user_id . "'");
 	}
 
 	public function deleteUser($user_id) {

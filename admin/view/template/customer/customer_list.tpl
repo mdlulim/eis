@@ -3,7 +3,11 @@
   <div class="page-header">
     <div class="container-fluid">
       <div class="pull-right"><a href="<?php echo $add; ?>" data-toggle="tooltip" title="<?php echo $button_add; ?>" class="btn btn-primary"><i class="fa fa-plus"></i></a>
+<<<<<<< HEAD
         <button id="button-invitation" type="button" data-toggle="tooltip" title="Send Invitation" class="btn btn-primary" onclick="Confirminvitation('invitation','Are you sure want to Send Invitation ?')"><i class="fa fa-paper-plane"></i></button>
+=======
+        <button id="button-invitation" type="button" data-toggle="tooltip" title="Send Invitation" class="btn btn-primary"><i class="fa fa-paper-plane"></i></button>
+>>>>>>> origin/master
         <button id="button-delete" type="button" data-toggle="tooltip" title="<?php echo $button_delete; ?>" class="btn btn-danger" onclick="Confirminvitation('delete','Are you sure want to Delete Customer ?')"><i class="fa fa-trash-o"></i></button>
       </div>
       <h1><?php echo $heading_title; ?></h1>
@@ -31,14 +35,14 @@
       </div>
       <div class="panel-body">
         <div class="well">
-        	<h3>Filters</h3>
+          <h3>Filters</h3>
           <div class="row">
-            <div class="col-sm-3">
+            <div class="col-sm-4">
               <div class="form-group">
                 <label class="control-label" for="input-name"><?php echo $entry_name; ?></label>
                 <!--<input type="text" name="filter_name" value="<?php echo $filter_name; ?>" placeholder="<?php echo $entry_name; ?>" id="input-name" class="form-control" />-->
                 <select name="filter_customer_id" class="form-control">
-                	<option value="">Customer Name</option>
+                  <option value="">Customer Name</option>
                     <?php foreach ($customerdropdown as $customerd) {  ?>
                 <?php if ($customerd['customer_id'] == $filter_customer_id) { ?>
                 <option value="<?php echo $customerd['customer_id']; ?>" selected="selected"><?php echo $customerd['firstname']; ?></option>
@@ -53,7 +57,7 @@
                 <label class="control-label" for="input-email"><?php echo $entry_email; ?></label>
                 <!--<input type="text" name="filter_email" value="<?php echo $filter_email; ?>" placeholder="<?php echo $entry_email; ?>" id="input-email" class="form-control" />-->
                 <select name="filter_email_id" class="form-control">
-                	<option value="">Select E-Mail</option>
+                  <option value="">Select E-Mail</option>
                     <?php foreach ($customerdropdown as $customerd) {  ?>
                 <?php if ($customerd['customer_id'] == $filter_email_id) { ?>
                 <option value="<?php echo $customerd['customer_id']; ?>" selected="selected"><?php echo $customerd['email']; ?></option>
@@ -65,7 +69,7 @@
                 </select>
               </div>
             </div>
-            <div class="col-sm-3">
+            <div class="col-sm-4">
               <div class="form-group">
                 <label class="control-label" for="input-customer-group">Contract Pricing</label>
                 <select name="filter_customer_group_id" id="input-customer-group" class="form-control">
@@ -96,7 +100,7 @@
                 </select>
               </div>
             </div>
-            <div class="col-sm-3">
+            <div class="col-sm-4">
               <div class="form-group">
                 <label class="control-label" for="input-approved"><?php echo $entry_approved; ?></label>
                 <select name="filter_approved" id="input-approved" class="form-control">
@@ -117,8 +121,11 @@
                 <label class="control-label" for="input-ip"><?php echo $entry_ip; ?></label>
                 <input type="text" name="filter_ip" value="<?php echo $filter_ip; ?>" placeholder="<?php echo $entry_ip; ?>" id="input-ip" class="form-control" />
               </div>-->
+<<<<<<< HEAD
             </div>
             <div class="col-sm-3">
+=======
+>>>>>>> origin/master
               <div class="form-group">
                 <label class="control-label" for="input-date-added"><?php echo $entry_date_added; ?></label>
                 <div class="input-group date">
@@ -127,6 +134,8 @@
                   <button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
                   </span></div>
               </div>
+            </div>
+            <div class="col-sm-12 pull-right">
               <button type="button" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-search"></i> Search</button>
                <button type="button" id="button-filter-reset" class="btn btn-primary pull-right" style="margin-right:10px;"><i class="fa fa-refresh"></i> Reset</button>
             </div>
@@ -231,8 +240,16 @@
       </div>
     </div>
   </div>
+
+  <!-- Page loader -->
+  <div class="loader-wrapper" style="display:none">
+    <div class="loader"></div>
+  </div>
+  <!-- /Page loader -->
+
  <script type="text/javascript"><!--
 $('input[name^=\'selected\']').on('change', function() { 
+<<<<<<< HEAD
 	
 	var selected = $('input[name^=\'selected\']:checked');
 
@@ -245,6 +262,20 @@ $('input[name^=\'selected\']').on('change', function() {
 		$('#button-delete').prop('disabled', true);
 		$('#button-invitation').prop('disabled', true);
 	}
+=======
+  
+  var selected = $('input[name^=\'selected\']:checked');
+
+  if (selected.length) {
+    $('#button-delete').prop('disabled', false);
+    $('#button-invitation').prop('disabled', false);
+  }
+  else
+  {
+    $('#button-delete').prop('disabled', true);
+    $('#button-invitation').prop('disabled', true);
+  }
+>>>>>>> origin/master
 
 });
 
@@ -255,6 +286,7 @@ $('input[name^=\'selected\']:first').trigger('change');
 $('input:checkbox').change(function () {
    var selected = $('input[name^=\'selected\']:checked');
 
+<<<<<<< HEAD
 	if (selected.length) {
 		$('#button-delete').prop('disabled', false);
 		$('#button-invitation').prop('disabled', false);
@@ -264,22 +296,37 @@ $('input:checkbox').change(function () {
 		$('#button-delete').prop('disabled', true);
 		$('#button-invitation').prop('disabled', true);
 	}
+=======
+  if (selected.length) {
+    $('#button-delete').prop('disabled', false);
+    $('#button-invitation').prop('disabled', false);
+  }
+  else
+  {
+    $('#button-delete').prop('disabled', true);
+    $('#button-invitation').prop('disabled', true);
+  }
+>>>>>>> origin/master
 })
 
 $('#button-delete').click(function(){
    $('#form-customer').attr('action', '<?php echo $delete; ?>');
 });
 
+<<<<<<< HEAD
 $('#button-invitation').click(function(){
    $('#form-customer').attr('action', '<?php echo $button-invitation; ?>');
 });
 
+=======
+>>>>>>> origin/master
 function Confirminvitation(action, msg)
 {
   var x = confirm(msg);
   if (x)
   {
       if(action == 'delete')
+<<<<<<< HEAD
 	  {
 	  	var faction = '<?php echo $delete; ?>';
 	  }
@@ -292,6 +339,20 @@ function Confirminvitation(action, msg)
 	  $('#form-customer').submit()
 	  return true;
 	}
+=======
+    {
+      var faction = '<?php echo $delete; ?>';
+    }
+    else
+    {
+      var faction = '<?php echo $invitation; ?>';
+    }
+    var newul = faction.replace(/&amp;/g, "&");
+    $('#form-customer').attr('action', newul);
+    $('#form-customer').submit()
+    return true;
+  }
+>>>>>>> origin/master
   else {
     return false;
  }
@@ -301,115 +362,115 @@ function Confirminvitation(action, msg)
 //--></script>  
   <script type="text/javascript"><!--
 $('#button-filter').on('click', function() {
-	url = 'index.php?route=customer/customer&token=<?php echo $token; ?>';
-	
-	var filter_name = $('input[name=\'filter_name\']').val();
-	
-	if (filter_name) {
-		url += '&filter_name=' + encodeURIComponent(filter_name);
-	}
-	
-	var filter_customer_id = $('select[name=\'filter_customer_id\']').val();
+  url = 'index.php?route=customer/customer&token=<?php echo $token; ?>';
+  
+  var filter_name = $('input[name=\'filter_name\']').val();
+  
+  if (filter_name) {
+    url += '&filter_name=' + encodeURIComponent(filter_name);
+  }
+  
+  var filter_customer_id = $('select[name=\'filter_customer_id\']').val();
 
-	if (filter_customer_id) {
-		url += '&filter_customer_id=' + encodeURIComponent(filter_customer_id);
-	}
-	
-	var filter_email_id = $('select[name=\'filter_email_id\']').val();
+  if (filter_customer_id) {
+    url += '&filter_customer_id=' + encodeURIComponent(filter_customer_id);
+  }
+  
+  var filter_email_id = $('select[name=\'filter_email_id\']').val();
 
-	if (filter_email_id) {
-		url += '&filter_email_id=' + encodeURIComponent(filter_email_id);
-	}
-	
-	/*var filter_email = $('input[name=\'filter_email\']').val();
-	
-	if (filter_email) {
-		url += '&filter_email=' + encodeURIComponent(filter_email);
-	}*/
-	
-	var filter_customer_group_id = $('select[name=\'filter_customer_group_id\']').val();
-	
-	if (filter_customer_group_id != '*') {
-		url += '&filter_customer_group_id=' + encodeURIComponent(filter_customer_group_id);
-	}	
-	
-	var filter_status = $('select[name=\'filter_status\']').val();
-	
-	if (filter_status != '*') {
-		url += '&filter_status=' + encodeURIComponent(filter_status); 
-	}	
-	
-	var filter_approved = $('select[name=\'filter_approved\']').val();
-	
-	if (filter_approved != '*') {
-		url += '&filter_approved=' + encodeURIComponent(filter_approved);
-	}	
-	
-	var filter_ip = $('input[name=\'filter_ip\']').val();
-	
-	if (filter_ip) {
-		url += '&filter_ip=' + encodeURIComponent(filter_ip);
-	}
-		
-	var filter_date_added = $('input[name=\'filter_date_added\']').val();
-	
-	if (filter_date_added) {
-		url += '&filter_date_added=' + encodeURIComponent(filter_date_added);
-	}
-	
-	location = url;
+  if (filter_email_id) {
+    url += '&filter_email_id=' + encodeURIComponent(filter_email_id);
+  }
+  
+  /*var filter_email = $('input[name=\'filter_email\']').val();
+  
+  if (filter_email) {
+    url += '&filter_email=' + encodeURIComponent(filter_email);
+  }*/
+  
+  var filter_customer_group_id = $('select[name=\'filter_customer_group_id\']').val();
+  
+  if (filter_customer_group_id != '*') {
+    url += '&filter_customer_group_id=' + encodeURIComponent(filter_customer_group_id);
+  } 
+  
+  var filter_status = $('select[name=\'filter_status\']').val();
+  
+  if (filter_status != '*') {
+    url += '&filter_status=' + encodeURIComponent(filter_status); 
+  } 
+  
+  var filter_approved = $('select[name=\'filter_approved\']').val();
+  
+  if (filter_approved != '*') {
+    url += '&filter_approved=' + encodeURIComponent(filter_approved);
+  } 
+  
+  var filter_ip = $('input[name=\'filter_ip\']').val();
+  
+  if (filter_ip) {
+    url += '&filter_ip=' + encodeURIComponent(filter_ip);
+  }
+    
+  var filter_date_added = $('input[name=\'filter_date_added\']').val();
+  
+  if (filter_date_added) {
+    url += '&filter_date_added=' + encodeURIComponent(filter_date_added);
+  }
+  
+  location = url;
 });
 
 $('#button-filter-reset').on('click', function() {
-	var url = 'index.php?route=customer/customer&token=<?php echo $token; ?>';
+  var url = 'index.php?route=customer/customer&token=<?php echo $token; ?>';
 
-	location = url;
+  location = url;
 });
 //--></script> 
   <script type="text/javascript"><!--
 $('input[name=\'filter_name\']').autocomplete({
-	'source': function(request, response) {
-		$.ajax({
-			url: 'index.php?route=customer/customer/autocomplete&token=<?php echo $token; ?>&filter_name=' +  encodeURIComponent(request),
-			dataType: 'json',			
-			success: function(json) {
-				response($.map(json, function(item) {
-					return {
-						label: item['name'],
-						value: item['customer_id']
-					}
-				}));
-			}
-		});
-	},
-	'select': function(item) {
-		$('input[name=\'filter_name\']').val(item['label']);
-	}	
+  'source': function(request, response) {
+    $.ajax({
+      url: 'index.php?route=customer/customer/autocomplete&token=<?php echo $token; ?>&filter_name=' +  encodeURIComponent(request),
+      dataType: 'json',     
+      success: function(json) {
+        response($.map(json, function(item) {
+          return {
+            label: item['name'],
+            value: item['customer_id']
+          }
+        }));
+      }
+    });
+  },
+  'select': function(item) {
+    $('input[name=\'filter_name\']').val(item['label']);
+  } 
 });
 
 $('input[name=\'filter_email\']').autocomplete({
-	'source': function(request, response) {
-		$.ajax({
-			url: 'index.php?route=customer/customer/autocomplete&token=<?php echo $token; ?>&filter_email=' +  encodeURIComponent(request),
-			dataType: 'json',			
-			success: function(json) {
-				response($.map(json, function(item) {
-					return {
-						label: item['email'],
-						value: item['customer_id']
-					}
-				}));
-			}
-		});
-	},
-	'select': function(item) {
-		$('input[name=\'filter_email\']').val(item['label']);
-	}	
+  'source': function(request, response) {
+    $.ajax({
+      url: 'index.php?route=customer/customer/autocomplete&token=<?php echo $token; ?>&filter_email=' +  encodeURIComponent(request),
+      dataType: 'json',     
+      success: function(json) {
+        response($.map(json, function(item) {
+          return {
+            label: item['email'],
+            value: item['customer_id']
+          }
+        }));
+      }
+    });
+  },
+  'select': function(item) {
+    $('input[name=\'filter_email\']').val(item['label']);
+  } 
 });
 //--></script> 
   <script type="text/javascript"><!--
 $('.date').datetimepicker({
-	pickTime: false
+  pickTime: false
 });
 //--></script>
 <style>

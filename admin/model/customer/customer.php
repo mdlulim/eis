@@ -67,6 +67,13 @@ class ModelCustomerCustomer extends Model {
 		return $customer_id;
 	}
 
+<<<<<<< HEAD
+=======
+	public function addCustomerActivity($customer_id, $ip, $data) {
+		$this->db->query("INSERT INTO " . DB_PREFIX . "customer_activity SET customer_id = '" . (int)$customer_id . "', `key` = 'customer_invitation', data = '" . $this->db->escape(json_encode($data)) . "', ip = '" . $this->db->escape($ip) . "', date_added = NOW()");
+	}
+
+>>>>>>> origin/master
 	public function editCustomer($customer_id, $data) { 
 		if (!isset($data['custom_field'])) {
 			$data['custom_field'] = array();
@@ -139,6 +146,10 @@ class ModelCustomerCustomer extends Model {
 		}
 	}
 
+	public function updateCustomerPassword($customer_id, $password) {
+		$this->db->query("UPDATE " . DB_PREFIX . "customer SET salt = '" . $this->db->escape($salt = token(9)) . "', password = '" . $this->db->escape(sha1($salt . sha1($salt . sha1($password)))) . "', invited = 1, prompt_change_password = 1 WHERE customer_id = '" . (int)$customer_id . "'");
+	}
+
 	public function editToken($customer_id, $token) {
 		$this->db->query("UPDATE " . DB_PREFIX . "customer SET token = '" . $this->db->escape($token) . "' WHERE customer_id = '" . (int)$customer_id . "'");
 	}
@@ -167,12 +178,12 @@ class ModelCustomerCustomer extends Model {
 	public function getCustomers($data = array(), $allaccess=false, $current_user_id) {
 		if($allaccess)
 		{
-			$sql = "SELECT *, CONCAT(c.firstname) AS name, cgd.name AS customer_group FROM " . DB_PREFIX . "customer c LEFT JOIN " . DB_PREFIX . "customer_group_description cgd ON (c.customer_group_id = cgd.customer_group_id) LEFT JOIN oc_salesrep sr on sr.salesrep_id = c.salesrep_id left join oc_team tm on tm.team_id = sr.sales_team_id WHERE tm.sales_manager = '".$current_user_id."' and cgd.language_id = '" . (int)$this->config->get('config_language_id') . "'";
+			$sql = "SELECT c.*, CONCAT(c.firstname) AS name, cgd.name AS customer_group, ca.key, ca.data AS customer_activity FROM " . DB_PREFIX . "customer c LEFT JOIN " . DB_PREFIX . "customer_group_description cgd ON (c.customer_group_id = cgd.customer_group_id) LEFT JOIN " . DB_PREFIX . "customer_activity ca ON ca.customer_id = c.customer_id LEFT JOIN oc_salesrep sr on sr.salesrep_id = c.salesrep_id left join oc_team tm on tm.team_id = sr.sales_team_id WHERE tm.sales_manager = '".$current_user_id."' and cgd.language_id = '" . (int)$this->config->get('config_language_id') . "'";
 			
 		}
 		else
 		{
-			$sql = "SELECT *, CONCAT(c.firstname) AS name, cgd.name AS customer_group FROM " . DB_PREFIX . "customer c LEFT JOIN " . DB_PREFIX . "customer_group_description cgd ON (c.customer_group_id = cgd.customer_group_id) WHERE cgd.language_id = '" . (int)$this->config->get('config_language_id') . "'";
+			$sql = "SELECT c.*, CONCAT(c.firstname) AS name, cgd.name AS customer_group, ca.key, ca.data AS customer_activity FROM " . DB_PREFIX . "customer c LEFT JOIN " . DB_PREFIX . "customer_group_description cgd ON (c.customer_group_id = cgd.customer_group_id) LEFT JOIN " . DB_PREFIX . "customer_activity ca ON ca.customer_id = c.customer_id WHERE cgd.language_id = '" . (int)$this->config->get('config_language_id') . "'";
 		}
 
 		$implode = array();
@@ -235,6 +246,8 @@ class ModelCustomerCustomer extends Model {
 			'c.date_added'
 		);
 
+		$sql .= " GROUP BY c.customer_id";
+
 		if (isset($data['sort']) && in_array($data['sort'], $sort_data)) {
 			$sql .= " ORDER BY " . $data['sort'];
 		} else {
@@ -247,6 +260,12 @@ class ModelCustomerCustomer extends Model {
 			$sql .= " ASC";
 		}
 
+		if (preg_match('/ORDER BY/', $sql)) {
+			$sql .= " , customer_activity DESC";
+		} else {
+			$sql .= " ORDER customer_activity DESC";
+		}
+
 		if (isset($data['start']) || isset($data['limit'])) {
 			if ($data['start'] < 0) {
 				$data['start'] = 0;
@@ -255,10 +274,14 @@ class ModelCustomerCustomer extends Model {
 			if ($data['limit'] < 1) {
 				$data['limit'] = 20;
 			}
-
+			
 			$sql .= " LIMIT " . (int)$data['start'] . "," . (int)$data['limit'];
+		} else {
+
 		}
 //echo $sql; exit;
+
+
 		$query = $this->db->query($sql);
 
 		return $query->rows;

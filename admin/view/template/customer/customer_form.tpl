@@ -25,7 +25,7 @@
       </div>
       <div class="panel-body">
         <form action="<?php echo $action; ?>" method="post" enctype="multipart/form-data" id="form-customer" class="form-horizontal">
-        	<input type="hidden" name="type" value="<?php echo $type; ?>" />
+          <input type="hidden" name="type" value="<?php echo $type; ?>" />
             <input type="hidden" name="csalesrep_id" value="<?php echo $csalesrep_id; ?>" />
             
           <ul class="nav nav-tabs">
@@ -80,12 +80,20 @@
                       <div class="form-group" <?php if($customer_group_id != '3') { ?> style="display:none;" <?php } ?> id="wholesal"  >
                         <label class="col-sm-3 control-label" for="input-customer-group">Wholesale Invitation Status</label>
                         <div class="col-sm-9">
+<<<<<<< HEAD
                           <div style="float:left;">	
+=======
+                          <div style="float:left;"> 
+>>>>>>> origin/master
                             <input type="text" value="Not Invited" disabled="disabled" class="form-control" style="width:100px;" />
                           </div>
                           <a href="javascript:void()">
                           <div style="float:left;width:150px;padding:8px 5px 8px 15px;margin-left:10px;" class="form-control">
+<<<<<<< HEAD
                           	<i class="fa fa-paper-plane"></i> (Re)Send Invitation
+=======
+                            <i class="fa fa-paper-plane"></i> (Re)Send Invitation
+>>>>>>> origin/master
                           </div></a>
                         </div>
                       </div>
@@ -111,6 +119,7 @@
                           <select name="payment_method" id="input-customer-group" class="form-control">
                             <option value="">Select Preferred Payment Method</option>
                             <?php if($payment_method == 'Quotation') { ?>
+<<<<<<< HEAD
                             	<option value="Quotation" selected="selected">Quotation</option>
                             <?php } else { ?>
                             	<option value="Quotation">Quotation</option>
@@ -124,6 +133,21 @@
                             	<option value="Pay Now Using" selected="selected">Pay Now Using</option>
                             <?php } else { ?>
                             	<option value="Pay Now Using">Pay Now Using</option>
+=======
+                              <option value="Quotation" selected="selected">Quotation</option>
+                            <?php } else { ?>
+                              <option value="Quotation">Quotation</option>
+                            <?php } ?>
+                            <?php if($payment_method == 'Cash On Delivery') { ?>
+                              <option value="Cash On Delivery" selected="selected">Cash On Delivery</option>
+                            <?php } else { ?>
+                              <option value="Cash On Delivery">Cash On Delivery</option>
+                            <?php } ?>
+                            <?php if($payment_method == 'Pay Now Using') { ?>
+                              <option value="Pay Now Using" selected="selected">Pay Now Using</option>
+                            <?php } else { ?>
+                              <option value="Pay Now Using">Pay Now Using</option>
+>>>>>>> origin/master
                             <?php } ?>
                            
                           </select>
@@ -426,7 +450,11 @@
              </div>
              <fieldset style="margin: 0px 18px;">        
                   <legend style="width: 100px; padding-top: 24px; padding-left: 14px;">Address</legend>
+<<<<<<< HEAD
           		<div class="tab-content">
+=======
+              <div class="tab-content">
+>>>>>>> origin/master
             <div class="tab-pane active" id="tab-general1">
               <div class="row">
                 <div class="col-sm-2">
@@ -434,17 +462,29 @@
                     <?php $address_row = 1; ?>
                     <?php foreach ($addresses as $address) { ?>
                      <?php if(($address['address_id'] == $adrs_id) && $adrs_id !='0') { ?>
+<<<<<<< HEAD
                      	<?php $df = 'class="active"'; ?>
                      <?php } else if($address_row == '1' && $adrs_id =='0') { ?>
                      	<?php $df = 'class="active"'; ?>
                      <?php } else { ?>
                      	<?php $df = ''; ?>
+=======
+                      <?php $df = 'class="active"'; ?>
+                     <?php } else if($address_row == '1' && $adrs_id =='0') { ?>
+                      <?php $df = 'class="active"'; ?>
+                     <?php } else { ?>
+                      <?php $df = ''; ?>
+>>>>>>> origin/master
                      <?php } ?>
                     <li <?php echo $df; ?> ><a href="#tab-address<?php echo $address_row; ?>" data-toggle="tab"><i class="fa fa-minus-circle" onclick="$('#address a:first').tab('show'); $('#address a[href=\'#tab-address<?php echo $address_row; ?>\']').parent().remove(); $('#tab-address<?php echo $address_row; ?>').remove();"></i> <?php echo $tab_address . ' ' . $address_row; ?></a></li>
                     <?php $address_row++; ?>
                     <?php } ?>
                    
+<<<<<<< HEAD
                     	<li id="address-add"><a onclick="addAddress();"><i class="fa fa-plus-circle"></i> <?php echo $button_address_add; ?></a></li>
+=======
+                      <li id="address-add"><a onclick="addAddress();"><i class="fa fa-plus-circle"></i> <?php echo $button_address_add; ?></a></li>
+>>>>>>> origin/master
                    
                   </ul>
                 </div>
@@ -455,11 +495,19 @@
                     <?php foreach ($addresses as $address) { ?>
                     
                     <?php if (($address['address_id'] == $adrs_id) && $adrs_id !='0') { ?>
+<<<<<<< HEAD
                      	<?php $cls = 'class="tab-pane active"'; ?>
                     <?php } else if($address_row == '1' && $adrs_id =='0') { ?>
                      	<?php $cls = 'class="tab-pane active"'; ?>
                      <?php } else { ?>
                      	<?php $cls = 'class="tab-pane"'; ?>
+=======
+                      <?php $cls = 'class="tab-pane active"'; ?>
+                    <?php } else if($address_row == '1' && $adrs_id =='0') { ?>
+                      <?php $cls = 'class="tab-pane active"'; ?>
+                     <?php } else { ?>
+                      <?php $cls = 'class="tab-pane"'; ?>
+>>>>>>> origin/master
                      <?php } ?>
                     
                     <div <?php echo $cls; ?> id="tab-address<?php echo $address_row; ?>">
@@ -800,27 +848,27 @@
   </div>
   <script type="text/javascript"><!--
 $('select[name=\'customer_group_id\']').on('change', function() {
-	$.ajax({
-		url: 'index.php?route=customer/customer/customfield&token=<?php echo $token; ?>&customer_group_id=' + this.value,
-		dataType: 'json',
-		success: function(json) {
-			$('.custom-field').hide();
-			$('.custom-field').removeClass('required');
+  $.ajax({
+    url: 'index.php?route=customer/customer/customfield&token=<?php echo $token; ?>&customer_group_id=' + this.value,
+    dataType: 'json',
+    success: function(json) {
+      $('.custom-field').hide();
+      $('.custom-field').removeClass('required');
 
-			for (i = 0; i < json.length; i++) {
-				custom_field = json[i];
+      for (i = 0; i < json.length; i++) {
+        custom_field = json[i];
 
-				$('.custom-field' + custom_field['custom_field_id']).show();
+        $('.custom-field' + custom_field['custom_field_id']).show();
 
-				if (custom_field['required']) {
-					$('.custom-field' + custom_field['custom_field_id']).addClass('required');
-				}
-			}
-		},
-		error: function(xhr, ajaxOptions, thrownError) {
-			alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
-		}
-	});
+        if (custom_field['required']) {
+          $('.custom-field' + custom_field['custom_field_id']).addClass('required');
+        }
+      }
+    },
+    error: function(xhr, ajaxOptions, thrownError) {
+      alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+    }
+  });
 });
 
 $('select[name=\'customer_group_id\']').trigger('change');
@@ -835,11 +883,19 @@ $('.cstm').each(function(){ //alert(this.value);
  
   if(this.value)
   {
+<<<<<<< HEAD
   	$('#address-add').show();
   }
   else
   {
   	$('#address-add').hide();
+=======
+    $('#address-add').show();
+  }
+  else
+  {
+    $('#address-add').hide();
+>>>>>>> origin/master
   }
   
 });
@@ -851,6 +907,7 @@ $('.cstm').each(function(){ //alert(this.value);
 var address_row = <?php echo $address_row; ?>;
 
 function addAddress() {
+<<<<<<< HEAD
 	
 	html  = '<div class="tab-pane" id="tab-address' + address_row + '">';
 	html += '  <input type="hidden" name="address[' + address_row + '][address_id]" value="" />';
@@ -1025,137 +1082,319 @@ function addAddress() {
     html += '</div>';
 
 	$('#tab-general1 .tab-content').append(html);
+=======
+  
+  html  = '<div class="tab-pane" id="tab-address' + address_row + '">';
+  html += '  <input type="hidden" name="address[' + address_row + '][address_id]" value="" />';
 
-	$('select[name=\'customer_group_id\']').trigger('change');
+  /*html += '  <div class="form-group required">';
+  html += '    <label class="col-sm-2 control-label" for="input-firstname' + address_row + '"><?php echo $entry_firstname; ?></label>';
+  html += '    <div class="col-sm-10"><input type="text" name="address[' + address_row + '][firstname]" value="" placeholder="<?php echo $entry_firstname; ?>" id="input-firstname' + address_row + '" class="form-control" /></div>';
+  html += '  </div>';
 
-	$('select[name=\'address[' + address_row + '][country_id]\']').trigger('change');
+  html += '  <div class="form-group required">';
+  html += '    <label class="col-sm-2 control-label" for="input-lastname' + address_row + '"><?php echo $entry_lastname; ?></label>';
+  html += '    <div class="col-sm-10"><input type="text" name="address[' + address_row + '][lastname]" value="" placeholder="<?php echo $entry_lastname; ?>" id="input-lastname' + address_row + '" class="form-control" /></div>';
+  html += '  </div>';
 
+  html += '  <div class="form-group">';
+  html += '    <label class="col-sm-2 control-label" for="input-company' + address_row + '"><?php echo $entry_company; ?></label>';
+  html += '    <div class="col-sm-10"><input type="text" name="address[' + address_row + '][company]" value="" placeholder="<?php echo $entry_company; ?>" id="input-company' + address_row + '" class="form-control" /></div>';
+  html += '  </div>';*/
+
+  html += '  <div class="form-group required">';
+  html += '    <label class="col-sm-2 control-label" for="input-address-1' + address_row + '"><?php echo $entry_address_1; ?></label>';
+  html += '    <div class="col-sm-10"><input type="text" name="address[' + address_row + '][address_1]" value="" placeholder="<?php echo $entry_address_1; ?>" id="input-address-1' + address_row + '" class="form-control cstm" /></div>';
+  html += '  </div>';
+
+  html += '  <div class="form-group">';
+  html += '    <label class="col-sm-2 control-label" for="input-address-2' + address_row + '"><?php echo $entry_address_2; ?></label>';
+  html += '    <div class="col-sm-10"><input type="text" name="address[' + address_row + '][address_2]" value="" placeholder="<?php echo $entry_address_2; ?>" id="input-address-2' + address_row + '" class="form-control" /></div>';
+  html += '  </div>';
+
+  html += '  <div class="form-group required">';
+  html += '    <label class="col-sm-2 control-label" for="input-city' + address_row + '"><?php echo $entry_city; ?></label>';
+  html += '    <div class="col-sm-10"><input type="text" name="address[' + address_row + '][city]" value="" placeholder="<?php echo $entry_city; ?>" id="input-city' + address_row + '" class="form-control cstm" /></div>';
+  html += '  </div>';
+
+  html += '  <div class="form-group required">';
+  html += '    <label class="col-sm-2 control-label" for="input-postcode' + address_row + '"><?php echo $entry_postcode; ?></label>';
+  html += '    <div class="col-sm-10"><input type="text" name="address[' + address_row + '][postcode]" value="" placeholder="<?php echo $entry_postcode; ?>" id="input-postcode' + address_row + '" class="form-control" /></div>';
+  html += '  </div>';
+
+  html += '  <div class="form-group required">';
+  html += '    <label class="col-sm-2 control-label" for="input-country' + address_row + '"><?php echo $entry_country; ?></label>';
+  html += '    <div class="col-sm-10"><select name="address[' + address_row + '][country_id]" id="input-country' + address_row + '" onchange="country(this, \'' + address_row + '\', \'0\');" class="form-control cstm">';
+    html += '         <option value=""><?php echo $text_select; ?></option>';
+    <?php foreach ($countries as $country) { ?>
+  <?php if($country['country_id'] == '193') { ?>
+      html += '         <option value="<?php echo $country['country_id']; ?>" selected="selected"><?php echo addslashes($country['name']); ?></option>';
+  <?php } else { ?> 
+    html += '         <option value="<?php echo $country['country_id']; ?>"><?php echo addslashes($country['name']); ?></option>';
+  <?php } ?>  
+    <?php } ?>
+    html += '      </select></div>';
+  html += '  </div>';
+
+  html += '  <div class="form-group required">';
+  html += '    <label class="col-sm-2 control-label" for="input-zone' + address_row + '"><?php echo $entry_zone; ?></label>';
+  html += '    <div class="col-sm-10"><select name="address[' + address_row + '][zone_id]" id="input-zone' + address_row + '" class="form-control cstm"><option value=""><?php echo $text_none; ?></option></select></div>';
+  html += '  </div>';
+
+  // Custom Fields
+  <?php foreach ($custom_fields as $custom_field) { ?>
+  <?php if ($custom_field['location'] == 'address') { ?>
+  <?php if ($custom_field['type'] == 'select') { ?>
+
+  html += '  <div class="form-group custom-field custom-field<?php echo $custom_field['custom_field_id']; ?>" data-sort="<?php echo $custom_field['sort_order'] + 1; ?>">';
+  html += '     <label class="col-sm-2 control-label" for="input-address' + address_row + '-custom-field<?php echo $custom_field['custom_field_id']; ?>"><?php echo addslashes($custom_field['name']); ?></label>';
+  html += '     <div class="col-sm-10">';
+  html += '       <select name="address[' + address_row + '][custom_field][<?php echo $custom_field['custom_field_id']; ?>]" id="input-address' + address_row + '-custom-field<?php echo $custom_field['custom_field_id']; ?>" class="form-control">';
+  html += '       <option value=""><?php echo $text_select; ?></option>';
+
+  <?php foreach ($custom_field['custom_field_value'] as $custom_field_value) { ?>
+  html += '       <option value="<?php echo $custom_field_value['custom_field_value_id']; ?>"><?php echo addslashes($custom_field_value['name']); ?></option>';
+  <?php } ?>
+
+  html += '       </select>';
+  html += '     </div>';
+  html += '     </div>';
+  <?php } ?>
+
+  <?php if ($custom_field['type'] == 'radio') { ?>
+  html += '     <div class="form-group custom-field custom-field<?php echo $custom_field['custom_field_id']; ?>">';
+  html += '     <label class="col-sm-2 control-label"><?php echo addslashes($custom_field['name']); ?></label>';
+  html += '     <div class="col-sm-10">';
+  html += '       <div>';
+
+  <?php foreach ($custom_field['custom_field_value'] as $custom_field_value) { ?>
+  html += '       <div class="radio"><label><input type="radio" name="address[' + address_row + '][custom_field][<?php echo $custom_field['custom_field_id']; ?>]" value="<?php echo $custom_field_value['custom_field_value_id']; ?>" /> <?php echo addslashes($custom_field_value['name']); ?></label></div>';
+  <?php } ?>
+
+  html += '     </div>';
+  html += '   </div>';
+  html += '   </div>';
+  <?php } ?>
+
+  <?php if ($custom_field['type'] == 'checkbox') { ?>
+  html += '   <div class="form-group custom-field custom-field<?php echo $custom_field['custom_field_id']; ?>" data-sort="<?php echo $custom_field['sort_order'] + 1; ?>">';
+  html += '   <label class="col-sm-2 control-label"><?php echo addslashes($custom_field['name']); ?></label>';
+  html += '   <div class="col-sm-10">';
+  html += '     <div>';
+
+  <?php foreach ($custom_field['custom_field_value'] as $custom_field_value) { ?>
+  html += '     <div class="checkbox"><label><input type="checkbox" name="address[<?php echo $address_row; ?>][custom_field][<?php echo $custom_field['custom_field_id']; ?>][]" value="<?php echo $custom_field_value['custom_field_value_id']; ?>" /> <?php echo addslashes($custom_field_value['name']); ?></label></div>';
+  <?php } ?>
+
+  html += '     </div>';
+  html += '   </div>';
+  html += '   </div>';
+  <?php } ?>
+
+  <?php if ($custom_field['type'] == 'text') { ?>
+  html += '   <div class="form-group custom-field custom-field<?php echo $custom_field['custom_field_id']; ?>" data-sort="<?php echo $custom_field['sort_order'] + 1; ?>">';
+  html += '   <label class="col-sm-2 control-label" for="input-address' + address_row + '-custom-field<?php echo $custom_field['custom_field_id']; ?>"><?php echo addslashes($custom_field['name']); ?></label>';
+  html += '   <div class="col-sm-10">';
+  html += '     <input type="text" name="address[' + address_row + '][custom_field][<?php echo $custom_field['custom_field_id']; ?>]" value="<?php echo addslashes($custom_field['value']); ?>" placeholder="<?php echo addslashes($custom_field['name']); ?>" id="input-address' + address_row + '-custom-field<?php echo $custom_field['custom_field_id']; ?>" class="form-control" />';
+  html += '   </div>';
+  html += '   </div>';
+  <?php } ?>
+
+  <?php if ($custom_field['type'] == 'textarea') { ?>
+  html += '   <div class="form-group custom-field custom-field<?php echo $custom_field['custom_field_id']; ?>" data-sort="<?php echo $custom_field['sort_order'] + 1; ?>">';
+  html += '   <label class="col-sm-2 control-label" for="input-address' + address_row + '-custom-field<?php echo $custom_field['custom_field_id']; ?>"><?php echo addslashes($custom_field['name']); ?></label>';
+  html += '   <div class="col-sm-10">';
+  html += '     <textarea name="address[' + address_row + '][custom_field][<?php echo $custom_field['custom_field_id']; ?>]" rows="5" placeholder="<?php echo addslashes($custom_field['name']); ?>" id="input-address' + address_row + '-custom-field<?php echo $custom_field['custom_field_id']; ?>" class="form-control"><?php echo addslashes($custom_field['value']); ?></textarea>';
+  html += '   </div>';
+  html += '   </div>';
+  <?php } ?>
+
+  <?php if ($custom_field['type'] == 'file') { ?>
+  html += '   <div class="form-group custom-field custom-field<?php echo $custom_field['custom_field_id']; ?>" data-sort="<?php echo $custom_field['sort_order'] + 1; ?>">';
+  html += '   <label class="col-sm-2 control-label"><?php echo addslashes($custom_field['name']); ?></label>';
+  html += '   <div class="col-sm-10">';
+  html += '     <button type="button" id="button-address' + address_row + '-custom-field<?php echo $custom_field['custom_field_id']; ?>" data-loading-text="<?php echo $text_loading; ?>" class="btn btn-default"><i class="fa fa-upload"></i> <?php echo $button_upload; ?></button>';
+  html += '     <input type="hidden" name="address[' + address_row + '][<?php echo $custom_field['custom_field_id']; ?>]" value="" id="input-address' + address_row + '-custom-field<?php echo $custom_field['custom_field_id']; ?>" />';
+  html += '   </div>';
+  html += '   </div>';
+  <?php } ?>
+
+  <?php if ($custom_field['type'] == 'date') { ?>
+  html += '   <div class="form-group custom-field custom-field<?php echo $custom_field['custom_field_id']; ?>" data-sort="<?php echo $custom_field['sort_order'] + 1; ?>">';
+  html += '   <label class="col-sm-2 control-label" for="input-address' + address_row + '-custom-field<?php echo $custom_field['custom_field_id']; ?>"><?php echo addslashes($custom_field['name']); ?></label>';
+  html += '   <div class="col-sm-10">';
+  html += '     <div class="input-group date"><input type="text" name="address[' + address_row + '][custom_field][<?php echo $custom_field['custom_field_id']; ?>]" value="<?php echo addslashes($custom_field['value']); ?>" placeholder="<?php echo addslashes($custom_field['name']); ?>" data-date-format="YYYY-MM-DD" id="input-address' + address_row + '-custom-field<?php echo $custom_field['custom_field_id']; ?>" class="form-control" /><span class="input-group-btn"><button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button></span></div>';
+  html += '   </div>';
+  html += '   </div>';
+  <?php } ?>
+
+  <?php if ($custom_field['type'] == 'time') { ?>
+  html += '   <div class="form-group custom-field custom-field<?php echo $custom_field['custom_field_id']; ?>" data-sort="<?php echo $custom_field['sort_order'] + 1; ?>">';
+  html += '   <label class="col-sm-2 control-label" for="input-address' + address_row + '-custom-field<?php echo $custom_field['custom_field_id']; ?>"><?php echo addslashes($custom_field['name']); ?></label>';
+  html += '   <div class="col-sm-10">';
+  html += '     <div class="input-group time"><input type="text" name="address[' + address_row + '][custom_field][<?php echo $custom_field['custom_field_id']; ?>]" value="<?php echo $custom_field['value']; ?>" placeholder="<?php echo addslashes($custom_field['name']); ?>" data-date-format="HH:mm" id="input-address' + address_row + '-custom-field<?php echo $custom_field['custom_field_id']; ?>" class="form-control" /><span class="input-group-btn"><button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button></span></div>';
+  html += '   </div>';
+  html += '   </div>';
+  <?php } ?>
+
+  <?php if ($custom_field['type'] == 'datetime') { ?>
+  html += '   <div class="form-group custom-field custom-field<?php echo $custom_field['custom_field_id']; ?>" data-sort="<?php echo $custom_field['sort_order'] + 1; ?>">';
+  html += '   <label class="col-sm-2 control-label" for="input-address' + address_row + '-custom-field<?php echo $custom_field['custom_field_id']; ?>"><?php echo addslashes($custom_field['name']); ?></label>';
+  html += '   <div class="col-sm-10">';
+  html += '     <div class="input-group datetime"><input type="text" name="address[' + address_row + '][custom_field][<?php echo $custom_field['custom_field_id']; ?>]" value="<?php echo addslashes($custom_field['value']); ?>" placeholder="<?php echo addslashes($custom_field['name']); ?>" data-date-format="YYYY-MM-DD HH:mm" id="input-address' + address_row + '-custom-field<?php echo $custom_field['custom_field_id']; ?>" class="form-control" /><span class="input-group-btn"><button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button></span></div>';
+  html += '   </div>';
+  html += '   </div>';
+  <?php } ?>
+
+  <?php } ?>
+  <?php } ?>
+
+  html += '  <div class="form-group">';
+  html += '    <label class="col-sm-2 control-label"><?php echo $entry_default; ?></label>';
+  html += '    <div class="col-sm-10"><label class="radio"><input type="checkbox" name="address[' + address_row + '][default]" value="1" /></label></div>';
+  html += '  </div>';
+
+    html += '</div>';
+
+  $('#tab-general1 .tab-content').append(html);
+>>>>>>> origin/master
+
+  $('select[name=\'customer_group_id\']').trigger('change');
+
+  $('select[name=\'address[' + address_row + '][country_id]\']').trigger('change');
+
+<<<<<<< HEAD
 	$('#address-add').before('<li><a href="#tab-address' + address_row + '" data-toggle="tab"><i class="fa fa-minus-circle" onclick="$(\'#address a:first\').tab(\'show\'); $(\'a[href=\\\'#tab-address' + address_row + '\\\']\').parent().remove(); $(\'#tab-address' + address_row + '\').remove();"></i> <?php echo $tab_address; ?> ' + address_row + '</a></li>');
 	
 	//$('#address-add').before('<li><a href="#tab-address' + address_row + '" data-toggle="tab"><?php echo $tab_address; ?> ' + address_row + '</a></li>');
+=======
+  $('#address-add').before('<li><a href="#tab-address' + address_row + '" data-toggle="tab"><i class="fa fa-minus-circle" onclick="$(\'#address a:first\').tab(\'show\'); $(\'a[href=\\\'#tab-address' + address_row + '\\\']\').parent().remove(); $(\'#tab-address' + address_row + '\').remove();"></i> <?php echo $tab_address; ?> ' + address_row + '</a></li>');
+  
+  //$('#address-add').before('<li><a href="#tab-address' + address_row + '" data-toggle="tab"><?php echo $tab_address; ?> ' + address_row + '</a></li>');
+>>>>>>> origin/master
 
-	$('#address a[href=\'#tab-address' + address_row + '\']').tab('show');
+  $('#address a[href=\'#tab-address' + address_row + '\']').tab('show');
 
-	$('.date').datetimepicker({
-		pickTime: false
-	});
+  $('.date').datetimepicker({
+    pickTime: false
+  });
 
-	$('.datetime').datetimepicker({
-		pickDate: true,
-		pickTime: true
-	});
+  $('.datetime').datetimepicker({
+    pickDate: true,
+    pickTime: true
+  });
 
-	$('.time').datetimepicker({
-		pickDate: false
-	});
+  $('.time').datetimepicker({
+    pickDate: false
+  });
 
-	$('#tab-address' + address_row + ' .form-group[data-sort]').detach().each(function() {
-		if ($(this).attr('data-sort') >= 0 && $(this).attr('data-sort') <= $('#tab-address' + address_row + ' .form-group').length) {
-			$('#tab-address' + address_row + ' .form-group').eq($(this).attr('data-sort')).before(this);
-		}
+  $('#tab-address' + address_row + ' .form-group[data-sort]').detach().each(function() {
+    if ($(this).attr('data-sort') >= 0 && $(this).attr('data-sort') <= $('#tab-address' + address_row + ' .form-group').length) {
+      $('#tab-address' + address_row + ' .form-group').eq($(this).attr('data-sort')).before(this);
+    }
 
-		if ($(this).attr('data-sort') > $('#tab-address' + address_row + ' .form-group').length) {
-			$('#tab-address' + address_row + ' .form-group:last').after(this);
-		}
+    if ($(this).attr('data-sort') > $('#tab-address' + address_row + ' .form-group').length) {
+      $('#tab-address' + address_row + ' .form-group:last').after(this);
+    }
 
-		if ($(this).attr('data-sort') < -$('#tab-address' + address_row + ' .form-group').length) {
-			$('#tab-address' + address_row + ' .form-group:first').before(this);
-		}
-	});
+    if ($(this).attr('data-sort') < -$('#tab-address' + address_row + ' .form-group').length) {
+      $('#tab-address' + address_row + ' .form-group:first').before(this);
+    }
+  });
 
-	address_row++;
+  address_row++;
 }
 //--></script>
   <script type="text/javascript"><!--
 function country(element, index, zone_id) {
-	$.ajax({
-		url: 'index.php?route=localisation/country/country&token=<?php echo $token; ?>&country_id=' + element.value,
-		dataType: 'json',
-		beforeSend: function() {
-			$('select[name=\'address[' + index + '][country_id]\']').after(' <i class="fa fa-circle-o-notch fa-spin"></i>');
-		},
-		complete: function() {
-			$('.fa-spin').remove();
-		},
-		success: function(json) {
-			if (json['postcode_required'] == '1') {
-				$('input[name=\'address[' + index + '][postcode]\']').parent().parent().addClass('required');
-			} else {
-				$('input[name=\'address[' + index + '][postcode]\']').parent().parent().removeClass('required');
-			}
+  $.ajax({
+    url: 'index.php?route=localisation/country/country&token=<?php echo $token; ?>&country_id=' + element.value,
+    dataType: 'json',
+    beforeSend: function() {
+      $('select[name=\'address[' + index + '][country_id]\']').after(' <i class="fa fa-circle-o-notch fa-spin"></i>');
+    },
+    complete: function() {
+      $('.fa-spin').remove();
+    },
+    success: function(json) {
+      if (json['postcode_required'] == '1') {
+        $('input[name=\'address[' + index + '][postcode]\']').parent().parent().addClass('required');
+      } else {
+        $('input[name=\'address[' + index + '][postcode]\']').parent().parent().removeClass('required');
+      }
 
-			html = '<option value=""><?php echo $text_select; ?></option>';
+      html = '<option value=""><?php echo $text_select; ?></option>';
 
-			if (json['zone'] && json['zone'] != '') {
-				for (i = 0; i < json['zone'].length; i++) {
-					html += '<option value="' + json['zone'][i]['zone_id'] + '"';
+      if (json['zone'] && json['zone'] != '') {
+        for (i = 0; i < json['zone'].length; i++) {
+          html += '<option value="' + json['zone'][i]['zone_id'] + '"';
 
-					if (json['zone'][i]['zone_id'] == zone_id) {
-						html += ' selected="selected"';
-					}
+          if (json['zone'][i]['zone_id'] == zone_id) {
+            html += ' selected="selected"';
+          }
 
-					html += '>' + json['zone'][i]['name'] + '</option>';
-				}
-			} else {
-				html += '<option value="0"><?php echo $text_none; ?></option>';
-			}
+          html += '>' + json['zone'][i]['name'] + '</option>';
+        }
+      } else {
+        html += '<option value="0"><?php echo $text_none; ?></option>';
+      }
 
-			$('select[name=\'address[' + index + '][zone_id]\']').html(html);
-		},
-		error: function(xhr, ajaxOptions, thrownError) {
-			alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
-		}
-	});
+      $('select[name=\'address[' + index + '][zone_id]\']').html(html);
+    },
+    error: function(xhr, ajaxOptions, thrownError) {
+      alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+    }
+  });
 }
 
 $('select[name$=\'[country_id]\']').trigger('change');
 //--></script>
   <script type="text/javascript"><!--
 $('#history').delegate('.pagination a', 'click', function(e) {
-	e.preventDefault();
+  e.preventDefault();
 
-	$('#history').load(this.href);
+  $('#history').load(this.href);
 });
 
 $('#history').load('index.php?route=customer/customer/history&token=<?php echo $token; ?>&customer_id=<?php echo $customer_id; ?>');
 
 $('#button-history').on('click', function(e) {
-	e.preventDefault();
+  e.preventDefault();
 
-	$.ajax({
-		url: 'index.php?route=customer/customer/addhistory&token=<?php echo $token; ?>&customer_id=<?php echo $customer_id; ?>',
-		type: 'post',
-		dataType: 'json',
-		data: 'comment=' + encodeURIComponent($('#tab-history textarea[name=\'comment\']').val()),
-		beforeSend: function() {
-			$('#button-history').button('loading');
-		},
-		complete: function() {
-			$('#button-history').button('reset');
-		},
-		success: function(json) {
-			$('.alert').remove();
+  $.ajax({
+    url: 'index.php?route=customer/customer/addhistory&token=<?php echo $token; ?>&customer_id=<?php echo $customer_id; ?>',
+    type: 'post',
+    dataType: 'json',
+    data: 'comment=' + encodeURIComponent($('#tab-history textarea[name=\'comment\']').val()),
+    beforeSend: function() {
+      $('#button-history').button('loading');
+    },
+    complete: function() {
+      $('#button-history').button('reset');
+    },
+    success: function(json) {
+      $('.alert').remove();
 
-			if (json['error']) {
-				 $('#tab-history').prepend('<div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> ' + json['error'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div></div>');
-			}
+      if (json['error']) {
+         $('#tab-history').prepend('<div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> ' + json['error'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div></div>');
+      }
 
-			if (json['success']) {
-				$('#tab-history').prepend('<div class="alert alert-success"><i class="fa fa-check-circle"></i> ' + json['success'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div></div>');
+      if (json['success']) {
+        $('#tab-history').prepend('<div class="alert alert-success"><i class="fa fa-check-circle"></i> ' + json['success'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div></div>');
 
-				$('#history').load('index.php?route=customer/customer/history&token=<?php echo $token; ?>&customer_id=<?php echo $customer_id; ?>');
+        $('#history').load('index.php?route=customer/customer/history&token=<?php echo $token; ?>&customer_id=<?php echo $customer_id; ?>');
 
-				$('#tab-history textarea[name=\'comment\']').val('');
-			}
-		}
-	});
+        $('#tab-history textarea[name=\'comment\']').val('');
+      }
+    }
+  });
 });
 //--></script>
   <script type="text/javascript"><!--
 $('#transaction').delegate('.pagination a', 'click', function(e) {
-	e.preventDefault();
+  e.preventDefault();
 
-	$('#transaction').load(this.href);
+  $('#transaction').load(this.href);
 });
 
 $('#transaction').load('index.php?route=customer/customer/transaction&token=<?php echo $token; ?>&customer_id=<?php echo $customer_id; ?>');
@@ -1164,167 +1403,167 @@ $('#button-transaction').on('click', function(e) {
   e.preventDefault();
 
   $.ajax({
-		url: 'index.php?route=customer/customer/addtransaction&token=<?php echo $token; ?>&customer_id=<?php echo $customer_id; ?>',
-		type: 'post',
-		dataType: 'json',
-		data: 'description=' + encodeURIComponent($('#tab-transaction input[name=\'description\']').val()) + '&amount=' + encodeURIComponent($('#tab-transaction input[name=\'amount\']').val()),
-		beforeSend: function() {
-			$('#button-transaction').button('loading');
-		},
-		complete: function() {
-			$('#button-transaction').button('reset');
-		},
-		success: function(json) {
-			$('.alert').remove();
+    url: 'index.php?route=customer/customer/addtransaction&token=<?php echo $token; ?>&customer_id=<?php echo $customer_id; ?>',
+    type: 'post',
+    dataType: 'json',
+    data: 'description=' + encodeURIComponent($('#tab-transaction input[name=\'description\']').val()) + '&amount=' + encodeURIComponent($('#tab-transaction input[name=\'amount\']').val()),
+    beforeSend: function() {
+      $('#button-transaction').button('loading');
+    },
+    complete: function() {
+      $('#button-transaction').button('reset');
+    },
+    success: function(json) {
+      $('.alert').remove();
 
-			if (json['error']) {
-				 $('#tab-transaction').prepend('<div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> ' + json['error'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div></div>');
-			}
+      if (json['error']) {
+         $('#tab-transaction').prepend('<div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> ' + json['error'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div></div>');
+      }
 
-			if (json['success']) {
-				$('#tab-transaction').prepend('<div class="alert alert-success"><i class="fa fa-check-circle"></i> ' + json['success'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div></div>');
+      if (json['success']) {
+        $('#tab-transaction').prepend('<div class="alert alert-success"><i class="fa fa-check-circle"></i> ' + json['success'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div></div>');
 
-				$('#transaction').load('index.php?route=customer/customer/transaction&token=<?php echo $token; ?>&customer_id=<?php echo $customer_id; ?>');
+        $('#transaction').load('index.php?route=customer/customer/transaction&token=<?php echo $token; ?>&customer_id=<?php echo $customer_id; ?>');
 
-				$('#tab-transaction input[name=\'amount\']').val('');
-				$('#tab-transaction input[name=\'description\']').val('');
-			}
-		}
-	});
+        $('#tab-transaction input[name=\'amount\']').val('');
+        $('#tab-transaction input[name=\'description\']').val('');
+      }
+    }
+  });
 });
 //--></script>
   <script type="text/javascript"><!--
 $('#reward').delegate('.pagination a', 'click', function(e) {
-	e.preventDefault();
+  e.preventDefault();
 
-	$('#reward').load(this.href);
+  $('#reward').load(this.href);
 });
 
 $('#reward').load('index.php?route=customer/customer/reward&token=<?php echo $token; ?>&customer_id=<?php echo $customer_id; ?>');
 
 $('#button-reward').on('click', function(e) {
-	e.preventDefault();
+  e.preventDefault();
 
-	$.ajax({
-		url: 'index.php?route=customer/customer/addreward&token=<?php echo $token; ?>&customer_id=<?php echo $customer_id; ?>',
-		type: 'post',
-		dataType: 'json',
-		data: 'description=' + encodeURIComponent($('#tab-reward input[name=\'description\']').val()) + '&points=' + encodeURIComponent($('#tab-reward input[name=\'points\']').val()),
-		beforeSend: function() {
-			$('#button-reward').button('loading');
-		},
-		complete: function() {
-			$('#button-reward').button('reset');
-		},
-		success: function(json) {
-			$('.alert').remove();
+  $.ajax({
+    url: 'index.php?route=customer/customer/addreward&token=<?php echo $token; ?>&customer_id=<?php echo $customer_id; ?>',
+    type: 'post',
+    dataType: 'json',
+    data: 'description=' + encodeURIComponent($('#tab-reward input[name=\'description\']').val()) + '&points=' + encodeURIComponent($('#tab-reward input[name=\'points\']').val()),
+    beforeSend: function() {
+      $('#button-reward').button('loading');
+    },
+    complete: function() {
+      $('#button-reward').button('reset');
+    },
+    success: function(json) {
+      $('.alert').remove();
 
-			if (json['error']) {
-				 $('#tab-reward').prepend('<div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> ' + json['error'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div></div>');
-			}
+      if (json['error']) {
+         $('#tab-reward').prepend('<div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> ' + json['error'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div></div>');
+      }
 
-			if (json['success']) {
-				$('#tab-reward').prepend('<div class="alert alert-success"><i class="fa fa-check-circle"></i> ' + json['success'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div></div>');
+      if (json['success']) {
+        $('#tab-reward').prepend('<div class="alert alert-success"><i class="fa fa-check-circle"></i> ' + json['success'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div></div>');
 
-				$('#reward').load('index.php?route=customer/customer/reward&token=<?php echo $token; ?>&customer_id=<?php echo $customer_id; ?>');
+        $('#reward').load('index.php?route=customer/customer/reward&token=<?php echo $token; ?>&customer_id=<?php echo $customer_id; ?>');
 
-				$('#tab-reward input[name=\'points\']').val('');
-				$('#tab-reward input[name=\'description\']').val('');
-			}
-		}
-	});
+        $('#tab-reward input[name=\'points\']').val('');
+        $('#tab-reward input[name=\'description\']').val('');
+      }
+    }
+  });
 });
 
 $('#ip').delegate('.pagination a', 'click', function(e) {
-	e.preventDefault();
+  e.preventDefault();
 
-	$('#ip').load(this.href);
+  $('#ip').load(this.href);
 });
 
 $('#ip').load('index.php?route=customer/customer/ip&token=<?php echo $token; ?>&customer_id=<?php echo $customer_id; ?>');
 
 $('#content').delegate('button[id^=\'button-custom-field\'], button[id^=\'button-address\']', 'click', function() {
-	var node = this;
+  var node = this;
 
-	$('#form-upload').remove();
+  $('#form-upload').remove();
 
-	$('body').prepend('<form enctype="multipart/form-data" id="form-upload" style="display: none;"><input type="file" name="file" /></form>');
+  $('body').prepend('<form enctype="multipart/form-data" id="form-upload" style="display: none;"><input type="file" name="file" /></form>');
 
-	$('#form-upload input[name=\'file\']').trigger('click');
+  $('#form-upload input[name=\'file\']').trigger('click');
 
-	if (typeof timer != 'undefined') {
-    	clearInterval(timer);
-	}
+  if (typeof timer != 'undefined') {
+      clearInterval(timer);
+  }
 
-	timer = setInterval(function() {
-		if ($('#form-upload input[name=\'file\']').val() != '') {
-			clearInterval(timer);
+  timer = setInterval(function() {
+    if ($('#form-upload input[name=\'file\']').val() != '') {
+      clearInterval(timer);
 
-			$.ajax({
-				url: 'index.php?route=tool/upload/upload&token=<?php echo $token; ?>',
-				type: 'post',
-				dataType: 'json',
-				data: new FormData($('#form-upload')[0]),
-				cache: false,
-				contentType: false,
-				processData: false,
-				beforeSend: function() {
-					$(node).button('loading');
-				},
-				complete: function() {
-					$(node).button('reset');
-				},
-				success: function(json) {
-					$(node).parent().find('.text-danger').remove();
+      $.ajax({
+        url: 'index.php?route=tool/upload/upload&token=<?php echo $token; ?>',
+        type: 'post',
+        dataType: 'json',
+        data: new FormData($('#form-upload')[0]),
+        cache: false,
+        contentType: false,
+        processData: false,
+        beforeSend: function() {
+          $(node).button('loading');
+        },
+        complete: function() {
+          $(node).button('reset');
+        },
+        success: function(json) {
+          $(node).parent().find('.text-danger').remove();
 
-					if (json['error']) {
-						$(node).parent().find('input[type=\'hidden\']').after('<div class="text-danger">' + json['error'] + '</div>');
-					}
+          if (json['error']) {
+            $(node).parent().find('input[type=\'hidden\']').after('<div class="text-danger">' + json['error'] + '</div>');
+          }
 
-					if (json['success']) {
-						alert(json['success']);
-					}
+          if (json['success']) {
+            alert(json['success']);
+          }
 
-					if (json['code']) {
-						$(node).parent().find('input[type=\'hidden\']').val(json['code']);
-					}
-				},
-				error: function(xhr, ajaxOptions, thrownError) {
-					alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
-				}
-			});
-		}
-	}, 500);
+          if (json['code']) {
+            $(node).parent().find('input[type=\'hidden\']').val(json['code']);
+          }
+        },
+        error: function(xhr, ajaxOptions, thrownError) {
+          alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+        }
+      });
+    }
+  }, 500);
 });
 
 $('.date').datetimepicker({
-	pickTime: false
+  pickTime: false
 });
 
 $('.datetime').datetimepicker({
-	pickDate: true,
-	pickTime: true
+  pickDate: true,
+  pickTime: true
 });
 
 $('.time').datetimepicker({
-	pickDate: false
+  pickDate: false
 });
 
 // Sort the custom fields
 <?php $address_row = 1; ?>
 <?php foreach ($addresses as $address) { ?>
 $('#tab-address<?php echo $address_row; ?> .form-group[data-sort]').detach().each(function() {
-	if ($(this).attr('data-sort') >= 0 && $(this).attr('data-sort') <= $('#tab-address<?php echo $address_row; ?> .form-group').length) {
-		$('#tab-address<?php echo $address_row; ?> .form-group').eq($(this).attr('data-sort')).before(this);
-	}
+  if ($(this).attr('data-sort') >= 0 && $(this).attr('data-sort') <= $('#tab-address<?php echo $address_row; ?> .form-group').length) {
+    $('#tab-address<?php echo $address_row; ?> .form-group').eq($(this).attr('data-sort')).before(this);
+  }
 
-	if ($(this).attr('data-sort') > $('#tab-address<?php echo $address_row; ?> .form-group').length) {
-		$('#tab-address<?php echo $address_row; ?> .form-group:last').after(this);
-	}
+  if ($(this).attr('data-sort') > $('#tab-address<?php echo $address_row; ?> .form-group').length) {
+    $('#tab-address<?php echo $address_row; ?> .form-group:last').after(this);
+  }
 
-	if ($(this).attr('data-sort') < -$('#tab-address<?php echo $address_row; ?> .form-group').length) {
-		$('#tab-address<?php echo $address_row; ?> .form-group:first').before(this);
-	}
+  if ($(this).attr('data-sort') < -$('#tab-address<?php echo $address_row; ?> .form-group').length) {
+    $('#tab-address<?php echo $address_row; ?> .form-group:first').before(this);
+  }
 });
 <?php $address_row++; ?>
 <?php } ?>
@@ -1332,21 +1571,22 @@ $('#tab-address<?php echo $address_row; ?> .form-group[data-sort]').detach().eac
 
 <?php foreach ($addresses as $address) { ?>
 $('#tab-customer .form-group[data-sort]').detach().each(function() {
-	if ($(this).attr('data-sort') >= 0 && $(this).attr('data-sort') <= $('#tab-customer .form-group').length) {
-		$('#tab-customer .form-group').eq($(this).attr('data-sort')).before(this);
-	}
+  if ($(this).attr('data-sort') >= 0 && $(this).attr('data-sort') <= $('#tab-customer .form-group').length) {
+    $('#tab-customer .form-group').eq($(this).attr('data-sort')).before(this);
+  }
 
-	if ($(this).attr('data-sort') > $('#tab-customer .form-group').length) {
-		$('#tab-customer .form-group:last').after(this);
-	}
+  if ($(this).attr('data-sort') > $('#tab-customer .form-group').length) {
+    $('#tab-customer .form-group:last').after(this);
+  }
 
-	if ($(this).attr('data-sort') < -$('#tab-customer .form-group').length) {
-		$('#tab-customer .form-group:first').before(this);
-	}
+  if ($(this).attr('data-sort') < -$('#tab-customer .form-group').length) {
+    $('#tab-customer .form-group:first').before(this);
+  }
 });
 <?php } ?>
 //--></script>
 <script type="text/javascript">
+<<<<<<< HEAD
  	$('select[name=\'team_id\']').on('change', function() {
 		$('select[name=\'salesrep_id\']').html();
 		$.ajax({
@@ -1445,5 +1685,53 @@ $( "#form-customer" ).validate({
 input.error {border-color:#f56b6b;}
 </style>
 
+=======
+  $('select[name=\'team_id\']').on('change', function() {
+    $('select[name=\'salesrep_id\']').html();
+    $.ajax({
+    url: 'index.php?route=replogic/sales_rep_management/getsalesrepByteamId&token=<?php echo $token; ?>',
+    type: 'post',
+    data: 'team_id=' + $('select[name=\'team_id\'] option:selected').val(),
+    dataType: 'json',
+    crossDomain: true,
+    success: function(json) {
+      
+      html = '<option value="">Select Sales Rep</option>';
+      
+      if (json&& json != '') {
+        for (i = 0; i < json.length; i++) {
+          html += '<option value="' + json[i]['salesrep_id'] + '">' + json[i]['salesrep_name'] + json[i]['salesrep_lastname'] + '</option>';
+
+        }
+      } else {
+        html += '<option value="">No Found Sales Rep</option>';
+      }
+
+      $('select[name=\'salesrep_id\']').html(html);
+      
+    },
+    error: function(xhr, ajaxOptions, thrownError) {
+      alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+    }
+  });
+  
+  });
+    
+    $('select[name=\'customer_group_id\']').on('change', function() {
+  
+    var grp_id = $('select[name=\'customer_group_id\'] option:selected').val()
+    
+    if(grp_id == '3')
+    {
+      $("#wholesal").css("display", "block");
+    }
+    else
+    {
+      $("#wholesal").css("display", "none");
+    }
+  
+  });
+    </script>
+>>>>>>> origin/master
     </div>
 <?php echo $footer; ?>

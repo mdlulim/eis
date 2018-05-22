@@ -3,7 +3,11 @@
   <div class="page-header">
     <div class="container-fluid">
       <div class="pull-right">
+<<<<<<< HEAD
       	<a href="<?php echo $editurl; ?>" data-toggle="tooltip" title="Edit" class="btn btn-primary"><i class="fa fa-pencil"></i></a>
+=======
+        <a href="<?php echo $editurl; ?>" data-toggle="tooltip" title="Edit" class="btn btn-primary"><i class="fa fa-pencil"></i></a>
+>>>>>>> origin/master
         <a href="<?php echo $cancel; ?>" data-toggle="tooltip" title="<?php echo $button_cancel; ?>" class="btn btn-default"><i class="fa fa-reply"></i></a>
       </div>
       <h1><?php echo $heading_title; ?></h1>
@@ -45,7 +49,11 @@
           </ul>
           
           <form action="<?php echo $action; ?>" method="post" enctype="multipart/form-data" id="form-customer" class="form-horizontal">
+<<<<<<< HEAD
         	<input type="hidden" name="type" value="<?php echo $type; ?>" />
+=======
+          <input type="hidden" name="type" value="<?php echo $type; ?>" />
+>>>>>>> origin/master
             <input type="hidden" name="csalesrep_id" value="<?php echo $csalesrep_id; ?>" />
             
           
@@ -87,6 +95,7 @@
                       <div class="form-group" <?php if($customer_group_id != '3') { ?> style="display:none;" <?php } ?> id="wholesal"  >
                         <label class="col-sm-3 control-label" for="input-customer-group">Wholesale Invitation Status</label>
                         <div class="col-sm-9">
+<<<<<<< HEAD
                           <div style="float:left;">	
                             <input type="text" value="Not Invited" disabled="disabled" class="form-control" style="width:100px;" />
                           </div>
@@ -94,6 +103,16 @@
                           <div style="float:left;width:150px;padding:8px 5px 8px 15px;margin-left:10px;" class="form-control">
                           	<i class="fa fa-paper-plane"></i> (Re)Send Invitation
                           </div></a>
+=======
+                          <div style="float:left;"> 
+                            <input type="text" value="<?=($invited==1) ? 'Invited' : 'Not Invited'?>" disabled="disabled" class="<?=($invited==1) ? 'btn btn-success' : ''?>" style="width:100px;" />
+                          </div>
+                          <a href="javascript:void()" id="resend-invitation" data-customername='<?=$customername?>' data-token='<?=$token?>' data-customerid='<?=$customer_id?>'>
+                            <div style="float:left;width:150px;padding:8px 5px 8px 15px;margin-left:10px;" class="form-control">
+                              <i class="fa fa-paper-plane"></i> (Re)Send Invitation
+                            </div>
+                          </a>
+>>>>>>> origin/master
                         </div>
                       </div>
                       
@@ -118,6 +137,7 @@
                           <select name="payment_method" id="input-customer-group" class="form-control" disabled="disabled">
                             <option value="">Select Preferred Payment Method</option>
                             <?php if($payment_method == 'Quotation') { ?>
+<<<<<<< HEAD
                             	<option value="Quotation" selected="selected">Quotation</option>
                             <?php } else { ?>
                             	<option value="Quotation">Quotation</option>
@@ -131,6 +151,21 @@
                             	<option value="Pay Now Using" selected="selected">Pay Now Using</option>
                             <?php } else { ?>
                             	<option value="Pay Now Using">Pay Now Using</option>
+=======
+                              <option value="Quotation" selected="selected">Quotation</option>
+                            <?php } else { ?>
+                              <option value="Quotation">Quotation</option>
+                            <?php } ?>
+                            <?php if($payment_method == 'Cash On Delivery') { ?>
+                              <option value="Cash On Delivery" selected="selected">Cash On Delivery</option>
+                            <?php } else { ?>
+                              <option value="Cash On Delivery">Cash On Delivery</option>
+                            <?php } ?>
+                            <?php if($payment_method == 'Pay Now Using') { ?>
+                              <option value="Pay Now Using" selected="selected">Pay Now Using</option>
+                            <?php } else { ?>
+                              <option value="Pay Now Using">Pay Now Using</option>
+>>>>>>> origin/master
                             <?php } ?>
                            
                           </select>
@@ -198,12 +233,20 @@
                       <input type="hidden" name="approved" value="1"  />
                       
              </div> 
+<<<<<<< HEAD
              	</div>
+=======
+              </div>
+>>>>>>> origin/master
              </div>
               </fieldset>    
              <fieldset style="margin: 0px 18px;">        
                   <legend style="width: 100px; padding-top: 24px; padding-left: 14px;">Address</legend>
+<<<<<<< HEAD
           		<div class="tab-content">
+=======
+              <div class="tab-content">
+>>>>>>> origin/master
             <div class="tab-pane active" id="tab-general1">
               <div class="row">
                 <div class="col-sm-2">
@@ -211,11 +254,19 @@
                     <?php $address_row = 1; ?>
                     <?php foreach ($addresses as $address) { ?>
                      <?php if(($address['address_id'] == $adrs_id) && $adrs_id !='') { ?>
+<<<<<<< HEAD
                      	<?php $df = 'class="active"'; ?>
                      <?php } else if($address_row == '1' && $adrs_id =='') { ?>
                      	<?php $df = 'class="active"'; ?>
                      <?php } else { ?>
                      	<?php $df = ''; ?>
+=======
+                      <?php $df = 'class="active"'; ?>
+                     <?php } else if($address_row == '1' && $adrs_id =='') { ?>
+                      <?php $df = 'class="active"'; ?>
+                     <?php } else { ?>
+                      <?php $df = ''; ?>
+>>>>>>> origin/master
                      <?php } ?>
                     <li <?php echo $df; ?> ><a href="#tab-address<?php echo $address_row; ?>" data-toggle="tab"><?php echo $tab_address . ' ' . $address_row; ?></a></li>
                     <?php $address_row++; ?>
@@ -230,11 +281,19 @@
                     <?php foreach ($addresses as $address) { ?>
                     
                     <?php if (($address['address_id'] == $adrs_id) && $adrs_id !='') { ?>
+<<<<<<< HEAD
                      	<?php $cls = 'class="tab-pane active"'; ?>
                     <?php } else if($address_row == '1' && $adrs_id =='') { ?>
                      	<?php $cls = 'class="tab-pane active"'; ?>
                      <?php } else { ?>
                      	<?php $cls = 'class="tab-pane"'; ?>
+=======
+                      <?php $cls = 'class="tab-pane active"'; ?>
+                    <?php } else if($address_row == '1' && $adrs_id =='') { ?>
+                      <?php $cls = 'class="tab-pane active"'; ?>
+                     <?php } else { ?>
+                      <?php $cls = 'class="tab-pane"'; ?>
+>>>>>>> origin/master
                      <?php } ?>
                     
                     <div <?php echo $cls; ?> id="tab-address<?php echo $address_row; ?>">
@@ -292,9 +351,15 @@
                         <div class="col-sm-10">
                           <label class="radio">
                             <?php if (($address['address_id'] == $address_id) || !$addresses) { ?>
+<<<<<<< HEAD
                             	<input type="checkbox" name="address[<?php echo $address_row; ?>][default]" value="<?php echo $address_row; ?>" checked="checked" disabled="disabled" />
                             <?php } else { ?>
                             	<input type="checkbox" name="address[<?php echo $address_row; ?>][default]" value="<?php echo $address_row; ?>" disabled="disabled" />
+=======
+                              <input type="checkbox" name="address[<?php echo $address_row; ?>][default]" value="<?php echo $address_row; ?>" checked="checked" disabled="disabled" />
+                            <?php } else { ?>
+                              <input type="checkbox" name="address[<?php echo $address_row; ?>][default]" value="<?php echo $address_row; ?>" disabled="disabled" />
+>>>>>>> origin/master
                             <?php } ?>
                           </label>
                         </div>
@@ -329,6 +394,7 @@
     </div>
   </div>
 </div>
+<<<<<<< HEAD
 
  <script type="text/javascript"><!--
 function country(element, index, zone_id) {
@@ -372,6 +438,57 @@ function country(element, index, zone_id) {
 	});
 }
 
+=======
+
+<!-- Page loader -->
+<div class="loader-wrapper" style="display:none">
+  <div class="loader"></div>
+</div>
+<!-- /Page loader -->
+
+ <script type="text/javascript"><!--
+function country(element, index, zone_id) {
+  $.ajax({
+    url: 'index.php?route=localisation/country/country&token=<?php echo $token; ?>&country_id=' + element.value,
+    dataType: 'json',
+    beforeSend: function() {
+      $('select[name=\'address[' + index + '][country_id]\']').after(' <i class="fa fa-circle-o-notch fa-spin"></i>');
+    },
+    complete: function() {
+      $('.fa-spin').remove();
+    },
+    success: function(json) {
+      if (json['postcode_required'] == '1') {
+        $('input[name=\'address[' + index + '][postcode]\']').parent().parent().addClass('required');
+      } else {
+        $('input[name=\'address[' + index + '][postcode]\']').parent().parent().removeClass('required');
+      }
+
+      html = '<option value=""><?php echo $text_select; ?></option>';
+
+      if (json['zone'] && json['zone'] != '') {
+        for (i = 0; i < json['zone'].length; i++) {
+          html += '<option value="' + json['zone'][i]['zone_id'] + '"';
+
+          if (json['zone'][i]['zone_id'] == zone_id) {
+            html += ' selected="selected"';
+          }
+
+          html += '>' + json['zone'][i]['name'] + '</option>';
+        }
+      } else {
+        html += '<option value="0"><?php echo $text_none; ?></option>';
+      }
+
+      $('select[name=\'address[' + index + '][zone_id]\']').html(html);
+    },
+    error: function(xhr, ajaxOptions, thrownError) {
+      alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+    }
+  });
+}
+
+>>>>>>> origin/master
 $('select[name$=\'[country_id]\']').trigger('change');
 //--></script>
 <?php echo $footer; ?> 

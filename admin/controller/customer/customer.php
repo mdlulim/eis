@@ -7,23 +7,74 @@ class ControllerCustomerCustomer extends Controller {
 
 		$this->document->setTitle($this->language->get('heading_title'));
 
+		/*==================================
+		=       Add Files (Includes)       =
+		==================================*/
+
+		# stylesheets (CSS) files
+		$this->document->addStyle('view/javascript/bootstrap-sweetalert/sweetalert.css');
+		$this->document->addStyle('view/stylesheet/custom.css');
+
+		# javascript (JS) files
+		$this->document->addScript('view/javascript/bootstrap-sweetalert/sweetalert.min.js');
+		$this->document->addScript('view/javascript/bootstrap-sweetalert/sweetalert-data.js');
+		$this->document->addScript('view/javascript/customer.js');
+
+		/*=====  End of Add Files (Includes)  ======*/
+
 		$this->load->model('customer/customer');
 
 		$this->getList();
 	}
 
+<<<<<<< HEAD
 	public function invitation() { echo "Still this Function is Not created"; exit;
 	
+=======
+	public function invitation() {
+		$json['success'] = false;
+		if (($this->request->server['REQUEST_METHOD'] == 'POST')) {
+			if (isset($this->request->post['send_bulk_invitation']) && $this->request->post['send_bulk_invitation'] == 1) {
+				$this->sendBulkCustomerInvitation();
+				$json['success'] = true;
+			}
+		}
+		echo json_encode($json);
+		die();
+		
+>>>>>>> origin/master
 	}
 	public function add() {
 		$this->load->language('customer/customer');
 
 		$this->document->setTitle($this->language->get('heading_title'));
 
+		/*==================================
+		=       Add Files (Includes)       =
+		==================================*/
+
+		# stylesheets (CSS) files
+		$this->document->addStyle('view/stylesheet/custom.css');
+
+		# javascript (JS) files
+		$this->document->addScript('view/javascript/customer.js');
+
+		/*=====  End of Add Files (Includes)  ======*/
+
 		$this->load->model('customer/customer');
 
 		if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validateForm()) {
-			$this->model_customer_customer->addCustomer($this->request->post);
+			$customerId = $this->model_customer_customer->addCustomer($this->request->post);
+
+			# if B2B customer and send invitation checked
+			# send wholesale customer email invitation
+			if (!empty($customerId) && is_numeric($customerId)) {
+				if (isset($this->request->post['customer_group_id']) && $this->request->post['customer_group_id'] == 3) {
+					if (isset($this->request->post['send_invitation']) && $this->request->post['send_invitation'] == "yes") {
+						$this->sendCustomerInvitation($customerId);
+					}
+				}
+			}
 
 			$this->session->data['success'] = $this->language->get('text_success');
 
@@ -573,6 +624,13 @@ class ControllerCustomerCustomer extends Controller {
 				$unlock = '';
 			}
 
+			// customer activity [ wholesale ]
+			if (!empty($result['customer_activity'])) {
+				$wholesale_activity = ($result['key'] == 'customer_invitation') ? 'Invited' : '';
+			} else {
+				$wholesale_activity = ($result['invited'] == 1) ? 'Invited' : 'Not Invited';
+			}
+
 			$data['customers'][] = array(
 				'customer_id'    => $result['customer_id'],
 				//'name'           => $result['name'],
@@ -584,7 +642,11 @@ class ControllerCustomerCustomer extends Controller {
 				'date_added'     => date($this->language->get('date_format_short'), strtotime($result['date_added'])),
 				'approve'        => $approve,
 				'unlock'         => $unlock,
+<<<<<<< HEAD
 				'wholesale_activity'         => '',
+=======
+				'wholesale_activity' => $wholesale_activity,
+>>>>>>> origin/master
 				'view'          => $this->url->link('customer/customer_info', 'token=' . $this->session->data['token'] . '&type=general&customer_id=' . $result['customer_id'] . $url, true),
 				'edit'           => $this->url->link('customer/customer/edit', 'token=' . $this->session->data['token'] . '&customer_id=' . $result['customer_id'] . $url, true)
 			);
@@ -1030,24 +1092,43 @@ class ControllerCustomerCustomer extends Controller {
 		$current_user = $this->session->data['user_id'];
 		$current_user_group_id = $this->model_user_user->getUser($current_user);
 		$current_user_group = $this->model_user_user_group->getUserGroup($current_user_group_id['user_group_id']); 
-		//print_r($current_user_group); exit;
-		if($current_user_group['name'] == 'Company admin')
-		{
-			$data['access'] = 'yes';
-			$allaccess = true;
-			$current_user_id = 0;
+
+		switch (strtolower($current_user_group['name'])) {
+			case 'company admin':
+			case 'system administrator':
+				$data['access'] = 'yes';
+				$allaccess = true;
+				$current_user_id = 0;
+				break;
+
+			case 'administrator':
+				$data['access'] = 'yes';
+				$allaccess = true;
+				$current_user_id = $this->session->data['user_id'];
+				break;
+
+			case 'sales manager':
+				$data['access'] = 'yes';
+				$allaccess = false;
+				$current_user_id = $this->session->data['user_id'];
+				break;
+			
+			default:
+				$data['access'] = 'no';
+				$allaccess = false;
+				$current_user_id = $this->session->data['user_id'];
+				break;
 		}
-		else if($current_user_group['name'] == 'Sales Manager')
-		{
-			$data['access'] = 'yes';
-			$allaccess = false;
-			$current_user_id = $this->session->data['user_id'];
-		}
-		else
-		{
-			$data['access'] = 'no';
-			$allaccess = false;
-			$current_user_id = $this->session->data['user_id'];
+		
+		if (isset($this->request->post['salesrep_id'])) {
+			$data['salesrep_id'] = $this->request->post['salesrep_id'];
+		} elseif (!empty($customer_info)) {
+			$data['salesrep_id'] = $customer_info['salesrep_id'];
+		}elseif(isset($this->request->get['type']) && $this->request->get['type'] == 'customers') {
+			$data['salesrep_id'] = $this->request->get['csalesrep_id'];
+		} 
+		else {
+			$data['salesrep_id'] = '';
 		}
 		
 		if (isset($this->request->post['salesrep_id'])) {
@@ -1863,4 +1944,113 @@ class ControllerCustomerCustomer extends Controller {
 	$this->response->setOutput(json_encode($json));
 	
 	}
+<<<<<<< HEAD
+=======
+
+	protected function sendCustomerInvitation($customer_id) {
+
+		$this->load->model('customer/customer');
+
+		# get customer information
+		$customer = $this->model_customer_customer->getCustomer($customer_id);
+
+		# auto-generate password
+		$password = randomPassword();
+
+		# update customer password
+		$this->model_customer_customer->updateCustomerPassword($customer_id, $password);
+
+		# add/log customer activity
+		$this->model_customer_customer->addCustomerActivity($customer_id, $customer['ip'], $this->request->post);
+
+		# build data array
+		$data['subject'] = 'Welcome to Saleslogic';
+		$data['to']      = array('email'=>$customer['email'], 'name'=>$customer['firstname']);
+		$data['from']    = array('email'=>$this->config->get('config_email'), 'name'=>$this->config->get('config_name'));
+
+		$data['subject'] = 'New Wholesale Account';
+		$data['message'] = 'Good day '.$customer['firstname'].', '.$this->config->get('config_owner').' has invited you to purchase stock via their secure online wholesale portal. To access the portal, go to: '.$this->config->get('config_url').'. To log in, use this email address as your username. Your password is : '.$password;
+
+		# build email message [html]
+		$this->load->model('extension/mail/template');
+		$tempData = array(
+			'emailtemplate_key' => 'customer.invite'
+		);
+		$template                        = $this->model_extension_mail_template->load($tempData);
+		$template->data['password']      = $user_info['password'];
+		$template->data['customer_name'] = $user_info['firstname'];
+		$template->data['_url']          = $this->config->get('config_url');
+		$template->data['_name']         = $this->config->get('config_owner');
+		$template->data['_email']        = $this->config->get('config_email');
+		$template->data['help_guide']    = $this->config->get('config_url');
+
+		# smtp settings
+		$settings['protocol']      = $this->config->get('config_mail_protocol');
+		$settings['parameter']     = $this->config->get('config_mail_parameter');
+		$settings['smtp_hostname'] = $this->config->get('config_mail_smtp_hostname');
+		$settings['smtp_username'] = $this->config->get('config_mail_smtp_username');
+		$settings['smtp_password'] = $this->config->get('config_mail_smtp_password');
+		$settings['smtp_port']     = $this->config->get('config_mail_smtp_port');
+		$settings['smtp_timeout']  = $this->config->get('config_mail_smtp_timeout');
+
+		# send mail and output JSON encoded results back to JS
+		sendEmail($data, $settings, $template);
+	}
+
+	protected function sendBulkCustomerInvitation() {
+
+		# load model
+		$this->load->model('customer/customer');
+		$this->load->model('extension/mail/template');
+
+		# smtp settings
+		$settings['protocol']      = $this->config->get('config_mail_protocol');
+		$settings['parameter']     = $this->config->get('config_mail_parameter');
+		$settings['smtp_hostname'] = $this->config->get('config_mail_smtp_hostname');
+		$settings['smtp_username'] = $this->config->get('config_mail_smtp_username');
+		$settings['smtp_password'] = $this->config->get('config_mail_smtp_password');
+		$settings['smtp_port']     = $this->config->get('config_mail_smtp_port');
+		$settings['smtp_timeout']  = $this->config->get('config_mail_smtp_timeout');
+
+		# send mail and output JSON encoded results back to JS
+		if (isset($this->request->post['customers']) && is_array($this->request->post['customers'])) {
+			foreach ($this->request->post['customers'] as $key => $value) {
+
+				$customerId = $value['id'];
+
+				# get customer information
+				$customer = $this->model_customer_customer->getCustomer($customerId);
+
+				# auto-generate password
+				$password = randomPassword();
+
+				# update customer password
+				$this->model_customer_customer->updateCustomerPassword($customer['customer_id'], $password);
+
+				# add/log customer activity
+				$this->model_customer_customer->addCustomerActivity($customer['customer_id'], $customer['ip'], $this->request->post);
+
+				# build data array
+				$data['to']      = array('email'=>$customer['email'], 'name'=>$customer['firstname']);
+				$data['from']    = array('email'=>$this->config->get('config_email'), 'name'=>$this->config->get('config_name'));
+
+				$data['subject'] = 'New Wholesale Account';
+				$data['message'] = 'Good day '.$customer['firstname'].', '.$this->config->get('config_owner').' has invited you to purchase stock via their secure online wholesale portal. To access the portal, go to: '.$this->config->get('config_url').'. To log in, use this email address as your username. Your password is : '.$password;
+
+				$tempData = array('emailtemplate_key' => 'customer.invite');
+				$template = $this->model_extension_mail_template->load($tempData);
+				$template->data['password']      = $password;
+				$template->data['customer_name'] = $customer['firstname'];
+				$template->data['_url']          = $this->config->get('config_url');
+				$template->data['_name']         = $this->config->get('config_owner');
+				$template->data['_email']        = $this->config->get('config_email');
+				$template->data['help_guide']    = $this->config->get('config_url');
+
+				# send email invitation
+				sendEmail($data, $settings, $template);
+			}
+				
+		}
+	}
+>>>>>>> origin/master
 }

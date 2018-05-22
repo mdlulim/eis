@@ -154,6 +154,106 @@ class ModelReplogicOrderQuotes extends Model {
 		
 	}
 
+
+	/**
+	 * Get number of quotes awaiting approval
+	 * @param  array $filters 	an array of filters
+	 * @return int          	number of quotes awaiting approval
+	 */
+	public function getQuotesAwaitingApprovalCount($filters) {
+		$sql = "SELECT COUNT(quote_id) AS qty FROM ".DB_PREFIX."replogic_order_quote oq ";
+		$sql.= "LEFT JOIN ".DB_PREFIX."salesrep sr ON sr.salesrep_id=oq.salesrep_id ";
+		$sql.= "LEFT JOIN ".DB_PREFIX."team tm on tm.team_id=sr.sales_team_id ";
+		$sql.= "WHERE oq.status=0";
+
+		/*===============================
+		=            Filters            =
+		===============================*/
+		
+		switch (TRUE) {
+			case (isset($filters['filter_date'])):
+				# filter by date...
+				$sql .= " AND DATE_FORMAT(oq.date_added,'%Y-%m-%d')='".$filters['filter_date']."'";
+				break;
+
+			case (isset($filters['filter_month'])):
+				# filter by month...
+				$sql .= " AND DATE_FORMAT(oq.date_added,'%Y-%m')='".$filters['filter_month']."'";
+				break;
+
+			case (isset($filters['filter_year'])):
+				# filter by year...
+				$sql .= " AND DATE_FORMAT(oq.date_added,'%Y')='".$filters['filter_year']."'";
+				break;
+
+			case (isset($filters['filter_date_from']) && isset($filters['filter_date_to'])):
+				# filter by date range...
+				$sql .= " AND DATE_FORMAT(oq.date_added,'%Y-%m-%d')>='".$filters['filter_date_from']."'";
+				$sql .= " AND DATE_FORMAT(oq.date_added,'%Y-%m-%d')<='".$filters['filter_date_to']."'";
+				break;
+		}
+
+		if (isset($filters['filter_user'])) {
+			# filter by user [role]...
+			$sql .= " AND tm.sales_manager=".$filters['filter_user'];
+		}
+		
+		/*=====  End of Filters  ======*/
+
+		$query = $this->db->query($sql);
+		return $query->row['qty'];
+	}
+
+
+	/**
+	 * Get total number of quotes
+	 * @param  array $filters 	an array of filters
+	 * @return int          	number of quotes
+	 */
+	public function getTotalQuotesCount($filters) {
+		$sql = "SELECT COUNT(quote_id) AS qty FROM ".DB_PREFIX."replogic_order_quote oq ";
+		$sql.= "LEFT JOIN ".DB_PREFIX."salesrep sr ON sr.salesrep_id=oq.salesrep_id ";
+		$sql.= "LEFT JOIN ".DB_PREFIX."team tm on tm.team_id=sr.sales_team_id ";
+		$sql.= "WHERE oq.status IN (0,1)";
+
+		/*===============================
+		=            Filters            =
+		===============================*/
+		
+		switch (TRUE) {
+			case (isset($filters['filter_date'])):
+				# filter by date...
+				$sql .= " AND DATE_FORMAT(oq.date_added,'%Y-%m-%d')='".$filters['filter_date']."'";
+				break;
+
+			case (isset($filters['filter_month'])):
+				# filter by month...
+				$sql .= " AND DATE_FORMAT(oq.date_added,'%Y-%m')='".$filters['filter_month']."'";
+				break;
+
+			case (isset($filters['filter_year'])):
+				# filter by year...
+				$sql .= " AND DATE_FORMAT(oq.date_added,'%Y')='".$filters['filter_year']."'";
+				break;
+
+			case (isset($filters['filter_date_from']) && isset($filters['filter_date_to'])):
+				# filter by date range...
+				$sql .= " AND DATE_FORMAT(oq.date_added,'%Y-%m-%d')>='".$filters['filter_date_from']."'";
+				$sql .= " AND DATE_FORMAT(oq.date_added,'%Y-%m-%d')<='".$filters['filter_date_to']."'";
+				break;
+		}
+
+		if (isset($filters['filter_user'])) {
+			# filter by user [role]...
+			$sql .= " AND tm.sales_manager=".$filters['filter_user'];
+		}
+		
+		/*=====  End of Filters  ======*/
+
+		$query = $this->db->query($sql);
+		return $query->row['qty'];
+	}
+
 	public function getTotalOrders($data = array()) {
 		$sql = "SELECT COUNT(*) AS total FROM `" . DB_PREFIX . "replogic_order_quote`";
 

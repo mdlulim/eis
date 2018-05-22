@@ -36,7 +36,7 @@
                 <?php } ?>
               </div>
               <div class="text-right">
-                <button type="submit" class="btn btn-primary"><i class="fa fa-key"></i> <?php echo $button_login; ?></button>
+                <button type="submit" class="btn btn-primary" id="button-login"><i class="fa fa-key"></i> <?php echo $button_login; ?></button>
               </div>
               <?php if ($redirect) { ?>
               <input type="hidden" name="redirect" value="<?php echo $redirect; ?>" />
@@ -48,4 +48,10 @@
     </div>
   </div>
 </div>
+
+<!-- Page loader -->
+<div class="loader-wrapper" style="display:none">
+  <div class="loader"></div>
+</div>
+<!-- /Page loader -->
 <?php echo $footer; ?>

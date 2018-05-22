@@ -100,7 +100,7 @@ class ControllerCommonColumnLeft extends Controller {
 			if ($this->user->hasPermission('access', 'common/orders_dashboard')) {
 				$dashb[] = array(
 						'name'	   => $this->language->get('text_orders_dashboard'),
-						'href'     => $this->url->link('common/dashboard', 'token=' . $this->session->data['token'], true),
+						'href'     => $this->url->link('common/sales_dashboard', 'token=' . $this->session->data['token'], true),
 						'children' => array()		
 					);
 			}

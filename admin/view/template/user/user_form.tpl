@@ -96,7 +96,7 @@
               <input type="hidden" name="image" value="<?php echo $image; ?>" id="input-image" />
             </div>
           </div>-->
-          <div class="form-group required">
+          <!-- <div class="form-group required">
             <label class="col-sm-2 control-label" for="input-password"><?php echo $entry_password; ?></label>
             <div class="col-sm-10">
               <input type="password" name="password" value="<?php echo $password; ?>" placeholder="<?php echo $entry_password; ?>" id="input-password" class="form-control" autocomplete="off" />
@@ -113,7 +113,7 @@
               <div class="text-danger"><?php echo $error_confirm; ?></div>
               <?php  } ?>
             </div>
-          </div>
+          </div> -->
           <div class="form-group">
             <label class="col-sm-2 control-label" for="input-status"><?php echo $entry_status; ?></label>
             <div class="col-sm-10">
@@ -128,9 +128,25 @@
               </select>
             </div>
           </div>
+          <?php if ($show_resend_password) { ?>
+          <div class="form-group">
+            <div class="col-sm-10 col-sm-push-2">
+              <a href="javascript:void()" class="btn btn-default" id="resend-password" data-username='<?=$firstname?>' data-userid='<?=$user_id?>' data-token='<?=$token?>'>
+                <i class="fa fa-send"></i>
+                Resend Password
+              </a>
+            </div>
+          </div>
+          <?php } ?>
         </form>
       </div>
     </div>
   </div>
 </div>
+
+<!-- Page loader -->
+<div class="loader-wrapper" style="display:none">
+  <div class="loader"></div>
+</div>
+<!-- /Page loader -->
 <?php echo $footer; ?> 
