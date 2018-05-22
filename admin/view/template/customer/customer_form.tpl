@@ -1393,5 +1393,57 @@ $('#tab-customer .form-group[data-sort]').detach().each(function() {
 	
 	});
     </script>
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
+<script>
+// just for the demos, avoids form submit
+jQuery.validator.setDefaults({
+  debug: true,
+  success: "valid"
+});
+$( "#form-customer" ).validate({
+  rules: {
+    firstname: {
+      required: true
+    },
+	payment_method: {
+      required: true
+    },
+	telephone: {
+      required: true,
+	  number: true,
+	  minlength: 10
+    },
+	email: {
+        required: true,
+        // Specify that email should be validated
+        // by the built-in "email" rule
+        email: true
+      }
+	
+  },
+  messages: {
+      firstname: "Please Enter Company Name.",
+      payment_method: "Please Select Preferred Payment Method.",
+	  email: "Please Enter a valid Email.",
+	  telephone : {
+	  				required: "Please Enter Telephone Number",
+					number:"Please Enter numbers Only",
+					minlength: "Please Enter 10 Digits Number."
+				  }
+	  
+    },
+    // Make sure the form is submitted to the destination defined
+    // in the "action" attribute of the form when valid
+    submitHandler: function(form) {
+      form.submit();
+    }
+});
+</script>
+<style>
+.error {color:#f56b6b;}
+input.error {border-color:#f56b6b;}
+</style>
+
     </div>
 <?php echo $footer; ?>

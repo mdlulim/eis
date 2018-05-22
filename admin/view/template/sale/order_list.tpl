@@ -61,7 +61,7 @@
                 <label class="control-label" for="input-order-status"><?php echo $entry_order_status; ?></label>
                 <select name="filter_order_status" id="input-order-status" class="form-control">
                   <option value="*">Select Status</option>
-                  <?php if ($filter_order_status == '0') { ?>
+                 <!-- <?php if ($filter_order_status == '0') { ?>
                   <option value="0" selected="selected"><?php echo $text_missing; ?></option>
                   <?php } else { ?>
                   <option value="0"><?php echo $text_missing; ?></option>
@@ -72,12 +72,45 @@
                   <?php } else { ?>
                   <option value="<?php echo $order_status['order_status_id']; ?>"><?php echo $order_status['name']; ?></option>
                   <?php } ?>
+                  <?php } ?>-->
+                  <?php if ($filter_order_status == '15,3,5,11') { ?>
+                  	<option value="15,3,5,11" selected="selected">Order Confirmed</option>
+                  <?php } else { ?>
+                  	<option value="15,3,5,11">Order Confirmed</option>
                   <?php } ?>
+                  <?php if ($filter_order_status == '1') { ?>
+                  	<option value="1" selected="selected">Pending</option>
+                  <?php } else { ?>
+                  	<option value="1">Pending</option>
+                  <?php } ?>
+                  <?php if ($filter_order_status == '7,10') { ?>
+                  	<option value="7,10" selected="selected">Cancelled</option>
+                  <?php } else { ?>
+                  	<option value="7,10">Cancelled</option>
+                  <?php } ?>
+                  <?php if ($filter_order_status == '2') { ?>
+                  	<option value="2" selected="selected">Processing</option>
+                  <?php } else { ?>  
+                    <option value="2">Processing</option>
+                  <?php } ?>
+                  
                 </select>
               </div>
               <div class="form-group">
-                <label class="control-label" for="input-total"><?php echo $entry_total; ?></label>
-                <input type="text" name="filter_total" value="<?php echo $filter_total; ?>" placeholder="<?php echo $entry_total; ?>" id="input-total" class="form-control" />
+                <!--<label class="control-label" for="input-total"><?php echo $entry_total; ?></label>
+                <input type="text" name="filter_total" value="<?php echo $filter_total; ?>" placeholder="<?php echo $entry_total; ?>" id="input-total" class="form-control" />-->
+                 <label class="control-label" for="input-customer">Customer Contact</label>
+                   <select name="filter_customer_contactid" class="form-control">
+                	<option value="">Select Customer Contact</option>
+                    <?php foreach ($customercontacts as $customercontact) {  ?>
+                <?php if ($customercontact['customer_con_id'] == $filter_customer_contactid) { ?>
+                <option value="<?php echo $customercontact['customer_con_id']; ?>" selected="selected"><?php echo $customercontact['first_name']; ?> <?php echo $customercontact['last_name']; ?></option>
+                <?php } else { ?>
+                <option value="<?php echo $customercontact['customer_con_id']; ?>"><?php echo $customercontact['first_name']; ?> <?php echo $customercontact['last_name']; ?></option>
+                <?php } ?>
+                <?php } ?>
+                    
+                </select>         
               </div>
             </div>
             <div class="col-sm-4">
@@ -132,6 +165,11 @@
                     <?php } else { ?>
                     <a href="<?php echo $sort_customer; ?>"><?php echo $column_customer; ?></a>
                     <?php } ?></td>
+                  <td class="text-left"><?php if ($sort == 'oq.customer_contact_id') { ?>
+                    <a href="<?php echo $sort_customercontact; ?>" class="<?php echo strtolower($order); ?>">Customer Contact</a>
+                    <?php } else { ?>
+                    <a href="<?php echo $sort_customercontact; ?>">Customer Contact</a>
+                    <?php } ?></td>
                   <td class="text-left"><?php if ($sort == 'salesrep') { ?>
                     <a href="<?php echo $sort_salesrep; ?>" class="<?php echo strtolower($order); ?>">Sales Rep</a>
                     <?php } else { ?>
@@ -152,7 +190,7 @@
                     <?php } else { ?>
                     <a href="<?php echo $sort_date_modified; ?>"><?php echo $column_date_modified; ?></a>
                     <?php } ?></td>
-                    <td class="text-left"><?php if ($sort == 'order_status') { ?>
+                    <td class="text-left" width="128px"><?php if ($sort == 'order_status') { ?>
                     <a href="<?php echo $sort_status; ?>" class="<?php echo strtolower($order); ?>"><?php echo $column_status; ?></a>
                     <?php } else { ?>
                     <a href="<?php echo $sort_status; ?>"><?php echo $column_status; ?></a>
@@ -172,22 +210,21 @@
                     <input type="hidden" name="shipping_code[]" value="<?php echo $order['shipping_code']; ?>" /></td>
                   <td class="text-left"><?php echo $order['order_id']; ?></td>
                   <td class="text-left"><?php echo $order['customer']; ?></td>
+                  <td class="text-left"><?php echo $order['customercontact']; ?></td>
                   <td class="text-left"><?php echo $order['salesrep']; ?></td>
                   <td class="text-left"><?php echo $order['date_added']; ?></td>
                   <td class="text-left"><?php echo $order['total']; ?></td>
                   <td class="text-left"><?php echo $order['date_modified']; ?></td>
                   <td class="text-left">
                   	<?php //echo $order['order_status']; ?>
-                    <?php if($order['order_status'] == 'Complete') { ?>
+                    <?php if($order['order_status'] == 'Complete' || $order['order_status'] == 'Shipped' || $order['order_status'] == 'Processed' || $order['order_status'] == 'Refunded') { ?>
                     	<a class="btn-success" style="padding:2px 5px;border-radius:5px;">Order Confirmed</a>
                     <?php } else if($order['order_status'] == 'Pending') { ?>
                     	<a class="btn-warning" style="padding:2px 5px;border-radius:5px;">Pending</a>
-                    <?php } else if($order['order_status'] == 'Failed') { ?>
-                    	<a class="btn-warning" style="padding:2px 5px;border-radius:5px;background-color:#f56b6b;">Failed</a>
+                    <?php } else if($order['order_status'] == 'Failed' || $order['order_status'] == 'Canceled') { ?>
+                    	<a class="btn-warning" style="padding:2px 5px;border-radius:5px;background-color:#DB524B;">Cancelled</a>
                     <?php } else if($order['order_status'] == 'Processing') { ?>
                     	<a class="btn-warning" style="background-color: white;border: 1px solid #000;border-radius: 5px;color: #666666;padding: 0 10px;">Processing</a>
-                    <?php } else { ?>
-                    	<?php echo $order['order_status']; ?>
                     <?php } ?>
                     
                   </td>
@@ -253,6 +290,12 @@ $('#button-filter').on('click', function() {
 		url += '&filter_customer_id=' + encodeURIComponent(filter_customer_id);
 	}
 	
+	var filter_customer_contactid = $('select[name=\'filter_customer_contactid\']').val();
+
+	if (filter_customer_contactid) {
+		url += '&filter_customer_contactid=' + encodeURIComponent(filter_customer_contactid);
+	}
+	
 	var filter_salesrepid = $('select[name=\'filter_salesrepid\']').val();
 
 	if (filter_salesrepid) {
@@ -286,8 +329,9 @@ $('#button-filter').on('click', function() {
 	location = url;
 });
 $('#button-filter-reset').on('click', function() {
-	var team_id = $('input[name=\'team_id\']').val();
-	var url = 'index.php?route=sale/order&token=<?php echo $token; ?>&team_id=' + team_id + '';
+	//var team_id = $('input[name=\'team_id\']').val();
+	//var url = 'index.php?route=sale/order&token=<?php echo $token; ?>&team_id=' + team_id + '';
+	var url = 'index.php?route=sale/order&token=<?php echo $token; ?>';
 
 	location = url;
 });

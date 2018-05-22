@@ -82,7 +82,7 @@
         <?php } ?>
       </ul>
     </li>
-    <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" style="padding-right:3px;"><i class="fa fa-shopping-cart fa-lg" style="margin-right:12px;"></i>View Stores<img src="view/image/down-arrow.png" height="23" width="19" style="margin-left:15px;"></a>
+    <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" style="padding-right:3px;"><i class="fa fa-globe fa-lg"></i>  View Stores<img src="view/image/down-arrow.png" height="23" width="19" style="margin-left:15px;"></a>
       <ul class="dropdown-menu dropdown-menu-right">
         <!--<li class="dropdown-header"><?php echo $text_store; ?></li>-->
         <?php foreach ($stores as $store) { ?>
@@ -90,12 +90,12 @@
         <?php } ?>
       </ul>
     </li>
-    <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-life-ring fa-lg"></i></a>
+    <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-question fa-lg" style="background-color: #6D6D6D;border-radius: 1pc;color: white;    padding: 6px;"></i></a>
       <ul class="dropdown-menu dropdown-menu-right">
         <li class="dropdown-header"><?php echo $text_help; ?></li>
-        <li><a href="http://www.dashlogic.co.za" target="_blank"><?php echo $text_homepage; ?></a></li>
-        <li><a href="https://dashlogic.atlassian.net/wiki/display/KB/Knowledge+Base" target="_blank"><?php echo $text_documentation; ?></a></li>
-        <li><a href="https://dashlogic.atlassian.net/servicedesk/customer/portal/1" target="_blank"><?php echo $text_support; ?></a></li>
+        <!--<li><a href="http://www.dashlogic.co.za" target="_blank"><?php echo $text_homepage; ?></a></li>-->
+        <li><a href="https://help.saleslogic.io/portal/home" target="_blank"><?php echo $text_documentation; ?></a></li>
+        <li><a href="https://help.saleslogic.io/portal/home" target="_blank"><?php echo $text_support; ?></a></li>
       </ul>
     </li>
     <li><a href="<?php echo $logout; ?>"><span class="hidden-xs hidden-sm hidden-md"><?php echo $text_logout; ?></span> <i class="fa fa-sign-out fa-lg"></i></a></li>

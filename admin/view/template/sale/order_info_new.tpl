@@ -30,11 +30,11 @@
               <td style="text-align:center;">
                 <span class="ctm">
                 	<div class="col-md-5 rightalign1">Channel :</div> 
-                    <div class="col-md-7 paddingleft1"><b> <a href="javascript:void(0)" style="color: #666;">Saleslogic Rep<?php //echo $store_name; ?></a></b></div>
+                    <div class="col-md-7 paddingleft1"><b> <a href="javascript:void(0)" style="color: #666;"><?php echo $channelname; ?></a></b></div>
                     </span><br>
                 <span class="ctm">
                 	<div class="col-md-5 rightalign1">Sales Rep : </div>
-                    <div class="col-md-7 paddingleft1"><b> <?php echo $ssfirstname; ?> <?php echo $sslastname; ?></b></div>
+                    <div class="col-md-7 paddingleft1"><b> <?php if($isReplogic) { ?> <?php echo $ssfirstname; ?> <?php echo $sslastname; ?><?php } else { ?>None <?php } ?></b></div>
                     </span><br>
                 <span class="ctm">
                 	<div class="col-md-5 rightalign1" style="padding-left:0px;">Date Confirmed : </div>
@@ -46,11 +46,20 @@
                         </span><br>
                 <span class="ctm">
                 	<div class="col-md-5 rightalign1" style="padding-left:0px;">Shipping Method : </div>
-                    	<div class="col-md-7 paddingleft1"><b><?php echo $shipping_method; ?></b></div>
+                    	<div class="col-md-7 paddingleft1"><b style="text-align:initial;"><?php echo $shipping_method; ?></b></div>
                         </span><br>
                 <span class="ctm">
                 	<div class="col-md-5 rightalign1">Status : </div>
-                    	<div class="col-md-7 paddingleft1"><b><a class="btn-success" style="padding:2px 5px;border-radius:5px;">Order Confirmed</a></b></div>
+                    	<div class="col-md-7 paddingleft1"><b>
+                         <?php if($order_status_id == '5' || $order_status_id == '3' || $order_status_id == '15' || $order_status_id == '11') { ?>
+                            <a class="btn-success" style="padding:2px 5px;border-radius:5px;">Order Confirmed</a>
+                         <?php } else if($order_status_id == '1') { ?>
+                            <a class="btn-warning" style="padding:2px 5px;border-radius:5px;">Pending</a>
+                         <?php } else if($order_status_id == '2') { ?>
+                            <a class="btn-warning" style="background-color: white;border: 1px solid #000;border-radius: 5px;color: #666666;padding: 0 10px;">Processing</a>
+                         <?php } else if($order_status_id == '7' || $order_status_id == '10' || $order_status_id == '0') { ?>
+                            <a class="btn-warning" style="background-color: #DB524B;border: 1px solid #000;border-radius: 5px;color: #FFFFFF;padding: 0 10px;">Cancelled</a>                         <?php } ?>
+                        </b></div>
                         </span><br>
                 <span class="ctm">
                 	<div class="col-md-5 rightalign1">Total(ZAR) : </div> 
@@ -116,7 +125,8 @@
           </div>
           <table class="table">
             <tr>
-              <td style="text-align:center;">
+              <?php if($isReplogic) { ?>
+               <td style="text-align:center;">
                 <span class="ctm">
                 	<div class="col-md-6 rightalign1">Customer Contact : </div>
                     <div class="col-md-6 paddingleft1"><b> <?php echo $ccfirstname; ?> <?php echo $cclastname; ?></b></div>
@@ -139,6 +149,31 @@
                 </span><br>
                 
                </td>
+              <?php } else { ?>
+              	<td style="text-align:center;">
+                <span class="ctm">
+                	<div class="col-md-6 rightalign1">Customer : </div>
+                    <div class="col-md-6 paddingleft1"><b> <?php echo $firstname; ?></b></div>
+                </span><br>
+                <span class="ctm">
+                	<div class="col-md-6 rightalign1">Contract Pricing : </div>
+                    <div class="col-md-6 paddingleft1"><b> <?php echo $customer_group; ?></b></div>
+                </span><br>
+                <span class="ctm">
+                	<div class="col-md-6 rightalign1">Email : </div>
+                    <div class="col-md-6 paddingleft1"><b> <?php echo $email; ?></b></div>
+                </span><br>
+                <span class="ctm">
+                	<div class="col-md-6 rightalign1">Telephone : </div>
+                    <div class="col-md-6 paddingleft1"><b> <?php echo $telephone; ?></b></div>
+                </span><br>
+                <span class="ctm">
+                	<div class="col-md-6 rightalign1">Address : </div>
+                    <div class="col-md-6 paddingleft1" style="padding-right: 0px;"><b style="text-align:initial;"> <?php echo $shipaddress['address_1']; ?>, <?php echo $shipaddress['address_2']; ?> <?php echo $shipaddress['city']; ?>, <?php echo $shipaddress['zone']; ?>, <?php echo $shipaddress['country']; ?></b></div>
+                </span><br>
+                
+               </td>
+               <?php } ?>
             
             </tr>
             
