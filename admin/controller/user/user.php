@@ -21,7 +21,6 @@ class ControllerUserUser extends Controller {
 
 		if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validateForm()) {
 
-
 			$addUserInfo = $this->request->post;
 			$addUserInfo['password'] = randomPassword();
 			$this->model_user_user->addUser($addUserInfo);
@@ -65,6 +64,21 @@ class ControllerUserUser extends Controller {
 
 	public function edit() {
 		$this->load->language('user/user');
+
+		/*==================================
+		=       Add Files (Includes)       =
+		==================================*/
+
+		# stylesheets (CSS) files
+		$this->document->addStyle('view/javascript/bootstrap-sweetalert/sweetalert.css');
+		$this->document->addStyle('view/stylesheet/custom.css');
+
+		# javascript (JS) files
+		$this->document->addScript('view/javascript/bootstrap-sweetalert/sweetalert.min.js');
+		$this->document->addScript('view/javascript/bootstrap-sweetalert/sweetalert-data.js');
+		$this->document->addScript('view/javascript/user.js');
+
+		/*=====  End of Add Files (Includes)  ======*/
 
 		$this->document->setTitle($this->language->get('heading_title'));
 
@@ -153,6 +167,22 @@ class ControllerUserUser extends Controller {
 		$this->getList();
 	}
 
+	public function resend_password() {
+		$this->load->model('user/user');
+		$json['success'] = false;
+		if (($this->request->server['REQUEST_METHOD'] == 'POST') && (isset($this->request->post['action']) && $this->request->post['action'] == "resend_password") && isset($this->request->post['user_id'])) {
+			# get user info
+			$userInfo = $this->model_user_user->getUser($this->request->post['user_id']);
+			# generate new [random] password
+			$userInfo['password'] = randomPassword();
+			# update user password
+			$this->model_user_user->editPassword($this->request->post['user_id'], $userInfo['password']);
+			# send new password to user
+			$json['success']  = $this->sendUserInvitation($userInfo);
+		}
+		echo json_encode($json);
+	}
+
 	protected function sendUserInvitation($user_info) {
 		# build data array
 		$data['subject'] = 'Welcome to Saleslogic';
@@ -167,9 +197,12 @@ class ControllerUserUser extends Controller {
 		$tempData = array(
 			'emailtemplate_key' => 'user.invite'
 		);
-		$template                   = $this->model_extension_mail_template->load($tempData);
-		$template->data['password'] = $user_info['password'];
-		$template->data['store_url']= $this->config->get('config_url');
+		$template                     = $this->model_extension_mail_template->load($tempData);
+		$template->data['password']   = $user_info['password'];
+		$template->data['_url']       = $this->config->get('config_url');
+		$template->data['_name']      = $this->config->get('config_owner');
+		$template->data['_email']     = $this->config->get('config_email');
+		$template->data['help_guide'] = $this->config->get('config_url');
 
 		# smtp settings
 		$settings['protocol']      = $this->config->get('config_mail_protocol');
@@ -181,7 +214,7 @@ class ControllerUserUser extends Controller {
 		$settings['smtp_timeout']  = $this->config->get('config_mail_smtp_timeout');
 
 		# send mail
-		sendEmail($data, $settings, $template);
+		return sendEmail($data, $settings, $template);
 	}
 
 	protected function getList() {
@@ -588,6 +621,10 @@ class ControllerUserUser extends Controller {
 		} else {
 			$data['status'] = 0;
 		}
+
+		$data['token'] = $this->session->data['token'];
+		$data['user_id'] = (isset($this->request->get['user_id'])) ? $this->request->get['user_id'] : '';
+		$data['show_resend_password'] = (isset($this->request->get['user_id']));
 
 		$data['header'] = $this->load->controller('common/header');
 		$data['column_left'] = $this->load->controller('common/column_left');
