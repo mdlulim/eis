@@ -228,6 +228,12 @@ $('.cstm').each(function(){ //alert(this.value);
 <script type="text/javascript"><!--
 var address_row = <?php echo $address_row; ?>;
 
+$(document).ready(function() {
+  if ($('.nav-pills > li > a[style="color:#f56b6b;"]').length > 0) {
+    $('.nav-pills > li > a[style="color:#f56b6b;"]').click();
+  }
+});
+
 function addAddress() {
 	
 	$('#address-add').hide();
@@ -248,7 +254,7 @@ function addAddress() {
 	
 	html += '  <div class="form-group required">';
 	html += '    <label class="col-sm-2 control-label" for="input-email"><?php echo $entry_email; ?></label>';
-	html += '    <div class="col-sm-10"><input type="text" name="customer_contact[' + address_row + '][email]" placeholder="<?php echo $entry_email; ?>" id="input-email' + address_row + '" class="form-control cstm" /></div>';
+	html += '    <div class="col-sm-10"><input type="text" name="customer_contact[' + address_row + '][email]" placeholder="<?php echo $entry_email; ?>" id="input-email' + address_row + '" class="form-control cstm" required /></div>';
 	html += '  </div>';
 	
 	html += '  <div class="form-group">';

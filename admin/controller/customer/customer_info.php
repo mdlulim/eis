@@ -18,6 +18,7 @@ class ControllerCustomerCustomerInfo extends Controller {
 		# javascript (JS) files
 		$this->document->addScript('view/javascript/bootstrap-sweetalert/sweetalert.min.js');
 		$this->document->addScript('view/javascript/bootstrap-sweetalert/sweetalert-data.js');
+		$this->document->addScript('view/javascript/jquery-validation/dist/jquery.validate.min.js');
 		$this->document->addScript('view/javascript/customer.js');
 
 		/*=====  End of Add Files (Includes)  ======*/
