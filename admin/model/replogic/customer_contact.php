@@ -37,7 +37,7 @@ class ModelReplogicCustomerContact extends Model {
 		}
 
 		if (!empty($data['filter_customer_id'])) {
-			$sql .= " AND customer_id LIKE '" . $this->db->escape($data['filter_customer_id']) . "'";
+			$sql .= " AND customer_id = '" . $this->db->escape($data['filter_customer_id']) . "'";
 		}
 		
 		$sql .= " ORDER BY first_name";
@@ -93,6 +93,31 @@ class ModelReplogicCustomerContact extends Model {
 		$query = $this->db->query("SELECT * FROM `" . DB_PREFIX . "team`");
 
 		return $query->rows;
+	}
+	
+		
+	public function addMultiCustomercontact($data) {
+		//print_r($data['customer_contact']); exit;
+		//$this->db->query("DELETE FROM " . DB_PREFIX . "customer_contact WHERE customer_id = '" . (int)($data['customer_id']) . "'");
+		
+		foreach ($this->request->post['customer_contact'] as $key => $value) {
+			
+			if($value!='') {
+			
+			if($value['customer_con_id'] == '' ) {
+			
+				$this->db->query("INSERT INTO " . DB_PREFIX . "customer_contact SET first_name = '" . $this->db->escape($value['first_name']) . "', last_name = '" . $this->db->escape($value['last_name']) . "',email = '" . $this->db->escape($value['email']) . "', telephone_number = '" . $this->db->escape($value['telephone_number']) . "',cellphone_number = '" . $this->db->escape($value['cellphone_number']) . "',customer_id = '" . $this->db->escape($value['customer_id']) . "',role = '" . $this->db->escape($value['role']) . "'");
+				return $this->db->getLastId();
+				
+			} else {
+				
+				$this->db->query("UPDATE " . DB_PREFIX . "customer_contact SET first_name = '" . $this->db->escape($value['first_name']) . "', last_name = '" . $this->db->escape($value['last_name']) . "',email = '" . $this->db->escape($value['email']) . "',telephone_number = '" . $this->db->escape($value['telephone_number']) . "',cellphone_number = '" . $this->db->escape($value['cellphone_number']) . "',customer_id = '" . $this->db->escape($value['customer_id']) . "',role = '" . $this->db->escape($value['role']) . "' WHERE customer_con_id = '" . (int)$value['customer_con_id'] . "'");
+				
+			}
+		 }	
+			
+		}
+		
 	}
 
 }
