@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-  <title>Customer Invitation</title>
+  <title>User Invitation</title>
 
   <style type="text/css">
 
@@ -116,7 +116,7 @@
                             <table width="560" cellpadding="0" cellspacing="0" border="0" class="container">
                               <tr>
                                 <td align="center" valign="top">
-                                  <h1>New Wholesale Account</h1>
+                                  <h1>Welcome to Saleslogic</h1>
                                 </td>
                               </tr>
                             </table>
@@ -131,7 +131,7 @@
                         </tr>
                         <tr>
                           <td align="center" valign="top">
-                            <img src="http://139.59.187.168/dev/image/email/Wholesale-email-divider.png" border="0" style="width:100%" />
+                            <img src="http://dashbundle.co.za/image/Welcome-divider.png" border="0" style="width:100%" />
                           </td>
                         </tr>
                         <tr>
@@ -152,15 +152,7 @@
                                   <table width="100%" cellpadding="0" cellspacing="0" border="0">
                                     <tr>
                                       <td valign="top">
-                                        Good day <?php echo $customer_name; ?>
-                                      </td>
-                                    </tr>
-                                    <tr>
-                                      <td height="25" style="font-size:25px; line-height:25px;">&nbsp;</td>
-                                    </tr>
-                                    <tr>
-                                      <td>
-                                        <?php echo $_name; ?> has invited you to purchase stock via their secure online wholesale portal.
+                                        Welcome to Saleslogic. Your new password is : <strong><?php echo $password; ?></strong>
                                       </td>
                                     </tr>
                                     <tr>
@@ -177,8 +169,7 @@
                                     </tr>
                                     <tr>
                                       <td>
-                                        To log in, use this email address as your username.<br/>
-                                        Your password is : <strong><?php echo $password; ?></strong>
+                                        To log in, use this email address and your password.
                                       </td>
                                     </tr>
                                   </table>
@@ -255,7 +246,7 @@
                             <table width="560" cellpadding="0" cellspacing="0" border="0" class="container">
                               <tr>
                                 <td valign="top" style="text-align:center">
-                                  <a href="<?php echo $_url;?>" target="_blank" title="<?php echo $store_name;?>"><img src="http://139.59.187.168/dev/image/email/access-portal-button.png" border="0" style="width:220px; height:40px" width="220" height="40" align="middle" /></a>
+                                  <a href="<?php echo $_url;?>" target="_blank" title="<?php echo $_name;?>"><img src="http://139.59.187.168/dev/image/email/access-portal-button.png" border="0" style="width:220px; height:40px" width="220" height="40" align="middle" /></a>
                                 </td>
                               </tr>
                               <tr>

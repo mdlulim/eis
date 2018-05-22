@@ -3415,7 +3415,6 @@ class ControllerCustomerCustomerInfo extends Controller {
 		$this->model_customer_customer->addCustomerActivity($customer['customer_id'], $customer['ip'], $this->request->post);
 
 		# build data array
-		$data['subject'] = 'Welcome to Saleslogic';
 		$data['to']      = array('email'=>$customer['email'], 'name'=>$customer['firstname']);
 		$data['from']    = array('email'=>$this->config->get('config_email'), 'name'=>$this->config->get('config_name'));
 
@@ -3430,8 +3429,10 @@ class ControllerCustomerCustomerInfo extends Controller {
 		$template                        = $this->model_extension_mail_template->load($tempData);
 		$template->data['password']      = $user_info['password'];
 		$template->data['customer_name'] = $user_info['firstname'];
-		$template->data['company_name']  = $this->config->get('config_owner');
-		$template->data['store_url']     = $this->config->get('config_url');
+		$template->data['_url']          = $this->config->get('config_url');
+		$template->data['_name']         = $this->config->get('config_owner');
+		$template->data['_email']        = $this->config->get('config_email');
+		$template->data['help_guide']    = $this->config->get('config_url');
 
 		# smtp settings
 		$settings['protocol']      = $this->config->get('config_mail_protocol');
