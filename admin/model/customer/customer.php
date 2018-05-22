@@ -67,13 +67,11 @@ class ModelCustomerCustomer extends Model {
 		return $customer_id;
 	}
 
-<<<<<<< HEAD
-=======
+
 	public function addCustomerActivity($customer_id, $ip, $data) {
 		$this->db->query("INSERT INTO " . DB_PREFIX . "customer_activity SET customer_id = '" . (int)$customer_id . "', `key` = 'customer_invitation', data = '" . $this->db->escape(json_encode($data)) . "', ip = '" . $this->db->escape($ip) . "', date_added = NOW()");
 	}
 
->>>>>>> origin/master
 	public function editCustomer($customer_id, $data) { 
 		if (!isset($data['custom_field'])) {
 			$data['custom_field'] = array();

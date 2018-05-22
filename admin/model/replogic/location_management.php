@@ -1,10 +1,10 @@
 <?php
 class ModelReplogicLocationManagement extends Model {
 	
-<<<<<<< HEAD
+
 	public function deletelocation($checkin_id) { 
 		$this->db->query("DELETE FROM " . DB_PREFIX . "salesrep_checkins WHERE checkin_id = '" . (int)$checkin_id . "'");
-=======
+}
 	public function getLocationsDash($data = array()) {
 		$sql = "SELECT rc.*,CONCAT(sr.salesrep_name,' ',sr.salesrep_lastname) AS salesrep_name,CONCAT(cs.firstname,' ',cs.lastname) AS customer_name, ca.latitude AS customer_lat,ca.longitude AS customer_lng ";
 		$sql.= "FROM ".DB_PREFIX."salesrep_checkins rc ";
@@ -56,7 +56,7 @@ class ModelReplogicLocationManagement extends Model {
 		
 		$query = $this->db->query($sql);
 		return $query->rows;
->>>>>>> origin/master
+
 	}
 	
 	public function getLocations($data = array()) {

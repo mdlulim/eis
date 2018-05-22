@@ -27,10 +27,7 @@ class ControllerCustomerCustomer extends Controller {
 		$this->getList();
 	}
 
-<<<<<<< HEAD
-	public function invitation() { echo "Still this Function is Not created"; exit;
-	
-=======
+
 	public function invitation() {
 		$json['success'] = false;
 		if (($this->request->server['REQUEST_METHOD'] == 'POST')) {
@@ -40,9 +37,9 @@ class ControllerCustomerCustomer extends Controller {
 			}
 		}
 		echo json_encode($json);
-		die();
 		
->>>>>>> origin/master
+		
+
 	}
 	public function add() {
 		$this->load->language('customer/customer');
@@ -642,11 +639,7 @@ class ControllerCustomerCustomer extends Controller {
 				'date_added'     => date($this->language->get('date_format_short'), strtotime($result['date_added'])),
 				'approve'        => $approve,
 				'unlock'         => $unlock,
-<<<<<<< HEAD
-				'wholesale_activity'         => '',
-=======
 				'wholesale_activity' => $wholesale_activity,
->>>>>>> origin/master
 				'view'          => $this->url->link('customer/customer_info', 'token=' . $this->session->data['token'] . '&type=general&customer_id=' . $result['customer_id'] . $url, true),
 				'edit'           => $this->url->link('customer/customer/edit', 'token=' . $this->session->data['token'] . '&customer_id=' . $result['customer_id'] . $url, true)
 			);
@@ -1944,8 +1937,6 @@ class ControllerCustomerCustomer extends Controller {
 	$this->response->setOutput(json_encode($json));
 	
 	}
-<<<<<<< HEAD
-=======
 
 	protected function sendCustomerInvitation($customer_id) {
 
@@ -2052,5 +2043,5 @@ class ControllerCustomerCustomer extends Controller {
 				
 		}
 	}
->>>>>>> origin/master
+
 }

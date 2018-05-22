@@ -34,11 +34,9 @@
               <div class="row">
                 
               <fieldset style="margin: 0px 18px;">        
-<<<<<<< HEAD
-                  <legend style="width: 173px; padding-top: 24px; padding-left: 14px;">Customer Details</legend>
-=======
+
                   <legend style="width: 86px; padding-top: 24px; padding-left: 14px;">Details</legend>
->>>>>>> origin/master
+
                   <div class="col-sm-1">
                   
                 </div>
@@ -77,28 +75,22 @@
                       <h2 class="drawline"></h2>
                       
                       <div class="form-group" <?php if($customer_group_id != '3') { ?> style="display:none;" <?php } ?> id="wholesal"  >
-<<<<<<< HEAD
-                        <label class="col-sm-3 control-label" for="input-customer-group">Wholesale Invitation Status</label>
-                        <div class="col-sm-9">
-                          <div style="float:left;">	
-=======
+
                         <label class="col-sm-3 control-label" for="send_invitation">Send Wholesale Invitation</label>
                         <div class="col-sm-9">
                           <label class="radio">
                             <input type="checkbox" name="send_invitation" id="send_invitation" value="yes" checked>
                           </label>
                           <!-- <div style="float:left;">	
->>>>>>> origin/master
+
                             <input type="text" value="Not Invited" disabled="disabled" class="form-control" style="width:100px;" />
                           </div>
                           <a href="javascript:void()">
                           <div style="float:left;width:150px;padding:8px 5px 8px 15px;margin-left:10px;" class="form-control">
                           	<i class="fa fa-paper-plane"></i> (Re)Send Invitation
-<<<<<<< HEAD
-                          </div></a>
-=======
+
                           </div></a> -->
->>>>>>> origin/master
+
                         </div>
                       </div>
                       
@@ -182,15 +174,11 @@
                           <?php } ?>
                         </div>
                       </div>
-<<<<<<< HEAD
-                      <?php } ?>
-                     
-                     <h2 class="drawline"></h2>
-=======
+
                      
                      <h2 class="drawline"></h2>
                       <?php } ?>
->>>>>>> origin/master
+
                       
                       <!--<div class="form-group required">
                         <label class="col-sm-2 control-label" for="input-lastname"><?php echo $entry_lastname; ?></label>
@@ -759,8 +747,7 @@
       </div>
     </div>
   </div>
-<<<<<<< HEAD
-=======
+
 
   <!-- Page loader -->
   <div class="loader-wrapper" style="display:none">
@@ -768,7 +755,6 @@
   </div>
   <!-- /Page loader -->
 
->>>>>>> origin/master
   <script type="text/javascript"><!--
 $('select[name=\'customer_group_id\']').on('change', function() {
 	$.ajax({
@@ -1349,25 +1335,7 @@ $('#tab-customer .form-group[data-sort]').detach().each(function() {
 	});
 	
 	});
-<<<<<<< HEAD
-    
-    $('select[name=\'customer_group_id\']').on('change', function() {
-	
-		var grp_id = $('select[name=\'customer_group_id\'] option:selected').val()
-		
-		if(grp_id == '3')
-		{
-			$("#wholesal").css("display", "block");
-		}
-		else
-		{
-			$("#wholesal").css("display", "none");
-		}
-	
-	});
-=======
 
->>>>>>> origin/master
     </script>
     </div>
 <?php echo $footer; ?>

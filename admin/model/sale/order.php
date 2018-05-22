@@ -204,11 +204,9 @@ class ModelSaleOrder extends Model {
 		}
 		else
 		{
-<<<<<<< HEAD
+
 			$sql = "SELECT o.order_id, (select c.firstname from " . DB_PREFIX . "customer as c where o.customer_id = c.customer_id) AS customer, (select CONCAT(cc.first_name, ' ', cc.last_name) from " . DB_PREFIX . "customer_contact as cc where oq.customer_contact_id = cc.customer_con_id) AS customercontact, (SELECT os.name FROM " . DB_PREFIX . "order_status os WHERE os.order_status_id = o.order_status_id AND os.language_id = '" . (int)$this->config->get('config_language_id') . "') AS order_status, o.shipping_code, o.firstname, o.total, o.currency_code, o.currency_value, o.date_added, o.date_modified FROM `" . DB_PREFIX . "order` o";
-=======
-			$sql = "SELECT o.order_id, o.customer_id, (select c.firstname from " . DB_PREFIX . "customer as c where o.customer_id = c.customer_id) AS customer, (SELECT os.name FROM " . DB_PREFIX . "order_status os WHERE os.order_status_id = o.order_status_id AND os.language_id = '" . (int)$this->config->get('config_language_id') . "') AS order_status, o.shipping_code, o.total, o.currency_code, o.currency_value, o.date_added, o.date_modified FROM `" . DB_PREFIX . "order` o";
->>>>>>> origin/master
+
 		}
 
 		

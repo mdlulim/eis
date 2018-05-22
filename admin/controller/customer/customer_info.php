@@ -1456,9 +1456,6 @@ class ControllerCustomerCustomerInfo extends Controller {
 		$data['transactionstab'] = $this->url->link('customer/customer_info', 'type=transactions&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
 		$data['rewardpointstab'] = $this->url->link('customer/customer_info', 'type=rewardpoints&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
 		$data['ipaddressestab'] = $this->url->link('customer/customer_info', 'type=ipaddresses&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
-<<<<<<< HEAD
-=======
-
 		$data['customer_contacts'] = array();
 
 		$filter_data = array(
@@ -1623,7 +1620,7 @@ class ControllerCustomerCustomerInfo extends Controller {
 		$data['header'] = $this->load->controller('common/header');
 		$data['column_left'] = $this->load->controller('common/column_left');
 		$data['footer'] = $this->load->controller('common/footer');
->>>>>>> origin/master
+
 
 		$data['customer_contacts'] = array();
 
@@ -3564,8 +3561,7 @@ class ControllerCustomerCustomerInfo extends Controller {
 		
 		$this->response->setOutput($this->load->view('customer/customer_info_ip', $data));
 	}
-<<<<<<< HEAD
-=======
+
 
 	protected function sendCustomerInvitation() {
 
@@ -3617,9 +3613,9 @@ class ControllerCustomerCustomerInfo extends Controller {
 		# send mail and output JSON encoded results back to JS
 		$json['success'] = sendEmail($data, $settings, $template);;
 		echo json_encode($json);
-		die();
+		
 	}
->>>>>>> origin/master
+
 	
 	
 }

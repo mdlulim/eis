@@ -3,11 +3,7 @@
   <div class="page-header">
     <div class="container-fluid">
       <div class="pull-right"><a href="<?php echo $add; ?>" data-toggle="tooltip" title="<?php echo $button_add; ?>" class="btn btn-primary"><i class="fa fa-plus"></i></a>
-<<<<<<< HEAD
-        <button id="button-invitation" type="button" data-toggle="tooltip" title="Send Invitation" class="btn btn-primary" onclick="Confirminvitation('invitation','Are you sure want to Send Invitation ?')"><i class="fa fa-paper-plane"></i></button>
-=======
         <button id="button-invitation" type="button" data-toggle="tooltip" title="Send Invitation" class="btn btn-primary"><i class="fa fa-paper-plane"></i></button>
->>>>>>> origin/master
         <button id="button-delete" type="button" data-toggle="tooltip" title="<?php echo $button_delete; ?>" class="btn btn-danger" onclick="Confirminvitation('delete','Are you sure want to Delete Customer ?')"><i class="fa fa-trash-o"></i></button>
       </div>
       <h1><?php echo $heading_title; ?></h1>
@@ -121,11 +117,10 @@
                 <label class="control-label" for="input-ip"><?php echo $entry_ip; ?></label>
                 <input type="text" name="filter_ip" value="<?php echo $filter_ip; ?>" placeholder="<?php echo $entry_ip; ?>" id="input-ip" class="form-control" />
               </div>-->
-<<<<<<< HEAD
+
             </div>
             <div class="col-sm-3">
-=======
->>>>>>> origin/master
+
               <div class="form-group">
                 <label class="control-label" for="input-date-added"><?php echo $entry_date_added; ?></label>
                 <div class="input-group date">
@@ -249,21 +244,7 @@
 
  <script type="text/javascript"><!--
 $('input[name^=\'selected\']').on('change', function() { 
-<<<<<<< HEAD
-	
-	var selected = $('input[name^=\'selected\']:checked');
 
-	if (selected.length) {
-		$('#button-delete').prop('disabled', false);
-		$('#button-invitation').prop('disabled', false);
-	}
-	else
-	{
-		$('#button-delete').prop('disabled', true);
-		$('#button-invitation').prop('disabled', true);
-	}
-=======
-  
   var selected = $('input[name^=\'selected\']:checked');
 
   if (selected.length) {
@@ -275,7 +256,6 @@ $('input[name^=\'selected\']').on('change', function() {
     $('#button-delete').prop('disabled', true);
     $('#button-invitation').prop('disabled', true);
   }
->>>>>>> origin/master
 
 });
 
@@ -286,17 +266,6 @@ $('input[name^=\'selected\']:first').trigger('change');
 $('input:checkbox').change(function () {
    var selected = $('input[name^=\'selected\']:checked');
 
-<<<<<<< HEAD
-	if (selected.length) {
-		$('#button-delete').prop('disabled', false);
-		$('#button-invitation').prop('disabled', false);
-	}
-	else
-	{
-		$('#button-delete').prop('disabled', true);
-		$('#button-invitation').prop('disabled', true);
-	}
-=======
   if (selected.length) {
     $('#button-delete').prop('disabled', false);
     $('#button-invitation').prop('disabled', false);
@@ -306,40 +275,19 @@ $('input:checkbox').change(function () {
     $('#button-delete').prop('disabled', true);
     $('#button-invitation').prop('disabled', true);
   }
->>>>>>> origin/master
+
 })
 
 $('#button-delete').click(function(){
    $('#form-customer').attr('action', '<?php echo $delete; ?>');
 });
 
-<<<<<<< HEAD
-$('#button-invitation').click(function(){
-   $('#form-customer').attr('action', '<?php echo $button-invitation; ?>');
-});
-
-=======
->>>>>>> origin/master
 function Confirminvitation(action, msg)
 {
   var x = confirm(msg);
   if (x)
   {
       if(action == 'delete')
-<<<<<<< HEAD
-	  {
-	  	var faction = '<?php echo $delete; ?>';
-	  }
-	  else
-	  {
-	  	var faction = '<?php echo $invitation; ?>';
-	  }
-	  var newul = faction.replace(/&amp;/g, "&");
-	  $('#form-customer').attr('action', newul);
-	  $('#form-customer').submit()
-	  return true;
-	}
-=======
     {
       var faction = '<?php echo $delete; ?>';
     }
@@ -352,7 +300,6 @@ function Confirminvitation(action, msg)
     $('#form-customer').submit()
     return true;
   }
->>>>>>> origin/master
   else {
     return false;
  }
