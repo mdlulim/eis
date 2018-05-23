@@ -73,20 +73,20 @@
                   <option value="<?php echo $order_status['order_status_id']; ?>"><?php echo $order_status['name']; ?></option>
                   <?php } ?>
                   <?php } ?>-->
-                  <?php if ($filter_order_status == '15,3,5,11') { ?>
-                  	<option value="15,3,5,11" selected="selected">Order Confirmed</option>
+                  <?php if ($filter_order_status == '5') { ?>
+                  	<option value="5" selected="selected">Order Confirmed</option>
                   <?php } else { ?>
-                  	<option value="15,3,5,11">Order Confirmed</option>
+                  	<option value="5">Order Confirmed</option>
                   <?php } ?>
                   <?php if ($filter_order_status == '1') { ?>
                   	<option value="1" selected="selected">Pending</option>
                   <?php } else { ?>
                   	<option value="1">Pending</option>
                   <?php } ?>
-                  <?php if ($filter_order_status == '7,10') { ?>
-                  	<option value="7,10" selected="selected">Cancelled</option>
+                  <?php if ($filter_order_status == '7') { ?>
+                  	<option value="7" selected="selected">Cancelled</option>
                   <?php } else { ?>
-                  	<option value="7,10">Cancelled</option>
+                  	<option value="7">Cancelled</option>
                   <?php } ?>
                   <?php if ($filter_order_status == '2') { ?>
                   	<option value="2" selected="selected">Processing</option>
@@ -217,11 +217,11 @@
                   <td class="text-left"><?php echo $order['date_modified']; ?></td>
                   <td class="text-left">
                   	<?php //echo $order['order_status']; ?>
-                    <?php if($order['order_status'] == 'Complete' || $order['order_status'] == 'Shipped' || $order['order_status'] == 'Processed' || $order['order_status'] == 'Refunded') { ?>
+                    <?php if($order['order_status'] == 'Order Confirmed') { ?>
                     	<a class="btn-success" style="padding:2px 5px;border-radius:5px;">Order Confirmed</a>
                     <?php } else if($order['order_status'] == 'Pending') { ?>
                     	<a class="btn-warning" style="padding:2px 5px;border-radius:5px;">Pending</a>
-                    <?php } else if($order['order_status'] == 'Failed' || $order['order_status'] == 'Canceled') { ?>
+                    <?php } else if($order['order_status'] == 'Canceled') { ?>
                     	<a class="btn-warning" style="padding:2px 5px;border-radius:5px;background-color:#DB524B;">Cancelled</a>
                     <?php } else if($order['order_status'] == 'Processing') { ?>
                     	<a class="btn-warning" style="background-color: white;border: 1px solid #000;border-radius: 5px;color: #666666;padding: 0 10px;">Processing</a>
