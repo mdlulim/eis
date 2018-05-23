@@ -51,6 +51,18 @@ class ModelCatalogProduct extends Model {
 				}
 			}
 		}
+		
+		// custome price
+
+        if (isset($data['pricing'])) {
+            foreach ($data['pricing'] as $product_customer_group_price) {
+                $this->db->query("REPLACE INTO " . DB_PREFIX . "product_to_customer_group_prices SET product_id = '" . (int)$product_id . "', customer_group_id = '" . (int)$product_customer_group_price['customer_group_id'] . "',  price = '" . (float)$product_customer_group_price['price'] . "'");
+                $this->db->query( "REPLACE INTO `" . DB_PREFIX . "product_to_customer_group` SET product_id='".(int)$product_id."', customer_group_id ='". (int)$product_customer_group_price['customer_group_id'] ."'");
+
+            }
+        }
+
+        // end custom price
 
 		if (isset($data['product_discount'])) {
 			foreach ($data['product_discount'] as $product_discount) {
@@ -182,6 +194,21 @@ class ModelCatalogProduct extends Model {
 				}
 			}
 		}
+		
+		// custom price
+		
+		$this->db->query("DELETE FROM " . DB_PREFIX . "product_to_customer_group_prices WHERE product_id = '" . (int)$product_id . "'");
+
+                if (isset($data['pricing'])) {
+			     foreach ($data['pricing'] as $customer_group_id) {
+				    
+					$this->db->query("DELETE FROM " . DB_PREFIX . "product_to_customer_group_prices WHERE product_id = '" . (int)$product_id . "' and customer_group_id = '" . (int)$customer_group_id['customer_group_id'] . "'");
+					
+					$this->db->query("INSERT INTO " . DB_PREFIX . "product_to_customer_group_prices SET product_id = '" . (int)$product_id . "', customer_group_id = '" . (int)$customer_group_id['customer_group_id'] . "', price = '" . (float)$customer_group_id['price'] . "'");
+			     }
+		        }
+		
+		// end custom price
 
 		$this->db->query("DELETE FROM " . DB_PREFIX . "product_discount WHERE product_id = '" . (int)$product_id . "'");
 
