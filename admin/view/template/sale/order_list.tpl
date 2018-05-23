@@ -221,7 +221,7 @@
                     	<a class="btn-success" style="padding:2px 5px;border-radius:5px;">Order Confirmed</a>
                     <?php } else if($order['order_status'] == 'Pending') { ?>
                     	<a class="btn-warning" style="padding:2px 5px;border-radius:5px;">Pending</a>
-                    <?php } else if($order['order_status'] == 'Canceled') { ?>
+                    <?php } else if($order['order_status'] == 'Cancelled') { ?>
                     	<a class="btn-warning" style="padding:2px 5px;border-radius:5px;background-color:#DB524B;">Cancelled</a>
                     <?php } else if($order['order_status'] == 'Processing') { ?>
                     	<a class="btn-warning" style="background-color: white;border: 1px solid #000;border-radius: 5px;color: #666666;padding: 0 10px;">Processing</a>
