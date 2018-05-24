@@ -269,17 +269,18 @@ class ControllerSaleOrder extends Controller {
 			$cname = !empty($result['customer']) ? $result['customer'] : $result['firstname'];
 			
 			$data['orders'][] = array(
-				'order_id'      => $result['order_id'],
-				'customercontact'      => $result['customercontact'],
-				'customer'      => $cname,
-				'salesrep'      => $salesrepname,
-				'order_status'  => $result['order_status'] ? $result['order_status'] : $this->language->get('text_missing'),
-				'total'         => $this->currency->format($result['total'], $result['currency_code'], $result['currency_value']),
-				'date_added'    => $date_added,
-				'date_modified' => $date_modified,
-				'shipping_code' => $result['shipping_code'],
-				'view'          => $this->url->link('sale/order/info', 'token=' . $this->session->data['token'] . '&order_id=' . $result['order_id'] . $url, true),
-				'edit'          => $this->url->link('sale/order/edit', 'token=' . $this->session->data['token'] . '&order_id=' . $result['order_id'] . $url, true)
+				'order_id'        => $result['order_id'],
+				'customercontact' => $result['customercontact'],
+				'customer'        => $cname,
+				'salesrep'        => $salesrepname,
+				'order_status_id' => $ord['order_status_id'],
+				'order_status'    => $result['order_status'] ? $result['order_status'] : $this->language->get('text_missing'),
+				'total'           => $this->currency->format($result['total'], $result['currency_code'], $result['currency_value']),
+				'date_added'      => $date_added,
+				'date_modified'   => $date_modified,
+				'shipping_code'   => $result['shipping_code'],
+				'view'            => $this->url->link('sale/order/info', 'token=' . $this->session->data['token'] . '&order_id=' . $result['order_id'] . $url, true),
+				'edit'            => $this->url->link('sale/order/edit', 'token=' . $this->session->data['token'] . '&order_id=' . $result['order_id'] . $url, true)
 			);
 		}
 		
@@ -338,6 +339,12 @@ class ControllerSaleOrder extends Controller {
 		$data['button_filter'] = $this->language->get('button_filter');
 		$data['button_view'] = $this->language->get('button_view');
 		$data['button_ip_add'] = $this->language->get('button_ip_add');
+
+		# order statuses
+		$data['order_status_pending']    = $this->language->get('order_status_pending_id');
+		$data['order_status_processing'] = $this->language->get('order_status_processing_id');
+		$data['order_status_confirmed']  = $this->language->get('order_status_confirmed_id');
+		$data['order_status_cancelled']  = $this->language->get('order_status_cancelled_id');
 
 		$data['token'] = $this->session->data['token'];
 

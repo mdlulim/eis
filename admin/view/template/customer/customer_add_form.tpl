@@ -447,7 +447,11 @@
                      <?php } else { ?>
                      	<?php $df = ''; ?>
                      <?php } ?>
-                    <li <?php echo $df; ?> ><a href="#tab-address<?php echo $address_row; ?>" data-toggle="tab"><i class="fa fa-minus-circle" onclick="$('#address a:first').tab('show'); $('#address a[href=\'#tab-address<?php echo $address_row; ?>\']').parent().remove(); $('#tab-address<?php echo $address_row; ?>').remove();"></i> <?php echo $tab_address . ' ' . $address_row; ?></a></li>
+                    <li <?php echo $df; ?> >
+                      <a href="#tab-address<?php echo $address_row; ?>" data-toggle="tab">
+                        <i class="fa fa-minus-circle" onclick="$('#address a:first').tab('show'); $('#address a[href=\'#tab-address<?php echo $address_row; ?>\']').parent().remove(); <?php if ($address_row <> 1) :?>$('#tab-address<?php echo $address_row; ?>').remove(); <?php endif; ?"></i> <?php echo $tab_address . ' ' . $address_row; ?>
+                      </a>
+                    </li>
                     <?php $address_row++; ?>
                     <?php } ?>
                     
@@ -732,10 +736,10 @@
           </div>
           </fieldset>
                       
- <style>
-  #tab-customer .form-group + .form-group{border-top:none;}
-  .drawline{border-top:1px solid #ededed;margin:10px 0px;}
-  </style>                   
+         <style>
+          #tab-customer .form-group + .form-group{border-top:none;}
+          .drawline{border-top:1px solid #ededed;margin:10px 0px;}
+          </style>
                     
                   
                 
