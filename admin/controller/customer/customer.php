@@ -37,9 +37,6 @@ class ControllerCustomerCustomer extends Controller {
 			}
 		}
 		echo json_encode($json);
-		
-		
-
 	}
 	public function add() {
 		$this->load->language('customer/customer');
@@ -1973,7 +1970,7 @@ class ControllerCustomerCustomer extends Controller {
 		$template->data['_url']          = $this->config->get('config_url');
 		$template->data['_name']         = $this->config->get('config_owner');
 		$template->data['_email']        = $this->config->get('config_email');
-		$template->data['help_guide']    = $this->config->get('config_url');
+		$template->data['help_guide']    = 'https://help.saleslogic.io/portal/home';
 
 		# smtp settings
 		$settings['protocol']      = $this->config->get('config_mail_protocol');
@@ -2012,33 +2009,36 @@ class ControllerCustomerCustomer extends Controller {
 				# get customer information
 				$customer = $this->model_customer_customer->getCustomer($customerId);
 
-				# auto-generate password
-				$password = randomPassword();
+				if (isset($customer['customer_group_id']) && $customer['customer_group_id'] == 3) {
 
-				# update customer password
-				$this->model_customer_customer->updateCustomerPassword($customer['customer_id'], $password);
+					# auto-generate password
+					$password = randomPassword();
 
-				# add/log customer activity
-				$this->model_customer_customer->addCustomerActivity($customer['customer_id'], $customer['ip'], $this->request->post);
+					# update customer password
+					$this->model_customer_customer->updateCustomerPassword($customer['customer_id'], $password);
 
-				# build data array
-				$data['to']      = array('email'=>$customer['email'], 'name'=>$customer['firstname']);
-				$data['from']    = array('email'=>$this->config->get('config_email'), 'name'=>$this->config->get('config_name'));
+					# add/log customer activity
+					$this->model_customer_customer->addCustomerActivity($customer['customer_id'], $customer['ip'], $this->request->post);
 
-				$data['subject'] = 'New Wholesale Account';
-				$data['message'] = 'Good day '.$customer['firstname'].', '.$this->config->get('config_owner').' has invited you to purchase stock via their secure online wholesale portal. To access the portal, go to: '.$this->config->get('config_url').'. To log in, use this email address as your username. Your password is : '.$password;
+					# build data array
+					$data['to']      = array('email'=>$customer['email'], 'name'=>$customer['firstname']);
+					$data['from']    = array('email'=>$this->config->get('config_email'), 'name'=>$this->config->get('config_name'));
 
-				$tempData = array('emailtemplate_key' => 'customer.invite');
-				$template = $this->model_extension_mail_template->load($tempData);
-				$template->data['password']      = $password;
-				$template->data['customer_name'] = $customer['firstname'];
-				$template->data['_url']          = $this->config->get('config_url');
-				$template->data['_name']         = $this->config->get('config_owner');
-				$template->data['_email']        = $this->config->get('config_email');
-				$template->data['help_guide']    = $this->config->get('config_url');
+					$data['subject'] = 'New Wholesale Account';
+					$data['message'] = 'Good day '.$customer['firstname'].', '.$this->config->get('config_owner').' has invited you to purchase stock via their secure online wholesale portal. To access the portal, go to: '.$this->config->get('config_url').'. To log in, use this email address as your username. Your password is : '.$password;
 
-				# send email invitation
-				sendEmail($data, $settings, $template);
+					$tempData = array('emailtemplate_key' => 'customer.invite');
+					$template = $this->model_extension_mail_template->load($tempData);
+					$template->data['password']      = $password;
+					$template->data['customer_name'] = $customer['firstname'];
+					$template->data['_url']          = $this->config->get('config_url');
+					$template->data['_name']         = $this->config->get('config_owner');
+					$template->data['_email']        = $this->config->get('config_email');
+					$template->data['help_guide']    = 'https://help.saleslogic.io/portal/home';
+
+					# send email invitation
+					sendEmail($data, $settings, $template);
+				}
 			}
 				
 		}

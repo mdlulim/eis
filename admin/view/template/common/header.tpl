@@ -36,9 +36,9 @@
 <header id="header" class="navbar navbar-static-top">
   <div class="navbar-header">
     <?php if ($logged) { ?>
-    <a type="button" id="button-menu" class="pull-left"><i class="fa fa-indent fa-lg"></i></a>
+    <!-- <a type="button" id="button-menu" class="pull-left"><i class="fa fa-indent fa-lg"></i></a> -->
     <?php } ?>
-    <a href="<?php echo $home; ?>" class="navbar-brand"><img src="view/image/logo.png" alt="<?php echo $heading_title; ?>" title="<?php echo $heading_title; ?>" /></a></div>
+    <a href="<?php echo $home; ?>" class="navbar-brand" style="height:44px; padding-top:12.5px;"><img src="view/image/logo.png" alt="<?php echo $heading_title; ?>" title="<?php echo $heading_title; ?>" /></a></div>
   <?php if ($logged) { ?>
   <ul class="nav pull-right">
     <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown"><?php if($alerts > 0) { ?><span class="label label-danger pull-left"><?php echo $alerts; ?></span><?php } ?> <i class="fa fa-bell fa-lg"></i></a>
@@ -56,10 +56,10 @@
         
         <?php } else { ?>
         
-         <li class="divider"></li>
-        <li class="dropdown-header"><?php echo $text_customer; ?></li>
-        <li><a href="<?php echo $online; ?>"><span class="label label-success pull-right"><?php echo $online_total; ?></span><?php echo $text_online; ?></a></li>
-        <li><a href="<?php echo $customer_approval; ?>"><span class="label label-danger pull-right"><?php echo $customer_total; ?></span><?php echo $text_approval; ?></a></li>
+        <li class="divider"></li>
+        <li class="dropdown-header"><?php echo $text_quotes; ?></li>
+        <li><a href="<?php echo $quotes_header; ?>"><span class="label label-success pull-right"><?php echo $order_quotes_total_all; ?></span><?php echo $text_approvedquotes; ?></a></li>
+        <li><a href="<?php echo $quotes_waiting_header; ?>"><span class="label label-danger pull-right"><?php echo $order_quotes_total_all_waiting; ?></span><?php echo $text_approval; ?></a></li>
         
         <?php } ?>
         
@@ -73,8 +73,22 @@
         
         <li class="divider"></li>
         <li class="dropdown-header"><?php echo $text_product; ?></li>
-        <li><a href="<?php echo $product; ?>"><span class="label label-danger pull-right"><?php echo $product_total; ?></span><?php echo $text_stock; ?></a></li>
-        <li><a href="<?php echo $review; ?>"><span class="label label-danger pull-right"><?php echo $review_total; ?></span><?php echo $text_review; ?></a></li>
+        <li>
+          <a href="<?php echo $product; ?>">
+            <span class="label <?=($product_total > 0) ? 'label-danger' : 'label-default'; ?> pull-right">
+              <?php echo $product_total; ?>
+            </span>
+            <?php echo $text_stock; ?>
+          </a>
+        </li>
+        <li>
+          <a href="<?php echo $review; ?>">
+            <span class="label <?=($review_total > 0) ? 'label-danger' : 'label-default'; ?> pull-right">
+              <?php echo $review_total; ?>
+            </span>
+              <?php echo $text_review; ?>
+          </a>
+        </li>
          <?php if($login_user_group_name != "Sales Manager") { ?>
         <li class="divider"></li>
         <li class="dropdown-header"><?php echo $text_affiliate; ?></li>
@@ -94,8 +108,8 @@
       <ul class="dropdown-menu dropdown-menu-right">
         <li class="dropdown-header"><?php echo $text_help; ?></li>
         <!--<li><a href="http://www.dashlogic.co.za" target="_blank"><?php echo $text_homepage; ?></a></li>-->
-        <li><a href="https://help.saleslogic.io/portal/home" target="_blank"><?php echo $text_documentation; ?></a></li>
-        <li><a href="https://help.saleslogic.io/portal/home" target="_blank"><?php echo $text_support; ?></a></li>
+        <li><a href="https://help.saleslogic.io/portal/kb" target="_blank"><?php echo $text_documentation; ?></a></li>
+        <li><a href="https://help.saleslogic.io/portal/newticket" target="_blank"><?php echo $text_support; ?></a></li>
       </ul>
     </li>
     <li><a href="<?php echo $logout; ?>"><span class="hidden-xs hidden-sm hidden-md"><?php echo $text_logout; ?></span> <i class="fa fa-sign-out fa-lg"></i></a></li>

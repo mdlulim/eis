@@ -15,12 +15,12 @@
     </div>
   </div>
   <div class="container-fluid">
-    <?php if ($error_warning) { ?>
+    <?php if (isset($error_warning)) { ?>
     <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> <?php echo $error_warning; ?>
       <button type="button" class="close" data-dismiss="alert">&times;</button>
     </div>
     <?php } ?>
-    <?php if ($success) { ?>
+    <?php if (isset($success)) { ?>
     <div class="alert alert-success"><i class="fa fa-check-circle"></i> <?php echo $success; ?>
       <button type="button" class="close" data-dismiss="alert">&times;</button>
     </div>
@@ -44,9 +44,9 @@
             <li><a href="<?php echo $ipaddressestab; ?>" >Ip Addresses</a></li>
           </ul>
           
-          <form action="<?php echo $action; ?>" method="post" enctype="multipart/form-data" id="form-customer" class="form-horizontal">
-          <input type="hidden" name="type" value="<?php echo $type; ?>" />
-            <input type="hidden" name="csalesrep_id" value="<?php echo $csalesrep_id; ?>" />
+          <form action="<?=(isset($action)) ? $action : ''; ?>" method="post" enctype="multipart/form-data" id="form-customer" class="form-horizontal">
+          <input type="hidden" name="type" value="<?=(isset($type)) ? $type : ''; ?>" />
+            <input type="hidden" name="csalesrep_id" value="<?=(isset($csalesrep_id)) ? $csalesrep_id : ''; ?>" />
             
           
           <div class="tab-content">
@@ -136,7 +136,7 @@
                             <?php } ?>
                            
                           </select>
-                          <?php if ($error_payment_method) { ?>
+                          <?php if (isset($error_payment_method)) { ?>
                           <div class="text-danger"><?php echo $error_payment_method; ?></div>
                           <?php } ?>
                         </div>
@@ -212,10 +212,10 @@
                   <ul class="nav nav-pills nav-stacked" id="address">
                     <?php $address_row = 1; ?>
                     <?php foreach ($addresses as $address) { ?>
-                     <?php if(($address['address_id'] == $adrs_id) && $adrs_id !='') { ?>
+                     <?php if(isset($adrs_id) && ($address['address_id'] == $adrs_id) && $adrs_id !='') { ?>
 
                       <?php $df = 'class="active"'; ?>
-                     <?php } else if($address_row == '1' && $adrs_id =='') { ?>
+                     <?php } else if(isset($adrs_id) && $address_row == '1' && $adrs_id =='') { ?>
                       <?php $df = 'class="active"'; ?>
                      <?php } else { ?>
                       <?php $df = ''; ?>
@@ -232,9 +232,9 @@
                     <?php $address_row = 1; ?>
                     <?php foreach ($addresses as $address) { ?>
                     
-                    <?php if (($address['address_id'] == $adrs_id) && $adrs_id !='') { ?>
+                    <?php if (isset($adrs_id) && ($address['address_id'] == $adrs_id) && $adrs_id !='') { ?>
                       <?php $cls = 'class="tab-pane active"'; ?>
-                    <?php } else if($address_row == '1' && $adrs_id =='') { ?>
+                    <?php } else if(isset($adrs_id) && $address_row == '1' && $adrs_id =='') { ?>
                       <?php $cls = 'class="tab-pane active"'; ?>
                      <?php } else { ?>
                       <?php $cls = 'class="tab-pane"'; ?>

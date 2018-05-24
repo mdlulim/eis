@@ -52,7 +52,10 @@
 		    				if (res.success)
 		    					swal("Sent!", "Email invitation has been sent to "+customerName+".", "success");
 		    				else
-		    					swal("Error!", "An unexpected error has occurred.", "error");
+		    					if (res.error !== undefined)
+		    						swal("Error!", res.error, "error");
+		    					else
+		    						swal("Error!", "An unexpected error has occurred.", "error");
 		    			}
 		    		});
 				}
@@ -111,7 +114,13 @@
 	    						$('#button-invitation').prop('disabled', true);
 		    					swal("Sent!", "Email invitation has been sent to "+postData.customers.length+" customer(s).", "success");
 		    				} else {
-		    					swal("Error!", "An unexpected error has occurred.", "error");
+		    					if (res.error !== undefined)
+		    						swal("Error!", res.error, "error");
+		    					else
+		    						if (res.error !== undefined)
+		    						swal("Error!", res.error, "error");
+		    					else
+		    						swal("Error!", "An unexpected error has occurred.", "error");
 		    				}
 		    			}
 		    		});

@@ -130,7 +130,7 @@
               </div>
             </div>
             <div class="tile-footer">
-              <a href="<?=$quotes_view_more?>">View more...</a>
+              <a href="<?=$unapproved_quotes_view_more?>">View more...</a>
             </div>
           </div>
         </div>
@@ -167,7 +167,7 @@
                     <td><span class="label label-<?=(strtolower($appointment['appointment_type'])=='new business')? 'default' : 'primary' ?>"><?=$appointment['appointment_type']?></span></td>
                     <td><?=$appointment['visit_date']?></td>
                     <td class="text-right">
-                      <a href="<?=$appointment['view']?>" data-toggle="tooltip" title="<?=$button_view?>" class="btn btn-info"><i class="fa fa-eye"></i></a>
+                      <a href="<?=$appointment['view']?>" data-toggle="tooltip" title="<?=$appointment['customer_name']?>" class="btn btn-info"><i class="fa fa-eye"></i></a>
                     </td>
                   </tr>
                   <?php endforeach; ?>

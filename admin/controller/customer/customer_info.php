@@ -1621,172 +1621,6 @@ class ControllerCustomerCustomerInfo extends Controller {
 		$data['column_left'] = $this->load->controller('common/column_left');
 		$data['footer'] = $this->load->controller('common/footer');
 
-
-		$data['customer_contacts'] = array();
-
-		$filter_data = array(
-			//'filter_customer_contact_id'	  => $filter_customer_contact_id,
-			//'filter_email'	  => $filter_email,
-			'filter_customer_id' => $customer_id
-		);
-
-		$customer_contact_total = $this->model_replogic_customer_contact->getTotalCustomercontact($filter_data);
-
-		$data['customer_contacts'] = $this->model_replogic_customer_contact->getcustomercontacts($filter_data);
-		 
-		$data['customers'] = $this->model_customer_customer->getCustomers();
-		$data['allcustomer_contacts'] = $this->model_replogic_customer_contact->getcustomercontacts($filter_data = array('filter_customer_id' => $customer_id));
-		
-		$data['heading_title'] = $this->language->get('heading_title');
-		
-		$data['text_list'] = $this->language->get('text_list');
-		$data['text_no_results'] = $this->language->get('text_no_results');
-		$data['text_confirm'] = $this->language->get('text_confirm');
-
-		$data['entry_first_name'] = $this->language->get('entry_first_name');
-		$data['entry_last_name'] = $this->language->get('entry_last_name');
-		$data['entry_email'] = $this->language->get('entry_email');
-		$data['entry_cellphone_number'] = $this->language->get('entry_cellphone_number');
-		$data['entry_telephone_number'] = $this->language->get('entry_telephone_number');
-		$data['entry_customer'] = $this->language->get('entry_customer');
-		$data['entry_role'] = $this->language->get('entry_role');
-		
-		$data['entry_access'] = $this->language->get('entry_access');
-		$data['entry_modify'] = $this->language->get('entry_modify');
-
-		$data['button_cancel'] = $this->language->get('button_cancel');
-		
-		$data['token'] = $this->session->data['token'];
-
-		if (isset($this->error['warning'])) {
-			$data['error_warning'] = $this->error['warning'];
-		} else {
-			$data['error_warning'] = '';
-		}
-
-		if (isset($this->session->data['success'])) {
-			$data['success'] = $this->session->data['success'];
-
-			unset($this->session->data['success']);
-		} else {
-			$data['success'] = '';
-		}
-
-		$url = '';
-		
-		if (isset($this->request->get['type'])) {
-			$url .= '&type=' . $this->request->get['type'];
-		}
-		
-		if (isset($this->request->get['customer_id'])) {
-			$url .= '&customer_id=' . $this->request->get['customer_id'];
-		}
-		
-		$data['filter_customer_contact_id'] = $filter_customer_contact_id;
-		$data['filter_email'] = $filter_email;
-		$data['sort'] = $sort;
-		$data['order'] = $order;
-
-		$data['header'] = $this->load->controller('common/header');
-		$data['column_left'] = $this->load->controller('common/column_left');
-		$data['footer'] = $this->load->controller('common/footer');
-
-		$this->response->setOutput($this->load->view('customer/customer_info_contactform', $data));
-		}
-		
-	public function CustomerContactView() { 
-	
-		$this->load->language('replogic/customer_contact');
-		$this->load->language('customer/customer_info');
-		$this->load->model('customer/customer');
-		$this->load->model('replogic/customer_contact');
-		
-		$customer_id = $this->request->get['customer_id'];
-		$customerdetails = $this->model_customer_customer->getCustomer($customer_id);
-		$data['customername'] = $customerdetails['firstname'];
-		$data['customer_id'] = $customer_id;
-		
-		$this->document->setTitle($this->language->get('heading_title'));
-		$data['heading_title'] = $this->language->get('heading_title');
-		
-		$data['text_form'] = !isset($this->request->get['customer_con_id']) ? $this->language->get('text_add') : $this->language->get('text_edit');
-		$data['text_select_all'] = $this->language->get('text_select_all');
-		$data['text_unselect_all'] = $this->language->get('text_unselect_all');
-
-		$data['entry_first_name'] = $this->language->get('entry_first_name');
-		$data['entry_last_name'] = $this->language->get('entry_last_name');
-		$data['entry_email'] = $this->language->get('entry_email');
-		$data['entry_cellphone_number'] = $this->language->get('entry_cellphone_number');
-		$data['entry_telephone_number'] = $this->language->get('entry_telephone_number');
-		$data['entry_customer'] = $this->language->get('entry_customer');
-		$data['entry_role'] = $this->language->get('entry_role');
-		
-		$data['entry_access'] = $this->language->get('entry_access');
-		$data['entry_modify'] = $this->language->get('entry_modify');
-
-		$data['button_cancel'] = $this->language->get('button_cancel');
-
-		$url = '';
-
-		if (isset($this->request->get['type'])) {
-			$url .= '&type=' . $this->request->get['type'];
-		}
-		
-		if (isset($this->request->get['customer_id'])) {
-			$url .= '&customer_id=' . $this->request->get['customer_id'];
-		}
-		
-		if (isset($this->request->get['sort'])) {
-			$url .= '&sort=' . $this->request->get['sort'];
-		}
-
-		if (isset($this->request->get['order'])) {
-			$url .= '&order=' . $this->request->get['order'];
-		}
-
-		if (isset($this->request->get['page'])) {
-			$url .= '&page=' . $this->request->get['page'];
-		}
-
-		$data['breadcrumbs'] = array();
-
-		$data['breadcrumbs'][] = array(
-			'text' => $this->language->get('text_home'),
-			'href' => $this->url->link('common/dashboard', 'token=' . $this->session->data['token'], true)
-		);
-
-		$data['breadcrumbs'][] = array(
-			'text' => 'Customer Management',
-			'href' => $this->url->link('customer/customer', 'token=' . $this->session->data['token'] . $url, true)
-		);
-		
-		$data['breadcrumbs'][] = array(
-			'text' => $this->language->get('breadcrum_title'),
-			'href' => $this->url->link('customer/customer_info', 'token=' . $this->session->data['token'] . $url, true)
-		);
-
-		$data['cancel'] = $this->url->link('customer/customer_info', 'token=' . $this->session->data['token'] . $url, true);
-		$data['editurl'] = $this->url->link('replogic/customer_contact/edit', 'customer_con_id='.$this->request->get['customer_con_id'].'&token=' . $this->session->data['token'] . $url, true);
-
-		if (isset($this->request->get['customer_con_id']) && $this->request->server['REQUEST_METHOD'] != 'POST') {
-			$customer_contact_info = $this->model_replogic_customer_contact->getcustomercontact($this->request->get['customer_con_id']);
-		}
-
-		$data['first_name'] = $customer_contact_info['first_name']; 
-		$data['last_name'] = $customer_contact_info['last_name'];
-		$data['email'] = $customer_contact_info['email'];
-		$data['telephone_number'] = $customer_contact_info['telephone_number'];
-		$data['cellphone_number'] = $customer_contact_info['cellphone_number'];
-		$data['role'] = $customer_contact_info['role'];
-		$data['ccustomer_id'] = $customer_contact_info['customer_id'];
-		
-		$this->load->model('customer/customer');
-	   $data['customers'] = $this->model_customer_customer->getCustomers();
-		
-		$data['header'] = $this->load->controller('common/header');
-		$data['column_left'] = $this->load->controller('common/column_left');
-		$data['footer'] = $this->load->controller('common/footer');
-
 		$this->response->setOutput($this->load->view('customer/customer_info_contact_view', $data));
 	
 	}
@@ -3593,13 +3427,15 @@ class ControllerCustomerCustomerInfo extends Controller {
 		$tempData = array(
 			'emailtemplate_key' => 'customer.invite'
 		);
-		$template                        = $this->model_extension_mail_template->load($tempData);
-		$template->data['password']      = $user_info['password'];
-		$template->data['customer_name'] = $user_info['firstname'];
+		
+		$template = $this->model_extension_mail_template->load($tempData);
+
+		$template->data['password']      = $password;
+		$template->data['customer_name'] = $customer['firstname'];
 		$template->data['_url']          = $this->config->get('config_url');
 		$template->data['_name']         = $this->config->get('config_owner');
 		$template->data['_email']        = $this->config->get('config_email');
-		$template->data['help_guide']    = $this->config->get('config_url');
+		$template->data['help_guide']    = 'https://help.saleslogic.io/portal/home';
 
 		# smtp settings
 		$settings['protocol']      = $this->config->get('config_mail_protocol');

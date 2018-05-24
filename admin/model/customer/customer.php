@@ -453,7 +453,7 @@ class ModelCustomerCustomer extends Model {
 		return $query->row['total'];
 	}
 	
-	public function getTotalCustomers($data = array(), $allaccess=false, $current_user_id) {
+	public function getTotalCustomers($data = array(), $allaccess=false, $current_user_id=null) {
 		
 		$implode = array();
 		if($allaccess)
