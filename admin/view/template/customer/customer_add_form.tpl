@@ -784,6 +784,17 @@ $('select[name=\'customer_group_id\']').trigger('change');
 //--></script>
 
 <script type="text/javascript">
+
+  $(document).ready(function ($) {
+    if ($('.tab-pane .form-group').hasClass('has-error')) {
+      var id = $('.has-error').closest('.tab-pane').attr('id');
+      var element = '.nav.nav-pills a[href="#'+id+'"]';
+      if ($(element).length > 0) {
+        $(element).trigger('click');
+      }
+    }
+  });
+
 $(document).ready(function ($) {
  $('#tab-general1').on('change',function(e){
 e.preventDefault()

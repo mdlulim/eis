@@ -331,6 +331,11 @@ class ModelSaleOrder extends Model {
 		return $query->rows;
 	}
 
+	public function updateOrderStatus($order_id, $order_status_id) {
+		$sql = "UPDATE `" . DB_PREFIX . "order` SET order_status_id = '".$order_status_id."', date_modified = NOW() WHERE order_id = '".$order_id."'"; 
+		$this->db->query($sql);
+	}
+
 
 	/**
 	 * Get total orders [revenue]

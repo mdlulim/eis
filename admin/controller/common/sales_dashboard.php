@@ -271,6 +271,8 @@ class ControllerCommonSalesDashboard extends Controller {
 		# View more link(s)
 		$data['order_view_more'] = $this->url->link('sale/order', "token=$token", true);
 		$data['quotes_view_more'] = $this->url->link('replogic/order_quotes', "token=$token", true);
+
+		$data['unapproved_quotes_view_more'] = $this->url->link('replogic/order_quotes', "token=$token&filter_order_status=0");
 	
 		/*=====  End of Tiles  ======*/
 		
@@ -340,11 +342,13 @@ class ControllerCommonSalesDashboard extends Controller {
 				$response = curl_exec($ch);
 				curl_close($ch);
 				$decodedResponse = json_decode($response);
-				$latitude = $decodedResponse->results[0]->geometry->location->lat;
-				$longitude = $decodedResponse->results[0]->geometry->location->lng;
-				
-				$data['locations_map'][] = array('latitude'=>$latitude,'longitude'=>$longitude,'name'=>$location['salesrep_name'],'icon'=>'view/image/green-dot.png');
-				$data['locations_map'][] = array('latitude'=>$location['customer_lat'],'longitude'=>$location['customer_lng'],'name'=>$location['customer_name'],'icon'=>'view/image/blue-dot.png');
+				if (isset($decodedResponse->results[0])) {
+					$latitude = $decodedResponse->results[0]->geometry->location->lat;
+					$longitude = $decodedResponse->results[0]->geometry->location->lng;
+					
+					$data['locations_map'][] = array('latitude'=>$latitude,'longitude'=>$longitude,'name'=>$location['salesrep_name'],'icon'=>'view/image/green-dot.png');
+					$data['locations_map'][] = array('latitude'=>$location['customer_lat'],'longitude'=>$location['customer_lng'],'name'=>$location['customer_name'],'icon'=>'view/image/blue-dot.png');
+				}
 			
 			}
 		}

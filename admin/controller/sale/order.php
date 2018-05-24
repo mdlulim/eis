@@ -576,6 +576,13 @@ class ControllerSaleOrder extends Controller {
 		$data['tab_voucher'] = $this->language->get('tab_voucher');
 		$data['tab_total'] = $this->language->get('tab_total');
 
+		$orderStatuses = array(
+			'pending'    => $this->language->get('order_status_pending_id'),
+			'processing' => $this->language->get('order_status_processing_id'),
+			'confirmed'  => $this->language->get('order_status_confirmed_id'),
+			'cancelled'  => $this->language->get('order_status_cancelled_id')
+		);
+
 		$url = '';
 
 		if (isset($this->request->get['filter_order_id'])) {
@@ -659,6 +666,14 @@ class ControllerSaleOrder extends Controller {
 
 		if (isset($this->request->get['order_id'])) {
 			$order_info = $this->model_sale_order->getOrder($this->request->get['order_id']);
+
+			# If Order is 'Pending', change status to 'Processing' on page load
+			# update order status, and
+			# get updated order information
+			if (isset($order_info['order_status_id']) && $order_info['order_status_id'] == $orderStatuses['pending']) {
+				$this->model_sale_order->updateOrderStatus($this->request->get['order_id'], $orderStatuses['processing']);
+				$order_info = $this->model_sale_order->getOrder($this->request->get['order_id']);
+			}
 		}
 
 		if (!empty($order_info)) {

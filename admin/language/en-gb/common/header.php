@@ -8,10 +8,9 @@ $_['text_processing_status'] = 'Processing';
 $_['text_complete_status']   = 'Completed';
 $_['text_customer']          = 'Customers';
 $_['text_quotes']            = 'Quotes';
-$_['text_approvedquotes']    = 'Approved Quotes';
-
+$_['text_approvedquotes']    = 'Confirmed';
 $_['text_online']            = 'Customers Online';
-$_['text_approval']          = 'Pending approval';
+$_['text_approval']          = 'Awaiting Approval';
 $_['text_product']           = 'Products';
 $_['text_stock']             = 'Out of stock';
 $_['text_review']            = 'Reviews';

@@ -119,7 +119,7 @@
               </div>-->
 
             </div>
-            <div class="col-sm-3">
+            <div class="col-sm-4">
 
               <div class="form-group">
                 <label class="control-label" for="input-date-added"><?php echo $entry_date_added; ?></label>
@@ -215,7 +215,7 @@
                     <?php } else { ?>
                     <button type="button" class="btn btn-warning" disabled><i class="fa fa-unlock"></i></button>
                     <?php } ?>-->
-                    <a href="<?php echo $customer['view']; ?>" data-toggle="tooltip" title="<?php echo $button_view; ?>" class="btn btn-info"><i class="fa fa-eye"></i></a>
+                    <a href="<?php echo $customer['view']; ?>" data-toggle="tooltip" title="<?php echo $customer['name']; ?>" class="btn btn-info"><i class="fa fa-eye"></i></a>
                     <!--<a href="<?php echo $customer['edit']; ?>" data-toggle="tooltip" title="<?php echo $button_edit; ?>" class="btn btn-primary"><i class="fa fa-pencil"></i></a>--></td>
                 </tr>
                 <?php } ?>

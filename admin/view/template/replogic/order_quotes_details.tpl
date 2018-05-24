@@ -4,8 +4,8 @@
     <div class="container-fluid">
       <div class="pull-right">
       	<div style="float:left">
-        <a href="javascript:void();" data-toggle="tooltip" title="Decline" onclick="onpopupdeny(<?php echo $_GET['quote_id']; ?>);" style="float: right; font-family: Calibri;" class="btn btn-danger decline"><i class="fa fa-times"> Deny</i></a>
-        <a data-toggle="tooltip" id="button-save" title="Convert to Order" class="btn btn-success" style="float:right;margin-right:8px;font-family: Calibri;"><i class="fa fa-check"></i> Confirm</a>
+        <a href="javascript:void();" data-toggle="tooltip" title="Deny" onclick="onpopupdeny(<?php echo $_GET['quote_id']; ?>);" style="float: right; font-family: Calibri;" class="btn btn-danger decline"><i class="fa fa-times"></i></a>
+        <a data-toggle="tooltip" id="button-save" title="Confirm Order" class="btn btn-success" style="float:right;margin-right:8px;font-family: Calibri;"><i class="fa fa-check"></i></a>
         </div>
         <div style="float:right;margin-left:8px;">
         <a href="<?php echo $cancel; ?>" data-toggle="tooltip" title="<?php echo $button_cancel; ?>" class="btn btn-default" style="float:right;"><i class="fa fa-reply"></i></a>
