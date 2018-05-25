@@ -92,7 +92,7 @@
                   <?php } ?>
                 </select>
               </div>
-              <div class="form-group">
+              <!--<div class="form-group">
                 <label class="control-label" for="input-image"><?php echo $entry_image; ?></label>
                 <select name="filter_image" id="input-image" class="form-control">
                   <option value="*"></option>
@@ -107,7 +107,7 @@
                   <option value="0"><?php echo $text_disabled; ?></option>
                   <?php } ?>
                 </select>
-              </div>
+              </div>-->
               <button type="button" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-search"></i> Search</button>
               <button type="button" id="button-filter-reset" class="btn btn-primary pull-right" style="margin-right:10px;"><i class="fa fa-refresh"></i> Reset</button>
             </div>
@@ -207,6 +207,8 @@ $('#button-filter').on('click', function() {
 		url += '&filter_name=' + encodeURIComponent(filter_name);
 	}
 
+	var filter_product_id = $('select[name=\'filter_product_id\']').val();
+	
 	if (filter_product_id) {
 		url += '&filter_product_id=' + encodeURIComponent(filter_product_id);
 	}
@@ -241,13 +243,19 @@ $('#button-filter').on('click', function() {
 		url += '&filter_status=' + encodeURIComponent(filter_status);
 	}
 
-  var filter_image = $('select[name=\'filter_image\']').val();
+  /*var filter_image = $('select[name=\'filter_image\']').val();
 
   if (filter_image != '*') {
     url += '&filter_image=' + encodeURIComponent(filter_image);
-  }
+  }*/
 
 	location = url;
+});
+
+$('#button-filter-reset').on('click', function() {
+  var url = 'index.php?route=catalog/product&token=<?php echo $token; ?>';
+
+  location = url;
 });
 //--></script>
   <script type="text/javascript"><!--

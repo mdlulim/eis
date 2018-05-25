@@ -264,9 +264,9 @@
 		 		 <?php
 			]]></search>
 			<add><![CDATA[
-				$_['text_category_customer_groups']      = 'Customer Groups';
-                $_['help_category_customer_groups']      = 'Select each Customer Group to which this category will be available';
-                $_['column_category_customer_groups']    = 'Customer Groups';
+				$_['text_category_customer_groups']      = 'Contract Pricing';
+                $_['help_category_customer_groups']      = 'Select each Contract Pricing to which this category will be available';
+                $_['column_category_customer_groups']    = 'Contract Pricing';
                 $_['text_close']                         = 'Close';
 			]]></add>
 		</operation>
@@ -592,12 +592,12 @@
 		    	<?php
 		    ]]></search>
 		    <add><![CDATA[
-		   		$_['entry_show_admin_category_customer_groups_in_category_list']      = 'Show customer groups in Admin category list.';
-                $_['text_categories_by_customer_group']                               = 'Categories by Customer Groups.';
-                $_['entry_default_category_customer_groups']                         = 'Set the Default Customer Groups.';
+		   		$_['entry_show_admin_category_customer_groups_in_category_list']      = 'Show Contract Pricing in Admin category list.';
+                $_['text_categories_by_customer_group']                               = 'Categories by Contract Pricing.';
+                $_['entry_default_category_customer_groups']                         = 'Set the Default Contract Pricing.';
                 $_['help_default_category_customer_groups']                          = 'Each checked group will also be checked whenever you create a new category.';
                 $_['entry_update_category_customer_groups_in_category_list']          = 'Update all categories';
-                $_['help_update_category_customer_groups_in_category_list']           = 'Set this to yes and all categories with NO customer group assigned will be updated with all the checked default customer groups from above. Use this only the first time you install this extension!';
+                $_['help_update_category_customer_groups_in_category_list']           = 'Set this to yes and all categories with NO Contract Pricing assigned will be updated with all the checked default Contract Pricing from above. Use this only the first time you install this extension!';
 		    ]]></add>	
 		</operation>
 	</file>

@@ -29,20 +29,26 @@
     <input type="hidden" name="order_id" value="<?php echo $order_id; ?>" />
     <input type="hidden" name="order_status_id" value="5" />
     
+    
     <div id="tab-customer" style="display:none">
         <input type="hidden" name="currency" value="ZAR" />
         <input type="hidden" name="customer" value="<?php echo $firstname; ?>" />
         <input type="hidden" name="customer_group_id" value="<?php echo $customer_group_id; ?>" />
         <input type="hidden" name="customer_id" value="<?php echo $customer_id; ?>" />
         
-        <?php if($customer_id > 0) { ?>
+        <?php if($customer_id > 0 && $isReplogic == '1') { ?>
         <input type="hidden" name="customer_contact_id" value="<?php echo $customer_contact_id; ?>" />
+        <?php } ?>
+        
+        <?php if($isReplogic == '1') { ?>
+        	<input type="hidden" name="store_id" value="0" />
+        <?php } else { ?>
+        	<input type="hidden" name="store_id" value="<?php echo $store_id; ?>" />
         <?php } ?>
         
         <input type="hidden" name="email" value="<?php echo $email; ?>" />
         <input type="hidden" name="firstname" value="<?php echo $firstname; ?>" />
         <input type="hidden" name="lastname" value="<?php echo $firstname; ?>" />
-        <input type="hidden" name="store_id" value="0" />
         <input type="hidden" name="telephone" value="<?php echo $telephone; ?>" />
          
     </div>
@@ -686,7 +692,7 @@ if(token)
 {				
 				
 				$.ajax({
-					url: '<?php echo $catalog; ?>index.php?route=api/customer&token=' + token + '&store_id=0',
+					url: '<?php echo $catalog; ?>index.php?route=api/customer&token=' + token + '&store_id=' + $('input[name=\'store_id\']').val(),
 					type: 'post',
 					data: $('#tab-customer input[type=\'text\'], #tab-customer input[type=\'hidden\'], #tab-customer input[type=\'radio\']:checked, #tab-customer input[type=\'checkbox\']:checked, #tab-customer select, #tab-customer textarea'),
 					dataType: 'json',
@@ -732,7 +738,7 @@ if(token)
 						} else {
 							// Refresh products, vouchers and totals
 							var request_1 = $.ajax({
-								url: '<?php echo $catalog; ?>index.php?route=api/cart/add&token=' + token + '&store_id=0',
+								url: '<?php echo $catalog; ?>index.php?route=api/cart/add&token=' + token + '&store_id=' + $('input[name=\'store_id\']').val(),
 								type: 'post',
 								data: $('#cart input[name^=\'product\'][type=\'text\'], #cart input[name^=\'product\'][type=\'hidden\'], #cart input[name^=\'product\'][type=\'radio\']:checked, #cart input[name^=\'product\'][type=\'checkbox\']:checked, #cart select[name^=\'product\'], #cart textarea[name^=\'product\']'),
 								dataType: 'json',
@@ -766,7 +772,7 @@ if(token)
 				});
 				
 				$.ajax({
-				url: '<?php echo $catalog; ?>index.php?route=api/currency&token=' + token + '&store_id=0',
+				url: '<?php echo $catalog; ?>index.php?route=api/currency&token=' + token + '&store_id=' + $('input[name=\'store_id\']').val(),
 				type: 'post',
 				data: 'currency=ZAR',
 				dataType: 'json',
@@ -806,7 +812,7 @@ $('#cart').delegate('.btn-danger', 'click', function() {
 	var node = this;
 
 	$.ajax({
-		url: '<?php echo $catalog; ?>index.php?route=api/cart/remove&token=' + token + '&store_id=0',
+		url: '<?php echo $catalog; ?>index.php?route=api/cart/remove&token=' + token + '&store_id=' + $('input[name=\'store_id\']').val(),
 		type: 'post',
 		data: 'key=' + encodeURIComponent(this.value),
 		dataType: 'json',
@@ -843,7 +849,7 @@ $('#cart').delegate('.btn-primary', 'click', function() {
 
     // Refresh products, vouchers and totals
     $.ajax({
-        url: '<?php echo $catalog; ?>index.php?route=api/cart/add&token=' + token + '&store_id=0',
+        url: '<?php echo $catalog; ?>index.php?route=api/cart/add&token=' + token + '&store_id=' + $('input[name=\'store_id\']').val(),
         type: 'post',
         data: $('#cart input[name^=\'product\'][type=\'text\'], #cart input[name^=\'product\'][type=\'hidden\'], #cart input[name^=\'product\'][type=\'radio\']:checked, #cart input[name^=\'product\'][type=\'checkbox\']:checked, #cart select[name^=\'product\'], #cart textarea[name^=\'product\']'),
         dataType: 'json',
@@ -877,7 +883,7 @@ $('#cart').delegate('.btn-primary', 'click', function() {
 // Add all products to the cart using the api
 $('#button-refresh').on('click', function() {
 	$.ajax({
-		url: '<?php echo $catalog; ?>index.php?route=api/cart/products&token=' + token + '&store_id=0',
+		url: '<?php echo $catalog; ?>index.php?route=api/cart/products&token=' + token + '&store_id=' + $('input[name=\'store_id\']').val(),
 		dataType: 'json',
 		crossDomain: true,
 		success: function(json) {
@@ -1062,7 +1068,7 @@ $('#button-refresh').on('click', function() {
 
 $('#button-payment-address').on('click', function() {
 	$.ajax({
-		url: '<?php echo $catalog; ?>index.php?route=api/payment/address&token=' + token + '&store_id=0',
+		url: '<?php echo $catalog; ?>index.php?route=api/payment/address&token=' + token + '&store_id=' + $('input[name=\'store_id\']').val(),
 		type: 'post',
 		data: $('#tab-payment input[type=\'text\'], #tab-payment input[type=\'hidden\'], #tab-payment input[type=\'radio\']:checked, #tab-payment input[type=\'checkbox\']:checked, #tab-payment select, #tab-payment textarea'),
 		dataType: 'json',
@@ -1099,7 +1105,7 @@ $('#button-payment-address').on('click', function() {
 			} else {
 				// Payment Methods
 				$.ajax({
-					url: '<?php echo $catalog; ?>index.php?route=api/payment/methods&token=' + token + '&store_id=0',
+					url: '<?php echo $catalog; ?>index.php?route=api/payment/methods&token=' + token + '&store_id=' + $('input[name=\'store_id\']').val(),
 					dataType: 'json',
 					crossDomain: true,
 					beforeSend: function() {
@@ -1152,7 +1158,7 @@ $('#button-payment-address').on('click', function() {
 
 $('#button-shipping-address').on('click', function() {
 	$.ajax({
-		url: '<?php echo $catalog; ?>index.php?route=api/shipping/address&token=' + token + '&store_id=0',
+		url: '<?php echo $catalog; ?>index.php?route=api/shipping/address&token=' + token + '&store_id=' + $('input[name=\'store_id\']').val(),
 		type: 'post',
 		data: $('#tab-shipping input[type=\'text\'], #tab-shipping input[type=\'hidden\'], #tab-shipping input[type=\'radio\']:checked, #tab-shipping input[type=\'checkbox\']:checked, #tab-shipping select, #tab-shipping textarea'),
 		dataType: 'json',
@@ -1188,7 +1194,7 @@ $('#button-shipping-address').on('click', function() {
 			} else {
 				// Shipping Methods
 				var request = $.ajax({
-					url: '<?php echo $catalog; ?>index.php?route=api/shipping/methods&token=' + token + '&store_id=0',
+					url: '<?php echo $catalog; ?>index.php?route=api/shipping/methods&token=' + token + '&store_id=' + $('input[name=\'store_id\']').val(),
 					dataType: 'json',
 					beforeSend: function() {
 						$('#button-shipping-address').button('loading');
@@ -1305,7 +1311,7 @@ $('#button-save').on('click', function() {
 $('select[name=\'shipping_method\']').on('change', function() {
 //$('#button-shipping-method').on('click', function() {
 	$.ajax({
-		url: '<?php echo $catalog; ?>index.php?route=api/shipping/method&token=' + token + '&store_id=0',
+		url: '<?php echo $catalog; ?>index.php?route=api/shipping/method&token=' + token + '&store_id=' + $('input[name=\'store_id\']').val(),
 		type: 'post',
 		data: 'shipping_method=' + $('select[name=\'shipping_method\'] option:selected').val(),
 		dataType: 'json',
@@ -1345,7 +1351,7 @@ $('select[name=\'shipping_method\']').on('change', function() {
 $('select[name=\'payment_method\']').on('change', function() {
 //$('#button-payment-method').on('click', function() {
 	$.ajax({
-		url: '<?php echo $catalog; ?>index.php?route=api/payment/method&token=' + token + '&store_id=0',
+		url: '<?php echo $catalog; ?>index.php?route=api/payment/method&token=' + token + '&store_id=' + $('input[name=\'store_id\']').val(),
 		type: 'post',
 		data: 'payment_method=' + $('select[name=\'payment_method\'] option:selected').val(),
 		dataType: 'json',

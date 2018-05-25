@@ -19,12 +19,12 @@ $_['text_confirm']               = 'Are you sure that you want to delete this co
 
 // Column
 $_['column_sku']   	= 'SKU';
-$_['column_contract'] 	= 'Customer Group';
+$_['column_contract'] 	= 'Contract Pricing';
 $_['column_price'] = 'Price';
 
 // Entry
 $_['entry_sku']    		= 'SKU';
-$_['entry_contract'] = 'Customer Group';
+$_['entry_contract'] = 'Contract Pricing';
 $_['entry_price'] = 'Price';
 
 

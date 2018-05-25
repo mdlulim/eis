@@ -64,7 +64,7 @@
               <div class="form-group">
                 <label class="control-label" for="input-customer-group"><?php echo $entry_customer_group; ?></label>
                 <select name="filter_customer_group_id" id="input-customer-group" class="form-control">
-                  <option value="*">Select Customer Group</option>
+                  <option value="*">Select Contract Pricing</option>
                   <?php foreach ($customer_groups as $customer_group) { ?>
                   <?php if ($customer_group['customer_group_id'] == $filter_customer_group_id) { ?>
                   <option value="<?php echo $customer_group['customer_group_id']; ?>" selected="selected"><?php echo $customer_group['name']; ?></option>

@@ -53,9 +53,9 @@
                         </div>
                         <div class="col-sm-6">
                           <div class="form-group">
-                            <label class="control-label" for="input-name">Customer Group</label>
+                            <label class="control-label" for="input-name">Contract Pricing</label>
                             <select name="filter_customer_group_id" id="input-name" class="form-control">
-                              <option value="*">Select Customer Group</option>
+                              <option value="*">Select Contract Pricing</option>
                               <?php foreach($Dropdowncustomergroup as $customergroup) { ?>
                                 <?php if($customergroup['customer_group_id'] == $filter_customer_group_id ) { ?>
                                   <option value="<?php echo $customergroup['customer_group_id']; ?>" selected="selected"><?php echo $customergroup['name']; ?></option>

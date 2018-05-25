@@ -36,8 +36,8 @@
             <li><a href="#tab-discount" data-toggle="tab"><?php echo $tab_discount; ?></a></li>
             <li><a href="#tab-special" data-toggle="tab"><?php echo $tab_special; ?></a></li>
             <li><a href="#tab-image" data-toggle="tab"><?php echo $tab_image; ?></a></li>
-            <!--<li><a href="#tab-reward" data-toggle="tab"><?php echo $tab_reward; ?></a></li>
-            <li><a href="#tab-design" data-toggle="tab"><?php echo $tab_design; ?></a></li>-->
+            <li><a href="#tab-reward" data-toggle="tab"><?php echo $tab_reward; ?></a></li>
+            <li><a href="#tab-design" data-toggle="tab"><?php echo $tab_design; ?></a></li>
           </ul>
           <div class="tab-content">
             <div class="tab-pane active" id="tab-general">
@@ -657,8 +657,8 @@
                 <table id="pricing" class="table table-striped table-bordered table-hover">
                   <thead>
                     <tr>
-                      <td class="text-left">Customer Group</td>
-                      <td class="text-right">Price</td>
+                      <td class="text-left">Contract Pricing</td>
+                      <td class="text-left">Price</td>
                       <td></td>
                     </tr>
                   </thead>
@@ -668,7 +668,7 @@
                     <tr id="pricing-row<?php echo $pricing_row; ?>">
                       <td class="text-left">
                       	<select name="pricing[<?php echo $pricing_row; ?>][customer_group_id]" class="form-control" >
-                        	<option value="">Select Customer Group</option>
+                        	<option value="">Select Contract Pricing</option>
                             <?php foreach($groups as $group) { ?>
                             	<?php if($pricings[customer_group_id] == $group['customer_group_id']) { ?>
                                 	<option selected="selected" value="<?php echo $group['customer_group_id']?>"><?php echo $group['name']?></option>

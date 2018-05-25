@@ -25,7 +25,7 @@ $_['column_total']          = 'Total Accounts';
 $_['column_action']         = 'Action';
 
 // Entry
-$_['entry_customer_group']  = 'Customer Group';
+$_['entry_customer_group']  = 'Contract Pricing';
 $_['entry_salesrep']        = 'Sales Rep';
 $_['entry_firstname']       = 'First Name';
 $_['entry_lastname']        = 'Last Name';
