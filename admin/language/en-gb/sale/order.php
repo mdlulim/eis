@@ -15,7 +15,7 @@ $_['text_date_added']            = 'Date Added';
 $_['text_payment_method']        = 'Payment Method';
 $_['text_shipping_method']       = 'Shipping Method';
 $_['text_customer']              = 'Customer';
-$_['text_customer_group']        = 'Customer Group';
+$_['text_customer_group']        = 'Contract Pricing';
 $_['text_email']                 = 'E-Mail';
 $_['text_telephone']             = 'Telephone';
 $_['text_invoice']               = 'Invoice';
@@ -83,7 +83,7 @@ $_['column_weight']              = 'Product Weight';
 // Entry
 $_['entry_store']                = 'Store';
 $_['entry_customer']             = 'Customer Name';
-$_['entry_customer_group']       = 'Customer Group';
+$_['entry_customer_group']       = 'Contract Pricing';
 $_['entry_firstname']            = 'First Name';
 $_['entry_lastname']             = 'Last Name';
 $_['entry_email']                = 'E-Mail';
