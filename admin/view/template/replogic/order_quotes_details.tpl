@@ -4,8 +4,10 @@
     <div class="container-fluid">
       <div class="pull-right">
       	<div style="float:left">
-        <a href="javascript:void();" data-toggle="tooltip" title="Deny" onclick="onpopupdeny(<?php echo $_GET['quote_id']; ?>);" style="float: right; font-family: Calibri;" class="btn btn-danger decline"><i class="fa fa-times"></i></a>
-        <a data-toggle="tooltip" id="button-save" title="Confirm Order" class="btn btn-success" style="float:right;margin-right:8px;font-family: Calibri;"><i class="fa fa-check"></i></a>
+          <?php if ($qstatus == $quote_status_pending) :?>
+          <a href="javascript:void();" data-toggle="tooltip" title="Deny" onclick="onpopupdeny(<?php echo $_GET['quote_id']; ?>);" style="float: right; font-family: Calibri;" class="btn btn-danger decline"><i class="fa fa-times"></i></a>
+          <a data-toggle="tooltip" id="button-save" title="Confirm Order" class="btn btn-success" style="float:right;margin-right:8px;font-family: Calibri;"><i class="fa fa-check"></i></a>
+          <?php endif; ?>
         </div>
         <div style="float:right;margin-left:8px;">
         <a href="<?php echo $cancel; ?>" data-toggle="tooltip" title="<?php echo $button_cancel; ?>" class="btn btn-default" style="float:right;"><i class="fa fa-reply"></i></a>
@@ -94,8 +96,16 @@
                     </span><br>
                 <span class="ctm">
                 	<div class="col-md-5 rightalign1">Status : </div>
-                    	<div class="col-md-7 paddingleft1"><b><a class="btn-warning1" style="">Processing</a></b></div>
-                        </span><br>
+                    	<div class="col-md-7 paddingleft1">
+                        <?php if ($qstatus == $quote_status_pending) : ?>
+                          <b><a class="btn-warning" style="padding:2px 5px; border-radius:5px;"><?=$quote_status?></a></b>
+                        <?php elseif ($qstatus == $quote_status_converted) :?>
+                          <b><a class="btn-success" style="padding:2px 5px; border-radius:5px;"><?=$quote_status?></a></b>
+                        <?php elseif ($qstatus == $quote_status_denied) :?>
+                          <b><a class="btn-danger" style="padding:2px 5px; border-radius:5px;"><?=$quote_status?></a></b>
+                        <?php endif; ?>
+                      </div>
+                      </span><br>
                 <span class="ctm">
                 	<div class="col-md-5 rightalign1">Total(ZAR) : </div> 
                     <div class="col-md-7 paddingleft1"><b> <?php echo $totals; ?></b></div>

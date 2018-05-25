@@ -97,6 +97,11 @@ class ControllerReplogicQuotesInfo extends Controller {
 		$data['tab_voucher'] = $this->language->get('tab_voucher');
 		$data['tab_total'] = $this->language->get('tab_total');
 
+		// quote statuses
+		$data['quote_status_pending'] = $this->language->get('quote_status_pending_id');
+		$data['quote_status_converted'] = $this->language->get('quote_status_converted_id');
+		$data['quote_status_denied'] = $this->language->get('quote_status_denied_id');
+
 		$url = '';
 
 		if (isset($this->request->get['filter_quote_id'])) {
@@ -171,10 +176,10 @@ class ControllerReplogicQuotesInfo extends Controller {
 		$quote_id = $this->request->get['quote_id'];
 		$quote_info = $this->model_replogic_order_quotes->getOrderquote($this->request->get['quote_id']);
 		
-		if($quote_info['status'] == 0)
-		{
-			$this->model_replogic_order_quotes->statuschange($quote_id,3);
-		}
+		// if($quote_info['status'] == 0)
+		// {
+		// 	$this->model_replogic_order_quotes->statuschange($quote_id,3);
+		// }
 		
 		$data['Qdate_added'] = date('d M, Y', strtotime($quote_info['date_added']));
 		$data['store_url'] = $this->request->server['HTTPS'] ? HTTPS_CATALOG : HTTP_CATALOG;
@@ -182,6 +187,7 @@ class ControllerReplogicQuotesInfo extends Controller {
 		
 		$data['comment'] = $quote_info['comments'];
 		$data['qstatus'] = $quote_info['status'];
+		$data['quote_status'] = $quote_info['quote_status'];
 		
 		$cust_con = $this->model_replogic_customer_contact->getcustomercontact($quote_info['customer_contact_id']);
 		

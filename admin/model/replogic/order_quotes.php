@@ -83,7 +83,7 @@ class ModelReplogicOrderQuotes extends Model {
 	
 	public function getOrderquote($quote_id) {
 	
-		$sql = "SELECT * FROM " . DB_PREFIX . "replogic_order_quote where quote_id = ".$quote_id;
+		$sql = "SELECT q.*, s.name AS quote_status FROM " . DB_PREFIX . "replogic_order_quote q LEFT JOIN " . DB_PREFIX . "replogic_quote_status s ON s.quote_status_id = q.status WHERE quote_id = ".$quote_id;
 		$query = $this->db->query($sql);
 
 		return $query->row;
