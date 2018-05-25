@@ -158,7 +158,7 @@
 		</operation>
         
         <operation>
-			<search position="before" index="1"><![CDATA[
+			<search position="before" index="111"><![CDATA[
 		 		 $this->db->query("DELETE FROM " . DB_PREFIX . "product_discount WHERE product_id = '" . (int)$product_id . "'");
 			]]></search>
 			<add><![CDATA[
@@ -268,7 +268,7 @@
     <file name="admin/view/template/catalog/product_form.tpl">
 		<operation>
 			<search position="after" offset="2"><![CDATA[
-		 		 <input type="text" name="price" value="<?php echo $price; ?>" placeholder="<?php echo $entry_price; ?>" id="input-price" class="form-control" />
+		 		 <input type="text" name="priceeeee" value="<?php echo $price; ?>" placeholder="<?php echo $entry_price; ?>" id="input-price" class="form-control" />
 			]]></search>
 			<add><![CDATA[
             <?php $existing_groups = array(); ?>
