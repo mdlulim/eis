@@ -535,18 +535,6 @@ class ControllerReplogicOrderQuotes extends Controller {
 		
 		foreach ($results as $result) {
 			
-			if ($result['status'] == 0) {
-				$qstatus = 'Awaiting Approval';
-			} elseif ($result['status'] == 1){
-				$qstatus = 'Approved';
-			}
-			elseif ($result['status'] == 2){
-				$qstatus = 'Declined';
-			}
-			elseif ($result['status'] == 3){
-				$qstatus = 'Processing';
-			}
-			
 			$objct = json_decode($result['cart']);
 			$array = (array) $objct;
 			$total = $array['cart_total_price']; 
@@ -586,9 +574,9 @@ class ControllerReplogicOrderQuotes extends Controller {
 				'customer'      => $customer_nm,
 				'customer_contact'      => $customer_contact,
 				'approve'      => $this->url->link('replogic/order/add', 'token=' . $this->session->data['token'] . '&quote_id=' . $result['quote_id'] . $url, true),
-				'qstatus'      => $qstatus,
 				'salesrepname'      => $salesrepname,
-				'status'      => $result['status'],
+				'quote_status_id' => $result['status'],
+				'quote_status' => $result['quote_status'],
 				'order_id'      => $result['order_id'],
 				'order_status'  => $result['order_status'] ? $result['order_status'] : $this->language->get('text_missing'),
 				'total'         => $this->currency->format($total, 'ZAR', '1.0000'),
@@ -647,6 +635,12 @@ class ControllerReplogicOrderQuotes extends Controller {
 		$data['button_filter'] = $this->language->get('button_filter');
 		$data['button_view'] = $this->language->get('button_view');
 		$data['button_ip_add'] = $this->language->get('button_ip_add');
+
+		# quotes statuses
+		$data['quote_statuses'] = $this->model_replogic_order_quotes->getQuoteStatus();
+		$data['quote_status_pending'] = $this->language->get('quote_status_pending_id');
+		$data['quote_status_converted'] = $this->language->get('quote_status_converted_id');
+		$data['quote_status_denied'] = $this->language->get('quote_status_denied_id');
 
 		$data['token'] = $this->session->data['token'];
 
@@ -796,10 +790,6 @@ class ControllerReplogicOrderQuotes extends Controller {
 
 		$data['sort'] = $sort;
 		$data['order'] = $order;
-
-		$this->load->model('localisation/order_status');
-
-		$data['order_statuses'] = $this->model_localisation_order_status->getOrderStatuses();
 		
 		$data['header'] = $this->load->controller('common/header');
 		$data['column_left'] = $this->load->controller('common/column_left');

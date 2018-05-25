@@ -62,7 +62,22 @@
                 <label class="control-label" for="input-order-status"><?php echo $entry_order_status; ?></label>
                 <select name="filter_order_status" id="input-order-status" class="form-control">
                   <option value="*">Select Status</option>
-                  <?php if ($filter_order_status == '0') { ?>
+                  <?php if (isset($quote_statuses) && is_array($quote_statuses)) : ?>
+                    <?php foreach($quote_statuses as $key => $selectStatus) : ?>
+                      <?php if ($filter_order_status == $selectStatus['quote_status_id']) : ?>
+                        <option value="<?=$selectStatus['quote_status_id']?>" selected="selected">
+                          <?=$selectStatus['name']?>
+                        </option>
+                      <?php else : ?>
+                        <option value="<?=$selectStatus['quote_status_id']?>">
+                          <?=$selectStatus['name']?>
+                        </option>
+                      <?php endif; ?>
+                    <?php endforeach; ?>
+                  <?php endif; ?>
+
+
+                  <!-- <?php if ($filter_order_status == '0') { ?>
                   <option value="0" selected="selected">Awaiting Approval</option>
                   <?php } else { ?>
                   <option value="0">Awaiting Approval</option>
@@ -84,7 +99,7 @@
                   <option value="2" selected="selected">Declined</option>
                   <?php } else { ?>
                   <option value="2">Declined</option>
-                  <?php } ?>
+                  <?php } ?> -->
                   
                 </select>
               </div>
@@ -219,19 +234,14 @@
                      Null
                     <?php } ?>	
                     </td>
-                  <td class="text-left">
-                  <?php //echo $order['qstatus']; ?>
-                  		<?php if($order['qstatus'] == 'Approved') { ?>
-                        <a class="btn-success" style="padding:2px 5px;border-radius:5px;">Order Confirmed</a>
-                        <?php } elseif($order['qstatus'] == 'Declined') { ?>
-                        <a class="btn-danger" style="padding:2px 5px;border-radius:5px;">Denied</a>
-                        <?php } elseif($order['qstatus'] == 'Awaiting Approval') { ?>
-                        <a class="btn-warning" style="padding:2px 5px;border-radius:5px;">Pending</a>
-                        <?php } elseif($order['qstatus'] == 'Processing') { ?>
-                        <a class="btn-warning" style="background-color: white;border: 1px solid #000;border-radius: 5px;color: #666666;padding: 0 10px;">Processing</a>
-                        <?php } else { ?>
-                        	<?php echo $order['qstatus']; ?>
-                        <?php } ?>
+                  <td class="text-left" style="min-width:140px;">
+                		<?php if ($order['quote_status_id'] == $quote_status_converted) : ?>
+                      <a class="btn-success" style="padding:2px 5px;border-radius:5px;"><?=$order['quote_status']?></a>
+                    <?php elseif ($order['quote_status_id'] == $quote_status_denied) : ?>
+                      <a class="btn-danger" style="padding:2px 5px;border-radius:5px;"><?=$order['quote_status']?></a>
+                    <?php elseif ($order['quote_status_id'] == $quote_status_pending) : ?>
+                      <a class="btn-warning" style="padding:2px 5px;border-radius:5px;"><?=$order['quote_status']?></a>
+                    <?php endif; ?>
                   </td>
                   <td class="text-right">
                     

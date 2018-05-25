@@ -61,39 +61,19 @@
                 <label class="control-label" for="input-order-status"><?php echo $entry_order_status; ?></label>
                 <select name="filter_order_status" id="input-order-status" class="form-control">
                   <option value="*">Select Status</option>
-                 <!-- <?php if ($filter_order_status == '0') { ?>
-                  <option value="0" selected="selected"><?php echo $text_missing; ?></option>
-                  <?php } else { ?>
-                  <option value="0"><?php echo $text_missing; ?></option>
-                  <?php } ?>
-                  <?php foreach ($order_statuses as $order_status) { ?>
-                  <?php if ($order_status['order_status_id'] == $filter_order_status) { ?>
-                  <option value="<?php echo $order_status['order_status_id']; ?>" selected="selected"><?php echo $order_status['name']; ?></option>
-                  <?php } else { ?>
-                  <option value="<?php echo $order_status['order_status_id']; ?>"><?php echo $order_status['name']; ?></option>
-                  <?php } ?>
-                  <?php } ?>-->
-                  <?php if ($filter_order_status == '5') { ?>
-                  	<option value="5" selected="selected">Order Confirmed</option>
-                  <?php } else { ?>
-                  	<option value="5">Order Confirmed</option>
-                  <?php } ?>
-                  <?php if ($filter_order_status == '1') { ?>
-                  	<option value="1" selected="selected">Pending</option>
-                  <?php } else { ?>
-                  	<option value="1">Pending</option>
-                  <?php } ?>
-                  <?php if ($filter_order_status == '7') { ?>
-                  	<option value="7" selected="selected">Cancelled</option>
-                  <?php } else { ?>
-                  	<option value="7">Cancelled</option>
-                  <?php } ?>
-                  <?php if ($filter_order_status == '2') { ?>
-                  	<option value="2" selected="selected">Processing</option>
-                  <?php } else { ?>  
-                    <option value="2">Processing</option>
-                  <?php } ?>
-                  
+                  <?php if (isset($order_statuses) && is_array($order_statuses)) : ?>
+                    <?php foreach($order_statuses as $key => $selectStatus) : ?>
+                      <?php if ($filter_order_status == $selectStatus['order_status_id']) : ?>
+                        <option value="<?=$selectStatus['order_status_id']?>" selected="selected">
+                          <?=$selectStatus['name']?>
+                        </option>
+                      <?php else : ?>
+                        <option value="<?=$selectStatus['order_status_id']?>">
+                          <?=$selectStatus['name']?>
+                        </option>
+                      <?php endif; ?>
+                    <?php endforeach; ?>
+                  <?php endif; ?>
                 </select>
               </div>
               <div class="form-group">
@@ -216,17 +196,15 @@
                   <td class="text-left"><?php echo $order['total']; ?></td>
                   <td class="text-left"><?php echo $order['date_modified']; ?></td>
                   <td class="text-left">
-                  	<?php //echo $order['order_status']; ?>
-                    <?php if($order['order_status'] == 'Order Confirmed') { ?>
+                    <?php if ($order['order_status_id'] == $order_status_confirmed) : ?>
                     	<a class="btn-success" style="padding:2px 5px;border-radius:5px;">Order Confirmed</a>
-                    <?php } else if($order['order_status'] == 'Pending') { ?>
+                    <?php elseif ($order['order_status_id'] == $order_status_pending) : ?>
                     	<a class="btn-warning" style="padding:2px 5px;border-radius:5px;">Pending</a>
-                    <?php } else if($order['order_status'] == 'Cancelled') { ?>
+                    <?php elseif ($order['order_status_id'] == $order_status_cancelled) : ?>
                     	<a class="btn-warning" style="padding:2px 5px;border-radius:5px;background-color:#DB524B;">Cancelled</a>
-                    <?php } else if($order['order_status'] == 'Processing') { ?>
+                    <?php elseif ($order['order_status_id'] == $order_status_processing) : ?>
                     	<a class="btn-warning" style="background-color: white;border: 1px solid #000;border-radius: 5px;color: #666666;padding: 0 10px;">Processing</a>
-                    <?php } ?>
-                    
+                    <?php endif; ?>
                   </td>
                   <td class="text-right"><a href="<?php echo $order['view']; ?>" data-toggle="tooltip" title="<?php echo $button_view; ?>" class="btn btn-info"><i class="fa fa-eye"></i></a> <!--<a href="<?php echo $order['edit']; ?>" data-toggle="tooltip" title="<?php echo $button_edit; ?>" class="btn btn-primary"><i class="fa fa-pencil"></i></a>--></td>
                 </tr>
