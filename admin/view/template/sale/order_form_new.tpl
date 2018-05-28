@@ -27,7 +27,7 @@
     <input type="hidden" id="button-payment-address" />
     <input type="hidden" id="button-shipping-address" />
     <input type="hidden" name="order_id" value="<?php echo $order_id; ?>" />
-    <input type="hidden" name="order_status_id" value="<?php echo $order_status_id; ?>" />
+    <input type="hidden" name="order_status_id" value="5" />
     
     <div id="tab-customer" style="display:none">
         <input type="hidden" name="currency" value="ZAR" />
@@ -100,13 +100,13 @@
                 	<div class="col-md-5 rightalign1">Status : </div>
                     	<div class="col-md-7 paddingleft1"><b>
                         
-                            <?php if($order_status_id == '5' || $order_status_id == '3' || $order_status_id == '15' || $order_status_id == '11') { ?>
+                            <?php if($order_status_id == '5') { ?>
                             <a class="btn-success" style="padding:2px 5px;border-radius:5px;">Order Confirmed</a>
                          <?php } else if($order_status_id == '1') { ?>
                             <a class="btn-warning" style="padding:2px 5px;border-radius:5px;">Pending</a>
                          <?php } else if($order_status_id == '2') { ?>
                             <a class="btn-warning" style="background-color: white;border: 1px solid #000;border-radius: 5px;color: #666666;padding: 0 10px;">Processing</a>
-                         <?php } else if($order_status_id == '7' || $order_status_id == '10' || $order_status_id == '0') { ?>
+                         <?php } else if($order_status_id == '7' || $order_status_id == '0') { ?>
                             <a class="btn-warning" style="background-color: #DB524B;border: 1px solid #000;border-radius: 5px;color: #FFFFFF;padding: 0 10px;">Cancelled</a>                         <?php } ?>
                         </b></div>
                         </span><br>
@@ -326,7 +326,7 @@
         <table class="table table-bordered">
           <thead>
             <tr>
-              <td class="text-left"><?php echo $column_image; ?></td>
+              <td class="text-left">Images</td>
               <td class="text-left"><?php echo $column_product; ?></td>
               <td class="text-left"><?php echo $column_model; ?></td>
               <td class="text-right"><?php echo $column_quantity; ?></td>

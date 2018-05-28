@@ -29,7 +29,7 @@
     <input type="hidden" id="button-payment-address" />
     <input type="hidden" id="button-shipping-address" />
     <input type="hidden" name="order_id" value="" />
-    <input type="hidden" name="order_status_id" value="15" />
+    <input type="hidden" name="order_status_id" value="1" />
     
     <div id="tab-customer" style="display:none">
         <input type="hidden" name="currency" value="ZAR" />
