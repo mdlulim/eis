@@ -27,7 +27,7 @@
 			              	
 				            <div class="well">
 								<h4><i class="fa fa-info-circle"></i> <strong>Password Tips</strong></h4>
-								Choose a strong password that won't be easy to guess by others or computers. A strong password contains at least <strong>3</strong> of the following and is a minimum of 12 characters long:
+								Choose a strong password that won't be easy to guess by others or computers. A strong password contains at least <strong>3</strong> of the following and is a minimum of 8 characters long:
 								<ul class="list-check" style="margin-top:10px;">
 									<li>Uppercase (A,B,C...)</li>
 									<li>Lowercase (a,b,c...)</li>

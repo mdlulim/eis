@@ -1,10 +1,10 @@
 <?php
 // Heading
-$_['heading_title']    = 'Customer Sales Representative';
+$_['heading_title']    = 'Customers';
 $_['breadcrum_title']    = 'Customer Info';
 
 // Text
-$_['text_success']     = 'Success: You have modified Customer Sales Representative!';
+$_['text_success']     = 'Success: You have modified Customer!';
 $_['text_list']        = 'Customer Info : ';
 
 // Column

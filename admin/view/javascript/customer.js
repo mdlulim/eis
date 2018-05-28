@@ -3,7 +3,7 @@
 
     var initStateChange = function () {
     	$(document).on('change', 'select[name="customer_group_id"]', function() {
-			if($(this).val() == '3') {
+			if($(this).val() != '1') {
 				$("#wholesal").show();
 			} else {
 				$("#wholesal").hide();

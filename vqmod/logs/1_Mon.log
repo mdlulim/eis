@@ -1,0 +1,15 @@
+---------- Date: 2018-05-28 09:55:35 ~ IP : 41.0.159.4 ----------
+REQUEST URI : /ReplogicExtension/admin/index.php?route=catalog/product/edit&token=MQW4QvMdNkCwADGp1CtQxbxyWoYWeeAf&product_id=1757
+MOD DETAILS:
+   modFile   : /var/www/html/ReplogicExtension/vqmod/xml/PSM_Prices_By_Customer_groups.xml
+   id        : Prices By Customer Groups
+   version   : 1.0.1 - oc2302
+   vqmver    : 2.1.6
+   author    : OC-addons - oc-addons.com
+
+File Name    : admin/view/template/catalog/product_form.tpl(0)
+VQModObject::applyMod - SEARCH NOT FOUND (ABORTING MOD): <input type="text" name="priceeeee" value="<?php echo $price; ?>" placeholder="<?php echo $entry_price; ?>" id="input-price" class="form-control" />
+
+----------------------------------------------------------------------
+
+

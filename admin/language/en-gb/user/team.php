@@ -22,7 +22,7 @@ $_['entry_modify']     = 'Modify Permission';
 // Error
 $_['error_permission'] = 'Warning: You do not have permission to modify Team!';
 $_['error_team_name']       = 'Team Name must be between 3 and 64 characters!';
-$_['error_sales_manager']       = 'Plz Select Sales Manager!';
-$_['error_team_name_exit']  = 'Team Name is Duplicate, Plz Enter Unique Team Name!';
+$_['error_sales_manager']       = 'Please Select Sales Manager!';
+$_['error_team_name_exit']  = 'Team already exists';
 $_['error_salesmanager_team_exit']  = 'The Sales Manager chosen is already assigned a team, please choose a different  Sales Manager!';
 

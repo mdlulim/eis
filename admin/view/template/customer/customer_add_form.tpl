@@ -74,7 +74,7 @@
                       
                       <h2 class="drawline"></h2>
                       
-                      <div class="form-group" <?php if($customer_group_id != '3') { ?> style="display:none;" <?php } ?> id="wholesal"  >
+                      <div class="form-group" id="wholesal" style="display:none;" >
 
                         <label class="col-sm-3 control-label" for="send_invitation">Send Wholesale Invitation</label>
                         <div class="col-sm-9">
@@ -93,7 +93,6 @@
 
                         </div>
                       </div>
-                      
                       <div class="form-group required">
                         <label class="col-sm-3 control-label" for="input-customer-group">Contract Pricing</label>
                         <div class="col-sm-9">
@@ -449,7 +448,7 @@
                      <?php } ?>
                     <li <?php echo $df; ?> >
                       <a href="#tab-address<?php echo $address_row; ?>" data-toggle="tab">
-                        <i class="fa fa-minus-circle" onclick="$('#address a:first').tab('show'); $('#address a[href=\'#tab-address<?php echo $address_row; ?>\']').parent().remove(); <?php if ($address_row <> 1) :?>$('#tab-address<?php echo $address_row; ?>').remove(); <?php endif; ?"></i> <?php echo $tab_address . ' ' . $address_row; ?>
+                        <i class="fa fa-minus-circle" onclick="$('#address a:first').tab('show'); $('#address a[href=\'#tab-address<?php echo $address_row; ?>\']').parent().remove(); <?php if ($address_row <> 1) :?>$('#tab-address<?php echo $address_row; ?>').remove(); <?php endif; ?>"></i> <?php echo $tab_address . ' ' . $address_row; ?>
                       </a>
                     </li>
                     <?php $address_row++; ?>

@@ -3488,7 +3488,7 @@ class ControllerCustomerCustomerInfo extends Controller {
 			            ),
 			            array(
 			                'name'    => 'HELP_GUIDE',
-			                'content' => 'https://help.saleslogic.io/portal/home'
+			                'content' => HELP_GUIDE
 			            )
 			        )
 			    );
@@ -3517,7 +3517,7 @@ class ControllerCustomerCustomerInfo extends Controller {
 				$template->data['_url']          = $this->config->get('config_url');
 				$template->data['_name']         = $this->config->get('config_owner');
 				$template->data['_email']        = $this->config->get('config_email');
-				$template->data['help_guide']    = 'https://help.saleslogic.io/portal/home';
+				$template->data['help_guide']    = HELP_GUIDE;
 
 				# smtp settings
 				$settings['protocol']      = $this->config->get('config_mail_protocol');

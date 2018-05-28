@@ -81,15 +81,14 @@
                           <input type="text" name="email" value="<?php echo $email; ?>" placeholder="<?php echo $entry_email; ?>" id="input-email" class="form-control" disabled="disabled" />
                         </div>
                       </div>
-                      
+                         <?php if($customer_group_id != '1') { ?> 
                       <h2 class="drawline"></h2>
-                      
-                      <div class="form-group" <?php if($customer_group_id != '3') { ?> style="display:none;" <?php } ?> id="wholesal"  >
+                      <div class="form-group" id="wholesal"  >
                         <label class="col-sm-3 control-label" for="input-customer-group">Wholesale Invitation Status</label>
                         <div class="col-sm-9">
 
                           <div style="float:left;"> 
-                            <input type="text" value="<?=($invited==1) ? 'Invited' : 'Not Invited'?>" disabled="disabled" class="<?=($invited==1) ? 'btn btn-success' : ''?>" style="width:100px;" />
+                            <input type="text" value="<?php echo ($invited==1) ? 'Invited' : 'Not Invited'?>" disabled="disabled" class="<?php echo ($invited==1) ? 'btn btn-success' : 'btn btn-default'?>" style="width:100px;" />
                           </div>
                           <a href="javascript:void()" id="resend-invitation" data-customername='<?=$customername?>' data-token='<?=$token?>' data-customerid='<?=$customer_id?>'>
                             <div style="float:left;width:150px;padding:8px 5px 8px 15px;margin-left:10px;" class="form-control">
@@ -98,7 +97,7 @@
                           </a>
                         </div>
                       </div>
-                      
+                       <?php } ?> 
                       <div class="form-group">
                         <label class="col-sm-3 control-label" for="input-customer-group">Contract Pricing</label>
                         <div class="col-sm-9">
@@ -140,11 +139,13 @@
                           <div class="text-danger"><?php echo $error_payment_method; ?></div>
                           <?php } ?>
                         </div>
+
                       </div>
                       
-                      <h2 class="drawline"></h2>
+                      
                       
                       <?php if($access == 'yes') { ?>
+                        <h2 class="drawline"></h2>
                       <div class="form-group">
                         <label class="col-sm-3 control-label" for="input-customer-group">Sales Team</label>
                         <div class="col-sm-9">

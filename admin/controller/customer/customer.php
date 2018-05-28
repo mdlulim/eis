@@ -1992,7 +1992,7 @@ class ControllerCustomerCustomer extends Controller {
 			            ),
 			            array(
 			                'name'    => 'HELP_GUIDE',
-			                'content' => 'https://help.saleslogic.io/portal/home'
+			                'content' => HELP_GUIDE
 			            )
 			        )
 			    );
@@ -2021,7 +2021,7 @@ class ControllerCustomerCustomer extends Controller {
 				$template->data['_url']          = $this->config->get('config_url');
 				$template->data['_name']         = $this->config->get('config_owner');
 				$template->data['_email']        = $this->config->get('config_email');
-				$template->data['help_guide']    = 'https://help.saleslogic.io/portal/home';
+				$template->data['help_guide']    = HELP_GUIDE;
 
 				# smtp settings
 				$settings['protocol']      = $this->config->get('config_mail_protocol');
@@ -2067,7 +2067,7 @@ class ControllerCustomerCustomer extends Controller {
 				# get customer information
 				$customer = $this->model_customer_customer->getCustomer($customerId);
 
-				if (isset($customer['customer_group_id']) && $customer['customer_group_id'] == 3) {
+				if (isset($customer['customer_group_id']) && $customer['customer_group_id'] != 1) {
 
 					# auto-generate password
 					$password = randomPassword();
@@ -2117,7 +2117,7 @@ class ControllerCustomerCustomer extends Controller {
 						            ),
 						            array(
 						                'name'    => 'HELP_GUIDE',
-						                'content' => 'https://help.saleslogic.io/portal/home'
+						                'content' => HELP_GUIDE
 						            )
 						        )
 						    );
@@ -2139,7 +2139,7 @@ class ControllerCustomerCustomer extends Controller {
 							$template->data['_url']          = $this->config->get('config_url');
 							$template->data['_name']         = $this->config->get('config_owner');
 							$template->data['_email']        = $this->config->get('config_email');
-							$template->data['help_guide']    = 'https://help.saleslogic.io/portal/home';
+							$template->data['help_guide']    = HELP_GUIDE;
 
 							# send email invitation
 							sendEmail($data, $settings, $template);

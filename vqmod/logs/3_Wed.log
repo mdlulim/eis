@@ -1,0 +1,14 @@
+---------- Date: 2018-05-23 07:54:16 ~ IP : 197.97.24.150 ----------
+REQUEST URI : /ReplogicExtension/admin/index.php?route=catalog/product&token=wJ15cF878ioLhWgVoi60VaTgd6cLJyem
+MOD DETAILS:
+   modFile   : /var/www/html/ReplogicExtension/vqmod/xml/productViewOrder.xml
+   id        : Product - View orders
+   version   : 1.0.0
+   vqmver    : 2.4.2
+   author    : Nerdherd Developers
+
+File Name    : admin/view/template/catalog/product_list.tpl(8)
+VQModObject::applyMod - SEARCH NOT FOUND (ABORTING MOD): <button type="button" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-search"></i> <?php echo $button_filter; ?></button>
+----------------------------------------------------------------------
+
+
