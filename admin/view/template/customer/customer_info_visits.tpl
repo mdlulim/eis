@@ -41,7 +41,7 @@
             <li><a href="<?php echo $historytab; ?>" >History</a></li>
             <li><a href="<?php echo $transactionstab; ?>" >Transactions</a></li>
             <li><a href="<?php echo $rewardpointstab; ?>" >Reward Points</a></li>
-            <li><a href="<?php echo $ipaddressestab; ?>" >Ip Addresses</a></li>
+            <li><a href="<?php echo $ipaddressestab; ?>" >IP Addresses</a></li>
             
           </ul>
         
