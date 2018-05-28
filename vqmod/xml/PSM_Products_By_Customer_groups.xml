@@ -254,9 +254,9 @@
 		 		 <?php
 			]]></search>
 			<add><![CDATA[
-				$_['text_customer_groups']               = 'Customer Groups';
-                $_['help_customer_groups']               = 'Select each Customer Group to which this product will be available';
-                $_['column_customer_groups']             = 'Customer Groups';
+				$_['text_customer_groups']               = 'Contract Pricing';
+                $_['help_customer_groups']               = 'Select each Contract Pricing to which this product will be available';
+                $_['column_customer_groups']             = 'Contract Pricing';
                 $_['text_close']                         = 'Close';
 			]]></add>
 		</operation>
@@ -584,12 +584,12 @@
 		    	<?php
 		    ]]></search>
 		    <add><![CDATA[
-		   		$_['entry_show_admin_product_customer_groups_in_product_list']      = 'Show customer groups in Admin product list.';
-                $_['text_products_by_customer_group']                               = 'Products by Customer Groups.';
-                $_['entry_default_product_customer_groups']                         = 'Set the Default Customer Groups.';
+		   		$_['entry_show_admin_product_customer_groups_in_product_list']      = 'Show Contract Pricing in Admin product list.';
+                $_['text_products_by_customer_group']                               = 'Products by Contract Pricing.';
+                $_['entry_default_product_customer_groups']                         = 'Set the Default Contract Pricing.';
                 $_['help_default_product_customer_groups']                          = 'Each checked group will also be checked whenever you create a new product.';
                 $_['entry_update_product_customer_groups_in_product_list']          = 'Update all products';
-                $_['help_update_product_customer_groups_in_product_list']           = 'Set this to yes and all products with NO customer group assigned will be updated with all the checked default customer groups from above. Use this only the first time you install this extension!';
+                $_['help_update_product_customer_groups_in_product_list']           = 'Set this to yes and all products with NO Contract Pricing assigned will be updated with all the checked default Contract Pricing from above. Use this only the first time you install this extension!';
 		    ]]></add>	
 		</operation>
 	</file>

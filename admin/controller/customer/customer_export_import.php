@@ -21,12 +21,20 @@ class ControllerCustomerCustomerExportImport extends Controller {
 				$this->load->model('customer/customer_group');
 				$this->load->model('localisation/country');
 				
+				set_time_limit(0);
+				ini_set('memory_limit', '1G');
+				ini_set("auto_detect_line_endings", true);
+				
 				$file = $_FILES['upload']['tmp_name'];
 				$handle = fopen($file,"r");
 				$i = 1;
-				while ($data = fgetcsv($handle,1000,",","'")) // parses the line it reads for fields in CSV format and returns an array containing the fields read.
+				/*while ($data = fgetcsv($handle,1000,",","'")) // parses the line it reads for fields in CSV format and returns an array containing the fields read.
 				{ 
-					if($i == 3)
+					if($i == 1)
+					{
+						
+					}
+					if($i == 2)
 					{ 
 						$customer_id = trim($data[0]);
 						$firstname = trim($data[1]);
@@ -124,8 +132,173 @@ class ControllerCustomerCustomerExportImport extends Controller {
 					}
 					
 					$i++;
+				}*/
+				
+				$all_rows = array();
+				$header = fgetcsv($handle,1000,",","'");
+				//print_r($header); exit;
+				
+				// set customer export/import configuration settings
+				$firstnameExportSettings 	= $this->config->get( 'customer_export_import_settings_firstname' );
+				$lastnameExportSettings 		= $this->config->get( 'customer_export_import_settings_lastname' );
+				$emailExportSettings 		= $this->config->get( 'customer_export_import_settings_email' );
+				$telephoneExportSettings 	= $this->config->get( 'customer_export_import_settings_telephone' );
+				$salesRepExportSettings 	= $this->config->get( 'customer_export_import_settings_salesrep' );
+				$companyGroupExportSettings = $this->config->get( 'customer_export_import_settings_companygroup' );
+				$newsletterExportSettings 	= $this->config->get( 'customer_export_import_settings_newsletter' );
+				$statusExportSettings 		= $this->config->get( 'customer_export_import_settings_status' );
+				$passwordExportSettings 	= $this->config->get( 'customer_export_import_settings_password' );
+				$approvedExportSettings 	= $this->config->get( 'customer_export_import_settings_approved' );
+				$address1ExportSettings 	= $this->config->get( 'customer_export_import_settings_address1' );
+				$address2ExportSettings 	= $this->config->get( 'customer_export_import_settings_address2' );
+				$cityExportSettings 		= $this->config->get( 'customer_export_import_settings_city' );
+				$postCodeExportSettings 	= $this->config->get( 'customer_export_import_settings_postcode' );
+				$countryExportSettings 		= $this->config->get( 'customer_export_import_settings_country' );
+				$regionExportSettings 		= $this->config->get( 'customer_export_import_settings_region' );
+				$companyNameExportSettings 	= $this->config->get( 'customer_export_import_settings_companyname' );
+				$paymentmethodExportSettings 	= $this->config->get( 'customer_export_import_settings_paymentmethod' );
+				
+				$fields = array('Customer ID');
+		
+				$firstnameExportSettings 	? array_push($fields, 'First Name') : '';
+				$lastnameExportSettings 	? array_push($fields, 'Last Name') : '';
+				$emailExportSettings 	? array_push($fields, 'Email') : '';
+				$telephoneExportSettings 	? array_push($fields, 'Telephone') : '';
+				$companyNameExportSettings 	? array_push($fields, 'Company Name') : '';
+				$address1ExportSettings 	? array_push($fields, 'Address 1') : '';
+				$address2ExportSettings 	? array_push($fields, 'Address 2') : '';
+				$cityExportSettings 	? array_push($fields, 'City') : '';
+				$postCodeExportSettings 	? array_push($fields, 'Postcode') : '';
+				$countryExportSettings 	? array_push($fields, 'Country') : '';
+				$regionExportSettings 	? array_push($fields, 'Region/State') : '';
+				$passwordExportSettings 	? array_push($fields, 'Password') : '';
+				$newsletterExportSettings 	? array_push($fields, 'Newsletter') : '';
+				$companyGroupExportSettings 	? array_push($fields, 'Company Group') : '';
+				$approvedExportSettings 	? array_push($fields, 'Approved') : '';
+				$paymentmethodExportSettings 	? array_push($fields, 'Payment Method') : '';
+				$salesRepExportSettings 	? array_push($fields, 'Sales Rep') : '';
+				$statusExportSettings 	? array_push($fields, 'Status') : '';
+			//print_r($fields); exit;	
+			
+			$array1 = $header;
+			$array2 = $fields;
+			//print_r($array2); exit;
+			if($array1 === array_intersect($array1, $array2) && $array2 === array_intersect($array2, $array1)) 
+			{
+				//echo 'Equal';
+				
+				while ($row = fgetcsv($handle,1000,",","'")) {
+					$all_rows[] = array_combine($header, $row);
 				}
-				$this->session->data['success'] = 'CSV Successfully Imported!';
+				//print_r($all_rows); exit;
+				$customer_id = '';
+				foreach($all_rows as $all_row)
+				{
+					if(!empty($all_row) && count($all_row) > 0)
+					{
+					$customer_id = $all_row['Customer ID'] ? $all_row['Customer ID'] : '';
+					$firstname = $all_row['First Name'] ? $all_row['First Name'] : '';
+					$lastname = $all_row['Last Name'] ? $all_row['Last Name'] : '';
+					$email = $all_row['Email'] ? $all_row['Email'] : '';
+					$telephone = $all_row['Telephone'] ? $all_row['Telephone'] : '';
+					$companyname = $all_row['Company Name'] ? $all_row['Company Name'] : '';
+					$address1 = $all_row['Address 1'] ? $all_row['Address 1'] : '';
+					$address2 = $all_row['Address 2'] ? $all_row['Address 2'] : '';
+					$city = $all_row['City'] ? $all_row['City'] : '';
+					$postcode = $all_row['Postcode'] ? $all_row['Postcode'] : '';
+					$country = $all_row['Country'] ? $all_row['Country'] : '';
+					$region = $all_row['Region/State'] ? $all_row['Region/State'] : '';
+					$password = $all_row['Password'] ? $all_row['Password'] : '';
+					$newsletter = $all_row['Newsletter'] ? $all_row['Newsletter'] : '';
+					$companygroup = $all_row['Company Group'] ? $all_row['Company Group'] : '';
+					$approved = $all_row['Approved'] ? $all_row['Approved'] : '';
+					$paymentmethod = $all_row['Payment Method'] ? $all_row['Payment Method'] : '';
+					$salesrep = $all_row['Sales Rep'] ? $all_row['Sales Rep'] : '';
+					$status = $all_row['Status'] ? $all_row['Status'] : '';
+					
+					if(!empty($salesrep))
+						{
+							$sales = $this->model_replogic_sales_rep_management->getSalesrepByName($salesrep);
+							$salesrep_id = $sales['salesrep_id'];
+						}
+						else
+						{
+							$salesrep_id = '';
+						}
+						
+						if(!empty($companygroup))
+						{
+							$groupname = $this->model_customer_customer_group->getCustomerGroupByName($companygroup);
+							$customer_group_id = $groupname['customer_group_id'];
+						}
+						else
+						{
+							$customer_group_id = '';
+						}
+						
+						if(!empty($country))
+						{ 
+							$countryname = $this->model_localisation_country->getCountriesByName($country);
+							
+							$country_id = $countryname['country_id'];
+						}
+						else
+						{
+							$country_id = '';
+						}
+						
+						if(!empty($region))
+						{
+							$zonename = $this->model_localisation_country->getRegionByName($region);
+							$zone_id = $zonename['zone_id'];
+						}
+						else
+						{
+							$zone_id = '';
+						}
+						
+						$data_array = array(
+										'customer_id' => $customer_id,
+										'firstname' => $firstname,
+										'lastname' => $lastname,
+										'email' => $email,
+										'telephone' => $telephone,
+										'companyname' => $companyname,
+										'address1' => $address1,
+										'address2' => $address2,
+										'city' => $city,
+										'postcode' => $postcode,
+										'country' => $country_id,
+										'region' => $zone_id,
+										'password' => $password,
+										'newsletter' => $newsletter,
+										'companygroup' => $customer_group_id,
+										'approved' => $approved,
+										'paymentmethod' => $paymentmethod,
+										'salesrep' => $salesrep_id,
+										'status' => $status
+									);
+						//echo $customer_id; exit;
+						//print_r($data_array); exit;
+						if (!empty($customer_id)) // if column 1 is not empty
+						{ 
+							$this->model_customer_customer_export_import->importCsvCustomerDataUpdate($data_array);  // parse the data to model
+							
+						}
+						else
+						{
+							$this->model_customer_customer_export_import->importCsvCustomerDataInsert($data_array); 
+						}
+					}
+				}
+					
+					$this->session->data['success'] = 'CSV Successfully Imported!';	
+				
+			} else 
+			{
+				$this->session->data['import_error'] = 'CSV Not Imported! <br> File Header Not Set Proper or Missing some Column on Csv or Speling mismatch on csv Header section as per Setting Tab. <br> Better to Export First to View Exact Csv Format!';	
+			}
+				
 				
 			}
 		}
@@ -134,29 +307,6 @@ class ControllerCustomerCustomerExportImport extends Controller {
 	}
 
 	
-	protected function return_bytes($val)
-	{
-		$val = trim($val);
-	
-		switch (strtolower(substr($val, -1)))
-		{
-			case 'm': $val = (int)substr($val, 0, -1) * 1048576; break;
-			case 'k': $val = (int)substr($val, 0, -1) * 1024; break;
-			case 'g': $val = (int)substr($val, 0, -1) * 1073741824; break;
-			case 'b':
-				switch (strtolower(substr($val, -2, 1)))
-				{
-					case 'm': $val = (int)substr($val, 0, -2) * 1048576; break;
-					case 'k': $val = (int)substr($val, 0, -2) * 1024; break;
-					case 'g': $val = (int)substr($val, 0, -2) * 1073741824; break;
-					default : break;
-				} break;
-			default: break;
-		}
-		return $val;
-	}
-
-
 	public function download() {
 		$this->load->language( 'customer/customer_export_import' );
 		$this->document->setTitle($this->language->get('heading_title'));
@@ -174,8 +324,8 @@ class ControllerCustomerCustomerExportImport extends Controller {
 					
 					if (($min==null) || ($max==null)) {
 						$this->model_customer_customer_export_import->downloadCsv();
-					} else {
-						$this->model_customer_customer_export_import->download($export_type, $min*($max-1-1), $min, null, null);
+					} elseif(($min!=null) || ($max!=null)) {
+						$this->model_customer_customer_export_import->downloadCsv($min, $max);
 					}
 					
 			}
@@ -204,8 +354,6 @@ class ControllerCustomerCustomerExportImport extends Controller {
 		$data = array();
 		$data['heading_title'] = $this->language->get('heading_title');
 		
-		$data['exist_filter'] = $this->model_customer_customer_export_import->existFilter();
-
 		$data['text_export_type_category'] = ($data['exist_filter']) ? $this->language->get('text_export_type_category') : $this->language->get('text_export_type_category_old');
 		$data['text_export_type_product'] = ($data['exist_filter']) ? $this->language->get('text_export_type_product') : $this->language->get('text_export_type_product_old');
 		$data['text_export_type_poa'] = $this->language->get('text_export_type_poa');
@@ -276,7 +424,12 @@ class ControllerCustomerCustomerExportImport extends Controller {
 		} else {
 			$data['error_warning'] = '';
 		}
+		
+		if (!empty($this->session->data['import_error'])) {
+				$data['error_warning'] .= $this->session->data['import_error'];
+			}
 
+		unset($this->session->data['import_error']);
 		unset($this->session->data['export_import_error']);
 		unset($this->session->data['export_import_nochange']);
 
@@ -303,8 +456,6 @@ class ControllerCustomerCustomerExportImport extends Controller {
 		$data['import'] = $this->url->link('customer/customer_export_import/upload', 'token=' . $this->session->data['token'], $this->ssl);
 		$data['export'] = $this->url->link('customer/customer_export_import/download', 'token=' . $this->session->data['token'], $this->ssl);
 		$data['settings'] = $this->url->link('customer/customer_export_import/settings', 'token=' . $this->session->data['token'], $this->ssl);
-		$data['post_max_size'] = $this->return_bytes( ini_get('post_max_size') );
-		$data['upload_max_filesize'] = $this->return_bytes( ini_get('upload_max_filesize') );
 
 		if (isset($this->request->post['export_type'])) {
 			$data['export_type'] = $this->request->post['export_type'];
@@ -480,14 +631,7 @@ class ControllerCustomerCustomerExportImport extends Controller {
 			$data['settings_status'] = '0';
 		}
 
-		$min_customer_id = $this->model_customer_customer_export_import->getMinCustomerId();
-		$max_customer_id = $this->model_customer_customer_export_import->getMaxCustomerId();
-		$count_customer = $this->model_customer_customer_export_import->getCountCustomer();
 		
-		$data['min_customer_id'] = $min_customer_id;
-		$data['max_customer_id'] = $max_customer_id;
-		$data['count_customer'] = $count_customer;
-
 		$data['token'] = $this->session->data['token'];
 
 		$this->document->addStyle('view/stylesheet/export_import.css');
@@ -504,66 +648,6 @@ class ControllerCustomerCustomerExportImport extends Controller {
 		if (!$this->user->hasPermission('access', 'customer/customer_export_import')) {
 			$this->error['warning'] = $this->language->get('error_permission');
 			return false;
-		}
-
-		if (!$this->config->get( 'export_import_settings_use_option_id' )) {
-			$option_names = $this->model_customer_customer_export_import->getOptionNameCounts();
-			foreach ($option_names as $option_name) {
-				if ($option_name['count'] > 1) {
-					$this->error['warning'] = str_replace( '%1', $option_name['name'], $this->language->get( 'error_option_name' ) );
-					return false;
-				}
-			}
-		}
-
-		if (!$this->config->get( 'export_import_settings_use_option_value_id' )) {
-			$option_value_names = $this->model_customer_customer_export_import->getOptionValueNameCounts();
-			foreach ($option_value_names as $option_value_name) {
-				if ($option_value_name['count'] > 1) {
-					$this->error['warning'] = str_replace( '%1', $option_value_name['name'], $this->language->get( 'error_option_value_name' ) );
-					return false;
-				}
-			}
-		}
-
-		if (!$this->config->get( 'export_import_settings_use_attribute_group_id' )) {
-			$attribute_group_names = $this->model_customer_customer_export_import->getAttributeGroupNameCounts();
-			foreach ($attribute_group_names as $attribute_group_name) {
-				if ($attribute_group_name['count'] > 1) {
-					$this->error['warning'] = str_replace( '%1', $attribute_group_name['name'], $this->language->get( 'error_attribute_group_name' ) );
-					return false;
-				}
-			}
-		}
-
-		if (!$this->config->get( 'export_import_settings_use_attribute_id' )) {
-			$attribute_names = $this->model_customer_customer_export_import->getAttributeNameCounts();
-			foreach ($attribute_names as $attribute_name) {
-				if ($attribute_name['count'] > 1) {
-					$this->error['warning'] = str_replace( '%1', $attribute_name['name'], $this->language->get( 'error_attribute_name' ) );
-					return false;
-				}
-			}
-		}
-
-		if (!$this->config->get( 'export_import_settings_use_filter_group_id' )) {
-			$filter_group_names = $this->model_customer_customer_export_import->getFilterGroupNameCounts();
-			foreach ($filter_group_names as $filter_group_name) {
-				if ($filter_group_name['count'] > 1) {
-					$this->error['warning'] = str_replace( '%1', $filter_group_name['name'], $this->language->get( 'error_filter_group_name' ) );
-					return false;
-				}
-			}
-		}
-
-		if (!$this->config->get( 'export_import_settings_use_filter_id' )) {
-			$filter_names = $this->model_customer_customer_export_import->getFilterNameCounts();
-			foreach ($filter_names as $filter_name) {
-				if ($filter_name['count'] > 1) {
-					$this->error['warning'] = str_replace( '%1', $filter_name['name'], $this->language->get( 'error_filter_name' ) );
-					return false;
-				}
-			}
 		}
 
 		return true;
@@ -616,20 +700,6 @@ class ControllerCustomerCustomerExportImport extends Controller {
 	}
 
 
-	public function getNotifications() {
-		sleep(1); // give the data some "feel" that its not in our system
-		$this->load->model('customer/customer_export_import');
-		$this->load->language( 'customer/customer_export_import' );
-		$response = $this->model_customer_customer_export_import->getNotifications();
-		$json = array();
-		if ($response===false) {
-			$json['message'] = '';
-			$json['error'] = $this->language->get( 'error_notifications' );
-		} else {
-			$json['message'] = $response;
-			$json['error'] = '';
-		}
-		$this->response->setOutput(json_encode($json));
-	}
+	
 }
 ?>

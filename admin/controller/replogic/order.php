@@ -355,13 +355,13 @@ class ControllerReplogicOrder extends Controller {
 				} else {
 					$image = $this->model_tool_image->resize('tsc_image.png', 40, 40);
 				}
-				
+				$model = $this->model_replogic_order_quotes->getOrderquotemodel($product->id);
 				$data['order_products'][] = array(
 					'product_id' => $product->id,
 					'name'       => $product->name,
 					'image'      => $image,
 					'sku'      => $product->sku,
-					'model'      => '',
+					'model'      => $model['model'],
 					'option'     => '',
 					'quantity'   => $product->qty,
 					'price'      => $product->unit_price,

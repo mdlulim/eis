@@ -184,37 +184,83 @@ class ControllerUserUser extends Controller {
 	}
 
 	protected function sendUserInvitation($user_info) {
+		$emailClient = "mandrill";
+
 		# build data array
 		$data['subject'] = 'Welcome to Saleslogic';
 		$data['to']      = array('email'=>$user_info['email'], 'name'=>$user_info['firstname']);
 		$data['from']    = array('email'=>$this->config->get('config_email'), 'name'=>$this->config->get('config_name'));
-
 		$data['subject'] = 'Welcome to Saleslogic';
-		$data['message'] = 'Welcome to Saleslogic. Your new password is : '.$user_info['password'].'. To access the portal, go to: '.$this->config->get('config_url').' To log in, use this email address and your password.';
 
-		# build email message [html]
-		$this->load->model('extension/mail/template');
-		$tempData = array(
-			'emailtemplate_key' => 'user.invite'
-		);
-		$template                     = $this->model_extension_mail_template->load($tempData);
-		$template->data['password']   = $user_info['password'];
-		$template->data['_url']       = $this->config->get('config_url');
-		$template->data['_name']      = $this->config->get('config_owner');
-		$template->data['_email']     = $this->config->get('config_email');
-		$template->data['help_guide'] = $this->config->get('config_url');
+		switch ($emailClient) {
+			case 'mandrill':
+				# message
+				$data['message'] = array(
+			        'subject' => $data['subject'],
+			        'to'      => array(
+			            array(
+			                'email' => $data['to']['email'],
+			                'type'  => 'to'
+			            )
+			        ),
+			        'global_merge_vars' => array(
+			            array(
+			                'name'    => 'PASSWORD',
+			                'content' => $user_info['password']
+			            ),
+			            array(
+			                'name'    => 'STORE_URL',
+			                'content' => $this->config->get('config_url')
+			            ),
+			            array(
+			                'name'    => 'STORE_NAME',
+			                'content' => $this->config->get('config_owner')
+			            ),
+			            array(
+			                'name'    => 'STORE_EMAIL',
+			                'content' => $this->config->get('config_email')
+			            ),
+			            array(
+			                'name'    => 'HELP_GUIDE',
+			                'content' => 'https://help.saleslogic.io/portal/home'
+			            )
+			        )
+			    );
+				$template['name'] = 'baselogic-user-invite';
+				$emailResult      = sendEmail($data, false, $template, $emailClient);
+				return (isset($emailResult[0]['status']) && (
+		                $emailResult[0]['status'] == "sent" || 
+		                $emailResult[0]['status'] == "queued" || 
+		                $emailResult[0]['status'] == "scheduled"));
+			
+			default:
+				# message
+				$data['message'] = 'Welcome to Saleslogic. Your new password is : '.$user_info['password'].'. To access the portal, go to: '.$this->config->get('config_url').' To log in, use this email address and your password.';
 
-		# smtp settings
-		$settings['protocol']      = $this->config->get('config_mail_protocol');
-		$settings['parameter']     = $this->config->get('config_mail_parameter');
-		$settings['smtp_hostname'] = $this->config->get('config_mail_smtp_hostname');
-		$settings['smtp_username'] = $this->config->get('config_mail_smtp_username');
-		$settings['smtp_password'] = $this->config->get('config_mail_smtp_password');
-		$settings['smtp_port']     = $this->config->get('config_mail_smtp_port');
-		$settings['smtp_timeout']  = $this->config->get('config_mail_smtp_timeout');
+				# build email message [html]
+				$this->load->model('extension/mail/template');
+				$tempData = array(
+					'emailtemplate_key' => 'user.invite'
+				);
+				$template                     = $this->model_extension_mail_template->load($tempData);
+				$template->data['password']   = $user_info['password'];
+				$template->data['_url']       = $this->config->get('config_url');
+				$template->data['_name']      = $this->config->get('config_owner');
+				$template->data['_email']     = $this->config->get('config_email');
+				$template->data['help_guide'] = $this->config->get('config_url');
 
-		# send mail
-		return sendEmail($data, $settings, $template);
+				# smtp settings
+				$settings['protocol']      = $this->config->get('config_mail_protocol');
+				$settings['parameter']     = $this->config->get('config_mail_parameter');
+				$settings['smtp_hostname'] = $this->config->get('config_mail_smtp_hostname');
+				$settings['smtp_username'] = $this->config->get('config_mail_smtp_username');
+				$settings['smtp_password'] = $this->config->get('config_mail_smtp_password');
+				$settings['smtp_port']     = $this->config->get('config_mail_smtp_port');
+				$settings['smtp_timeout']  = $this->config->get('config_mail_smtp_timeout');
+
+				# send mail
+				return sendEmail($data, $settings, $template);
+		}
 	}
 
 	protected function getList() {

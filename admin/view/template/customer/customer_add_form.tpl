@@ -34,7 +34,9 @@
               <div class="row">
                 
               <fieldset style="margin: 0px 18px;">        
+
                   <legend style="width: 86px; padding-top: 24px; padding-left: 14px;">Details</legend>
+
                   <div class="col-sm-1">
                   
                 </div>
@@ -73,18 +75,22 @@
                       <h2 class="drawline"></h2>
                       
                       <div class="form-group" <?php if($customer_group_id != '3') { ?> style="display:none;" <?php } ?> id="wholesal"  >
+
                         <label class="col-sm-3 control-label" for="send_invitation">Send Wholesale Invitation</label>
                         <div class="col-sm-9">
                           <label class="radio">
                             <input type="checkbox" name="send_invitation" id="send_invitation" value="yes" checked>
                           </label>
                           <!-- <div style="float:left;">	
+
                             <input type="text" value="Not Invited" disabled="disabled" class="form-control" style="width:100px;" />
                           </div>
                           <a href="javascript:void()">
                           <div style="float:left;width:150px;padding:8px 5px 8px 15px;margin-left:10px;" class="form-control">
                           	<i class="fa fa-paper-plane"></i> (Re)Send Invitation
+
                           </div></a> -->
+
                         </div>
                       </div>
                       
@@ -168,9 +174,11 @@
                           <?php } ?>
                         </div>
                       </div>
+
                      
                      <h2 class="drawline"></h2>
                       <?php } ?>
+
                       
                       <!--<div class="form-group required">
                         <label class="col-sm-2 control-label" for="input-lastname"><?php echo $entry_lastname; ?></label>
@@ -439,7 +447,11 @@
                      <?php } else { ?>
                      	<?php $df = ''; ?>
                      <?php } ?>
-                    <li <?php echo $df; ?> ><a href="#tab-address<?php echo $address_row; ?>" data-toggle="tab"><i class="fa fa-minus-circle" onclick="$('#address a:first').tab('show'); $('#address a[href=\'#tab-address<?php echo $address_row; ?>\']').parent().remove(); $('#tab-address<?php echo $address_row; ?>').remove();"></i> <?php echo $tab_address . ' ' . $address_row; ?></a></li>
+                    <li <?php echo $df; ?> >
+                      <a href="#tab-address<?php echo $address_row; ?>" data-toggle="tab">
+                        <i class="fa fa-minus-circle" onclick="$('#address a:first').tab('show'); $('#address a[href=\'#tab-address<?php echo $address_row; ?>\']').parent().remove(); <?php if ($address_row <> 1) :?>$('#tab-address<?php echo $address_row; ?>').remove(); <?php endif; ?"></i> <?php echo $tab_address . ' ' . $address_row; ?>
+                      </a>
+                    </li>
                     <?php $address_row++; ?>
                     <?php } ?>
                     
@@ -724,10 +736,10 @@
           </div>
           </fieldset>
                       
- <style>
-  #tab-customer .form-group + .form-group{border-top:none;}
-  .drawline{border-top:1px solid #ededed;margin:10px 0px;}
-  </style>                   
+         <style>
+          #tab-customer .form-group + .form-group{border-top:none;}
+          .drawline{border-top:1px solid #ededed;margin:10px 0px;}
+          </style>
                     
                   
                 
@@ -739,6 +751,7 @@
       </div>
     </div>
   </div>
+
 
   <!-- Page loader -->
   <div class="loader-wrapper" style="display:none">
@@ -775,6 +788,17 @@ $('select[name=\'customer_group_id\']').trigger('change');
 //--></script>
 
 <script type="text/javascript">
+
+  $(document).ready(function ($) {
+    if ($('.tab-pane .form-group').hasClass('has-error')) {
+      var id = $('.has-error').closest('.tab-pane').attr('id');
+      var element = '.nav.nav-pills a[href="#'+id+'"]';
+      if ($(element).length > 0) {
+        $(element).trigger('click');
+      }
+    }
+  });
+
 $(document).ready(function ($) {
  $('#tab-general1').on('change',function(e){
 e.preventDefault()

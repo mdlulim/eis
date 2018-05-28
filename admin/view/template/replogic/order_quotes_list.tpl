@@ -4,8 +4,9 @@
     <div class="container-fluid">
       <div class="pull-right">
         <?php if($delete) { ?>
-        <button type="button" id="button-delete" form="form-order" formaction="<?php echo $delete; ?>" data-toggle="tooltip" title="<?php echo $button_delete; ?>" class="btn btn-danger"><i class="fa fa-trash-o"></i></button>
+        <button type="button" id="button-delete" form="form-order" data-toggle="tooltip" title="<?php echo $button_delete; ?>" class="btn btn-danger" onclick="Confirmbtn('delete','Are you sure want to Delete Quotes ?')"><i class="fa fa-trash-o"></i></button>
         <?php } ?>
+        <button type="button" id="button-deny" form="form-order" onclick="Confirmbtn('deny','Are you sure want to Deny Quotes ?')" data-toggle="tooltip" title="Deny Quote(s)" class="btn btn-danger"><i class="fa fa-times"></i></button>
       </div>
       <h1><?php echo $heading_title; ?></h1>
       <ul class="breadcrumb">
@@ -61,7 +62,22 @@
                 <label class="control-label" for="input-order-status"><?php echo $entry_order_status; ?></label>
                 <select name="filter_order_status" id="input-order-status" class="form-control">
                   <option value="*">Select Status</option>
-                  <?php if ($filter_order_status == '0') { ?>
+                  <?php if (isset($quote_statuses) && is_array($quote_statuses)) : ?>
+                    <?php foreach($quote_statuses as $key => $selectStatus) : ?>
+                      <?php if ($filter_order_status == $selectStatus['quote_status_id']) : ?>
+                        <option value="<?=$selectStatus['quote_status_id']?>" selected="selected">
+                          <?=$selectStatus['name']?>
+                        </option>
+                      <?php else : ?>
+                        <option value="<?=$selectStatus['quote_status_id']?>">
+                          <?=$selectStatus['name']?>
+                        </option>
+                      <?php endif; ?>
+                    <?php endforeach; ?>
+                  <?php endif; ?>
+
+
+                  <!-- <?php if ($filter_order_status == '0') { ?>
                   <option value="0" selected="selected">Awaiting Approval</option>
                   <?php } else { ?>
                   <option value="0">Awaiting Approval</option>
@@ -73,17 +89,17 @@
                   <option value="1">Approved</option>
                   <?php } ?>
                   
+                  <?php if ($filter_order_status == '3') { ?>
+                  <option value="3" selected="selected">Processing</option>
+                  <?php } else { ?>
+                  <option value="3">Processing</option>
+                  <?php } ?>
+                  
                   <?php if ($filter_order_status == '2') { ?>
                   <option value="2" selected="selected">Declined</option>
                   <?php } else { ?>
                   <option value="2">Declined</option>
-                  <?php } ?>
-                  
-                  <?php if ($filter_order_status == '3') { ?>
-                  <option value="3" selected="selected">Cancelled</option>
-                  <?php } else { ?>
-                  <option value="3">Cancelled</option>
-                  <?php } ?>
+                  <?php } ?> -->
                   
                 </select>
               </div>
@@ -125,7 +141,21 @@
                   <button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
                   </span></div>
               </div>
-              <div style="margin-top:15px;">
+              <div class="form-group">
+                <label class="control-label" for="input-customer">Sales Rep Name</label>
+                   <select name="filter_salesrepid" class="form-control">
+                	<option value="">Select Sales Rep Name</option>
+                    <?php foreach ($salesrepnames as $salesrepname) {  ?>
+                <?php if ($salesrepname['salesrep_id'] == $filter_salesrepid) { ?>
+                <option value="<?php echo $salesrepname['salesrep_id']; ?>" selected="selected"><?php echo $salesrepname['salesrep_name']; ?> <?php echo $salesrepname['salesrep_lastname']; ?></option>
+                <?php } else { ?>
+                <option value="<?php echo $salesrepname['salesrep_id']; ?>"><?php echo $salesrepname['salesrep_name']; ?> <?php echo $salesrepname['salesrep_lastname']; ?></option>
+                <?php } ?>
+                <?php } ?>
+                    
+                </select>         
+              </div>
+              <div>
               <button type="button" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-search"></i> Search</button>
               <button type="button" id="button-filter-reset" class="btn btn-primary pull-right" style="margin-right:10px;"><i class="fa fa-refresh"></i> Reset</button>
               </div>
@@ -138,12 +168,12 @@
               <thead>
                 <tr>
                   <td style="width: 1px;" class="text-center"><input type="checkbox" onclick="$('input[name*=\'selected\']').prop('checked', this.checked);" /></td>
-                  <td class="text-left"><?php if ($sort == 'quote_id') { ?>
+                  <td class="text-left" width="85"><?php if ($sort == 'quote_id') { ?>
                     <a href="<?php echo $sort_order; ?>" class="<?php echo strtolower($order); ?>"><?php echo $column_quote_id; ?></a>
                     <?php } else { ?>
                     <a href="<?php echo $sort_order; ?>"><?php echo $column_quote_id; ?></a>
                     <?php } ?></td>
-                  <td class="text-left"><?php if ($sort == 'order_id') { ?>
+                  <td class="text-left" width="82"><?php if ($sort == 'order_id') { ?>
                     <a href="<?php echo $sort_order_id; ?>" class="<?php echo strtolower($order); ?>">Order Id</a>
                     <?php } else { ?>
                     <a href="<?php echo $sort_order_id; ?>">Order Id</a>
@@ -158,20 +188,25 @@
                     <?php } else { ?>
                     <a href="<?php echo $sort_customer_contact; ?>"><?php echo $column_customer_contact; ?></a>
                     <?php } ?></td>
-                  <td class="text-left"><?php if ($sort == 'order_status') { ?>
-                    <a href="<?php echo $sort_status; ?>" class="<?php echo strtolower($order); ?>"><?php echo $column_status; ?></a>
+                    <td class="text-left"><?php if ($sort == 'sort_salesrep_id') { ?>
+                    <a href="<?php echo $sort_salesrep_id; ?>" class="<?php echo strtolower($order); ?>">Sales Rep Name</a>
                     <?php } else { ?>
-                    <a href="<?php echo $sort_status; ?>"><?php echo $column_status; ?></a>
+                    <a href="<?php echo $sort_salesrep_id; ?>">Sales Rep Name</a>
+                    <?php } ?></td>
+                    <td class="text-left"><?php if ($sort == 'date_added') { ?>
+                    <a href="<?php echo $sort_date_added; ?>" class="<?php echo strtolower($order); ?>"><?php echo $column_date_added; ?></a>
+                    <?php } else { ?>
+                    <a href="<?php echo $sort_date_added; ?>"><?php echo $column_date_added; ?></a>
                     <?php } ?></td>
                   <td class="text-left"><?php if ($sort == 'total') { ?>
                     <a href="<?php echo $sort_total; ?>" class="<?php echo strtolower($order); ?>"><?php echo $column_total; ?></a>
                     <?php } else { ?>
                     <a href="<?php echo $sort_total; ?>"><?php echo $column_total; ?></a>
                     <?php } ?></td>
-                  <td class="text-left"><?php if ($sort == 'date_added') { ?>
-                    <a href="<?php echo $sort_date_added; ?>" class="<?php echo strtolower($order); ?>"><?php echo $column_date_added; ?></a>
+                  <td class="text-left" width="130"><?php if ($sort == 'order_status') { ?>
+                    <a href="<?php echo $sort_status; ?>" class="<?php echo strtolower($order); ?>"><?php echo $column_status; ?></a>
                     <?php } else { ?>
-                    <a href="<?php echo $sort_date_added; ?>"><?php echo $column_date_added; ?></a>
+                    <a href="<?php echo $sort_status; ?>"><?php echo $column_status; ?></a>
                     <?php } ?></td>
                   <td class="text-right"><?php echo $column_action; ?></td>
                 </tr>
@@ -190,7 +225,8 @@
                   <td class="text-left"><?php echo $order['order_id']; ?></td>
                   <td class="text-left"><?php echo $order['customer']; ?></td>
                   <td class="text-left"><?php echo $order['customer_contact']; ?></td>
-                  <td class="text-left"><?php echo $order['qstatus']; ?></td>
+                  <td class="text-left"><?php echo $order['salesrepname']; ?></td>
+                  <td class="text-left"><?php echo $order['date_added']; ?></td>
                   <td class="text-left">
                   	<?php if($order['total'] != '') { ?>
                     	<?php echo $order['total']; ?>
@@ -198,19 +234,27 @@
                      Null
                     <?php } ?>	
                     </td>
-                  <td class="text-left"><?php echo $order['date_added']; ?></td>
+                  <td class="text-left" style="min-width:140px;">
+                		<?php if ($order['quote_status_id'] == $quote_status_converted) : ?>
+                      <a class="btn-success" style="padding:2px 5px;border-radius:5px;"><?=$order['quote_status']?></a>
+                    <?php elseif ($order['quote_status_id'] == $quote_status_denied) : ?>
+                      <a class="btn-danger" style="padding:2px 5px;border-radius:5px;"><?=$order['quote_status']?></a>
+                    <?php elseif ($order['quote_status_id'] == $quote_status_pending) : ?>
+                      <a class="btn-warning" style="padding:2px 5px;border-radius:5px;"><?=$order['quote_status']?></a>
+                    <?php endif; ?>
+                  </td>
                   <td class="text-right">
                     
                     	<?php if($order['view']) { ?>
                         <a href="<?php echo $order['view']; ?>" data-toggle="tooltip" title="View Quote" class="btn btn-info"><i class="fa fa-eye"></i></a>
                    		<?php } ?>
                         <?php if($order['order_id'] == '' && $order['status'] != '2') { ?>
-                        	<a href="<?php echo $order['approve']; ?>" data-toggle="tooltip" title="Convert to Order" class="btn btn-success"><i class="fa fa-check"></i></a>
+                        	<!--<a href="<?php echo $order['approve']; ?>" data-toggle="tooltip" title="Convert to Order" class="btn btn-success"><i class="fa fa-check"></i></a>-->
                         	<!--<a href="javascript:void();" data-toggle="tooltip" title="Decline" onclick="onpopup(<?php echo $order['quote_id']; ?>);" class="btn btn-danger decline"><i class="fa fa-times"></i></a>-->
                            
                         <?php } else { ?>
                         	
-                            <a href="javascript:void();" disabled  data-toggle="tooltip" title="Converted to Order" class="btn btn-success"><i class="fa fa-check"></i></a>
+                           <!-- <a href="javascript:void();" disabled  data-toggle="tooltip" title="Converted to Order" class="btn btn-success"><i class="fa fa-check"></i></a>-->
                             <!--<a href="javascript:void();" data-toggle="tooltip" title="Decline" disabled class="btn btn-danger decline"><i class="fa fa-times"></i></a>-->
                         	
                         <?php } ?>
@@ -308,6 +352,12 @@ $('#button-filter').on('click', function() {
 
 	if (filter_customer_contact_id) {
 		url += '&filter_customer_contact_id=' + encodeURIComponent(filter_customer_contact_id);
+	}
+	
+	var filter_salesrepid = $('select[name=\'filter_salesrepid\']').val();
+
+	if (filter_salesrepid) {
+		url += '&filter_salesrepid=' + encodeURIComponent(filter_salesrepid);
 	}
 	
 	var filter_order_status = $('select[name=\'filter_order_status\']').val();
@@ -429,6 +479,74 @@ $('#button-delete').on('click', function(e) {
 $('.date').datetimepicker({
 	pickTime: false
 });
+//--></script>
+<script type="text/javascript"><!--
+$('input[name^=\'selected\']').on('change', function() { 
+	
+	var selected = $('input[name^=\'selected\']:checked');
+
+	if (selected.length) {
+		$('#button-delete').prop('disabled', false);
+		$('#button-deny').prop('disabled', false);
+	}
+	else
+	{
+		$('#button-delete').prop('disabled', true);
+		$('#button-deny').prop('disabled', true);
+	}
+
+});
+
+$('#button-delete').prop('disabled', true);
+$('#button-deny').prop('disabled', true);
+$('input[name^=\'selected\']:first').trigger('change');
+
+$('input:checkbox').change(function () {
+   var selected = $('input[name^=\'selected\']:checked');
+
+	if (selected.length) {
+		$('#button-delete').prop('disabled', false);
+		$('#button-deny').prop('disabled', false);
+	}
+	else
+	{
+		$('#button-delete').prop('disabled', true);
+		$('#button-deny').prop('disabled', true);
+	}
+})
+
+$('#button-delete').click(function(){
+   $('#form-order').attr('action', '<?php echo $delete; ?>');
+});
+
+$('#button-deny').click(function(){
+   $('#form-order').attr('action', '<?php echo $button-deny; ?>');
+});
+
+function Confirmbtn(action, msg)
+{
+  var x = confirm(msg);
+  if (x)
+  {
+      if(action == 'delete')
+	  {
+	  	var faction = '<?php echo $delete; ?>';
+	  }
+	  else
+	  {
+	  	var faction = '<?php echo $deny; ?>';
+	  }
+	  var newul = faction.replace(/&amp;/g, "&");
+	  $('#form-order').attr('action', newul);
+	  $('#form-order').submit()
+	  return true;
+	}
+  else {
+    return false;
+ }
+}
+
+
 //--></script>
 <style>
   .form-group + .form-group{border-top:none;}

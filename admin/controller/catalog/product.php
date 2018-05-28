@@ -911,6 +911,21 @@ class ControllerCatalogProduct extends Controller {
 		} else {
 			$data['product_recurrings'] = array();
 		}
+		
+		$this->load->model('customer/customer_group');
+		$this->load->model('catalog/product');
+		$data['groups'] = $this->model_customer_customer_group->getCustomerGroups();
+		
+		//print_r($data['groups']); exit;
+		
+		if (isset($this->request->post['pricing'])) {
+			$data['pricing'] = $this->request->post['pricing'];
+		} elseif (isset($this->request->get['product_id'])) { 
+			$data['pricing'] = $this->model_catalog_product->getProductCustomerGroupPrices($this->request->get['product_id']);
+		} else {
+			$data['pricing'] = array();
+		}
+	//print_r($data['pricing']); exit;
 
 		$this->load->model('localisation/tax_class');
 

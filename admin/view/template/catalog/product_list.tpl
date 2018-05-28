@@ -92,7 +92,7 @@
                   <?php } ?>
                 </select>
               </div>
-              <div class="form-group">
+              <!--<div class="form-group">
                 <label class="control-label" for="input-image"><?php echo $entry_image; ?></label>
                 <select name="filter_image" id="input-image" class="form-control">
                   <option value="*"></option>
@@ -107,7 +107,7 @@
                   <option value="0"><?php echo $text_disabled; ?></option>
                   <?php } ?>
                 </select>
-              </div>
+              </div>-->
               <button type="button" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-search"></i> Search</button>
               <button type="button" id="button-filter-reset" class="btn btn-primary pull-right" style="margin-right:10px;"><i class="fa fa-refresh"></i> Reset</button>
             </div>
@@ -120,7 +120,7 @@
                 <tr>
                   <td style="width: 1px;" class="text-center"><input type="checkbox" onclick="$('input[name*=\'selected\']').prop('checked', this.checked);" /></td>
                   <td class="text-center"><?php echo $column_image; ?></td>
-                  <td class="text-left"><?php if ($sort == 'pd.name') { ?>
+                  <td class="text-left" width="420"><?php if ($sort == 'pd.name') { ?>
                     <a href="<?php echo $sort_name; ?>" class="<?php echo strtolower($order); ?>"><?php echo $column_name; ?></a>
                     <?php } else { ?>
                     <a href="<?php echo $sort_name; ?>"><?php echo $column_name; ?></a>
@@ -207,6 +207,8 @@ $('#button-filter').on('click', function() {
 		url += '&filter_name=' + encodeURIComponent(filter_name);
 	}
 
+	var filter_product_id = $('select[name=\'filter_product_id\']').val();
+	
 	if (filter_product_id) {
 		url += '&filter_product_id=' + encodeURIComponent(filter_product_id);
 	}
@@ -241,13 +243,19 @@ $('#button-filter').on('click', function() {
 		url += '&filter_status=' + encodeURIComponent(filter_status);
 	}
 
-  var filter_image = $('select[name=\'filter_image\']').val();
+  /*var filter_image = $('select[name=\'filter_image\']').val();
 
   if (filter_image != '*') {
     url += '&filter_image=' + encodeURIComponent(filter_image);
-  }
+  }*/
 
 	location = url;
+});
+
+$('#button-filter-reset').on('click', function() {
+  var url = 'index.php?route=catalog/product&token=<?php echo $token; ?>';
+
+  location = url;
 });
 //--></script>
   <script type="text/javascript"><!--

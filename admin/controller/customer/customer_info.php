@@ -1456,7 +1456,6 @@ class ControllerCustomerCustomerInfo extends Controller {
 		$data['transactionstab'] = $this->url->link('customer/customer_info', 'type=transactions&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
 		$data['rewardpointstab'] = $this->url->link('customer/customer_info', 'type=rewardpoints&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
 		$data['ipaddressestab'] = $this->url->link('customer/customer_info', 'type=ipaddresses&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
-
 		$data['customer_contacts'] = array();
 
 		$filter_data = array(
@@ -1630,6 +1629,7 @@ class ControllerCustomerCustomerInfo extends Controller {
 		
 		$this->load->model('sale/order');
 		$this->load->model('customer/customer');
+		$this->load->model('replogic/customer_contact');
 		$this->load->language('sale/order');
 		$this->load->language('customer/customer_info');
 		
@@ -1648,6 +1648,12 @@ class ControllerCustomerCustomerInfo extends Controller {
 			$filter_customer = $this->request->get['filter_customer'];
 		} else {
 			$filter_customer = null;
+		}
+
+		if (isset($this->request->get['filter_customer_contact_id'])) {
+			$filter_customer_contact_id = $this->request->get['filter_customer_contact_id'];
+		} else {
+			$filter_customer_contact_id = null;
 		}
 
 		if (isset($this->request->get['filter_order_status'])) {
@@ -1700,6 +1706,10 @@ class ControllerCustomerCustomerInfo extends Controller {
 		
 		if (isset($this->request->get['customer_id'])) {
 			$url .= '&customer_id=' . $this->request->get['customer_id'];
+		}
+
+		if (isset($this->request->get['filter_customer_contact_id'])) {
+			$url .= '&filter_customer_contact_id=' . $this->request->get['filter_customer_contact_id'];
 		}
 		
 		if (isset($this->request->get['filter_order_id'])) {
@@ -1772,19 +1782,22 @@ class ControllerCustomerCustomerInfo extends Controller {
 		$data['orders'] = array();
 
 		$filter_data = array(
-			'filter_order_id'      => $filter_order_id,
-			'filter_salesrep_id'   => $salesrep_id,
-			'filter_customer'	   => $filter_customer,
-			'filter_customer_id'	   => $customer_id,
-			'filter_order_status'  => $filter_order_status,
-			'filter_total'         => $filter_total,
-			'filter_date_added'    => $filter_date_added,
-			'filter_date_modified' => $filter_date_modified,
-			'sort'                 => $sort,
-			'order'                => $order,
-			'start'                => ($page - 1) * $this->config->get('config_limit_admin'),
-			'limit'                => $this->config->get('config_limit_admin')
+			'filter_order_id'            => $filter_order_id,
+			'filter_salesrep_id'         => $salesrep_id,
+			'filter_customer'	         => $filter_customer,
+			'filter_customer_id'         => $customer_id,
+			'filter_customer_contactid'  => $filter_customer_contact_id,
+			'filter_order_status'        => $filter_order_status,
+			'filter_total'               => $filter_total,
+			'filter_date_added'          => $filter_date_added,
+			'filter_date_modified'       => $filter_date_modified,
+			'sort'                       => $sort,
+			'order'                      => $order,
+			'start'                      => ($page - 1) * $this->config->get('config_limit_admin'),
+			'limit'                      => $this->config->get('config_limit_admin')
 		);
+
+		$data['customer_contacts'] = $this->model_replogic_customer_contact->getcustomercontacts(array('filter_customer_id'=>$customer_id));
 
 		$order_total = $this->model_sale_order->getTotalOrders($filter_data);
 
@@ -1796,18 +1809,26 @@ class ControllerCustomerCustomerInfo extends Controller {
 			$cstdetails = $this->model_customer_customer->getCustomer($ord['customer_id']);
 			$salesrep = $this->model_replogic_sales_rep_management->getsalesrep($cstdetails['salesrep_id']);
 			$salesrepname = $salesrep['salesrep_name'].' '.$salesrep['salesrep_lastname'];
+
+			$time = strtotime($result['date_added']);
+			$date_added = date("d F, Y g:i A", $time);
+			
+			$time1 = strtotime($result['date_modified']);
+			$date_modified = date("d F, Y g:i A", $time1);
 			
 			$data['orders'][] = array(
-				'order_id'      => $result['order_id'],
-				'customer'      => $result['customer'],
-				'salesrep'      => $salesrepname,
-				'order_status'  => $result['order_status'] ? $result['order_status'] : $this->language->get('text_missing'),
-				'total'         => $this->currency->format($result['total'], $result['currency_code'], $result['currency_value']),
-				'date_added'    => date($this->language->get('date_format_short'), strtotime($result['date_added'])),
-				'date_modified' => date($this->language->get('date_format_short'), strtotime($result['date_modified'])),
-				'shipping_code' => $result['shipping_code'],
-				'view'          => $this->url->link('sale/order/info', 'token=' . $this->session->data['token'] . '&order_id=' . $result['order_id'] . $url, true),
-				'edit'           => $this->url->link('sale/order/edit', 'token=' . $this->session->data['token'] . '&order_id=' . $result['order_id']. $url, true)
+				'order_id'        => $result['order_id'],
+				'customer'        => $result['customer'],
+				'customercontact' => $result['customercontact'],
+				'salesrep'        => $salesrepname,
+				'order_status_id' => $ord['order_status_id'],
+				'order_status'    => $result['order_status'] ? $result['order_status'] : $this->language->get('text_missing'),
+				'total'           => $this->currency->format($result['total'], $result['currency_code'], $result['currency_value']),
+				'date_added'      => $date_added,
+				'date_modified'   => $date_modified,
+				'shipping_code'   => $result['shipping_code'],
+				'view'            => $this->url->link('sale/order/info', 'token=' . $this->session->data['token'] . '&order_id=' . $result['order_id'] . $url, true),
+				'edit'            => $this->url->link('sale/order/edit', 'token=' . $this->session->data['token'] . '&order_id=' . $result['order_id']. $url, true)
 			);
 		}
 
@@ -1843,6 +1864,12 @@ class ControllerCustomerCustomerInfo extends Controller {
 		$data['button_view'] = $this->language->get('button_view');
 		$data['button_ip_add'] = $this->language->get('button_ip_add');
 
+		# order statuses
+		$data['order_status_pending']    = $this->language->get('order_status_pending_id');
+		$data['order_status_processing'] = $this->language->get('order_status_processing_id');
+		$data['order_status_confirmed']  = $this->language->get('order_status_confirmed_id');
+		$data['order_status_cancelled']  = $this->language->get('order_status_cancelled_id');
+
 		$data['token'] = $this->session->data['token'];
 
 		if (isset($this->error['warning'])) {
@@ -1875,6 +1902,10 @@ class ControllerCustomerCustomerInfo extends Controller {
 
 		if (isset($this->request->get['filter_customer'])) {
 			$url .= '&filter_customer=' . urlencode(html_entity_decode($this->request->get['filter_customer'], ENT_QUOTES, 'UTF-8'));
+		}
+		
+		if (isset($this->request->get['filter_customer_contact_id'])) {
+			$url .= '&filter_customer_contact_id=' . $this->request->get['filter_customer_contact_id'];
 		}
 
 		if (isset($this->request->get['filter_order_status'])) {
@@ -1965,6 +1996,7 @@ class ControllerCustomerCustomerInfo extends Controller {
 
 		$data['filter_order_id'] = $filter_order_id;
 		$data['filter_customer'] = $filter_customer;
+		$data['filter_customer_contact_id'] = $filter_customer_contact_id;
 		$data['filter_order_status'] = $filter_order_status;
 		$data['filter_total'] = $filter_total;
 		$data['filter_date_added'] = $filter_date_added;
@@ -2190,15 +2222,6 @@ class ControllerCustomerCustomerInfo extends Controller {
 		
 		foreach ($results as $result) {
 			
-			if ($result['status'] == 0) {
-				$qstatus = 'Awaiting Approval';
-			} elseif ($result['status'] == 1){
-				$qstatus = 'Approved';
-			}
-			elseif ($result['status'] == 2){
-				$qstatus = 'Declined';
-			}
-			
 			$objct = json_decode($result['cart']);
 			$array = (array) $objct;
 			$total = $array['cart_total_price']; 
@@ -2218,23 +2241,25 @@ class ControllerCustomerCustomerInfo extends Controller {
 				$view_button = '';
 			}
 			
+			$time = strtotime($result['date_added']);
+			$date_added = date("d F, Y g:i A", $time); 
+			
 			$data['orders'][] = array(
 				'quote_id'      => $result['quote_id'],
 				'customer'      => $customer_nm,
 				'customer_contact'      => $customer_contact,
 				'approve'      => $this->url->link('replogic/order/add', 'token=' . $this->session->data['token'] . '&quote_id=' . $result['quote_id'] . $url, true),
-				'qstatus'      => $qstatus,
+				'quote_status'      => $result['quote_status'],
 				'status'      => $result['status'],
-				'order_id'      => $result['order_id'],
-				'order_status'  => $result['order_status'] ? $result['order_status'] : $this->language->get('text_missing'),
+				'quote_status_id' => $result['status'],
 				'total'         => $this->currency->format($total, 'ZAR', '1.0000'),
-				'date_added'    => date($this->language->get('date_format_short'), strtotime($result['date_added'])),
+				'date_added'    => $date_added,
 				'shipping_code' => $result['shipping_code'],
 				'view'          => $view_button
 			);
 		}
 		
-		$data['customercontacts'] = $this->model_replogic_customer_contact->getcustomercontacts();
+		$data['customercontacts'] = $this->model_replogic_customer_contact->getcustomercontacts(array('filter_customer_id'=>$customer_id));
 		
 		$data['heading_title'] = $this->language->get('heading_title');
 
@@ -2268,6 +2293,12 @@ class ControllerCustomerCustomerInfo extends Controller {
 		$data['button_filter'] = $this->language->get('button_filter');
 		$data['button_view'] = $this->language->get('button_view');
 		$data['button_ip_add'] = $this->language->get('button_ip_add');
+
+		# quotes statuses
+		$data['quote_statuses'] = $this->model_replogic_order_quotes->getQuoteStatus();
+		$data['quote_status_pending'] = $this->language->get('quote_status_pending_id');
+		$data['quote_status_converted'] = $this->language->get('quote_status_converted_id');
+		$data['quote_status_denied'] = $this->language->get('quote_status_denied_id');
 
 		$data['token'] = $this->session->data['token'];
 
@@ -3397,11 +3428,14 @@ class ControllerCustomerCustomerInfo extends Controller {
 		$this->response->setOutput($this->load->view('customer/customer_info_ip', $data));
 	}
 
+
 	protected function sendCustomerInvitation() {
 
 		$this->load->model('customer/customer');
 
 		$json['success'] = false;
+
+		$emailClient = 'mandrill';
 
 		# get customer information
 		$customer = $this->model_customer_customer->getCustomer($this->request->post['customer_id']);
@@ -3418,37 +3452,90 @@ class ControllerCustomerCustomerInfo extends Controller {
 		# build data array
 		$data['to']      = array('email'=>$customer['email'], 'name'=>$customer['firstname']);
 		$data['from']    = array('email'=>$this->config->get('config_email'), 'name'=>$this->config->get('config_name'));
-
 		$data['subject'] = 'New Wholesale Account';
-		$data['message'] = 'Good day '.$customer['firstname'].', '.$this->config->get('config_owner').' has invited you to purchase stock via their secure online wholesale portal. To access the portal, go to: '.$this->config->get('config_url').'. To log in, use this email address as your username. Your password is : '.$password;
 
-		# build email message [html]
-		$this->load->model('extension/mail/template');
-		$tempData = array(
-			'emailtemplate_key' => 'customer.invite'
-		);
-		$template                        = $this->model_extension_mail_template->load($tempData);
-		$template->data['password']      = $user_info['password'];
-		$template->data['customer_name'] = $user_info['firstname'];
-		$template->data['_url']          = $this->config->get('config_url');
-		$template->data['_name']         = $this->config->get('config_owner');
-		$template->data['_email']        = $this->config->get('config_email');
-		$template->data['help_guide']    = $this->config->get('config_url');
+		switch ($emailClient) {
+			case 'mandrill':
+				# message
+				$data['message'] = array(
+			        'subject' => $data['subject'],
+			        'to'      => array(
+			            array(
+			                'email' => $data['to']['email'],
+			                'type'  => 'to'
+			            )
+			        ),
+			        'global_merge_vars' => array(
+			            array(
+			                'name'    => 'PASSWORD',
+			                'content' => $password
+			            ),
+			            array(
+			                'name'    => 'CUSTOMER_NAME',
+			                'content' => $customer['firstname']
+			            ),
+			            array(
+			                'name'    => 'STORE_URL',
+			                'content' => $this->config->get('config_url')
+			            ),
+			            array(
+			                'name'    => 'STORE_NAME',
+			                'content' => $this->config->get('config_owner')
+			            ),
+			            array(
+			                'name'    => 'STORE_EMAIL',
+			                'content' => $this->config->get('config_email')
+			            ),
+			            array(
+			                'name'    => 'HELP_GUIDE',
+			                'content' => 'https://help.saleslogic.io/portal/home'
+			            )
+			        )
+			    );
+				$template['name'] = 'baselogic-customer-invite';
+				$emailResult      = sendEmail($data, false, $template, $emailClient);
+				$json['success']  = (isset($emailResult[0]['status']) && (
+					                $emailResult[0]['status'] == "sent" || 
+					                $emailResult[0]['status'] == "queued" || 
+					                $emailResult[0]['status'] == "scheduled"));
+				break;
+			
+			default:
+				# message
+				$data['message'] = 'Good day '.$customer['firstname'].', '.$this->config->get('config_owner').' has invited you to purchase stock via their secure online wholesale portal. To access the portal, go to: '.$this->config->get('config_url').'. To log in, use this email address as your username. Your password is : '.$password;
 
-		# smtp settings
-		$settings['protocol']      = $this->config->get('config_mail_protocol');
-		$settings['parameter']     = $this->config->get('config_mail_parameter');
-		$settings['smtp_hostname'] = $this->config->get('config_mail_smtp_hostname');
-		$settings['smtp_username'] = $this->config->get('config_mail_smtp_username');
-		$settings['smtp_password'] = $this->config->get('config_mail_smtp_password');
-		$settings['smtp_port']     = $this->config->get('config_mail_smtp_port');
-		$settings['smtp_timeout']  = $this->config->get('config_mail_smtp_timeout');
+				# load template
+				$this->load->model('extension/mail/template');
+				$tempData = array(
+					'emailtemplate_key' => 'customer.invite'
+				);
+				
+				$template = $this->model_extension_mail_template->load($tempData);
 
-		# send mail and output JSON encoded results back to JS
-		$json['success'] = sendEmail($data, $settings, $template);;
+				$template->data['password']      = $password;
+				$template->data['customer_name'] = $customer['firstname'];
+				$template->data['_url']          = $this->config->get('config_url');
+				$template->data['_name']         = $this->config->get('config_owner');
+				$template->data['_email']        = $this->config->get('config_email');
+				$template->data['help_guide']    = 'https://help.saleslogic.io/portal/home';
+
+				# smtp settings
+				$settings['protocol']      = $this->config->get('config_mail_protocol');
+				$settings['parameter']     = $this->config->get('config_mail_parameter');
+				$settings['smtp_hostname'] = $this->config->get('config_mail_smtp_hostname');
+				$settings['smtp_username'] = $this->config->get('config_mail_smtp_username');
+				$settings['smtp_password'] = $this->config->get('config_mail_smtp_password');
+				$settings['smtp_port']     = $this->config->get('config_mail_smtp_port');
+				$settings['smtp_timeout']  = $this->config->get('config_mail_smtp_timeout');
+
+				# send mail and output JSON encoded results back to JS
+				$json['success'] = sendEmail($data, $settings, $template);
+				break;
+		}
 		echo json_encode($json);
-		die();
+		
 	}
+
 	
 	
 }

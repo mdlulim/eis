@@ -117,6 +117,10 @@
                 <label class="control-label" for="input-ip"><?php echo $entry_ip; ?></label>
                 <input type="text" name="filter_ip" value="<?php echo $filter_ip; ?>" placeholder="<?php echo $entry_ip; ?>" id="input-ip" class="form-control" />
               </div>-->
+
+            </div>
+            <div class="col-sm-4">
+
               <div class="form-group">
                 <label class="control-label" for="input-date-added"><?php echo $entry_date_added; ?></label>
                 <div class="input-group date">
@@ -211,7 +215,7 @@
                     <?php } else { ?>
                     <button type="button" class="btn btn-warning" disabled><i class="fa fa-unlock"></i></button>
                     <?php } ?>-->
-                    <a href="<?php echo $customer['view']; ?>" data-toggle="tooltip" title="<?php echo $button_view; ?>" class="btn btn-info"><i class="fa fa-eye"></i></a>
+                    <a href="<?php echo $customer['view']; ?>" data-toggle="tooltip" title="<?php echo $customer['name']; ?>" class="btn btn-info"><i class="fa fa-eye"></i></a>
                     <!--<a href="<?php echo $customer['edit']; ?>" data-toggle="tooltip" title="<?php echo $button_edit; ?>" class="btn btn-primary"><i class="fa fa-pencil"></i></a>--></td>
                 </tr>
                 <?php } ?>
@@ -240,7 +244,7 @@
 
  <script type="text/javascript"><!--
 $('input[name^=\'selected\']').on('change', function() { 
-  
+
   var selected = $('input[name^=\'selected\']:checked');
 
   if (selected.length) {
@@ -271,6 +275,7 @@ $('input:checkbox').change(function () {
     $('#button-delete').prop('disabled', true);
     $('#button-invitation').prop('disabled', true);
   }
+
 })
 
 $('#button-delete').click(function(){

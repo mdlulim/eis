@@ -40,7 +40,7 @@
             <li><a href="<?php echo $historytab; ?>" >History</a></li>
             <li><a href="<?php echo $transactionstab; ?>" >Transactions</a></li>
             <li><a href="<?php echo $rewardpointstab; ?>" >Reward Points</a></li>
-            <li><a href="<?php echo $ipaddressestab; ?>" >Ip Addresses</a></li>
+            <li><a href="<?php echo $ipaddressestab; ?>" >IP Addresses</a></li>
           </ul>
       
         <div class="well">
@@ -62,24 +62,19 @@
                 <label class="control-label" for="input-order-status"><?php echo $entry_order_status; ?></label>
                 <select name="filter_order_status" id="input-order-status" class="form-control">
                   <option value="*">Select Status</option>
-                  <?php if ($filter_order_status == '0') { ?>
-                  <option value="0" selected="selected">Awaiting Approval</option>
-                  <?php } else { ?>
-                  <option value="0">Awaiting Approval</option>
-                  <?php } ?>
-                  
-                  <?php if ($filter_order_status == '1') { ?>
-                  <option value="1" selected="selected">Approved</option>
-                  <?php } else { ?>
-                  <option value="1">Approved</option>
-                  <?php } ?>
-                  
-                  <?php if ($filter_order_status == '2') { ?>
-                  <option value="2" selected="selected">Declined</option>
-                  <?php } else { ?>
-                  <option value="2">Declined</option>
-                  <?php } ?>
-                  
+                  <?php if (isset($quote_statuses) && is_array($quote_statuses)) : ?>
+                    <?php foreach($quote_statuses as $key => $selectStatus) : ?>
+                      <?php if ($filter_order_status == $selectStatus['quote_status_id']) : ?>
+                        <option value="<?=$selectStatus['quote_status_id']?>" selected="selected">
+                          <?=$selectStatus['name']?>
+                        </option>
+                      <?php else : ?>
+                        <option value="<?=$selectStatus['quote_status_id']?>">
+                          <?=$selectStatus['name']?>
+                        </option>
+                      <?php endif; ?>
+                    <?php endforeach; ?>
+                  <?php endif; ?>
                 </select>
               </div>
               
@@ -125,9 +120,9 @@
                 <tr>
                   <td class="text-left"><?php echo $column_quote_id; ?></td>
                   <td class="text-left"><?php echo $column_customer_contact; ?></td>
-                  <td class="text-left"><?php echo $column_status; ?></td>
                   <td class="text-left"><?php echo $column_total; ?></td>
                   <td class="text-left"><?php echo $column_date_added; ?></td>
+                  <td class="text-left"><?php echo $column_status; ?></td>
                   <td class="text-right"><?php echo $column_action; ?></td>
                 </tr>
               </thead>
@@ -137,28 +132,36 @@
                 <tr>
                   <td class="text-left"><?php echo $order['quote_id']; ?></td>
                   <td class="text-left"><?php echo $order['customer_contact']; ?></td>
-                  <td class="text-left"><?php echo $order['qstatus']; ?></td>
                   <td class="text-left">
                   	<?php if($order['total'] != '') { ?>
                     	<?php echo $order['total']; ?>
                     <?php } else { ?>
                      Null
                     <?php } ?>	
-                    </td>
+                  </td>
                   <td class="text-left"><?php echo $order['date_added']; ?></td>
+                  <td class="text-left" style="min-width:140px;">
+                    <?php if ($order['quote_status_id'] == $quote_status_converted) : ?>
+                      <a class="btn-success" style="padding:2px 5px;border-radius:5px;"><?=$order['quote_status']?></a>
+                    <?php elseif ($order['quote_status_id'] == $quote_status_denied) : ?>
+                      <a class="btn-danger" style="padding:2px 5px;border-radius:5px;"><?=$order['quote_status']?></a>
+                    <?php elseif ($order['quote_status_id'] == $quote_status_pending) : ?>
+                      <a class="btn-warning" style="padding:2px 5px;border-radius:5px;"><?=$order['quote_status']?></a>
+                    <?php endif; ?>
+                  </td>
                   <td class="text-right">
                     
                     	<?php if($order['view']) { ?>
                         <a href="<?php echo $order['view']; ?>" data-toggle="tooltip" title="View Quote" class="btn btn-info"><i class="fa fa-eye"></i></a>
                    		<?php } ?>
                         <?php if($order['order_id'] == '' && $order['status'] != '2' && $order['status'] != '1') { ?>
-                        	<a href="<?php echo $order['approve']; ?>" data-toggle="tooltip" title="Approve" class="btn btn-success"><i class="fa fa-check"></i></a>
-                        	<a href="javascript:void();" data-toggle="tooltip" title="Decline" onclick="onpopup(<?php echo $order['quote_id']; ?>);" class="btn btn-danger decline"><i class="fa fa-times"></i></a>
+                        	<!-- <a href="<?php echo $order['approve']; ?>" data-toggle="tooltip" title="Approve" class="btn btn-success"><i class="fa fa-check"></i></a>
+                        	<a href="javascript:void();" data-toggle="tooltip" title="Decline" onclick="onpopup(<?php echo $order['quote_id']; ?>);" class="btn btn-danger decline"><i class="fa fa-times"></i></a> -->
                            <!-- <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#myModal" data-whatever="@getbootstrap"><i class="fa fa-times"></i>Decline</button>-->
                         <?php } else { ?>
                         	
-                            <a href="javascript:void();" disabled  data-toggle="tooltip" title="Approve" class="btn btn-success"><i class="fa fa-check"></i></a>
-                            <a href="javascript:void();" data-toggle="tooltip" title="Decline" disabled class="btn btn-danger decline"><i class="fa fa-times"></i></a>
+                            <!-- <a href="javascript:void();" disabled  data-toggle="tooltip" title="Approve" class="btn btn-success"><i class="fa fa-check"></i></a>
+                            <a href="javascript:void();" data-toggle="tooltip" title="Decline" disabled class="btn btn-danger decline"><i class="fa fa-times"></i></a> -->
                         	
                         <?php } ?>
                     

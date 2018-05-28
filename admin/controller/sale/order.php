@@ -59,6 +59,14 @@ class ControllerSaleOrder extends Controller {
 			if (isset($this->request->get['filter_customer_id'])) {
 				$url .= '&filter_customer_id=' . $this->request->get['filter_customer_id'];
 			}
+			
+			if (isset($this->request->get['filter_customer_contactid'])) {
+				$url .= '&filter_customer_contactid=' . $this->request->get['filter_customer_contactid'];
+			}
+			
+			if (isset($this->request->get['filter_salesrepid'])) {
+				$url .= '&filter_salesrepid=' . $this->request->get['filter_salesrepid'];
+			}
 	
 			if (isset($this->request->get['filter_order_status'])) {
 				$url .= '&filter_order_status=' . $this->request->get['filter_order_status'];
@@ -99,6 +107,18 @@ class ControllerSaleOrder extends Controller {
 			$filter_customer_id = $this->request->get['filter_customer_id'];
 		} else {
 			$filter_customer_id = null;
+		}
+		
+		if (isset($this->request->get['filter_customer_contactid'])) {
+			$filter_customer_contactid = $this->request->get['filter_customer_contactid'];
+		} else {
+			$filter_customer_contactid = null;
+		}
+		
+		if (isset($this->request->get['filter_salesrepid'])) {
+			$filter_salesrepid = $this->request->get['filter_salesrepid'];
+		} else {
+			$filter_salesrepid = null;
 		}
 
 		if (isset($this->request->get['filter_order_status'])) {
@@ -157,6 +177,14 @@ class ControllerSaleOrder extends Controller {
 			$url .= '&filter_customer_id=' . $this->request->get['filter_customer_id'];
 		}
 		
+		if (isset($this->request->get['filter_customer_contactid'])) {
+			$url .= '&filter_customer_contactid=' . $this->request->get['filter_customer_contactid'];
+		}
+		
+		if (isset($this->request->get['filter_salesrepid'])) {
+			$url .= '&filter_salesrepid=' . $this->request->get['filter_salesrepid'];
+		}
+		
 		if (isset($this->request->get['filter_order_status'])) {
 			$url .= '&filter_order_status=' . $this->request->get['filter_order_status'];
 		}
@@ -207,7 +235,9 @@ class ControllerSaleOrder extends Controller {
 		$filter_data = array(
 			'filter_order_id'      => $filter_order_id,
 			'filter_customer'	   => $filter_customer,
-			'filter_customer_id'	   => $filter_customer_id,
+			'filter_customer_id'   => $filter_customer_id,
+			'filter_customer_contactid'   => $filter_customer_contactid,
+			'filter_salesrep_id'	   => $filter_salesrepid,
 			'filter_order_status'  => $filter_order_status,
 			'filter_total'         => $filter_total,
 			'filter_date_added'    => $filter_date_added,
@@ -230,21 +260,53 @@ class ControllerSaleOrder extends Controller {
 			$salesrep = $this->model_replogic_sales_rep_management->getsalesrep($cstdetails['salesrep_id']);
 			$salesrepname = $salesrep['salesrep_name'].' '.$salesrep['salesrep_lastname'];
 			
+			$time = strtotime($result['date_added']);
+			$date_added = date("d F, Y g:i A", $time);
+			
+			$time1 = strtotime($result['date_modified']);
+			$date_modified = date("d F, Y g:i A", $time1);
+			
+			$cname = !empty($result['customer']) ? $result['customer'] : $result['firstname'];
+			
 			$data['orders'][] = array(
-				'order_id'      => $result['order_id'],
-				'customer'      => $result['customer'],
-				'salesrep'      => $salesrepname,
-				'order_status'  => $result['order_status'] ? $result['order_status'] : $this->language->get('text_missing'),
-				'total'         => $this->currency->format($result['total'], $result['currency_code'], $result['currency_value']),
-				'date_added'    => date($this->language->get('date_format_short'), strtotime($result['date_added'])),
-				'date_modified' => date($this->language->get('date_format_short'), strtotime($result['date_modified'])),
-				'shipping_code' => $result['shipping_code'],
-				'view'          => $this->url->link('sale/order/info', 'token=' . $this->session->data['token'] . '&order_id=' . $result['order_id'] . $url, true),
-				'edit'          => $this->url->link('sale/order/edit', 'token=' . $this->session->data['token'] . '&order_id=' . $result['order_id'] . $url, true)
+				'order_id'        => $result['order_id'],
+				'customercontact' => $result['customercontact'],
+				'customer'        => $cname,
+				'salesrep'        => $salesrepname,
+				'order_status_id' => $ord['order_status_id'],
+				'order_status'    => $result['order_status'] ? $result['order_status'] : $this->language->get('text_missing'),
+				'total'           => $this->currency->format($result['total'], $result['currency_code'], $result['currency_value']),
+				'date_added'      => $date_added,
+				'date_modified'   => $date_modified,
+				'shipping_code'   => $result['shipping_code'],
+				'view'            => $this->url->link('sale/order/info', 'token=' . $this->session->data['token'] . '&order_id=' . $result['order_id'] . $url, true),
+				'edit'            => $this->url->link('sale/order/edit', 'token=' . $this->session->data['token'] . '&order_id=' . $result['order_id'] . $url, true)
 			);
 		}
 		
 		$data['customers'] = $this->model_customer_customer->getCustomers();
+		
+		$this->load->model('replogic/sales_rep_management');
+		$this->load->model('replogic/customer_contact');
+		$this->load->model('user/user_group');
+		$this->load->model('user/user');
+		$current_user = $this->session->data['user_id'];
+		$current_user_group_id = $this->model_user_user->getUser($current_user); ;
+		$current_user_group = $this->model_user_user_group->getUserGroup($current_user_group_id['user_group_id']); ;
+		
+		if($current_user_group['name'] == 'Company admin' || $current_user_group['name'] == 'Administrator')
+		{
+			$allaccess = true;
+			$current_user_id = 0;
+		}
+		else
+		{ 
+			$allaccess = false;
+			$current_user_id = $this->session->data['user_id'];
+			
+		}
+		$data['salesrepnames'] = $this->model_replogic_sales_rep_management->getSalesRepsDropdown($allaccess, $current_user_id);
+		$data['customercontacts'] = $this->model_replogic_customer_contact->getcustomercontacts();
 		
 		$data['heading_title'] = $this->language->get('heading_title');
 
@@ -277,6 +339,12 @@ class ControllerSaleOrder extends Controller {
 		$data['button_filter'] = $this->language->get('button_filter');
 		$data['button_view'] = $this->language->get('button_view');
 		$data['button_ip_add'] = $this->language->get('button_ip_add');
+
+		# order statuses
+		$data['order_status_pending']    = $this->language->get('order_status_pending_id');
+		$data['order_status_processing'] = $this->language->get('order_status_processing_id');
+		$data['order_status_confirmed']  = $this->language->get('order_status_confirmed_id');
+		$data['order_status_cancelled']  = $this->language->get('order_status_cancelled_id');
 
 		$data['token'] = $this->session->data['token'];
 
@@ -313,6 +381,14 @@ class ControllerSaleOrder extends Controller {
 		if (isset($this->request->get['filter_customer_id'])) {
 			$url .= '&filter_customer_id=' . $this->request->get['filter_customer_id'];
 		}
+		
+		if (isset($this->request->get['filter_customer_contactid'])) {
+			$url .= '&filter_customer_contactid=' . $this->request->get['filter_customer_contactid'];
+		}
+		
+		if (isset($this->request->get['filter_salesrepid'])) {
+			$url .= '&filter_salesrepid=' . $this->request->get['filter_salesrepid'];
+		}
 
 		if (isset($this->request->get['filter_order_status'])) {
 			$url .= '&filter_order_status=' . $this->request->get['filter_order_status'];
@@ -342,6 +418,7 @@ class ControllerSaleOrder extends Controller {
 
 		$data['sort_order'] = $this->url->link('sale/order', 'token=' . $this->session->data['token'] . '&sort=o.order_id' . $url, true);
 		$data['sort_customer'] = $this->url->link('sale/order', 'token=' . $this->session->data['token'] . '&sort=customer' . $url, true);
+		$data['sort_customercontact'] = $this->url->link('sale/order', 'token=' . $this->session->data['token'] . '&sort=oq.customer_contact_id' . $url, true);
 		$data['sort_salesrep'] = $this->url->link('sale/order', 'token=' . $this->session->data['token'] . '&sort=salesrep' . $url, true);
 		$data['sort_status'] = $this->url->link('sale/order', 'token=' . $this->session->data['token'] . '&sort=order_status' . $url, true);
 		$data['sort_total'] = $this->url->link('sale/order', 'token=' . $this->session->data['token'] . '&sort=o.total' . $url, true);
@@ -360,6 +437,14 @@ class ControllerSaleOrder extends Controller {
 		
 		if (isset($this->request->get['filter_customer_id'])) {
 			$url .= '&filter_customer_id=' . $this->request->get['filter_customer_id'];
+		}
+		
+		if (isset($this->request->get['filter_customer_contactid'])) {
+			$url .= '&filter_customer_contactid=' . $this->request->get['filter_customer_contactid'];
+		}
+		
+		if (isset($this->request->get['filter_salesrepid'])) {
+			$url .= '&filter_salesrepid=' . $this->request->get['filter_salesrepid'];
 		}
 
 		if (isset($this->request->get['filter_order_status'])) {
@@ -399,6 +484,8 @@ class ControllerSaleOrder extends Controller {
 		$data['filter_order_id'] = $filter_order_id;
 		$data['filter_customer'] = $filter_customer;
 		$data['filter_customer_id'] = $filter_customer_id;
+		$data['filter_customer_contactid'] = $filter_customer_contactid;
+		$data['filter_salesrepid'] = $filter_salesrepid;
 		$data['filter_order_status'] = $filter_order_status;
 		$data['filter_total'] = $filter_total;
 		$data['filter_date_added'] = $filter_date_added;
@@ -496,6 +583,13 @@ class ControllerSaleOrder extends Controller {
 		$data['tab_voucher'] = $this->language->get('tab_voucher');
 		$data['tab_total'] = $this->language->get('tab_total');
 
+		$orderStatuses = array(
+			'pending'    => $this->language->get('order_status_pending_id'),
+			'processing' => $this->language->get('order_status_processing_id'),
+			'confirmed'  => $this->language->get('order_status_confirmed_id'),
+			'cancelled'  => $this->language->get('order_status_cancelled_id')
+		);
+
 		$url = '';
 
 		if (isset($this->request->get['filter_order_id'])) {
@@ -508,6 +602,14 @@ class ControllerSaleOrder extends Controller {
 		
 		if (isset($this->request->get['filter_customer_id'])) {
 			$url .= '&filter_customer_id=' . $this->request->get['filter_customer_id'];
+		}
+		
+		if (isset($this->request->get['filter_customer_contactid'])) {
+			$url .= '&filter_customer_contactid=' . $this->request->get['filter_customer_contactid'];
+		}
+		
+		if (isset($this->request->get['filter_salesrepid'])) {
+			$url .= '&filter_salesrepid=' . $this->request->get['filter_salesrepid'];
 		}
 
 		if (isset($this->request->get['filter_order_status'])) {
@@ -571,6 +673,14 @@ class ControllerSaleOrder extends Controller {
 
 		if (isset($this->request->get['order_id'])) {
 			$order_info = $this->model_sale_order->getOrder($this->request->get['order_id']);
+
+			# If Order is 'Pending', change status to 'Processing' on page load
+			# update order status, and
+			# get updated order information
+			if (isset($order_info['order_status_id']) && $order_info['order_status_id'] == $orderStatuses['pending']) {
+				$this->model_sale_order->updateOrderStatus($this->request->get['order_id'], $orderStatuses['processing']);
+				$order_info = $this->model_sale_order->getOrder($this->request->get['order_id']);
+			}
 		}
 
 		if (!empty($order_info)) {
@@ -590,7 +700,86 @@ class ControllerSaleOrder extends Controller {
 
 			$this->load->model('customer/customer');
 
-			$data['addresses'] = $this->model_customer_customer->getAddresses($order_info['customer_id']);
+			
+			
+			$this->load->model('customer/customer_group');
+			$this->load->model('replogic/sales_rep_management');
+			$this->load->model('replogic/customer_contact');
+			$customer_group_info = $this->model_customer_customer_group->getCustomerGroup($order_info['customer_group_id']);
+			if ($customer_group_info) {
+				$data['customer_group'] = $customer_group_info['name'];
+			} else {
+				$data['customer_group'] = '';
+			}
+			
+			$data['customer_group_id'] = $order_info['customer_group_id'];
+			
+			if($order_info['customer_id'] > 0)
+			{
+				$cust = $this->model_customer_customer->getCustomer($order_info['customer_id']);
+				$data['shipaddress'] = $this->model_customer_customer->getAddress($cust['address_id']);
+				$data['addresses'] = $this->model_customer_customer->getAddresses($order_info['customer_id']);
+				$data['address_id'] = $cust['address_id'];
+			
+				$quote_info = $this->model_sale_order->getQuotesByOrderId($order_info['order_id']);
+			
+				$this->load->model('replogic/customer_contact');
+				$cust_con = $this->model_replogic_customer_contact->getcustomercontact($quote_info['customer_contact_id']);
+				$data['ccfirstname'] = $cust_con['first_name'];
+				$data['cclastname'] = $cust_con['last_name'];
+				$data['ccemail'] = $cust_con['email'];
+				$data['cctelephone'] = $cust_con['telephone_number'];
+				$data['quote_id'] = $quote_info['quote_id'];
+				
+				$this->load->model('replogic/sales_rep_management');
+				$salesrep = $this->model_replogic_sales_rep_management->getsalesrep($quote_info['salesrep_id']);
+				
+				$data['ssfirstname'] = $salesrep['salesrep_name'];
+				$data['sslastname'] = $salesrep['salesrep_lastname'];
+				
+				$data['Qdate_added'] = date('d M, Y', strtotime($quote_info['date_added']));
+			}
+			else
+			{
+				$arr = array('firstname'=>$order_info['firstname'],'lastname'=>$order_info['lastname'],'company'=>$order_info['shipping_company'],'address_1'=>$order_info['shipping_address_1'],'address_2'=>$order_info['shipping_address_2'],'city'=>$order_info['shipping_city'],'postcode'=>$order_info['shipping_postcode'],'zone'=>$order_info['shipping_zone'],'country'=>$order_info['shipping_country'],'country_id'=>$order_info['shipping_country_id'],'zone_id'=>$order_info['shipping_zone_id']);
+				$data['shipaddress'] = $arr;
+				
+				$ads[] = array('address_1'=>$order_info['shipping_address_1'],'address_2'=>$order_info['shipping_address_2'],'city'=>$order_info['shipping_city'],'postcode'=>$order_info['shipping_postcode'],'zone'=>$order_info['shipping_zone'],'country'=>$order_info['shipping_country'],'country_id'=>$order_info['shipping_country_id'],'zone_id'=>$order_info['shipping_zone_id']);
+				$data['addresses'] = $ads;
+				
+				$data['address_id'] = '';
+				$data['ccfirstname'] = '';
+				$data['cclastname'] = '';
+				$data['ccemail'] = '';
+				$data['cctelephone'] = '';
+				$data['quote_id'] = '';
+				
+				$data['ssfirstname'] = '';
+				$data['sslastname'] = '';
+				
+				$data['Qdate_added'] = '';
+			}
+			
+			$data['isReplogic'] = $order_info['isReplogic'];
+			
+			if($order_info['isReplogic'])
+			{
+				$data['channelname'] = 'Saleslogic Rep';
+			}
+			else
+			{
+				$data['channelname'] = $order_info['store_name'];
+			}
+		
+			$data['customer_contact_id'] = $quote_info['customer_contact_id'];
+			$cust_con = $this->model_replogic_customer_contact->getcustomercontact($quote_info['customer_contact_id']);
+			
+			$data['ccfirstname'] = $cust_con['first_name'];
+			$data['cclastname'] = $cust_con['last_name'];
+			$data['ccemail'] = $cust_con['email'];
+			$data['cctelephone'] = $cust_con['telephone_number'];
+			
+			$data['Odate_added'] = date('d M, Y', strtotime($order_info['date_added']));
 
 			$data['payment_firstname'] = $order_info['payment_firstname'];
 			$data['payment_lastname'] = $order_info['payment_lastname'];
@@ -670,6 +859,20 @@ class ControllerSaleOrder extends Controller {
 			$data['affiliate_id'] = $order_info['affiliate_id'];
 			$data['affiliate'] = $order_info['affiliate_firstname'] . ' ' . $order_info['affiliate_lastname'];
 			$data['currency_code'] = $order_info['currency_code'];
+			
+			$data['totals'] = array();
+
+			$totals = $this->model_sale_order->getOrderTotals($order_info['order_id']);
+
+			foreach ($totals as $total) {
+				$data['totals'][] = array(
+					'title' => $total['title'],
+					'text'  => $this->currency->format($total['value'], $order_info['currency_code'], $order_info['currency_value'])
+				);
+			}
+
+			$data['comment'] = nl2br($order_info['comment']);
+			
 		} else {
 			$data['order_id'] = 0;
 			$data['store_id'] = 0;
@@ -816,7 +1019,11 @@ class ControllerSaleOrder extends Controller {
 		$data['column_left'] = $this->load->controller('common/column_left');
 		$data['footer'] = $this->load->controller('common/footer');
 
-		$this->response->setOutput($this->load->view('sale/order_form', $data));
+		if (!empty($order_info)) {
+			$this->response->setOutput($this->load->view('sale/order_form_new', $data));
+		} else {
+			$this->response->setOutput($this->load->view('sale/order_form', $data));
+		}
 	}
 
 	public function info() {
@@ -910,6 +1117,10 @@ class ControllerSaleOrder extends Controller {
 			if (isset($this->request->get['filter_customer_id'])) {
 				$url .= '&filter_customer_id=' . $this->request->get['filter_customer_id'];
 			}
+			
+			if (isset($this->request->get['filter_customer_contactid'])) {
+				$url .= '&filter_customer_contactid=' . $this->request->get['filter_customer_contactid'];
+			}
 
 			if (isset($this->request->get['filter_order_status'])) {
 				$url .= '&filter_order_status=' . $this->request->get['filter_order_status'];
@@ -991,7 +1202,7 @@ class ControllerSaleOrder extends Controller {
 				$data['invoice_no'] = '';
 			}
 
-			$data['date_added'] = date($this->language->get('date_format_short'), strtotime($order_info['date_added']));
+			$data['date_added'] = date('d M, Y', strtotime($order_info['date_added']));
 
 			$data['firstname'] = $order_info['firstname'];
 			$data['lastname'] = $order_info['lastname'];
@@ -1017,6 +1228,9 @@ class ControllerSaleOrder extends Controller {
 
 			$data['shipping_method'] = $order_info['shipping_method'];
 			$data['payment_method'] = $order_info['payment_method'];
+			if (strpos($data['payment_method'], 'Pay now using') !== false) {
+				$data['payment_method'] = 'Pay now using';
+			}
 
 			// Payment Address
 			if ($order_info['payment_address_format']) {
@@ -1201,6 +1415,56 @@ class ControllerSaleOrder extends Controller {
 			}
 
 			$data['order_statuses'] = $this->model_localisation_order_status->getOrderStatuses();
+			
+			if($order_info['customer_id'] > 0)
+			{
+				$cust = $this->model_customer_customer->getCustomer($order_info['customer_id']);
+				$data['shipaddress'] = $this->model_customer_customer->getAddress($cust['address_id']);
+			
+				$quote_info = $this->model_sale_order->getQuotesByOrderId($order_info['order_id']);
+			
+				$this->load->model('replogic/customer_contact');
+				$cust_con = $this->model_replogic_customer_contact->getcustomercontact($quote_info['customer_contact_id']);
+				$data['ccfirstname'] = $cust_con['first_name'];
+				$data['cclastname'] = $cust_con['last_name'];
+				$data['ccemail'] = $cust_con['email'];
+				$data['cctelephone'] = $cust_con['telephone_number'];
+				$data['quote_id'] = $quote_info['quote_id'];
+				
+				$this->load->model('replogic/sales_rep_management');
+				$salesrep = $this->model_replogic_sales_rep_management->getsalesrep($quote_info['salesrep_id']);
+				
+				$data['ssfirstname'] = $salesrep['salesrep_name'];
+				$data['sslastname'] = $salesrep['salesrep_lastname'];
+				
+				$data['Qdate_added'] = date('d M, Y', strtotime($quote_info['date_added']));
+			}
+			else
+			{
+				$arr = array('address_1'=>$order_info['shipping_address_1'],'address_2'=>$order_info['shipping_address_2'],'city'=>$order_info['shipping_city'],'zone'=>$order_info['shipping_zone'],'country'=>$order_info['shipping_country']);
+				$data['shipaddress'] = $arr;
+				$data['ccfirstname'] = '';
+				$data['cclastname'] = '';
+				$data['ccemail'] = '';
+				$data['cctelephone'] = '';
+				$data['quote_id'] = '';
+				
+				$data['ssfirstname'] = '';
+				$data['sslastname'] = '';
+				
+				$data['Qdate_added'] = '';
+			}
+			
+			$data['isReplogic'] = $order_info['isReplogic'];
+			
+			if($order_info['isReplogic'])
+			{
+				$data['channelname'] = 'Saleslogic Rep';
+			}
+			else
+			{
+				$data['channelname'] = $order_info['store_name'];
+			}
 
 			$data['order_status_id'] = $order_info['order_status_id'];
 
@@ -1438,7 +1702,8 @@ class ControllerSaleOrder extends Controller {
 			$data['column_left'] = $this->load->controller('common/column_left');
 			$data['footer'] = $this->load->controller('common/footer');
 
-			$this->response->setOutput($this->load->view('sale/order_info', $data));
+			//$this->response->setOutput($this->load->view('sale/order_info', $data));
+			$this->response->setOutput($this->load->view('sale/order_info_new', $data));
 		} else {
 			return new Action('error/not_found');
 		}

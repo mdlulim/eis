@@ -67,6 +67,7 @@ class ModelCustomerCustomer extends Model {
 		return $customer_id;
 	}
 
+
 	public function addCustomerActivity($customer_id, $ip, $data) {
 		$this->db->query("INSERT INTO " . DB_PREFIX . "customer_activity SET customer_id = '" . (int)$customer_id . "', `key` = 'customer_invitation', data = '" . $this->db->escape(json_encode($data)) . "', ip = '" . $this->db->escape($ip) . "', date_added = NOW()");
 	}
@@ -452,7 +453,7 @@ class ModelCustomerCustomer extends Model {
 		return $query->row['total'];
 	}
 	
-	public function getTotalCustomers($data = array(), $allaccess=false, $current_user_id) {
+	public function getTotalCustomers($data = array(), $allaccess=false, $current_user_id=null) {
 		
 		$implode = array();
 		if($allaccess)

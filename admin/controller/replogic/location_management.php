@@ -11,6 +11,52 @@ class ControllerReplogicLocationManagement extends Controller {
 
 		$this->getList();
 	}
+	
+	public function delete() { 
+		$this->load->language('replogic/location_management');
+
+		$this->document->setTitle($this->language->get('heading_title'));
+
+		$this->load->model('replogic/location_management');
+
+		if (isset($this->request->post['selected'])) { 
+			foreach ($this->request->post['selected'] as $checkin_id) {
+				$this->model_replogic_location_management->deletelocation($checkin_id);
+			}
+
+			$this->session->data['success'] = $this->language->get('text_success');
+
+			$url = '';
+			
+			if (isset($this->request->get['filter_customer_id'])) {
+			$url .= '&filter_customer_id=' . $this->request->get['filter_customer_id'];
+			}
+			
+			if (isset($this->request->get['filter_team_id'])) {
+				$url .= '&filter_team_id=' . $this->request->get['filter_team_id'];
+			}
+			
+			if (isset($this->request->get['filter_salesrep_id'])) {
+				$url .= '&filter_salesrep_id=' . $this->request->get['filter_salesrep_id'];
+			}
+			
+			if (isset($this->request->get['sort'])) {
+				$url .= '&sort=' . $this->request->get['sort'];
+			}
+
+			if (isset($this->request->get['order'])) {
+				$url .= '&order=' . $this->request->get['order'];
+			}
+
+			if (isset($this->request->get['page'])) {
+				$url .= '&page=' . $this->request->get['page'];
+			}
+
+			$this->response->redirect($this->url->link('replogic/location_management', 'token=' . $this->session->data['token'] . $url, true));
+		}
+
+		$this->getList();
+	}
 
 	protected function getList() {
 		
@@ -124,6 +170,9 @@ class ControllerReplogicLocationManagement extends Controller {
 		{
 			//$filter_team_id = NULL; 
 		}
+		
+		//$data['deletebutton'] = ($current_user_group['name'] == 'Company admin') ? '1' : '0';
+		$data['deletebutton'] = ($current_user_group['name'] == 'System Administrator') ? '1' : '0';
 		
 		$filter_data = array(
 			'filter_groupby_salesrep'	  => true,

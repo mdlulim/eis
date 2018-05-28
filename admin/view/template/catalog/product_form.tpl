@@ -31,12 +31,13 @@
             <li><a href="#tab-links" data-toggle="tab"><?php echo $tab_links; ?></a></li>
             <li><a href="#tab-attribute" data-toggle="tab"><?php echo $tab_attribute; ?></a></li>
             <li><a href="#tab-option" data-toggle="tab"><?php echo $tab_option; ?></a></li>
+            <li><a href="#tab-pricing" data-toggle="tab">Contract Pricing</a></li>
             <li><a href="#tab-recurring" data-toggle="tab"><?php echo $tab_recurring; ?></a></li>
             <li><a href="#tab-discount" data-toggle="tab"><?php echo $tab_discount; ?></a></li>
             <li><a href="#tab-special" data-toggle="tab"><?php echo $tab_special; ?></a></li>
             <li><a href="#tab-image" data-toggle="tab"><?php echo $tab_image; ?></a></li>
-            <!--<li><a href="#tab-reward" data-toggle="tab"><?php echo $tab_reward; ?></a></li>
-            <li><a href="#tab-design" data-toggle="tab"><?php echo $tab_design; ?></a></li>-->
+            <li><a href="#tab-reward" data-toggle="tab"><?php echo $tab_reward; ?></a></li>
+            <li><a href="#tab-design" data-toggle="tab"><?php echo $tab_design; ?></a></li>
           </ul>
           <div class="tab-content">
             <div class="tab-pane active" id="tab-general">
@@ -649,6 +650,48 @@
                     <?php } ?>
                   </div>
                 </div>
+              </div>
+            </div>
+            <div class="tab-pane" id="tab-pricing">
+            	<div class="table-responsive">
+                <table id="pricing" class="table table-striped table-bordered table-hover">
+                  <thead>
+                    <tr>
+                      <td class="text-left">Contract Pricing</td>
+                      <td class="text-left">Price</td>
+                      <td></td>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <?php $pricing_row = 0; ?>
+                    <?php foreach ($pricing as $pricings) {  ?>
+                    <tr id="pricing-row<?php echo $pricing_row; ?>">
+                      <td class="text-left">
+                      	<select name="pricing[<?php echo $pricing_row; ?>][customer_group_id]" class="form-control" >
+                        	<option value="">Select Contract Pricing</option>
+                            <?php foreach($groups as $group) { ?>
+                            	<?php if($pricings[customer_group_id] == $group['customer_group_id']) { ?>
+                                	<option selected="selected" value="<?php echo $group['customer_group_id']?>"><?php echo $group['name']?></option>
+                                <?php } else { ?>
+                                	<option value="<?php echo $group['customer_group_id']?>"><?php echo $group['name']?></option>
+                                 <?php } ?>
+                            <?php } ?>
+                            
+                        </select>
+                      </td>
+                      <td class="text-right"><input type="text" name="pricing[<?php echo $pricing_row; ?>][price]" value="<?php echo $pricings['price']; ?>" placeholder="<?php echo $entry_sort_order; ?>" class="form-control" /></td>
+                      <td class="text-left"><button type="button" onclick="$('#pricing-row<?php echo $pricing_row; ?>').remove();" data-toggle="tooltip" title="<?php echo $button_remove; ?>" class="btn btn-danger"><i class="fa fa-minus-circle"></i></button></td>
+                    </tr>
+                    <?php $pricing_row++; ?>
+                    <?php } ?>
+                  </tbody>
+                  <tfoot>
+                    <tr>
+                      <td colspan="2"></td>
+                      <td class="text-left"><button type="button" onclick="addPricing();" data-toggle="tooltip" title="<?php echo $button_image_add; ?>" class="btn btn-primary"><i class="fa fa-plus-circle"></i></button></td>
+                    </tr>
+                  </tfoot>
+                </table>
               </div>
             </div>
             <div class="tab-pane" id="tab-recurring">
@@ -1362,6 +1405,22 @@ function addImage() {
 	$('#images tbody').append(html);
 
 	image_row++;
+}
+//--></script>
+<script type="text/javascript"><!--
+var pricing_row = <?php echo $pricing_row; ?>;
+
+function addPricing() {
+	html  = '<tr id="pricing-row' + pricing_row + '">';
+	html += '  <td class="text-left"><select name="pricing[' + pricing_row + '][customer_group_id]" class="form-control" ><option value="">Select Customer Group</option><?php foreach($groups as $group) { ?> <option value="<?php echo $group["customer_group_id"]?>"><?php echo $group["name"]?></option><?php } ?> </select></td>';
+	
+	html += '  <td class="text-right"><input type="text" name="pricing[' + pricing_row + '][price]" value="" placeholder="Price" class="form-control" /></td>';
+	html += '  <td class="text-left"><button type="button" onclick="$(\'#pricing-row' + pricing_row  + '\').remove();" data-toggle="tooltip" title="<?php echo $button_remove; ?>" class="btn btn-danger"><i class="fa fa-minus-circle"></i></button></td>';
+	html += '</tr>';
+	
+	$('#pricing tbody').append(html);
+	
+	pricing_row++;
 }
 //--></script>
   <script type="text/javascript"><!--

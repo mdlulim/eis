@@ -294,5 +294,5 @@ class ModelReplogicSalesRepManagement extends Model {
 
 		return $query->row;
 	}
-
+	
 }

@@ -278,7 +278,7 @@
                     <?php $product_row = 0; ?>
                     <?php foreach ($order_products as $order_product) { ?>
                     <tr>
-                      <td class="text-left"><?php echo $order_product['image']; ?></td>
+                      <td class="text-left"><img src="<?php echo $order_product['image']; ?>" /></td>
                       <td class="text-left"><?php echo $order_product['name']; ?><br />
                         <input type="hidden" name="product[<?php echo $product_row; ?>][product_id]" value="<?php echo $order_product['product_id']; ?>" />
                         <?php foreach ($order_product['option'] as $option) { ?>
@@ -296,8 +296,8 @@
                       <td class="text-left"><?php echo $order_product['model']; ?></td>
                       <td class="text-right"><?php echo $order_product['quantity']; ?>
                         <input type="hidden" name="product[<?php echo $product_row; ?>][quantity]" value="<?php echo $order_product['quantity']; ?>" /></td>
-                      <td class="text-right"></td>
-                      <td class="text-right"></td>
+                      <td class="text-right"><?php echo $currency['code']; ?> <?php echo $order_product['price']; ?></td>
+                      <td class="text-right"><?php echo $currency['code']; ?> <?php echo $order_product['total']; ?></td>
                       <td class="text-center"></td>
                     </tr>
                     <?php $product_row++; ?>
@@ -2544,7 +2544,7 @@ $('#button-save').on('click', function() {
 
                 // Refresh products, vouchers and totals
 				//$('#button-refresh').trigger('click');
-				var url = 'index.php?route=replogic/order_quotes&token=<?php echo $token; ?>';
+				var url = 'index.php?route=sale/order/info&token=<?php echo $token; ?>&order_id=' + json['order_id'] + ' ';
 				window.location = url;
             }
 

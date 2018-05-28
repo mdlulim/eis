@@ -15,12 +15,12 @@
     </div>
   </div>
   <div class="container-fluid">
-    <?php if ($error_warning) { ?>
+    <?php if (isset($error_warning)) { ?>
     <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> <?php echo $error_warning; ?>
       <button type="button" class="close" data-dismiss="alert">&times;</button>
     </div>
     <?php } ?>
-    <?php if ($success) { ?>
+    <?php if (isset($success)) { ?>
     <div class="alert alert-success"><i class="fa fa-check-circle"></i> <?php echo $success; ?>
       <button type="button" class="close" data-dismiss="alert">&times;</button>
     </div>
@@ -41,12 +41,12 @@
             <li><a href="<?php echo $historytab; ?>" >History</a></li>
             <li><a href="<?php echo $transactionstab; ?>" >Transactions</a></li>
             <li><a href="<?php echo $rewardpointstab; ?>" >Reward Points</a></li>
-            <li><a href="<?php echo $ipaddressestab; ?>" >Ip Addresses</a></li>
+            <li><a href="<?php echo $ipaddressestab; ?>" >IP Addresses</a></li>
           </ul>
           
-          <form action="<?php echo $action; ?>" method="post" enctype="multipart/form-data" id="form-customer" class="form-horizontal">
-          <input type="hidden" name="type" value="<?php echo $type; ?>" />
-            <input type="hidden" name="csalesrep_id" value="<?php echo $csalesrep_id; ?>" />
+          <form action="<?=(isset($action)) ? $action : ''; ?>" method="post" enctype="multipart/form-data" id="form-customer" class="form-horizontal">
+          <input type="hidden" name="type" value="<?=(isset($type)) ? $type : ''; ?>" />
+            <input type="hidden" name="csalesrep_id" value="<?=(isset($csalesrep_id)) ? $csalesrep_id : ''; ?>" />
             
           
           <div class="tab-content">
@@ -87,6 +87,7 @@
                       <div class="form-group" <?php if($customer_group_id != '3') { ?> style="display:none;" <?php } ?> id="wholesal"  >
                         <label class="col-sm-3 control-label" for="input-customer-group">Wholesale Invitation Status</label>
                         <div class="col-sm-9">
+
                           <div style="float:left;"> 
                             <input type="text" value="<?=($invited==1) ? 'Invited' : 'Not Invited'?>" disabled="disabled" class="<?=($invited==1) ? 'btn btn-success' : ''?>" style="width:100px;" />
                           </div>
@@ -135,7 +136,7 @@
                             <?php } ?>
                            
                           </select>
-                          <?php if ($error_payment_method) { ?>
+                          <?php if (isset($error_payment_method)) { ?>
                           <div class="text-danger"><?php echo $error_payment_method; ?></div>
                           <?php } ?>
                         </div>
@@ -204,16 +205,17 @@
               </fieldset>    
              <fieldset style="margin: 0px 18px;">        
                   <legend style="width: 100px; padding-top: 24px; padding-left: 14px;">Address</legend>
-              <div class="tab-content">
+          <div class="tab-content">
             <div class="tab-pane active" id="tab-general1">
               <div class="row">
                 <div class="col-sm-2">
                   <ul class="nav nav-pills nav-stacked" id="address">
                     <?php $address_row = 1; ?>
                     <?php foreach ($addresses as $address) { ?>
-                     <?php if(($address['address_id'] == $adrs_id) && $adrs_id !='') { ?>
+                     <?php if(isset($adrs_id) && ($address['address_id'] == $adrs_id) && $adrs_id !='') { ?>
+
                       <?php $df = 'class="active"'; ?>
-                     <?php } else if($address_row == '1' && $adrs_id =='') { ?>
+                     <?php } else if(isset($adrs_id) && $address_row == '1' && $adrs_id =='') { ?>
                       <?php $df = 'class="active"'; ?>
                      <?php } else { ?>
                       <?php $df = ''; ?>
@@ -230,12 +232,13 @@
                     <?php $address_row = 1; ?>
                     <?php foreach ($addresses as $address) { ?>
                     
-                    <?php if (($address['address_id'] == $adrs_id) && $adrs_id !='') { ?>
+                    <?php if (isset($adrs_id) && ($address['address_id'] == $adrs_id) && $adrs_id !='') { ?>
                       <?php $cls = 'class="tab-pane active"'; ?>
-                    <?php } else if($address_row == '1' && $adrs_id =='') { ?>
+                    <?php } else if(isset($adrs_id) && $address_row == '1' && $adrs_id =='') { ?>
                       <?php $cls = 'class="tab-pane active"'; ?>
                      <?php } else { ?>
                       <?php $cls = 'class="tab-pane"'; ?>
+
                      <?php } ?>
                     
                     <div <?php echo $cls; ?> id="tab-address<?php echo $address_row; ?>">
@@ -330,7 +333,6 @@
     </div>
   </div>
 </div>
-
 <!-- Page loader -->
 <div class="loader-wrapper" style="display:none">
   <div class="loader"></div>

@@ -4,7 +4,7 @@
         <div class="container-fluid">
             <div class="pull-right"><a href="<?php echo $add; ?>" data-toggle="tooltip" title="<?php echo $button_add; ?>" class="btn btn-primary"><i class="fa fa-plus"></i></a>
                 <a href="<?php echo $import_csv; ?>" class="btn btn-primary">Import CSV</a>
-                <button type="button" data-toggle="tooltip" title="<?php echo $button_delete; ?>" class="btn btn-danger" onclick="confirm('<?php echo $text_confirm; ?>') ? $('#form-filter').submit() : false;"><i class="fa fa-trash-o"></i></button>
+                <button type="button" data-toggle="tooltip" id="button-delete" title="<?php echo $button_delete; ?>" class="btn btn-danger" onclick="confirm('<?php echo $text_confirm; ?>') ? $('#form-filter').submit() : false;"><i class="fa fa-trash-o"></i></button>
             </div>
             <h1><?php echo $heading_title; ?></h1>
             <ul class="breadcrumb">
@@ -53,9 +53,9 @@
                         </div>
                         <div class="col-sm-6">
                           <div class="form-group">
-                            <label class="control-label" for="input-name">Customer Group</label>
+                            <label class="control-label" for="input-name">Contract Pricing</label>
                             <select name="filter_customer_group_id" id="input-name" class="form-control">
-                              <option value="*">Select Customer Group</option>
+                              <option value="*">Select Contract Pricing</option>
                               <?php foreach($Dropdowncustomergroup as $customergroup) { ?>
                                 <?php if($customergroup['customer_group_id'] == $filter_customer_group_id ) { ?>
                                   <option value="<?php echo $customergroup['customer_group_id']; ?>" selected="selected"><?php echo $customergroup['name']; ?></option>
@@ -152,4 +152,35 @@ $('#button-filter-reset').on('click', function() {
 });
 
 //--></script>
+<script type="text/javascript"><!--
+$('input[name^=\'selected\']').on('change', function() { 
+	
+	var selected = $('input[name^=\'selected\']:checked');
+
+	if (selected.length) {
+		$('#button-delete').prop('disabled', false);
+	}
+	else
+	{
+		$('#button-delete').prop('disabled', true);
+	}
+
+});
+
+$('#button-delete').prop('disabled', true);
+$('input[name^=\'selected\']:first').trigger('change');
+
+$('input:checkbox').change(function () {
+   var selected = $('input[name^=\'selected\']:checked');
+
+	if (selected.length) {
+		$('#button-delete').prop('disabled', false);
+	}
+	else
+	{
+		$('#button-delete').prop('disabled', true);
+	}
+})
+
+//--></script> 
 <?php echo $footer; ?>

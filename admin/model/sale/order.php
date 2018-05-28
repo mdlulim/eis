@@ -93,6 +93,7 @@ class ModelSaleOrder extends Model {
 
 			return array(
 				'order_id'                => $order_query->row['order_id'],
+				'isReplogic'                => $order_query->row['isReplogic'],
 				'invoice_no'              => $order_query->row['invoice_no'],
 				'invoice_prefix'          => $order_query->row['invoice_prefix'],
 				'store_id'                => $order_query->row['store_id'],
@@ -171,15 +172,47 @@ class ModelSaleOrder extends Model {
 
 	public function getOrders($data = array()) {
 		
-		if (!empty($data['filter_salesrep_id']) || !empty($data['filter_customer_id']) ) 
+		/*$sql = "SELECT * FROM `" . DB_PREFIX . "order_total` where code LIKE '%sub_total%' AND code LIKE '%total%'"; 
+		$query = $this->db->query($sql);
+		$rows = $query->rows;
+		
+		foreach($rows as $row)
 		{
-			$sql = "SELECT o.order_id, (select c.firstname from " . DB_PREFIX . "customer as c where o.customer_id = c.customer_id) AS customer, (SELECT os.name FROM " . DB_PREFIX . "order_status os WHERE os.order_status_id = o.order_status_id AND os.language_id = '" . (int)$this->config->get('config_language_id') . "') AS order_status, o.shipping_code, o.total, o.currency_code, o.currency_value, o.date_added, o.date_modified FROM `" . DB_PREFIX . "order` o left join oc_customer as c on o.customer_id = c.customer_id";
+			if($row['title'] == 'Sub-Total')
+			{
+				$title = 'Sub-Total (Excl):';
+			}
+			else if($row['title'] == 'Total')
+			{
+				$title = 'Total (Incl):';
+			}
+			else{
+				$title = '';
+			}
+			
+			if($title)
+			{
+				$sql = "Update `" . DB_PREFIX . "order_total` set title = '".$title."' where order_total_id = '".$row['order_total_id']."'"; 
+				$query = $this->db->query($sql);
+			}
+			
+		}*/
+		
+		if (!empty($data['filter_salesrep_id']) || !empty($data['filter_customer_id']) ) 
+		{ 
+			$sql = "SELECT o.order_id, (select c.firstname from " . DB_PREFIX . "customer as c where o.customer_id = c.customer_id) AS customer, (select CONCAT(cc.first_name, ' ', cc.last_name) from " . DB_PREFIX . "customer_contact as cc where oq.customer_contact_id = cc.customer_con_id) AS customercontact, (SELECT os.name FROM " . DB_PREFIX . "order_status os WHERE os.order_status_id = o.order_status_id AND os.language_id = '" . (int)$this->config->get('config_language_id') . "') AS order_status, o.shipping_code, o.firstname, o.total, o.currency_code, o.currency_value, o.date_added, o.date_modified FROM `" . DB_PREFIX . "order` o left join oc_customer as c on o.customer_id = c.customer_id";
 		}
 		else
 		{
-			$sql = "SELECT o.order_id, o.customer_id, (select c.firstname from " . DB_PREFIX . "customer as c where o.customer_id = c.customer_id) AS customer, (SELECT os.name FROM " . DB_PREFIX . "order_status os WHERE os.order_status_id = o.order_status_id AND os.language_id = '" . (int)$this->config->get('config_language_id') . "') AS order_status, o.shipping_code, o.total, o.currency_code, o.currency_value, o.date_added, o.date_modified FROM `" . DB_PREFIX . "order` o";
+
+			$sql = "SELECT o.order_id, (select c.firstname from " . DB_PREFIX . "customer as c where o.customer_id = c.customer_id) AS customer, (select CONCAT(cc.first_name, ' ', cc.last_name) from " . DB_PREFIX . "customer_contact as cc where oq.customer_contact_id = cc.customer_con_id) AS customercontact, (SELECT os.name FROM " . DB_PREFIX . "order_status os WHERE os.order_status_id = o.order_status_id AND os.language_id = '" . (int)$this->config->get('config_language_id') . "') AS order_status, o.shipping_code, o.firstname, o.total, o.currency_code, o.currency_value, o.date_added, o.date_modified FROM `" . DB_PREFIX . "order` o";
+
 		}
 
+		
+		
+		$sql .= " left join " . DB_PREFIX . "replogic_order_quote oq on o.order_id = oq.order_id";
+		
 		if (isset($data['filter_order_status'])) {
 			$implode = array();
 
@@ -194,6 +227,12 @@ class ModelSaleOrder extends Model {
 			}
 		} else {
 			$sql .= " WHERE o.order_status_id > '0'";
+		}
+		
+		if (isset($data['filter_customer_contactid'])) {
+		
+			$sql .= " And oq.customer_contact_id = ".$data['filter_customer_contactid']."";
+		
 		}
 
 		if (!empty($data['filter_order_id'])) {
@@ -290,6 +329,11 @@ class ModelSaleOrder extends Model {
 		$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "order_total WHERE order_id = '" . (int)$order_id . "' ORDER BY sort_order");
 
 		return $query->rows;
+	}
+
+	public function updateOrderStatus($order_id, $order_status_id) {
+		$sql = "UPDATE `" . DB_PREFIX . "order` SET order_status_id = '".$order_status_id."', date_modified = NOW() WHERE order_id = '".$order_id."'"; 
+		$this->db->query($sql);
 	}
 
 
@@ -580,7 +624,9 @@ class ModelSaleOrder extends Model {
 		} else {
 			$sql = "SELECT COUNT(*) AS total FROM `" . DB_PREFIX . "order` o";
 		}
-
+		
+			$sql .= " left join " . DB_PREFIX . "replogic_order_quote oq on o.order_id = oq.order_id";
+		
 		if (isset($data['filter_order_status'])) {
 			$implode = array();
 
@@ -597,6 +643,12 @@ class ModelSaleOrder extends Model {
 			$sql .= " WHERE order_status_id > '0'";
 		}
 
+		if (isset($data['filter_customer_contactid'])) {
+		
+			$sql .= " And oq.customer_contact_id = ".$data['filter_customer_contactid']."";
+		
+		}
+		
 		if (!empty($data['filter_order_id'])) {
 			$sql .= " AND o.order_id = '" . (int)$data['filter_order_id'] . "'";
 		}
@@ -770,4 +822,12 @@ class ModelSaleOrder extends Model {
 
 		return $query->row['email'];
 	}
+	
+	public function getQuotesByOrderId($orderid) {
+		
+		$query = $this->db->query("select * from `" . DB_PREFIX . "replogic_order_quote` where order_id = ".$orderid."");
+
+		return $query->row;
+	}
+	
 }

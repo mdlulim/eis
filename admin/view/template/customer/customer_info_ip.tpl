@@ -40,7 +40,7 @@
             <li><a href="<?php echo $historytab; ?>" >History</a></li>
             <li><a href="<?php echo $transactionstab; ?>" >Transactions</a></li>
             <li><a href="<?php echo $rewardpointstab; ?>" >Reward Points</a></li>
-            <li class="active"><a href="javascript:void()" >Ip Addresses</a></li>
+            <li class="active"><a href="javascript:void()" >IP Addresses</a></li>
           </ul>
         
         <div class="table-responsive">

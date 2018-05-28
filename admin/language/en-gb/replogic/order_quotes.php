@@ -67,7 +67,7 @@ $_['column_customer_contact']    = 'Customer Contact Name';
 $_['column_status']              = 'Status';
 $_['column_date_added']          = 'Date Added';
 $_['column_date_modified']       = 'Date Modified';
-$_['column_total']               = 'Total';
+$_['column_total']               = 'Order Value';
 $_['column_image']               = 'Images';
 $_['column_product']             = 'Product';
 $_['column_model']               = 'Model';
@@ -123,6 +123,11 @@ $_['entry_quote_id']             = 'Quote ID';
 $_['entry_total']                = 'Total';
 $_['entry_date_added']           = 'Date Added';
 $_['entry_date_modified']        = 'Date Modified';
+
+// Quote Statuses
+$_['quote_status_pending_id']    = 0;
+$_['quote_status_converted_id']  = 1;
+$_['quote_status_denied_id']     = 2;
 
 // Help
 $_['help_override']              = 'If the customers order is being blocked from changing the order status due to an anti-fraud extension enable override.';

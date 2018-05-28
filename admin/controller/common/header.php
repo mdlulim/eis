@@ -132,11 +132,13 @@ class ControllerCommonHeader extends Controller {
 
 			if($data['login_user_group_name'] == 'Sales Manager')
 			{ 
-				$data['alerts'] = $customer_total + $product_total + $review_total + $return_total + $order_quotes_total_waiting['total'];
+				// $data['alerts'] = $customer_total + $product_total + $review_total + $return_total + $order_quotes_total_waiting['total'];
+				$data['alerts'] = $return_total + $order_quotes_total_waiting[0]['total'] + $product_total;
 			}
 			else
 			{ 
-				$data['alerts'] = $customer_total + $product_total + $review_total + $return_total + $affiliate_total;
+				// $data['alerts'] = $customer_total + $product_total + $review_total + $return_total + $affiliate_total;
+				$data['alerts'] = $return_total + $order_quotes_total_waiting[0]['total'] + $product_total + $affiliate_total;
 			}
 
 			// Online Stores

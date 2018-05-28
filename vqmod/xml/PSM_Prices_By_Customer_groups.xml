@@ -158,7 +158,7 @@
 		</operation>
         
         <operation>
-			<search position="before" index="1"><![CDATA[
+			<search position="before" index="111"><![CDATA[
 		 		 $this->db->query("DELETE FROM " . DB_PREFIX . "product_discount WHERE product_id = '" . (int)$product_id . "'");
 			]]></search>
 			<add><![CDATA[
@@ -254,10 +254,10 @@
 		 		 <?php
 			]]></search>
 			<add><![CDATA[
-				$_['text_customer_group_prices']               = 'Customer Groups Prices';
-                $_['text_customer_group_name']                 = 'Customer Group: ';
-                $_['help_customer_group_prices']               = 'Product prices for each Customer Group ';
-                $_['column_customer_group_prices']             = 'Customer Group Prices';
+				$_['text_customer_group_prices']               = 'Contract Pricing Prices';
+                $_['text_customer_group_name']                 = 'Contract Pricing: ';
+                $_['help_customer_group_prices']               = 'Product prices for each Contract Pricing ';
+                $_['column_customer_group_prices']             = 'Contract Pricing Prices';
                 $_['text_close']                         	   = 'Close';
                 $_['text_save']                         	   = 'Save';
                 $_['error_group_price']                        = 'Incorrect value entered!';
@@ -268,7 +268,7 @@
     <file name="admin/view/template/catalog/product_form.tpl">
 		<operation>
 			<search position="after" offset="2"><![CDATA[
-		 		 <input type="text" name="price" value="<?php echo $price; ?>" placeholder="<?php echo $entry_price; ?>" id="input-price" class="form-control" />
+		 		 <input type="text" name="priceeeee" value="<?php echo $price; ?>" placeholder="<?php echo $entry_price; ?>" id="input-price" class="form-control" />
 			]]></search>
 			<add><![CDATA[
             <?php $existing_groups = array(); ?>
@@ -621,12 +621,12 @@
 		    	<?php
 		    ]]></search>
 		    <add><![CDATA[
-		   		$_['entry_show_admin_product_customer_group_prices_in_product_list']        = 'Show customer group prices in Admin product list.';
-                $_['text_products_by_customer_group_prices']                                = 'Product Prices by Customer Groups.';
+		   		$_['entry_show_admin_product_customer_group_prices_in_product_list']        = 'Show Contract Pricing prices in Admin product list.';
+                $_['text_products_by_customer_group_prices']                                = 'Product Prices by Contract Pricing.';
                 $_['entry_update_product_customer_group_prices_in_product_list']            = 'Update all product prices';
                 $_['entry_enable_admin_product_customer_group_prices']                      = 'Enable this extension?';
-                $_['help_update_product_customer_group_prices_in_product_list']             = 'Set this to yes and all Customer Group Prices will be updated/changed with the default price. You have to use this option only after the first installation to set the Customer Group Prices or whenever you want to reset all the prices. After setting this to Yes and visited the Product list, be sure to turn this option to No afterwards.';
-                $_['help_enable_admin_product_customer_group_prices']                       = 'By enableing this extension the frontend of the shop will use the Customer Group Prices for the products';
+                $_['help_update_product_customer_group_prices_in_product_list']             = 'Set this to yes and all Contract Pricing Prices will be updated/changed with the default price. You have to use this option only after the first installation to set the Contract Pricing Prices or whenever you want to reset all the prices. After setting this to Yes and visited the Product list, be sure to turn this option to No afterwards.';
+                $_['help_enable_admin_product_customer_group_prices']                       = 'By enableing this extension the frontend of the shop will use the Contract Pricing Prices for the products';
 		    ]]></add>	
 		</operation>
 	</file>

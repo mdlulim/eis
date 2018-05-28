@@ -255,7 +255,7 @@
                             <table width="560" cellpadding="0" cellspacing="0" border="0" class="container">
                               <tr>
                                 <td valign="top" style="text-align:center">
-                                  <a href="<?php echo $_url;?>" target="_blank" title="<?php echo $store_name;?>"><img src="http://139.59.187.168/dev/image/email/access-portal-button.png" border="0" style="width:220px; height:40px" width="220" height="40" align="middle" /></a>
+                                  <a href="<?php echo $_url;?>" target="_blank" title="<?php echo $_name;?>"><img src="http://139.59.187.168/dev/image/email/access-portal-button.png" border="0" style="width:220px; height:40px" width="220" height="40" align="middle" /></a>
                                 </td>
                               </tr>
                               <tr>

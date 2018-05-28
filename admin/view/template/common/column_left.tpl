@@ -14,7 +14,7 @@
   <ul class="nav navbar-nav" id="menu">
     <?php foreach ($menus as $menu) { ?>
     <li class="dropdown" id="<?php echo $menu['id']; ?>">
-      <?php if ($menu['href']) { ?>
+      <?php if (isset($menu['href'])) { ?>
       <a href="<?php echo $menu['href']; ?>" ><i class="fa <?php echo $menu['icon']; ?> fw"></i> <span><?php echo $menu['name']; ?></span></a>
       <?php } else { ?>
       <a class="parent" class="dropdown-toggle" data-toggle="dropdown" ><i class="fa <?php echo $menu['icon']; ?> fw"></i> <span><?php echo $menu['name']; ?></span><span class="caret"></span></a>
@@ -100,7 +100,7 @@
    <!-- <ul class="nav navbar-nav">
       <?php foreach ($menus as $menu) { ?>
       <li class="dropdown" id="<?php echo $menu['id']; ?>">
-        <?php if ($menu['href']) { ?>
+        <?php if (isset($menu['href'])) { ?>
         <a href="<?php echo $menu['href']; ?>" ><?php echo $menu['name']; ?></a>
         <?php } else { ?>
         <a class="parent" class="dropdown-toggle" data-toggle="dropdown" ><?php echo $menu['name']; ?><i class="caret"></i></a>
@@ -162,7 +162,7 @@
                           <?php } else { ?>
                           <a class="parent"><?php echo $children_1['title']; ?></a>
                           <?php } ?>
-                          <?php if ($children_1['children']) { ?>
+                          <?php if (isset($children_1['children']) && is_array($children_1['children'])) { ?>
                           <ul class="dropdown-menu dropdown2">
                             <?php foreach ($children_1['children'] as $children_2) { ?>
                            	 	<?php if(in_array($children_2['menu_id'], $Cmenuitems)) { ?>
@@ -172,7 +172,7 @@
                                       <?php } else { ?>
                                       <a class="parent"><?php echo $children_2['title']; ?></a>
                                       <?php } ?>
-                                      <?php if ($children_2['children']) { ?>
+                                      <?php if (isset($children_2['children']) && is_array($children_2['children'])) { ?>
                                       <ul class="dropdown-menu dropdown3">
                                         <?php foreach ($children_2['children'] as $children_3) { ?>
                                         	<?php if(in_array($children_3['menu_id'], $Cmenuitems)) { ?>

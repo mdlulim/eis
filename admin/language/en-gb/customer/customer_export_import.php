@@ -23,13 +23,13 @@ $_['text_loading_notifications']            = 'Getting messages';
 $_['text_retry']                            = 'Retry';
 
 // Entry
-$_['entry_import']                          = 'Import from a XLS, XLSX or ODS spreadsheet file';
-$_['entry_export']                          = 'Export requested data to a XLSX spreadsheet file.';
+$_['entry_import']                          = 'Import from a CSV file';
+$_['entry_export']                          = 'Export requested data to a CSV spreadsheet file.';
 $_['entry_export_type']                     = 'Select what data you want to export:';
 $_['entry_range_type']                      = 'Please select the data range you want to export:';
-$_['entry_start_id']                        = 'Start id:';
+$_['entry_start_id']                        = 'Id From:';
 $_['entry_start_index']                     = 'Counts per batch:';
-$_['entry_end_id']                          = 'End id:';
+$_['entry_end_id']                          = 'Id To:';
 $_['entry_end_index']                       = 'The batch number:';
 $_['entry_incremental']                     = 'Use incremental Import';
 $_['entry_upload']                          = 'File to be uploaded';

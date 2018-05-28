@@ -60,18 +60,11 @@
 
 								<tr id="range_type">
 									<td style="vertical-align:top;"><?php echo $entry_range_type; ?><span class="help"><?php echo $help_range_type; ?></span><br />
-										<input type="radio" name="range_type" value="id" id="range_type_id"><?php echo $button_export_id; ?> &nbsp;&nbsp;
-										<!--<input type="radio" name="range_type" value="page" id="range_type_page"><?php echo $button_export_page; ?>-->
-										<br /><br />
-										<span class="id"><?php echo $entry_start_id; ?></span>
-										<span class="page"><?php echo $entry_start_index; ?></span>
-										<br />
-										<input type="text" name="min" value="<?php echo $min; ?>" />
-										<br />
-										<span class="id"><?php echo $entry_end_id; ?></span>
-										<span class="page"><?php echo $entry_end_index; ?></span>
-										<br />
-										<input type="text" name="max" value="<?php echo $max; ?>" />
+										<input type="hidden" name="range_type" value="id" id="range_type_id" checked="checked">
+										<span class="id" style="margin-right: 5px;float:left;margin-top:7px;"><?php echo $entry_start_id; ?></span>
+										<input type="text" name="min" value="<?php echo $min; ?>" placeholder="Id From" class="form-control" style="float:left;width:150px;" />
+										<span class="id" style="margin-right: 10px;margin-left:10px;float:left;margin-top:7px;"><?php echo $entry_end_id; ?></span>
+										<input type="text" name="max" value="<?php echo $max; ?>" placeholder="Id To" class="form-control" style="float:left;width:150px;" />
 									</td>
 								</tr>
 
@@ -88,11 +81,11 @@
 								<tr>
 									<td>
 										<?php echo $entry_import; ?>
-										<span class="help"><?php echo $help_import; ?></span>
+										<!--<span class="help"><?php echo $help_import; ?></span>-->
 										<span class="help"><?php echo $help_format; ?></span>
 									</td>
 								</tr>
-								<tr>
+								<!--<tr>
 									<td>
 										<?php echo $entry_incremental; ?><br />
 										<input type="radio" name="incremental" value="1" checked="checked" />
@@ -100,7 +93,7 @@
 										<br />
 										
 									</td>
-								</tr>
+								</tr>-->
 								<tr>
 									<td><?php echo $entry_upload; ?><br /><br /><input type="file" name="upload" id="upload" /></td>
 								</tr>
@@ -118,7 +111,7 @@
 									<td>
 										<label>
 										<?php if($settings_firstname) { ?>
-                                        	<input type="checkbox" name="customer_export_import_settings_firstname" value="1" checked="checked" /> First Name
+                                        	<input type="checkbox" name="customer_export_import_settings_firstname" value="1" checked="checked" disabled="disabled" /> First Name
                                         <?php } else { ?>    
                                         	<input type="checkbox" name="customer_export_import_settings_firstname" value="1" /> First Name
                                         <?php } ?>
@@ -129,7 +122,7 @@
 									<td>
 										<label>
 										<?php if($settings_lastname) { ?>
-                                        	<input type="checkbox" name="customer_export_import_settings_lastname" value="1" checked="checked" /> Last Name
+                                        	<input type="checkbox" name="customer_export_import_settings_lastname" value="1" checked="checked" disabled="disabled" /> Last Name
                                         <?php } else { ?>
                                         	<input type="checkbox" name="customer_export_import_settings_lastname" value="1" /> Last Name
                                         <?php } ?>
@@ -140,7 +133,7 @@
 									<td>
 										<label>
 										<?php if($settings_email) { ?>
-                                        	<input type="checkbox" name="customer_export_import_settings_email" value="1" checked="checked" /> Email
+                                        	<input type="checkbox" name="customer_export_import_settings_email" value="1" checked="checked" disabled="disabled" /> Email
                                         <?php } else { ?>
                                         	<input type="checkbox" name="customer_export_import_settings_email" value="1" /> Email
                                         <?php } ?>
@@ -162,7 +155,7 @@
 									<td>
 										<label>
 										<?php if($settings_companyname) { ?>
-                                        	<input type="checkbox" name="customer_export_import_settings_companyname" value="1" checked="checked" /> Company Name
+                                        	<input type="checkbox" name="customer_export_import_settings_companyname" value="1" checked="checked" disabled="disabled" /> Company Name
                                         <?php } else { ?>     
                                             <input type="checkbox" name="customer_export_import_settings_companyname" value="1" /> Company Name
                                         <?php } ?>
@@ -173,9 +166,9 @@
 									<td>
 										<label>
 										<?php if($settings_address1) { ?>
-                                        	<input type="checkbox" name="customer_export_import_settings_address1" value="1" checked="checked" /> Address 1
+                                        	<input type="checkbox" name="customer_export_import_settings_address1" value="1" checked="checked" disabled="disabled" /> Address line 1
                                         <?php } else { ?>    
-                                            <input type="checkbox" name="customer_export_import_settings_address1" value="1" /> Address 1
+                                            <input type="checkbox" name="customer_export_import_settings_address1" value="1" /> Address line 1
                                         <?php } ?>
 										</label>
 									</td>
@@ -184,9 +177,9 @@
 									<td>
 										<label>
 										<?php if($settings_address2) { ?>
-                                        	<input type="checkbox" name="customer_export_import_settings_address2" value="1" checked="checked" /> Address 2
+                                        	<input type="checkbox" name="customer_export_import_settings_address2" value="1" checked="checked" /> Address line 2
                                         <?php } else { ?>    
-                                            <input type="checkbox" name="customer_export_import_settings_address2" value="1" /> Address 2
+                                            <input type="checkbox" name="customer_export_import_settings_address2" value="1" /> Address line 2
                                         <?php } ?>
 										</label>
 									</td>
@@ -195,7 +188,7 @@
 									<td>
 										<label>
 										<?php if($settings_city) { ?>
-                                        	<input type="checkbox" name="customer_export_import_settings_city" value="1" checked="checked" /> City
+                                        	<input type="checkbox" name="customer_export_import_settings_city" value="1" checked="checked" disabled="disabled" /> City
                                         <?php } else { ?>    
                                             <input type="checkbox" name="customer_export_import_settings_city" value="1" /> City
                                         <?php } ?>
@@ -217,7 +210,7 @@
 									<td>
 										<label>
 										<?php if($settings_country) { ?>
-                                        	<input type="checkbox" name="customer_export_import_settings_country" value="1" checked="checked" /> Country
+                                        	<input type="checkbox" name="customer_export_import_settings_country" value="1" checked="checked" disabled="disabled" /> Country
                                         <?php } else { ?>    
                                             <input type="checkbox" name="customer_export_import_settings_country" value="1" /> Country
                                         <?php } ?>
@@ -228,7 +221,7 @@
 									<td>
 										<label>
 										<?php if($settings_region) { ?>
-                                        	<input type="checkbox" name="customer_export_import_settings_region" value="1" checked="checked" /> Region/State
+                                        	<input type="checkbox" name="customer_export_import_settings_region" value="1" checked="checked" disabled="disabled" /> Region/State
                                         <?php } else { ?>    
                                             <input type="checkbox" name="customer_export_import_settings_region" value="1" /> Region/State
                                         <?php } ?>
@@ -261,7 +254,7 @@
 									<td>
 										<label>
 										<?php if($settings_companygroup) { ?>
-                                        	<input type="checkbox" name="customer_export_import_settings_companygroup" value="1" checked="checked" /> Company Group
+                                        	<input type="checkbox" name="customer_export_import_settings_companygroup" value="1" checked="checked" disabled="disabled" /> Company Group
                                         <?php } else { ?>    
                                             <input type="checkbox" name="customer_export_import_settings_companygroup" value="1" /> Company Group
                                         <?php } ?>
@@ -283,7 +276,7 @@
 									<td>
 										<label>
                                         <?php if($settings_paymentmethod) { ?>
-											<input type="checkbox" name="customer_export_import_settings_paymentmethod" value="1" checked="checked" /> Payment Method
+											<input type="checkbox" name="customer_export_import_settings_paymentmethod" value="1" checked="checked" disabled="disabled" /> Payment Method
                                         <?php } else { ?>    
                                             <input type="checkbox" name="customer_export_import_settings_paymentmethod" value="1" /> Payment Method
                                         <?php } ?>

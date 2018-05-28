@@ -13,8 +13,8 @@ $_['text_balance']          = 'Balance';
 // Column
 $_['column_name']           = 'Customer Name';
 $_['column_email']          = 'E-Mail';
-$_['column_customer_group'] = 'Customer Group';
-$_['column_status']         = 'Status';
+$_['column_customer_group'] = 'Contract Pricing';
+$_['column_status']         = 'Account Status';
 $_['column_date_added']     = 'Date Added';
 $_['column_comment']        = 'Comment';
 $_['column_description']    = 'Description';
@@ -25,7 +25,7 @@ $_['column_total']          = 'Total Accounts';
 $_['column_action']         = 'Action';
 
 // Entry
-$_['entry_customer_group']  = 'Customer Group';
+$_['entry_customer_group']  = 'Contract Pricing';
 $_['entry_salesrep']        = 'Sales Rep';
 $_['entry_firstname']       = 'First Name';
 $_['entry_lastname']        = 'Last Name';
@@ -33,14 +33,14 @@ $_['entry_email']           = 'E-Mail';
 $_['entry_telephone']       = 'Telephone';
 $_['entry_fax']             = 'Fax';
 $_['entry_newsletter']      = 'Newsletter';
-$_['entry_status']          = 'Status';
+$_['entry_status']          = 'Account Status';
 $_['entry_approved']        = 'Approved';
 $_['entry_safe']            = 'Safe';
 $_['entry_password']        = 'Password';
 $_['entry_confirm']         = 'Confirm';
 $_['entry_company']         = 'Company';
-$_['entry_address_1']       = 'Address 1';
-$_['entry_address_2']       = 'Address 2';
+$_['entry_address_1']       = 'Address line 1';
+$_['entry_address_2']       = 'Address line 2';
 $_['entry_city']            = 'City';
 $_['entry_postcode']        = 'Postcode';
 $_['entry_country']         = 'Country';

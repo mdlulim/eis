@@ -8,7 +8,7 @@ $_['text_list']             = 'Customer Reward Points List';
 // Column
 $_['column_customer']       = 'Customer Name';
 $_['column_email']          = 'E-Mail';
-$_['column_customer_group'] = 'Customer Group';
+$_['column_customer_group'] = 'Contract Pricing';
 $_['column_status']         = 'Status';
 $_['column_points']         = 'Reward Points';
 $_['column_orders']         = 'No of Orders';
