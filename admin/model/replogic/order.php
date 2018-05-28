@@ -196,6 +196,10 @@ class ModelReplogicOrder extends Model {
 			$sql .= " AND CONCAT(o.firstname, ' ', o.lastname) LIKE '%" . $this->db->escape($data['filter_customer']) . "%'";
 		}
 
+		if (!empty($data['filter_customer_contact_id'])) {
+			$sql .= " AND CONCAT(c.firstname, ' ', c.lastname) c.customer '%" . $this->db->escape($data['filter_customer']) . "%'";
+		}
+
 		if (!empty($data['filter_date_added'])) {
 			$sql .= " AND DATE(o.date_added) = DATE('" . $this->db->escape($data['filter_date_added']) . "')";
 		}

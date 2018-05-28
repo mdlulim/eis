@@ -1937,6 +1937,8 @@ class ControllerCustomerCustomer extends Controller {
 
 	protected function sendCustomerInvitation($customer_id) {
 
+		$emailClient = "mandrill";
+
 		$this->load->model('customer/customer');
 
 		# get customer information
@@ -1952,53 +1954,109 @@ class ControllerCustomerCustomer extends Controller {
 		$this->model_customer_customer->addCustomerActivity($customer_id, $customer['ip'], $this->request->post);
 
 		# build data array
-		$data['subject'] = 'Welcome to Saleslogic';
 		$data['to']      = array('email'=>$customer['email'], 'name'=>$customer['firstname']);
 		$data['from']    = array('email'=>$this->config->get('config_email'), 'name'=>$this->config->get('config_name'));
-
 		$data['subject'] = 'New Wholesale Account';
-		$data['message'] = 'Good day '.$customer['firstname'].', '.$this->config->get('config_owner').' has invited you to purchase stock via their secure online wholesale portal. To access the portal, go to: '.$this->config->get('config_url').'. To log in, use this email address as your username. Your password is : '.$password;
 
-		# build email message [html]
-		$this->load->model('extension/mail/template');
-		$tempData = array(
-			'emailtemplate_key' => 'customer.invite'
-		);
-		$template                        = $this->model_extension_mail_template->load($tempData);
-		$template->data['password']      = $user_info['password'];
-		$template->data['customer_name'] = $user_info['firstname'];
-		$template->data['_url']          = $this->config->get('config_url');
-		$template->data['_name']         = $this->config->get('config_owner');
-		$template->data['_email']        = $this->config->get('config_email');
-		$template->data['help_guide']    = 'https://help.saleslogic.io/portal/home';
+		switch ($emailClient) {
+			case 'mandrill':
+				# message
+				$data['message'] = array(
+			        'subject' => $data['subject'],
+			        'to'      => array(
+			            array(
+			                'email' => $data['to']['email'],
+			                'type'  => 'to'
+			            )
+			        ),
+			        'global_merge_vars' => array(
+			            array(
+			                'name'    => 'PASSWORD',
+			                'content' => $password
+			            ),
+			            array(
+			                'name'    => 'CUSTOMER_NAME',
+			                'content' => $customer['firstname']
+			            ),
+			            array(
+			                'name'    => 'STORE_URL',
+			                'content' => $this->config->get('config_url')
+			            ),
+			            array(
+			                'name'    => 'STORE_NAME',
+			                'content' => $this->config->get('config_owner')
+			            ),
+			            array(
+			                'name'    => 'STORE_EMAIL',
+			                'content' => $this->config->get('config_email')
+			            ),
+			            array(
+			                'name'    => 'HELP_GUIDE',
+			                'content' => 'https://help.saleslogic.io/portal/home'
+			            )
+			        )
+			    );
+				$template['name'] = 'baselogic-customer-invite';
+				$emailResult      = sendEmail($data, false, $template, $emailClient);
+				$json['success']  = (isset($emailResult[0]['status']) && (
+					                $emailResult[0]['status'] == "sent" || 
+					                $emailResult[0]['status'] == "queued" || 
+					                $emailResult[0]['status'] == "scheduled"));
+				break;
+			
+			default:
+				# message
+				$data['message'] = 'Good day '.$customer['firstname'].', '.$this->config->get('config_owner').' has invited you to purchase stock via their secure online wholesale portal. To access the portal, go to: '.$this->config->get('config_url').'. To log in, use this email address as your username. Your password is : '.$password;
 
-		# smtp settings
-		$settings['protocol']      = $this->config->get('config_mail_protocol');
-		$settings['parameter']     = $this->config->get('config_mail_parameter');
-		$settings['smtp_hostname'] = $this->config->get('config_mail_smtp_hostname');
-		$settings['smtp_username'] = $this->config->get('config_mail_smtp_username');
-		$settings['smtp_password'] = $this->config->get('config_mail_smtp_password');
-		$settings['smtp_port']     = $this->config->get('config_mail_smtp_port');
-		$settings['smtp_timeout']  = $this->config->get('config_mail_smtp_timeout');
+				# load template
+				$this->load->model('extension/mail/template');
+				$tempData = array(
+					'emailtemplate_key' => 'customer.invite'
+				);
+				
+				$template = $this->model_extension_mail_template->load($tempData);
 
-		# send mail and output JSON encoded results back to JS
-		sendEmail($data, $settings, $template);
+				$template->data['password']      = $password;
+				$template->data['customer_name'] = $customer['firstname'];
+				$template->data['_url']          = $this->config->get('config_url');
+				$template->data['_name']         = $this->config->get('config_owner');
+				$template->data['_email']        = $this->config->get('config_email');
+				$template->data['help_guide']    = 'https://help.saleslogic.io/portal/home';
+
+				# smtp settings
+				$settings['protocol']      = $this->config->get('config_mail_protocol');
+				$settings['parameter']     = $this->config->get('config_mail_parameter');
+				$settings['smtp_hostname'] = $this->config->get('config_mail_smtp_hostname');
+				$settings['smtp_username'] = $this->config->get('config_mail_smtp_username');
+				$settings['smtp_password'] = $this->config->get('config_mail_smtp_password');
+				$settings['smtp_port']     = $this->config->get('config_mail_smtp_port');
+				$settings['smtp_timeout']  = $this->config->get('config_mail_smtp_timeout');
+
+				# send mail and output JSON encoded results back to JS
+				$json['success'] = sendEmail($data, $settings, $template);
+				break;
+		}
+		echo json_encode($json);
 	}
 
 	protected function sendBulkCustomerInvitation() {
+
+		$emailClient = "mandrill";
 
 		# load model
 		$this->load->model('customer/customer');
 		$this->load->model('extension/mail/template');
 
-		# smtp settings
-		$settings['protocol']      = $this->config->get('config_mail_protocol');
-		$settings['parameter']     = $this->config->get('config_mail_parameter');
-		$settings['smtp_hostname'] = $this->config->get('config_mail_smtp_hostname');
-		$settings['smtp_username'] = $this->config->get('config_mail_smtp_username');
-		$settings['smtp_password'] = $this->config->get('config_mail_smtp_password');
-		$settings['smtp_port']     = $this->config->get('config_mail_smtp_port');
-		$settings['smtp_timeout']  = $this->config->get('config_mail_smtp_timeout');
+		if ($emailClient === "mail") {
+			# smtp settings
+			$settings['protocol']      = $this->config->get('config_mail_protocol');
+			$settings['parameter']     = $this->config->get('config_mail_parameter');
+			$settings['smtp_hostname'] = $this->config->get('config_mail_smtp_hostname');
+			$settings['smtp_username'] = $this->config->get('config_mail_smtp_username');
+			$settings['smtp_password'] = $this->config->get('config_mail_smtp_password');
+			$settings['smtp_port']     = $this->config->get('config_mail_smtp_port');
+			$settings['smtp_timeout']  = $this->config->get('config_mail_smtp_timeout');
+		}
 
 		# send mail and output JSON encoded results back to JS
 		if (isset($this->request->post['customers']) && is_array($this->request->post['customers'])) {
@@ -2023,21 +2081,70 @@ class ControllerCustomerCustomer extends Controller {
 					# build data array
 					$data['to']      = array('email'=>$customer['email'], 'name'=>$customer['firstname']);
 					$data['from']    = array('email'=>$this->config->get('config_email'), 'name'=>$this->config->get('config_name'));
-
 					$data['subject'] = 'New Wholesale Account';
-					$data['message'] = 'Good day '.$customer['firstname'].', '.$this->config->get('config_owner').' has invited you to purchase stock via their secure online wholesale portal. To access the portal, go to: '.$this->config->get('config_url').'. To log in, use this email address as your username. Your password is : '.$password;
 
-					$tempData = array('emailtemplate_key' => 'customer.invite');
-					$template = $this->model_extension_mail_template->load($tempData);
-					$template->data['password']      = $password;
-					$template->data['customer_name'] = $customer['firstname'];
-					$template->data['_url']          = $this->config->get('config_url');
-					$template->data['_name']         = $this->config->get('config_owner');
-					$template->data['_email']        = $this->config->get('config_email');
-					$template->data['help_guide']    = 'https://help.saleslogic.io/portal/home';
+					switch ($emailClient) {
+						case 'mandrill':
+							# message
+							$data['message'] = array(
+						        'subject' => $data['subject'],
+						        'to'      => array(
+						            array(
+						                'email' => $data['to']['email'],
+						                'type'  => 'to'
+						            )
+						        ),
+						        'global_merge_vars' => array(
+						            array(
+						                'name'    => 'PASSWORD',
+						                'content' => $password
+						            ),
+						            array(
+						                'name'    => 'CUSTOMER_NAME',
+						                'content' => $customer['firstname']
+						            ),
+						            array(
+						                'name'    => 'STORE_URL',
+						                'content' => $this->config->get('config_url')
+						            ),
+						            array(
+						                'name'    => 'STORE_NAME',
+						                'content' => $this->config->get('config_owner')
+						            ),
+						            array(
+						                'name'    => 'STORE_EMAIL',
+						                'content' => $this->config->get('config_email')
+						            ),
+						            array(
+						                'name'    => 'HELP_GUIDE',
+						                'content' => 'https://help.saleslogic.io/portal/home'
+						            )
+						        )
+						    );
+							$template['name'] = 'baselogic-customer-invite';
+							$emailResult      = sendEmail($data, false, $template, $emailClient);
+							$json['success']  = (isset($emailResult[0]['status']) && (
+								                $emailResult[0]['status'] == "sent" || 
+								                $emailResult[0]['status'] == "queued" || 
+								                $emailResult[0]['status'] == "scheduled"));
+							break;
+						
+						default:
+							$data['message'] = 'Good day '.$customer['firstname'].', '.$this->config->get('config_owner').' has invited you to purchase stock via their secure online wholesale portal. To access the portal, go to: '.$this->config->get('config_url').'. To log in, use this email address as your username. Your password is : '.$password;
 
-					# send email invitation
-					sendEmail($data, $settings, $template);
+							$tempData = array('emailtemplate_key' => 'customer.invite');
+							$template = $this->model_extension_mail_template->load($tempData);
+							$template->data['password']      = $password;
+							$template->data['customer_name'] = $customer['firstname'];
+							$template->data['_url']          = $this->config->get('config_url');
+							$template->data['_name']         = $this->config->get('config_owner');
+							$template->data['_email']        = $this->config->get('config_email');
+							$template->data['help_guide']    = 'https://help.saleslogic.io/portal/home';
+
+							# send email invitation
+							sendEmail($data, $settings, $template);
+							break;
+					}
 				}
 			}
 				
