@@ -3364,3 +3364,8 @@
 2018-05-28 17:00:05 - PHP Notice:  Undefined index: salesrep_name in /Applications/XAMPP/xamppfiles/htdocs/ReplogicExtension/admin/controller/sale/order.php on line 261
 2018-05-28 17:00:05 - PHP Notice:  Undefined index: salesrep_lastname in /Applications/XAMPP/xamppfiles/htdocs/ReplogicExtension/admin/controller/sale/order.php on line 261
 2018-05-28 17:00:05 - PHP Warning:  Missing argument 3 for ModelCustomerCustomer::getCustomers() in /Applications/XAMPP/xamppfiles/htdocs/ReplogicExtension/admin/model/customer/customer.php on line 176
+2018-05-29 16:14:39 - PHP Notice:  Undefined variable: customer_info in /Applications/XAMPP/xamppfiles/htdocs/ReplogicExtension/admin/controller/customer/customer.php on line 1140
+2018-05-29 16:14:39 - PHP Warning:  Invalid argument supplied for foreach() in /Applications/XAMPP/xamppfiles/htdocs/ReplogicExtension/admin/view/template/customer/customer_add_form.tpl on line 163
+2018-05-29 16:15:04 - PHP Notice:  Undefined index: fax in /Applications/XAMPP/xamppfiles/htdocs/ReplogicExtension/admin/model/customer/customer.php on line 10
+2018-05-29 16:15:04 - PHP Notice:  Undefined index: newsletter in /Applications/XAMPP/xamppfiles/htdocs/ReplogicExtension/admin/model/customer/customer.php on line 10
+2018-05-29 16:15:04 - PHP Notice:  Undefined index: safe in /Applications/XAMPP/xamppfiles/htdocs/ReplogicExtension/admin/model/customer/customer.php on line 10
