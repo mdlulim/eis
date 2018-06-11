@@ -4,3 +4,5 @@ system/storage/logs/
 vqmod/checked.cache
 vqmod/logs/
 vqmod/mods.cache
+config.php
+admin/config.php
