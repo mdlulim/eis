@@ -171,8 +171,6 @@
                     </td>
                   </tr>
                   <?php endforeach; ?>
-                  <?php else : ?>
-                  <tr><td class="text-center" colspan="6">No results!</td></tr>
                   <?php endif; ?>
                 </tbody>
               </table>
