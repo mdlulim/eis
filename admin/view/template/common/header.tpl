@@ -29,7 +29,7 @@
 <?php foreach ($scripts as $script) { ?>
 <script type="text/javascript" src="<?php echo $script; ?>"></script>
 <?php } ?>
-<link href="http://dashbundle.co.za/image/catalog/Dashlogic-icon-2.png" rel="icon" />
+<link href="../image/catalog/images_company/saleslogic_favicon.png" rel="icon" />
 </head>
 <body class="teee">
 <div id="container">
@@ -96,7 +96,7 @@
         <?php } ?>
       </ul>
     </li>
-    <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" style="padding-right:3px;"><i class="fa fa-globe fa-lg"></i>  View Stores<img src="view/image/down-arrow.png" height="23" width="19" style="margin-left:15px;"></a>
+    <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" style="padding-right:3px;"><!--i class="fa fa-globe fa-lg"></i-->  View Stores<img src="view/image/down-arrow.png" height="23" width="19" style="margin-left:15px;"></a>
       <ul class="dropdown-menu dropdown-menu-right">
         <!--<li class="dropdown-header"><?php echo $text_store; ?></li>-->
         <?php foreach ($stores as $store) { ?>
