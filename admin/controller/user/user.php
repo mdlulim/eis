@@ -184,7 +184,15 @@ class ControllerUserUser extends Controller {
 	}
 
 	protected function sendUserInvitation($user_info) {
+		
+		$this->load->model('setting/setting');
+		
 		$emailClient = "mandrill";
+
+		# get rep settings
+		$repSettings  = $this->model_setting_setting->getRepSettings();
+		$storeUrl     = $repSettings['store_url'];
+		$companyEmail = $repSettings['email'];
 
 		# build data array
 		$data['subject'] = 'Welcome to Saleslogic';
@@ -210,7 +218,7 @@ class ControllerUserUser extends Controller {
 			            ),
 			            array(
 			                'name'    => 'STORE_URL',
-			                'content' => $this->config->get('config_url')
+			                'content' => $storeUrl
 			            ),
 			            array(
 			                'name'    => 'STORE_NAME',
@@ -218,7 +226,7 @@ class ControllerUserUser extends Controller {
 			            ),
 			            array(
 			                'name'    => 'STORE_EMAIL',
-			                'content' => $this->config->get('config_email')
+			                'content' => $companyEmail
 			            ),
 			            array(
 			                'name'    => 'HELP_GUIDE',

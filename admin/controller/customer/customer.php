@@ -1940,6 +1940,12 @@ class ControllerCustomerCustomer extends Controller {
 		$emailClient = "mandrill";
 
 		$this->load->model('customer/customer');
+		$this->load->model('setting/setting');
+
+		# get rep settings
+		$repSettings  = $this->model_setting_setting->getRepSettings();
+		$storeUrl     = $repSettings['store_url'];
+		$companyEmail = $repSettings['email'];
 
 		# get customer information
 		$customer = $this->model_customer_customer->getCustomer($customer_id);
@@ -1980,7 +1986,7 @@ class ControllerCustomerCustomer extends Controller {
 			            ),
 			            array(
 			                'name'    => 'STORE_URL',
-			                'content' => $this->config->get('config_url')
+			                'content' => $storeUrl
 			            ),
 			            array(
 			                'name'    => 'STORE_NAME',
@@ -1988,7 +1994,7 @@ class ControllerCustomerCustomer extends Controller {
 			            ),
 			            array(
 			                'name'    => 'STORE_EMAIL',
-			                'content' => $this->config->get('config_email')
+			                'content' => $companyEmail
 			            ),
 			            array(
 			                'name'    => 'HELP_GUIDE',
@@ -2046,6 +2052,7 @@ class ControllerCustomerCustomer extends Controller {
 		# load model
 		$this->load->model('customer/customer');
 		$this->load->model('extension/mail/template');
+		$this->load->model('setting/setting');
 
 		if ($emailClient === "mail") {
 			# smtp settings
@@ -2057,6 +2064,11 @@ class ControllerCustomerCustomer extends Controller {
 			$settings['smtp_port']     = $this->config->get('config_mail_smtp_port');
 			$settings['smtp_timeout']  = $this->config->get('config_mail_smtp_timeout');
 		}
+
+		# get rep settings
+		$repSettings  = $this->model_setting_setting->getRepSettings();
+		$storeUrl     = $repSettings['store_url'];
+		$companyEmail = $repSettings['email'];
 
 		# send mail and output JSON encoded results back to JS
 		if (isset($this->request->post['customers']) && is_array($this->request->post['customers'])) {
@@ -2105,7 +2117,7 @@ class ControllerCustomerCustomer extends Controller {
 						            ),
 						            array(
 						                'name'    => 'STORE_URL',
-						                'content' => $this->config->get('config_url')
+						                'content' => $storeUrl
 						            ),
 						            array(
 						                'name'    => 'STORE_NAME',
@@ -2113,7 +2125,7 @@ class ControllerCustomerCustomer extends Controller {
 						            ),
 						            array(
 						                'name'    => 'STORE_EMAIL',
-						                'content' => $this->config->get('config_email')
+						                'content' => $companyEmail
 						            ),
 						            array(
 						                'name'    => 'HELP_GUIDE',

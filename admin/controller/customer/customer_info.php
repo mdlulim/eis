@@ -3432,10 +3432,16 @@ class ControllerCustomerCustomerInfo extends Controller {
 	protected function sendCustomerInvitation() {
 
 		$this->load->model('customer/customer');
+		$this->load->model('setting/setting');
 
 		$json['success'] = false;
 
 		$emailClient = 'mandrill';
+
+		# get rep settings
+		$repSettings  = $this->model_setting_setting->getRepSettings();
+		$storeUrl     = $repSettings['store_url'];
+		$companyEmail = $repSettings['email'];
 
 		# get customer information
 		$customer = $this->model_customer_customer->getCustomer($this->request->post['customer_id']);
@@ -3476,7 +3482,7 @@ class ControllerCustomerCustomerInfo extends Controller {
 			            ),
 			            array(
 			                'name'    => 'STORE_URL',
-			                'content' => $this->config->get('config_url')
+			                'content' => $storeUrl
 			            ),
 			            array(
 			                'name'    => 'STORE_NAME',
@@ -3484,7 +3490,7 @@ class ControllerCustomerCustomerInfo extends Controller {
 			            ),
 			            array(
 			                'name'    => 'STORE_EMAIL',
-			                'content' => $this->config->get('config_email')
+			                'content' => $companyEmail
 			            ),
 			            array(
 			                'name'    => 'HELP_GUIDE',

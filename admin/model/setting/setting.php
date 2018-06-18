@@ -51,4 +51,9 @@ class ModelSettingSetting extends Model {
 			$this->db->query("UPDATE " . DB_PREFIX . "setting SET `value` = '" . $this->db->escape(json_encode($value)) . "', serialized = '1' WHERE `code` = '" . $this->db->escape($code) . "' AND `key` = '" . $this->db->escape($key) . "' AND store_id = '" . (int)$store_id . "'");
 		}
 	}
+	
+	public function getRepSettings() {
+		$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "rep_settings");
+		return $query->row;
+	}
 }
