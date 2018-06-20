@@ -39,7 +39,7 @@ class ControllerReplogicOrderQuotes extends Controller {
 			
 			$quote_id = $this->request->get['quote_id'];
 			
-			$this->model_replogic_order_quotes->statuschange($quote_id,1);
+			$this->model_replogic_order_quotes->statuschange($quote_id, $this->language->get('quote_status_converted_id'));
 			
 			$this->session->data['success'] = $this->language->get('text_success');
 
@@ -95,7 +95,7 @@ class ControllerReplogicOrderQuotes extends Controller {
 			$quote_id = $this->request->post['quote_id'];
 			$reason = $this->request->post['reason'];
 			
-			$this->model_replogic_order_quotes->Declinestatuschange($quote_id,$reason);
+			$this->model_replogic_order_quotes->Declinestatuschange($quote_id, $reason);
 			
 			$this->session->data['success'] = $this->language->get('text_success');
 
@@ -176,7 +176,7 @@ class ControllerReplogicOrderQuotes extends Controller {
 			
 			$quote_id = $this->request->get['quote_id'];
 			
-			$this->model_replogic_order_quotes->statuschange($quote_id,3);
+			$this->model_replogic_order_quotes->statuschange($quote_id, $this->language->get('quote_status_denied_id'));
 			
 			$this->session->data['success'] = $this->language->get('text_success');
 

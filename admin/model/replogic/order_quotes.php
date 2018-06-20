@@ -105,7 +105,7 @@ class ModelReplogicOrderQuotes extends Model {
 	}
 	
 	public function Declinestatuschange($quote_id, $reason) {
-		$query = $this->db->query("UPDATE " . DB_PREFIX . "replogic_order_quote set status = '2', comments = '".$reason."' WHERE quote_id = '" . (int)$quote_id . "'");
+		$query = $this->db->query("UPDATE " . DB_PREFIX . "replogic_order_quote set status = '3', comments = '".$reason."' WHERE quote_id = '" . (int)$quote_id . "'");
 
 		return $query->row;
 	}
