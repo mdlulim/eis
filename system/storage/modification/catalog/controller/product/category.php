@@ -97,7 +97,6 @@ class ControllerProductCategory extends Controller {
 			$this->document->setDescription($category_info['meta_description']);
 			$this->document->setKeywords($category_info['meta_keyword']);
 
-$data['mobile'] = $this->config->get('mobile_general');
 			$data['heading_title'] = $category_info['name'];
 
 			$data['text_refine'] = $this->language->get('text_refine');

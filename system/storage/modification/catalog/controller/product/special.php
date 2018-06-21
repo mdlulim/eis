@@ -9,7 +9,6 @@ class ControllerProductSpecial extends Controller {
             
 
 		$this->load->model('tool/image');
-$data['mobile'] = $this->config->get('mobile_general');
 
 		if (isset($this->request->get['sort'])) {
 			$sort = $this->request->get['sort'];

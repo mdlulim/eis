@@ -6,7 +6,6 @@ class ControllerProductManufacturer extends Controller {
 		$this->load->model('catalog/manufacturer');
 
 		$this->load->model('tool/image');
-$data['mobile'] = $this->config->get('mobile_general');
 
 		$this->document->setTitle($this->language->get('heading_title'));
 
@@ -73,7 +72,6 @@ $data['mobile'] = $this->config->get('mobile_general');
             
 
 		$this->load->model('tool/image');
-$data['mobile'] = $this->config->get('mobile_general');
 
 		if (isset($this->request->get['manufacturer_id'])) {
 			$manufacturer_id = (int)$this->request->get['manufacturer_id'];

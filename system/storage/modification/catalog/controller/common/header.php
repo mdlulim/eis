@@ -26,110 +26,6 @@ class ControllerCommonHeader extends Controller {
 
 		$data['title'] = $this->document->getTitle();
 
- $this->document->addStyle('catalog/view/javascript/so_sociallogin/css/so_sociallogin.css');
- $this->load->model('setting/setting');
- $this->load->model('tool/image');
- $setting = $this->model_setting_setting->getSetting('so_sociallogin');
- 
- if (isset($setting['so_sociallogin_enable']) && $setting['so_sociallogin_enable'] && $this->config->get('so_sociallogin_enable')) {
- if(isset($this->session->data['route']))
- {
- $location = $this->url->link($this->session->data['route'], "", 'SSL');
- }
- else
- {
- $location = $this->url->link("account/account", "", 'SSL');
- }
- 
- /* Facebook Library */
- require_once(DIR_SYSTEM . 'library/so_social/fb/facebook.php');
- 
- /* Facebook Login link code */
- $fbconnect = new Facebook(array(
- 'appId' => $setting['so_sociallogin_fbapikey'],
- 'secret' => $setting['so_sociallogin_fbsecretapi'],
- ));
- 
- $data['fblink'] = $fbconnect->getLoginUrl(
- array(
- 'scope' => 'email,user_birthday,user_location,user_hometown',
- 'redirect_uri' => $this->url->link('extension/module/so_sociallogin/FacebookLogin', '', 'SSL')
- )
- );
- /* Facebook Login link code */
- 
- /* Google Libery file inculde */
- require_once DIR_SYSTEM.'library/so_social/src/Google_Client.php';
- require_once DIR_SYSTEM.'library/so_social/src/contrib/Google_Oauth2Service.php';
- 
- /* Google Login link code */
- $gClient = new Google_Client();
- $gClient->setApplicationName($setting['so_sociallogin_googletitle']);
- $gClient->setClientId($setting['so_sociallogin_googleapikey']);
- $gClient->setClientSecret($setting['so_sociallogin_googlesecretapi']);
- $gClient->setRedirectUri($this->url->link('extension/module/so_sociallogin/GoogleLogin', '', 'SSL'));
- $google_oauthV2 = new Google_Oauth2Service($gClient);
- $data['googlelink'] = $gClient->createAuthUrl();
- 
- /* Twitter Login */ 
- $data['twitlink'] = $this->url->link('extension/module/so_sociallogin/TwitterLogin', '', 'SSL');
- 
- /* Linkedin Login */
- $data['linkdinlink'] = $this->url->link('extension/module/so_sociallogin/LinkedinLogin', '', 'SSL');
- 
- /* Get Image */
- $sociallogin_width = 130;
- $sociallogin_height = 35;
- if (isset($setting['so_sociallogin_width']) && is_numeric($setting['so_sociallogin_width'])) {
- $sociallogin_width = $setting['so_sociallogin_width'];
- }
- if (isset($setting['so_sociallogin_height']) && is_numeric($setting['so_sociallogin_height'])) {
- $sociallogin_height = $setting['so_sociallogin_height'];
- }
- if ($setting['so_sociallogin_fbimage']) {
- $fbicon = $this->model_tool_image->resize($setting['so_sociallogin_fbimage'], $sociallogin_width, $sociallogin_height);
- } else {
- $fbicon = $this->model_tool_image->resize('placeholder.png', $sociallogin_width, $sociallogin_height);
- }
- 
- if ($setting['so_sociallogin_twitimage']) {
- $twiticon = $this->model_tool_image->resize($setting['so_sociallogin_twitimage'], $sociallogin_width, $sociallogin_height);
- } else {
- $twiticon = $this->model_tool_image->resize('placeholder.png', $sociallogin_width, $sociallogin_height);
- }
- 
- if ($setting['so_sociallogin_googleimage']) {
- $googleicon = $this->model_tool_image->resize($setting['so_sociallogin_googleimage'], $sociallogin_width, $sociallogin_height);
- } else {
- $googleicon = $this->model_tool_image->resize('placeholder.png', $sociallogin_width, $sociallogin_height);
- }
- 
- if ($setting['so_sociallogin_linkdinimage']) {
- $linkdinicon = $this->model_tool_image->resize($setting['so_sociallogin_linkdinimage'], $sociallogin_width, $sociallogin_height);
- } else {
- $linkdinicon = $this->model_tool_image->resize('placeholder.png', $sociallogin_width, $sociallogin_height);
- }
- 
- $data['iconwidth'] = $sociallogin_width;
- $data['iconheight'] = $sociallogin_height;
- $data['status'] = $setting['so_sociallogin_enable'];
- $data['fbimage'] = $fbicon;
- $data['twitimage'] = $twiticon;
- $data['googleimage'] = $googleicon;
- $data['linkdinimage'] = $linkdinicon;
- 
- $data['setting'] = $setting;
- 
- $this->load->language('extension/module/so_sociallogin');
- $data['text_colregister'] = $this->language->get('text_colregister');
- $data['text_create_account'] = $this->language->get('text_create_account');
- $data['text_forgot_password'] = $this->language->get('text_forgot_password');
- $data['forgotten'] = $this->url->link('account/forgotten', '', true);
- $data['text_title_popuplogin'] = $this->language->get('text_title_popuplogin');
- $data['text_title_login_with_social'] = $this->language->get('text_title_login_with_social');
- }
- 
-
 		$data['base'] = $server;
 		$data['description'] = $this->document->getDescription();
 		$data['keywords'] = $this->document->getKeywords();
@@ -227,19 +123,6 @@ class ControllerCommonHeader extends Controller {
 			}
 		}
 
-
-				$this->load->language('extension/soconfig/mobile');
-				$data['objlang'] = $this->language;
-				$data['menu_search'] = $this->url->link('product/search', '', true);
-				$data['mobile'] = $this->config->get('mobile_general');
-				$data['text_items'] = sprintf($this->language->get('text_itemcount'), $this->cart->countProducts() + (isset($this->session->data['vouchers']) ? count($this->session->data['vouchers']) : 0));
-				if($this->session->data['device']=='mobile'){
-					$data['home'] = $this->url->link('mobile/home');
-				}else{
-					$data['home'] = $this->url->link('common/home');
-				}
-				if(isset($this->request->get['layoutmobile'])) $data['layoutmobile'] = $this->request->get['layoutmobile'];
-		
 		$data['language'] = $this->load->controller('common/language');
 		$data['currency'] = $this->load->controller('common/currency');
 		$data['search'] = $this->load->controller('common/search');

@@ -11,7 +11,6 @@ class ControllerProductSearch extends Controller {
             
 
 		$this->load->model('tool/image');
-$data['mobile'] = $this->config->get('mobile_general');
 
 		if (isset($this->request->get['search'])) {
 			$search = $this->request->get['search'];
