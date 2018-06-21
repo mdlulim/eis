@@ -71,7 +71,7 @@ class ControllerCommonOrdersDashboard extends Controller {
 		============================================*/
 
 		$data['add_user_link'] =  $this->url->link('user/user/add', "token=$token", true);
-		$data['add_product_link'] = $this->url->link('catalog/mproduct/add', "token=$token", true);
+		$data['add_product_link'] = $this->url->link('catalog/product/add', "token=$token", true);
 		$data['add_customer_link'] = $this->url->link('customer/customer/add', "token=$token", true);
 		$data['add_appointment_link'] = $this->url->link('replogic/schedule_management/add', "token=$token", true);
 		$data['add_salesrep_link'] = $this->url->link('replogic/sales_rep_management/add', "token=$token", true);
