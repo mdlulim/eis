@@ -447,7 +447,7 @@ class ControllerReplogicSalesRepManagement extends Controller {
 		$current_user_group_id = $this->model_user_user->getUser($current_user); ;
 		$current_user_group = $this->model_user_user_group->getUserGroup($current_user_group_id['user_group_id']); ;
 		//print_r($current_user_group); exit;
-		if($current_user_group['name'] == 'Company admin' || $current_user_group['name'] == 'Administrator')
+		if($current_user_group_id['user_group_id'] == '15' || $current_user_group_id['user_group_id'] == '19')
 		{
 			$allaccess = true;
 			$current_user_id = 0;
@@ -461,7 +461,7 @@ class ControllerReplogicSalesRepManagement extends Controller {
 		
 		$this->load->model('user/team');
 		$this->load->model('customer/customer');
-		if($current_user_group['name'] == 'Sales Manager')
+		if($current_user_group_id['user_group_id'] == '16')
 		{
 			$filter_salesrep_id = $current_user; 
 			
@@ -824,7 +824,7 @@ class ControllerReplogicSalesRepManagement extends Controller {
 		$current_user = $this->session->data['user_id'];
 		$current_user_group_id = $this->model_user_user->getUser($current_user);
 		$current_user_group = $this->model_user_user_group->getUserGroup($current_user_group_id['user_group_id']); 
-		if($current_user_group['name'] == 'Sales Manager')
+		if($current_user_group_id['user_group_id'] == '16')
 		{
 			$filter_salesrep_id = $current_user; 
 			
