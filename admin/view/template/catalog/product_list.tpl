@@ -93,7 +93,7 @@
                   <?php } ?>
                 </select>
               </div>
-              <div class="form-group">
+              <!--div class="form-group">
                 <label class="control-label" for="input-image"><?php echo $entry_image; ?></label>
                 <select name="filter_image" id="input-image" class="form-control">
                   <option value="*"></option>
@@ -108,7 +108,7 @@
                   <option value="0"><?php echo $text_disabled; ?></option>
                   <?php } ?>
                 </select>
-              </div>
+              </div-->
               <button type="button" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-search"></i> Search</button>
               <button type="button" id="button-filter-reset" class="btn btn-primary pull-right" style="margin-right:10px;"><i class="fa fa-refresh"></i> Reset</button>
             </div>

@@ -548,7 +548,7 @@ class ControllerReplogicOrderQuotes extends Controller {
 			$cust = $this->model_customer_customer->getCustomer($result['customer_id']);
 			$customer_nm = $cust['firstname'];
 			
-			if($current_user_group['name'] == 'Company admin' || $current_user_group['name'] == 'Administrator' || $current_user_group['name'] == 'Sales Manager')
+			if($current_user_group_id['user_group_id'] == '15' || $current_user_group_id['user_group_id'] == '19' || $current_user_group_id['user_group_id'] == '16')
 			{
 				//$view_button = $this->url->link('replogic/order_quotes/info', 'quote_id='.$result['quote_id'].'&token=' . $this->session->data['token'] . $url, true);
 				if($result['order_id'])
@@ -590,7 +590,7 @@ class ControllerReplogicOrderQuotes extends Controller {
 		$data['customers'] = $this->model_customer_customer->getCustomers();
 		$data['allcustomer_contacts'] = $this->model_replogic_customer_contact->getcustomercontacts();
 		
-		if($current_user_group['name'] == 'Company admin' || $current_user_group['name'] == 'Administrator')
+		if($current_user_group_id['user_group_id'] == '15' || $current_user_group_id['user_group_id'] == '19')
 		{
 			$allaccess = true;
 			$current_user_id = 0;

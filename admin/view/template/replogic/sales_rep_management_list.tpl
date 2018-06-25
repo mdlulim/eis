@@ -3,7 +3,7 @@
   <div class="page-header">
     <div class="container-fluid">
       <div class="pull-right">
-      	<button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal"  id="popup" title="Assign Sales Rep to Team"><i class="fa fa-user-plus" style="font-size:14px;"></i></button>
+        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal"  id="popup" title="Assign Sales Rep to Team"><i class="fa fa-user-plus" style="font-size:14px;"></i></button>
         <?php if($team_id == '') { ?>
         <button type="button" class="btn btn-info" data-toggle="modal" data-target="#Modalunassign"  id="popupunassign" title="Sales Rep to Unassign Team"><i class="fa fa-user-times" style="font-size:14px;"></i></button>
         <?php } ?>
@@ -40,14 +40,16 @@
       <div class="panel-body">
         
         <div class="well">
-        	<h3>Filters</h3>
+          <h3>Filters</h3>
           <div class="row">
             <div class="col-sm-6">
               <div class="form-group">
                 <label class="control-label" for="input-name">Sales Rep Name</label>
                 <!--<input type="text" name="filter_sales_rep_name" value="<?php echo $filter_sales_rep_name; ?>" placeholder="Sales Rep Name" id="input-name" class="form-control" />-->
-                <select name="filter_salesrep_name_id" class="form-control">
-                	<option value="">Select Sales Rep Name</option>
+                <input type="text" name="filter_salesrep" value="<?php echo $filter_salesrep; ?>" placeholder="Sales Rep Name" id="input-salesrep" class="form-control" />
+                <input type="hidden" name="filter_salesrep_name_id" value="<?php echo $filter_salesrep_name_id; ?>" />
+                <!--<select name="filter_salesrep_name_id" class="form-control">
+                  <option value="">Select Sales Rep Name</option>
                     <?php foreach ($allsalesreps as $allsalesrep) {  ?>
                 <?php if ($allsalesrep['salesrep_id'] == $filter_salesrep_name_id) { ?>
                 <option value="<?php echo $allsalesrep['salesrep_id']; ?>" selected="selected"><?php echo $allsalesrep['salesrep_name']; ?> <?php echo $allsalesrep['salesrep_lastname']; ?></option>
@@ -56,13 +58,15 @@
                 <?php } ?>
                 <?php } ?>
                     
-                </select>
+                </select>-->
               </div>
               
               <div class="form-group">
                 <label class="control-label" for="input-price">Customer Name</label>
-                <select name="filter_customer_id" class="form-control">
-                	<option value="">Customer Name</option>
+                <input type="text" name="filter_customer" value="<?php echo $filter_customer; ?>" placeholder="Customer Name" id="input-customer" class="form-control" />
+                <input type="hidden" name="filter_customer_id" value="<?php echo $filter_customer_id; ?>" />
+                <!--<select name="filter_customer_id" class="form-control">
+                  <option value="">Customer Name</option>
                     <?php foreach ($customers as $customer) {  ?>
                 <?php if ($customer['customer_id'] == $filter_customer_id) { ?>
                 <option value="<?php echo $customer['customer_id']; ?>" selected="selected"><?php echo $customer['firstname']; ?></option>
@@ -71,7 +75,7 @@
                 <?php } ?>
                 <?php } ?>
                     
-                </select>
+                </select>-->
               </div>
             </div>
             <div class="col-sm-6" style="margin-bottom:10px;">
@@ -85,7 +89,7 @@
               <div class="form-group">
                 <label class="control-label" for="input-price">Sales Team</label>
                 <select name="filter_team_id" class="form-control">
-                	<option value="">Select Sales Team</option>
+                  <option value="">Select Sales Team</option>
                     <?php foreach ($teams as $team) {  ?>
                 <?php if ($team['team_id'] == $filter_team_id) { ?>
                 <option value="<?php echo $team['team_id']; ?>" selected="selected"><?php echo $team['team_name']; ?></option>
@@ -101,8 +105,8 @@
               <?php } ?>
               
               <div class="form-group">
-            	<button type="button" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-search"></i> Search</button>
-            	<button type="button" id="button-filter-reset" class="btn btn-primary pull-right" style="margin-right:10px;"><i class="fa fa-refresh"></i> Reset</button>
+              <button type="button" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-search"></i> Search</button>
+              <button type="button" id="button-filter-reset" class="btn btn-primary pull-right" style="margin-right:10px;"><i class="fa fa-refresh"></i> Reset</button>
             </div>
               
             </div>
@@ -111,35 +115,33 @@
            
         </div>
         <script type="text/javascript">
-		$(document).ready(function () {
+    $(document).ready(function () {
     $("#popup").click(function () {
         $('#bookId').val($(this).data('id'));
         var array = $.map($('input[name="selected[]"]:checked'), function(c){return c.value; })
-		$('#sales_rep_ids').val(array);
-		
+    $('#sales_rep_ids').val(array);
+    
     });
-	
-	document.getElementById('assign').onclick = function() {
+  
+  document.getElementById('assign').onclick = function() {
         document.getElementById('form-popup').submit();
         return false;
     };
-	
-
-
+  
 $("#popupunassign").click(function () {
         $('#bookId').val($(this).data('id'));
         var array = $.map($('input[name="selected[]"]:checked'), function(c){return c.value; })
-		$('#unsales_rep_ids').val(array);
-		
+    $('#unsales_rep_ids').val(array);
+    
     });
-	
-	document.getElementById('unassign').onclick = function() {
+  
+  document.getElementById('unassign').onclick = function() {
         document.getElementById('form-unassign').submit();
         return false;
     };
-	
+  
 });
-		</script>
+    </script>
         <div id="myModal" class="modal fade" role="dialog">
           <form action="<?php echo $assign; ?>" method="post" enctype="multipart/form-data" id="form-popup">
           <input type="hidden" name="sales_rep_ids" id="sales_rep_ids" value=""  />
@@ -154,10 +156,10 @@ $("#popupunassign").click(function () {
               <div class="modal-body">
                 <p><strong>Select Team</strong> </p>
                 <select name="team_id" class="form-control">
-                	<option value="">Select Sales Team</option>
-                	<?php foreach ($teams as $team) {  ?>
-                    	<option value="<?php echo $team['team_id']; ?>"><?php echo $team['team_name']; ?></option>
-                	<?php } ?>
+                  <option value="">Select Sales Team</option>
+                  <?php foreach ($teams as $team) {  ?>
+                      <option value="<?php echo $team['team_id']; ?>"><?php echo $team['team_name']; ?></option>
+                  <?php } ?>
                 </select>
               </div>
               <div class="modal-footer">
@@ -228,7 +230,7 @@ $("#popupunassign").click(function () {
                             </tr>
                      <?php } ?>
                 <?php } else { ?>
-                	<tr>
+                  <tr>
                         <td class="text-center" colspan="5"><?php echo $text_no_results; ?></td>
                     </tr>
                 <?php } ?>
@@ -246,77 +248,106 @@ $("#popupunassign").click(function () {
 </div>
 <script type="text/javascript"><!--
 $('#button-filter').on('click', function() {
-	var url = 'index.php?route=replogic/sales_rep_management&token=<?php echo $token; ?>';
-
-	var filter_sales_rep_name = $('input[name=\'filter_sales_rep_name\']').val();
-	
-	var filter_sales_rep_name = $.trim(filter_sales_rep_name);
-	if (filter_sales_rep_name) {
-		url += '&filter_sales_rep_name=' + encodeURIComponent(filter_sales_rep_name);
-	}
-
-	var filter_team_id = $('select[name=\'filter_team_id\']').val();
-
-	if (filter_team_id) {
-		url += '&filter_team_id=' + encodeURIComponent(filter_team_id);
-	}
-	
-	var team_id = $('input[name=\'team_id\']').val();
-
-	if (team_id) {
-		url += '&team_id=' + encodeURIComponent(team_id);
-	}
-	
-	var filter_customer_id = $('select[name=\'filter_customer_id\']').val();
-
-	if (filter_customer_id) {
-		url += '&filter_customer_id=' + encodeURIComponent(filter_customer_id);
-	}
-	
-	var filter_salesrep_name_id = $('select[name=\'filter_salesrep_name_id\']').val();
-
-	if (filter_salesrep_name_id) {
-		url += '&filter_salesrep_name_id=' + encodeURIComponent(filter_salesrep_name_id);
-	}
-
-	var filter_email = $('input[name=\'filter_email\']').val();
-	var filter_email = $.trim(filter_email);
-	if (filter_email) {
-		url += '&filter_email=' + encodeURIComponent(filter_email);
-	}
-	
+  var url = 'index.php?route=replogic/sales_rep_management&token=<?php echo $token; ?>';
+  var filter_sales_rep_name = $('input[name=\'filter_sales_rep_name\']').val();
+  
+  var filter_sales_rep_name = $.trim(filter_sales_rep_name);
+  if (filter_sales_rep_name) {
+    url += '&filter_sales_rep_name=' + encodeURIComponent(filter_sales_rep_name);
+  }
+  var filter_team_id = $('select[name=\'filter_team_id\']').val();
+  if (filter_team_id) {
+    url += '&filter_team_id=' + encodeURIComponent(filter_team_id);
+  }
+  
+  var team_id = $('input[name=\'team_id\']').val();
+  if (team_id) {
+    url += '&team_id=' + encodeURIComponent(team_id);
+  }
+  
+  var filter_customer_id = $('input[name=\'filter_customer_id\']').val();
+  if (filter_customer_id) {
+    url += '&filter_customer_id=' + encodeURIComponent(filter_customer_id);
+  }
+  
+  var filter_salesrep_name_id = $('input[name=\'filter_salesrep_name_id\']').val();
+  if (filter_salesrep_name_id) {
+    url += '&filter_salesrep_name_id=' + encodeURIComponent(filter_salesrep_name_id);
+  }
+  var filter_email = $('input[name=\'filter_email\']').val();
+  var filter_email = $.trim(filter_email);
+  if (filter_email) {
+    url += '&filter_email=' + encodeURIComponent(filter_email);
+  }
+  
 //alert(url);
-	location = url;
+  location = url;
 });
 $('#button-filter-reset').on('click', function() {
-	<?php if($_REQUEST['team_id']) { ?>
-	var team_id = $('input[name=\'team_id\']').val();
-	var url = 'index.php?route=replogic/sales_rep_management&token=<?php echo $token; ?>&team_id=' + team_id + '';
-	<?php } else { ?>
-	var url = 'index.php?route=replogic/sales_rep_management&token=<?php echo $token; ?>';
-	<?php } ?>
-
-	location = url;
+  <?php if($_REQUEST['team_id']) { ?>
+  var team_id = $('input[name=\'team_id\']').val();
+  var url = 'index.php?route=replogic/sales_rep_management&token=<?php echo $token; ?>&team_id=' + team_id + '';
+  <?php } else { ?>
+  var url = 'index.php?route=replogic/sales_rep_management&token=<?php echo $token; ?>';
+  <?php } ?>
+  location = url;
 });
 //--></script>
 <script type="text/javascript"><!--
 $('input[name^=\'selected\']').on('change', function() {
-	
-	var selected = $('input[name^=\'selected\']:checked');
-
-	if (selected.length) {
-		$('#button-delete').prop('disabled', false);
-		$('#popup').prop('disabled', false);
-		$('#popupunassign').prop('disabled', false);
-	}
-
+  
+  var selected = $('input[name^=\'selected\']:checked');
+  if (selected.length) {
+    $('#button-delete').prop('disabled', false);
+    $('#popup').prop('disabled', false);
+    $('#popupunassign').prop('disabled', false);
+  }
 });
-
 $('#button-delete').prop('disabled', true);
 $('#popup').prop('disabled', true);
 $('#popupunassign').prop('disabled', true);
-
 $('input[name^=\'selected\']:first').trigger('change');
-
 //--></script> 
+<script type="text/javascript"><!--
+$('input[name=\'filter_customer\']').autocomplete({
+  'source': function(request, response) {
+    $.ajax({
+      url: 'index.php?route=customer/customer/autocomplete&token=<?php echo $token; ?>&filter_name=' +  encodeURIComponent(request),
+      dataType: 'json',
+      success: function(json) {
+        response($.map(json, function(item) {
+          return {
+            label: item['name'],
+            value: item['customer_id']
+          }
+        }));
+      }
+    });
+  },
+  'select': function(item) {
+    $('input[name=\'filter_customer\']').val(item['label']);
+    $('input[name=\'filter_customer_id\']').val(item['value']);
+  }
+});
+$('input[name=\'filter_salesrep\']').autocomplete({
+  'source': function(request, response) {
+    $.ajax({
+      url: 'index.php?route=replogic/sales_rep_management/autocomplete&token=<?php echo $token; ?>&filter_name=' +  encodeURIComponent(request),
+      dataType: 'json',
+      success: function(json) {
+        response($.map(json, function(item) {
+          return {
+            label: item['name'],
+            value: item['salesrep_id']
+          }
+        }));
+      }
+    });
+  },
+  'select': function(item) {
+    $('input[name=\'filter_salesrep\']').val(item['label']);
+    $('input[name=\'filter_salesrep_name_id\']').val(item['value']);
+  }
+});
+//--></script>
 <?php echo $footer; ?> 

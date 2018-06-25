@@ -60,7 +60,7 @@ class ModelUserUser extends Model {
 		$sql .= " where user_id > 0";
 		
 		if (!empty($data['filter_name'])) {
-			$sql .= " AND username = '" . $this->db->escape($data['filter_name']) . "'";
+			$sql .= " AND username LIKE '%" . $this->db->escape($data['filter_name']) . "%'";
 		}
 		
 		if (isset($data['filter_status']) && !is_null($data['filter_status'])) {

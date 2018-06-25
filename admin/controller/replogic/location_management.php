@@ -1,31 +1,22 @@
 <?php 
 class ControllerReplogicLocationManagement extends Controller {
 	private $error = array(); 
-
 	public function index() {
 		$this->load->language('replogic/location_management');
-
 		$this->document->setTitle($this->language->get('heading_title'));
-
 		$this->load->model('replogic/location_management');
-
 		$this->getList();
 	}
 	
 	public function delete() { 
 		$this->load->language('replogic/location_management');
-
 		$this->document->setTitle($this->language->get('heading_title'));
-
 		$this->load->model('replogic/location_management');
-
 		if (isset($this->request->post['selected'])) { 
 			foreach ($this->request->post['selected'] as $checkin_id) {
 				$this->model_replogic_location_management->deletelocation($checkin_id);
 			}
-
 			$this->session->data['success'] = $this->language->get('text_success');
-
 			$url = '';
 			
 			if (isset($this->request->get['filter_customer_id'])) {
@@ -43,21 +34,16 @@ class ControllerReplogicLocationManagement extends Controller {
 			if (isset($this->request->get['sort'])) {
 				$url .= '&sort=' . $this->request->get['sort'];
 			}
-
 			if (isset($this->request->get['order'])) {
 				$url .= '&order=' . $this->request->get['order'];
 			}
-
 			if (isset($this->request->get['page'])) {
 				$url .= '&page=' . $this->request->get['page'];
 			}
-
 			$this->response->redirect($this->url->link('replogic/location_management', 'token=' . $this->session->data['token'] . $url, true));
 		}
-
 		$this->getList();
 	}
-
 	protected function getList() {
 		
 		if (isset($this->request->get['filter_address'])) {
@@ -65,19 +51,16 @@ class ControllerReplogicLocationManagement extends Controller {
 		} else {
 			$filter_address = null;
 		}
-
 		if (isset($this->request->get['filter_customer_id'])) {
 			$filter_customer_id = $this->request->get['filter_customer_id'];
 		} else {
 			$filter_customer_id = null;
 		}
-
 		if (isset($this->request->get['filter_team_id'])) {
 			$filter_team_id = $this->request->get['filter_team_id'];
 		} else {
 			$filter_team_id = null;
 		}
-
 		if (isset($this->request->get['filter_salesrep_id'])) {
 			$filter_salesrep_id = $this->request->get['filter_salesrep_id'];
 		} else {
@@ -89,25 +72,20 @@ class ControllerReplogicLocationManagement extends Controller {
 		} else {
 			$sort = 'name';
 		}
-
 		if (isset($this->request->get['order'])) {
 			$order = $this->request->get['order'];
 		} else {
 			$order = 'ASC';
 		}
-
 		if (isset($this->request->get['page'])) {
 			$page = $this->request->get['page'];
 		} else {
 			$page = 1;
 		}
-
 		$url = '';
-
 		if (isset($this->request->get['filter_address'])) {
 			$url .= '&filter_address=' . urlencode(html_entity_decode($this->request->get['filter_address'], ENT_QUOTES, 'UTF-8'));
 		}
-
 		if (isset($this->request->get['filter_salesrep_id'])) {
 			$url .= '&filter_salesrep_id=' . $this->request->get['filter_salesrep_id'];
 		}
@@ -115,7 +93,6 @@ class ControllerReplogicLocationManagement extends Controller {
 		if (isset($this->request->get['filter_customer_id'])) {
 			$url .= '&filter_customer_id=' . $this->request->get['filter_customer_id'];
 		}
-
 		if (isset($this->request->get['filter_team_id'])) {
 			$url .= '&filter_team_id=' . $this->request->get['filter_team_id'];
 		}
@@ -123,27 +100,21 @@ class ControllerReplogicLocationManagement extends Controller {
 		if (isset($this->request->get['sort'])) {
 			$url .= '&sort=' . $this->request->get['sort'];
 		}
-
 		if (isset($this->request->get['order'])) {
 			$url .= '&order=' . $this->request->get['order'];
 		}
-
 		if (isset($this->request->get['page'])) {
 			$url .= '&page=' . $this->request->get['page'];
 		}
-
 		$data['breadcrumbs'] = array();
-
 		$data['breadcrumbs'][] = array(
 			'text' => $this->language->get('text_home'),
-			'href' => $this->url->link('common/sales_dashboard', 'token=' . $this->session->data['token'], true)
+			'href' => $this->url->link('common/dashboard', 'token=' . $this->session->data['token'], true)
 		);
-
 		$data['breadcrumbs'][] = array(
 			'text' => $this->language->get('heading_title'),
 			'href' => $this->url->link('replogic/location_management', 'token=' . $this->session->data['token'] . $url, true)
 		);
-
 		$data['add'] = $this->url->link('replogic/location_management/add', 'token=' . $this->session->data['token'] . $url, true);
 		$data['delete'] = $this->url->link('replogic/location_management/delete', 'token=' . $this->session->data['token'] . $url, true);
 		
@@ -160,7 +131,7 @@ class ControllerReplogicLocationManagement extends Controller {
 		$current_user_group_id = $this->model_user_user->getUser($current_user); ;
 		$current_user_group = $this->model_user_user_group->getUserGroup($current_user_group_id['user_group_id']); ;
 		//print_r($current_user_group); exit;
-		if($current_user_group['name'] == 'Sales Manager')
+		if($current_user_group_id['user_group_id'] == '16')
 		{
 			$curent_sales_team = $this->model_user_team->getTeamBySalesmanager($current_user);
 			$filter_team_id = $curent_sales_team['team_id']; 
@@ -172,7 +143,7 @@ class ControllerReplogicLocationManagement extends Controller {
 		}
 		
 		//$data['deletebutton'] = ($current_user_group['name'] == 'Company admin') ? '1' : '0';
-		$data['deletebutton'] = ($current_user_group['name'] == 'System Administrator') ? '1' : '0';
+		$data['deletebutton'] = ($current_user_group_id['user_group_id'] == '19') ? '1' : '0';
 		
 		$filter_data = array(
 			'filter_groupby_salesrep'	  => true,
@@ -214,7 +185,7 @@ class ControllerReplogicLocationManagement extends Controller {
 		$this->load->model('customer/customer');
 		$this->load->model('user/team');
 		
-		if($current_user_group['name'] == 'Sales Manager')
+		if($current_user_group_id['user_group_id'] == '16')
 		{
 			$data['filtersales'] = 'yes';
 			if (isset($this->request->get['filter_team_id']))
@@ -256,7 +227,38 @@ class ControllerReplogicLocationManagement extends Controller {
 			$data['filtersales'] = 'no';
 			$data['customers'] = $this->model_customer_customer->getCustomers();
 			$data['salesReps'] = $this->model_replogic_sales_rep_management->getSalesRepsDropdown($allaccess=true);
-			$salesrep_id = ''; 
+			$salesrep_id = '';
+			
+			if($filter_customer_id)
+			{
+				$filtercustomerinfo = $this->model_customer_customer->getCustomer($filter_customer_id);
+				$data['filter_customer'] = $filtercustomerinfo['firstname'];
+			}
+			else
+			{
+				$data['filter_customer'] = '';
+			}
+			
+			if($filter_salesrep_id)
+			{
+				$salesreinfo = $this->model_replogic_sales_rep_management->getsalesrep($filter_salesrep_id);
+				$data['filter_salesrep'] = $salesreinfo['salesrep_name'] . ' ' . $salesreinfo['salesrep_lastname'];
+			}
+			else
+			{
+				$data['filter_salesrep'] = '';
+			}
+			
+			if($filter_team_id)
+			{
+				$teamsinfo = $this->model_user_team->getTeam($filter_team_id);
+				$data['filter_teamname'] = $teamsinfo['team_name'];
+			}
+			else
+			{
+				$data['filter_teamname'] = '';
+			}
+		 
 		}
 		
 		$filter_dataa = array('filter_salesrep_id' => $salesrep_id);
@@ -333,10 +335,8 @@ class ControllerReplogicLocationManagement extends Controller {
 		$data['text_list'] = $this->language->get('text_list');
 		$data['text_no_results'] = $this->language->get('text_no_results');
 		$data['text_confirm'] = $this->language->get('text_confirm');
-
 		$data['column_name'] = $this->language->get('column_name');
 		$data['column_action'] = $this->language->get('column_action');
-
 		$data['button_add'] = $this->language->get('button_add');
 		$data['button_edit'] = $this->language->get('button_edit');
 		$data['button_delete'] = $this->language->get('button_delete');
@@ -347,27 +347,22 @@ class ControllerReplogicLocationManagement extends Controller {
 		} else {
 			$data['error_warning'] = '';
 		}
-
 		if (isset($this->session->data['success'])) {
 			$data['success'] = $this->session->data['success'];
-
 			unset($this->session->data['success']);
 		} else {
 			$data['success'] = '';
 		}
-
 		if (isset($this->request->post['selected'])) {
 			$data['selected'] = (array)$this->request->post['selected'];
 		} else {
 			$data['selected'] = array();
 		}
-
 		$url = '';
 		
 		if (isset($this->request->get['filter_address'])) {
 			$url .= '&filter_address=' . urlencode(html_entity_decode($this->request->get['filter_address'], ENT_QUOTES, 'UTF-8'));
 		}
-
 		if (isset($this->request->get['filter_salesrep_id'])) {
 			$url .= '&filter_salesrep_id=' . $this->request->get['filter_salesrep_id'];
 		}
@@ -375,7 +370,6 @@ class ControllerReplogicLocationManagement extends Controller {
 		if (isset($this->request->get['filter_customer_id'])) {
 			$url .= '&filter_customer_id=' . $this->request->get['filter_customer_id'];
 		}
-
 		if (isset($this->request->get['filter_team_id'])) {
 			$url .= '&filter_team_id=' . $this->request->get['filter_team_id'];
 		}
@@ -385,19 +379,15 @@ class ControllerReplogicLocationManagement extends Controller {
 		} else {
 			$url .= '&order=ASC';
 		}
-
 		if (isset($this->request->get['page'])) {
 			$url .= '&page=' . $this->request->get['page'];
 		}
-
 		$data['sort_name'] = $this->url->link('replogic/location_management', 'token=' . $this->session->data['token'] . '&sort=name' . $url, true);
-
 		$url = '';
 		
 		if (isset($this->request->get['filter_address'])) {
 			$url .= '&filter_address=' . urlencode(html_entity_decode($this->request->get['filter_address'], ENT_QUOTES, 'UTF-8'));
 		}
-
 		if (isset($this->request->get['filter_salesrep_id'])) {
 			$url .= '&filter_salesrep_id=' . $this->request->get['filter_salesrep_id'];
 		}
@@ -405,7 +395,6 @@ class ControllerReplogicLocationManagement extends Controller {
 		if (isset($this->request->get['filter_customer_id'])) {
 			$url .= '&filter_customer_id=' . $this->request->get['filter_customer_id'];
 		}
-
 		if (isset($this->request->get['filter_team_id'])) {
 			$url .= '&filter_team_id=' . $this->request->get['filter_team_id'];
 		}
@@ -413,7 +402,6 @@ class ControllerReplogicLocationManagement extends Controller {
 		if (isset($this->request->get['sort'])) {
 			$url .= '&sort=' . $this->request->get['sort'];
 		}
-
 		if (isset($this->request->get['order'])) {
 			$url .= '&order=' . $this->request->get['order'];
 		}
@@ -423,22 +411,17 @@ class ControllerReplogicLocationManagement extends Controller {
 		$pagination->page = $page;
 		$pagination->limit = $this->config->get('config_limit_admin');
 		$pagination->url = $this->url->link('replogic/location_management', 'token=' . $this->session->data['token'] . $url . '&page={page}', true);
-
 		$data['pagination'] = $pagination->render();
-
 		$data['results'] = sprintf($this->language->get('text_pagination'), ($location_total) ? (($page - 1) * $this->config->get('config_limit_admin')) + 1 : 0, ((($page - 1) * $this->config->get('config_limit_admin')) > ($location_total - $this->config->get('config_limit_admin'))) ? $location_total : ((($page - 1) * $this->config->get('config_limit_admin')) + $this->config->get('config_limit_admin')), $location_total, ceil($location_total / $this->config->get('config_limit_admin')));
-
 		$data['filter_address'] = $filter_address;
 		$data['filter_customer_id'] = $filter_customer_id;
 		$data['filter_team_id'] = $filter_team_id;
 		$data['filter_salesrep_id'] = $filter_salesrep_id;
 		$data['sort'] = $sort;
 		$data['order'] = $order;
-
 		$data['header'] = $this->load->controller('common/header');
 		$data['column_left'] = $this->load->controller('common/column_left');
 		$data['footer'] = $this->load->controller('common/footer');
-
 		$this->response->setOutput($this->load->view('replogic/location_management_list', $data));
 	}
 	
@@ -448,46 +431,37 @@ class ControllerReplogicLocationManagement extends Controller {
         $timestamp = (int) $timestamp;
         $current_time = time();
         $diff = $current_time - $timestamp;
-
         //intervals in seconds
         $intervals = array(
             'year' => 31556926, 'month' => 2629744, 'week' => 604800, 'day' => 86400, 'hour' => 3600, 'minute' => 60
         );
-
         //now we just find the difference
         if ($diff == 0) {
             return ' Just now ';
         }
-
         if ($diff < 60) {
             return $diff == 1 ? $diff . ' second ago ' : $diff . ' seconds ago ';
         }
-
         if ($diff >= 60 && $diff < $intervals['hour']) {
             $diff = floor($diff / $intervals['minute']);
             return $diff == 1 ? $diff . ' minute ago ' : $diff . ' minutes ago ';
         }
-
         if ($diff >= $intervals['hour'] && $diff < $intervals['day']) {
             $diff = floor($diff / $intervals['hour']);
             return $diff == 1 ? $diff . ' hour ago ' : $diff . ' hours ago ';
         }
-
         if ($diff >= $intervals['day'] && $diff < $intervals['week']) {
             $diff = floor($diff / $intervals['day']);
             return $diff == 1 ? $diff . ' day ago ' : $diff . ' days ago ';
         }
-
         if ($diff >= $intervals['week'] && $diff < $intervals['month']) {
             $diff = floor($diff / $intervals['week']);
             return $diff == 1 ? $diff . ' week ago ' : $diff . ' weeks ago ';
         }
-
         if ($diff >= $intervals['month'] && $diff < $intervals['year']) {
             $diff = floor($diff / $intervals['month']);
             return $diff == 1 ? $diff . ' month ago ' : $diff . ' months ago ';
         }
-
         if ($diff >= $intervals['year']) {
             $diff = floor($diff / $intervals['year']);
             return $diff == 1 ? $diff . ' year ago ' : $diff . ' years ago ';
@@ -589,11 +563,8 @@ class ControllerReplogicLocationManagement extends Controller {
 	
 	public function GetSalesRep() {
 		$json = array();
-
 		$this->load->model('replogic/sales_rep_management');
-
 		$salesrep_infos = $this->model_replogic_sales_rep_management->getSalesRepByTeam($this->request->get['team_id']);
-
 		if ($salesrep_infos) {
 			foreach($salesrep_infos as $salesrep_info)
 			{
@@ -603,18 +574,14 @@ class ControllerReplogicLocationManagement extends Controller {
 				);
 			}
 		}
-
 		$this->response->addHeader('Content-Type: application/json');
 		$this->response->setOutput(json_encode($json));
 	}
 	
 	public function GetCustomerBySalesrep() {
 		$json = array();
-
 		$this->load->model('customer/customer');
-
 		$customer_infos = $this->model_customer_customer->getCustomerBySalesRep($this->request->get['salesrep_id']);
-
 		if ($customer_infos) {
 			foreach($customer_infos as $customer_info)
 			{
@@ -624,9 +591,7 @@ class ControllerReplogicLocationManagement extends Controller {
 				);
 			}
 		}
-
 		$this->response->addHeader('Content-Type: application/json');
 		$this->response->setOutput(json_encode($json));
 	}	
-
 }

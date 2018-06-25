@@ -33,7 +33,7 @@
       </div>
       <div class="panel-body">
         <div class="well">
-        	<h3>Filters</h3>
+          <h3>Filters</h3>
           <div class="row">
             <div class="col-sm-4">
               <div class="form-group">
@@ -42,9 +42,9 @@
               </div>
               <div class="form-group">
                 <label class="control-label" for="input-customer"><?php echo $entry_customer; ?></label>
-                <!--<input type="text" name="filter_customer" value="<?php echo $filter_customer; ?>" placeholder="<?php echo $entry_customer; ?>" id="input-customer" class="form-control" />-->
-                <select name="filter_customer_id" class="form-control">
-                	<option value="">Select Customer Name</option>
+                <input type="text" name="filter_customer" value="<?php echo $filter_customer; ?>" placeholder="<?php echo $entry_customer; ?>" id="input-customer" class="form-control" />
+                <!--<select name="filter_customer_id" class="form-control">
+                  <option value="">Select Customer Name</option>
                     <?php foreach ($customers as $customer) {  ?>
                 <?php if ($customer['customer_id'] == $filter_customer_id) { ?>
                 <option value="<?php echo $customer['customer_id']; ?>" selected="selected"><?php echo $customer['firstname']; ?></option>
@@ -53,7 +53,7 @@
                 <?php } ?>
                 <?php } ?>
                     
-                </select>
+                </select>-->
               </div>
             </div>
             <div class="col-sm-4">
@@ -80,8 +80,10 @@
                 <!--<label class="control-label" for="input-total"><?php echo $entry_total; ?></label>
                 <input type="text" name="filter_total" value="<?php echo $filter_total; ?>" placeholder="<?php echo $entry_total; ?>" id="input-total" class="form-control" />-->
                  <label class="control-label" for="input-customer">Customer Contact</label>
-                   <select name="filter_customer_contactid" class="form-control">
-                	<option value="">Select Customer Contact</option>
+                   <input type="text" name="filter_customercontact" value="<?php echo $filter_customercontact; ?>" placeholder="Customer Contact" id="input-customercontact" class="form-control" />
+                     <input type="hidden" name="filter_customer_contactid" value="<?php echo $filter_customer_contactid; ?>" />
+                   <!--<select name="filter_customer_contactid" class="form-control">
+                  <option value="">Select Customer Contact</option>
                     <?php foreach ($customercontacts as $customercontact) {  ?>
                 <?php if ($customercontact['customer_con_id'] == $filter_customer_contactid) { ?>
                 <option value="<?php echo $customercontact['customer_con_id']; ?>" selected="selected"><?php echo $customercontact['first_name']; ?> <?php echo $customercontact['last_name']; ?></option>
@@ -90,7 +92,7 @@
                 <?php } ?>
                 <?php } ?>
                     
-                </select>         
+                </select>-->         
               </div>
             </div>
             <div class="col-sm-4">
@@ -112,8 +114,10 @@
               </div>-->
               <div class="form-group">
                 <label class="control-label" for="input-customer">Sales Rep Name</label>
-                   <select name="filter_salesrepid" class="form-control">
-                	<option value="">Select Sales Rep Name</option>
+                   <input type="text" name="filter_salesrep" value="<?php echo $filter_salesrep; ?>" placeholder="Sales Rep Name" id="input-salesrep" class="form-control" />
+                   <input type="hidden" name="filter_salesrepid" value="<?php echo $filter_salesrepid; ?>" />
+                   <!--<select name="filter_salesrepid" class="form-control">
+                  <option value="">Select Sales Rep Name</option>
                     <?php foreach ($salesrepnames as $salesrepname) {  ?>
                 <?php if ($salesrepname['salesrep_id'] == $filter_salesrepid) { ?>
                 <option value="<?php echo $salesrepname['salesrep_id']; ?>" selected="selected"><?php echo $salesrepname['salesrep_name']; ?> <?php echo $salesrepname['salesrep_lastname']; ?></option>
@@ -122,7 +126,7 @@
                 <?php } ?>
                 <?php } ?>
                     
-                </select>         
+                </select>-->         
               </div>
               <button type="button" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-search"></i> Search</button>
               <button type="button" id="button-filter-reset" class="btn btn-primary pull-right" style="margin-right:10px;"><i class="fa fa-refresh"></i> Reset</button>
@@ -197,13 +201,13 @@
                   <td class="text-left"><?php echo $order['date_modified']; ?></td>
                   <td class="text-left">
                     <?php if ($order['order_status_id'] == $order_status_confirmed) : ?>
-                    	<a class="btn-success" style="padding:2px 5px;border-radius:5px;">Order Confirmed</a>
+                      <a class="btn-success" style="padding:2px 5px;border-radius:5px;">Order Confirmed</a>
                     <?php elseif ($order['order_status_id'] == $order_status_pending) : ?>
-                    	<a class="btn-warning" style="padding:2px 5px;border-radius:5px;">Pending</a>
+                      <a class="btn-warning" style="padding:2px 5px;border-radius:5px;">Pending</a>
                     <?php elseif ($order['order_status_id'] == $order_status_cancelled) : ?>
-                    	<a class="btn-warning" style="padding:2px 5px;border-radius:5px;background-color:#DB524B;">Cancelled</a>
+                      <a class="btn-warning" style="padding:2px 5px;border-radius:5px;background-color:#DB524B;">Cancelled</a>
                     <?php elseif ($order['order_status_id'] == $order_status_processing) : ?>
-                    	<a class="btn-warning" style="background-color: white;border: 1px solid #000;border-radius: 5px;color: #666666;padding: 0 10px;">Processing</a>
+                      <a class="btn-warning" style="background-color: white;border: 1px solid #000;border-radius: 5px;color: #666666;padding: 0 10px;">Processing</a>
                     <?php endif; ?>
                   </td>
                   <td class="text-right"><a href="<?php echo $order['view']; ?>" data-toggle="tooltip" title="<?php echo $button_view; ?>" class="btn btn-info"><i class="fa fa-eye"></i></a> <!--<a href="<?php echo $order['edit']; ?>" data-toggle="tooltip" title="<?php echo $button_edit; ?>" class="btn btn-primary"><i class="fa fa-pencil"></i></a>--></td>
@@ -230,154 +234,167 @@
   </style>
  <script type="text/javascript"><!--
 $('input[name^=\'selected\']').on('change', function() {
-	
-	var selected = $('input[name^=\'selected\']:checked');
-
-	if (selected.length) {
-		$('#button-delete').prop('disabled', false);
-	}
-	else
-	{
-		$('#button-delete').prop('disabled', true);
-	}
-
+  
+  var selected = $('input[name^=\'selected\']:checked');
+  if (selected.length) {
+    $('#button-delete').prop('disabled', false);
+  }
+  else
+  {
+    $('#button-delete').prop('disabled', true);
+  }
 });
-
 $('#button-delete').prop('disabled', true);
-
 //--></script>   
   <script type="text/javascript"><!--
 $('#button-filter').on('click', function() {
-	url = 'index.php?route=sale/order&token=<?php echo $token; ?>';
-
-	var filter_order_id = $('input[name=\'filter_order_id\']').val();
-
-	if (filter_order_id) {
-		url += '&filter_order_id=' + encodeURIComponent(filter_order_id);
-	}
-
-	var filter_customer = $('input[name=\'filter_customer\']').val();
-
-	if (filter_customer) {
-		url += '&filter_customer=' + encodeURIComponent(filter_customer);
-	}
-	
-	var filter_customer_id = $('select[name=\'filter_customer_id\']').val();
-
-	if (filter_customer_id) {
-		url += '&filter_customer_id=' + encodeURIComponent(filter_customer_id);
-	}
-	
-	var filter_customer_contactid = $('select[name=\'filter_customer_contactid\']').val();
-
-	if (filter_customer_contactid) {
-		url += '&filter_customer_contactid=' + encodeURIComponent(filter_customer_contactid);
-	}
-	
-	var filter_salesrepid = $('select[name=\'filter_salesrepid\']').val();
-
-	if (filter_salesrepid) {
-		url += '&filter_salesrepid=' + encodeURIComponent(filter_salesrepid);
-	}
-
-	var filter_order_status = $('select[name=\'filter_order_status\']').val();
-
-	if (filter_order_status != '*') {
-		url += '&filter_order_status=' + encodeURIComponent(filter_order_status);
-	}
-
-	var filter_total = $('input[name=\'filter_total\']').val();
-
-	if (filter_total) {
-		url += '&filter_total=' + encodeURIComponent(filter_total);
-	}
-
-	var filter_date_added = $('input[name=\'filter_date_added\']').val();
-
-	if (filter_date_added) {
-		url += '&filter_date_added=' + encodeURIComponent(filter_date_added);
-	}
-
-	var filter_date_modified = $('input[name=\'filter_date_modified\']').val();
-
-	if (filter_date_modified) {
-		url += '&filter_date_modified=' + encodeURIComponent(filter_date_modified);
-	}
-
-	location = url;
+  url = 'index.php?route=sale/order&token=<?php echo $token; ?>';
+  var filter_order_id = $('input[name=\'filter_order_id\']').val();
+  if (filter_order_id) {
+    url += '&filter_order_id=' + encodeURIComponent(filter_order_id);
+  }
+  var filter_customer = $('input[name=\'filter_customer\']').val();
+  if (filter_customer) {
+    url += '&filter_customer=' + encodeURIComponent(filter_customer);
+  }
+  
+  var filter_customer_id = $('select[name=\'filter_customer_id\']').val();
+  if (filter_customer_id) {
+    url += '&filter_customer_id=' + encodeURIComponent(filter_customer_id);
+  }
+  
+  /*var filter_customer_contactid = $('select[name=\'filter_customer_contactid\']').val();*/
+  var filter_customer_contactid = $('input[name=\'filter_customer_contactid\']').val();
+  if (filter_customer_contactid) {
+    url += '&filter_customer_contactid=' + encodeURIComponent(filter_customer_contactid);
+  }
+  
+  /*var filter_salesrepid = $('select[name=\'filter_salesrepid\']').val();*/
+  var filter_salesrepid = $('input[name=\'filter_salesrepid\']').val();
+  if (filter_salesrepid) {
+    url += '&filter_salesrepid=' + encodeURIComponent(filter_salesrepid);
+  }
+  var filter_order_status = $('select[name=\'filter_order_status\']').val();
+  if (filter_order_status != '*') {
+    url += '&filter_order_status=' + encodeURIComponent(filter_order_status);
+  }
+  var filter_total = $('input[name=\'filter_total\']').val();
+  if (filter_total) {
+    url += '&filter_total=' + encodeURIComponent(filter_total);
+  }
+  var filter_date_added = $('input[name=\'filter_date_added\']').val();
+  if (filter_date_added) {
+    url += '&filter_date_added=' + encodeURIComponent(filter_date_added);
+  }
+  var filter_date_modified = $('input[name=\'filter_date_modified\']').val();
+  if (filter_date_modified) {
+    url += '&filter_date_modified=' + encodeURIComponent(filter_date_modified);
+  }
+  location = url;
 });
 $('#button-filter-reset').on('click', function() {
-	//var team_id = $('input[name=\'team_id\']').val();
-	//var url = 'index.php?route=sale/order&token=<?php echo $token; ?>&team_id=' + team_id + '';
-	var url = 'index.php?route=sale/order&token=<?php echo $token; ?>';
-
-	location = url;
+  //var team_id = $('input[name=\'team_id\']').val();
+  //var url = 'index.php?route=sale/order&token=<?php echo $token; ?>&team_id=' + team_id + '';
+  var url = 'index.php?route=sale/order&token=<?php echo $token; ?>';
+  location = url;
 });
 //--></script> 
   <script type="text/javascript"><!--
 $('input[name=\'filter_customer\']').autocomplete({
-	'source': function(request, response) {
-		$.ajax({
-			url: 'index.php?route=customer/customer/autocomplete&token=<?php echo $token; ?>&filter_name=' +  encodeURIComponent(request),
-			dataType: 'json',
-			success: function(json) {
-				response($.map(json, function(item) {
-					return {
-						label: item['name'],
-						value: item['customer_id']
-					}
-				}));
-			}
-		});
-	},
-	'select': function(item) {
-		$('input[name=\'filter_customer\']').val(item['label']);
-	}
+  'source': function(request, response) {
+    $.ajax({
+      url: 'index.php?route=customer/customer/autocomplete&token=<?php echo $token; ?>&filter_name=' +  encodeURIComponent(request),
+      dataType: 'json',
+      success: function(json) {
+        response($.map(json, function(item) {
+          return {
+            label: item['name'],
+            value: item['customer_id']
+          }
+        }));
+      }
+    });
+  },
+  'select': function(item) {
+    $('input[name=\'filter_customer\']').val(item['label']);
+  }
+});
+$('input[name=\'filter_customercontact\']').autocomplete({
+  'source': function(request, response) {
+    $.ajax({
+      url: 'index.php?route=replogic/customer_contact/autocomplete&token=<?php echo $token; ?>&filter_name=' +  encodeURIComponent(request),
+      dataType: 'json',
+      success: function(json) {
+        response($.map(json, function(item) {
+          return {
+            label: item['name'],
+            value: item['customer_con_id']
+          }
+        }));
+      }
+    });
+  },
+  'select': function(item) {
+    $('input[name=\'filter_customercontact\']').val(item['label']);
+    $('input[name=\'filter_customer_contactid\']').val(item['value']);
+  }
+});
+$('input[name=\'filter_salesrep\']').autocomplete({
+  'source': function(request, response) {
+    $.ajax({
+      url: 'index.php?route=replogic/sales_rep_management/autocomplete&token=<?php echo $token; ?>&filter_name=' +  encodeURIComponent(request),
+      dataType: 'json',
+      success: function(json) {
+        response($.map(json, function(item) {
+          return {
+            label: item['name'],
+            value: item['salesrep_id']
+          }
+        }));
+      }
+    });
+  },
+  'select': function(item) {
+    $('input[name=\'filter_salesrep\']').val(item['label']);
+    $('input[name=\'filter_salesrepid\']').val(item['value']);
+  }
 });
 //--></script> 
   <script type="text/javascript"><!--
 $('input[name^=\'selected\']').on('change', function() {
-	$('#button-shipping, #button-invoice').prop('disabled', true);
-
-	var selected = $('input[name^=\'selected\']:checked');
-
-	if (selected.length) {
-		$('#button-invoice').prop('disabled', false);
-	}
-
-	for (i = 0; i < selected.length; i++) {
-		if ($(selected[i]).parent().find('input[name^=\'shipping_code\']').val()) {
-			$('#button-shipping').prop('disabled', false);
-
-			break;
-		}
-	}
+  $('#button-shipping, #button-invoice').prop('disabled', true);
+  var selected = $('input[name^=\'selected\']:checked');
+  if (selected.length) {
+    $('#button-invoice').prop('disabled', false);
+  }
+  for (i = 0; i < selected.length; i++) {
+    if ($(selected[i]).parent().find('input[name^=\'shipping_code\']').val()) {
+      $('#button-shipping').prop('disabled', false);
+      break;
+    }
+  }
 });
-
 $('#button-shipping, #button-invoice').prop('disabled', true);
-
 $('input[name^=\'selected\']:first').trigger('change');
-
 // IE and Edge fix!
 $('#button-shipping, #button-invoice').on('click', function(e) {
-	$('#form-order').attr('action', this.getAttribute('formAction'));
+  $('#form-order').attr('action', this.getAttribute('formAction'));
 });
-
 $('#button-delete').on('click', function(e) {
-	$('#form-order').attr('action', this.getAttribute('formAction'));
-	
-	if (confirm('<?php echo $text_confirm; ?>')) {
-		$('#form-order').submit();
-	} else {
-		return false;
-	}
+  $('#form-order').attr('action', this.getAttribute('formAction'));
+  
+  if (confirm('<?php echo $text_confirm; ?>')) {
+    $('#form-order').submit();
+  } else {
+    return false;
+  }
 });
 //--></script> 
   <script src="view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
   <link href="view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.css" type="text/css" rel="stylesheet" media="screen" />
   <script type="text/javascript"><!--
 $('.date').datetimepicker({
-	pickTime: false
+  pickTime: false
 });
 //--></script></div>
 <?php echo $footer; ?> 

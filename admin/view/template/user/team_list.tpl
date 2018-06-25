@@ -31,7 +31,7 @@
       <div class="panel-body">
         
         <div class="well">
-        	<h3>Filters</h3>
+          <h3>Filters</h3>
           <div class="row">
             <div class="col-sm-6">
               <div class="form-group">
@@ -45,9 +45,9 @@
               <div class="form-group">
                 <label class="control-label" for="input-price">Sales Manager</label>
                 <select name="filter_salesrep_id" class="form-control">
-                	<option value="">Select Sales Manager</option>
+                  <option value="">Select Sales Manager</option>
                     <?php foreach($sales_managers as $sales_manager) { ?>
-                    	<?php if ($sales_manager['user_id'] == $filter_salesrep_id) { ?>
+                      <?php if ($sales_manager['user_id'] == $filter_salesrep_id) { ?>
                 <option value="<?php echo $sales_manager['user_id']; ?>" selected="selected"><?php echo $sales_manager['firstname']; ?> <?php echo $sales_manager['lastname']; ?></option>
                 <?php } else { ?>
                 <option value="<?php echo $sales_manager['user_id']; ?>"><?php echo $sales_manager['firstname']; ?> <?php echo $sales_manager['lastname']; ?></option>
@@ -106,7 +106,7 @@
                     </tr>
                     <?php } ?>
                 <?php } else { ?>
-                	<tr>
+                  <tr>
                         <td class="text-center" colspan="5">You Don't have Permission to access the Manage Group.</td>
                     </tr>
                 <?php } ?>
@@ -124,43 +124,55 @@
 </div>
 <script type="text/javascript"><!--
 $('#button-filter').on('click', function() {
-	var url = 'index.php?route=user/team&token=<?php echo $token; ?>';
-
-	var filter_team_name = $('input[name=\'filter_team_name\']').val();
-
-	if (filter_team_name) {
-		url += '&filter_team_name=' + encodeURIComponent(filter_team_name);
-	}
+  var url = 'index.php?route=user/team&token=<?php echo $token; ?>';
+  var filter_team_name = $('input[name=\'filter_team_name\']').val();
+  if (filter_team_name) {
+    url += '&filter_team_name=' + encodeURIComponent(filter_team_name);
+  }
 <?php if($loginuser != 'Sales Manager') { ?>
-	var filter_salesrep_id = $('select[name=\'filter_salesrep_id\']').val();
-
-	if (filter_salesrep_id) {
-		url += '&filter_salesrep_id=' + encodeURIComponent(filter_salesrep_id);
-	}
+  var filter_salesrep_id = $('select[name=\'filter_salesrep_id\']').val();
+  if (filter_salesrep_id) {
+    url += '&filter_salesrep_id=' + encodeURIComponent(filter_salesrep_id);
+  }
 <?php } ?>
 //alert(url);
-	location = url;
+  location = url;
 });
 $('#button-filter-reset').on('click', function() {
-	var url = 'index.php?route=user/team&token=<?php echo $token; ?>';
-
-	location = url;
+  var url = 'index.php?route=user/team&token=<?php echo $token; ?>';
+  location = url;
 });
 //--></script>
 <script type="text/javascript"><!--
 $('input[name^=\'selected\']').on('change', function() {
-	
-	var selected = $('input[name^=\'selected\']:checked');
-
-	if (selected.length) {
-		$('#button-delete').prop('disabled', false);
-	}
-
+  
+  var selected = $('input[name^=\'selected\']:checked');
+  if (selected.length) {
+    $('#button-delete').prop('disabled', false);
+  }
 });
-
 $('#button-delete').prop('disabled', true);
-
 $('input[name^=\'selected\']:first').trigger('change');
-
 //--></script> 
+<script type="text/javascript"><!--
+$('input[name=\'filter_team_name\']').autocomplete({
+  'source': function(request, response) {
+    $.ajax({
+      url: 'index.php?route=user/team/autocomplete&token=<?php echo $token; ?>&filter_name=' +  encodeURIComponent(request),
+      dataType: 'json',
+      success: function(json) {
+        response($.map(json, function(item) {
+          return {
+            label: item['name'],
+            value: item['team_id']
+          }
+        }));
+      }
+    });
+  },
+  'select': function(item) {
+    $('input[name=\'filter_team_name\']').val(item['label']);
+  }
+});
+//--></script>
 <?php echo $footer; ?> 

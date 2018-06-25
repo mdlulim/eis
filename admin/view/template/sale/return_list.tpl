@@ -30,7 +30,7 @@
       </div>
       <div class="panel-body">
         <div class="well">
-        	<h3>Filters</h3>
+          <h3>Filters</h3>
           <div class="row">
             <div class="col-sm-3">
               <div class="form-group">
@@ -45,9 +45,9 @@
             <div class="col-sm-3">
               <div class="form-group">
                 <label class="control-label" for="input-customer"><?php echo $entry_customer; ?></label>
-                <!--<input type="text" name="filter_customer" value="<?php echo $filter_customer; ?>" placeholder="<?php echo $entry_customer; ?>" id="input-customer" class="form-control" />-->
-                <select name="filter_customer_id" class="form-control">
-                	<option value=""><?php echo $entry_customer; ?></option>
+                <input type="text" name="filter_customer" value="<?php echo $filter_customer; ?>" placeholder="<?php echo $entry_customer; ?>" id="input-customer" class="form-control" />
+                <!--<select name="filter_customer_id" class="form-control">
+                  <option value=""><?php echo $entry_customer; ?></option>
                     <?php foreach ($customers as $customer) {  ?>
                 <?php if ($customer['customer_id'] == $filter_customer_id) { ?>
                 <option value="<?php echo $customer['customer_id']; ?>" selected="selected"><?php echo $customer['firstname']; ?></option>
@@ -56,13 +56,13 @@
                 <?php } ?>
                 <?php } ?>
                     
-                </select>
+                </select>-->
               </div>
               <div class="form-group">
                 <label class="control-label" for="input-product"><?php echo $entry_product; ?></label>
-                <!--<input type="text" name="filter_product" value="<?php echo $filter_product; ?>" placeholder="<?php echo $entry_product; ?>" id="input-product" class="form-control" />-->
-                <select name="filter_product_id" class="form-control">
-                	<option value="">Select Product</option>
+                <input type="text" name="filter_product" value="<?php echo $filter_product; ?>" placeholder="<?php echo $entry_product; ?>" id="input-product" class="form-control" />
+                <!--<select name="filter_product_id" class="form-control">
+                  <option value="">Select Product</option>
                     <?php foreach ($products as $product) {  ?>
                 <?php if ($product['product_id'] == $filter_product_id) { ?>
                 <option value="<?php echo $product['product_id']; ?>" selected="selected"><?php echo $product['name']; ?></option>
@@ -71,7 +71,7 @@
                 <?php } ?>
                 <?php } ?>
                     
-                </select>
+                </select>-->
                 
               </div>
             </div>
@@ -80,7 +80,7 @@
                 <label class="control-label" for="input-model"><?php echo $entry_model; ?></label>
                 <!--<input type="text" name="filter_model" value="<?php echo $filter_model; ?>" placeholder="<?php echo $entry_model; ?>" id="input-model" class="form-control" />-->
                 <select name="filter_model" class="form-control">
-                	<option value="">Select Model</option>
+                  <option value="">Select Model</option>
                     <?php foreach ($models as $model) {  ?>
                 <?php if ($model['model'] == $filter_model) { ?>
                 <option value="<?php echo $model['model']; ?>" selected="selected"><?php echo $model['model']; ?></option>
@@ -215,147 +215,138 @@
   </div>
   <script type="text/javascript"><!--
 $('#button-filter').on('click', function() {
-	url = 'index.php?route=sale/return&token=<?php echo $token; ?>';
-	
-	var filter_return_id = $('input[name=\'filter_return_id\']').val();
-	
-	if (filter_return_id) {
-		url += '&filter_return_id=' + encodeURIComponent(filter_return_id);
-	}
-	
-	var filter_order_id = $('input[name=\'filter_order_id\']').val();
-	
-	if (filter_order_id) {
-		url += '&filter_order_id=' + encodeURIComponent(filter_order_id);
-	}	
-		
-	var filter_customer = $('input[name=\'filter_customer\']').val();
-	
-	if (filter_customer) {
-		url += '&filter_customer=' + encodeURIComponent(filter_customer);
-	}
-	
-	var filter_customer_id = $('select[name=\'filter_customer_id\']').val();
-
-	if (filter_customer_id) {
-		url += '&filter_customer_id=' + encodeURIComponent(filter_customer_id);
-	}
-	
-	var filter_product = $('input[name=\'filter_product\']').val();
-	
-	if (filter_product) {
-		url += '&filter_product=' + encodeURIComponent(filter_product);
-	}
-	
-	var filter_product_id = $('select[name=\'filter_product_id\']').val();
-
-	if (filter_product_id) {
-		url += '&filter_product_id=' + encodeURIComponent(filter_product_id);
-	}
-
-	/*var filter_model = $('input[name=\'filter_model\']').val();
-	
-	if (filter_model) {
-		url += '&filter_model=' + encodeURIComponent(filter_model);
-	}*/
-	
-	var filter_model = $('select[name=\'filter_model\']').val();
-
-	if (filter_model) {
-		url += '&filter_model=' + encodeURIComponent(filter_model);
-	}
-		
-	var filter_return_status_id = $('select[name=\'filter_return_status_id\']').val();
-	
-	if (filter_return_status_id != '*') {
-		url += '&filter_return_status_id=' + encodeURIComponent(filter_return_status_id);
-	}	
-	
-	var filter_date_added = $('input[name=\'filter_date_added\']').val();
-	
-	if (filter_date_added) {
-		url += '&filter_date_added=' + encodeURIComponent(filter_date_added);
-	}
-
-	var filter_date_modified = $('input[name=\'filter_date_modified\']').val();
-	
-	if (filter_date_modified) {
-		url += '&filter_date_modified=' + encodeURIComponent(filter_date_modified);
-	}
-			
-	location = url;
+  url = 'index.php?route=sale/return&token=<?php echo $token; ?>';
+  
+  var filter_return_id = $('input[name=\'filter_return_id\']').val();
+  
+  if (filter_return_id) {
+    url += '&filter_return_id=' + encodeURIComponent(filter_return_id);
+  }
+  
+  var filter_order_id = $('input[name=\'filter_order_id\']').val();
+  
+  if (filter_order_id) {
+    url += '&filter_order_id=' + encodeURIComponent(filter_order_id);
+  } 
+    
+  var filter_customer = $('input[name=\'filter_customer\']').val();
+  
+  if (filter_customer) {
+    url += '&filter_customer=' + encodeURIComponent(filter_customer);
+  }
+  
+  var filter_customer_id = $('select[name=\'filter_customer_id\']').val();
+  if (filter_customer_id) {
+    url += '&filter_customer_id=' + encodeURIComponent(filter_customer_id);
+  }
+  
+  var filter_product = $('input[name=\'filter_product\']').val();
+  
+  if (filter_product) {
+    url += '&filter_product=' + encodeURIComponent(filter_product);
+  }
+  
+  var filter_product_id = $('select[name=\'filter_product_id\']').val();
+  if (filter_product_id) {
+    url += '&filter_product_id=' + encodeURIComponent(filter_product_id);
+  }
+  /*var filter_model = $('input[name=\'filter_model\']').val();
+  
+  if (filter_model) {
+    url += '&filter_model=' + encodeURIComponent(filter_model);
+  }*/
+  
+  var filter_model = $('select[name=\'filter_model\']').val();
+  if (filter_model) {
+    url += '&filter_model=' + encodeURIComponent(filter_model);
+  }
+    
+  var filter_return_status_id = $('select[name=\'filter_return_status_id\']').val();
+  
+  if (filter_return_status_id != '*') {
+    url += '&filter_return_status_id=' + encodeURIComponent(filter_return_status_id);
+  } 
+  
+  var filter_date_added = $('input[name=\'filter_date_added\']').val();
+  
+  if (filter_date_added) {
+    url += '&filter_date_added=' + encodeURIComponent(filter_date_added);
+  }
+  var filter_date_modified = $('input[name=\'filter_date_modified\']').val();
+  
+  if (filter_date_modified) {
+    url += '&filter_date_modified=' + encodeURIComponent(filter_date_modified);
+  }
+      
+  location = url;
 });
-
 $('#button-filter-reset').on('click', function() {
-	url = 'index.php?route=sale/return&token=<?php echo $token; ?>';
-	location = url;
+  url = 'index.php?route=sale/return&token=<?php echo $token; ?>';
+  location = url;
 });
-
 //--></script> 
   <script type="text/javascript"><!--
 $('input[name=\'filter_customer\']').autocomplete({
-	'source': function(request, response) {
-		$.ajax({
-			url: 'index.php?route=customer/customer/autocomplete&token=<?php echo $token; ?>&filter_name=' +  encodeURIComponent(request),
-			dataType: 'json',			
-			success: function(json) {
-				response($.map(json, function(item) {
-					return {
-						label: item['name'],
-						value: item['customer_id']
-					}
-				}));
-			}
-		});
-	},
-	'select': function(item) {
-		$('input[name=\'filter_customer\']').val(item['label']);
-	}	
+  'source': function(request, response) {
+    $.ajax({
+      url: 'index.php?route=customer/customer/autocomplete&token=<?php echo $token; ?>&filter_name=' +  encodeURIComponent(request),
+      dataType: 'json',     
+      success: function(json) {
+        response($.map(json, function(item) {
+          return {
+            label: item['name'],
+            value: item['customer_id']
+          }
+        }));
+      }
+    });
+  },
+  'select': function(item) {
+    $('input[name=\'filter_customer\']').val(item['label']);
+  } 
 });
-
 $('input[name=\'filter_product\']').autocomplete({
-	'source': function(request, response) {
-		$.ajax({
-			url: 'index.php?route=catalog/product/autocomplete&token=<?php echo $token; ?>&filter_name=' +  encodeURIComponent(request),
-			dataType: 'json',			
-			success: function(json) {
-				response($.map(json, function(item) {
-					return {
-						label: item['name'],
-						value: item['product_id']
-					}
-				}));
-			}
-		});
-	},
-	'select': function(item) {
-		$('input[name=\'filter_product\']').val(item['label']);
-	}	
+  'source': function(request, response) {
+    $.ajax({
+      url: 'index.php?route=catalog/product/autocomplete&token=<?php echo $token; ?>&filter_name=' +  encodeURIComponent(request),
+      dataType: 'json',     
+      success: function(json) {
+        response($.map(json, function(item) {
+          return {
+            label: item['name'],
+            value: item['product_id']
+          }
+        }));
+      }
+    });
+  },
+  'select': function(item) {
+    $('input[name=\'filter_product\']').val(item['label']);
+  } 
 });
-
 $('input[name=\'filter_model\']').autocomplete({
-	'source': function(request, response) {
-		$.ajax({
-			url: 'index.php?route=catalog/product/autocomplete&token=<?php echo $token; ?>&filter_model=' +  encodeURIComponent(request),
-			dataType: 'json',			
-			success: function(json) {
-				response($.map(json, function(item) {
-					return {
-						label: item['model'],
-						value: item['product_id']
-					}
-				}));
-			}
-		});
-	},
-	'select': function(item) {
-		$('input[name=\'filter_model\']').val(item['label']);
-	}	
+  'source': function(request, response) {
+    $.ajax({
+      url: 'index.php?route=catalog/product/autocomplete&token=<?php echo $token; ?>&filter_model=' +  encodeURIComponent(request),
+      dataType: 'json',     
+      success: function(json) {
+        response($.map(json, function(item) {
+          return {
+            label: item['model'],
+            value: item['product_id']
+          }
+        }));
+      }
+    });
+  },
+  'select': function(item) {
+    $('input[name=\'filter_model\']').val(item['label']);
+  } 
 });
 //--></script> 
   <script type="text/javascript"><!--
 $('.date').datetimepicker({
-	pickTime: false
+  pickTime: false
 });
 //--></script></div>
 <?php echo $footer; ?> 

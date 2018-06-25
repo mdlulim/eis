@@ -30,22 +30,23 @@
       </div>
       <div class="panel-body">
       
-      	<div class="well">
-        	<h3>Filters</h3>
+        <div class="well">
+          <h3>Filters</h3>
           <div class="row">
             <div class="col-sm-4">
               <div class="form-group">
                 <label class="control-label" for="input-name">User Name</label>
-                <select name="filter_name" id="input-name" class="form-control">
+                <input type="text" name="filter_name" value="<?php echo $filter_name; ?>" placeholder="<?php echo $filter_name; ?>" id="input-name" class="form-control" />
+          <!--<select name="filter_name" id="input-name" class="form-control">
                   <option value="*">Select User Name</option>
                   <?php foreach($Dropdownnames as $Dname) { ?>
-                  	<?php if($Dname['username'] == $filter_name ) { ?>
+                    <?php if($Dname['username'] == $filter_name ) { ?>
                       <option value="<?php echo $Dname['username']; ?>" selected="selected"><?php echo $Dname['username']; ?></option>
                       <?php } else { ?>
                       <option value="<?php echo $Dname['username']; ?>"><?php echo $Dname['username']; ?></option>
                       <?php } ?>
                   <?php } ?>
-                </select>
+                </select>-->
               </div>
             </div>
             <div class="col-sm-4">  
@@ -78,8 +79,8 @@
                 </select>
               </div>
               <div class="form-group">
-            		<button type="button" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-search"></i> Search</button>
-            		<button type="button" id="button-filter-reset" class="btn btn-primary pull-right" style="margin-right:10px;"><i class="fa fa-refresh"></i> Reset</button>  
+                <button type="button" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-search"></i> Search</button>
+                <button type="button" id="button-filter-reset" class="btn btn-primary pull-right" style="margin-right:10px;"><i class="fa fa-refresh"></i> Reset</button>  
               </div>
             </div>
             
@@ -145,21 +146,17 @@
 </div>
 <script type="text/javascript"><!--
 $('input[name^=\'selected\']').on('change', function() {
-	
-	var selected = $('input[name^=\'selected\']:checked');
-
-	if (selected.length) {
-		$('#button-delete').prop('disabled', false);
-	}
-	else
-	{
-		$('#button-delete').prop('disabled', true);
-	}
-
+  
+  var selected = $('input[name^=\'selected\']:checked');
+  if (selected.length) {
+    $('#button-delete').prop('disabled', false);
+  }
+  else
+  {
+    $('#button-delete').prop('disabled', true);
+  }
 });
-
 $('#button-delete').prop('disabled', true);
-
 //--></script>
 
 <style>
@@ -168,44 +165,56 @@ $('#button-delete').prop('disabled', true);
   </style>
 <script type="text/javascript"><!--
 $('#button-filter').on('click', function() {
-	var url = 'index.php?route=user/user&token=<?php echo $token; ?>';
-
-	var filter_name = $('select[name=\'filter_name\']').val();
-
-	if (filter_name != '*') {
-		url += '&filter_name=' + encodeURIComponent(filter_name);
-	}
-	
-	var filter_dateadded = $('input[name=\'filter_dateadded\']').val();
-
-	if (filter_dateadded) {
-		url += '&filter_dateadded=' + encodeURIComponent(filter_dateadded);
-	}
-	
-	var filter_status = $('select[name=\'filter_status\']').val();
-
-	if (filter_status != '*') {
-		url += '&filter_status=' + encodeURIComponent(filter_status);
-	}
-
-	location = url;
+  var url = 'index.php?route=user/user&token=<?php echo $token; ?>';
+  var filter_name = $('input[name=\'filter_name\']').val();
+  if (filter_name != '*') {
+    url += '&filter_name=' + encodeURIComponent(filter_name);
+  }
+  
+  var filter_dateadded = $('input[name=\'filter_dateadded\']').val();
+  if (filter_dateadded) {
+    url += '&filter_dateadded=' + encodeURIComponent(filter_dateadded);
+  }
+  
+  var filter_status = $('select[name=\'filter_status\']').val();
+  if (filter_status != '*') {
+    url += '&filter_status=' + encodeURIComponent(filter_status);
+  }
+  location = url;
 });
-
 $('#button-filter-reset').on('click', function() {
-	
-	var url = 'index.php?route=user/user&token=<?php echo $token; ?>';
-
-	location = url;
+  
+  var url = 'index.php?route=user/user&token=<?php echo $token; ?>';
+  location = url;
 });
-
 $(function () 
 {
-		$('#filter_dateadded').datetimepicker({
-			 pickTime: false
-		});
-				
+    $('#filter_dateadded').datetimepicker({
+       pickTime: false
+    });
+        
 });
-
+//--></script>
+<script type="text/javascript"><!--
+$('input[name=\'filter_name\']').autocomplete({
+  'source': function(request, response) {
+    $.ajax({
+      url: 'index.php?route=user/user/autocomplete&token=<?php echo $token; ?>&filter_name=' +  encodeURIComponent(request),
+      dataType: 'json',
+      success: function(json) {
+        response($.map(json, function(item) {
+          return {
+            label: item['name'],
+            value: item['user_id']
+          }
+        }));
+      }
+    });
+  },
+  'select': function(item) {
+    $('input[name=\'filter_name\']').val(item['label']);
+  }
+});
 //--></script>
 
 

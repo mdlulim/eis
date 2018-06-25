@@ -36,8 +36,8 @@
             <div class="col-sm-4">
               <div class="form-group">
                 <label class="control-label" for="input-name"><?php echo $entry_name; ?></label>
-                <!--<input type="text" name="filter_name" value="<?php echo $filter_name; ?>" placeholder="<?php echo $entry_name; ?>" id="input-name" class="form-control" />-->
-                <select name="filter_customer_id" class="form-control">
+                <input type="text" name="filter_name" value="<?php echo $filter_name; ?>" placeholder="<?php echo $entry_name; ?>" id="input-name" class="form-control" />
+                <!--<select name="filter_customer_id" class="form-control">
                   <option value="">Customer Name</option>
                     <?php foreach ($customerdropdown as $customerd) {  ?>
                 <?php if ($customerd['customer_id'] == $filter_customer_id) { ?>
@@ -47,12 +47,12 @@
                 <?php } ?>
                 <?php } ?>
                     
-                </select>
+                </select>-->
               </div>
               <div class="form-group">
                 <label class="control-label" for="input-email"><?php echo $entry_email; ?></label>
-                <!--<input type="text" name="filter_email" value="<?php echo $filter_email; ?>" placeholder="<?php echo $entry_email; ?>" id="input-email" class="form-control" />-->
-                <select name="filter_email_id" class="form-control">
+                <input type="text" name="filter_email" value="<?php echo $filter_email; ?>" placeholder="<?php echo $entry_email; ?>" id="input-email" class="form-control" />
+                <!--<select name="filter_email_id" class="form-control">
                   <option value="">Select E-Mail</option>
                     <?php foreach ($customerdropdown as $customerd) {  ?>
                 <?php if ($customerd['customer_id'] == $filter_email_id) { ?>
@@ -62,7 +62,7 @@
                 <?php } ?>
                 <?php } ?>
                     
-                </select>
+                </select>-->
               </div>
             </div>
             <div class="col-sm-4">
@@ -244,9 +244,7 @@
 
  <script type="text/javascript"><!--
 $('input[name^=\'selected\']').on('change', function() { 
-
   var selected = $('input[name^=\'selected\']:checked');
-
   if (selected.length) {
     $('#button-delete').prop('disabled', false);
     $('#button-invitation').prop('disabled', false);
@@ -256,16 +254,12 @@ $('input[name^=\'selected\']').on('change', function() {
     $('#button-delete').prop('disabled', true);
     $('#button-invitation').prop('disabled', true);
   }
-
 });
-
 $('#button-delete').prop('disabled', true);
 $('#button-invitation').prop('disabled', true);
 $('input[name^=\'selected\']:first').trigger('change');
-
 $('input:checkbox').change(function () {
    var selected = $('input[name^=\'selected\']:checked');
-
   if (selected.length) {
     $('#button-delete').prop('disabled', false);
     $('#button-invitation').prop('disabled', false);
@@ -275,13 +269,10 @@ $('input:checkbox').change(function () {
     $('#button-delete').prop('disabled', true);
     $('#button-invitation').prop('disabled', true);
   }
-
 })
-
 $('#button-delete').click(function(){
    $('#form-customer').attr('action', '<?php echo $delete; ?>');
 });
-
 function Confirminvitation(action, msg)
 {
   var x = confirm(msg);
@@ -304,8 +295,6 @@ function Confirminvitation(action, msg)
     return false;
  }
 }
-
-
 //--></script>  
   <script type="text/javascript"><!--
 $('#button-filter').on('click', function() {
@@ -318,22 +307,20 @@ $('#button-filter').on('click', function() {
   }
   
   var filter_customer_id = $('select[name=\'filter_customer_id\']').val();
-
   if (filter_customer_id) {
     url += '&filter_customer_id=' + encodeURIComponent(filter_customer_id);
   }
   
   var filter_email_id = $('select[name=\'filter_email_id\']').val();
-
   if (filter_email_id) {
     url += '&filter_email_id=' + encodeURIComponent(filter_email_id);
   }
   
-  /*var filter_email = $('input[name=\'filter_email\']').val();
+  var filter_email = $('input[name=\'filter_email\']').val();
   
   if (filter_email) {
     url += '&filter_email=' + encodeURIComponent(filter_email);
-  }*/
+  }
   
   var filter_customer_group_id = $('select[name=\'filter_customer_group_id\']').val();
   
@@ -367,10 +354,8 @@ $('#button-filter').on('click', function() {
   
   location = url;
 });
-
 $('#button-filter-reset').on('click', function() {
   var url = 'index.php?route=customer/customer&token=<?php echo $token; ?>';
-
   location = url;
 });
 //--></script> 
@@ -394,7 +379,6 @@ $('input[name=\'filter_name\']').autocomplete({
     $('input[name=\'filter_name\']').val(item['label']);
   } 
 });
-
 $('input[name=\'filter_email\']').autocomplete({
   'source': function(request, response) {
     $.ajax({

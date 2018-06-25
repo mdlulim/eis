@@ -32,7 +32,7 @@
       <div class="panel-body">
         
         <div class="well">
-        	<h3>Filters</h3>
+          <h3>Filters</h3>
           <div class="row">
             <div class="col-sm-4">
               <!--<div class="form-group">
@@ -41,8 +41,10 @@
               </div>-->
               <div class="form-group">
                 <label class="control-label" for="input-price">Customer Name</label>
-                <select name="filter_customer_id" class="form-control">
-                	<option value="">Customer Name</option>
+                <input type="text" name="filter_customer" value="<?php echo $filter_customer; ?>" placeholder="Customer Name" id="input-customer" class="form-control" />
+          <input type="hidden" name="filter_customer_id" value="<?php echo $filter_customer_id; ?>" id="customer_id">
+                <!--<select name="filter_customer_id" class="form-control">
+                  <option value="">Customer Name</option>
                     <?php foreach ($customers as $customer) {  ?>
                 <?php if ($customer['customer_id'] == $filter_customer_id) { ?>
                 <option value="<?php echo $customer['customer_id']; ?>" selected="selected"><?php echo $customer['firstname']; ?></option>
@@ -51,7 +53,7 @@
                 <?php } ?>
                 <?php } ?>
                     
-                </select>
+                </select>-->
               </div>
               <div class="form-group fromdate">
                 <label class="control-label" for="input-model">Appointment Date From</label>
@@ -67,13 +69,13 @@
                     </span>
                 </div>
            <style>
-		   .glyphicon-calendar:before {content: "\e109" !important; }
-		   </style>
-            	<script type="text/javascript">
+       .glyphicon-calendar:before {content: "\e109" !important; }
+       </style>
+              <script type="text/javascript">
             $(function () {
                 $('#filter_appointment_from').datetimepicker({
                      //defaultDate: new Date(),
-					// inline: true,
+          // inline: true,
                 });
             });
         </script>  
@@ -83,8 +85,9 @@
             <div class="col-sm-4">
               <div class="form-group">
                 <label class="control-label" for="input-price">Sales Rep Name</label>
-                
-                	<select name="filter_salesrep_id" id="input-sales_manager" class="form-control">
+                  <input type="text" name="filter_salesrep" value="<?php echo $filter_salesrep; ?>" placeholder="Sales Rep Name" id="input-salesrep" class="form-control" />
+                    <input type="hidden" name="filter_salesrep_id" value="<?php echo $filter_salesrep_id; ?>" />
+                  <!--<select name="filter_salesrep_id" id="input-sales_manager" class="form-control">
                         <option value="">Select Sales Rep Name</option>
                         <?php foreach ($salesReps as $salesRep) { ?>
                         <?php if ($salesRep['salesrep_id'] == $filter_salesrep_id) { ?>
@@ -93,7 +96,7 @@
                         <option value="<?php echo $salesRep['salesrep_id']; ?>"><?php echo $salesRep['salesrep_name']; ?> <?php echo $salesRep['salesrep_lastname']; ?></option>
                         <?php } ?>
                         <?php } ?>
-                      </select>
+                      </select>-->
               </div>
               <div class="form-group todate">
                 <label class="control-label" for="input-quantity">Appointment Date To</label>
@@ -109,7 +112,7 @@
                     </span>
                 </div>
             
-        		<script type="text/javascript">
+            <script type="text/javascript">
             $(function () {
                 $('#filter_appointment_to').datetimepicker({
                     //defaultDate: new Date(),
@@ -124,7 +127,7 @@
               <div class="form-group">
                 <label class="control-label" for="input-price">Business Type</label>
                 
-                	<select name="filter_type" id="input-type" class="form-control">
+                  <select name="filter_type" id="input-type" class="form-control">
                         <option value="">Select Business Type</option>
                         <?php if($filter_type == 'New Business') { ?>
                             <option value="New Business" selected="selected">New Business</option>
@@ -139,8 +142,8 @@
                       </select>
               </div>
               <div class="form-group" style="margin-top:23px;">
-            		<button type="button" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-search"></i> Search</button>
-            		<button type="button" id="button-filter-reset" class="btn btn-primary pull-right" style="margin-right:10px;"><i class="fa fa-refresh"></i> Reset</button>  
+                <button type="button" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-search"></i> Search</button>
+                <button type="button" id="button-filter-reset" class="btn btn-primary pull-right" style="margin-right:10px;"><i class="fa fa-refresh"></i> Reset</button>  
               </div>
             </div>
             
@@ -201,7 +204,7 @@
                     </tr>
                     <?php } ?>
                 <?php } else { ?>
-                	<tr>
+                  <tr>
                         <td class="text-center" colspan="5">You Don't have Permission to access the Schedule Manegement.</td>
                     </tr>
                 <?php } ?>
@@ -219,67 +222,101 @@
 </div>
 <script type="text/javascript"><!--
 $('#button-filter').on('click', function() {
-	var url = 'index.php?route=replogic/schedule_management&token=<?php echo $token; ?>';
+  var url = 'index.php?route=replogic/schedule_management&token=<?php echo $token; ?>';
+  var filter_appointment_name = $('input[name=\'filter_appointment_name\']').val();
+  if (filter_appointment_name) {
+    url += '&filter_appointment_name=' + encodeURIComponent(filter_appointment_name);
+  }
 
-	var filter_appointment_name = $('input[name=\'filter_appointment_name\']').val();
+  var filter_salesrep_id = $('input[name=\'filter_salesrep_id\']').val();
 
-	if (filter_appointment_name) {
-		url += '&filter_appointment_name=' + encodeURIComponent(filter_appointment_name);
-	}
+  if (filter_salesrep_id) {
+    url += '&filter_salesrep_id=' + encodeURIComponent(filter_salesrep_id);
+  }
+  
+  var filter_customer_id = $('input[name=\'filter_customer_id\']').val();
 
-	var filter_salesrep_id = $('select[name=\'filter_salesrep_id\']').val();
+  if (filter_customer_id) {
+    url += '&filter_customer_id=' + encodeURIComponent(filter_customer_id);
+  }
 
-	if (filter_salesrep_id) {
-		url += '&filter_salesrep_id=' + encodeURIComponent(filter_salesrep_id);
-	}
-	
-	var filter_customer_id = $('select[name=\'filter_customer_id\']').val();
+  var filter_appointment_from = $('input[name=\'filter_appointment_from\']').val();
 
-	if (filter_customer_id) {
-		url += '&filter_customer_id=' + encodeURIComponent(filter_customer_id);
-	}
+  if (filter_appointment_from) {
+    url += '&filter_appointment_from=' + encodeURIComponent(filter_appointment_from);
+  }
+  
+  var filter_appointment_to = $('input[name=\'filter_appointment_to\']').val();
 
-	var filter_appointment_from = $('input[name=\'filter_appointment_from\']').val();
+  if (filter_appointment_to) {
+    url += '&filter_appointment_to=' + encodeURIComponent(filter_appointment_to);
+  }
 
-	if (filter_appointment_from) {
-		url += '&filter_appointment_from=' + encodeURIComponent(filter_appointment_from);
-	}
-	
-	var filter_appointment_to = $('input[name=\'filter_appointment_to\']').val();
+  var filter_type = $('select[name=\'filter_type\']').val();
 
-	if (filter_appointment_to) {
-		url += '&filter_appointment_to=' + encodeURIComponent(filter_appointment_to);
-	}
-
-	var filter_type = $('select[name=\'filter_type\']').val();
-
-	if (filter_type) {
-		url += '&filter_type=' + encodeURIComponent(filter_type);
-	}
+  if (filter_type) {
+    url += '&filter_type=' + encodeURIComponent(filter_type);
+  }
 //alert(url);
-	location = url;
+  location = url;
 });
 $('#button-filter-reset').on('click', function() {
-	var url = 'index.php?route=replogic/schedule_management&token=<?php echo $token; ?>';
-
-	location = url;
+  var url = 'index.php?route=replogic/schedule_management&token=<?php echo $token; ?>';
+  location = url;
 });
 //--></script>
 <script type="text/javascript"><!--
 $('input[name^=\'selected\']').on('change', function() {
-	
-	var selected = $('input[name^=\'selected\']:checked');
-
-	if (selected.length) {
-		$('#button-delete').prop('disabled', false);
-	}
-
+  
+  var selected = $('input[name^=\'selected\']:checked');
+  if (selected.length) {
+    $('#button-delete').prop('disabled', false);
+  }
 });
-
 $('#button-delete').prop('disabled', true);
-
 $('input[name^=\'selected\']:first').trigger('change');
-
+//--></script>
+<script type="text/javascript"><!--
+$('input[name=\'filter_customer\']').autocomplete({
+  'source': function(request, response) {
+    $.ajax({
+      url: 'index.php?route=customer/customer/autocomplete&token=<?php echo $token; ?>&filter_name=' +  encodeURIComponent(request),
+      dataType: 'json',
+      success: function(json) {
+        response($.map(json, function(item) {
+          return {
+            label: item['name'],
+            value: item['customer_id']
+          }
+        }));
+      }
+    });
+  },
+  'select': function(item) {
+    $('input[name=\'filter_customer\']').val(item['label']);
+    $('input[name=\'filter_customer_id\']').val(item['value']);
+  }
+});
+$('input[name=\'filter_salesrep\']').autocomplete({
+  'source': function(request, response) {
+    $.ajax({
+      url: 'index.php?route=replogic/sales_rep_management/autocomplete&token=<?php echo $token; ?>&filter_name=' +  encodeURIComponent(request),
+      dataType: 'json',
+      success: function(json) {
+        response($.map(json, function(item) {
+          return {
+            label: item['name'],
+            value: item['salesrep_id']
+          }
+        }));
+      }
+    });
+  },
+  'select': function(item) {
+    $('input[name=\'filter_salesrep\']').val(item['label']);
+    $('input[name=\'filter_salesrep_id\']').val(item['value']);
+  }
+});
 //--></script> 
 
 <?php echo $footer; ?> 
