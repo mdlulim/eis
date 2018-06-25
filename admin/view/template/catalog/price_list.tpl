@@ -31,13 +31,14 @@
             </div>
             <div class="panel-body">
             
-            	<div class="well">
-          			<h3>Filters</h3>
+              <div class="well">
+                <h3>Filters</h3>
                     <div class="row">
                         <div class="col-sm-6">
                           <div class="form-group">
                             <label class="control-label" for="input-name">SKU</label>
-                            <select name="filter_sku" id="input-name" class="form-control">
+                            <input type="text" name="filter_sku" value="<?php echo $filter_sku; ?>" placeholder="Sku" id="input-sku" class="form-control" />
+                            <!--<select name="filter_sku" id="input-name" class="form-control">
                               <option value="*">Select Sku</option>
                               <?php foreach($Dropdownskus as $Dsku) { ?>
                                 <?php if($Dsku['sku']) { ?>
@@ -47,7 +48,7 @@
                                   <option value="<?php echo $Dsku['sku']; ?>"><?php echo $Dsku['sku']; ?></option>
                                   <?php } ?>
                               <?php } } ?>
-                            </select>
+                            </select>-->
                           </div>
                           
                         </div>
@@ -73,7 +74,7 @@
                         
                       </div>
            
-        		</div>
+            </div>
             
                 <form action="<?php echo $delete; ?>" method="post" enctype="multipart/form-data" id="form-filter">
                     <div class="table-responsive">
@@ -127,60 +128,72 @@
   </style>
 <script type="text/javascript"><!--
 $('#button-filter').on('click', function() {
-	var url = 'index.php?route=catalog/price&token=<?php echo $token; ?>';
-
-	var filter_sku = $('select[name=\'filter_sku\']').val();
-
-	if (filter_sku != '*') {
-		url += '&filter_sku=' + encodeURIComponent(filter_sku);
-	}
-	
-	var filter_customer_group_id = $('select[name=\'filter_customer_group_id\']').val();
-
-	if (filter_customer_group_id != '*') {
-		url += '&filter_customer_group_id=' + encodeURIComponent(filter_customer_group_id);
-	}
-
-	location = url;
+  var url = 'index.php?route=catalog/price&token=<?php echo $token; ?>';
+  /*var filter_sku = $('select[name=\'filter_sku\']').val();
+  if (filter_sku != '*') {
+    url += '&filter_sku=' + encodeURIComponent(filter_sku);
+  }*/
+  
+  var filter_sku = $('input[name=\'filter_sku\']').val();
+  
+  if (filter_sku) {
+    url += '&filter_sku=' + encodeURIComponent(filter_sku);
+  }
+  
+  var filter_customer_group_id = $('select[name=\'filter_customer_group_id\']').val();
+  if (filter_customer_group_id != '*') {
+    url += '&filter_customer_group_id=' + encodeURIComponent(filter_customer_group_id);
+  }
+  location = url;
 });
-
 $('#button-filter-reset').on('click', function() {
-	
-	var url = 'index.php?route=catalog/price&token=<?php echo $token; ?>';
-
-	location = url;
+  
+  var url = 'index.php?route=catalog/price&token=<?php echo $token; ?>';
+  location = url;
 });
-
 //--></script>
 <script type="text/javascript"><!--
 $('input[name^=\'selected\']').on('change', function() { 
-	
-	var selected = $('input[name^=\'selected\']:checked');
-
-	if (selected.length) {
-		$('#button-delete').prop('disabled', false);
-	}
-	else
-	{
-		$('#button-delete').prop('disabled', true);
-	}
-
+  
+  var selected = $('input[name^=\'selected\']:checked');
+  if (selected.length) {
+    $('#button-delete').prop('disabled', false);
+  }
+  else
+  {
+    $('#button-delete').prop('disabled', true);
+  }
 });
-
 $('#button-delete').prop('disabled', true);
 $('input[name^=\'selected\']:first').trigger('change');
-
 $('input:checkbox').change(function () {
    var selected = $('input[name^=\'selected\']:checked');
-
-	if (selected.length) {
-		$('#button-delete').prop('disabled', false);
-	}
-	else
-	{
-		$('#button-delete').prop('disabled', true);
-	}
+  if (selected.length) {
+    $('#button-delete').prop('disabled', false);
+  }
+  else
+  {
+    $('#button-delete').prop('disabled', true);
+  }
 })
-
+$('input[name=\'filter_sku\']').autocomplete({
+  'source': function(request, response) { 
+    $.ajax({
+      url: 'index.php?route=catalog/price/Filterautocomplete&token=<?php echo $token; ?>&filter_sku=' +  encodeURIComponent(request),
+      dataType: 'json',
+      success: function(json) {
+        response($.map(json, function(item) {
+          return {
+            label: item['sku'],
+            value: item['sku']
+          }
+        }));
+      }
+    });
+  },
+  'select': function(item) {
+    $('input[name=\'filter_sku\']').val(item['label']);
+  }
+});
 //--></script> 
 <?php echo $footer; ?>
