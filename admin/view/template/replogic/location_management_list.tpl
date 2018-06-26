@@ -1,4 +1,3 @@
-
 <?php echo $header; ?><?php echo $column_left; ?>
 
 <div id="content">
@@ -579,7 +578,7 @@ $('#chkbx').on('click', function() {
                       // validation: remove any null values to prevent map errors
                       for (var i=0; i<data.length; i++) { 
                           if (data[i].latitude != null && data[i].latitude != "null" && data[i].longitude != null && data[i].longitude != "null") {
-                              locations.push({latitude: data[i].latitude, longitude: data[i].longitude, name: data[i].name, icon: data[i].icon});
+                              locations.push({latitude: data[i].latitude, longitude: data[i].longitude, name: data[i].name, icon: data[i].icon, chkaddress: data[i].chkaddress});
                           }
                       }
                       // initialize map with markers
@@ -602,15 +601,18 @@ $('#chkbx').on('click', function() {
           var marker, i;
           // loop through locations and create markers for the map
           for (i = 0; i < locations.length; i++) { 
-              marker = new google.maps.Marker({
+              
+        var addrname = locations[i].chkaddress+' (' + locations[i].name + ' )';
+        //alert(addrname);
+        marker = new google.maps.Marker({
                   position: new google.maps.LatLng(locations[i].latitude, locations[i].longitude),
-          name:locations[i].name,
+          name:addrname,
                   map: map,
           icon: locations[i].icon
               });
               google.maps.event.addListener(marker, 'click', (function(marker, i) {
                   return function() {
-                      infowindow.setContent(locations[i].name);
+                      infowindow.setContent(addrname);
                       infowindow.open(map, marker);
                   }
               })(marker, i));
@@ -643,4 +645,4 @@ $('input:checkbox').change(function () {
   }
 })
 //--></script> 
-<?php echo $footer; ?> 
+<?php echo $footer; ?>

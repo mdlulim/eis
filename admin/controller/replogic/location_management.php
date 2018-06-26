@@ -500,7 +500,8 @@ class ControllerReplogicLocationManagement extends Controller {
 			$latitude = $response_a->results[0]->geometry->location->lat;
 			$longitude = $response_a->results[0]->geometry->location->lng;
 			
-			$locationsmaps[] = array('latitude'=>$latitude,'longitude'=>$longitude,'name'=>$sales_rep,'icon'=>'view/image/green-dot.png');
+			$locationsmaps[] = array('latitude'=>$latitude,'longitude'=>$longitude,'name'=>$sales_rep,'icon'=>'view/image/green-dot.png','chkaddress'=>$address);
+
 			
 		}
 		
