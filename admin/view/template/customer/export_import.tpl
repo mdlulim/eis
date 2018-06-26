@@ -95,7 +95,7 @@
 									</td>
 								</tr>-->
 								<tr>
-									<td><?php echo $entry_upload; ?><br /><br /><input type="file" name="upload" id="upload" /></td>
+									<td><?php echo $entry_upload; ?><br /><br /><input type="file" name="upload" id="upload" /> <b id="siz" style="margin-left:77px;"></b></td>
 								</tr>
 								<tr>
 									<td class="buttons"><a onclick="uploadData();" class="btn btn-primary"><span><?php echo $button_import; ?></span></a></td>
@@ -107,7 +107,7 @@
 					<div class="tab-pane" id="tab-settings">
 						<form action="<?php echo $settings; ?>" method="post" enctype="multipart/form-data" id="settings" class="form-horizontal">
 							<table class="form">
-								<tr>
+								<!--<tr>
 									<td>
 										<label>
 										<?php if($settings_firstname) { ?>
@@ -128,23 +128,25 @@
                                         <?php } ?>
 										</label>
 									</td>
-								</tr>
-								<tr>
+								</tr>-->
+                                <tr>
 									<td>
-										<label>
-										<?php if($settings_email) { ?>
-                                        	<input type="checkbox" name="customer_export_import_settings_email" value="1" checked="checked" disabled="disabled" /> Email
+										<label style="color:#FF0000;">
+										<?php if($settings_companyname) { ?>
+                                        	<input type="checkbox" name="customer_export_import_settings_companyname" value="1" checked="checked" disabled="disabled" /> Company Name
+                                            <input type="hidden" name="customer_export_import_settings_companyname" value="1" />
                                         <?php } else { ?>
-                                        	<input type="checkbox" name="customer_export_import_settings_email" value="1" /> Email
+                                        	<input type="checkbox" name="customer_export_import_settings_companyname" value="1" /> Company Name
                                         <?php } ?>
 										</label>
 									</td>
 								</tr>
 								<tr>
 									<td>
-										<label>
+										<label style="color:#FF0000;">
 										<?php if($settings_telephone) { ?>
-                                        	<input type="checkbox" name="customer_export_import_settings_telephone" value="1" checked="checked" /> Telephone
+                                        	<input type="checkbox" name="customer_export_import_settings_telephone" value="1" checked="checked" disabled="disabled" /> Telephone
+                                            <input type="hidden" name="customer_export_import_settings_telephone" value="1" />
                                         <?php } else { ?>
                                         	<input type="checkbox" name="customer_export_import_settings_telephone" value="1" /> Telephone
                                         <?php } ?>
@@ -153,11 +155,36 @@
 								</tr>
                                 <tr>
 									<td>
-										<label>
-										<?php if($settings_companyname) { ?>
-                                        	<input type="checkbox" name="customer_export_import_settings_companyname" value="1" checked="checked" disabled="disabled" /> Company Name
-                                        <?php } else { ?>     
-                                            <input type="checkbox" name="customer_export_import_settings_companyname" value="1" /> Company Name
+										<label style="color:#FF0000;">
+										<?php if($settings_email) { ?>
+                                        	<input type="checkbox" name="customer_export_import_settings_email" value="1" checked="checked" disabled="disabled" /> Email
+                                            <input type="hidden" name="customer_export_import_settings_email" value="1" />
+                                        <?php } else { ?>
+                                        	<input type="checkbox" name="customer_export_import_settings_email" value="1" /> Email
+                                        <?php } ?>
+										</label>
+									</td>
+								</tr>
+                                <tr>
+									<td>
+										<label style="color:#FF0000;">
+										<?php if($settings_companygroup) { ?>
+                                        	<input type="checkbox" name="customer_export_import_settings_companygroup" value="1" checked="checked" disabled="disabled" /> Contract Pricing
+                                            <input type="hidden" name="customer_export_import_settings_companygroup" value="1" />
+                                        <?php } else { ?>    
+                                            <input type="checkbox" name="customer_export_import_settings_companygroup" value="1" /> Contract Pricing
+                                        <?php } ?>
+										</label>
+									</td>
+								</tr>
+                                <tr>
+									<td>
+										<label style="color:#FF0000;">
+                                        <?php if($settings_paymentmethod) { ?>
+											<input type="checkbox" name="customer_export_import_settings_paymentmethod" value="1" checked="checked" disabled="disabled" /> Preferred Payment Method
+                                            <input type="hidden" name="customer_export_import_settings_paymentmethod" value="1" />
+                                        <?php } else { ?>    
+                                            <input type="checkbox" name="customer_export_import_settings_paymentmethod" value="1" /> Preferred Payment Method
                                         <?php } ?>
 										</label>
 									</td>
@@ -165,8 +192,43 @@
                                 <tr>
 									<td>
 										<label>
+                                        <?php if($settings_salesteam) { ?>
+											<input type="checkbox" name="customer_export_import_settings_salesteam" value="1" checked="checked" /> Sales Team
+                                        <?php } else { ?>    
+                                            <input type="checkbox" name="customer_export_import_settings_salesteam" value="1" /> Sales Team
+                                        <?php } ?>
+										</label>
+									</td>
+								</tr>
+                                <tr>
+									<td>
+										<label>
+                                        <?php if($settings_salesrep) { ?>
+											<input type="checkbox" name="customer_export_import_settings_salesrep" value="1" checked="checked" /> Sales Rep
+                                        <?php } else { ?>    
+                                            <input type="checkbox" name="customer_export_import_settings_salesrep" value="1" /> Sales Rep
+                                        <?php } ?>
+										</label>
+									</td>
+								</tr>
+                                <tr>
+									<td>
+										<label style="color:#FF0000;">
+                                        <?php if($settings_status) { ?>
+											<input type="checkbox" name="customer_export_import_settings_status" value="1" checked="checked" disabled="disabled" /> Account Status
+                                            <input type="hidden" name="customer_export_import_settings_status" value="1" />
+                                        <?php } else { ?>    
+                                            <input type="checkbox" name="customer_export_import_settings_status" value="1" /> Account Status
+                                        <?php } ?>
+										</label>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<label style="color:#FF0000;">
 										<?php if($settings_address1) { ?>
                                         	<input type="checkbox" name="customer_export_import_settings_address1" value="1" checked="checked" disabled="disabled" /> Address line 1
+                                            <input type="hidden" name="customer_export_import_settings_address1" value="1" />
                                         <?php } else { ?>    
                                             <input type="checkbox" name="customer_export_import_settings_address1" value="1" /> Address line 1
                                         <?php } ?>
@@ -186,9 +248,10 @@
 								</tr>
                                 <tr>
 									<td>
-										<label>
+										<label style="color:#FF0000;">
 										<?php if($settings_city) { ?>
                                         	<input type="checkbox" name="customer_export_import_settings_city" value="1" checked="checked" disabled="disabled" /> City
+                                            <input type="hidden" name="customer_export_import_settings_city" value="1" />
                                         <?php } else { ?>    
                                             <input type="checkbox" name="customer_export_import_settings_city" value="1" /> City
                                         <?php } ?>
@@ -208,9 +271,10 @@
 								</tr>
 								<tr>
 									<td>
-										<label>
+										<label style="color:#FF0000;">
 										<?php if($settings_country) { ?>
                                         	<input type="checkbox" name="customer_export_import_settings_country" value="1" checked="checked" disabled="disabled" /> Country
+                                            <input type="hidden" name="customer_export_import_settings_country" value="1" />
                                         <?php } else { ?>    
                                             <input type="checkbox" name="customer_export_import_settings_country" value="1" /> Country
                                         <?php } ?>
@@ -219,16 +283,17 @@
 								</tr>
                                 <tr>
 									<td>
-										<label>
+										<label style="color:#FF0000;">
 										<?php if($settings_region) { ?>
                                         	<input type="checkbox" name="customer_export_import_settings_region" value="1" checked="checked" disabled="disabled" /> Region/State
+                                            <input type="hidden" name="customer_export_import_settings_region" value="1" />
                                         <?php } else { ?>    
                                             <input type="checkbox" name="customer_export_import_settings_region" value="1" /> Region/State
                                         <?php } ?>
 										</label>
 									</td>
 								</tr>
-                                <tr>
+                                <!--<tr>
 									<td>
 										<label>
 										<?php if($settings_password) { ?>
@@ -250,17 +315,7 @@
 										</label>
 									</td>
 								</tr>
-                                <tr>
-									<td>
-										<label>
-										<?php if($settings_companygroup) { ?>
-                                        	<input type="checkbox" name="customer_export_import_settings_companygroup" value="1" checked="checked" disabled="disabled" /> Company Group
-                                        <?php } else { ?>    
-                                            <input type="checkbox" name="customer_export_import_settings_companygroup" value="1" /> Company Group
-                                        <?php } ?>
-										</label>
-									</td>
-								</tr>
+                                
                                 <tr>
 									<td>
 										<label>
@@ -271,40 +326,20 @@
                                         <?php } ?>
 										</label>
 									</td>
-								</tr>
+								</tr>-->
+                                
                                 <tr>
 									<td>
 										<label>
-                                        <?php if($settings_paymentmethod) { ?>
-											<input type="checkbox" name="customer_export_import_settings_paymentmethod" value="1" checked="checked" disabled="disabled" /> Payment Method
+                                        <?php if($settings_defaultaddress) { ?>
+											<input type="checkbox" name="customer_export_import_settings_defaultaddress" value="1" checked="checked" /> Default Address
                                         <?php } else { ?>    
-                                            <input type="checkbox" name="customer_export_import_settings_paymentmethod" value="1" /> Payment Method
+                                            <input type="checkbox" name="customer_export_import_settings_defaultaddress" value="1" /> Default Address
                                         <?php } ?>
 										</label>
 									</td>
 								</tr>
-                                <tr>
-									<td>
-										<label>
-                                        <?php if($settings_salesrep) { ?>
-											<input type="checkbox" name="customer_export_import_settings_salesrep" value="1" checked="checked" /> Sales Rep
-                                        <?php } else { ?>    
-                                            <input type="checkbox" name="customer_export_import_settings_salesrep" value="1" /> Sales Rep
-                                        <?php } ?>
-										</label>
-									</td>
-								</tr>
-                                <tr>
-									<td>
-										<label>
-                                        <?php if($settings_status) { ?>
-											<input type="checkbox" name="customer_export_import_settings_status" value="1" checked="checked" /> Status
-                                        <?php } else { ?>    
-                                            <input type="checkbox" name="customer_export_import_settings_status" value="1" /> Status
-                                        <?php } ?>
-										</label>
-									</td>
-								</tr>
+                                
 								<tr>
 									<td class="buttons"><a onclick="updateSettings();" class="btn btn-primary"><span><?php echo $button_settings; ?></span></a></td>
 								</tr>
@@ -319,7 +354,6 @@
 	</div>
 
 <script type="text/javascript"><!--
-
 function getNotifications() {
 	$('#export_import_notification').html('<i class="fa fa-info-circle"></i><button type="button" class="close" data-dismiss="alert">&times;</button> <div id="export_import_loading"><img src="view/image/export-import/loading.gif" /><?php echo $text_loading_notifications; ?></div>');
 	setTimeout(
@@ -348,7 +382,6 @@ function getNotifications() {
 		500
 	);
 }
-
 function check_range_type(export_type) {
 	if ((export_type=='p') || (export_type=='c') || (export_type=='u')) {
 		$('#range_type').show();
@@ -360,45 +393,34 @@ function check_range_type(export_type) {
 		$('#range_type').hide();
 	}
 }
-
 $(document).ready(function() {
-
 	check_range_type($('input[name=export_type]:checked').val());
-
 	$("#range_type_id").click(function() {
 		$(".page").hide();
 		$(".id").show();
 	});
-
 	$("#range_type_page").click(function() {
 		$(".id").hide();
 		$(".page").show();
 	});
-
 	$('input[name=export_type]').click(function() {
 		check_range_type($(this).val());
 	});
-
 	$('span.close').click(function() {
 		$(this).parent().remove();
 	});
-
 	$('a[data-toggle="tab"]').click(function() {
 		$('#export_import_notification').remove();
 	});
-
 	getNotifications();
 });
-
 function checkFileSize(id) {
 	// See also http://stackoverflow.com/questions/3717793/javascript-file-upload-size-validation for details
 	var input, file, file_size;
-
 	if (!window.FileReader) {
 		// The file API isn't yet supported on user's browser
 		return true;
 	}
-
 	input = document.getElementById(id);
 	if (!input) {
 		// couldn't find the file input element
@@ -435,37 +457,30 @@ function checkFileSize(id) {
 		return true;
 	}
 }
-
 function uploadData() {
 	if (checkFileSize('upload')) {
 		$('#import').submit();
 	}
 }
-
 function isNumber(txt){ 
 	var regExp=/^[\d]{1,}$/;
 	return regExp.test(txt); 
 }
-
 function validateExportForm(id) {
 	var export_type = $('input[name=export_type]:checked').val();
 	if ((export_type!='c') && (export_type!='p') && (export_type!='u')) {
 		return true;
 	}
-
 	var val = $("input[name=range_type]:checked").val();
 	var min = $("input[name=min]").val();
 	var max = $("input[name=max]").val();
-
 	if ((min=='') && (max=='')) {
 		return true;
 	}
-
 	if (!isNumber(min) || !isNumber(max)) {
 		alert("<?php echo $error_param_not_number; ?>");
 		return false;
 	}
-
 	var count_item;
 	switch (export_type) {
 		case 'p': count_item = <?php echo $count_product-1; ?>;  break;
@@ -487,7 +502,6 @@ function validateExportForm(id) {
 		default:  maxItemId = parseInt( <?php echo $max_customer_id; ?> ); break;
 	
 	}
-
 	if (val=="page") {  // Min for the batch size, Max for the batch number
 		if (parseInt(max) <= 0) {
 			alert("<?php echo $error_batch_number; ?>");
@@ -511,15 +525,32 @@ function validateExportForm(id) {
 	}
 	return true;
 }
-
 function downloadData() {
 	if (validateExportForm('export')) {
 		$('#export').submit();
 	}
 }
-
 function updateSettings() {
 	$('#settings').submit();
+}
+$('#upload').bind('change', function() {
+  var filesize = AlertFilesize();
+  var txt = 'File Size ' + filesize; 
+  $("#siz").html(txt);
+});
+function AlertFilesize(){
+    if(window.ActiveXObject){
+        var fso = new ActiveXObject("Scripting.FileSystemObject");
+        var filepath = document.getElementById('upload').value;
+        var thefile = fso.getFile(filepath);
+        var sizeinbytes = thefile.size;
+    }else{
+        var sizeinbytes = document.getElementById('upload').files[0].size;
+    }
+    var fSExt = new Array('Bytes', 'KB', 'MB', 'GB');
+    fSize = sizeinbytes; i=0;while(fSize>900){fSize/=1024;i++;}
+	var fsize = (Math.round(fSize*100)/100)+' '+fSExt[i];
+    return fsize;
 }
 //--></script>
 <style>

@@ -122,7 +122,7 @@ require_once(DIR_SYSTEM . 'helper/general.php');
 require_once(DIR_SYSTEM . 'helper/utf8.php');
 require_once(DIR_SYSTEM . 'helper/json.php');
 require_once(DIR_SYSTEM . 'helper/functions.php');
-
+require_once(DIR_SYSTEM . 'PHPExcel/Classes/PHPExcel/IOFactory.php');
 function start($application_config) {
 	require_once(DIR_SYSTEM . 'framework.php');	
 }

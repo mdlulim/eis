@@ -1,7 +1,6 @@
 <?php
 // Heading
 $_['heading_title']                         = 'Customer Export / Import';
-
 // Text
 $_['text_success']                          = 'Success: You have successfully imported your data!';
 $_['text_success_settings']                 = 'Success: You have successfully updated the settings for the Customer Export/Import!';
@@ -21,9 +20,8 @@ $_['text_log_details_2_0_x']                = 'See also \'Tools &gt; Error Logs\
 $_['text_log_details_2_1_x']                = 'See also \'System &gt; Tools &gt; Error Logs\' for more details.';
 $_['text_loading_notifications']            = 'Getting messages';
 $_['text_retry']                            = 'Retry';
-
 // Entry
-$_['entry_import']                          = 'Import from a CSV file';
+$_['entry_import']                          = 'Import from a XLS, XLSX, CSV or ODS spreadsheet file';
 $_['entry_export']                          = 'Export requested data to a CSV spreadsheet file.';
 $_['entry_export_type']                     = 'Select what data you want to export:';
 $_['entry_range_type']                      = 'Please select the data range you want to export:';
@@ -41,7 +39,6 @@ $_['entry_settings_use_filter_group_id']    = 'Use <em>filter_group_id</em> inst
 $_['entry_settings_use_filter_id']          = 'Use <em>filter_id</em> instead of <em>filter name</em> in worksheets \'ProductFilters\' and \'CategoryFilters\'';
 $_['entry_settings_use_export_cache']       = 'Use phpTemp cache for large Exports (will be slightly slower)';
 $_['entry_settings_use_import_cache']       = 'Use phpTemp cache for large Imports (will be slightly slower)';
-
 // Error
 $_['error_permission']                      = 'Warning: You do not have permission to modify Export/Import!';
 $_['error_upload']                          = 'Uploaded spreadsheet file has validation errors!';
@@ -93,7 +90,7 @@ $_['error_id_no_data']                      = 'No data between start-id and end-
 $_['error_page_no_data']                    = 'No more data.';
 $_['error_param_not_number']                = 'Values for data range must be whole numbers.';
 $_['error_upload_name']                     = 'Missing file name for upload';
-$_['error_upload_ext']                      = 'Uploaded file has not one of the \'.csv\' file name extensions, Upload Csv file!';
+$_['error_upload_ext']                      = 'Uploaded file has not one of the \'.xls\', \'.xlsx\', \'.csv\' or \'.ods\' file name extensions, it might not be a spreadsheet file!';
 $_['error_notifications']                   = 'Could not load messages from MHCCORP.COM.';
 $_['error_no_news']                         = 'No messages';
 $_['error_batch_number']                    = 'Batch number must be greater than 0';
@@ -117,7 +114,6 @@ $_['error_filter_name']                     = 'Filter \'%1\' is defined multiple
 $_['error_filter_name']                    .= 'In the Settings-tab please activate the following:<br />';
 $_['error_filter_name']                    .= "Use <em>filter_id</em> instead of <em>filter name</em> in worksheet 'ProductFilters'";
 $_['error_incremental']                     = "Missing 'incremental' (Yes or No) selection for Import";
-
 $_['error_missing_customer_group']                      = 'Export/Import: Missing customer_groups in worksheet \'%1\'!';
 $_['error_invalid_customer_group']                      = 'Export/Import: Undefined customer_group \'%2\' used in worksheet \'%1\'!';
 $_['error_missing_product_id']                          = 'Export/Import: Missing product_ids in worksheet \'%1\'!';
@@ -180,19 +176,16 @@ $_['error_incremental_only']                            = 'Export/Import: Worksh
 $_['error_multiple_category_id_store_id']               = 'Export/Import: Duplicate category_id/store_id \'%1\'/\'%2\' listed in worksheet \'CategorySEOKeywords\'!';
 $_['error_multiple_product_id_store_id']                = 'Export/Import: Duplicate product_id/store_id \'%1\'/\'%2\' listed in worksheet \'ProductSEOKeywords\'!';
 $_['error_unique_keyword']                              = 'Export/Import: Keyword \'%1\' used more than once for store_id \'%2\' in worksheet \'%3\'!';
-
 // Tabs
 $_['tab_import']                            = 'Import';
 $_['tab_export']                            = 'Export';
 $_['tab_settings']                          = 'Settings';
-
 // Button labels
 $_['button_import']                         = 'Import';
 $_['button_export']                         = 'Export';
 $_['button_settings']                       = 'Update Settings';
 $_['button_export_id']                      = 'By id range';
 $_['button_export_page']                    = 'By batches';
-
 // Help
 $_['help_range_type']                       = '(Optional, leave empty if not needed)';
 $_['help_incremental_yes']                  = '(Update and/or add data)';
@@ -200,4 +193,4 @@ $_['help_incremental_no']                   = '(Delete all old data before Impor
 $_['help_import']                           = 'Spreadsheet can have categories, products, attribute definitions, option definitions, or filter definitions. ';
 $_['help_import_old']                       = 'Spreadsheet can have categories, products, attribute definitions, or option definitions. ';
 $_['help_format']                           = 'Do an Export first to see the exact format of the worksheets!';
-?>
+?> 
