@@ -14,7 +14,7 @@ class ControllerUserUser extends Controller {
 		if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validateForm()) {
 			$addUserInfo = $this->request->post;
 			$addUserInfo['password'] = randomPassword();
-			$this->model_user_user->addUser($addUserInfo);
+			$lastid = $this->model_user_user->addUser($addUserInfo);
 			// send email invitation to user
 			$this->sendUserInvitation($addUserInfo);
 			$this->session->data['success'] = $this->language->get('text_success');
@@ -40,7 +40,8 @@ class ControllerUserUser extends Controller {
 			if (isset($this->request->get['page'])) {
 				$url .= '&page=' . $this->request->get['page'];
 			}
-			$this->response->redirect($this->url->link('user/user', 'token=' . $this->session->data['token'] . $url, true));
+			$this->response->redirect($this->url->link('user/user/view', 'token=' . $this->session->data['token'] . '&user_id=' . $lastid . $url, true));
+			
 		}
 		$this->getForm();
 	}
@@ -84,7 +85,7 @@ class ControllerUserUser extends Controller {
 			if (isset($this->request->get['page'])) {
 				$url .= '&page=' . $this->request->get['page'];
 			}
-			$this->response->redirect($this->url->link('user/user', 'token=' . $this->session->data['token'] . $url, true));
+			$this->response->redirect($this->url->link('user/user/view', 'token=' . $this->session->data['token'] . '&user_id=' . $this->request->get['user_id'] . $url, true));
 		}
 		$this->getForm();
 	}
@@ -298,6 +299,7 @@ class ControllerUserUser extends Controller {
 				'username'   => $result['username'],
 				'status'     => ($result['status'] ? $this->language->get('text_enabled') : $this->language->get('text_disabled')),
 				'date_added' => date($this->language->get('date_format_short'), strtotime($result['date_added'])),
+				'view'       => $this->url->link('user/user/view', 'token=' . $this->session->data['token'] . '&user_id=' . $result['user_id'] . $url, true),
 				'edit'       => $this->url->link('user/user/edit', 'token=' . $this->session->data['token'] . '&user_id=' . $result['user_id'] . $url, true)
 			);
 		}
@@ -466,7 +468,14 @@ class ControllerUserUser extends Controller {
 			$data['dashboard'] = trim($this->request->get['dashboard']);
 		}
 		
-		$data['cancel'] = $this->url->link('user/user', 'token=' . $this->session->data['token'] . $url, true);
+		if(isset($this->request->get['user_id']))
+		{
+			$data['cancel'] = $this->url->link('user/user/view', 'token=' . $this->session->data['token'] . '&user_id=' . $this->request->get['user_id'] . $url, true);
+		}
+		else
+		{
+			$data['cancel'] = $this->url->link('user/user', 'token=' . $this->session->data['token'] . $url, true);
+		}
 		if (isset($this->request->get['user_id']) && ($this->request->server['REQUEST_METHOD'] != 'POST')) {
 			$user_info = $this->model_user_user->getUser($this->request->get['user_id']);
 		}
@@ -555,6 +564,129 @@ class ControllerUserUser extends Controller {
 		$data['column_left'] = $this->load->controller('common/column_left');
 		$data['footer'] = $this->load->controller('common/footer');
 		$this->response->setOutput($this->load->view('user/user_form', $data));
+	}
+	
+	public function view() {
+		
+		$this->load->language('user/user');
+		$this->document->setTitle($this->language->get('heading_title'));
+		$this->load->model('user/user');
+		
+		$data['heading_title'] = $this->language->get('heading_title');
+		
+		$data['text_form'] = !isset($this->request->get['user_id']) ? $this->language->get('text_add') : $this->language->get('text_edit');
+		$data['text_enabled'] = $this->language->get('text_enabled');
+		$data['text_disabled'] = $this->language->get('text_disabled');
+		$data['entry_username'] = $this->language->get('entry_username');
+		$data['entry_user_group'] = $this->language->get('entry_user_group');
+		// $data['entry_password'] = $this->language->get('entry_password');
+		// $data['entry_confirm'] = $this->language->get('entry_confirm');
+		$data['entry_firstname'] = $this->language->get('entry_firstname');
+		$data['entry_lastname'] = $this->language->get('entry_lastname');
+		$data['entry_email'] = $this->language->get('entry_email');
+		$data['entry_image'] = $this->language->get('entry_image');
+		$data['entry_status'] = $this->language->get('entry_status');
+		$data['button_save'] = $this->language->get('button_save');
+		$data['button_cancel'] = $this->language->get('button_cancel');
+		if (isset($this->error['warning'])) {
+			$data['error_warning'] = $this->error['warning'];
+		} else {
+			$data['error_warning'] = '';
+		}
+		if (isset($this->error['confirm'])) {
+			$data['error_confirm'] = $this->error['confirm'];
+		} else {
+			$data['error_confirm'] = '';
+		}
+		$url = '';
+		if (isset($this->request->get['filter_name'])) {
+			$url .= '&filter_name=' . $this->request->get['filter_name'];
+		}
+		
+		if (isset($this->request->get['filter_status'])) {
+			$url .= '&filter_status=' . $this->request->get['filter_status'];
+		}
+		
+		if (isset($this->request->get['filter_dateadded'])) {
+			$url .= '&filter_dateadded=' . $this->request->get['filter_dateadded'];
+		}
+		
+		if (isset($this->request->get['sort'])) {
+			$url .= '&sort=' . $this->request->get['sort'];
+		}
+		if (isset($this->request->get['order'])) {
+			$url .= '&order=' . $this->request->get['order'];
+		}
+		if (isset($this->request->get['page'])) {
+			$url .= '&page=' . $this->request->get['page'];
+		}
+		$data['breadcrumbs'] = array();
+		$data['breadcrumbs'][] = array(
+			'text' => $this->language->get('text_home'),
+			'href' => $this->url->link('common/dashboard', 'token=' . $this->session->data['token'], true)
+		);
+		$data['breadcrumbs'][] = array(
+			'text' => $this->language->get('heading_title'),
+			'href' => $this->url->link('user/user', 'token=' . $this->session->data['token'] . $url, true)
+		);
+		$data['action'] = $this->url->link('user/user/edit', 'token=' . $this->session->data['token'] . '&user_id=' . $this->request->get['user_id'] . $url, true);
+		
+		if (!isset($this->request->get['dashboard'])) {
+			$data['dashboard'] = '';
+		} else {
+			$data['dashboard'] = trim($this->request->get['dashboard']);
+		}
+		
+		$data['cancel'] = $this->url->link('user/user', 'token=' . $this->session->data['token'] . $url, true);
+		if (isset($this->request->get['user_id']) && ($this->request->server['REQUEST_METHOD'] != 'POST')) {
+			$user_info = $this->model_user_user->getUser($this->request->get['user_id']);
+		}
+		$data['username'] = $user_info['username'];
+		$data['user_group_id'] = $user_info['user_group_id'];
+		
+		$this->load->model('user/user_group');
+		$data['user_groups'] = $this->model_user_user_group->getUserGroups();
+		
+		$this->load->model('user/user');
+		$current_user = $this->session->data['user_id'];
+		$current_user_group_id = $this->model_user_user->getUser($current_user); ;
+		$current_user_group = $this->model_user_user_group->getUserGroup($current_user_group_id['user_group_id']);
+		$data['current_user_group'] = $current_user_group;
+		
+		// if (isset($this->request->post['password'])) {
+		// 	$data['password'] = $this->request->post['password'];
+		// } else {
+		// 	$data['password'] = '';
+		// }
+		if (isset($this->request->post['confirm'])) {
+			$data['confirm'] = $this->request->post['confirm'];
+		} else {
+			$data['confirm'] = '';
+		}
+		$data['firstname'] = $user_info['firstname'];
+		$data['lastname'] = $user_info['lastname'];
+		$data['email'] = $user_info['email'];
+		$data['image'] = $user_info['image'];
+		
+		$this->load->model('tool/image');
+		if (isset($this->request->post['image']) && is_file(DIR_IMAGE . $this->request->post['image'])) {
+			$data['thumb'] = $this->model_tool_image->resize($this->request->post['image'], 100, 100);
+		} elseif (!empty($user_info) && $user_info['image'] && is_file(DIR_IMAGE . $user_info['image'])) {
+			$data['thumb'] = $this->model_tool_image->resize($user_info['image'], 100, 100);
+		} else {
+			$data['thumb'] = $this->model_tool_image->resize('tsc_image.png', 100, 100);
+		}
+		
+		$data['placeholder'] = $this->model_tool_image->resize('tsc_image.png', 100, 100);
+		$data['status'] = $user_info['status'];
+		
+		$data['token'] = $this->session->data['token'];
+		$data['user_id'] = (isset($this->request->get['user_id'])) ? $this->request->get['user_id'] : '';
+		$data['show_resend_password'] = (isset($this->request->get['user_id']));
+		$data['header'] = $this->load->controller('common/header');
+		$data['column_left'] = $this->load->controller('common/column_left');
+		$data['footer'] = $this->load->controller('common/footer');
+		$this->response->setOutput($this->load->view('user/user_view', $data));
 	}
 	protected function validateForm() {
 		if (!$this->user->hasPermission('modify', 'user/user')) {

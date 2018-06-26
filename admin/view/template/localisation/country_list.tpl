@@ -31,7 +31,7 @@
       <div class="panel-body">
         
         <div class="well">
-        	<h3>Filters</h3>
+          <h3>Filters</h3>
           <div class="row">
             <div class="col-sm-6">
               <div class="form-group">
@@ -39,7 +39,7 @@
                 <select name="filter_name" id="input-name" class="form-control">
                   <option value="*">Select User Name</option>
                   <?php foreach($Dropdownnames as $Dname) { ?>
-                  	<?php if($Dname['name'] == $filter_name ) { ?>
+                    <?php if($Dname['name'] == $filter_name ) { ?>
                       <option value="<?php echo $Dname['name']; ?>" selected="selected"><?php echo $Dname['name']; ?></option>
                       <?php } else { ?>
                       <option value="<?php echo $Dname['name']; ?>"><?php echo $Dname['name']; ?></option>
@@ -55,8 +55,8 @@
                 <input name="filter_code" type='text' value="<?php echo $filter_code; ?>"  placeholder="Country Code" class="form-control" class="form-control"  />
               </div>
               <div class="form-group">
-            		<button type="button" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-search"></i> Search</button>
-            		<button type="button" id="button-filter-reset" class="btn btn-primary pull-right" style="margin-right:10px;"><i class="fa fa-refresh"></i> Reset</button>  
+                <button type="button" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-search"></i> Search</button>
+                <button type="button" id="button-filter-reset" class="btn btn-primary pull-right" style="margin-right:10px;"><i class="fa fa-refresh"></i> Reset</button>  
               </div>
             </div>
             
@@ -100,7 +100,7 @@
                   <td class="text-left"><?php echo $country['name']; ?></td>
                   <td class="text-left"><?php echo $country['iso_code_2']; ?></td>
                   <td class="text-left"><?php echo $country['iso_code_3']; ?></td>
-                  <td class="text-right"><a href="<?php echo $country['edit']; ?>" data-toggle="tooltip" title="<?php echo $button_edit; ?>" class="btn btn-primary"><i class="fa fa-pencil"></i></a></td>
+                  <td class="text-right"><!--<a href="<?php echo $country['edit']; ?>" data-toggle="tooltip" title="<?php echo $button_edit; ?>" class="btn btn-primary"><i class="fa fa-pencil"></i></a>--><a href="<?php echo $country['view']; ?>" data-toggle="tooltip" title="View Country" class="btn btn-info"><i class="fa fa-eye"></i></a></td>
                 </tr>
                 <?php } ?>
                 <?php } else { ?>
@@ -125,29 +125,23 @@
 </style>
 <script type="text/javascript"><!--
 $('#button-filter').on('click', function() {
-	var url = 'index.php?route=localisation/country&token=<?php echo $token; ?>';
-
-	var filter_name = $('select[name=\'filter_name\']').val();
-
-	if (filter_name != '*') {
-		url += '&filter_name=' + encodeURIComponent(filter_name);
-	}
-	
-	var filter_code = $('input[name=\'filter_code\']').val();
-
-	if (filter_code) {
-		url += '&filter_code=' + encodeURIComponent(filter_code);
-	}
-	
-	location = url;
+  var url = 'index.php?route=localisation/country&token=<?php echo $token; ?>';
+  var filter_name = $('select[name=\'filter_name\']').val();
+  if (filter_name != '*') {
+    url += '&filter_name=' + encodeURIComponent(filter_name);
+  }
+  
+  var filter_code = $('input[name=\'filter_code\']').val();
+  if (filter_code) {
+    url += '&filter_code=' + encodeURIComponent(filter_code);
+  }
+  
+  location = url;
 });
-
 $('#button-filter-reset').on('click', function() {
-	
-	var url = 'index.php?route=localisation/country&token=<?php echo $token; ?>';
-
-	location = url;
+  
+  var url = 'index.php?route=localisation/country&token=<?php echo $token; ?>';
+  location = url;
 });
-
 //--></script>
 <?php echo $footer; ?>

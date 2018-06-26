@@ -65,7 +65,7 @@
                   <td class="text-left"><?php echo $zone['country']; ?></td>
                   <td class="text-left"><?php echo $zone['name']; ?></td>
                   <td class="text-left"><?php echo $zone['code']; ?></td>
-                  <td class="text-right"><a href="<?php echo $zone['edit']; ?>" data-toggle="tooltip" title="<?php echo $button_edit; ?>" class="btn btn-primary"><i class="fa fa-pencil"></i></a></td>
+                  <td class="text-right"><!--<a href="<?php echo $zone['edit']; ?>" data-toggle="tooltip" title="<?php echo $button_edit; ?>" class="btn btn-primary"><i class="fa fa-pencil"></i></a>--><a href="<?php echo $zone['view']; ?>" data-toggle="tooltip" title="View Zone" class="btn btn-info"><i class="fa fa-eye"></i></a></td>
                 </tr>
                 <?php } ?>
                 <?php } else { ?>

@@ -59,7 +59,7 @@
                     <?php } ?></td>
                   <td class="text-left"><?php echo $geo_zone['name']; ?></td>
                   <td class="text-left"><?php echo $geo_zone['description']; ?></td>
-                  <td class="text-right"><a href="<?php echo $geo_zone['edit']; ?>" data-toggle="tooltip" title="<?php echo $button_edit; ?>" class="btn btn-primary"><i class="fa fa-pencil"></i></a></td>
+                  <td class="text-right"><!--<a href="<?php echo $geo_zone['edit']; ?>" data-toggle="tooltip" title="<?php echo $button_edit; ?>" class="btn btn-primary"><i class="fa fa-pencil"></i></a>--><a href="<?php echo $geo_zone['view']; ?>" data-toggle="tooltip" title="View Geo Zone" class="btn btn-info"><i class="fa fa-eye"></i></a></td>
                 </tr>
                 <?php } ?>
                 <?php } else { ?>

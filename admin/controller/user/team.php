@@ -12,7 +12,7 @@ class ControllerUserTeam extends Controller {
 		$this->document->setTitle($this->language->get('heading_title'));
 		$this->load->model('user/team');
 		if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validateForm()) {
-			$this->model_user_team->addTeam($this->request->post);
+			$lastid = $this->model_user_team->addTeam($this->request->post);
 			$this->session->data['success'] = $this->language->get('text_success');
 			$url = '';
 			if (isset($this->request->get['sort'])) {
@@ -24,7 +24,7 @@ class ControllerUserTeam extends Controller {
 			if (isset($this->request->get['page'])) {
 				$url .= '&page=' . $this->request->get['page'];
 			}
-			$this->response->redirect($this->url->link('user/team', 'token=' . $this->session->data['token'] . $url, true));
+			$this->response->redirect($this->url->link('user/team/view', 'token=' . $this->session->data['token'] . '&team_id=' . $lastid . $url, true));
 		}
 		$this->getForm();
 	}
@@ -45,7 +45,8 @@ class ControllerUserTeam extends Controller {
 			if (isset($this->request->get['page'])) {
 				$url .= '&page=' . $this->request->get['page'];
 			}
-			$this->response->redirect($this->url->link('user/team', 'token=' . $this->session->data['token'] . $url, true));
+			$this->response->redirect($this->url->link('user/team/view', 'token=' . $this->session->data['token'] . '&team_id=' . $this->request->get['team_id'] . $url, true));
+			
 		}
 		$this->getForm();
 	}
@@ -172,6 +173,7 @@ class ControllerUserTeam extends Controller {
 				'team_name'          => $result['team_name'],
 				'sales_manager'          => $sales_manag,
 				'salesrep'          => $this->url->link('replogic/sales_rep_management', 'token=' . $this->session->data['token'] . '&team_id=' . $result['team_id'] . $url, true),
+				'view'          => $this->url->link('user/team/view', 'token=' . $this->session->data['token'] . '&team_id=' . $result['team_id'] . $url, true),
 				'edit'          => $this->url->link('user/team/edit', 'token=' . $this->session->data['token'] . '&team_id=' . $result['team_id'] . $url, true)
 			);
 		}
@@ -312,7 +314,14 @@ class ControllerUserTeam extends Controller {
 		} else {
 			$data['action'] = $this->url->link('user/team/edit', 'token=' . $this->session->data['token'] . '&team_id=' . $this->request->get['team_id'] . $url, true);
 		}
-		$data['cancel'] = $this->url->link('user/team', 'token=' . $this->session->data['token'] . $url, true);
+		if(isset($this->request->get['team_id']))
+		{
+			$data['cancel'] = $this->url->link('user/team/view', 'token=' . $this->session->data['token'] . '&team_id=' . $this->request->get['team_id'] . $url, true);
+		}
+		else
+		{
+			$data['cancel'] = $this->url->link('user/team', 'token=' . $this->session->data['token'] . $url, true);
+		}
 		if (isset($this->request->get['team_id']) && $this->request->server['REQUEST_METHOD'] != 'POST') {
 			$team_info = $this->model_user_team->getTeam($this->request->get['team_id']);
 		}
@@ -369,6 +378,94 @@ class ControllerUserTeam extends Controller {
 		$data['column_left'] = $this->load->controller('common/column_left');
 		$data['footer'] = $this->load->controller('common/footer');
 		$this->response->setOutput($this->load->view('user/team_form', $data));
+	}
+	
+	public function view() { 
+	
+		$this->load->language('user/team');
+		$this->document->setTitle($this->language->get('heading_title'));
+		$this->load->model('user/team');
+	
+		$data['heading_title'] = $this->language->get('heading_title');
+		
+		$data['text_form'] = !isset($this->request->get['team_id']) ? $this->language->get('text_add') : $this->language->get('text_edit');
+		$data['text_select_all'] = $this->language->get('text_select_all');
+		$data['text_unselect_all'] = $this->language->get('text_unselect_all');
+		$data['entry_name'] = $this->language->get('entry_name');
+		$data['entry_sales'] = $this->language->get('entry_sales');
+		$data['entry_access'] = $this->language->get('entry_access');
+		$data['entry_modify'] = $this->language->get('entry_modify');
+		$data['button_cancel'] = $this->language->get('button_cancel');
+		if (isset($this->error['warning'])) {
+			$data['error_warning'] = $this->error['warning'];
+		} else {
+			$data['error_warning'] = '';
+		}
+		$url = '';
+		if (isset($this->request->get['sort'])) {
+			$url .= '&sort=' . $this->request->get['sort'];
+		}
+		if (isset($this->request->get['order'])) {
+			$url .= '&order=' . $this->request->get['order'];
+		}
+		if (isset($this->request->get['page'])) {
+			$url .= '&page=' . $this->request->get['page'];
+		}
+		$data['breadcrumbs'] = array();
+		$data['breadcrumbs'][] = array(
+			'text' => $this->language->get('text_home'),
+			'href' => $this->url->link('common/dashboard', 'token=' . $this->session->data['token'], true)
+		);
+		$data['breadcrumbs'][] = array(
+			'text' => $this->language->get('heading_title'),
+			'href' => $this->url->link('user/team', 'token=' . $this->session->data['token'] . $url, true)
+		);
+		$data['cancel'] = $this->url->link('user/team', 'token=' . $this->session->data['token'] . $url, true);
+		$data['editurl'] = $this->url->link('user/team/edit', 'token=' . $this->session->data['token'] . '&team_id=' . $this->request->get['team_id'] . $url, true);
+		if (isset($this->request->get['team_id']) && $this->request->server['REQUEST_METHOD'] != 'POST') {
+			$team_info = $this->model_user_team->getTeam($this->request->get['team_id']);
+		}
+		$data['team_name'] = $team_info['team_name'];
+		
+		$this->load->model('user/user_group');
+		$this->load->model('user/user');
+		$user_group_id = $this->model_user_user_group->getUserGroupByName('Sales Manager');
+		$data['users'] = $this->model_user_user->getUsersByGroupId($user_group_id['user_group_id']); 
+	   //print_r($data['users']); exit;
+	
+		$data['sales_manager'] = $team_info['sales_manager'];
+		
+		
+		$current_user = $this->session->data['user_id'];
+		$current_user_group_id = $this->model_user_user->getUser($current_user);
+		$current_user_group = $this->model_user_user_group->getUserGroup($current_user_group_id['user_group_id']); 
+		if($current_user_group_id['user_group_id'] == '16')
+		{
+			$filter_salesrep_id = $current_user; 
+			$data['loginuser'] = 'Sales Manager';
+			$data['salesrep_id'] = $current_user;
+		}
+		else
+		{
+			$data['loginuser'] = 'Other';
+		}
+		$ignore = array(
+			'common/dashboard',
+			'common/startup',
+			'common/login',
+			'common/logout',
+			'common/forgotten',
+			'common/reset',			
+			'common/footer',
+			'common/header',
+			'error/not_found',
+			'error/permission'
+		);
+		
+		$data['header'] = $this->load->controller('common/header');
+		$data['column_left'] = $this->load->controller('common/column_left');
+		$data['footer'] = $this->load->controller('common/footer');
+		$this->response->setOutput($this->load->view('user/team_view', $data));
 	}
 	protected function validateForm() {
 		if (!$this->user->hasPermission('modify', 'user/team')) {

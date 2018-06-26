@@ -30,8 +30,8 @@
       </div>
       <div class="panel-body">
       
-      	<div class="well">
-        	<h3>Filters</h3>
+        <div class="well">
+          <h3>Filters</h3>
           <div class="row">
             <div class="col-sm-4">
               <div class="form-group">
@@ -39,7 +39,7 @@
                 <select name="filter_title" id="input-name" class="form-control">
                   <option value="*">Select Currency</option>
                    <?php foreach($DropdownCurrencys as $DCurrency) { ?>
-                  	<?php if($DCurrency['title'] == $filter_title ) { ?>
+                    <?php if($DCurrency['title'] == $filter_title ) { ?>
                       <option value="<?php echo $DCurrency['title']; ?>" selected="selected"><?php echo $DCurrency['title']; ?></option>
                       <?php } else { ?>
                       <option value="<?php echo $DCurrency['title']; ?>"><?php echo $DCurrency['title']; ?></option>
@@ -66,7 +66,7 @@
                 <select name="filter_code" id="input-name" class="form-control">
                   <option value="*">Select Currency Code</option>
                   <?php foreach($DropdownCurrencys as $DCurrency) { ?>
-                  	<?php if($DCurrency['code'] == $filter_code) { ?>
+                    <?php if($DCurrency['code'] == $filter_code) { ?>
                       <option value="<?php echo $DCurrency['code']; ?>" selected="selected"><?php echo $DCurrency['code']; ?></option>
                       <?php } else { ?>
                       <option value="<?php echo $DCurrency['code']; ?>"><?php echo $DCurrency['code']; ?></option>
@@ -75,8 +75,8 @@
                 </select>
               </div>
               <div class="form-group">
-            		<button type="button" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-search"></i> Search</button>
-            		<button type="button" id="button-filter-reset" class="btn btn-primary pull-right" style="margin-right:10px;"><i class="fa fa-refresh"></i> Reset</button>  
+                <button type="button" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-search"></i> Search</button>
+                <button type="button" id="button-filter-reset" class="btn btn-primary pull-right" style="margin-right:10px;"><i class="fa fa-refresh"></i> Reset</button>  
               </div>
             </div>
             
@@ -126,7 +126,7 @@
                   <td class="text-left"><?php echo $currency['code']; ?></td>
                   <td class="text-right"><?php echo $currency['value']; ?></td>
                   <td class="text-left"><?php echo $currency['date_modified']; ?></td>
-                  <td class="text-right"><a href="<?php echo $currency['edit']; ?>" data-toggle="tooltip" title="<?php echo $button_edit; ?>" class="btn btn-primary"><i class="fa fa-pencil"></i></a></td>
+                  <td class="text-right"><!--<a href="<?php echo $currency['edit']; ?>" data-toggle="tooltip" title="<?php echo $button_edit; ?>" class="btn btn-primary"><i class="fa fa-pencil"></i></a>--><a href="<?php echo $currency['view']; ?>" data-toggle="tooltip" title="View Currency" class="btn btn-info"><i class="fa fa-eye"></i></a></td>
                 </tr>
                 <?php } ?>
                 <?php } else { ?>
@@ -152,43 +152,34 @@
   </style>
 <script type="text/javascript"><!--
 $('#button-filter').on('click', function() {
-	var url = 'index.php?route=localisation/currency&token=<?php echo $token; ?>';
-
-	var filter_title = $('select[name=\'filter_title\']').val();
-
-	if (filter_title != '*') {
-		url += '&filter_title=' + encodeURIComponent(filter_title);
-	}
-	
-	var filter_updated = $('input[name=\'filter_updated\']').val();
-
-	if (filter_updated) {
-		url += '&filter_updated=' + encodeURIComponent(filter_updated);
-	}
-	
-	var filter_code = $('select[name=\'filter_code\']').val();
-
-	if (filter_code != '*') {
-		url += '&filter_code=' + encodeURIComponent(filter_code);
-	}
-
-	location = url;
+  var url = 'index.php?route=localisation/currency&token=<?php echo $token; ?>';
+  var filter_title = $('select[name=\'filter_title\']').val();
+  if (filter_title != '*') {
+    url += '&filter_title=' + encodeURIComponent(filter_title);
+  }
+  
+  var filter_updated = $('input[name=\'filter_updated\']').val();
+  if (filter_updated) {
+    url += '&filter_updated=' + encodeURIComponent(filter_updated);
+  }
+  
+  var filter_code = $('select[name=\'filter_code\']').val();
+  if (filter_code != '*') {
+    url += '&filter_code=' + encodeURIComponent(filter_code);
+  }
+  location = url;
 });
-
 $('#button-filter-reset').on('click', function() {
-	
-	var url = 'index.php?route=localisation/currency&token=<?php echo $token; ?>';
-
-	location = url;
+  
+  var url = 'index.php?route=localisation/currency&token=<?php echo $token; ?>';
+  location = url;
 });
-
 $(function () 
 {
-		$('#filter_dateupdated').datetimepicker({
-			 pickTime: false
-		});
-				
+    $('#filter_dateupdated').datetimepicker({
+       pickTime: false
+    });
+        
 });
-
 //--></script>
 <?php echo $footer; ?> 

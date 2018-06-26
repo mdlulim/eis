@@ -59,7 +59,7 @@
                     <?php } ?></td>
                   <td class="text-left"><?php echo $locations['name']; ?></td>
                   <td class="text-left"><?php echo $locations['address']; ?></td>
-                  <td class="text-right"><a href="<?php echo $locations['edit']; ?>" data-toggle="tooltip" title="<?php echo $button_edit; ?>" class="btn btn-primary"><i class="fa fa-pencil"></i></a></td>
+                  <td class="text-right"><!--<a href="<?php echo $locations['edit']; ?>" data-toggle="tooltip" title="<?php echo $button_edit; ?>" class="btn btn-primary"><i class="fa fa-pencil"></i></a>--><a href="<?php echo $locations['view']; ?>" data-toggle="tooltip" title="View Store Location" class="btn btn-info"><i class="fa fa-eye"></i></a></td>
                 </tr>
                 <?php } ?>
                 <?php } else { ?>

@@ -65,7 +65,7 @@
                   <td class="text-left"><?php echo $language['name']; ?></td>
                   <td class="text-left"><?php echo $language['code']; ?></td>
                   <td class="text-right"><?php echo $language['sort_order']; ?></td>
-                  <td class="text-right"><a href="<?php echo $language['edit']; ?>" data-toggle="tooltip" title="<?php echo $button_edit; ?>" class="btn btn-primary"><i class="fa fa-pencil"></i></a></td>
+                  <td class="text-right"><!--<a href="<?php echo $language['edit']; ?>" data-toggle="tooltip" title="<?php echo $button_edit; ?>" class="btn btn-primary"><i class="fa fa-pencil"></i></a>--><a href="<?php echo $language['view']; ?>" data-toggle="tooltip" title="View Language" class="btn btn-info"><i class="fa fa-eye"></i></a></td>
                 </tr>
                 <?php } ?>
                 <?php } else { ?>
