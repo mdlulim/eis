@@ -165,7 +165,7 @@
                   <td class="text-left"><?php echo $custom_field['location']; ?></td>
                   <td class="text-left"><?php echo $custom_field['type']; ?></td>
                   <td class="text-left"><?php echo $custom_field['sort_order']; ?></td>
-                  <td class="text-right"><a href="<?php echo $custom_field['edit']; ?>" data-toggle="tooltip" title="<?php echo $button_edit; ?>" class="btn btn-primary"><i class="fa fa-pencil"></i></a></td>
+                  <td class="text-right"><!--<a href="<?php echo $custom_field['edit']; ?>" data-toggle="tooltip" title="<?php echo $button_edit; ?>" class="btn btn-primary"><i class="fa fa-pencil"></i></a>--><a href="<?php echo $custom_field['view']; ?>" data-toggle="tooltip" title="View Custom Field" class="btn btn-info"><i class="fa fa-eye"></i></a></td>
                 </tr>
                 <?php } ?>
                 <?php } else { ?>

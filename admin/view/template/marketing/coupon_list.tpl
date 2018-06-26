@@ -142,7 +142,7 @@
                   <td class="text-left"><?php echo $coupon['date_start']; ?></td>
                   <td class="text-left"><?php echo $coupon['date_end']; ?></td>
                   <td class="text-left"><?php echo $coupon['status']; ?></td>
-                  <td class="text-right"><a href="<?php echo $coupon['edit']; ?>" data-toggle="tooltip" title="<?php echo $button_edit; ?>" class="btn btn-primary"><i class="fa fa-pencil"></i></a></td>
+                 <td class="text-right"><!--<a href="<?php echo $coupon['edit']; ?>" data-toggle="tooltip" title="<?php echo $button_edit; ?>" class="btn btn-primary"><i class="fa fa-pencil"></i></a>--><a href="<?php echo $coupon['view']; ?>" data-toggle="tooltip" title="View Coupon" class="btn btn-info"><i class="fa fa-eye"></i></a></td>
                 </tr>
                 <?php } ?>
                 <?php } else { ?>

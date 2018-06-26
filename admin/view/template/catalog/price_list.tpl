@@ -103,7 +103,7 @@
                                 <td class="text-left"><?php echo $price['contract']; ?></td>
                                 <td class="text-left"><?php echo $price['price']; ?></td>
 
-                                <td class="text-right"><a href="<?php echo $price['edit']; ?>" data-toggle="tooltip" title="<?php echo $button_edit; ?>" class="btn btn-primary"><i class="fa fa-pencil"></i></a></td>
+                                <td class="text-right"><!--<a href="<?php echo $price['edit']; ?>" data-toggle="tooltip" title="<?php echo $button_edit; ?>" class="btn btn-primary"><i class="fa fa-pencil"></i></a>--><a href="<?php echo $price['view']; ?>" data-toggle="tooltip" title="View Contract Price" class="btn btn-info"><i class="fa fa-eye"></i></a></td>
                             </tr>
                             <?php } ?>
                             <?php } else { ?>

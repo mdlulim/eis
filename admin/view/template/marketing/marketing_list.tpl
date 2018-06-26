@@ -99,7 +99,7 @@
                   <td class="text-left"><?php echo $marketing['clicks']; ?></td>
                   <td class="text-left"><?php echo $marketing['orders']; ?></td>
                   <td class="text-left"><?php echo $marketing['date_added']; ?></td>
-                  <td class="text-left"><a href="<?php echo $marketing['edit']; ?>" data-toggle="tooltip" title="<?php echo $button_edit; ?>" class="btn btn-primary"><i class="fa fa-pencil"></i></a></td>
+                 <td class="text-left"><!--<a href="<?php echo $marketing['edit']; ?>" data-toggle="tooltip" title="<?php echo $button_edit; ?>" class="btn btn-primary"><i class="fa fa-pencil"></i></a>--><a href="<?php echo $marketing['view']; ?>" data-toggle="tooltip" title="View Marketing Tracking" class="btn btn-info"><i class="fa fa-eye"></i></a></td>
                 </tr>
                 <?php } ?>
                 <?php } else { ?>

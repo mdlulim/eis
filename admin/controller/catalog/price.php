@@ -18,7 +18,8 @@ class ControllerCatalogPrice extends Controller {
         $this->document->setTitle($this->language->get('heading_title'));
         $this->load->model('catalog/price');
         if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validateForm()) {
-            $this->model_catalog_price->addPrice($this->request->post);
+            
+            $lastid = $this->model_catalog_price->addPrice($this->request->post);
             $this->session->data['success'] = $this->language->get('text_success');
             $url = '';
             if (isset($this->request->get['filter_sku'])) {
@@ -38,7 +39,7 @@ class ControllerCatalogPrice extends Controller {
             if (isset($this->request->get['page'])) {
                 $url .= '&page=' . $this->request->get['page'];
             }
-            $this->response->redirect($this->url->link('catalog/price', 'token=' . $this->session->data['token'] . $url, 'SSL'));
+            $this->response->redirect($this->url->link('catalog/price', 'token=' . $this->session->data['token'] . $url, true));
         }
         $this->getForm();
     }
@@ -67,7 +68,7 @@ class ControllerCatalogPrice extends Controller {
             if (isset($this->request->get['page'])) {
                 $url .= '&page=' . $this->request->get['page'];
             }
-            $this->response->redirect($this->url->link('catalog/price', 'token=' . $this->session->data['token'] . $url, 'SSL'));
+            $this->response->redirect($this->url->link('catalog/price/view', 'token=' . $this->session->data['token'] . '&price_id=' . $this->request->get['price_id'] . '&customer_group_id='. $this->request->get['customer_group_id'] . $url, true));
         }
         $this->getForm();
     }
@@ -179,6 +180,7 @@ class ControllerCatalogPrice extends Controller {
                 'contract'   => $result['c_name'],
                 'customer_group_id'   => $result['customer_group_id'],
                 'price'   => $result['price'],
+                'view'          => $this->url->link('catalog/price/view', 'token=' . $this->session->data['token'] . '&price_id=' . $result['product_id'] .'&customer_group_id=' . $result['c_id'] . $url, 'SSL'),
                 'edit'          => $this->url->link('catalog/price/edit', 'token=' . $this->session->data['token'] . '&price_id=' . $result['product_id'] .'&customer_group_id=' . $result['c_id'] . $url, 'SSL')
             );
         }
@@ -311,9 +313,14 @@ class ControllerCatalogPrice extends Controller {
         if (!isset($this->request->get['price_id'])) {
             $data['action'] = $this->url->link('catalog/price/add', 'token=' . $this->session->data['token'] . $url, 'SSL');
         } else {
-            $data['action'] = $this->url->link('catalog/price/edit', 'token=' . $this->session->data['token'] . '&price_id=' . $this->request->get['price_id'] . $url, 'SSL');
+            $data['action'] = $this->url->link('catalog/price/edit', 'token=' . $this->session->data['token'] . '&price_id=' . $this->request->get['price_id'] . '&customer_group_id=' . $this->request->get['customer_group_id'] . $url, 'SSL');
         }
-        $data['cancel'] = $this->url->link('catalog/price', 'token=' . $this->session->data['token'] . $url, 'SSL');
+        if(isset($this->request->get['price_id']))
+        {
+            $data['cancel'] = $this->url->link('catalog/price/view', 'token=' . $this->session->data['token'] . '&price_id=' . $this->request->get['price_id'].'&customer_group_id='. $this->request->get['customer_group_id'] . $url, 'SSL');
+        } else {
+            $data['cancel'] = $this->url->link('catalog/price', 'token=' . $this->session->data['token'] . $url, 'SSL');
+        }
         if (isset($this->request->get['price_id']) && ($this->request->server['REQUEST_METHOD'] != 'POST')) {
             $data['price_info'] = $this->model_catalog_price->getPrice($this->request->get['price_id'],$this->request->get['customer_group_id']);
         }
@@ -354,6 +361,98 @@ class ControllerCatalogPrice extends Controller {
         $data['column_left'] = $this->load->controller('common/column_left');
         $data['footer'] = $this->load->controller('common/footer');
         $this->response->setOutput($this->load->view('catalog/price_form.tpl', $data));
+    }
+    
+    public function view() {
+    
+        $this->load->language('catalog/price');
+        $this->document->setTitle($this->language->get('heading_title'));
+        $this->load->model('catalog/price');
+    
+        $data['heading_title']          = $this->language->get('heading_title');
+        $data['text_form']              = !isset($this->request->get['price_id']) ? $this->language->get('text_add') : $this->language->get('text_edit');
+        $data['entry_sku']      = $this->language->get('entry_sku');
+        $data['entry_contract'] = $this->language->get('entry_contract');
+        $data['entry_price'] = $this->language->get('entry_price');
+        $data['button_save']            = $this->language->get('button_save');
+        $data['button_cancel']          = $this->language->get('button_cancel');
+        $data['button_filter_add']      = $this->language->get('button_filter_add');
+        $data['button_remove']          = $this->language->get('button_remove');
+        if (isset($this->error['warning'])) {
+            $data['error_warning'] = $this->error['warning'];
+        } else {
+            $data['error_warning'] = '';
+        }
+        $url = '';
+        if (isset($this->request->get['filter_sku'])) {
+            $url .= '&filter_sku=' . $this->request->get['filter_sku'];
+        }
+        
+        if (isset($this->request->get['filter_customer_group_id'])) {
+            $url .= '&filter_customer_group_id=' . $this->request->get['filter_customer_group_id'];
+        }
+        
+        if (isset($this->request->get['sort'])) {
+            $url .= '&sort=' . $this->request->get['sort'];
+        }
+        if (isset($this->request->get['order'])) {
+            $url .= '&order=' . $this->request->get['order'];
+        }
+        if (isset($this->request->get['page'])) {
+            $url .= '&page=' . $this->request->get['page'];
+        }
+        $data['breadcrumbs'] = array();
+        $data['breadcrumbs'][] = array(
+            'text' => $this->language->get('text_home'),
+            'href' => $this->url->link('common/dashboard', 'token=' . $this->session->data['token'], 'SSL')
+        );
+        $data['breadcrumbs'][] = array(
+            'text' => $this->language->get('heading_title'),
+            'href' => $this->url->link('catalog/price', 'token=' . $this->session->data['token'] . $url, 'SSL')
+        );
+        $data['action'] = $this->url->link('catalog/price/edit', 'token=' . $this->session->data['token'] . '&price_id=' . $this->request->get['price_id'].'&customer_group_id='. $this->request->get['customer_group_id'] . $url, 'SSL');
+        
+        $data['cancel'] = $this->url->link('catalog/price', 'token=' . $this->session->data['token'] . $url, 'SSL');
+        if (isset($this->request->get['price_id']) && ($this->request->server['REQUEST_METHOD'] != 'POST')) {
+            $data['price_info'] = $this->model_catalog_price->getPrice($this->request->get['price_id'],$this->request->get['customer_group_id']);
+        }
+        $data['token'] = $this->session->data['token'];
+        $this->load->model('localisation/language');
+        $data['languages'] = $this->model_localisation_language->getLanguages();
+        if (isset($this->request->post['filter_group_description'])) {
+            $data['filter_group_description'] = $this->request->post['filter_group_description'];
+        } elseif (isset($this->request->get['filter_group_id'])) {
+            $data['filter_group_description'] = $this->model_catalog_filter->getFilterGroupDescriptions($this->request->get['filter_group_id']);
+        } else {
+            $data['filter_group_description'] = array();
+        }
+        if (isset($this->request->post['sort_order'])) {
+            $data['sort_order'] = $this->request->post['sort_order'];
+        } elseif (!empty($filter_group_info)) {
+            $data['sort_order'] = $filter_group_info['sort_order'];
+        } else {
+            $data['sort_order'] = '';
+        }
+        if (isset($this->request->post['filter'])) {
+            $data['filters'] = $this->request->post['filter'];
+        } elseif (isset($this->request->get['filter_group_id'])) {
+            $data['filters'] = $this->model_catalog_filter->getFilterDescriptions($this->request->get['filter_group_id']);
+        } else {
+            $data['filters'] = array();
+        }
+        if (isset($this->request->post['c_id'])) {
+            $data['c_id'] = $this->request->post['c_id'];
+        } elseif (!empty($contractid)) {
+            $data['c_id'] = $contractid['c_id'];
+        } else {
+            $data['c_id'] = '';
+        }
+        $this->load->model('catalog/price');
+        $data['customer_groups'] = $this->model_catalog_price->getCustomerGroups();
+        $data['header'] = $this->load->controller('common/header');
+        $data['column_left'] = $this->load->controller('common/column_left');
+        $data['footer'] = $this->load->controller('common/footer');
+        $this->response->setOutput($this->load->view('catalog/price_view.tpl', $data));
     }
     protected function validateForm() {
         if (!$this->user->hasPermission('modify', 'catalog/price')) {

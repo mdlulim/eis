@@ -772,7 +772,7 @@ class ControllerReplogicSalesRepManagement extends Controller {
 	}
 	protected function validateForm() {
 		if (!$this->user->hasPermission('modify', 'replogic/sales_rep_management')) {
-			$this->error['warning'] = $this->language->get('error_sales_rep_management');
+			$this->error['warning'] = $this->language->get('error_permission');
 		}
 		if ((utf8_strlen($this->request->post['salesrep_name']) < 3) || (utf8_strlen($this->request->post['salesrep_name']) > 64)) {
 			$this->error['salesrep_name'] = $this->language->get('error_salesrep_name');
