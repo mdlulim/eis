@@ -164,7 +164,7 @@
                     <td><?=$appointment['customer_name']?></td>
                     <td><?=$appointment['salesrep_name']?></td>
                     <td><?=$appointment['appointment_date']?></td>
-                    <td><span class="label label-<?=(strtolower($appointment['appointment_type'])=='new business')? 'default' : 'primary' ?>"><?=$appointment['appointment_type']?></span></td>
+                  <td><span class="label label-<?=(strtolower($appointment['appointment_type'])=='new business')? 'default' : 'primary' ?>" style="font-size:14px;"><?=$appointment['appointment_type']?></span></td>
                     <td><?=$appointment['visit_date']?></td>
                     <td class="text-right">
                       <a href="<?=$appointment['view']?>" data-toggle="tooltip" title="<?=$appointment['customer_name']?>" class="btn btn-info"><i class="fa fa-eye"></i></a>
