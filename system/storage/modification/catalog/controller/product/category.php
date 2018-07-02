@@ -91,6 +91,7 @@ class ControllerProductCategory extends Controller {
 		}
 
 		$category_info = $this->model_catalog_category->getCategory($category_id);
+		$data['category_id'] = $category_id;
 
 		if ($category_info) {
 			$this->document->setTitle($category_info['meta_title']);
@@ -179,6 +180,15 @@ class ControllerProductCategory extends Controller {
 				'limit'              => $limit
 			);
 
+			// cart
+			$cartProductIds = [];
+			if ($this->cart->hasProducts()) {
+				$cartProducts = $this->cart->getProducts();
+				foreach ($cartProducts as $key => $value) {
+					$cartProductIds[$value['product_id']] = $value['quantity'];
+				}
+			}
+
 			$product_total = $this->model_catalog_product->getTotalProducts($filter_data);
 
 			$results = $this->model_catalog_product->getProducts($filter_data);
@@ -232,23 +242,20 @@ class ControllerProductCategory extends Controller {
                 if (count($additional_images) > 0) {
                     $image2 = $this->model_tool_image->resize($additional_images[0]['image'], $this->config->get('config_image_product_width'), $this->config->get('config_image_product_height'));
                 }
-            
+
 				$data['products'][] = array(
 					'product_id'  => $result['product_id'],
 					'thumb'       => $image,
-
-                'thumb2'       => $image2,
-            
-
-                'labels'        => $this->model_journal2_product->getLabels($result['product_id']),
-            
+					'thumb2'       => $image2,
+	            	'labels'        => $this->model_journal2_product->getLabels($result['product_id']),
 					'name'        => $result['name'],
 					'description' => utf8_substr(strip_tags(html_entity_decode($result['description'], ENT_QUOTES, 'UTF-8')), 0, $this->config->get($this->config->get('config_theme') . '_product_description_length')) . '..',
 					'price'       => $price,
 					'special'     => $special,
 
-                'date_end'       => $date_end,
-            
+                	'date_end'       => $date_end,
+                	'model'  => $result['model'],
+            		'cart_qty' => (isset($cartProductIds[$result['product_id']])) ? $cartProductIds[$result['product_id']] : 0,
 					'tax'         => $tax,
 					'minimum'     => $result['minimum'] > 0 ? $result['minimum'] : 1,
 					'rating'      => $result['rating'],
