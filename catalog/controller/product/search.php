@@ -209,6 +209,15 @@ class ControllerProductSearch extends Controller {
 				'limit'               => $limit
 			);
 
+			// cart
+			$cartProductIds = [];
+			if ($this->cart->hasProducts()) {
+				$cartProducts = $this->cart->getProducts();
+				foreach ($cartProducts as $key => $value) {
+					$cartProductIds[$value['product_id']] = $value['quantity'];
+				}
+			}
+
 			$product_total = $this->model_catalog_product->getTotalProducts($filter_data);
 
 			$results = $this->model_catalog_product->getProducts($filter_data);
@@ -252,6 +261,8 @@ class ControllerProductSearch extends Controller {
 					'price'       => $price,
 					'special'     => $special,
 					'tax'         => $tax,
+                	'model'  => $result['model'],
+            		'cart_qty' => (isset($cartProductIds[$result['product_id']])) ? $cartProductIds[$result['product_id']] : 0,
 					'minimum'     => $result['minimum'] > 0 ? $result['minimum'] : 1,
 					'rating'      => $result['rating'],
 					'href'        => $this->url->link('product/product', 'product_id=' . $result['product_id'] . $url)

@@ -1000,7 +1000,10 @@ table view
 .main-products > .product-table-row > .product-thumb {
   font-size: 13px;
   margin-left: -15px;
-  margin-right: -15px; }
+  margin-right: -15px;
+  border: none;
+  background-color: transparent;
+  display: inherit; }
 .main-products > .product-table-row > .product-thumb:before {
   content: " ";
   display: table; }
@@ -1085,7 +1088,13 @@ table view
 .main-products > .product-table-row > .product-thumb > .product-details .product-sku a,
 .main-products > .product-table-row > .product-thumb > .product-details .product-price .price {
   margin-top: 10px;
-  display: block; }
+  display: block;
+  font-weight: bold;
+  font-size: 14px; }
+.main-products > .product-table-row > .product-thumb > .product-details .product-price .price > .price-old {
+  text-decoration: line-through;
+  color: red;
+  font-size: smaller; }
 .main-products > .product-table-row > .product-thumb > .product-details .product-name a {
   padding: 0 10px 0; }
 
