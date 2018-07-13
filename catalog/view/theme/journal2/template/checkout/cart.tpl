@@ -46,6 +46,7 @@
                 <td class="text-left quantity"><?php echo $column_quantity; ?></td>
                 <td class="text-right price"><?php echo $column_price; ?></td>
                 <td class="text-right total"><?php echo $column_total; ?></td>
+                <td></td>
               </tr>
             </thead>
             <tbody>
@@ -73,13 +74,24 @@
                   <span class="label label-info"><?php echo $text_recurring_item; ?></span> <small><?php echo $product['recurring']; ?></small>
                   <?php } ?></td>
                 <td class="text-left model"><?php echo $product['model']; ?></td>
-                <td class="text-left quantity"><div class="input-group btn-block" style="max-width: 200px;">
+                <td class="text-left quantity">
+                  <span class="qty">
+                    <a href="javascript:;" class="journal-stepper" onclick="Journal.removeProductFromCart(<?php echo $product['product_id']; ?>, this)">-</a>
+                    <input name="quantity" value="<?php echo $product['cart_qty'] ?>" size="10" data-min-value="0" id="quantity_<?php echo $product['product_id']; ?>" class="form-control product-info1" type="text" data-cart-qty="<?php echo $product['cart_qty'] ?>" data-product-id="<?php echo $product['product_id'] ?>">
+                    <a href="javascript:;" class="journal-stepper" onclick="Journal.addToCart(<?php echo $product['product_id']; ?>, this)">+</a>
+                  </span>
+                  <!-- <div class="input-group btn-block" style="max-width: 200px;">
                     <input type="text" name="quantity[<?php echo $product[version_compare(VERSION, '2.1', '<') ? 'key' : 'cart_id']; ?>]" value="<?php echo $product['quantity']; ?>" size="1" class="form-control" />
                     <span class="input-group-btn">
                     <button type="submit" data-toggle="tooltip" title="<?php echo $button_update; ?>" class="btn btn-primary"><i class="fa fa-refresh"></i></button>
-                    <button type="button" data-toggle="tooltip" title="<?php echo $button_remove; ?>" class="btn btn-danger" onclick="cart.remove('<?php echo $product[version_compare(VERSION, '2.1', '<') ? 'key' : 'cart_id']; ?>');"><i class="fa fa-times-circle"></i></button></span></div></td>
+                    <button type="button" data-toggle="tooltip" title="<?php echo $button_remove; ?>" class="btn btn-danger" onclick="cart.remove('<?php echo $product[version_compare(VERSION, '2.1', '<') ? 'key' : 'cart_id']; ?>');"><i class="fa fa-times-circle"></i></button></span>
+                  </div> -->
+                </td>
                 <td class="text-right price"><?php echo $product['price']; ?></td>
                 <td class="text-right total"><?php echo $product['total']; ?></td>
+                <td class="text-right remove-from-cart">
+                    <button type="button" data-toggle="tooltip" title="<?php echo $button_remove; ?>" class="btn btn-danger btn-remove-cart-item" onclick="cart.remove('<?php echo $product[version_compare(VERSION, '2.1', '<') ? 'key' : 'cart_id']; ?>');"><i class="fa fa-trash-o"></i></button>
+                </td>
               </tr>
               <?php } ?>
               <?php foreach ($vouchers as $vouchers) { ?>
@@ -87,18 +99,31 @@
                 <td></td>
                 <td class="text-left name"><?php echo $vouchers['description']; ?></td>
                 <td class="text-left"></td>
-                <td class="text-left quantity"><div class="input-group btn-block" style="max-width: 200px;">
+                <td class="text-left quantity">
+                  <div class="input-group btn-block" style="max-width: 200px;">
                     <input type="text" name="" value="1" size="1" disabled="disabled" class="form-control" />
-                    <span class="input-group-btn"><button type="button" data-toggle="tooltip" title="<?php echo $button_remove; ?>" class="btn btn-danger" onclick="voucher.remove('<?php echo $vouchers['key']; ?>');"><i class="fa fa-times-circle"></i></button></span></div></td>
+                    <span class="input-group-btn"><button type="button" data-toggle="tooltip" title="<?php echo $button_remove; ?>" class="btn btn-danger" onclick="voucher.remove('<?php echo $vouchers['key']; ?>');"><i class="fa fa-times-circle"></i></button></span>
+                  </div>
+                </td>
                 <td class="text-right price"><?php echo $vouchers['amount']; ?></td>
                 <td class="text-right total"><?php echo $vouchers['amount']; ?></td>
               </tr>
               <?php } ?>
             </tbody>
+            <tfoot>
+              <?php foreach ($totals as $total) : ?>
+              <tr>
+                <th colspan="5" align="right" class="text-right" style="padding:10px 15px; background-color:white"><?php echo $total['title']; ?></th>
+                <th align="center" class="text-center cart-subtotal" style="padding:10px 6px; background-color:white"><?php echo $total['text']; ?></th>
+                <td style="padding:10px 6px; background-color:white">&nbsp;</td>
+              </tr>
+              <?php endforeach; ?>
+            </tfoot>
           </table>
         </div>
       </form>
       <div class="action-area">
+        <?php /* //start-php-comment
         <?php if (version_compare(VERSION, '2.2', '<')): ?>
         <?php if ($coupon || $voucher || $reward || $shipping) { ?>
         <h3><?php echo $text_next; ?></h3>
@@ -128,6 +153,7 @@
             </table>
           </div>
         </div>
+        //end-php-comment */ ?>
         <div class="buttons">
           <div class="pull-left"><a href="<?php echo $continue; ?>" class="btn-default button"><?php echo $button_shopping; ?></a></div>
           <div class="pull-right"><a href="<?php echo $checkout; ?>" class="btn-primary button"><?php echo $button_checkout; ?></a></div>

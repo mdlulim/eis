@@ -486,37 +486,42 @@
               <?php endforeach; ?>
               <input type="hidden" name="product_id" value="<?php echo $product_id; ?>" />
               <?php else: ?>
+              <div class="quantity">
                 <span class="qty">
-              <label class="control-label text-qty" for="input-quantity"><?php echo $entry_qty; ?></label>
-              <input type="text" name="quantity" value="<?php echo $minimum; ?>" size="2" data-min-value="<?php echo $minimum; ?>" id="input-quantity" class="form-control" />
-              <input type="hidden" name="product_id" value="<?php echo $product_id; ?>" />
-              <script>
-                /* quantity buttons */
-                var $input = $('.cart input[name="quantity"]');
-                function up() {
-                  var val = parseInt($input.val(), 10) + 1 || parseInt($input.attr('data-min-value'), 10);
-                  $input.val(val);
-                }
-                function down() {
-                  var val = parseInt($input.val(), 10) - 1 || 0;
-                  var min = parseInt($input.attr('data-min-value'), 10) || 1;
-                  $input.val(Math.max(val, min));
-                }
-                $('<a href="javascript:;" class="journal-stepper">-</a>').insertBefore($input).click(down);
-                $('<a href="javascript:;" class="journal-stepper">+</a>').insertAfter($input).click(up);
-                $input.keydown(function (e) {
-                  if (e.which === 38) {
-                    up();
-                    return false;
-                  }
-                  if (e.which === 40) {
-                    down();
-                    return false;
-                  }
-                });
-              </script>
-              </span>
-                <button type="button" id="button-cart" data-loading-text="<?php echo $text_loading; ?>" class="button"><span class="button-cart-text"><?php echo $button_cart; ?></span></button>
+                  <a href="javascript:;" class="journal-stepper" onclick="Journal.removeProductFromCart(<?php echo $product_id; ?>, this)">-</a>
+                    <input name="quantity" value="<?php echo $cart_qty; ?>" size="10" data-min-value="0" id="quantity_<?php echo $product_id; ?>" class="form-control product-info1" type="text" data-cart-qty="<?php echo $cart_qty; ?>" data-product-id="<?php echo $product_id ?>">
+                    <a href="javascript:;" class="journal-stepper" onclick="Journal.addToCart(<?php echo $product_id; ?>, this)">+</a>
+                  <!-- <label class="control-label text-qty" for="input-quantity"><?php echo $entry_qty; ?></label>
+                  <input type="text" name="quantity" value="<?php echo $minimum; ?>" size="2" data-min-value="<?php echo $minimum; ?>" id="input-quantity" class="form-control" />
+                  <input type="hidden" name="product_id" value="<?php echo $product_id; ?>" />
+                  <script>
+                    /* quantity buttons */
+                    var $input = $('.cart input[name="quantity"]');
+                    function up() {
+                      var val = parseInt($input.val(), 10) + 1 || parseInt($input.attr('data-min-value'), 10);
+                      $input.val(val);
+                    }
+                    function down() {
+                      var val = parseInt($input.val(), 10) - 1 || 0;
+                      var min = parseInt($input.attr('data-min-value'), 10) || 1;
+                      $input.val(Math.max(val, min));
+                    }
+                    $('<a href="javascript:;" class="journal-stepper">-</a>').insertBefore($input).click(down);
+                    $('<a href="javascript:;" class="journal-stepper">+</a>').insertAfter($input).click(up);
+                    $input.keydown(function (e) {
+                      if (e.which === 38) {
+                        up();
+                        return false;
+                      }
+                      if (e.which === 40) {
+                        down();
+                        return false;
+                      }
+                    });
+                  </script> -->
+                </span>
+              </div>
+                <!-- <button type="button" id="button-cart" data-loading-text="<?php echo $text_loading; ?>" class="button"><span class="button-cart-text"><?php echo $button_cart; ?></span></button> -->
                 <?php endif; ?>
               </div>
             </div>
@@ -735,142 +740,142 @@
 </div>
 <script type="text/javascript"><!--
 $('select[name=\'recurring_id\'], input[name="quantity"]').change(function(){
-	$.ajax({
-		url: 'index.php?route=product/product/getRecurringDescription',
-		type: 'post',
-		data: $('input[name=\'product_id\'], input[name=\'quantity\'], select[name=\'recurring_id\']'),
-		dataType: 'json',
-		beforeSend: function() {
-			$('#recurring-description').html('');
-		},
-		success: function(json) {
-			$('.alert, .text-danger').remove();
-			
-			if (json['success']) {
-				$('#recurring-description').html(json['success']);
-			}
-		}
-	});
+  $.ajax({
+    url: 'index.php?route=product/product/getRecurringDescription',
+    type: 'post',
+    data: $('input[name=\'product_id\'], input[name=\'quantity\'], select[name=\'recurring_id\']'),
+    dataType: 'json',
+    beforeSend: function() {
+      $('#recurring-description').html('');
+    },
+    success: function(json) {
+      $('.alert, .text-danger').remove();
+      
+      if (json['success']) {
+        $('#recurring-description').html(json['success']);
+      }
+    }
+  });
 });
 //--></script> 
 <script type="text/javascript"><!--
 $('#button-cart').on('click', function() {
-	$.ajax({
-		url: 'index.php?route=checkout/cart/add',
-		type: 'post',
-		data: $('#product input[type=\'text\'], #product input[type=\'hidden\'], #product input[type=\'radio\']:checked, #product input[type=\'checkbox\']:checked, #product select, #product textarea'),
-		dataType: 'json',
-		beforeSend: function() {
-			$('#button-cart').button('loading');
-		},
-		complete: function() {
-			$('#button-cart').button('reset');
-		},
-		success: function(json) {
-			$('.alert, .text-danger').remove();
-			$('.form-group').removeClass('has-error');
+  $.ajax({
+    url: 'index.php?route=checkout/cart/add',
+    type: 'post',
+    data: $('#product input[type=\'text\'], #product input[type=\'hidden\'], #product input[type=\'radio\']:checked, #product input[type=\'checkbox\']:checked, #product select, #product textarea'),
+    dataType: 'json',
+    beforeSend: function() {
+      $('#button-cart').button('loading');
+    },
+    complete: function() {
+      $('#button-cart').button('reset');
+    },
+    success: function(json) {
+      $('.alert, .text-danger').remove();
+      $('.form-group').removeClass('has-error');
 
-			if (json['error']) {
-				if (json['error']['option']) {
-					for (i in json['error']['option']) {
-						var element = $('#input-option' + i.replace('_', '-'));
-						
-						if (element.parent().hasClass('input-group')) {
-							element.parent().after('<div class="text-danger">' + json['error']['option'][i] + '</div>');
-						} else {
-							element.after('<div class="text-danger">' + json['error']['option'][i] + '</div>');
-						}
-					}
-				}
-				
-				if (json['error']['recurring']) {
-					$('select[name=\'recurring_id\']').after('<div class="text-danger">' + json['error']['recurring'] + '</div>');
-				}
-				
-				// Highlight any found errors
-				$('.text-danger').parent().addClass('has-error');
-			}
-			
-			if (json['success']) {
+      if (json['error']) {
+        if (json['error']['option']) {
+          for (i in json['error']['option']) {
+            var element = $('#input-option' + i.replace('_', '-'));
+            
+            if (element.parent().hasClass('input-group')) {
+              element.parent().after('<div class="text-danger">' + json['error']['option'][i] + '</div>');
+            } else {
+              element.after('<div class="text-danger">' + json['error']['option'][i] + '</div>');
+            }
+          }
+        }
+        
+        if (json['error']['recurring']) {
+          $('select[name=\'recurring_id\']').after('<div class="text-danger">' + json['error']['recurring'] + '</div>');
+        }
+        
+        // Highlight any found errors
+        $('.text-danger').parent().addClass('has-error');
+      }
+      
+      if (json['success']) {
                 if (!Journal.showNotification(json['success'], json['image'], true)) {
                     $('.breadcrumb').after('<div class="alert alert-success success">' + json['success'] + '<button type="button" class="close" data-dismiss="alert">&times;</button></div>');
                 }
 
-				$('#cart-total').html(json['total']);
+        $('#cart-total').html(json['total']);
 
           if (Journal.scrollToTop) {
               $('html, body').animate({ scrollTop: 0 }, 'slow');
           }
 
-				$('#cart ul').load('index.php?route=common/cart/info ul li');
-			}
-		},
+        $('#cart ul').load('index.php?route=common/cart/info ul li');
+      }
+    },
         error: function(xhr, ajaxOptions, thrownError) {
           alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
         }
-	});
+  });
 });
 //--></script> 
 <script type="text/javascript"><!--
 $('.date').datetimepicker({
-	pickTime: false
+  pickTime: false
 });
 
 $('.datetime').datetimepicker({
-	pickDate: true,
-	pickTime: true
+  pickDate: true,
+  pickTime: true
 });
 
 $('.time').datetimepicker({
-	pickDate: false
+  pickDate: false
 });
 
 $('button[id^=\'button-upload\']').on('click', function() {
-	var node = this;
-	
-	$('#form-upload').remove();
-	
-	$('body').prepend('<form enctype="multipart/form-data" id="form-upload" style="display: none;"><input type="file" name="file" /></form>');
-	
-	$('#form-upload input[name=\'file\']').trigger('click');
-	
-	timer = setInterval(function() {
-		if ($('#form-upload input[name=\'file\']').val() != '') {
-			clearInterval(timer);
-			
-			$.ajax({
-				url: 'index.php?route=tool/upload',
-				type: 'post',
-				dataType: 'json',
-				data: new FormData($('#form-upload')[0]),
-				cache: false,
-				contentType: false,
-				processData: false,
-				beforeSend: function() {
-					$(node).button('loading');
-				},
-				complete: function() {
-					$(node).button('reset');
-				},
-				success: function(json) {
-					$('.text-danger').remove();
-					
-					if (json['error']) {
-						$(node).parent().find('input').after('<div class="text-danger">' + json['error'] + '</div>');
-					}
-					
-					if (json['success']) {
-						alert(json['success']);
-						
-						$(node).parent().find('input').attr('value', json['code']);
-					}
-				},
-				error: function(xhr, ajaxOptions, thrownError) {
-					alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
-				}
-			});
-		}
-	}, 500);
+  var node = this;
+  
+  $('#form-upload').remove();
+  
+  $('body').prepend('<form enctype="multipart/form-data" id="form-upload" style="display: none;"><input type="file" name="file" /></form>');
+  
+  $('#form-upload input[name=\'file\']').trigger('click');
+  
+  timer = setInterval(function() {
+    if ($('#form-upload input[name=\'file\']').val() != '') {
+      clearInterval(timer);
+      
+      $.ajax({
+        url: 'index.php?route=tool/upload',
+        type: 'post',
+        dataType: 'json',
+        data: new FormData($('#form-upload')[0]),
+        cache: false,
+        contentType: false,
+        processData: false,
+        beforeSend: function() {
+          $(node).button('loading');
+        },
+        complete: function() {
+          $(node).button('reset');
+        },
+        success: function(json) {
+          $('.text-danger').remove();
+          
+          if (json['error']) {
+            $(node).parent().find('input').after('<div class="text-danger">' + json['error'] + '</div>');
+          }
+          
+          if (json['success']) {
+            alert(json['success']);
+            
+            $(node).parent().find('input').attr('value', json['code']);
+          }
+        },
+        error: function(xhr, ajaxOptions, thrownError) {
+          alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+        }
+      });
+    }
+  }, 500);
 });
 //--></script> 
 <script type="text/javascript"><!--
@@ -887,54 +892,54 @@ $('#review').delegate('.pagination a', 'click', function(e) {
 $('#review').load('index.php?route=product/product/review&product_id=<?php echo $product_id; ?>');
 
 $('#button-review').on('click', function() {
-	$.ajax({
-		url: 'index.php?route=product/product/write&product_id=<?php echo $product_id; ?>',
-		type: 'post',
-		dataType: 'json',
+  $.ajax({
+    url: 'index.php?route=product/product/write&product_id=<?php echo $product_id; ?>',
+    type: 'post',
+    dataType: 'json',
     <?php if (version_compare(VERSION, '2.0.2', '<')): ?>
-		data: 'name=' + encodeURIComponent($('input[name=\'name\']').val()) + '&text=' + encodeURIComponent($('textarea[name=\'text\']').val()) + '&rating=' + encodeURIComponent($('input[name=\'rating\']:checked').val() ? $('input[name=\'rating\']:checked').val() : '') + '&captcha=' + encodeURIComponent($('input[name=\'captcha\']').val()),
+    data: 'name=' + encodeURIComponent($('input[name=\'name\']').val()) + '&text=' + encodeURIComponent($('textarea[name=\'text\']').val()) + '&rating=' + encodeURIComponent($('input[name=\'rating\']:checked').val() ? $('input[name=\'rating\']:checked').val() : '') + '&captcha=' + encodeURIComponent($('input[name=\'captcha\']').val()),
     <?php else: ?>
     data: $("#form-review").serialize(),
     <?php endif; ?>
-		beforeSend: function() {
-			$('#button-review').button('loading');
-		},
-		complete: function() {
-			$('#button-review').button('reset');
+    beforeSend: function() {
+      $('#button-review').button('loading');
+    },
+    complete: function() {
+      $('#button-review').button('reset');
       <?php if (version_compare(VERSION, '2.0.2', '<')): ?>
-			$('#captcha').attr('src', 'index.php?route=tool/captcha#'+new Date().getTime());
-			$('input[name=\'captcha\']').val('');
+      $('#captcha').attr('src', 'index.php?route=tool/captcha#'+new Date().getTime());
+      $('input[name=\'captcha\']').val('');
       <?php endif; ?>
-		},
-		success: function(json) {
-			$('.alert-success, .alert-danger').remove();
-			
-			if (json['error']) {
-				$('#review').after('<div class="alert alert-danger warning"><i class="fa fa-exclamation-circle"></i> ' + json['error'] + '</div>');
-			}
-			
-			if (json['success']) {
-				$('#review').after('<div class="alert alert-success success"><i class="fa fa-check-circle"></i> ' + json['success'] + '</div>');
-				
-				$('input[name=\'name\']').val('');
-				$('textarea[name=\'text\']').val('');
-				$('input[name=\'rating\']:checked').prop('checked', false);
+    },
+    success: function(json) {
+      $('.alert-success, .alert-danger').remove();
+      
+      if (json['error']) {
+        $('#review').after('<div class="alert alert-danger warning"><i class="fa fa-exclamation-circle"></i> ' + json['error'] + '</div>');
+      }
+      
+      if (json['success']) {
+        $('#review').after('<div class="alert alert-success success"><i class="fa fa-check-circle"></i> ' + json['success'] + '</div>');
+        
+        $('input[name=\'name\']').val('');
+        $('textarea[name=\'text\']').val('');
+        $('input[name=\'rating\']:checked').prop('checked', false);
         <?php if (version_compare(VERSION, '2.0.2', '<')): ?>
-				$('input[name=\'captcha\']').val('');
+        $('input[name=\'captcha\']').val('');
         <?php endif; ?>
-			}
-		}
-	});
+      }
+    }
+  });
 });
 
 $(document).ready(function() {
-	$('.thumbnails').magnificPopup({
-		type:'image',
-		delegate: 'a',
-		gallery: {
-			enabled:true
-		}
-	});
+  $('.thumbnails').magnificPopup({
+    type:'image',
+    delegate: 'a',
+    gallery: {
+      enabled:true
+    }
+  });
 });
 //--></script> 
 <?php echo $footer; ?>
