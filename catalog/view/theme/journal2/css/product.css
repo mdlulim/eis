@@ -953,6 +953,173 @@ PRODUCT LABELS
   margin-top: 0; }
 
 /******************************
+table view
+*******************************/
+button#add-category-to-cart {
+  margin: 8px;
+  background-color: #fff;
+  color: initial;
+  padding: 2px 10px;
+  font-size: 13px; }
+button#add-category-to-cart:not('.disabled'):active,
+button#add-category-to-cart:not('.disabled'):focus,
+button#add-category-to-cart:not('.disabled'):hover {
+  color: rgb(70, 130, 180); }
+button#add-category-to-cart > i:before {
+  color: inherit;
+  content: '\e180';
+  font-family: 'journal-icons';
+  position: relative;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  color: inherit;
+  font-size: inherit;
+  display: inline-block;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+}
+button#add-category-to-cart.disabled {
+  color: #999;
+  cursor: not-allowed; }
+.main-products .product-table-view-headings {
+  display: none; }
+.main-products.product-table .product-table-view-headings {
+  display: block;
+  background-color: rgb(56, 56, 56);
+  color: rgb(255, 255, 255);
+  font-size: 13px;
+  min-height: 32px;
+  width: 100%;
+  padding-top: 8px; }
+.main-products.product-table .product-table-view-headings:before {
+  content: " ";
+  display: table; }
+.main-products.product-table .product-table-view-headings .head-img {
+  display: inline-block;
+  float: left;
+  width: 8.33333%; }
+.main-products.product-table .product-table-view-headings .head-proddetails {
+  display: inline-block;
+  float: left;
+  font-weight: bold;
+  width: 91.66667%; }
+.main-products.product-table .product-table-view-headings .head-proddetails .col-4,
+.main-products.product-table .product-table-view-headings .head-proddetails .col-3,
+.main-products.product-table .product-table-view-headings .head-proddetails .col-2 {
+  display: inline-block;
+  float: left; }
+.main-products.product-table .product-table-view-headings .head-proddetails .col-4 {
+  width: 33.33333%; }
+.main-products.product-table .product-table-view-headings .head-proddetails .col-3 {
+  width: 25%; }
+.main-products.product-table .product-table-view-headings .head-proddetails .col-2 {
+  width: 16.66667%; }
+
+.main-products > .product-table-row {
+  display: block;
+  padding: 15px;
+  border-bottom: 1px solid #eee; }
+.main-products > .product-table-row:nth-child(odd) {
+  background-color: #fff; }
+.main-products > .product-table-row:nth-child(even) {
+  background-color: #fafafa; }
+.main-products > .product-table-row > .product-thumb {
+  font-size: 13px;
+  margin-left: -15px;
+  margin-right: -15px; }
+.main-products > .product-table-row > .product-thumb:before {
+  content: " ";
+  display: table; }
+.main-products > .product-table-row > .product-thumb > .image {
+  display: inline-block;
+  float: left;
+  width: 8.33333%; }
+.main-products > .product-table-row > .product-thumb > .product-details {
+  display: inline-block;
+  float: left;
+  width: 91.66667%; }
+.main-products > .product-table-row > .product-thumb > .image img {
+  width: 50px;
+  height: 50px;
+}
+.main-products > .product-table-row > .product-thumb > .image > span,
+.main-products > .product-table-row > .product-thumb > .product-details .description,
+.main-products > .product-table-row > .product-thumb > .product-details .button-group,
+.main-products > .product-table-row > .product-thumb > .product-details .caption {
+  display: none; }
+.main-products .row.product-table-row-details {
+  display: none; }
+.main-products > .product-table-row > .product-thumb > .product-details .row.product-table-row-details {
+  display: block; }
+.main-products > .product-table-row > .product-thumb > .product-details .row.product-table-row-details:before {
+  content: " ";
+  display: table; }
+.main-products > .product-table-row > .product-thumb > .product-details .row.product-table-row-details .col-4,
+.main-products > .product-table-row > .product-thumb > .product-details .row.product-table-row-details .col-3,
+.main-products > .product-table-row > .product-thumb > .product-details .row.product-table-row-details .col-2 {
+  display: inline-block;
+  float: left; }
+.main-products > .product-table-row > .product-thumb > .product-details .row.product-table-row-details .col-4 {
+  width: 33.33333%; }
+.main-products > .product-table-row > .product-thumb > .product-details .row.product-table-row-details .col-3 {
+  width: 25%; }
+.main-products > .product-table-row > .product-thumb > .product-details .row.product-table-row-details .col-2 {
+  width: 16.66667%; }
+.main-products > .product-table-row > .product-thumb > .product-details .row.product-table-row-details .qty {
+  width: 100%;
+  display: block;
+  float: left;
+  height: 40px;
+  margin-right: 8px;
+  overflow: hidden; }
+.main-products > .product-table-row > .product-thumb > .product-details .row.product-table-row-details .product-info1 {
+  float: left;
+  width: 40%;
+  line-height: 17px;
+  height: 100%;
+  text-align: center;
+  margin: 0;
+  border: 0; 
+  -webkit-appearance: none;
+  background: white;
+  border-radius: 0;
+  border-width: 1px;
+  border-style: solid;
+  padding: 5px 10px;
+  transition: all 0.2s;
+  font-size: 13px;
+  min-height: 35px;
+  box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.08);
+  background-color: rgb(229, 229, 229);
+  border-color: rgb(183, 183, 183);
+}
+.main-products > .product-table-row > .product-thumb > .product-details .row.product-table-row-details .journal-stepper {
+  background-color: rgb(56, 56, 56);
+  color: rgb(255, 255, 255);
+  width: 17%;
+  text-align: center;
+  height: 100%;
+  float: left;
+  line-height: 37px;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: normal;
+  transition: all 0.2s;
+  display: inline-block; }
+
+.main-products > .product-table-row > .product-thumb > .product-details .product-name a,
+.main-products > .product-table-row > .product-thumb > .product-details .product-sku a,
+.main-products > .product-table-row > .product-thumb > .product-details .product-price .price {
+  margin-top: 10px;
+  display: block; }
+.main-products > .product-table-row > .product-thumb > .product-details .product-name a {
+  padding: 0 10px 0; }
+
+.main-products > .product-table-row > .product-thumb > .product-details .price-tax {
+  display: none; }
+
+/******************************
  CLOUD ZOOM
 *******************************/
 .zm-viewer {

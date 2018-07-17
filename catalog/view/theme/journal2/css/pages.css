@@ -7,15 +7,25 @@
 .information-page #content > p + div {
   margin-top: 20px; }
 
+.text-left { text-align: left !important; }
+.text-right { text-align: right !important; }
+.text-center { text-align: center !important; }
+.text-justify { text-align: justify !important; }
+
 /******************************
  SHOPPING CART
 *******************************/
 .cart-info .stock {
   color: red; }
 .cart-info .name {
-  max-width: 400px;
+  max-width: 300px;
   text-align: left; }
   .cart-info .name a {
+    font-weight: bold; }
+.cart-info .category {
+  max-width: 300px;
+  text-align: left; }
+  .cart-info .category a {
     font-weight: bold; }
 .cart-info .image {
   text-align: center;
@@ -47,27 +57,33 @@
 .cart-info td {
   padding: 5px 10px 5px 5px;
   text-align: center; }
-.cart-info thead td {
+.cart-info thead td,
+.cart-info thead th {
   height: 40px;
   font-weight: bold;
   border-bottom: none;
   font-size: 13px; }
-.cart-info tbody td {
+.cart-info tbody td,
+.cart-info tbody th {
   border-bottom-style: solid;
   border-bottom-width: 1px;
   border-bottom-color: #E4E4E4; }
-.cart-info tbody td.image {
+.cart-info tbody td.image,
+.cart-info tbody th.image {
   padding-left: 0; }
-.cart-info tbody tr:last-of-type td {
+.cart-info tbody tr:last-of-type td,
+.cart-info tbody tr:last-of-type th {
   border-bottom: none; }
 
 #content.sc-page .content p, #content.sc-page .action-area p {
   padding: 10px;
   font-size: 13px; }
-#content.sc-page .content table.radio .highlight td {
+#content.sc-page .content table.radio .highlight td,
+#content.sc-page .content table.radio .highlight th {
   border-bottom: 1px solid;
   border-color: #f4f4f4; }
-#content.sc-page .content table.radio .highlight:last-of-type td {
+#content.sc-page .content table.radio .highlight:last-of-type td,
+#content.sc-page .content table.radio .highlight:last-of-type th {
   border-bottom: none; }
 #content.sc-page a + .text-danger {
   color: #EA2E49;

@@ -486,37 +486,42 @@
               <?php endforeach; ?>
               <input type="hidden" name="product_id" value="<?php echo $product_id; ?>" />
               <?php else: ?>
+              <div class="quantity">
                 <span class="qty">
-              <label class="control-label text-qty" for="input-quantity"><?php echo $entry_qty; ?></label>
-              <input type="text" name="quantity" value="<?php echo $minimum; ?>" size="2" data-min-value="<?php echo $minimum; ?>" id="input-quantity" class="form-control" />
-              <input type="hidden" name="product_id" value="<?php echo $product_id; ?>" />
-              <script>
-                /* quantity buttons */
-                var $input = $('.cart input[name="quantity"]');
-                function up() {
-                  var val = parseInt($input.val(), 10) + 1 || parseInt($input.attr('data-min-value'), 10);
-                  $input.val(val);
-                }
-                function down() {
-                  var val = parseInt($input.val(), 10) - 1 || 0;
-                  var min = parseInt($input.attr('data-min-value'), 10) || 1;
-                  $input.val(Math.max(val, min));
-                }
-                $('<a href="javascript:;" class="journal-stepper">-</a>').insertBefore($input).click(down);
-                $('<a href="javascript:;" class="journal-stepper">+</a>').insertAfter($input).click(up);
-                $input.keydown(function (e) {
-                  if (e.which === 38) {
-                    up();
-                    return false;
-                  }
-                  if (e.which === 40) {
-                    down();
-                    return false;
-                  }
-                });
-              </script>
-              </span>
-                <button type="button" id="button-cart" data-loading-text="<?php echo $text_loading; ?>" class="button"><span class="button-cart-text"><?php echo $button_cart; ?></span></button>
+                  <a href="javascript:;" class="journal-stepper" onclick="Journal.removeProductFromCart(<?php echo $product_id; ?>, this)">-</a>
+                    <input name="quantity" value="<?php echo $cart_qty; ?>" size="10" data-min-value="0" id="quantity_<?php echo $product_id; ?>" class="form-control product-info1" type="text" data-cart-qty="<?php echo $cart_qty; ?>" data-product-id="<?php echo $product_id ?>">
+                    <a href="javascript:;" class="journal-stepper" onclick="Journal.addToCart(<?php echo $product_id; ?>, this)">+</a>
+                  <!-- <label class="control-label text-qty" for="input-quantity"><?php echo $entry_qty; ?></label>
+                  <input type="text" name="quantity" value="<?php echo $minimum; ?>" size="2" data-min-value="<?php echo $minimum; ?>" id="input-quantity" class="form-control" />
+                  <input type="hidden" name="product_id" value="<?php echo $product_id; ?>" />
+                  <script>
+                    /* quantity buttons */
+                    var $input = $('.cart input[name="quantity"]');
+                    function up() {
+                      var val = parseInt($input.val(), 10) + 1 || parseInt($input.attr('data-min-value'), 10);
+                      $input.val(val);
+                    }
+                    function down() {
+                      var val = parseInt($input.val(), 10) - 1 || 0;
+                      var min = parseInt($input.attr('data-min-value'), 10) || 1;
+                      $input.val(Math.max(val, min));
+                    }
+                    $('<a href="javascript:;" class="journal-stepper">-</a>').insertBefore($input).click(down);
+                    $('<a href="javascript:;" class="journal-stepper">+</a>').insertAfter($input).click(up);
+                    $input.keydown(function (e) {
+                      if (e.which === 38) {
+                        up();
+                        return false;
+                      }
+                      if (e.which === 40) {
+                        down();
+                        return false;
+                      }
+                    });
+                  </script> -->
+                </span>
+              </div>
+                <!-- <button type="button" id="button-cart" data-loading-text="<?php echo $text_loading; ?>" class="button"><span class="button-cart-text"><?php echo $button_cart; ?></span></button> -->
                 <?php endif; ?>
               </div>
             </div>

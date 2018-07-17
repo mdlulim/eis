@@ -522,6 +522,16 @@ class ControllerProductProduct extends Controller {
 				}
 			}
 
+			// cart
+			$cartProductIds = [];
+			if ($this->cart->hasProducts()) {
+				$cartProducts = $this->cart->getProducts();
+				foreach ($cartProducts as $key => $value) {
+					$cartProductIds[$value['product_id']] = $value['quantity'];
+				}
+			}
+    		$data['cart_qty'] = (isset($cartProductIds[$product_id])) ? $cartProductIds[$product_id] : 0;
+
 			$data['recurrings'] = $this->model_catalog_product->getProfiles($this->request->get['product_id']);
 
 			$this->model_catalog_product->updateViewed($this->request->get['product_id']);
