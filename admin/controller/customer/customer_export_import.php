@@ -567,7 +567,7 @@ class ControllerCustomerCustomerExportImport extends Controller {
 					}
 					
 					if (($min==null) || ($max==null)) {
-						$this->model_customer_customer_export_import->downloadCsv($min, $max);
+						$this->model_customer_customer_export_import->downloadCsv();
 					} elseif(($min!=null) || ($max!=null)) {
 						$this->model_customer_customer_export_import->downloadCsv($min, $max);
 					}

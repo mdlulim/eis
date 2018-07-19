@@ -402,3 +402,96 @@
 2018-07-19 11:35:37 - PHP Notice:  Undefined variable: max_product_id in /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/admin/view/template/customer/export_import.tpl on line 500
 2018-07-19 11:35:37 - PHP Notice:  Undefined variable: max_category_id in /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/admin/view/template/customer/export_import.tpl on line 501
 2018-07-19 11:35:37 - PHP Notice:  Undefined variable: max_customer_id in /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/admin/view/template/customer/export_import.tpl on line 502
+2018-07-19 12:26:48 - PHP Notice:  Undefined index: exist_filter in /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/admin/controller/customer/customer_export_import.php on line 597
+2018-07-19 12:26:48 - PHP Notice:  Undefined index: exist_filter in /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/admin/controller/customer/customer_export_import.php on line 598
+2018-07-19 12:26:48 - PHP Notice:  Undefined index: exist_filter in /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/admin/controller/customer/customer_export_import.php on line 637
+2018-07-19 12:26:49 - PHP Notice:  Undefined variable: count_product in /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/admin/view/template/customer/export_import.tpl on line 486
+2018-07-19 12:26:49 - PHP Notice:  Undefined variable: count_category in /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/admin/view/template/customer/export_import.tpl on line 487
+2018-07-19 12:26:49 - PHP Notice:  Undefined variable: count_customer in /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/admin/view/template/customer/export_import.tpl on line 488
+2018-07-19 12:26:49 - PHP Notice:  Undefined variable: min_product_id in /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/admin/view/template/customer/export_import.tpl on line 493
+2018-07-19 12:26:49 - PHP Notice:  Undefined variable: min_category_id in /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/admin/view/template/customer/export_import.tpl on line 494
+2018-07-19 12:26:49 - PHP Notice:  Undefined variable: min_customer_id in /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/admin/view/template/customer/export_import.tpl on line 495
+2018-07-19 12:26:49 - PHP Notice:  Undefined variable: max_product_id in /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/admin/view/template/customer/export_import.tpl on line 500
+2018-07-19 12:26:49 - PHP Notice:  Undefined variable: max_category_id in /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/admin/view/template/customer/export_import.tpl on line 501
+2018-07-19 12:26:49 - PHP Notice:  Undefined variable: max_customer_id in /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/admin/view/template/customer/export_import.tpl on line 502
+2018-07-19 14:27:51 - PHP Notice:  Undefined variable: filter_data in /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/admin/controller/replogic/customer_contact.php on line 642
+2018-07-19 14:28:47 - PHP Notice:  Undefined index: exist_filter in /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/admin/controller/customer/customer_export_import.php on line 597
+2018-07-19 14:28:47 - PHP Notice:  Undefined index: exist_filter in /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/admin/controller/customer/customer_export_import.php on line 598
+2018-07-19 14:28:47 - PHP Notice:  Undefined index: exist_filter in /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/admin/controller/customer/customer_export_import.php on line 637
+2018-07-19 14:28:47 - PHP Notice:  Undefined variable: count_product in /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/admin/view/template/customer/export_import.tpl on line 486
+2018-07-19 14:28:47 - PHP Notice:  Undefined variable: count_category in /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/admin/view/template/customer/export_import.tpl on line 487
+2018-07-19 14:28:47 - PHP Notice:  Undefined variable: count_customer in /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/admin/view/template/customer/export_import.tpl on line 488
+2018-07-19 14:28:47 - PHP Notice:  Undefined variable: min_product_id in /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/admin/view/template/customer/export_import.tpl on line 493
+2018-07-19 14:28:47 - PHP Notice:  Undefined variable: min_category_id in /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/admin/view/template/customer/export_import.tpl on line 494
+2018-07-19 14:28:47 - PHP Notice:  Undefined variable: min_customer_id in /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/admin/view/template/customer/export_import.tpl on line 495
+2018-07-19 14:28:47 - PHP Notice:  Undefined variable: max_product_id in /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/admin/view/template/customer/export_import.tpl on line 500
+2018-07-19 14:28:47 - PHP Notice:  Undefined variable: max_category_id in /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/admin/view/template/customer/export_import.tpl on line 501
+2018-07-19 14:28:47 - PHP Notice:  Undefined variable: max_customer_id in /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/admin/view/template/customer/export_import.tpl on line 502
+2018-07-19 14:29:14 - PHP Notice:  Undefined index: Sales Team in /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/admin/controller/customer/customer_export_import.php on line 147
+2018-07-19 14:29:14 - PHP Notice:  Undefined index: Sales Rep in /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/admin/controller/customer/customer_export_import.php on line 148
+2018-07-19 14:29:14 - PHP Notice:  Undefined index: Address 2 in /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/admin/controller/customer/customer_export_import.php on line 151
+2018-07-19 14:29:14 - PHP Notice:  Undefined index: Postcode in /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/admin/controller/customer/customer_export_import.php on line 153
+2018-07-19 14:29:14 - PHP Notice:  Undefined index: Default Address in /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/admin/controller/customer/customer_export_import.php on line 159
+2018-07-19 14:29:14 - PHP Notice:  Indirect modification of overloaded property ModelCustomerCustomerExportImport::$error has no effect in /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/admin/model/customer/customer_export_import.php on line 366
+2018-07-19 14:32:09 - PHP Notice:  Undefined index: Sales Team in /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/admin/controller/customer/customer_export_import.php on line 147
+2018-07-19 14:32:09 - PHP Notice:  Undefined index: Sales Rep in /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/admin/controller/customer/customer_export_import.php on line 148
+2018-07-19 14:32:09 - PHP Notice:  Undefined index: Address 2 in /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/admin/controller/customer/customer_export_import.php on line 151
+2018-07-19 14:32:09 - PHP Notice:  Undefined index: Postcode in /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/admin/controller/customer/customer_export_import.php on line 153
+2018-07-19 14:32:09 - PHP Notice:  Undefined index: Default Address in /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/admin/controller/customer/customer_export_import.php on line 159
+2018-07-19 14:32:09 - PHP Notice:  Indirect modification of overloaded property ModelCustomerCustomerExportImport::$error has no effect in /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/admin/model/customer/customer_export_import.php on line 366
+2018-07-19 14:34:06 - PHP Notice:  Undefined index: Sales Team in /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/admin/controller/customer/customer_export_import.php on line 147
+2018-07-19 14:34:06 - PHP Notice:  Undefined index: Sales Rep in /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/admin/controller/customer/customer_export_import.php on line 148
+2018-07-19 14:34:06 - PHP Notice:  Undefined index: Address 2 in /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/admin/controller/customer/customer_export_import.php on line 151
+2018-07-19 14:34:06 - PHP Notice:  Undefined index: Postcode in /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/admin/controller/customer/customer_export_import.php on line 153
+2018-07-19 14:34:06 - PHP Notice:  Undefined index: Default Address in /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/admin/controller/customer/customer_export_import.php on line 159
+2018-07-19 14:34:06 - PHP Notice:  Indirect modification of overloaded property ModelCustomerCustomerExportImport::$error has no effect in /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/admin/model/customer/customer_export_import.php on line 366
+2018-07-19 14:36:50 - PHP Notice:  Undefined index: Sales Team in /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/admin/controller/customer/customer_export_import.php on line 147
+2018-07-19 14:36:50 - PHP Notice:  Undefined index: Sales Rep in /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/admin/controller/customer/customer_export_import.php on line 148
+2018-07-19 14:36:50 - PHP Notice:  Undefined index: Address 2 in /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/admin/controller/customer/customer_export_import.php on line 151
+2018-07-19 14:36:50 - PHP Notice:  Undefined index: Postcode in /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/admin/controller/customer/customer_export_import.php on line 153
+2018-07-19 14:36:50 - PHP Notice:  Undefined index: Default Address in /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/admin/controller/customer/customer_export_import.php on line 159
+2018-07-19 14:36:50 - PHP Notice:  Indirect modification of overloaded property ModelCustomerCustomerExportImport::$error has no effect in /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/admin/model/customer/customer_export_import.php on line 297
+2018-07-19 14:36:50 - PHP Notice:  Undefined index: Sales Team in /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/admin/controller/customer/customer_export_import.php on line 147
+2018-07-19 14:36:50 - PHP Notice:  Undefined index: Sales Rep in /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/admin/controller/customer/customer_export_import.php on line 148
+2018-07-19 14:36:50 - PHP Notice:  Undefined index: Address 2 in /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/admin/controller/customer/customer_export_import.php on line 151
+2018-07-19 14:36:50 - PHP Notice:  Undefined index: Postcode in /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/admin/controller/customer/customer_export_import.php on line 153
+2018-07-19 14:36:50 - PHP Notice:  Undefined index: Default Address in /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/admin/controller/customer/customer_export_import.php on line 159
+2018-07-19 14:36:50 - PHP Notice:  Indirect modification of overloaded property ModelCustomerCustomerExportImport::$error has no effect in /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/admin/model/customer/customer_export_import.php on line 297
+2018-07-19 14:36:50 - PHP Notice:  Undefined index: exist_filter in /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/admin/controller/customer/customer_export_import.php on line 597
+2018-07-19 14:36:50 - PHP Notice:  Undefined index: exist_filter in /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/admin/controller/customer/customer_export_import.php on line 598
+2018-07-19 14:36:50 - PHP Notice:  Undefined index: exist_filter in /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/admin/controller/customer/customer_export_import.php on line 637
+2018-07-19 14:36:50 - PHP Notice:  Undefined variable: count_product in /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/admin/view/template/customer/export_import.tpl on line 486
+2018-07-19 14:36:50 - PHP Notice:  Undefined variable: count_category in /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/admin/view/template/customer/export_import.tpl on line 487
+2018-07-19 14:36:50 - PHP Notice:  Undefined variable: count_customer in /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/admin/view/template/customer/export_import.tpl on line 488
+2018-07-19 14:36:50 - PHP Notice:  Undefined variable: min_product_id in /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/admin/view/template/customer/export_import.tpl on line 493
+2018-07-19 14:36:50 - PHP Notice:  Undefined variable: min_category_id in /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/admin/view/template/customer/export_import.tpl on line 494
+2018-07-19 14:36:50 - PHP Notice:  Undefined variable: min_customer_id in /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/admin/view/template/customer/export_import.tpl on line 495
+2018-07-19 14:36:50 - PHP Notice:  Undefined variable: max_product_id in /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/admin/view/template/customer/export_import.tpl on line 500
+2018-07-19 14:36:50 - PHP Notice:  Undefined variable: max_category_id in /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/admin/view/template/customer/export_import.tpl on line 501
+2018-07-19 14:36:50 - PHP Notice:  Undefined variable: max_customer_id in /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/admin/view/template/customer/export_import.tpl on line 502
+2018-07-19 14:37:05 - PHP Notice:  Undefined index: Sales Team in /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/admin/controller/customer/customer_export_import.php on line 147
+2018-07-19 14:37:05 - PHP Notice:  Undefined index: Sales Rep in /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/admin/controller/customer/customer_export_import.php on line 148
+2018-07-19 14:37:05 - PHP Notice:  Undefined index: Address 2 in /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/admin/controller/customer/customer_export_import.php on line 151
+2018-07-19 14:37:05 - PHP Notice:  Undefined index: Postcode in /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/admin/controller/customer/customer_export_import.php on line 153
+2018-07-19 14:37:05 - PHP Notice:  Undefined index: Default Address in /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/admin/controller/customer/customer_export_import.php on line 159
+2018-07-19 14:37:05 - PHP Notice:  Indirect modification of overloaded property ModelCustomerCustomerExportImport::$error has no effect in /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/admin/model/customer/customer_export_import.php on line 297
+2018-07-19 14:37:05 - PHP Notice:  Undefined index: Sales Team in /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/admin/controller/customer/customer_export_import.php on line 147
+2018-07-19 14:37:05 - PHP Notice:  Undefined index: Sales Rep in /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/admin/controller/customer/customer_export_import.php on line 148
+2018-07-19 14:37:05 - PHP Notice:  Undefined index: Address 2 in /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/admin/controller/customer/customer_export_import.php on line 151
+2018-07-19 14:37:05 - PHP Notice:  Undefined index: Postcode in /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/admin/controller/customer/customer_export_import.php on line 153
+2018-07-19 14:37:05 - PHP Notice:  Undefined index: Default Address in /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/admin/controller/customer/customer_export_import.php on line 159
+2018-07-19 14:37:05 - PHP Notice:  Indirect modification of overloaded property ModelCustomerCustomerExportImport::$error has no effect in /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/admin/model/customer/customer_export_import.php on line 297
+2018-07-19 14:37:05 - PHP Notice:  Undefined index: exist_filter in /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/admin/controller/customer/customer_export_import.php on line 597
+2018-07-19 14:37:05 - PHP Notice:  Undefined index: exist_filter in /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/admin/controller/customer/customer_export_import.php on line 598
+2018-07-19 14:37:05 - PHP Notice:  Undefined index: exist_filter in /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/admin/controller/customer/customer_export_import.php on line 637
+2018-07-19 14:37:06 - PHP Notice:  Undefined variable: count_product in /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/admin/view/template/customer/export_import.tpl on line 486
+2018-07-19 14:37:06 - PHP Notice:  Undefined variable: count_category in /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/admin/view/template/customer/export_import.tpl on line 487
+2018-07-19 14:37:06 - PHP Notice:  Undefined variable: count_customer in /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/admin/view/template/customer/export_import.tpl on line 488
+2018-07-19 14:37:06 - PHP Notice:  Undefined variable: min_product_id in /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/admin/view/template/customer/export_import.tpl on line 493
+2018-07-19 14:37:06 - PHP Notice:  Undefined variable: min_category_id in /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/admin/view/template/customer/export_import.tpl on line 494
+2018-07-19 14:37:06 - PHP Notice:  Undefined variable: min_customer_id in /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/admin/view/template/customer/export_import.tpl on line 495
+2018-07-19 14:37:06 - PHP Notice:  Undefined variable: max_product_id in /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/admin/view/template/customer/export_import.tpl on line 500
+2018-07-19 14:37:06 - PHP Notice:  Undefined variable: max_category_id in /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/admin/view/template/customer/export_import.tpl on line 501
+2018-07-19 14:37:06 - PHP Notice:  Undefined variable: max_customer_id in /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/admin/view/template/customer/export_import.tpl on line 502
+2018-07-19 14:48:40 - PHP Notice:  Undefined index: filter_groupby_sku in /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/admin/model/catalog/price.php on line 62
+2018-07-19 14:48:49 - PHP Notice:  Undefined index: filter_groupby_sku in /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/admin/model/catalog/price.php on line 62

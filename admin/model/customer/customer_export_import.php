@@ -39,18 +39,6 @@ class ModelCustomerCustomerExportImport extends Model {
 			}
 		}
 	
-		if ($this->config->get( 'customer_export_import_settings_newsletter' ) && ($data['newsletter'] != '')) {
-			if($data['newsletter'] == 'TRUE')
-			{
-				$data['newsletter'] = 1;
-			}
-			else
-			{
-				$data['newsletter'] = 0;
-			}
-			$sql .= "newsletter = '".$data['newsletter']."', ";
-		}
-		
 		if ($this->config->get( 'customer_export_import_settings_status' ) && ($data['status'] != '')) {
 			if($data['status'] == 'TRUE' || $data['status'] == '=TRUE()' || $data['status'] == '1' || $data['status'] == 'True')
 			{
@@ -61,22 +49,6 @@ class ModelCustomerCustomerExportImport extends Model {
 				$data['status'] = 0;
 			}
 			$sql .= "status = '".$data['status']."', ";
-		}
-		
-		if ($this->config->get( 'customer_export_import_settings_password' ) && ($data['password'] != '')) {
-			$sql .= "password = '" . $this->db->escape($data['password']) . "', ";
-		}
-		
-		if ($this->config->get( 'customer_export_import_settings_approved' ) && ($data['approved'] != '')) {
-			if($data['approved'] == 'TRUE')
-			{
-				$data['approved'] = 1;
-			}
-			else
-			{
-				$data['approved'] = 0;
-			}
-			$sql .= "approved = '".$data['approved']."', ";
 		}
 		
 		$sql1 = rtrim($sql, ', '); 
@@ -97,14 +69,7 @@ class ModelCustomerCustomerExportImport extends Model {
 			$adr .= "customer_id = '".(int)$data['customer_id']."', ";
 			
 			if ($this->config->get( 'customer_export_import_settings_companyname' ) && ($data['companyname'] != '') ) {
-				$adr .= "company = '".$data['companyname']."', ";
-			}
-			
-			if ($this->config->get( 'customer_export_import_settings_companyname' ) && ($data['companyname'] != '') ) {
 				$adr .= "firstname = '".$data['companyname']."', ";
-			}
-			
-			if ($this->config->get( 'customer_export_import_settings_companyname' ) && ($data['companyname'] != '') ) {
 				$adr .= "lastname = '".$data['companyname']."', ";
 				$adr .= "company = '".$data['companyname']."', ";
 			}
@@ -211,20 +176,9 @@ class ModelCustomerCustomerExportImport extends Model {
 			}
 		}
 	
-		if ($this->config->get( 'customer_export_import_settings_newsletter' ) && ($data['newsletter'] != '')) {
-			if($data['newsletter'] == 'TRUE')
-			{
-				$data['newsletter'] = 1;
-			}
-			else
-			{
-				$data['newsletter'] = 0;
-			}
-			$sql .= "newsletter = '".$data['newsletter']."', ";
-		}
-		
 		if ($this->config->get( 'customer_export_import_settings_status' ) && ($data['status'] != '')) {
-			if($data['status'] == 'TRUE')
+			
+			if($data['status'] == 'TRUE' || $data['status'] == '=TRUE()' || $data['status'] == '1' || $data['status'] == 'True')
 			{
 				$data['status'] = 1;
 			}
@@ -233,22 +187,6 @@ class ModelCustomerCustomerExportImport extends Model {
 				$data['status'] = 0;
 			}
 			$sql .= "status = '".$data['status']."', ";
-		}
-		
-		if ($this->config->get( 'customer_export_import_settings_password' ) && ($data['password'] != '')) {
-			$sql .= "password = '" . $this->db->escape($data['password']) . "', ";
-		}
-		
-		if ($this->config->get( 'customer_export_import_settings_approved' ) && ($data['approved'] != '')) {
-			if($data['approved'] == 'TRUE')
-			{
-				$data['approved'] = 1;
-			}
-			else
-			{
-				$data['approved'] = 0;
-			}
-			$sql .= "approved = '".$data['approved']."', ";
 		}
 		
 		$sql1 = rtrim($sql, ', '); 
@@ -288,14 +226,7 @@ class ModelCustomerCustomerExportImport extends Model {
 			}
 			
 			if ($this->config->get( 'customer_export_import_settings_companyname' ) && ($data['companyname'] != '') ) {
-				$adr .= "company = '".$data['companyname']."', ";
-			}
-			
-			if ($this->config->get( 'customer_export_import_settings_companyname' ) && ($data['companyname'] != '') ) {
 				$adr .= "firstname = '".$data['companyname']."', ";
-			}
-			
-			if ($this->config->get( 'customer_export_import_settings_companyname' ) && ($data['companyname'] != '') ) {
 				$adr .= "lastname = '".$data['companyname']."', ";
 				$adr .= "company = '".$data['companyname']."', ";
 			}
@@ -589,50 +520,47 @@ class ModelCustomerCustomerExportImport extends Model {
 		$defaultaddressExportSettings 	= $this->config->get( 'customer_export_import_settings_defaultaddress' );
 		// create a file pointer
     	$f = fopen('php://memory', 'w');
-
-    	// set column headers
-    	//$fields = array('Customer ID', 'First Name', 'Last Name', 'Email', 'Telephone', 'Company Name', 'Address 1', 'Address 2', 'City', 'Postcode', 'Country', 'Region/State', 'Password', 'Newsletter', 'Company Group', 'Approved', 'Payment Method', 'Sales Rep', 'Status');
-    	
-		$fields = array('Customer ID');
+    	$fields = array('Customer ID');
 		
 		//$firstnameExportSettings 	? array_push($fields, 'First Name') : '';
 		//$lastnameExportSettings 	? array_push($fields, 'Last Name') : '';
 		$companyNameExportSettings 	? array_push($fields, 'Company Name') : '';
 		$telephoneExportSettings 	? array_push($fields, 'Telephone') : '';
 		$emailExportSettings 	? array_push($fields, 'Email') : '';
-		$telephoneExportSettings 	? array_push($fields, 'Telephone') : '';
-		$companyNameExportSettings 	? array_push($fields, 'Company Name') : '';
+		$companyGroupExportSettings 	? array_push($fields, 'Contract Pricing') : '';
+		$paymentmethodExportSettings 	? array_push($fields, 'Preferred Payment Method') : '';
+		$salesTeamExportSettings 	? array_push($fields, 'Sales Team') : '';
+		$salesRepExportSettings 	? array_push($fields, 'Sales Rep') : '';
+		$statusExportSettings 	? array_push($fields, 'Account Status') : '';
 		$address1ExportSettings 	? array_push($fields, 'Address 1') : '';
 		$address2ExportSettings 	? array_push($fields, 'Address 2') : '';
 		$cityExportSettings 	? array_push($fields, 'City') : '';
 		$postCodeExportSettings 	? array_push($fields, 'Postcode') : '';
 		$countryExportSettings 	? array_push($fields, 'Country') : '';
 		$regionExportSettings 	? array_push($fields, 'Region/State') : '';
-		$passwordExportSettings 	? array_push($fields, 'Password') : '';
-		$newsletterExportSettings 	? array_push($fields, 'Newsletter') : '';
-		$companyGroupExportSettings 	? array_push($fields, 'Company Group') : '';
-		$approvedExportSettings 	? array_push($fields, 'Approved') : '';
-		$paymentmethodExportSettings 	? array_push($fields, 'Payment Method') : '';
-		$salesRepExportSettings 	? array_push($fields, 'Sales Rep') : '';
-		$statusExportSettings 	? array_push($fields, 'Status') : '';
+		//$passwordExportSettings 	? array_push($fields, 'Password') : '';
+		//$newsletterExportSettings 	? array_push($fields, 'Newsletter') : '';
+		//$approvedExportSettings 	? array_push($fields, 'Approved') : '';
+		$defaultaddressExportSettings 	? array_push($fields, 'Default Address') : '';
+		
 		
 		fputcsv($f, $fields, $delimiter);
     	// output each row of the data, format line as csv and write to file pointer
 		//print_r($customers); exit;
     	foreach ($customers as $key => $customer) {
     		$customerID 	= $customer['customer_id'];
-    		$firstname 		= ($firstnameExportSettings) 	? $customer['firstname'] : '';
-    		$lastname 		= ($lastnameExportSettings) 	? $customer['lastname'] : '';
+    		$companyname 		= ($companyNameExportSettings) 	? $customer['firstname'] : '';
+    		//$lastname 		= ($lastnameExportSettings) 	? $customer['lastname'] : '';
     		$email 			= ($emailExportSettings) 		? $customer['email'] : '';
     		$telephone 		= ($telephoneExportSettings) 	? $customer['telephone'] : '';
-    		$companyname 	= ($companyNameExportSettings) 	? $customer['companyname'] : '';
+    		//$companyname 	= ($companyNameExportSettings) 	? $customer['companyname'] : '';
     		$address1 		= ($address1ExportSettings) 	? $customer['address_1'] : '';
     		$address2 		= ($address2ExportSettings) 	? $customer['address_2'] : '';
     		$city 			= ($cityExportSettings) 		? $customer['city'] : '';
     		$postcode 		= ($postCodeExportSettings) 	? $customer['postcode'] : '';
     		$country 		= ($countryExportSettings) 		? $customer['country'] : '';
     		$region 		= ($regionExportSettings) 		? $customer['region'] : '';
-    		$password 		= ($passwordExportSettings) 	? $customer['password'] : '';
+    		//$password 		= ($passwordExportSettings) 	? $customer['password'] : '';
     		$customer_group = ($companyGroupExportSettings) ? $customer['customer_group'] : '';
     		$salesrep 		= ($salesRepExportSettings) ? $customer['salesrep'] : '';
 			$salesteam 		= ($salesTeamExportSettings) ? $customer['salesteam'] : '';
@@ -648,53 +576,29 @@ class ModelCustomerCustomerExportImport extends Model {
     		} else {
     			$status = '';
     		}
-    		if ($approvedExportSettings) {
-    			$approved = ($customer['approved'] == '1') ? 'True' : 'False';
-    		} else {
-    			$approved = '';
-    		}
-			/*$lineData = array(
-    			$customerID,
-    			$firstname,
-    			$lastname,
-    			$email,
-    			$telephone,
-				$companyname,
-				$address1,
-				$address2,
-				$city,
-				$postcode,
-				$country,
-				$region,
-				$password,
-				$newsletter,
-				$customer_group,
-				$approved,
-				'',
-				$salesrep,
-				$status
-			);*/
-			
+    		
 			$lineData = array($customerID);
 			
-			$firstnameExportSettings 	? array_push($lineData, $firstname) : '';
-			$lastnameExportSettings 	? array_push($lineData, $lastname) : '';
-			$emailExportSettings 	? array_push($lineData, $email) : '';
-			$telephoneExportSettings 	? array_push($lineData, $telephone) : '';
+			//$firstnameExportSettings 	? array_push($lineData, $firstname) : '';
+			//$lastnameExportSettings 	? array_push($lineData, $lastname) : '';
 			$companyNameExportSettings 	? array_push($lineData, $companyname) : '';
+			$telephoneExportSettings 	? array_push($lineData, $telephone) : '';
+			$emailExportSettings 	? array_push($lineData, $email) : '';
+			$companyGroupExportSettings 	? array_push($lineData, $customer_group) : '';
+			$paymentmethodExportSettings 	? array_push($lineData, $payment_method) : '';
+			$salesTeamExportSettings 	? array_push($lineData, $salesteam) : '';
+			$salesRepExportSettings 	? array_push($lineData, $salesrep) : '';
+			$statusExportSettings 	? array_push($lineData, $status) : '';
 			$address1ExportSettings 	? array_push($lineData, $address1) : '';
 			$address2ExportSettings 	? array_push($lineData, $address2) : '';
 			$cityExportSettings 	? array_push($lineData, $city) : '';
 			$postCodeExportSettings 	? array_push($lineData, $postcode) : '';
 			$countryExportSettings 	? array_push($lineData, $country) : '';
 			$regionExportSettings 	? array_push($lineData, $region) : '';
-			$passwordExportSettings 	? array_push($lineData, $password) : '';
-			$newsletterExportSettings 	? array_push($lineData, $newsletter) : '';
-			$companyGroupExportSettings 	? array_push($lineData, $customer_group) : '';
-			$approvedExportSettings 	? array_push($lineData, $approved) : '';
-			$paymentmethodExportSettings 	? array_push($lineData, $payment_method) : '';
-			$salesRepExportSettings 	? array_push($lineData, $salesrep) : '';
-			$statusExportSettings 	? array_push($lineData, $status) : '';
+			//$passwordExportSettings 	? array_push($lineData, $password) : '';
+			//$newsletterExportSettings 	? array_push($lineData, $newsletter) : '';
+			//$approvedExportSettings 	? array_push($lineData, $approved) : '';
+			$defaultaddressExportSettings 	? array_push($lineData, $defaultaddress) : '';
 			
 			fputcsv($f, $lineData, $delimiter);
     	}

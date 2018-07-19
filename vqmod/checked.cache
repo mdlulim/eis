@@ -159,3 +159,4 @@ admin/language/en-gb/customer/custom_field.php
 admin/controller/replogic/customer_contact.php
 admin/language/en-gb/replogic/customer_contact.php
 admin/model/replogic/customer_contact.php
+system/startup.php
