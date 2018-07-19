@@ -96,7 +96,7 @@ class ControllerUserMenuSetting extends Controller {
 
 		$data['breadcrumbs'][] = array(
 			'text' => $this->language->get('text_home'),
-			'href' => $this->url->link('common/sales_dashboard', 'token=' . $this->session->data['token'], true)
+			'href' => $this->url->link(getDashboard($this->user), 'token=' . $this->session->data['token'], true)
 		);
 
 		$data['breadcrumbs'][] = array(
@@ -157,7 +157,7 @@ class ControllerUserMenuSetting extends Controller {
 		// echo "</pre>";exit;
 		
 		$ignore = array(
-			'common/dashboard',
+			getDashboard($this->user),
 			'common/startup',
 			'common/login',
 			'common/logout',

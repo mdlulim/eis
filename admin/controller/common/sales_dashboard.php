@@ -85,7 +85,7 @@ class ControllerCommonSalesDashboard extends Controller {
 		
 		$filters = array();
 		$token = $this->session->data['token'];
-		$url = $this->url->link('common/sales_dashboard', "token=$token", true);
+		$url = $this->url->link(getDashboard($this->user), "token=$token", true);
 		$data['day_selected'] = "";
 		$data['week_selected'] = "";
 		$data['month_selected'] = "";

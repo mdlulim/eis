@@ -12,9 +12,9 @@ class ControllerCommonLogin extends Controller {
 		if ($this->user->isLogged() && isset($this->request->get['token']) && ($this->request->get['token'] == $this->session->data['token'])) {
 			$token = $this->session->data['token'];
 			if ($this->promptChangePassword()) {
-				$this->response->redirect($this->url->link('common/sales_dashboard', "token=$token&prompt_change_password=1", true));
+				$this->response->redirect($this->url->link(getDashboard($this->user), "token=$token&prompt_change_password=1", true));
 			} else {
-				$this->response->redirect($this->url->link('common/sales_dashboard', "token=$token", true));
+				$this->response->redirect($this->url->link(getDashboard($this->user), "token=$token", true));
 			}
 		}
 
@@ -28,11 +28,10 @@ class ControllerCommonLogin extends Controller {
 					$this->response->redirect($this->request->post['redirect'] . '&token=' . $this->session->data['token']);
 				}
 			} else {
-				$token = $this->session->data['token'];
 				if ($this->promptChangePassword()) {
-					$this->response->redirect($this->url->link('common/sales_dashboard', "token=$token&prompt_change_password=1", true));
+					$this->response->redirect($this->url->link(getDashboard($this->user), "token=$token&prompt_change_password=1", true));
 				} else {
-					$this->response->redirect($this->url->link('common/sales_dashboard', "token=$token", true));
+					$this->response->redirect($this->url->link(getDashboard($this->user), "token=$token", true));
 				}
 			}
 		}

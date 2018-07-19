@@ -674,13 +674,13 @@ class ControllerCustomerCustomerExportImport extends Controller {
 		$data['breadcrumbs'] = array();
 		$data['breadcrumbs'][] = array(
 			'text' => $this->language->get('text_home'),
-			'href' => $this->url->link('common/dashboard', 'token=' . $this->session->data['token'], $this->ssl)
+			'href' => $this->url->link(getDashboard($this->user), 'token=' . $this->session->data['token'], $this->ssl)
 		);
 		$data['breadcrumbs'][] = array(
 			'text' => $this->language->get('heading_title'),
 			'href' => $this->url->link('customer/customer_export_import', 'token=' . $this->session->data['token'], $this->ssl)
 		);
-		$data['back'] = $this->url->link('common/dashboard', 'token=' . $this->session->data['token'], $this->ssl);
+		$data['back'] = $this->url->link(getDashboard($this->user), 'token=' . $this->session->data['token'], $this->ssl);
 		$data['button_back'] = $this->language->get( 'button_back' );
 		$data['import'] = $this->url->link('customer/customer_export_import/upload', 'token=' . $this->session->data['token'], $this->ssl);
 		$data['export'] = $this->url->link('customer/customer_export_import/download', 'token=' . $this->session->data['token'], $this->ssl);
