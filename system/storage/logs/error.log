@@ -124,3 +124,26 @@
 2018-07-19 10:19:04 - PHP Notice:  Undefined index: model in /Applications/XAMPP/xamppfiles/htdocs/hub-arch/catalog/view/theme/journal2/template/product/search.tpl on line 149
 2018-07-19 10:19:04 - PHP Notice:  Undefined index: cart_qty in /Applications/XAMPP/xamppfiles/htdocs/hub-arch/catalog/view/theme/journal2/template/product/search.tpl on line 154
 2018-07-19 10:19:04 - PHP Notice:  Undefined index: cart_qty in /Applications/XAMPP/xamppfiles/htdocs/hub-arch/catalog/view/theme/journal2/template/product/search.tpl on line 154
+2018-07-19 11:36:09 - PHP Warning:  ZipArchive::getFromName(): Invalid or uninitialized Zip object in /Applications/XAMPP/xamppfiles/htdocs/hub-arch/system/library/PHPExcel/Reader/Excel2007.php on line 428
+2018-07-19 11:36:09 - PHP Warning:  ZipArchive::getFromName(): Invalid or uninitialized Zip object in /Applications/XAMPP/xamppfiles/htdocs/hub-arch/system/library/PHPExcel/Reader/Excel2007.php on line 431
+2018-07-19 11:36:09 - PHP Notice:  Trying to get property of non-object in /Applications/XAMPP/xamppfiles/htdocs/hub-arch/system/library/PHPExcel/Reader/Excel2007.php on line 502
+2018-07-19 11:36:09 - PHP Warning:  Invalid argument supplied for foreach() in /Applications/XAMPP/xamppfiles/htdocs/hub-arch/system/library/PHPExcel/Reader/Excel2007.php on line 502
+2018-07-19 11:36:09 - PHP Warning:  ZipArchive::getFromName(): Invalid or uninitialized Zip object in /Applications/XAMPP/xamppfiles/htdocs/hub-arch/system/library/PHPExcel/Reader/Excel2007.php on line 428
+2018-07-19 11:36:09 - PHP Warning:  ZipArchive::getFromName(): Invalid or uninitialized Zip object in /Applications/XAMPP/xamppfiles/htdocs/hub-arch/system/library/PHPExcel/Reader/Excel2007.php on line 431
+2018-07-19 11:36:09 - PHP Notice:  Trying to get property of non-object in /Applications/XAMPP/xamppfiles/htdocs/hub-arch/system/library/PHPExcel/Reader/Excel2007.php on line 539
+2018-07-19 11:36:09 - PHP Warning:  Invalid argument supplied for foreach() in /Applications/XAMPP/xamppfiles/htdocs/hub-arch/system/library/PHPExcel/Reader/Excel2007.php on line 539
+2018-07-19 11:36:09 - PHP Warning:  ZipArchive::close(): Invalid or uninitialized Zip object in /Applications/XAMPP/xamppfiles/htdocs/hub-arch/system/library/PHPExcel/Reader/Excel2007.php on line 1839
+2018-07-19 11:36:09 - PHP Notice:  Undefined offset: -1 in /Applications/XAMPP/xamppfiles/htdocs/hub-arch/system/library/phpexcel.php on line 191
+2018-07-19 11:37:11 - PHP Warning:  ZipArchive::getFromName(): Invalid or uninitialized Zip object in /Applications/XAMPP/xamppfiles/htdocs/hub-arch/system/library/PHPExcel/Reader/Excel2007.php on line 428
+2018-07-19 11:37:11 - PHP Warning:  ZipArchive::getFromName(): Invalid or uninitialized Zip object in /Applications/XAMPP/xamppfiles/htdocs/hub-arch/system/library/PHPExcel/Reader/Excel2007.php on line 431
+2018-07-19 11:37:11 - PHP Notice:  Trying to get property of non-object in /Applications/XAMPP/xamppfiles/htdocs/hub-arch/system/library/PHPExcel/Reader/Excel2007.php on line 502
+2018-07-19 11:37:11 - PHP Warning:  Invalid argument supplied for foreach() in /Applications/XAMPP/xamppfiles/htdocs/hub-arch/system/library/PHPExcel/Reader/Excel2007.php on line 502
+2018-07-19 11:37:11 - PHP Warning:  ZipArchive::getFromName(): Invalid or uninitialized Zip object in /Applications/XAMPP/xamppfiles/htdocs/hub-arch/system/library/PHPExcel/Reader/Excel2007.php on line 428
+2018-07-19 11:37:11 - PHP Warning:  ZipArchive::getFromName(): Invalid or uninitialized Zip object in /Applications/XAMPP/xamppfiles/htdocs/hub-arch/system/library/PHPExcel/Reader/Excel2007.php on line 431
+2018-07-19 11:37:11 - PHP Notice:  Trying to get property of non-object in /Applications/XAMPP/xamppfiles/htdocs/hub-arch/system/library/PHPExcel/Reader/Excel2007.php on line 539
+2018-07-19 11:37:11 - PHP Warning:  Invalid argument supplied for foreach() in /Applications/XAMPP/xamppfiles/htdocs/hub-arch/system/library/PHPExcel/Reader/Excel2007.php on line 539
+2018-07-19 11:37:11 - PHP Warning:  ZipArchive::close(): Invalid or uninitialized Zip object in /Applications/XAMPP/xamppfiles/htdocs/hub-arch/system/library/PHPExcel/Reader/Excel2007.php on line 1839
+2018-07-19 11:37:11 - PHP Notice:  Undefined offset: -1 in /Applications/XAMPP/xamppfiles/htdocs/hub-arch/system/library/phpexcel.php on line 191
+2018-07-19 14:49:12 - PHP Notice:  Undefined index: uploadFile in /Applications/XAMPP/xamppfiles/htdocs/hub-arch/system/storage/modification/catalog/controller/checkout/cart.php on line 803
+2018-07-19 14:49:54 - PHP Notice:  Undefined index: uploadFile in /Applications/XAMPP/xamppfiles/htdocs/hub-arch/system/storage/modification/catalog/controller/checkout/cart.php on line 803
+2018-07-19 14:51:02 - PHP Notice:  Undefined index: uploadFile in /Applications/XAMPP/xamppfiles/htdocs/hub-arch/system/storage/modification/catalog/controller/checkout/cart.php on line 803

@@ -43,12 +43,8 @@
                 };
                 var exportButtons = new $.fn.dataTable.Buttons(oTable, {
                     buttons: [
-                        // 'copy', 'excel', 'csv', 'pdf'
                         $.extend(true, {}, buttonCommon, {
                             extend: 'copy'
-                        }),
-                        $.extend(true, {}, buttonCommon, {
-                            extend: 'excel'
                         }),
                         $.extend(true, {}, buttonCommon, {
                             extend: 'csv'
@@ -96,13 +92,14 @@
             var file = $(this)[0].files[0];
             if (file) {
                 var error;
-                var maxSize = 5000000; // 5000000 B | 5000 KB | 5MB (Max)
-                var formats = [
+                var maxSize  = 5000; // 5000 KB => 5MB (Max)
+                var fileSize = parseInt(file.size / 1024); // convert to KB
+                var formats  = [
                     'text/csv',
-                    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+                    // 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
                 ];
                 if (formats.indexOf(file.type) !== -1) {
-                    if (file.size <= maxSize) {
+                    if (fileSize <= maxSize) {
                         swal({
                             title: "Are you sure?",
                             text: `You are about to import "${file.name}" to your shopping cart.`,
@@ -141,11 +138,11 @@
                             }
                         });
                     } else {
-                        error = `The selected file "${file.name} [${file.size/1000000} MB]" exceeds the maximum upload size of 5MB.`;
+                        error = `The selected file "${file.name} [${file.size/1024} KB]" exceeds the maximum upload size of 5000KB.`;
                         swal("Invalid File Size!", error, "error");
                     }
                 } else {
-                    error = `Invalid file format chosen. Only CSV and XLSX files are allowed.`;
+                    error = `Invalid file format chosen. Only CSV files are allowed.`;
                     swal("Invalid File Type!", error, "error");
                 }
             }
