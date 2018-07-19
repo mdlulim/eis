@@ -24,9 +24,9 @@
         </select>
     </div>
 </div>
-<div class="row main-products product-list" data-grid-classes="<?php echo $this->journal2->settings->get('product_grid_classes'); ?> display-<?php echo $this->journal2->settings->get('product_grid_wishlist_icon_display'); ?> <?php echo $this->journal2->settings->get('product_grid_button_block_button'); ?>">
+<div class="row main-products <?php echo $view; ?>" data-grid-classes="<?php echo $this->journal2->settings->get('product_grid_classes'); ?> display-<?php echo $this->journal2->settings->get('product_grid_wishlist_icon_display'); ?> <?php echo $this->journal2->settings->get('product_grid_button_block_button'); ?>">
     <?php foreach ($products as $product) { ?>
-    <div class="product-list-item xs-100 sm-100 md-100 lg-100 xl-100">
+    <div class="<?php echo ($view == 'product-table') ? 'product-table-row' : 'product-list-item'; ?> xs-100 sm-100 md-100 lg-100 xl-100">
         <div class="product-thumb <?php echo isset($product['labels']) && is_array($product['labels']) && isset($product['labels']['outofstock']) ? 'outofstock' : ''; ?>">
             <div class="image <?php echo $this->journal2->settings->get('show_countdown', 'never') !== 'never' && isset($product['date_end']) && $product['date_end'] ? 'has-countdown' : ''; ?>">
                 <a href="<?php echo $product['href']; ?>" <?php if(isset($product['thumb2']) && $product['thumb2']): ?> class="has-second-image" style="background: url('<?php echo $product['thumb2']; ?>') no-repeat;" <?php endif; ?>>
@@ -43,6 +43,35 @@
                 <?php endif; ?>
             </div>
             <div class="product-details">
+                <div class="row product-table-row-details">
+                    <div class="col-4 product-name">
+                        <strong><a href="<?php echo $product['href']; ?>"><?php echo $product['name']; ?></a></strong>
+                    </div>
+                    <div class="col-2 product-sku">
+                        <strong><a href="<?php echo $product['href']; ?>"><?php echo $product['model']; ?></a></strong>
+                    </div>
+                    <div class="col-3">
+                        <span class="qty">
+                            <a href="javascript:;" class="journal-stepper" onclick="Journal.removeProductFromCart(<?php echo $product['product_id']; ?>, this)">-</a>
+                            <input name="quantity" value="<?php echo $product['cart_qty'] ?>" size="10" data-min-value="0" id="quantity_<?php echo $product['product_id']; ?>" class="form-control product-info1" type="text" data-cart-qty="<?php echo $product['cart_qty'] ?>" data-product-id="<?php echo $product['product_id'] ?>">
+                            <a href="javascript:;" class="journal-stepper" onclick="Journal.addToCart(<?php echo $product['product_id']; ?>, this)">+</a>
+                        </span>
+                    </div>
+                    <div class="col-3 product-price">
+                        <?php if ($product['price']) { ?>
+                        <p class="price">
+                            <?php if (!$product['special']) { ?>
+                            <?php echo $product['price']; ?>
+                            <?php } else { ?>
+                            <span class="price-old"><?php echo $product['price']; ?></span> <span class="price-new" <?php echo isset($product['date_end']) && $product['date_end'] ? "data-end-date='{$product['date_end']}'" : ""; ?>><?php echo $product['special']; ?></span>
+                            <?php } ?>
+                            <?php if ($product['tax']) { ?>
+                            <span class="price-tax"><?php echo $text_tax; ?> <?php echo $product['tax']; ?></span>
+                            <?php } ?>
+                        </p>
+                        <?php } ?>
+                    </div>
+                </div>
                 <div class="caption">
                     <h4 class="name"><a href="<?php echo $product['href']; ?>"><?php echo $product['name']; ?></a></h4>
                     <p class="description"><?php echo $product['description']; ?></p>

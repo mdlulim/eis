@@ -653,6 +653,16 @@ class ControllerJournal2Quickview extends Controller {
 			$data['reward'] = $product_info['reward'];
 			$data['points'] = $product_info['points'];
 
+			// cart
+			$cartProductIds = [];
+			if ($this->cart->hasProducts()) {
+				$cartProducts = $this->cart->getProducts();
+				foreach ($cartProducts as $key => $value) {
+					$cartProductIds[$value['product_id']] = $value['quantity'];
+				}
+			}
+			$data['cart_qty'] = (isset($cartProductIds[$result['product_id']])) ? $cartProductIds[$result['product_id']] : 0;
+
         $this->load->model('journal2/product');
         $data['labels'] = $this->model_journal2_product->getLabels($product_info['product_id']);
 

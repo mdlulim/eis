@@ -753,6 +753,15 @@ class ControllerModuleJournal2SuperFilter extends Controller {
 
         $data = $this->parseUrl();
 
+        // cart
+        $cartProductIds = [];
+        if ($this->cart->hasProducts()) {
+            $cartProducts = $this->cart->getProducts();
+            foreach ($cartProducts as $key => $value) {
+                $cartProductIds[$value['product_id']] = $value['quantity'];
+            }
+        }
+
         $product_total = $this->model_journal2_super_filter->getTotalProducts($data);
 
         $results = $this->model_journal2_super_filter->getProductsWithData($data);
@@ -827,6 +836,8 @@ class ControllerModuleJournal2SuperFilter extends Controller {
                 'price'       => $price,
                 'special'     => $special,
                 'date_end'    => $date_end,
+                'model'       => $result['model'],
+                'cart_qty'    => (isset($cartProductIds[$result['product_id']])) ? $cartProductIds[$result['product_id']] : 0,
                 'tax'         => $tax,
                 'rating'      => $result['rating'],
                 'reviews'     => sprintf($this->language->get('text_reviews'), (int)$result['reviews']),
@@ -952,6 +963,8 @@ class ControllerModuleJournal2SuperFilter extends Controller {
                 'href'  => $this->url->link($route, $url . '&limit=' . $limit)
             );
         }
+
+        $this->data['view'] = (isset($this->request->get['view'])) ? $this->request->get['view'] : 'product-list';
 
         $this->data['continue'] = $this->url->link('common/home');
         $this->language->load('product/search');

@@ -16,10 +16,6 @@
     <div id="content" class="<?php echo $class; ?>">
       <h1 class="heading-title">
         <?php echo $heading_title; ?>
-        <button type="button" class="btn btn-default btn-sm pull-right" id="add-category-to-cart" onclick="Journal.addCategoryToCart(<?php echo $category_id ?>, this);">
-          <i></i>
-          Add Category to Cart
-        </button>
       </h1>
       <?php echo $content_top; ?>
       <?php if ($thumb || $description) { ?>
@@ -132,7 +128,7 @@
         <div class="display">
           <a onclick="Journal.gridView()" class="grid-view"><?php echo $this->journal2->settings->get("category_grid_view_icon", $button_grid); ?></a>
           <a onclick="Journal.listView()" class="list-view"><?php echo $this->journal2->settings->get("category_list_view_icon", $button_list); ?></a>
-          <a onclick="Journal.tableView()" class="table-view active">
+          <a onclick="Journal.tableView()" class="table-view">
             <i style="margin-right:5px; color:rgb(51, 55, 69); font-size:21px; top:0" class="fa fa-list-alt"></i>
           </a>
         </div>
@@ -284,7 +280,8 @@
       <?php } ?>
       <?php echo $content_bottom; ?></div>
     </div>
-    <script>Journal.applyView('<?php echo $this->journal2->settings->get("product_view", "grid"); ?>');</script>
+    <?php /* <script>Journal.applyView('<?php echo $this->journal2->settings->get("product_view", "grid"); ?>');</script> */ ?>
+    <script>Journal.applyView('table');</script>
     <?php if ($this->journal2->settings->get('show_countdown', 'never') !== 'never'): ?>
     <script>Journal.enableCountdown();</script>
     <?php endif; ?>

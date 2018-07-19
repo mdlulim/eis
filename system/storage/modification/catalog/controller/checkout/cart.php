@@ -394,6 +394,12 @@ class ControllerCheckoutCart extends Controller {
                     $json['image'] = Journal2Utils::resizeImage($this->model_tool_image, $product_info['image'], $this->config->get('config_image_cart_width'), $this->config->get('config_image_cart_height'));
                 }
             
+
+                if (strpos($this->config->get('config_template'), 'journal2') === 0) {
+                    $this->load->model('tool/image');
+                    $json['image'] = Journal2Utils::resizeImage($this->model_tool_image, $product_info['image'], $this->config->get('config_image_cart_width'), $this->config->get('config_image_cart_height'));
+                }
+            
 				$json['success'] = sprintf($this->language->get('text_success'), $this->url->link('product/product', 'product_id=' . $this->request->post['product_id']), $product_info['name'], $this->url->link('checkout/cart'));
 
 				// Unset all shipping and payment methods
@@ -799,16 +805,19 @@ class ControllerCheckoutCart extends Controller {
 					$cartTotal = 0;
 
 					while ($row = fgetcsv($handle, 1000, ",")) {
-						if (!empty($row[0]) && !empty($row[1])) {
+						if (!empty($row[2]) && !empty($row[3])) {
 
-							$barcode      = $row[0];      # sku/barcode
-							$quantity     = (int)$row[1]; # quantity
+							$found        = false;
+							$barcode      = $row[2];      # sku/barcode
+							$quantity     = (int)$row[3]; # quantity
 							
 							if (is_numeric($quantity)) {
 
 								$product_info = $this->model_catalog_product->getProductBySku($barcode);
 
 								if (!empty($product_info)) {
+
+									$found = true;
 
 									$this->cart->set($product_info['product_id'], $quantity);
 
@@ -862,6 +871,9 @@ class ControllerCheckoutCart extends Controller {
 										array_multisort($sort_order, SORT_ASC, $totals);
 									}
 								}
+							}
+							if (!$found && is_numeric($row[3])) {
+								$json['items_not_found'][] = $row;
 							}
 						}
 					}

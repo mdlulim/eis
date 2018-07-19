@@ -77,6 +77,9 @@
         <div class="display">
           <a onclick="Journal.gridView()" class="grid-view"><?php echo $this->journal2->settings->get("category_grid_view_icon", $button_grid); ?></a>
           <a onclick="Journal.listView()" class="list-view"><?php echo $this->journal2->settings->get("category_list_view_icon", $button_list); ?></a>
+          <a onclick="Journal.tableView()" class="table-view">
+            <i style="margin-right:5px; color:rgb(51, 55, 69); font-size:21px; top:0" class="fa fa-list-alt"></i>
+          </a>
         </div>
         <div class="product-compare"><a href="<?php echo $compare; ?>" id="compare-total"><?php echo $text_compare; ?></a></div>
         <div class="limit"><b><?php echo $text_limit; ?></b>
@@ -103,6 +106,23 @@
         </div>
       </div>
       <div class="row main-products product-grid" data-grid-classes="<?php echo $this->journal2->settings->get('product_grid_classes'); ?> display-<?php echo $this->journal2->settings->get('product_grid_wishlist_icon_display'); ?> <?php echo $this->journal2->settings->get('product_grid_button_block_button'); ?>">
+        <div class="product-table-view-headings">
+          <div class="head-img">&nbsp;</div>
+          <div class="head-proddetails">
+            <div class="col-4">
+              Name
+            </div>
+            <div class="col-2">
+              SKU
+            </div>
+            <div class="col-3">
+              Quantity
+            </div>
+            <div class="col-3">
+              Price
+            </div>
+          </div>
+        </div>
         <?php foreach ($products as $product) { ?>  
         <div class="product-grid-item <?php echo $this->journal2->settings->get('product_grid_classes'); ?>">
           <div class="product-thumb product-wrapper <?php echo isset($product['labels']) && is_array($product['labels']) && isset($product['labels']['outofstock']) ? 'outofstock' : ''; ?>">
@@ -121,6 +141,35 @@
               <?php endif; ?>
             </div>
             <div class="product-details">
+              <div class="row product-table-row-details">
+                <div class="col-4 product-name">
+                  <strong><a href="<?php echo $product['href']; ?>"><?php echo $product['name']; ?></a></strong>
+                </div>
+                <div class="col-2 product-sku">
+                  <strong><a href="<?php echo $product['href']; ?>"><?php echo $product['model']; ?></a></strong>
+                </div>
+                <div class="col-3">
+                  <span class="qty">
+                    <a href="javascript:;" class="journal-stepper" onclick="Journal.removeProductFromCart(<?php echo $product['product_id']; ?>, this)">-</a>
+                    <input name="quantity" value="<?php echo $product['cart_qty'] ?>" size="10" data-min-value="0" id="quantity_<?php echo $product['product_id']; ?>" class="form-control product-info1" type="text" data-cart-qty="<?php echo $product['cart_qty'] ?>" data-product-id="<?php echo $product['product_id'] ?>">
+                    <a href="javascript:;" class="journal-stepper" onclick="Journal.addToCart(<?php echo $product['product_id']; ?>, this)">+</a>
+                  </span>
+                </div>
+                <div class="col-3 product-price">
+                  <?php if ($product['price']) { ?>
+                  <p class="price">
+                    <?php if (!$product['special']) { ?>
+                    <?php echo $product['price']; ?>
+                    <?php } else { ?>
+                    <span class="price-old"><?php echo $product['price']; ?></span> <span class="price-new" <?php echo isset($product['date_end']) && $product['date_end'] ? "data-end-date='{$product['date_end']}'" : ""; ?>><?php echo $product['special']; ?></span>
+                    <?php } ?>
+                    <?php if ($product['tax']) { ?>
+                    <span class="price-tax"><?php echo $text_tax; ?> <?php echo $product['tax']; ?></span>
+                    <?php } ?>
+                  </p>
+                  <?php } ?>
+                </div>
+              </div>
               <div class="caption">
                 <h4 class="name"><a href="<?php echo $product['href']; ?>"><?php echo $product['name']; ?></a></h4>
                 <p class="description"><?php echo $product['description']; ?></p>
@@ -175,7 +224,8 @@
       <?php } ?>
       <?php echo $content_bottom; ?></div>
     </div>
-    <script>Journal.applyView('<?php echo $this->journal2->settings->get("product_view", "grid"); ?>');</script>
+    <?php /* <script>Journal.applyView('<?php echo $this->journal2->settings->get("product_view", "grid"); ?>');</script> */ ?>
+    <script>Journal.applyView('table');</script>
     <?php if ($this->journal2->settings->get('show_countdown', 'never') !== 'never'): ?>
     <script>Journal.enableCountdown();</script>
     <?php endif; ?>

@@ -2063,6 +2063,15 @@ Journal.infiniteScroll = function () {
             var page = event.url.split('page=')[1];
             var params = Journal.SuperFilter.getFilterParams();
             params.filters += '/page=' + page;
+
+            // determine view [ grid | table | list ]
+            if ($('#content>.main-products').hasClass('product-grid')) {
+                params.view = 'product-grid';
+            } else if ($('#content>.main-products').hasClass('product-table')) {
+                params.view = 'product-table';
+            } else {
+                params.view = 'product-list';
+            }
             event.url = Journal.SuperFilter.$parent.attr('data-products-action') + '&' + $.param(params);
         }
         $('.main-products.product-list, .main-products.product-grid, .main-products.product-table').append('<span class="ias-loader"><span><i class="fa fa-spin fa-spinner"></i>' + Journal.infiniteScrollLoadingText + '</span></span>');

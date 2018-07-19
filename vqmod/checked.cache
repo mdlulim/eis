@@ -175,3 +175,4 @@ system/storage/modification/system/engine/loader.php
 system/storage/modification/system/library/config.php
 system/storage/modification/system/library/language.php
 system/library/cart/cart.php
+system/startup.php

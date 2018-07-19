@@ -97,6 +97,15 @@ class ControllerProductSpecial extends Controller {
 			'limit' => $limit
 		);
 
+		// cart
+		$cartProductIds = [];
+		if ($this->cart->hasProducts()) {
+			$cartProducts = $this->cart->getProducts();
+			foreach ($cartProducts as $key => $value) {
+				$cartProductIds[$value['product_id']] = $value['quantity'];
+			}
+		}
+
 		$product_total = $this->model_catalog_product->getTotalProductSpecials();
 
 		$results = $this->model_catalog_product->getProductSpecials($filter_data);
@@ -165,8 +174,10 @@ class ControllerProductSpecial extends Controller {
 				'price'       => $price,
 				'special'     => $special,
 
-                'date_end'       => $date_end,
-            
+                'date_end'    => $date_end,
+            	'model'       => $result['model'],
+        		'cart_qty'    => (isset($cartProductIds[$result['product_id']])) ? $cartProductIds[$result['product_id']] : 0,
+        		
 				'tax'         => $tax,
 				'minimum'     => $result['minimum'] > 0 ? $result['minimum'] : 1,
 				'rating'      => $result['rating'],
