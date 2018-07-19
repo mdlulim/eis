@@ -78,30 +78,30 @@
                          </a>
                         <?php } else { ?>
                         <a href="#tab-address<?php echo $address_row; ?>" data-toggle="tab">
-                          <?php if ($customer_contact['first_name']=='') { ?>
-                              <i class="fa fa-minus-circle" onclick="confirm('<?php echo $text_confirm; ?>') ? delt(<?php echo $customer_contact['customer_con_id']?>,<?php echo $customer_id; ?>) : false;"></i>
+                        	<?php if ($customer_contact['first_name']=='') { ?>
+                            	<i class="fa fa-minus-circle" onclick="confirm('<?php echo $text_confirm; ?>') ? delt(<?php echo $customer_contact['customer_con_id']?>,<?php echo $customer_id; ?>) : false;"></i>
                                 <?php echo 'Customer Contact ';?> <?php echo $address_row; ?>
                             <?php } else { ?>
-                              <i class="fa fa-minus-circle" onclick="confirm('Are you sure want to Delete <?php echo $customer_contact['first_name'].' '.$customer_contact['last_name']; ?> Customer Contact ?') ? delt(<?php echo $customer_contact['customer_con_id']?>,<?php echo $customer_id; ?>) : false;"></i>
-                              <?php echo $customer_contact['first_name'].' '.$customer_contact['last_name']; ?>
+                            	<i class="fa fa-minus-circle" onclick="confirm('Are you sure want to Delete <?php echo $customer_contact['first_name'].' '.$customer_contact['last_name']; ?> Customer Contact ?') ? delt(<?php echo $customer_contact['customer_con_id']?>,<?php echo $customer_id; ?>) : false;"></i>
+                            	<?php echo $customer_contact['first_name'].' '.$customer_contact['last_name']; ?>
                             <?php } ?>
                         </a>
                         <?php } ?>
                     <?php } else { ?>
                         <?php if (isset($error_customer_contact[$address_row]['first_name']) || isset($error_customer_contact[$address_row]['last_name']) || isset($error_customer_contact[$address_row]['email']) || isset($error_customer_contact[$address_row]['telephone_number']) || isset($error_customer_contact[$address_row]['cellphone_number'])) { ?>
                         <a style="color:#f56b6b;" href="#tab-address<?php echo $address_row; ?>" data-toggle="tab">
-                          <i class="fa fa-minus-circle" onclick="$('#address a:first').tab('show'); $('#address a[href=\'#tab-address<?php echo $address_row; ?>\']').parent().remove(); $('#tab-address<?php echo $address_row; ?>').remove();"></i> 
+                        	<i class="fa fa-minus-circle" onclick="$('#address a:first').tab('show'); $('#address a[href=\'#tab-address<?php echo $address_row; ?>\']').parent().remove(); $('#tab-address<?php echo $address_row; ?>').remove();"></i> 
                             <?php if ($customer_contact['first_name']=='') { ?>
-                              <?php echo 'Customer Contact ';?> <?php echo $address_row; ?>
+                            	<?php echo 'Customer Contact ';?> <?php echo $address_row; ?>
                             <?php } else { ?>
-                              <?php echo $customer_contact['first_name'].' '.$customer_contact['last_name']; ?>
+                            	<?php echo $customer_contact['first_name'].' '.$customer_contact['last_name']; ?>
                             <?php } ?>
                          </a>
                      <?php } else { ?>
                         <a href="#tab-address<?php echo $address_row; ?>" data-toggle="tab">
-                          <i class="fa fa-minus-circle" onclick="$('#address a:first').tab('show'); $('#address a[href=\'#tab-address<?php echo $address_row; ?>\']').parent().remove(); $('#tab-address<?php echo $address_row; ?>').remove();"></i> 
+                        	<i class="fa fa-minus-circle" onclick="$('#address a:first').tab('show'); $('#address a[href=\'#tab-address<?php echo $address_row; ?>\']').parent().remove(); $('#tab-address<?php echo $address_row; ?>').remove();"></i> 
                             <?php if ($customer_contact['first_name']=='') { ?>
-                              <?php echo 'Customer Contact ';?> <?php echo $address_row; ?>
+                            	<?php echo 'Customer Contact ';?> <?php echo $address_row; ?>
                             <?php } else { ?>
                             <?php echo $customer_contact['first_name'].' '.$customer_contact['last_name']; ?>
                             <?php } ?>
@@ -113,7 +113,7 @@
                     <?php $address_row++; ?>
                     <?php } ?>
                     
-                      <li id="address-add"><a onclick="addAddress();"><i class="fa fa-plus-circle"></i> Add Customer Contact</a></li>
+                    	<li id="address-add"><a onclick="addAddress();"><i class="fa fa-plus-circle"></i> Add Customer Contact</a></li>
                     
                   </ul>
                 </div>
@@ -124,9 +124,9 @@
                     <?php foreach ($customer_contacts as $customer_contact) { ?>
                     
                     <?php if($address_row == '1') { ?>
-                      <?php $cls = 'class="tab-pane active"'; ?>
+                     	<?php $cls = 'class="tab-pane active"'; ?>
                      <?php } else { ?>
-                      <?php $cls = 'class="tab-pane"'; ?>
+                     	<?php $cls = 'class="tab-pane"'; ?>
                      <?php } ?>
                     
                     <div <?php echo $cls; ?> id="tab-address<?php echo $address_row; ?>">
@@ -222,11 +222,11 @@ $('.cstm').each(function(){ //alert(this.value);
  
   if(this.value)
   {
-    $('#address-add').show();
+  	$('#address-add').show();
   }
   else
   {
-    $('#address-add').hide();
+  	$('#address-add').hide();
   }
   
 });
@@ -237,17 +237,17 @@ $('.cstm').each(function(){ //alert(this.value);
  function delt(id,cid) { 
  
  $.ajax({ 
-    url: 'index.php?route=replogic/customer_contact/AjaxDelete&token=<?php echo $token; ?>&id=' + id,
-    dataType: 'json',
-    success: function(json) {
-      
-      window.location.href = 'index.php?route=customer/customer_info&type=customercontact&customer_id='+ cid +'&token=<?php echo $token; ?>';
-      
-    },
-    error: function(xhr, ajaxOptions, thrownError) {
-      alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
-    }
-  });
+		url: 'index.php?route=replogic/customer_contact/AjaxDelete&token=<?php echo $token; ?>&id=' + id,
+		dataType: 'json',
+		success: function(json) {
+			
+			window.location.href = 'index.php?route=customer/customer_info&type=customercontact&customer_id='+ cid +'&token=<?php echo $token; ?>';
+			
+		},
+		error: function(xhr, ajaxOptions, thrownError) {
+			alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+		}
+	});
  
  }
 </script>

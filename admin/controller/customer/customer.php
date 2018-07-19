@@ -1326,7 +1326,7 @@ class ControllerCustomerCustomer extends Controller {
 
 		if (!isset($this->request->get['customer_id'])) {
 			$this->response->setOutput($this->load->view('customer/customer_add_form', $data));
-		} else {
+		} else { 
 			$this->response->setOutput($this->load->view('customer/customer_form', $data));
 		}
 		

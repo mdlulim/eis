@@ -82,7 +82,7 @@
                     <?php } else { ?>
                     <a href="<?php echo $sort_date_added; ?>"><?php echo $column_date_added; ?></a>
                     <?php } ?></td>
-                  <td class="text-left"><?php echo $column_action; ?></td>
+                  <td class="text-right"><?php echo $column_action; ?></td>
                 </tr>
               </thead>
               <tbody>

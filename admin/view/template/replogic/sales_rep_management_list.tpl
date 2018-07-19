@@ -307,6 +307,7 @@ $('#button-delete').prop('disabled', true);
 $('#popup').prop('disabled', true);
 $('#popupunassign').prop('disabled', true);
 $('input[name^=\'selected\']:first').trigger('change');
+
 //--></script> 
 <script type="text/javascript"><!--
 $('input[name=\'filter_customer\']').autocomplete({
@@ -329,6 +330,7 @@ $('input[name=\'filter_customer\']').autocomplete({
     $('input[name=\'filter_customer_id\']').val(item['value']);
   }
 });
+
 $('input[name=\'filter_salesrep\']').autocomplete({
   'source': function(request, response) {
     $.ajax({

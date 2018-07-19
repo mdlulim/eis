@@ -1126,6 +1126,15 @@ class ControllerReplogicScheduleManagement extends Controller {
 			$this->error['minutes'] = $this->language->get('error_minutes');
 		}
 		
+		if ($this->request->post['hour'] == 12 && $this->request->post['minutes'] > 0 ) {
+			$this->error['warning'] = 'Appointment Duration is Invalid, More than 12 hours Not Allowed!';
+		}
+		
+		if ($this->request->post['hour'] == 00 && $this->request->post['minutes'] < 1 ) {
+			$this->error['warning'] = 'Appointment Duration is Invalid, Minimum 15 Minutes Allowed!';
+			$this->error['minutes'] = $this->language->get('error_minutes');
+		}
+		
 		if ($this->request->post['salesrep_id'] == '') {
 			$this->error['salesrep_id'] = $this->language->get('error_salesrep_id');
 		}

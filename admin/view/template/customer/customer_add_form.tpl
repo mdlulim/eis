@@ -962,293 +962,361 @@ function addAddress() {
   html += '    <div class="col-sm-10"><label class="radio"><input type="checkbox" name="address[' + address_row + '][default]" value="" /></label></div>';
   html += '  </div>';
     html += '</div>';
-  $('#tab-general1 .tab-content').append(html);
-  $('select[name=\'customer_group_id\']').trigger('change');
-  $('select[name=\'address[' + address_row + '][country_id]\']').trigger('change');
-  $('#address-add').before('<li><a href="#tab-address' + address_row + '" data-toggle="tab"><i class="fa fa-minus-circle" onclick="$(\'#address a:first\').tab(\'show\'); $(\'#address-add\').show(); $(\'a[href=\\\'#tab-address' + address_row + '\\\']\').parent().remove(); $(\'#tab-address' + address_row + '\').remove();"></i> <?php echo $tab_address; ?> ' + address_row + '</a></li>');
-  
-  //$('#address-add').before('<li><a href="#tab-address' + address_row + '" data-toggle="tab"><?php echo $tab_address; ?> ' + address_row + '</a></li>');
-  $('#address a[href=\'#tab-address' + address_row + '\']').tab('show');
-  $('.date').datetimepicker({
-    pickTime: false
-  });
-  $('.datetime').datetimepicker({
-    pickDate: true,
-    pickTime: true
-  });
-  $('.time').datetimepicker({
-    pickDate: false
-  });
-  $('#tab-address' + address_row + ' .form-group[data-sort]').detach().each(function() {
-    if ($(this).attr('data-sort') >= 0 && $(this).attr('data-sort') <= $('#tab-address' + address_row + ' .form-group').length) {
-      $('#tab-address' + address_row + ' .form-group').eq($(this).attr('data-sort')).before(this);
-    }
-    if ($(this).attr('data-sort') > $('#tab-address' + address_row + ' .form-group').length) {
-      $('#tab-address' + address_row + ' .form-group:last').after(this);
-    }
-    if ($(this).attr('data-sort') < -$('#tab-address' + address_row + ' .form-group').length) {
-      $('#tab-address' + address_row + ' .form-group:first').before(this);
-    }
-  });
-  address_row++;
+
+	$('#tab-general1 .tab-content').append(html);
+
+	$('select[name=\'customer_group_id\']').trigger('change');
+
+	$('select[name=\'address[' + address_row + '][country_id]\']').trigger('change');
+
+	$('#address-add').before('<li><a href="#tab-address' + address_row + '" data-toggle="tab"><i class="fa fa-minus-circle" onclick="$(\'#address a:first\').tab(\'show\'); $(\'a[href=\\\'#tab-address' + address_row + '\\\']\').parent().remove(); $(\'#tab-address' + address_row + '\').remove();"></i> <?php echo $tab_address; ?> ' + address_row + '</a></li>');
+	
+	//$('#address-add').before('<li><a href="#tab-address' + address_row + '" data-toggle="tab"><?php echo $tab_address; ?> ' + address_row + '</a></li>');
+
+	$('#address a[href=\'#tab-address' + address_row + '\']').tab('show');
+
+	$('.date').datetimepicker({
+		pickTime: false
+	});
+
+	$('.datetime').datetimepicker({
+		pickDate: true,
+		pickTime: true
+	});
+
+	$('.time').datetimepicker({
+		pickDate: false
+	});
+
+	$('#tab-address' + address_row + ' .form-group[data-sort]').detach().each(function() {
+		if ($(this).attr('data-sort') >= 0 && $(this).attr('data-sort') <= $('#tab-address' + address_row + ' .form-group').length) {
+			$('#tab-address' + address_row + ' .form-group').eq($(this).attr('data-sort')).before(this);
+		}
+
+		if ($(this).attr('data-sort') > $('#tab-address' + address_row + ' .form-group').length) {
+			$('#tab-address' + address_row + ' .form-group:last').after(this);
+		}
+
+		if ($(this).attr('data-sort') < -$('#tab-address' + address_row + ' .form-group').length) {
+			$('#tab-address' + address_row + ' .form-group:first').before(this);
+		}
+	});
+
+	address_row++;
 }
 //--></script>
   <script type="text/javascript"><!--
 function country(element, index, zone_id) {
-  $.ajax({
-    url: 'index.php?route=localisation/country/country&token=<?php echo $token; ?>&country_id=' + element.value,
-    dataType: 'json',
-    beforeSend: function() {
-      $('select[name=\'address[' + index + '][country_id]\']').after(' <i class="fa fa-circle-o-notch fa-spin"></i>');
-    },
-    complete: function() {
-      $('.fa-spin').remove();
-    },
-    success: function(json) {
-      if (json['postcode_required'] == '1') {
-        $('input[name=\'address[' + index + '][postcode]\']').parent().parent().addClass('required');
-      } else {
-        $('input[name=\'address[' + index + '][postcode]\']').parent().parent().removeClass('required');
-      }
-      html = '<option value=""><?php echo $text_select; ?></option>';
-      if (json['zone'] && json['zone'] != '') {
-        for (i = 0; i < json['zone'].length; i++) {
-          html += '<option value="' + json['zone'][i]['zone_id'] + '"';
-          if (json['zone'][i]['zone_id'] == zone_id) {
-            html += ' selected="selected"';
-          }
-          html += '>' + json['zone'][i]['name'] + '</option>';
-        }
-      } else {
-        html += '<option value="0"><?php echo $text_none; ?></option>';
-      }
-      $('select[name=\'address[' + index + '][zone_id]\']').html(html);
-    },
-    error: function(xhr, ajaxOptions, thrownError) {
-      alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
-    }
-  });
+	$.ajax({
+		url: 'index.php?route=localisation/country/country&token=<?php echo $token; ?>&country_id=' + element.value,
+		dataType: 'json',
+		beforeSend: function() {
+			$('select[name=\'address[' + index + '][country_id]\']').after(' <i class="fa fa-circle-o-notch fa-spin"></i>');
+		},
+		complete: function() {
+			$('.fa-spin').remove();
+		},
+		success: function(json) {
+			if (json['postcode_required'] == '1') {
+				$('input[name=\'address[' + index + '][postcode]\']').parent().parent().addClass('required');
+			} else {
+				$('input[name=\'address[' + index + '][postcode]\']').parent().parent().removeClass('required');
+			}
+
+			html = '<option value=""><?php echo $text_select; ?></option>';
+
+			if (json['zone'] && json['zone'] != '') {
+				for (i = 0; i < json['zone'].length; i++) {
+					html += '<option value="' + json['zone'][i]['zone_id'] + '"';
+
+					if (json['zone'][i]['zone_id'] == zone_id) {
+						html += ' selected="selected"';
+					}
+
+					html += '>' + json['zone'][i]['name'] + '</option>';
+				}
+			} else {
+				html += '<option value="0"><?php echo $text_none; ?></option>';
+			}
+
+			$('select[name=\'address[' + index + '][zone_id]\']').html(html);
+		},
+		error: function(xhr, ajaxOptions, thrownError) {
+			alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+		}
+	});
 }
+
 $('select[name$=\'[country_id]\']').trigger('change');
 //--></script>
   <script type="text/javascript"><!--
 $('#history').delegate('.pagination a', 'click', function(e) {
-  e.preventDefault();
-  $('#history').load(this.href);
+	e.preventDefault();
+
+	$('#history').load(this.href);
 });
+
 $('#history').load('index.php?route=customer/customer/history&token=<?php echo $token; ?>&customer_id=<?php echo $customer_id; ?>');
+
 $('#button-history').on('click', function(e) {
-  e.preventDefault();
-  $.ajax({
-    url: 'index.php?route=customer/customer/addhistory&token=<?php echo $token; ?>&customer_id=<?php echo $customer_id; ?>',
-    type: 'post',
-    dataType: 'json',
-    data: 'comment=' + encodeURIComponent($('#tab-history textarea[name=\'comment\']').val()),
-    beforeSend: function() {
-      $('#button-history').button('loading');
-    },
-    complete: function() {
-      $('#button-history').button('reset');
-    },
-    success: function(json) {
-      $('.alert').remove();
-      if (json['error']) {
-         $('#tab-history').prepend('<div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> ' + json['error'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div></div>');
-      }
-      if (json['success']) {
-        $('#tab-history').prepend('<div class="alert alert-success"><i class="fa fa-check-circle"></i> ' + json['success'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div></div>');
-        $('#history').load('index.php?route=customer/customer/history&token=<?php echo $token; ?>&customer_id=<?php echo $customer_id; ?>');
-        $('#tab-history textarea[name=\'comment\']').val('');
-      }
-    }
-  });
+	e.preventDefault();
+
+	$.ajax({
+		url: 'index.php?route=customer/customer/addhistory&token=<?php echo $token; ?>&customer_id=<?php echo $customer_id; ?>',
+		type: 'post',
+		dataType: 'json',
+		data: 'comment=' + encodeURIComponent($('#tab-history textarea[name=\'comment\']').val()),
+		beforeSend: function() {
+			$('#button-history').button('loading');
+		},
+		complete: function() {
+			$('#button-history').button('reset');
+		},
+		success: function(json) {
+			$('.alert').remove();
+
+			if (json['error']) {
+				 $('#tab-history').prepend('<div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> ' + json['error'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div></div>');
+			}
+
+			if (json['success']) {
+				$('#tab-history').prepend('<div class="alert alert-success"><i class="fa fa-check-circle"></i> ' + json['success'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div></div>');
+
+				$('#history').load('index.php?route=customer/customer/history&token=<?php echo $token; ?>&customer_id=<?php echo $customer_id; ?>');
+
+				$('#tab-history textarea[name=\'comment\']').val('');
+			}
+		}
+	});
 });
 //--></script>
   <script type="text/javascript"><!--
 $('#transaction').delegate('.pagination a', 'click', function(e) {
-  e.preventDefault();
-  $('#transaction').load(this.href);
+	e.preventDefault();
+
+	$('#transaction').load(this.href);
 });
+
 $('#transaction').load('index.php?route=customer/customer/transaction&token=<?php echo $token; ?>&customer_id=<?php echo $customer_id; ?>');
+
 $('#button-transaction').on('click', function(e) {
   e.preventDefault();
+
   $.ajax({
-    url: 'index.php?route=customer/customer/addtransaction&token=<?php echo $token; ?>&customer_id=<?php echo $customer_id; ?>',
-    type: 'post',
-    dataType: 'json',
-    data: 'description=' + encodeURIComponent($('#tab-transaction input[name=\'description\']').val()) + '&amount=' + encodeURIComponent($('#tab-transaction input[name=\'amount\']').val()),
-    beforeSend: function() {
-      $('#button-transaction').button('loading');
-    },
-    complete: function() {
-      $('#button-transaction').button('reset');
-    },
-    success: function(json) {
-      $('.alert').remove();
-      if (json['error']) {
-         $('#tab-transaction').prepend('<div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> ' + json['error'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div></div>');
-      }
-      if (json['success']) {
-        $('#tab-transaction').prepend('<div class="alert alert-success"><i class="fa fa-check-circle"></i> ' + json['success'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div></div>');
-        $('#transaction').load('index.php?route=customer/customer/transaction&token=<?php echo $token; ?>&customer_id=<?php echo $customer_id; ?>');
-        $('#tab-transaction input[name=\'amount\']').val('');
-        $('#tab-transaction input[name=\'description\']').val('');
-      }
-    }
-  });
+		url: 'index.php?route=customer/customer/addtransaction&token=<?php echo $token; ?>&customer_id=<?php echo $customer_id; ?>',
+		type: 'post',
+		dataType: 'json',
+		data: 'description=' + encodeURIComponent($('#tab-transaction input[name=\'description\']').val()) + '&amount=' + encodeURIComponent($('#tab-transaction input[name=\'amount\']').val()),
+		beforeSend: function() {
+			$('#button-transaction').button('loading');
+		},
+		complete: function() {
+			$('#button-transaction').button('reset');
+		},
+		success: function(json) {
+			$('.alert').remove();
+
+			if (json['error']) {
+				 $('#tab-transaction').prepend('<div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> ' + json['error'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div></div>');
+			}
+
+			if (json['success']) {
+				$('#tab-transaction').prepend('<div class="alert alert-success"><i class="fa fa-check-circle"></i> ' + json['success'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div></div>');
+
+				$('#transaction').load('index.php?route=customer/customer/transaction&token=<?php echo $token; ?>&customer_id=<?php echo $customer_id; ?>');
+
+				$('#tab-transaction input[name=\'amount\']').val('');
+				$('#tab-transaction input[name=\'description\']').val('');
+			}
+		}
+	});
 });
 //--></script>
   <script type="text/javascript"><!--
 $('#reward').delegate('.pagination a', 'click', function(e) {
-  e.preventDefault();
-  $('#reward').load(this.href);
+	e.preventDefault();
+
+	$('#reward').load(this.href);
 });
+
 $('#reward').load('index.php?route=customer/customer/reward&token=<?php echo $token; ?>&customer_id=<?php echo $customer_id; ?>');
+
 $('#button-reward').on('click', function(e) {
-  e.preventDefault();
-  $.ajax({
-    url: 'index.php?route=customer/customer/addreward&token=<?php echo $token; ?>&customer_id=<?php echo $customer_id; ?>',
-    type: 'post',
-    dataType: 'json',
-    data: 'description=' + encodeURIComponent($('#tab-reward input[name=\'description\']').val()) + '&points=' + encodeURIComponent($('#tab-reward input[name=\'points\']').val()),
-    beforeSend: function() {
-      $('#button-reward').button('loading');
-    },
-    complete: function() {
-      $('#button-reward').button('reset');
-    },
-    success: function(json) {
-      $('.alert').remove();
-      if (json['error']) {
-         $('#tab-reward').prepend('<div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> ' + json['error'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div></div>');
-      }
-      if (json['success']) {
-        $('#tab-reward').prepend('<div class="alert alert-success"><i class="fa fa-check-circle"></i> ' + json['success'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div></div>');
-        $('#reward').load('index.php?route=customer/customer/reward&token=<?php echo $token; ?>&customer_id=<?php echo $customer_id; ?>');
-        $('#tab-reward input[name=\'points\']').val('');
-        $('#tab-reward input[name=\'description\']').val('');
-      }
-    }
-  });
+	e.preventDefault();
+
+	$.ajax({
+		url: 'index.php?route=customer/customer/addreward&token=<?php echo $token; ?>&customer_id=<?php echo $customer_id; ?>',
+		type: 'post',
+		dataType: 'json',
+		data: 'description=' + encodeURIComponent($('#tab-reward input[name=\'description\']').val()) + '&points=' + encodeURIComponent($('#tab-reward input[name=\'points\']').val()),
+		beforeSend: function() {
+			$('#button-reward').button('loading');
+		},
+		complete: function() {
+			$('#button-reward').button('reset');
+		},
+		success: function(json) {
+			$('.alert').remove();
+
+			if (json['error']) {
+				 $('#tab-reward').prepend('<div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> ' + json['error'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div></div>');
+			}
+
+			if (json['success']) {
+				$('#tab-reward').prepend('<div class="alert alert-success"><i class="fa fa-check-circle"></i> ' + json['success'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div></div>');
+
+				$('#reward').load('index.php?route=customer/customer/reward&token=<?php echo $token; ?>&customer_id=<?php echo $customer_id; ?>');
+
+				$('#tab-reward input[name=\'points\']').val('');
+				$('#tab-reward input[name=\'description\']').val('');
+			}
+		}
+	});
 });
+
 $('#ip').delegate('.pagination a', 'click', function(e) {
-  e.preventDefault();
-  $('#ip').load(this.href);
+	e.preventDefault();
+
+	$('#ip').load(this.href);
 });
+
 $('#ip').load('index.php?route=customer/customer/ip&token=<?php echo $token; ?>&customer_id=<?php echo $customer_id; ?>');
+
 $('#content').delegate('button[id^=\'button-custom-field\'], button[id^=\'button-address\']', 'click', function() {
-  var node = this;
-  $('#form-upload').remove();
-  $('body').prepend('<form enctype="multipart/form-data" id="form-upload" style="display: none;"><input type="file" name="file" /></form>');
-  $('#form-upload input[name=\'file\']').trigger('click');
-  if (typeof timer != 'undefined') {
-      clearInterval(timer);
-  }
-  timer = setInterval(function() {
-    if ($('#form-upload input[name=\'file\']').val() != '') {
-      clearInterval(timer);
-      $.ajax({
-        url: 'index.php?route=tool/upload/upload&token=<?php echo $token; ?>',
-        type: 'post',
-        dataType: 'json',
-        data: new FormData($('#form-upload')[0]),
-        cache: false,
-        contentType: false,
-        processData: false,
-        beforeSend: function() {
-          $(node).button('loading');
-        },
-        complete: function() {
-          $(node).button('reset');
-        },
-        success: function(json) {
-          $(node).parent().find('.text-danger').remove();
-          if (json['error']) {
-            $(node).parent().find('input[type=\'hidden\']').after('<div class="text-danger">' + json['error'] + '</div>');
-          }
-          if (json['success']) {
-            alert(json['success']);
-          }
-          if (json['code']) {
-            $(node).parent().find('input[type=\'hidden\']').val(json['code']);
-          }
-        },
-        error: function(xhr, ajaxOptions, thrownError) {
-          alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
-        }
-      });
-    }
-  }, 500);
+	var node = this;
+
+	$('#form-upload').remove();
+
+	$('body').prepend('<form enctype="multipart/form-data" id="form-upload" style="display: none;"><input type="file" name="file" /></form>');
+
+	$('#form-upload input[name=\'file\']').trigger('click');
+
+	if (typeof timer != 'undefined') {
+    	clearInterval(timer);
+	}
+
+	timer = setInterval(function() {
+		if ($('#form-upload input[name=\'file\']').val() != '') {
+			clearInterval(timer);
+
+			$.ajax({
+				url: 'index.php?route=tool/upload/upload&token=<?php echo $token; ?>',
+				type: 'post',
+				dataType: 'json',
+				data: new FormData($('#form-upload')[0]),
+				cache: false,
+				contentType: false,
+				processData: false,
+				beforeSend: function() {
+					$(node).button('loading');
+				},
+				complete: function() {
+					$(node).button('reset');
+				},
+				success: function(json) {
+					$(node).parent().find('.text-danger').remove();
+
+					if (json['error']) {
+						$(node).parent().find('input[type=\'hidden\']').after('<div class="text-danger">' + json['error'] + '</div>');
+					}
+
+					if (json['success']) {
+						alert(json['success']);
+					}
+
+					if (json['code']) {
+						$(node).parent().find('input[type=\'hidden\']').val(json['code']);
+					}
+				},
+				error: function(xhr, ajaxOptions, thrownError) {
+					alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+				}
+			});
+		}
+	}, 500);
 });
+
 $('.date').datetimepicker({
-  pickTime: false
+	pickTime: false
 });
+
 $('.datetime').datetimepicker({
-  pickDate: true,
-  pickTime: true
+	pickDate: true,
+	pickTime: true
 });
+
 $('.time').datetimepicker({
-  pickDate: false
+	pickDate: false
 });
+
 // Sort the custom fields
 <?php $address_row = 1; ?>
 <?php foreach ($addresses as $address) { ?>
 $('#tab-address<?php echo $address_row; ?> .form-group[data-sort]').detach().each(function() {
-  if ($(this).attr('data-sort') >= 0 && $(this).attr('data-sort') <= $('#tab-address<?php echo $address_row; ?> .form-group').length) {
-    $('#tab-address<?php echo $address_row; ?> .form-group').eq($(this).attr('data-sort')).before(this);
-  }
-  if ($(this).attr('data-sort') > $('#tab-address<?php echo $address_row; ?> .form-group').length) {
-    $('#tab-address<?php echo $address_row; ?> .form-group:last').after(this);
-  }
-  if ($(this).attr('data-sort') < -$('#tab-address<?php echo $address_row; ?> .form-group').length) {
-    $('#tab-address<?php echo $address_row; ?> .form-group:first').before(this);
-  }
+	if ($(this).attr('data-sort') >= 0 && $(this).attr('data-sort') <= $('#tab-address<?php echo $address_row; ?> .form-group').length) {
+		$('#tab-address<?php echo $address_row; ?> .form-group').eq($(this).attr('data-sort')).before(this);
+	}
+
+	if ($(this).attr('data-sort') > $('#tab-address<?php echo $address_row; ?> .form-group').length) {
+		$('#tab-address<?php echo $address_row; ?> .form-group:last').after(this);
+	}
+
+	if ($(this).attr('data-sort') < -$('#tab-address<?php echo $address_row; ?> .form-group').length) {
+		$('#tab-address<?php echo $address_row; ?> .form-group:first').before(this);
+	}
 });
 <?php $address_row++; ?>
 <?php } ?>
+
+
 <?php foreach ($addresses as $address) { ?>
 $('#tab-customer .form-group[data-sort]').detach().each(function() {
-  if ($(this).attr('data-sort') >= 0 && $(this).attr('data-sort') <= $('#tab-customer .form-group').length) {
-    $('#tab-customer .form-group').eq($(this).attr('data-sort')).before(this);
-  }
-  if ($(this).attr('data-sort') > $('#tab-customer .form-group').length) {
-    $('#tab-customer .form-group:last').after(this);
-  }
-  if ($(this).attr('data-sort') < -$('#tab-customer .form-group').length) {
-    $('#tab-customer .form-group:first').before(this);
-  }
+	if ($(this).attr('data-sort') >= 0 && $(this).attr('data-sort') <= $('#tab-customer .form-group').length) {
+		$('#tab-customer .form-group').eq($(this).attr('data-sort')).before(this);
+	}
+
+	if ($(this).attr('data-sort') > $('#tab-customer .form-group').length) {
+		$('#tab-customer .form-group:last').after(this);
+	}
+
+	if ($(this).attr('data-sort') < -$('#tab-customer .form-group').length) {
+		$('#tab-customer .form-group:first').before(this);
+	}
 });
 <?php } ?>
 //--></script>
 <script type="text/javascript">
-  $('select[name=\'team_id\']').on('change', function() {
-    $('select[name=\'salesrep_id\']').html();
-    $.ajax({
-    url: 'index.php?route=replogic/sales_rep_management/getsalesrepByteamId&token=<?php echo $token; ?>',
-    type: 'post',
-    data: 'team_id=' + $('select[name=\'team_id\'] option:selected').val(),
-    dataType: 'json',
-    crossDomain: true,
-    success: function(json) {
-      
-      html = '<option value="">Select Sales Rep</option>';
-      
-      if (json&& json != '') {
-        for (i = 0; i < json.length; i++) {
-          html += '<option value="' + json[i]['salesrep_id'] + '">' + json[i]['salesrep_name'] + json[i]['salesrep_lastname'] + '</option>';
-        }
-      } else {
-        html += '<option value="">No Found Sales Rep</option>';
-      }
-      $('select[name=\'salesrep_id\']').html(html);
-      
-    },
-    error: function(xhr, ajaxOptions, thrownError) {
-      alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
-    }
-  });
-  
-  });
+ 	$('select[name=\'team_id\']').on('change', function() {
+		$('select[name=\'salesrep_id\']').html();
+		$.ajax({
+		url: 'index.php?route=replogic/sales_rep_management/getsalesrepByteamId&token=<?php echo $token; ?>',
+		type: 'post',
+		data: 'team_id=' + $('select[name=\'team_id\'] option:selected').val(),
+		dataType: 'json',
+		crossDomain: true,
+		success: function(json) {
+			
+			html = '<option value="">Select Sales Rep</option>';
+			
+			if (json&& json != '') {
+				for (i = 0; i < json.length; i++) {
+					html += '<option value="' + json[i]['salesrep_id'] + '">' + json[i]['salesrep_name'] + json[i]['salesrep_lastname'] + '</option>';
+
+				}
+			} else {
+				html += '<option value="">No Found Sales Rep</option>';
+			}
+
+			$('select[name=\'salesrep_id\']').html(html);
+			
+		},
+		error: function(xhr, ajaxOptions, thrownError) {
+			alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+		}
+	});
+	
+	});
+
     </script>
     </div>
 <?php echo $footer; ?>

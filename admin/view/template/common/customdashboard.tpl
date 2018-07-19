@@ -129,6 +129,7 @@
             </div>
             <div class="panel-body">
               <div id="map"></div>
+              <div id="legend"></div>
                                 <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA6ycZiGobIPuZ8wtXalf2m2MtxAzncn_Q&callback=initMap&sensor=false"> </script>
                                 <script type="text/javascript">
 								/*function initMap() { 
@@ -158,7 +159,33 @@
 									var infowindow = new google.maps.InfoWindow(), marker, lat, lng;
 									var bounds = new google.maps.LatLngBounds();
 									
+									var icons = {
+									  parking: {
+										name: 'Rep Checked In',
+										icon: 'view/image/salesrep-checkin.png'
+									  },
+									  library: {
+										name: 'GPS Location',
+										icon: 'view/image/GPS.png'
+									  },
+									  info: {
+										name: 'Customer',
+										icon: 'view/image/customer2.png'
+									  }
+									};
 									
+									var legend = document.getElementById('legend');
+									for (var key in icons) {
+									  var type = icons[key];
+									  var name = type.name;
+									  var icon = type.icon;
+									  var div = document.createElement('div');
+									  div.innerHTML = '<img src="' + icon + '"> ' + name;
+									  legend.appendChild(div);
+									}
+							
+									map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(legend);
+
 									<?php foreach($locationsmaps as $key => $locationsmap ) { ?>
 									
 										<?php if($locationsmap['latitude'] != '' && $locationsmap['longitude'] != '' ) { ?>
@@ -203,6 +230,9 @@
 								</script>
                                 <style>
 								#map { height: 400px; width: 100%; }
+								#legend { font-family: Arial, sans-serif;background: #fff;border-radius: 5px;bottom:25px!important;right:100px!important; }
+							    #legend div { background:#FFFFFF;float:left;margin:5px;padding:5px;font-size:13px; }
+							    #legend img { vertical-align: middle; }
 								</style>
             </div>
           </div>

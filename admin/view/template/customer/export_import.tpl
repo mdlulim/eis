@@ -315,7 +315,17 @@
 										</label>
 									</td>
 								</tr>
-                                
+                                <tr>
+									<td>
+										<label>
+										<?php if($settings_companygroup) { ?>
+                                        	<input type="checkbox" name="customer_export_import_settings_companygroup" value="1" checked="checked" disabled="disabled" /> Company Group
+                                        <?php } else { ?>    
+                                            <input type="checkbox" name="customer_export_import_settings_companygroup" value="1" /> Company Group
+                                        <?php } ?>
+										</label>
+									</td>
+								</tr>
                                 <tr>
 									<td>
 										<label>
@@ -326,8 +336,7 @@
                                         <?php } ?>
 										</label>
 									</td>
-								</tr>-->
-                                
+								</tr>
                                 <tr>
 									<td>
 										<label>
@@ -339,7 +348,28 @@
 										</label>
 									</td>
 								</tr>
-                                
+                                <tr>
+									<td>
+										<label>
+                                        <?php if($settings_salesrep) { ?>
+											<input type="checkbox" name="customer_export_import_settings_salesrep" value="1" checked="checked" /> Sales Rep
+                                        <?php } else { ?>    
+                                            <input type="checkbox" name="customer_export_import_settings_salesrep" value="1" /> Sales Rep
+                                        <?php } ?>
+										</label>
+									</td>
+								</tr>
+                                <tr>
+									<td>
+										<label>
+                                        <?php if($settings_status) { ?>
+											<input type="checkbox" name="customer_export_import_settings_status" value="1" checked="checked" /> Status
+                                        <?php } else { ?>    
+                                            <input type="checkbox" name="customer_export_import_settings_status" value="1" /> Status
+                                        <?php } ?>
+										</label>
+									</td>
+								</tr>
 								<tr>
 									<td class="buttons"><a onclick="updateSettings();" class="btn btn-primary"><span><?php echo $button_settings; ?></span></a></td>
 								</tr>

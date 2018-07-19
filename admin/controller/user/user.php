@@ -23,6 +23,10 @@ class ControllerUserUser extends Controller {
 				$url .= '&filter_name=' . $this->request->get['filter_name'];
 			}
 			
+			if (isset($this->request->get['filter_user_group_id'])) {
+				$url .= '&filter_user_group_id=' . $this->request->get['filter_user_group_id'];
+			}
+			
 			if (isset($this->request->get['filter_status'])) {
 				$url .= '&filter_status=' . $this->request->get['filter_status'];
 			}
@@ -43,16 +47,21 @@ class ControllerUserUser extends Controller {
 			$this->response->redirect($this->url->link('user/user/view', 'token=' . $this->session->data['token'] . '&user_id=' . $lastid . $url, true));
 			
 		}
+
 		$this->getForm();
 	}
+
 	public function edit() {
 		$this->load->language('user/user');
+
 		/*==================================
 		=       Add Files (Includes)       =
 		==================================*/
+
 		# stylesheets (CSS) files
 		$this->document->addStyle('view/javascript/bootstrap-sweetalert/sweetalert.css');
 		$this->document->addStyle('view/stylesheet/custom.css');
+
 		# javascript (JS) files
 		$this->document->addScript('view/javascript/bootstrap-sweetalert/sweetalert.min.js');
 		$this->document->addScript('view/javascript/bootstrap-sweetalert/sweetalert-data.js');
@@ -66,6 +75,10 @@ class ControllerUserUser extends Controller {
 			$url = '';
 			if (isset($this->request->get['filter_name'])) {
 				$url .= '&filter_name=' . $this->request->get['filter_name'];
+			}
+			
+			if (isset($this->request->get['filter_user_group_id'])) {
+				$url .= '&filter_user_group_id=' . $this->request->get['filter_user_group_id'];
 			}
 			
 			if (isset($this->request->get['filter_status'])) {
@@ -101,6 +114,10 @@ class ControllerUserUser extends Controller {
 			$url = '';
 			if (isset($this->request->get['filter_name'])) {
 				$url .= '&filter_name=' . $this->request->get['filter_name'];
+			}
+			
+			if (isset($this->request->get['filter_user_group_id'])) {
+				$url .= '&filter_user_group_id=' . $this->request->get['filter_user_group_id'];
 			}
 			
 			if (isset($this->request->get['filter_status'])) {
@@ -221,6 +238,12 @@ class ControllerUserUser extends Controller {
 			$filter_name = null;
 		}
 		
+		if (isset($this->request->get['filter_user_group_id'])) {
+			$filter_user_group_id = $this->request->get['filter_user_group_id'];
+		} else {
+			$filter_user_group_id = null;
+		}
+		
 		if (isset($this->request->get['filter_status'])) {
 			$filter_status = $this->request->get['filter_status'];
 		} else {
@@ -251,6 +274,10 @@ class ControllerUserUser extends Controller {
 		$url = '';
 		if (isset($this->request->get['filter_name'])) {
 			$url .= '&filter_name=' . $this->request->get['filter_name'];
+		}
+		
+		if (isset($this->request->get['filter_user_group_id'])) {
+			$url .= '&filter_user_group_id=' . $this->request->get['filter_user_group_id'];
 		}
 		
 		if (isset($this->request->get['filter_status'])) {
@@ -284,6 +311,7 @@ class ControllerUserUser extends Controller {
 		$data['users'] = array();
 		$filter_data = array(
 			'filter_name'  => $filter_name,
+			'filter_user_group_id'  => $filter_user_group_id,
 			'filter_status'  => $filter_status,
 			'filter_dateadded'  => $filter_dateadded,
 			'sort'  => $sort,
@@ -293,16 +321,23 @@ class ControllerUserUser extends Controller {
 		);
 		$user_total = $this->model_user_user->getTotalUsers($filter_data);
 		$results = $this->model_user_user->getUsers($filter_data);
+
 		foreach ($results as $result) {
+			
+			$user_group_info = $this->model_user_user_group->getUserGroup($result['user_group_id']);
+			
 			$data['users'][] = array(
 				'user_id'    => $result['user_id'],
 				'username'   => $result['username'],
+				'usergroup'   => $user_group_info['name'],
 				'status'     => ($result['status'] ? $this->language->get('text_enabled') : $this->language->get('text_disabled')),
 				'date_added' => date($this->language->get('date_format_short'), strtotime($result['date_added'])),
 				'view'       => $this->url->link('user/user/view', 'token=' . $this->session->data['token'] . '&user_id=' . $result['user_id'] . $url, true),
 				'edit'       => $this->url->link('user/user/edit', 'token=' . $this->session->data['token'] . '&user_id=' . $result['user_id'] . $url, true)
 			);
 		}
+		
+		$data['user_groups'] = $this->model_user_user_group->getUserGroups();
 		
 		$data['Dropdownnames'] = $this->model_user_user->getUsers();
 		$data['heading_title'] = $this->language->get('heading_title');
@@ -347,6 +382,7 @@ class ControllerUserUser extends Controller {
 			$url .= '&page=' . $this->request->get['page'];
 		}
 		$data['sort_username'] = $this->url->link('user/user', 'token=' . $this->session->data['token'] . '&sort=username' . $url, true);
+		$data['sort_usergroup'] = $this->url->link('user/user', 'token=' . $this->session->data['token'] . '&sort=user_group_id' . $url, true);
 		$data['sort_status'] = $this->url->link('user/user', 'token=' . $this->session->data['token'] . '&sort=status' . $url, true);
 		$data['sort_date_added'] = $this->url->link('user/user', 'token=' . $this->session->data['token'] . '&sort=date_added' . $url, true);
 		$url = '';
@@ -364,6 +400,7 @@ class ControllerUserUser extends Controller {
 		$data['pagination'] = $pagination->render();
 		$data['results'] = sprintf($this->language->get('text_pagination'), ($user_total) ? (($page - 1) * $this->config->get('config_limit_admin')) + 1 : 0, ((($page - 1) * $this->config->get('config_limit_admin')) > ($user_total - $this->config->get('config_limit_admin'))) ? $user_total : ((($page - 1) * $this->config->get('config_limit_admin')) + $this->config->get('config_limit_admin')), $user_total, ceil($user_total / $this->config->get('config_limit_admin')));
 		$data['filter_name'] = $filter_name;
+		$data['filter_user_group_id'] = $filter_user_group_id;
 		$data['filter_status'] = $filter_status;
 		$data['filter_dateadded'] = $filter_dateadded;
 		$data['sort'] = $sort;
@@ -428,6 +465,10 @@ class ControllerUserUser extends Controller {
 		$url = '';
 		if (isset($this->request->get['filter_name'])) {
 			$url .= '&filter_name=' . $this->request->get['filter_name'];
+		}
+		
+		if (isset($this->request->get['filter_user_group_id'])) {
+			$url .= '&filter_user_group_id=' . $this->request->get['filter_user_group_id'];
 		}
 		
 		if (isset($this->request->get['filter_status'])) {
@@ -601,6 +642,10 @@ class ControllerUserUser extends Controller {
 		$url = '';
 		if (isset($this->request->get['filter_name'])) {
 			$url .= '&filter_name=' . $this->request->get['filter_name'];
+		}
+		
+		if (isset($this->request->get['filter_user_group_id'])) {
+			$url .= '&filter_user_group_id=' . $this->request->get['filter_user_group_id'];
 		}
 		
 		if (isset($this->request->get['filter_status'])) {

@@ -996,6 +996,7 @@ function addAddress() {
     html += '</div>';
   $('#tab-general1 .tab-content').append(html);
   $('select[name=\'customer_group_id\']').trigger('change');
+
   $('select[name=\'address[' + address_row + '][country_id]\']').trigger('change');
   $('#address-add').before('<li><a href="#tab-address' + address_row + '" data-toggle="tab"><i class="fa fa-minus-circle" onclick="$(\'#address a:first\').tab(\'show\'); $(\'#address-add\').show(); $(\'a[href=\\\'#tab-address' + address_row + '\\\']\').parent().remove(); $(\'#tab-address' + address_row + '\').remove();"></i> <?php echo $tab_address; ?> ' + address_row + '</a></li>');
   
@@ -1151,6 +1152,7 @@ $('#button-reward').on('click', function(e) {
     },
     success: function(json) {
       $('.alert').remove();
+
       if (json['error']) {
          $('#tab-reward').prepend('<div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> ' + json['error'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div></div>');
       }

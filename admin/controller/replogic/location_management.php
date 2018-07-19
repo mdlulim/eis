@@ -1,22 +1,31 @@
 <?php 
 class ControllerReplogicLocationManagement extends Controller {
 	private $error = array(); 
+
 	public function index() {
 		$this->load->language('replogic/location_management');
+
 		$this->document->setTitle($this->language->get('heading_title'));
+
 		$this->load->model('replogic/location_management');
+
 		$this->getList();
 	}
 	
 	public function delete() { 
 		$this->load->language('replogic/location_management');
+
 		$this->document->setTitle($this->language->get('heading_title'));
+
 		$this->load->model('replogic/location_management');
+
 		if (isset($this->request->post['selected'])) { 
 			foreach ($this->request->post['selected'] as $checkin_id) {
 				$this->model_replogic_location_management->deletelocation($checkin_id);
 			}
+
 			$this->session->data['success'] = $this->language->get('text_success');
+
 			$url = '';
 			
 			if (isset($this->request->get['filter_customer_id'])) {
@@ -34,16 +43,21 @@ class ControllerReplogicLocationManagement extends Controller {
 			if (isset($this->request->get['sort'])) {
 				$url .= '&sort=' . $this->request->get['sort'];
 			}
+
 			if (isset($this->request->get['order'])) {
 				$url .= '&order=' . $this->request->get['order'];
 			}
+
 			if (isset($this->request->get['page'])) {
 				$url .= '&page=' . $this->request->get['page'];
 			}
+
 			$this->response->redirect($this->url->link('replogic/location_management', 'token=' . $this->session->data['token'] . $url, true));
 		}
+
 		$this->getList();
 	}
+
 	protected function getList() {
 		
 		if (isset($this->request->get['filter_address'])) {
@@ -51,16 +65,19 @@ class ControllerReplogicLocationManagement extends Controller {
 		} else {
 			$filter_address = null;
 		}
+
 		if (isset($this->request->get['filter_customer_id'])) {
 			$filter_customer_id = $this->request->get['filter_customer_id'];
 		} else {
 			$filter_customer_id = null;
 		}
+
 		if (isset($this->request->get['filter_team_id'])) {
 			$filter_team_id = $this->request->get['filter_team_id'];
 		} else {
 			$filter_team_id = null;
 		}
+
 		if (isset($this->request->get['filter_salesrep_id'])) {
 			$filter_salesrep_id = $this->request->get['filter_salesrep_id'];
 		} else {
@@ -72,20 +89,25 @@ class ControllerReplogicLocationManagement extends Controller {
 		} else {
 			$sort = 'name';
 		}
+
 		if (isset($this->request->get['order'])) {
 			$order = $this->request->get['order'];
 		} else {
 			$order = 'ASC';
 		}
+
 		if (isset($this->request->get['page'])) {
 			$page = $this->request->get['page'];
 		} else {
 			$page = 1;
 		}
+
 		$url = '';
+
 		if (isset($this->request->get['filter_address'])) {
 			$url .= '&filter_address=' . urlencode(html_entity_decode($this->request->get['filter_address'], ENT_QUOTES, 'UTF-8'));
 		}
+
 		if (isset($this->request->get['filter_salesrep_id'])) {
 			$url .= '&filter_salesrep_id=' . $this->request->get['filter_salesrep_id'];
 		}
@@ -93,6 +115,7 @@ class ControllerReplogicLocationManagement extends Controller {
 		if (isset($this->request->get['filter_customer_id'])) {
 			$url .= '&filter_customer_id=' . $this->request->get['filter_customer_id'];
 		}
+
 		if (isset($this->request->get['filter_team_id'])) {
 			$url .= '&filter_team_id=' . $this->request->get['filter_team_id'];
 		}
@@ -100,21 +123,27 @@ class ControllerReplogicLocationManagement extends Controller {
 		if (isset($this->request->get['sort'])) {
 			$url .= '&sort=' . $this->request->get['sort'];
 		}
+
 		if (isset($this->request->get['order'])) {
 			$url .= '&order=' . $this->request->get['order'];
 		}
+
 		if (isset($this->request->get['page'])) {
 			$url .= '&page=' . $this->request->get['page'];
 		}
+
 		$data['breadcrumbs'] = array();
+
 		$data['breadcrumbs'][] = array(
 			'text' => $this->language->get('text_home'),
 			'href' => $this->url->link('common/dashboard', 'token=' . $this->session->data['token'], true)
 		);
+
 		$data['breadcrumbs'][] = array(
 			'text' => $this->language->get('heading_title'),
 			'href' => $this->url->link('replogic/location_management', 'token=' . $this->session->data['token'] . $url, true)
 		);
+
 		$data['add'] = $this->url->link('replogic/location_management/add', 'token=' . $this->session->data['token'] . $url, true);
 		$data['delete'] = $this->url->link('replogic/location_management/delete', 'token=' . $this->session->data['token'] . $url, true);
 		
@@ -307,6 +336,23 @@ class ControllerReplogicLocationManagement extends Controller {
 		$latitude = $response_a->results[0]->geometry->location->lat;
 		$longitude = $response_a->results[0]->geometry->location->lng;
 		
+		$gpslatitude = '';
+		$gpslongitude = '';
+		$gpsaddress = $result['checkin_location']; // Address
+		
+		$url1 = "http://maps.google.com/maps/api/geocode/json?address=".urlencode($gpsaddress)."&sensor=false";
+		$chh = curl_init();
+		curl_setopt($chh, CURLOPT_URL, $url1);
+		curl_setopt($chh, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($chh, CURLOPT_PROXYPORT, 3128);
+		curl_setopt($chh, CURLOPT_SSL_VERIFYHOST, 0);
+		curl_setopt($chh, CURLOPT_SSL_VERIFYPEER, 0);
+		$responsee = curl_exec($chh);
+		curl_close($chh);
+		$responsee_a = json_decode($responsee);
+		$gpslatitude = $responsee_a->results[0]->geometry->location->lat;
+		$gpslongitude = $responsee_a->results[0]->geometry->location->lng;
+		
 		$data['locations'][] = array(
 				'checkin_id' => $result['checkin_id'],
 				'salesrep_id' => $result['salesrep_id'],
@@ -318,8 +364,15 @@ class ControllerReplogicLocationManagement extends Controller {
 				'current_location'          => $result['location']
 				
 			);
-		$locationsmaps[] = array('latitude'=>$latitude,'longitude'=>$longitude,'name'=>$sales_rep,'icon'=>'view/image/green-dot.png');
-		$locationsmaps[] = array('latitude'=>$customerlatitude,'longitude'=>$customerlongitude,'name'=>$customername,'icon'=>'view/image/blue-dot.png');
+			
+		// Sales Rep Pin
+		$locationsmaps[] = array('latitude'=>$latitude,'longitude'=>$longitude,'name'=>$address." ( ".$sales_rep." )",'icon'=>'view/image/salesrep-checkin.png');
+		
+		// Customer Map Pin
+		$locationsmaps[] = array('latitude'=>$customerlatitude,'longitude'=>$customerlongitude,'name'=>$customername,'icon'=>'view/image/customer.png');
+		
+		// Sales Rep Gps Map Pin
+		$locationsmaps[] = array('latitude'=>$gpslatitude,'longitude'=>$gpslongitude,'name'=>$gpsaddress." ( ".$sales_rep." )",'icon'=>'view/image/GPS.png');
 		
 		}
 		$data['locationsmaps'] = $locationsmaps;
@@ -458,10 +511,12 @@ class ControllerReplogicLocationManagement extends Controller {
             $diff = floor($diff / $intervals['week']);
             return $diff == 1 ? $diff . ' week ago ' : $diff . ' weeks ago ';
         }
+
         if ($diff >= $intervals['month'] && $diff < $intervals['year']) {
             $diff = floor($diff / $intervals['month']);
             return $diff == 1 ? $diff . ' month ago ' : $diff . ' months ago ';
         }
+
         if ($diff >= $intervals['year']) {
             $diff = floor($diff / $intervals['year']);
             return $diff == 1 ? $diff . ' year ago ' : $diff . ' years ago ';
@@ -501,7 +556,6 @@ class ControllerReplogicLocationManagement extends Controller {
 			$longitude = $response_a->results[0]->geometry->location->lng;
 			
 			$locationsmaps[] = array('latitude'=>$latitude,'longitude'=>$longitude,'name'=>$sales_rep,'icon'=>'view/image/green-dot.png','chkaddress'=>$address);
-
 			
 		}
 		
@@ -512,10 +566,57 @@ class ControllerReplogicLocationManagement extends Controller {
 	public function PopupmapSingle()
 	{ 
 		$this->load->model('replogic/location_management');
+		$this->load->model('customer/customer');
 		$this->load->model('replogic/sales_rep_management');
 		$checkin_id = $this->request->post['checkin_id'];
 		
+		$json = array();
+		
 		$location_info = $this->model_replogic_location_management->getLocation($checkin_id);
+		
+		$customer_id = $location_info['customer_id'];
+		$customerinfo = $this->model_customer_customer->getCustomer($customer_id);
+		
+		$address_id = $customerinfo['address_id'];
+		if($address_id > 0)
+		{
+			$customeraddress = $this->model_customer_customer->getAddress($address_id);
+			$custaddress = $customeraddress['address_1'];
+			if(!empty($customeraddress['address_2']))
+			{
+				$custaddress .= " ".$customeraddress['address_1'].",";
+			}
+			if(!empty($customeraddress['city']))
+			{
+				$custaddress .= " ".$customeraddress['city'].",";
+			}
+			if(!empty($customeraddress['postcode']))
+			{
+				$custaddress .= " ".$customeraddress['postcode'].",";
+			}
+			if(!empty($customeraddress['zone']))
+			{
+				if(!empty($customeraddress['country']))
+				{
+					$custaddress .= " ".$customeraddress['zone'].",";
+				}
+				else
+				{
+					$custaddress .= " ".$customeraddress['zone'];
+				}
+			}
+			if(!empty($customeraddress['country']))
+			{
+				$custaddress .= " ".$customeraddress['country']."";
+			}
+		}
+		else
+		{
+			$custaddress = '';
+		}
+		
+		$customerLatitude = $customeraddress['latitude'];
+		$customerLongitude = $customeraddress['longitude'];
 			
 		$salesrep = $this->model_replogic_sales_rep_management->getsalesrep($location_info['salesrep_id']); ;
 		$sales_rep = $salesrep['salesrep_name'] ." ". $salesrep['salesrep_lastname'];
@@ -554,12 +655,24 @@ class ControllerReplogicLocationManagement extends Controller {
 			$Glatitude = $response_G->results[0]->geometry->location->lat;
 			$Glongitude = $response_G->results[0]->geometry->location->lng;
 		
-		$locationsmaps = array();	
-		$locationsmaps[] = array('location'=>'Current Location','latitude'=>$latitude,'longitude'=>$longitude,'name'=>'Location : '.$sales_rep,'icon'=>'view/image/green-dot.png');
-		$locationsmaps[] = array('location'=>'GPS Location','latitude'=>$Glatitude,'longitude'=>$Glongitude,'name'=>'Check In Location : '.$sales_rep,'icon'=>'view/image/blue-dot.png');
+		    $locationsmaps = array();	
+		    $locationsmaps[] = array('location'=>'Current Location','latitude'=>$latitude,'longitude'=>$longitude,'name'=>'Location : '.$sales_rep,'icon'=>'view/image/salesrep-checkin.png');
+		    $locationsmaps[] = array('location'=>'GPS Location','latitude'=>$Glatitude,'longitude'=>$Glongitude,'name'=>'Check In Location : '.$sales_rep,'icon'=>'view/image/GPS.png');
+			// Customer Pin
+			if($customerLatitude != '' && $customerLongitude != '')
+			{
+				$locationsmaps[] = array('location'=>'Customer Location','latitude'=>$customerLatitude,'longitude'=>$customerLongitude,'name'=>'Customer Name : '.$customerinfo['firstname'],'icon'=>'view/image/customer.png');
+			}
 		
-		$this->response->addHeader('Content-Type: application/json');
-		$this->response->setOutput(json_encode($locationsmaps));
+			$json = array(
+					'selflocation'        => $address,
+					'gpslocation'         => $Gaddress,
+					'customeraddress'     => $custaddress,
+					'mappin'              => $locationsmaps
+				);
+		
+		    $this->response->addHeader('Content-Type: application/json');
+		    $this->response->setOutput(json_encode($json));
 	}
 	
 	public function GetSalesRep() {

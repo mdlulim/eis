@@ -211,7 +211,7 @@
             <label class="col-sm-2 control-label" for="input-username">Shipping Address</label>
             <div class="col-sm-10">
               <select name="shippingaddress" id="input-sales_manager" class="form-control">
-                <option value="" selected="selected">Select Shipping Address</option>
+                <option value="" >Select Shipping Address</option>
                     <?php foreach ($addresses as $address) { ?>
                     	<?php if($address['address_id'] == $address_id) { ?>
                     <option value="<?php echo $address['address_id']; ?>" selected="selected"><?php echo $address['address_1'] .' '. $address['address_2'] . ', ' . $address['city'] . ', ' . $address['zone']. ', ' . $address['country']; ?></option>

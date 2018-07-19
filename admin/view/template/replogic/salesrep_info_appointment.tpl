@@ -128,12 +128,16 @@
                     <?php } else { ?>
                     <a href="<?php echo $sort_name; ?>">Appointment Name</a>
                     <?php } ?></td>
-                  <td class="text-left"><?php if ($sort == 'salesrepname') { ?>
+                  <!--<td class="text-left"><?php if ($sort == 'salesrepname') { ?>
                     <a href="<?php echo $sort_salesrepname; ?>" class="<?php echo strtolower($order); ?>">Sales Rep Name</a>
                     <?php } else { ?>
                     <a href="<?php echo $sort_salesrepname; ?>">Sales Rep Name</a>
+                    <?php } ?></td>-->
+                   <td class="text-left"><?php if ($sort == 'name') { ?>
+                    <a href="<?php echo $sort_name; ?>" class="<?php echo strtolower($order); ?>">Customer Name</a>
+                    <?php } else { ?>
+                    <a href="<?php echo $sort_name; ?>">Customer Name</a>
                     <?php } ?></td>
-                   <!--<td class="text-left">Customer Name</td> -->
                   <td class="text-left"><?php if ($sort == 'type') { ?>
                     <a href="<?php echo $sort_type; ?>" class="<?php echo strtolower($order); ?>">Business Type</a>
                     <?php } else { ?>
@@ -154,9 +158,9 @@
                         
                             <tr>
                               <td class="text-left"><?php echo $schedule_management['appointment_name']; ?></td>
-                              <td class="text-left"><?php echo $schedule_management['sales_manager']; ?></td>
-                              <!--<td class="text-left"><?php echo $schedule_management['customername']; ?></td>-->
-                              <td class="text-left"><?php echo $schedule_management['type']; ?></td>
+                              <!--<td class="text-left"><?php echo $schedule_management['sales_manager']; ?></td>-->
+                              <td class="text-left"><?php echo $schedule_management['customername']; ?></td>
+                              <td class="text-left"><span class="label label-<?=(strtolower($schedule_management['type'])=='new business')? 'default' : 'primary' ?>" style="font-size:14px;"><?=$schedule_management['type']?></span></td>
                               <td class="text-left"><?php  echo $schedule_management['appointment_date']; ?></td>
                               <td class="text-right"><a href="<?php echo $schedule_management['view']; ?>" data-toggle="tooltip" title="View" class="btn btn-info"><i class="fa fa-eye"></i></a></td>
                             </tr>

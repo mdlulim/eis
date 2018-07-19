@@ -64,7 +64,8 @@ class ModelCatalogPrice extends Model {
             $sql .= " DESC";
         } else {
             $sql .= " ASC";
-        }*/
+        }
+
         if (isset($data['start']) || isset($data['limit'])) {
             if ($data['start'] < 0) {
                 $data['start'] = 0;

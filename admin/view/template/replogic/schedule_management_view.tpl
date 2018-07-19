@@ -154,7 +154,7 @@
                 <div class="input-group" style="float:left;margin-left:15px;">
                 <select name="hour" class="form-control" style="float:left;width:135px;" disabled="disabled">
                     <option value="">Select Hours</option>
-                    <?php for($i=1;$i<=12;$i++) { ?>
+                    <?php for($i=0;$i<=12;$i++) { ?>
                     	<?php if($i == $hour) { ?>
                         	<option value="<?php echo $i; ?>" selected="selected"><?php echo $i; ?></option>
                         <?php } else { ?>    

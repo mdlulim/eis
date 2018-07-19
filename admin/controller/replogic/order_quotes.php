@@ -49,10 +49,6 @@ class ControllerReplogicOrderQuotes extends Controller {
 				$url .= '&filter_quote_id=' . $this->request->get['filter_quote_id'];
 			}
 	
-			if (isset($this->request->get['filter_customer'])) {
-				$url .= '&filter_customer=' . urlencode(html_entity_decode($this->request->get['filter_customer'], ENT_QUOTES, 'UTF-8'));
-			}
-			
 			if (isset($this->request->get['filter_salesrepid'])) {
 				$url .= '&filter_salesrepid=' . $this->request->get['filter_salesrepid'];
 			}
@@ -121,10 +117,6 @@ class ControllerReplogicOrderQuotes extends Controller {
 				$url .= '&filter_quote_id=' . $this->request->get['filter_quote_id'];
 			}
 	
-			if (isset($this->request->get['filter_customer'])) {
-				$url .= '&filter_customer=' . urlencode(html_entity_decode($this->request->get['filter_customer'], ENT_QUOTES, 'UTF-8'));
-			}
-			
 			if (isset($this->request->get['filter_customer_id'])) {
 			$url .= '&filter_customer_id=' . $this->request->get['filter_customer_id'];
 			}
@@ -186,10 +178,6 @@ class ControllerReplogicOrderQuotes extends Controller {
 				$url .= '&filter_quote_id=' . $this->request->get['filter_quote_id'];
 			}
 	
-			if (isset($this->request->get['filter_customer'])) {
-				$url .= '&filter_customer=' . urlencode(html_entity_decode($this->request->get['filter_customer'], ENT_QUOTES, 'UTF-8'));
-			}
-			
 			if (isset($this->request->get['filter_customer_id'])) {
 			$url .= '&filter_customer_id=' . $this->request->get['filter_customer_id'];
 			}
@@ -248,10 +236,6 @@ class ControllerReplogicOrderQuotes extends Controller {
 				$url .= '&filter_quote_id=' . $this->request->get['filter_quote_id'];
 			}
 	
-			if (isset($this->request->get['filter_customer'])) {
-				$url .= '&filter_customer=' . urlencode(html_entity_decode($this->request->get['filter_customer'], ENT_QUOTES, 'UTF-8'));
-			}
-			
 			if (isset($this->request->get['filter_customer_id'])) {
 			$url .= '&filter_customer_id=' . $this->request->get['filter_customer_id'];
 			}
@@ -305,10 +289,6 @@ class ControllerReplogicOrderQuotes extends Controller {
 				$url .= '&filter_quote_id=' . $this->request->get['filter_quote_id'];
 			}
 	
-			if (isset($this->request->get['filter_customer'])) {
-				$url .= '&filter_customer=' . urlencode(html_entity_decode($this->request->get['filter_customer'], ENT_QUOTES, 'UTF-8'));
-			}
-			
 			if (isset($this->request->get['filter_customer_id'])) {
 			$url .= '&filter_customer_id=' . $this->request->get['filter_customer_id'];
 			}
@@ -350,12 +330,6 @@ class ControllerReplogicOrderQuotes extends Controller {
 			$filter_quote_id = null;
 		}
 
-		if (isset($this->request->get['filter_customer'])) {
-			$filter_customer = $this->request->get['filter_customer'];
-		} else {
-			$filter_customer = null;
-		}
-		
 		if (isset($this->request->get['filter_customer_id'])) {
 			$filter_customer_id = $this->request->get['filter_customer_id'];
 		} else {
@@ -428,10 +402,6 @@ class ControllerReplogicOrderQuotes extends Controller {
 		
 		if (isset($this->request->get['filter_salesrepid'])) {
 			$url .= '&filter_salesrepid=' . $this->request->get['filter_salesrepid'];
-		}
-		
-		if (isset($this->request->get['filter_customer'])) {
-			$url .= '&filter_customer=' . urlencode(html_entity_decode($this->request->get['filter_customer'], ENT_QUOTES, 'UTF-8'));
 		}
 		
 		if (isset($this->request->get['filter_customer_contact_id'])) {
@@ -603,6 +573,36 @@ class ControllerReplogicOrderQuotes extends Controller {
 		}
 		$data['salesrepnames'] = $this->model_replogic_sales_rep_management->getSalesRepsDropdown($allaccess, $current_user_id);
 		
+		if($filter_customer_id)
+		{
+			$filtercustomerinfo = $this->model_customer_customer->getCustomer($filter_customer_id);
+			$data['filter_customer'] = $filtercustomerinfo['firstname'];
+		}
+		else
+		{
+			$data['filter_customer'] = '';
+		}
+		
+		if($filter_customer_contact_id)
+		{
+			$customercontactinfo = $this->model_replogic_customer_contact->getcustomercontact($filter_customer_contact_id);
+			$data['filter_customercontact'] = $customercontactinfo['first_name'] ." ". $customercontactinfo['last_name'];
+		}
+		else
+		{
+			$data['filter_customercontact'] = '';
+		}
+		
+		if($filter_salesrepid)
+		{
+			$salesreinfo = $this->model_replogic_sales_rep_management->getsalesrep($filter_salesrepid);
+			$data['filter_salesrep'] = $salesreinfo['salesrep_name'] . ' ' . $salesreinfo['salesrep_lastname'];
+		}
+		else
+		{
+			$data['filter_salesrep'] = '';
+		}
+		
 		$data['heading_title'] = $this->language->get('heading_title');
 
 		$data['text_list'] = $this->language->get('text_list');
@@ -670,10 +670,6 @@ class ControllerReplogicOrderQuotes extends Controller {
 			$url .= '&filter_quote_id=' . $this->request->get['filter_quote_id'];
 		}
 
-		if (isset($this->request->get['filter_customer'])) {
-			$url .= '&filter_customer=' . urlencode(html_entity_decode($this->request->get['filter_customer'], ENT_QUOTES, 'UTF-8'));
-		}
-		
 		if (isset($this->request->get['filter_customer_id'])) {
 			$url .= '&filter_customer_id=' . $this->request->get['filter_customer_id'];
 		}
@@ -728,10 +724,6 @@ class ControllerReplogicOrderQuotes extends Controller {
 			$url .= '&filter_quote_id=' . $this->request->get['filter_quote_id'];
 		}
 
-		if (isset($this->request->get['filter_customer'])) {
-			$url .= '&filter_customer=' . urlencode(html_entity_decode($this->request->get['filter_customer'], ENT_QUOTES, 'UTF-8'));
-		}
-		
 		if (isset($this->request->get['filter_salesrepid'])) {
 			$url .= '&filter_salesrepid=' . $this->request->get['filter_salesrepid'];
 		}
@@ -779,7 +771,6 @@ class ControllerReplogicOrderQuotes extends Controller {
 		$data['results'] = sprintf($this->language->get('text_pagination'), ($order_quotes_total) ? (($page - 1) * $this->config->get('config_limit_admin')) + 1 : 0, ((($page - 1) * $this->config->get('config_limit_admin')) > ($order_quotes_total - $this->config->get('config_limit_admin'))) ? $order_quotes_total : ((($page - 1) * $this->config->get('config_limit_admin')) + $this->config->get('config_limit_admin')), $order_quotes_total, ceil($order_quotes_total / $this->config->get('config_limit_admin')));
 
 		$data['filter_quote_id'] = $filter_quote_id;
-		$data['filter_customer'] = $filter_customer;
 		$data['filter_salesrepid'] = $filter_salesrepid;
 		$data['filter_customer_id'] = $filter_customer_id;
 		$data['filter_customer_contact'] = $filter_customer_contact;

@@ -104,3 +104,12 @@ admin/view/template/common/footer.tpl
 admin/view/template/extension/modification.tpl
 admin/model/setting/setting.php
 system/storage/modification/system/library/template/php.php
+system/library/cart/cart.php
+admin/controller/user/team.php
+admin/language/en-gb/user/team.php
+admin/model/customer/customer_group.php
+admin/controller/customer/customer_group.php
+admin/language/en-gb/customer/customer_group.php
+admin/controller/customer/customer_export_import.php
+admin/language/en-gb/customer/customer_export_import.php
+admin/model/customer/customer_export_import.php

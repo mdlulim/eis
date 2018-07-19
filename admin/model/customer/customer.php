@@ -31,7 +31,7 @@ class ModelCustomerCustomer extends Model {
 					$customerlatitude = '';
 					$customerlongitude = '';
 					
-					$url = "http://maps.google.com/maps/api/geocode/json?address=".urlencode($customeraddress)."&sensor=false&region=India";
+					$url = "http://maps.google.com/maps/api/geocode/json?address=".urlencode($customeraddress)."&sensor=false";
 					$ch = curl_init();
 					curl_setopt($ch, CURLOPT_URL, $url);
 					curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);

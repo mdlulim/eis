@@ -147,22 +147,25 @@ $('#button-filter').on('click', function() {
   location = url;
 });
 $('#button-filter-reset').on('click', function() {
-  
-  var url = 'index.php?route=catalog/price&token=<?php echo $token; ?>';
-  location = url;
+	
+	var url = 'index.php?route=catalog/price&token=<?php echo $token; ?>';
+
+	location = url;
 });
 //--></script>
 <script type="text/javascript"><!--
 $('input[name^=\'selected\']').on('change', function() { 
-  
-  var selected = $('input[name^=\'selected\']:checked');
-  if (selected.length) {
-    $('#button-delete').prop('disabled', false);
-  }
-  else
-  {
-    $('#button-delete').prop('disabled', true);
-  }
+	
+	var selected = $('input[name^=\'selected\']:checked');
+
+	if (selected.length) {
+		$('#button-delete').prop('disabled', false);
+	}
+	else
+	{
+		$('#button-delete').prop('disabled', true);
+	}
+
 });
 $('#button-delete').prop('disabled', true);
 $('input[name^=\'selected\']:first').trigger('change');
@@ -195,5 +198,6 @@ $('input[name=\'filter_sku\']').autocomplete({
     $('input[name=\'filter_sku\']').val(item['label']);
   }
 });
+
 //--></script> 
 <?php echo $footer; ?>
