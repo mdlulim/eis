@@ -254,8 +254,8 @@ class ControllerReplogicLocationManagement extends Controller {
 		else
 		{
 			$data['filtersales'] = 'no';
-			$data['customers'] = $this->model_customer_customer->getCustomers();
-			$data['salesReps'] = $this->model_replogic_sales_rep_management->getSalesRepsDropdown($allaccess=true);
+			$data['customers'] = $this->model_customer_customer->getCustomers($filter_data, $allaccess, $this->session->data['user_id']);
+			$data['salesReps'] = $this->model_replogic_sales_rep_management->getSalesRepsDropdown($allaccess=true, $this->session->data['user_id']);
 			$salesrep_id = '';
 			
 			if($filter_customer_id)

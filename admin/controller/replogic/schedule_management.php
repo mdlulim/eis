@@ -312,7 +312,7 @@ class ControllerReplogicScheduleManagement extends Controller {
 		$user_group_id = $this->model_user_user_group->getUserGroupByName('Sales Manager');
 		$data['sales_managers'] = $this->model_user_user->getUsersByGroupId($user_group_id['user_group_id']);
 		
-		$data['customers'] = $this->model_customer_customer->getCustomers();
+		$data['customers'] = $this->model_customer_customer->getCustomers($data, $allaccess, $this->session->data['user_id']);
 		
 		if($filter_customer_id)
 		{

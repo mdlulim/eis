@@ -7,8 +7,6 @@ class ControllerCustomerCustomerExportImport extends Controller {
 		$this->load->model('customer/customer_export_import');
 		$this->getForm();
 	}
-
-
 	public function upload() {
 		
 		$this->load->language('customer/customer_export_import');
@@ -47,9 +45,9 @@ class ControllerCustomerCustomerExportImport extends Controller {
 					$objReader = PHPExcel_IOFactory::createReader($inputfiletype);
 					$objPHPExcel = $objReader->load($inputfilename);
 					$sheet = $objPHPExcel->getSheet(0); 
-					$highestRow = $sheet->getHighestDataRow(); 
-					$highestColumn = $sheet->getHighestDataColumn();
-					 //echo $highestColumn; exit;
+					$highestRow = $sheet->getHighestRow(); 
+					$highestColumn = $sheet->getHighestColumn();
+					 
 					for ($row = 1; $row <= 1; $row++)
 					{ 
 						$header1 = $sheet->rangeToArray('A' . $row . ':' . $highestColumn . $row, NULL, FALSE, FALSE);
@@ -569,7 +567,7 @@ class ControllerCustomerCustomerExportImport extends Controller {
 					}
 					
 					if (($min==null) || ($max==null)) {
-						$this->model_customer_customer_export_import->downloadCsv();
+						$this->model_customer_customer_export_import->downloadCsv($min, $max);
 					} elseif(($min!=null) || ($max!=null)) {
 						$this->model_customer_customer_export_import->downloadCsv($min, $max);
 					}
@@ -882,14 +880,7 @@ class ControllerCustomerCustomerExportImport extends Controller {
 	protected function validateUploadForm() {
 		if (!$this->user->hasPermission('modify', 'customer/customer_export_import')) {
 			$this->error['warning'] = $this->language->get('error_permission');
-		} else if (!isset( $this->request->post['incremental'] )) {
-			$this->error['warning'] = $this->language->get( 'error_incremental' );
-		} else if ($this->request->post['incremental'] != '0') {
-			if ($this->request->post['incremental'] != '1') {
-				$this->error['warning'] = $this->language->get( 'error_incremental' );
-			}
-		}
-
+		} 
 		if (!isset($this->request->files['upload']['name'])) {
 			if (isset($this->error['warning'])) {
 				$this->error['warning'] .= "<br /\n" . $this->language->get( 'error_upload_name' );
@@ -911,6 +902,7 @@ class ControllerCustomerCustomerExportImport extends Controller {
 		} else { 
 			return false;
 		}
+		
 	}
 	protected function validateSettingsForm() {
 		if (!$this->user->hasPermission('access', 'customer/customer_export_import')) {

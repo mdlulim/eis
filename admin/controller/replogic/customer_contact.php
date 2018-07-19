@@ -269,7 +269,7 @@ class ControllerReplogicCustomerContact extends Controller {
 			);
 		}
 		
-		$data['customers'] = $this->model_customer_customer->getCustomers();
+		$data['customers'] = $this->model_customer_customer->getCustomers($filter_data, $allacess = true, $this->session->data['user_id']);
 		$data['allcustomer_contacts'] = $this->model_replogic_customer_contact->getcustomercontacts($filter_data = array('filter_customer_id' => $customer_id));
 		
 		$data['heading_title'] = $this->language->get('heading_title');
@@ -639,7 +639,7 @@ class ControllerReplogicCustomerContact extends Controller {
 		}
 		
 		$this->load->model('customer/customer');
-	    $data['customers'] = $this->model_customer_customer->getCustomers();
+	    $data['customers'] = $this->model_customer_customer->getCustomers($filter_data, $allacess = true, $this->session->data['user_id']);
 	    if (isset($this->request->post['customer_id'])) {
 			$data['customer_id'] = $this->request->post['customer_id'];
 		} elseif (!empty($customer_contact_info)) {
