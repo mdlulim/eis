@@ -693,6 +693,8 @@ class ControllerCustomerCustomerInfo extends Controller {
 	}
 	
 	protected function getAppointmentTab() {
+
+		$this->document->addStyle('view/stylesheet/custom.css');
 		
 		$this->load->model('customer/customer');
 		$this->load->model('replogic/schedule_management');
@@ -818,7 +820,7 @@ class ControllerCustomerCustomerInfo extends Controller {
 		$data['rewardpointstab'] = $this->url->link('customer/customer_info', 'type=rewardpoints&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
 		$data['ipaddressestab'] = $this->url->link('customer/customer_info', 'type=ipaddresses&customer_id=' . $customer_id .'&token=' . $this->session->data['token'], true);
 
-		$data['schedule_managements'] = array();
+		$data['appointments'] = array();
 
 		$filter_data = array(
 			'filter_appointment_name'	  => $filter_appointment_name,
@@ -861,17 +863,25 @@ class ControllerCustomerCustomerInfo extends Controller {
 		
 		foreach ($results as $result) {
 			
-		$time = strtotime($result['appointment_date']);
-		$myFormatForView = date("d-m-Y g:i A", $time); 
+			# appointment date
+			$appointmentDate = date("D d M Y", strtotime($result['appointment_date'])); 
+			$appointmentDate.= " at " . date("<b>g:i A</b>", strtotime($result['appointment_date']));
+
+			# visit date
+			$visitDate = (!empty($result['checkin']) && $result['checkin']<>"") ? date("D d M Y", strtotime($result['checkin'])) : "";
+			$visitDate.= (!empty($result['checkin']) && $result['checkin']<>"") ? " at " . date("<b>g:i A</b>", strtotime($result['checkin'])) : "";
 			
-		$data['schedule_managements'][] = array(
-				'appointment_id' => $result['appointment_id'],
-				'appointment_name'          => $result['appointment_name'],
-				'type'          => $result['type'],
-				'sales_manager'          => $result['salesrepname'],
-				'appointment_date'          => $myFormatForView,
-				'tasks'          => $this->url->link('replogic/tasks', 'token=' . $this->session->data['token'] . '&appointment_id=' . $result['appointment_id'] . $url, true),
-				'view'          => $this->url->link('customer/customer_info/appointmentView', 'token=' . $this->session->data['token'] . '&appointment_id=' . $result['appointment_id'] . $url, true)
+			$data['appointments'][] = array(
+				'appointment_id'   => $result['appointment_id'],
+				'appointment_name' => $result['appointment_name'],
+				'appointment_type' => $result['type'],
+				'salesrep_name'    => $result['salesrepname'],
+				'appointment_date' => $appointmentDate,
+				'visit_date'       => $visitDate,
+				'tasks'            => $this->url->link('replogic/tasks', 'token=' . $this->session->data['token'] . '&appointment_id=' . $result['appointment_id'] . $url, true),
+				'notes'            => $this->url->link('replogic/notes', 'token=' . $this->session->data['token'] . '&appointment_id=' . $result['appointment_id'] . $url, true),
+				'view'             => $this->url->link('replogic/schedule_management/view', 'token=' . $this->session->data['token'] . '&appointment_id=' . $result['appointment_id'] . $url, true),
+				'edit'             => $this->url->link('customer/customer_info/appointmentView', 'token=' . $this->session->data['token'] . '&appointment_id=' . $result['appointment_id'] . $url, true)
 			);
 		}
 		

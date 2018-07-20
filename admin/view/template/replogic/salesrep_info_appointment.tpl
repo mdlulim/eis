@@ -44,10 +44,6 @@
         	<h3>Filters</h3>
           <div class="row">
             <div class="col-sm-6">
-              <!--<div class="form-group">
-                <label class="control-label" for="input-name">Appointment Name</label>
-                <input type="text" name="filter_appointment_name" value="<?php echo $filter_appointment_name; ?>" placeholder="Appointment Name" id="input-name" class="form-control" />
-              </div>-->
               <div class="form-group fromdate">
                 <label class="control-label" for="input-model">Appointment Date From</label>
                 
@@ -123,54 +119,58 @@
             <table class="table table-bordered table-hover">
               <thead>
                 <tr>
-                  <td class="text-left"><?php if ($sort == 'name') { ?>
+                  <th class="text-left">Customer</th>
+                  <th class="text-left">
+                    <?php if ($sort == 'name') : ?>
                     <a href="<?php echo $sort_name; ?>" class="<?php echo strtolower($order); ?>">Appointment Name</a>
-                    <?php } else { ?>
+                    <?php else : ?>
                     <a href="<?php echo $sort_name; ?>">Appointment Name</a>
-                    <?php } ?></td>
-                  <td class="text-left"><?php if ($sort == 'salesrepname') { ?>
-                    <a href="<?php echo $sort_salesrepname; ?>" class="<?php echo strtolower($order); ?>">Sales Rep Name</a>
-                    <?php } else { ?>
-                    <a href="<?php echo $sort_salesrepname; ?>">Sales Rep Name</a>
-                    <?php } ?></td>
-                   <!--<td class="text-left">Customer Name</td> -->
-                  <td class="text-left"><?php if ($sort == 'type') { ?>
-                    <a href="<?php echo $sort_type; ?>" class="<?php echo strtolower($order); ?>">Business Type</a>
-                    <?php } else { ?>
-                    <a href="<?php echo $sort_type; ?>">Business Type</a>
-                    <?php } ?></td>
-                  <td class="text-left"><?php if ($sort == 'appointment_date') { ?>
+                    <?php endif; ?>
+                  </th>
+                  <th class="text-left">
+                    <?php if ($sort == 'appointment_date') : ?>
                     <a href="<?php echo $sort_appointment_date; ?>" class="<?php echo strtolower($order); ?>">Appointment Date</a>
-                    <?php } else { ?>
+                    <?php else : ?>
                     <a href="<?php echo $sort_appointment_date; ?>">Appointment Date</a>
-                    <?php } ?></td>
-                  <td class="text-right"><?php echo $column_action; ?></td>
+                    <?php endif; ?>
+                  </th>
+                  <th class="text-left">
+                    <?php if ($sort == 'type') : ?>
+                    <a href="<?php echo $sort_type; ?>" class="<?php echo strtolower($order); ?>">Appointment Type</a>
+                    <?php else : ?>
+                    <a href="<?php echo $sort_type; ?>">Appointment Type</a>
+                    <?php endif; ?>
+                  </th>
+                  <th class="text-left">Visit Date</th>
+                  <th class="text-right"><?php echo $column_action; ?></td>
                 </tr>
               </thead>
               <tbody>
-                <?php if($access == 'yes') { ?>
-                <?php if ($schedule_managements) { ?>
-                    <?php foreach ($schedule_managements as $schedule_management) { ?>
-                        
-                            <tr>
-                              <td class="text-left"><?php echo $schedule_management['appointment_name']; ?></td>
-                              <td class="text-left"><?php echo $schedule_management['sales_manager']; ?></td>
-                              <!--<td class="text-left"><?php echo $schedule_management['customername']; ?></td>-->
-                              <td class="text-left"><?php echo $schedule_management['type']; ?></td>
-                              <td class="text-left"><?php  echo $schedule_management['appointment_date']; ?></td>
-                              <td class="text-right"><a href="<?php echo $schedule_management['view']; ?>" data-toggle="tooltip" title="View" class="btn btn-info"><i class="fa fa-eye"></i></a></td>
-                            </tr>
-                     <?php } ?>
-                    <?php } else { ?>
+                <?php if($access == 'yes') : ?>
+                  <?php if (!empty($appointments)) : ?>
+                    <?php foreach ($appointments as $appointment) : ?>
                     <tr>
-                      <td class="text-center" colspan="5"><?php echo $text_no_results; ?></td>
+                      <td class="text-left"><?php echo $appointment['customer_name']; ?></td>
+                      <td class="text-left"><?php echo $appointment['appointment_name']; ?></td>
+                      <td class="text-left"><?php echo $appointment['appointment_date']; ?></td>
+                      <td class="text-left"><span class="label label-<?=(strtolower($appointment['appointment_type'])=='new business')? 'default' : 'primary' ?>" style="font-size:14px;"><?=$appointment['appointment_type']?></span></td>
+                      <td class="text-left"><?php echo $appointment['visit_date']; ?></td>
+                      <td class="text-right">
+                        <a href="<?php echo $appointment['notes']; ?>" data-toggle="tooltip" title="Notes" class="btn btn-primary"><i class="fa fa-sticky-note"></i></a>
+                        <a href="<?php echo $appointment['view']; ?>" data-toggle="tooltip" title="View Appointment" class="btn btn-info"><i class="fa fa-eye"></i></a>
+                      </td>
                     </tr>
-                    <?php } ?>
-                <?php } else { ?>
-                	<tr>
-                        <td class="text-center" colspan="5">You Don't have Permission to access the Appointment Manegement.</td>
-                    </tr>
-                <?php } ?>
+                     <?php endforeach; ?>
+                  <?php else : ?>
+                  <tr>
+                    <td class="text-center" colspan="6"><?php echo $text_no_results; ?></td>
+                  </tr>
+                  <?php endif; ?>
+                <?php else : ?>
+                <tr>
+                  <td class="text-center" colspan="6">You Don't have Permission to access the Appointment Manegement.</td>
+                </tr>
+                <?php endif; ?>
               </tbody>
             </table>
           </div>
