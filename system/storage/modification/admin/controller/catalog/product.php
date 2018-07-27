@@ -376,10 +376,10 @@ class ControllerCatalogProduct extends Controller {
 
 		$data['breadcrumbs'] = array();
 
-		$data['breadcrumbs'][] = array(
-			'text' => $this->language->get('text_home'),
-			'href' => $this->url->link('common/sales_dashboard', 'token=' . $this->session->data['token'], true)
-		);
+		// $data['breadcrumbs'][] = array(
+		// 	'text' => $this->language->get('text_home'),
+		// 	'href' => $this->url->link(getDashboard($this->user), 'token=' . $this->session->data['token'], true)
+		// );
 
 		$data['breadcrumbs'][] = array(
 			'text' => $this->language->get('heading_title'),
@@ -754,12 +754,6 @@ class ControllerCatalogProduct extends Controller {
 		} else {
 			$data['error_model'] = '';
 		}
-		
-		if (isset($this->error['sku'])) {
-			$data['error_sku'] = $this->error['sku'];
-		} else {
-			$data['error_sku'] = '';
-		}
 
 		if (isset($this->error['keyword'])) {
 			$data['error_keyword'] = $this->error['keyword'];
@@ -807,10 +801,10 @@ class ControllerCatalogProduct extends Controller {
 
 		$data['breadcrumbs'] = array();
 
-		$data['breadcrumbs'][] = array(
-			'text' => $this->language->get('text_home'),
-			'href' => $this->url->link('common/sales_dashboard', 'token=' . $this->session->data['token'], true)
-		);
+		// $data['breadcrumbs'][] = array(
+		// 	'text' => $this->language->get('text_home'),
+		// 	'href' => $this->url->link(getDashboard($this->user), 'token=' . $this->session->data['token'], true)
+		// );
 
 		$data['breadcrumbs'][] = array(
 			'text' => $this->language->get('heading_title'),
@@ -964,7 +958,7 @@ class ControllerCatalogProduct extends Controller {
 		if (isset($this->request->post['pricing'])) {
 			$data['pricing'] = $this->request->post['pricing'];
 		} elseif (isset($this->request->get['product_id'])) { 
-			$data['pricing'] = $this->model_catalog_product->getProductCustomerGroupPrices($this->request->get['product_id']);
+			//$data['pricing'] = $this->model_catalog_product->getProductCustomerGroupPrices($this->request->get['product_id']);
 		} else {
 			$data['pricing'] = array();
 		}
@@ -1439,10 +1433,6 @@ class ControllerCatalogProduct extends Controller {
 
 		if ((utf8_strlen($this->request->post['model']) < 1) || (utf8_strlen($this->request->post['model']) > 64)) {
 			$this->error['model'] = $this->language->get('error_model');
-		}
-		
-		if ((utf8_strlen($this->request->post['sku']) < 1) || (utf8_strlen($this->request->post['sku']) > 64)) {
-			$this->error['sku'] = $this->language->get('error_sku');
 		}
 
 		if (utf8_strlen($this->request->post['keyword']) > 0) {
