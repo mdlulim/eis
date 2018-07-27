@@ -477,13 +477,13 @@ class ControllerCommonDashboard extends Controller {
 		$gpslongitude = $responsee_a->results[0]->geometry->location->lng;
 		
 		// Sales Rep Pin
-		$locationsmaps[] = array('latitude'=>$latitude,'longitude'=>$longitude,'name'=>$address." ( ".$sales_rep." )",'icon'=>'view/image/salesrep-checkin.png');
+		$locationsmaps[] = array('latitude'=>$latitude,'longitude'=>$longitude,'name'=>$address." ( ".$sales_rep." )",'icon'=>'view/image/beenhere');
 		
 		// Customer Map Pin
-		$locationsmaps[] = array('latitude'=>$customerlatitude,'longitude'=>$customerlongitude,'name'=>$customername,'icon'=>'view/image/customer.png');
+		$locationsmaps[] = array('latitude'=>$customerlatitude,'longitude'=>$customerlongitude,'name'=>$customername,'icon'=>'view/image/customer01.png');
 		
 		// Sales Rep Gps Map Pin
-		$locationsmaps[] = array('latitude'=>$gpslatitude,'longitude'=>$gpslongitude,'name'=>$gpsaddress." ( ".$sales_rep." )",'icon'=>'view/image/GPS.png');
+		$locationsmaps[] = array('latitude'=>$gpslatitude,'longitude'=>$gpslongitude,'name'=>$gpsaddress." ( ".$sales_rep." )",'icon'=>'view/image/location_on.png');
 		
 		}
 		$data['locationsmaps'] = $locationsmaps;

@@ -6,7 +6,7 @@ class ModelReplogicLocationManagement extends Model {
 		$this->db->query("DELETE FROM " . DB_PREFIX . "salesrep_checkins WHERE checkin_id = '" . (int)$checkin_id . "'");
 }
 	public function getLocationsDash($data = array()) {
-		$sql = "SELECT rc.*,CONCAT(sr.salesrep_name,' ',sr.salesrep_lastname) AS salesrep_name,CONCAT(cs.firstname,' ',cs.lastname) AS customer_name, ca.latitude AS customer_lat,ca.longitude AS customer_lng ";
+		$sql = "SELECT rc.checkin AS checkin, rc.*,CONCAT(sr.salesrep_name,' ',sr.salesrep_lastname) AS salesrep_name,CONCAT(cs.firstname,' ',cs.lastname) AS customer_name, ca.latitude AS customer_lat,ca.longitude AS customer_lng ";
 		$sql.= "FROM ".DB_PREFIX."salesrep_checkins rc ";
 		$sql.= "LEFT JOIN ".DB_PREFIX."customer cs ON cs.customer_id=rc.customer_id ";
 		$sql.= "LEFT JOIN ".DB_PREFIX."address ca ON ca.address_id=cs.address_id ";

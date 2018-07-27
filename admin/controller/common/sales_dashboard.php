@@ -325,6 +325,8 @@ class ControllerCommonSalesDashboard extends Controller {
 		$locations = $this->model_replogic_location_management->getLocationsDash($filters);
 		$data['locations_map'] = array();
 
+		
+
 		if (!empty($locations) && is_array($locations)) {
 			foreach ($locations as $location) {
 				
@@ -346,8 +348,8 @@ class ControllerCommonSalesDashboard extends Controller {
 					$latitude = $decodedResponse->results[0]->geometry->location->lat;
 					$longitude = $decodedResponse->results[0]->geometry->location->lng;
 					
-					$data['locations_map'][] = array('latitude'=>$latitude,'longitude'=>$longitude,'name'=>$address." ( ".$location['salesrep_name']." )",'icon'=>'view/image/salesrep-checkin.png');
-					$data['locations_map'][] = array('latitude'=>$location['customer_lat'],'longitude'=>$location['customer_lng'],'name'=>$location['customer_name'],'icon'=>'view/image/customer.png');
+					$data['locations_map'][] = array('latitude'=>$latitude,'longitude'=>$longitude,'name'=>$address." ( ".$location['salesrep_name']." )",'icon'=>'view/image/beenhere.png');
+					$data['locations_map'][] = array('latitude'=>$location['customer_lat'],'longitude'=>$location['customer_lng'],'name'=>$location['customer_name'],'last_visited'=>$location['checkin'],'icon'=>'view/image/customer01.png');
 				}
 				
 				# Gps Check in address/location
@@ -368,7 +370,7 @@ class ControllerCommonSalesDashboard extends Controller {
 					$gpslatitude = $decodedResponse->results[0]->geometry->location->lat;
 					$gpslongitude = $decodedResponse->results[0]->geometry->location->lng;
 					
-					$data['locations_map'][] = array('latitude'=>$gpslatitude,'longitude'=>$gpslongitude,'name'=>$gpsaddress." ( ".$location['salesrep_name']." )",'icon'=>'view/image/GPS.png');
+					$data['locations_map'][] = array('latitude'=>$gpslatitude,'longitude'=>$gpslongitude,'name'=>$gpsaddress." ( ".$location['salesrep_name']." )",'icon'=>'view/image/location_on.png');
 					
 				}
 			

@@ -195,6 +195,7 @@
               <div id="legend"></div>
               <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA6ycZiGobIPuZ8wtXalf2m2MtxAzncn_Q&callback=initMap&sensor=false"></script>
               <script type="text/javascript">
+             
 								function initMap() {
 
 									var latlng = new google.maps.LatLng(-27.4457987, 21.4340156); // default location
@@ -217,15 +218,15 @@
 									var icons = {
 									  parking: {
 										name: 'Rep Checked In',
-										icon: 'view/image/salesrep-checkin.png'
+										icon: 'view/image/beenhere.png'
 									  },
 									  library: {
 										name: 'GPS Location',
-										icon: 'view/image/GPS.png'
+										icon: 'view/image/location_on.png'
 									  },
 									  info: {
 										name: 'Customer',
-										icon: 'view/image/customer2.png'
+										icon: 'view/image/customer01.png'
 									  }
 									};
 									
@@ -233,6 +234,7 @@
 									for (var key in icons) {
 									  var type = icons[key];
 									  var name = type.name;
+                    var last_visited = type.name;
 									  var icon = type.icon;
 									  var div = document.createElement('div');
 									  div.innerHTML = '<img src="' + icon + '"> ' + name;
@@ -242,12 +244,14 @@
 									map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(legend);
 
 									<?php foreach($locations_map as $key => $location) : ?>
-									
+								
 										<?php if($location['latitude'] != '' && $location['longitude'] != '' ) : ?>
 											
 											lat = '<?=$location['latitude']?>';
 											lng = '<?=$location['longitude']?>';
-											name = '<?=$location['name']?>';
+											name = '<b><?=$location['name']?></b></b></p>';
+                      last_visited = '<?=$location['last_visited']?>';
+                      address = '<?=$location['address']?>';
 							
 											marker = new google.maps.Marker({
 												position: new google.maps.LatLng(lat,lng),
@@ -258,7 +262,7 @@
 											
 											bounds.extend(marker.position); 
 											google.maps.event.addListener( marker, 'click', function(e){
-												infowindow.setContent( this.name );
+												infowindow.setContent( this.name )
 												infowindow.open( map, this );
 											}.bind( marker ) );
 											
@@ -318,6 +322,7 @@
       </div>
     </div>
   </div>
+
   <!-- /Modal(s) -->
 
   <!-- Page loader -->
