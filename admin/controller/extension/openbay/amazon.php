@@ -38,7 +38,7 @@ class ControllerExtensionOpenbayAmazon extends Controller {
 
 		$data['breadcrumbs'] = array();
 		$data['breadcrumbs'][] = array(
-			'href'      => $this->url->link('common/dashboard', 'token=' . $this->session->data['token'], true),
+			'href'      => $this->url->link(getDashboard($this->user), 'token=' . $this->session->data['token'], true),
 			'text'      => $this->language->get('text_home'),
 		);
 		$data['breadcrumbs'][] = array(
@@ -84,7 +84,7 @@ class ControllerExtensionOpenbayAmazon extends Controller {
 
 		$data['breadcrumbs'] = array();
 		$data['breadcrumbs'][] = array(
-			'href'      => $this->url->link('common/dashboard', 'token=' . $this->session->data['token'], true),
+			'href'      => $this->url->link(getDashboard($this->user), 'token=' . $this->session->data['token'], true),
 			'text'      => $this->language->get('text_home'),
 		);
 		$data['breadcrumbs'][] = array(
@@ -172,7 +172,7 @@ class ControllerExtensionOpenbayAmazon extends Controller {
 
 		$data['breadcrumbs'] = array();
 		$data['breadcrumbs'][] = array(
-			'href'      => $this->url->link('common/dashboard', 'token=' . $this->session->data['token'], true),
+			'href'      => $this->url->link(getDashboard($this->user), 'token=' . $this->session->data['token'], true),
 			'text'      => $this->language->get('text_home'),
 		);
 		$data['breadcrumbs'][] = array(
@@ -279,7 +279,7 @@ class ControllerExtensionOpenbayAmazon extends Controller {
 
 		$data['breadcrumbs'] = array();
 		$data['breadcrumbs'][] = array(
-			'href'      => $this->url->link('common/dashboard', 'token=' . $this->session->data['token'], true),
+			'href'      => $this->url->link(getDashboard($this->user), 'token=' . $this->session->data['token'], true),
 			'text'      => $this->language->get('text_home'),
 		);
 		$data['breadcrumbs'][] = array(
@@ -383,7 +383,7 @@ class ControllerExtensionOpenbayAmazon extends Controller {
 		$data['breadcrumbs'] = array();
 
 		$data['breadcrumbs'][] = array(
-			'href'      => $this->url->link('common/dashboard', 'token=' . $this->session->data['token'], true),
+			'href'      => $this->url->link(getDashboard($this->user), 'token=' . $this->session->data['token'], true),
 			'text'      => $this->language->get('text_home'),
 		);
 		$data['breadcrumbs'][] = array(
@@ -429,7 +429,7 @@ class ControllerExtensionOpenbayAmazon extends Controller {
 
 		$data['breadcrumbs'] = array();
 		$data['breadcrumbs'][] = array(
-			'href'      => $this->url->link('common/dashboard', 'token=' . $this->session->data['token'], true),
+			'href'      => $this->url->link(getDashboard($this->user), 'token=' . $this->session->data['token'], true),
 			'text'      => $this->language->get('text_home'),
 		);
 		$data['breadcrumbs'][] = array(
@@ -728,7 +728,7 @@ class ControllerExtensionOpenbayAmazon extends Controller {
 
 		$data['breadcrumbs'] = array();
 		$data['breadcrumbs'][] = array(
-			'href'      => $this->url->link('common/dashboard', 'token=' . $this->session->data['token'], true),
+			'href'      => $this->url->link(getDashboard($this->user), 'token=' . $this->session->data['token'], true),
 			'text'      => $this->language->get('text_home'),
 		);
 		$data['breadcrumbs'][] = array(
@@ -882,7 +882,7 @@ class ControllerExtensionOpenbayAmazon extends Controller {
 
 		$data['breadcrumbs'] = array();
 		$data['breadcrumbs'][] = array(
-			'href'      => $this->url->link('common/dashboard', 'token=' . $this->session->data['token'], true),
+			'href'      => $this->url->link(getDashboard($this->user), 'token=' . $this->session->data['token'], true),
 			'text'      => $this->language->get('text_home'),
 		);
 		$data['breadcrumbs'][] = array(

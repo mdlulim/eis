@@ -86,3 +86,13 @@ function sendEmail($data, $settings, $template=false, $client='mail') {
 
 	/*=====  End of Send email  ======*/
 }
+
+function getDashboard($user) {
+	if ($user->hasPermission('access', 'common/sales_dashboard')) {
+		return 'common/sales_dashboard';
+	}
+	if ($user->hasPermission('access', 'common/orders_dashboard')) {
+		return 'common/orders_dashboard';
+	}
+	return false;
+}

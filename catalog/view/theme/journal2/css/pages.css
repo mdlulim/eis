@@ -163,6 +163,59 @@ label {
 .order-list .list td {
   text-align: center; }
 
+/*----------  add/remove cart items UI  ----------*/
+
+.cart-info td.quantity > .qty,
+.cart .quantity > .qty {
+  width: 100%;
+  display: block;
+  float: left;
+  height: 40px;
+  margin-right: 8px;
+  overflow: hidden; }
+.cart-info td.quantity > .qty > .product-info1,
+.cart .quantity > .qty > .product-info1 {
+  float: left;
+  width: 40%;
+  line-height: 17px;
+  height: 100%;
+  text-align: center;
+  margin: 0;
+  border: 0; 
+  -webkit-appearance: none;
+  background: white;
+  border-radius: 0;
+  border-width: 1px;
+  border-style: solid;
+  padding: 5px 10px;
+  transition: all 0.2s;
+  font-size: 13px;
+  min-height: 35px;
+  box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.08);
+  background-color: rgb(229, 229, 229);
+  border-color: rgb(183, 183, 183);
+}
+.cart-info td.quantity > .qty > .journal-stepper,
+.cart .quantity > .qty > .journal-stepper {
+  background-color: rgb(56, 56, 56);
+  color: rgb(255, 255, 255);
+  width: 17%;
+  text-align: center;
+  height: 100%;
+  float: left;
+  line-height: 37px;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: normal;
+  transition: all 0.2s;
+  display: inline-block; }
+.cart-info td.remove-from-cart > button.btn-remove-cart-item {
+  font-size: 19px;
+  padding: 6px 14px; }
+.cart-info table > thead > tr > td {
+  background-color: rgb(56, 56, 56);
+}
+
 /******************************
  CHECKOUT PAGE
 *******************************/

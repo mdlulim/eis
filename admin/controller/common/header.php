@@ -52,11 +52,11 @@ class ControllerCommonHeader extends Controller {
 		if (!isset($this->request->get['token']) || !isset($this->session->data['token']) || ($this->request->get['token'] != $this->session->data['token'])) {
 			$data['logged'] = '';
 
-			$data['home'] = $this->url->link('common/sales_dashboard', '', true);
+			$data['home'] = $this->url->link(getDashboard($this->user), '', true);
 		} else {
 			$data['logged'] = true;
 
-			$data['home'] = $this->url->link('common/sales_dashboard', 'token=' . $this->session->data['token'], true);
+			$data['home'] = $this->url->link(getDashboard($this->user), 'token=' . $this->session->data['token'], true);
 			$data['logout'] = $this->url->link('common/logout', 'token=' . $this->session->data['token'], true);
 
 			// Orders

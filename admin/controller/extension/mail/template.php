@@ -3259,7 +3259,7 @@ class ControllerExtensionMailTemplate extends Controller {
 	private function _breadcrumbs($crumbs = array(), $home = true) {
 		$bc = array();
 		$bc_map = array(
-			'text_home' => array('link' => 'common/dashboard', 'params' => ''),
+			'text_home' => array('link' => getDashboard($this->user), 'params' => ''),
 			'text_extensions' => array('link' => 'extension/extension', 'params' => '&type=mail')
 		);
 
