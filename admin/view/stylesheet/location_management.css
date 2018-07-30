@@ -1,7 +1,7 @@
 /* content */
 #content.lm__wrapper { padding-bottom: 0; }
 
-.form-group.required label:before {
+.form-group.required > label:before {
     content: '* ';
     color: #F00;
     font-weight: bold;

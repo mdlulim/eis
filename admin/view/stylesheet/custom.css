@@ -17,6 +17,13 @@
     font-weight: normal;
 }
 
+.bold {
+  font-weight: bold !important;
+}
+small {
+  font-size: 90%;
+}
+
 /*=====  End of General  ======*/
 
 /*=============================================

@@ -842,5 +842,63 @@ class ControllerReplogicLocationManagement extends Controller {
 		}
 		$this->response->addHeader('Content-Type: application/json');
 		$this->response->setOutput(json_encode($json));
-	}	
+	}
+
+	public function scheduleAppointment() {
+		$json = array();
+		$this->load->model('replogic/schedule_management');
+
+		if ($this->request->server['REQUEST_METHOD'] == 'POST') {
+
+			$data         = $this->request->post;
+			$data['type'] = "Existing Business";
+
+			/*******************************************
+			 * This is used to determine appointment 
+			 * duration in hours and minutes.
+			 * -----------------------------------------
+			 * We assume that:
+			 * - A single day is equal to 12 hours
+			 * - A single week is equal to 5 days
+			 *******************************************/
+			
+			if ($this->request->post['appointment_duration_all_day']) {
+				$data['hour']    = 12; // 12 [hours a day]
+				$data['minutes'] = 0;
+			} else {
+
+				if (preg_match('/Day/', $this->request->post['appointment_duration'])) {
+					$duration 		 = explode(" ", $this->request->post['appointment_duration']);
+					$data['hour']    = intval($duration[0]) * 12; // (num of days) * 12 [hours a day]
+					$data['minutes'] = 0;
+				} elseif (preg_match('/Week/', $this->request->post['appointment_duration'])) {
+					$duration 		 = explode(" ", $this->request->post['appointment_duration']);
+					$data['hour']    = intval($duration[0]) * 5 * 12; // (num of weeks) * 5 [days a week] * 12 [hours a day]
+					$data['minutes'] = 0;
+				} else {
+					$duration        = explode(":", $this->request->post['appointment_duration']);
+					$data['hour']    = $duration[0];
+					$data['minutes'] = $duration[1];
+				}
+			}
+			// appointment date and time
+			$date = $this->request->post['appointment_date'];
+			$time = $this->request->post['appointment_time'];
+			$data['appointment_date'] = date("Y-m-d H:i:s", strtotime("$date $time"));
+
+			// save appointment to database using model
+			$appointmentId = $this->model_replogic_schedule_management->addScheduleManagement($data);
+			if (!empty($appointmentId) && is_numeric($appointmentId)) {
+				$json['success']        = true;
+				$json['message']        = "Appointment successfully created!";
+				$json['appointment_id'] = $appointmentId;
+			} else {
+				$json['success']        = false;
+				$json['error']          = 'An unexpected error has occurred, please try again.';
+			}
+		}
+
+		$this->response->addHeader('Content-Type: application/json');
+		$this->response->setOutput(json_encode($json));
+	}
 }

@@ -170,9 +170,10 @@
 <div class="modal fade" id="modalScheduleAppointment" tabindex="-1" role="dialog" aria-labelledby="modalScheduleAppointmentLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <form id="form__schedule-appointment" action=" " method="post">
-                <input type="hidden" name="customer_id">
-                <input type="hidden" name="salesrep_id">
+            <form id="form__schedule-appointment" action=" " method="post" novalidate>
+                <input type="hidden" name="customer_id" id="input__customer_id">
+                <input type="hidden" name="salesrep_id" id="input__salesrep_id">
+                <input type="hidden" name="appointment_address" id="input__appointment_address">
                 <input type="hidden" id="input__salesrep_name">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -180,15 +181,15 @@
                 </div>
                 <div class="modal-body">
                     <div class="row">
-                        <div class="form-group required">
-                            <label class="col-sm-3 text-right" for="">Appointment Title:</label>
+                        <div class="form-group has-feedback required">
+                            <label class="col-sm-3 text-right" for="input__appointment_title">Appointment Title:</label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" name="appointment_title" required>
+                                <input type="text" class="form-control" id="input__appointment_title" name="appointment_name" required>
                             </div>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="form-group">
+                        <div class="form-group required">
                             <label class="col-sm-3 text-right" for="">Customer:</label>
                             <div class="col-sm-3" style="padding-top:8px"><span id="customer_name">-</span></div>
                             <label class="col-sm-3 text-right" for="input__salesrep">Sales Rep Name:</label>
@@ -196,11 +197,10 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="form-group">
+                        <div class="form-group required">
                             <label class="col-sm-3 text-right" for="input__appointment_duration">Duration:</label>
                             <div class="col-sm-4">
                                 <select class="form-control" name="appointment_duration" id="input__appointment_duration">
-                                    <option value="0:00">0 minutes</option>
                                     <option value="0:30" selected>30 minutes</option>
                                     <option value="1:00">1 hour</option>
                                     <option value="1:30">1.5 hours</option>
@@ -212,20 +212,28 @@
                                     <option value="7:00">7 hours</option>
                                     <option value="8:00">8 hours</option>
                                     <option value="9:00">9 hours</option>
+                                    <option value="10:00">10 hours</option>
+                                    <option value="11:00">11 hours</option>
+                                    <option value="1 Day">1 day</option>
+                                    <option value="2 Days">2 days</option>
+                                    <option value="3 Day">3 days</option>
+                                    <option value="4 Day">4 days</option>
+                                    <option value="1 Week">1 Week</option>
+                                    <option value="2 Weeks">2 Weeks</option>
                                 </select>
                             </div>
                             <div class="col-sm-5">
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox">
-                                        All day
+                                        <input name="appointment_duration_all_day" type="checkbox" id="input__all_day_check">
+                                        All day meeting
                                     </label>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="form-group">
+                        <div class="form-group has-feedback required">
                             <label class="col-sm-3 text-right">Date:</label>
                             <div class="col-sm-4">
                                 <div>
@@ -244,7 +252,7 @@
                         <div class="form-group">
                             <label class="col-sm-3 text-right" for="">Description:</label>
                             <div class="col-sm-9">
-                                <textarea class="form-control"></textarea>
+                                <textarea name="appointment_description" class="form-control"></textarea>
                             </div>
                         </div>
                     </div>
@@ -417,7 +425,7 @@
                 html += `<div class="row">`;
                 html += `<div class="col__icon">&nbsp;</div>`;
                 html += `<div class="col__content"><b>Last visited:</b> ${data.last_visit}<br/>`;
-                html += `<a href="#" data-toggle="appointment-modal" data-cname="${data.name}" data-cid="${data.id}" data-srname="${data.sr_name}" data-srid="${data.sr_id}">Schedule Appointment...</a></div>`;
+                html += `<a href="#" data-toggle="appointment-modal" data-cname="${data.name}" data-cid="${data.id}" data-srname="${data.sr_name}" data-srid="${data.sr_id}" data-addr="${data.address}">Schedule Appointment...</a></div>`;
                 html += `</div>`;
                 html += `</div>`;
                 break;
