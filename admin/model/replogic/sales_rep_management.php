@@ -175,7 +175,7 @@ class ModelReplogicSalesRepManagement extends Model {
 		}
 		
 		if (!empty($data['filter_team_id'])) {
-			$sql .= " AND sales_team_id LIKE '" . $this->db->escape($data['filter_team_id']) . "'";
+			$sql .= " AND sales_team_id = " . (int)$this->db->escape($data['filter_team_id']);
 		}
 		
 		$sql .= " ORDER BY salesrep_name";
@@ -197,7 +197,7 @@ class ModelReplogicSalesRepManagement extends Model {
 
 			$sql .= " LIMIT " . (int)$data['start'] . "," . (int)$data['limit'];
 		}
-//echo $sql; exit;
+
 		$query = $this->db->query($sql);
 
 		return $query->rows;

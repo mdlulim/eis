@@ -2,10 +2,31 @@
 class ControllerReplogicLocationManagement extends Controller {
 	private $error = array(); 
 	public function index() {
+
+		/*==================================
+		=       Add Files (Includes)       =
+		==================================*/
+
+		# stylesheets (CSS) files
+		$this->document->addStyle('view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.css');
+		$this->document->addStyle('view/stylesheet/material-icons/material-icons.css');
+		$this->document->addStyle('view/javascript/bootstrap-sweetalert/sweetalert.css');
+		$this->document->addStyle('view/stylesheet/custom.css');
+		$this->document->addStyle('view/stylesheet/location_management.css');
+
+		# javascript (JS) files
+		$this->document->addScript('view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.js');
+		$this->document->addScript('view/javascript/bootstrap-sweetalert/sweetalert.min.js');
+		$this->document->addScript('view/javascript/bootstrap-sweetalert/sweetalert-data.js');
+		$this->document->addScript('view/javascript/location_management.js');
+
+		/*=====  End of Add Files (Includes)  ======*/
+
 		$this->load->language('replogic/location_management');
 		$this->document->setTitle($this->language->get('heading_title'));
 		$this->load->model('replogic/location_management');
-		$this->getList();
+		// $this->getList();
+		$this->locationManagement();
 	}
 	
 	public function delete() { 
@@ -44,6 +65,237 @@ class ControllerReplogicLocationManagement extends Controller {
 		}
 		$this->getList();
 	}
+
+	protected function locationManagement() {
+		$url    = '';
+		$data   = array();
+		$access = true;
+
+		$this->load->model('user/user_group');
+		$this->load->model('user/user');
+		$this->load->model('user/team');
+		
+		$this->load->model('replogic/sales_rep_management');
+		$this->load->model('customer/customer');
+		$this->load->model('user/team');
+
+		# route token
+		$data['token'] = $this->session->data['token'];
+		
+
+		/*******************************************
+		 * Breadcrumbs
+		 *******************************************/
+		
+		$data['breadcrumbs'][] = array(
+			'text' => $this->language->get('text_home'),
+			'href' => $this->url->link(getDashboard($this->user), 'token=' . $this->session->data['token'], true)
+		);
+		$data['breadcrumbs'][] = array(
+			'text' => $this->language->get('heading_title'),
+			'href' => $this->url->link('replogic/location_management', 'token=' . $this->session->data['token'] . $url, true)
+		);
+		
+
+		/*******************************************
+		 * Current user info
+		 *******************************************/
+
+		$currentUser      = $this->session->data['user_id'];
+		$currentUserGroup = $this->model_user_user->getUser($currentUser);
+
+		# if sales manager, get relevant team
+		if ($currentUserGroupId['user_group_id'] == '16') {
+			$isSalesManager      = true;
+			$curentUserSalesTeam = $this->model_user_team->getTeamBySalesmanager($currentUser);
+		} else {
+			$isSalesManager      = false;
+		}
+
+
+		/*******************************************
+		 * Filters | Dropdowns
+		 *******************************************/
+
+		$filters = array();
+
+		############### filter by team id ###############
+		if (isset($this->request->get['filter_team_id'])) {
+			$url .= '&filter_team_id=' . $this->request->get['filter_team_id'];
+			$data['filter_team_id']    = $this->request->get['filter_team_id'];
+			$filters['filter_team_id'] = $this->request->get['filter_team_id'];
+		}
+
+		############### filter by sales rep id ###############
+		if (isset($this->request->get['filter_salesrep_id'])) {
+			$url .= '&filter_salesrep_id=' . $this->request->get['filter_salesrep_id'];
+			$data['filter_salesrep_id']    = $this->request->get['filter_salesrep_id'];
+			$filters['filter_salesrep_id'] = $this->request->get['filter_salesrep_id'];
+		}
+
+		############### filter by [customer|business] type ###############
+		if (isset($this->request->get['filter_type']) && $this->request->get['filter_type'] === "prospect") {
+			$url .= '&filter_type=' . $this->request->get['filter_type'];
+			$filters['filter_customer_type'] = "New Business";
+			$data['filter_type']             = $this->request->get['filter_type'];
+			$data['select_customer_label']   = 'Prospect:';
+			$data['select_customer']         = 'All Prospects';
+			$isProspectCustomer              = true;
+		} else {
+			$filters['filter_customer_type'] = "Existing Business";
+			$data['filter_type']             = "customer";
+			$data['select_customer_label']   = 'Customer:';
+			$data['select_customer']         = 'All Customers';
+			$isProspectCustomer              = false;
+		}
+
+		############### filter by customer id ###############
+		if (isset($this->request->get['filter_customer_id'])) {
+			$url .= '&filter_customer_id=' . $this->request->get['filter_customer_id'];
+			$data['filter_customer_id']    = $this->request->get['filter_customer_id'];
+			$filters['filter_customer_id'] = $this->request->get['filter_customer_id'];
+		}
+
+
+		/*******************************************
+		 * Get teams:
+		 * - if 'sales manager' update team id filter
+		 *   as 'sales manager' is only assigned one
+		 *   team.
+		 *******************************************/
+
+		# 
+		# sales manager has only one team assigned
+		if ($isSalesManager) {
+			$data['teams'][] = $curentUserSalesTeam;
+		} else {
+			$data['teams']   = $this->model_user_team->getTeams();
+		}
+
+
+		/*******************************************
+		 * Get sales reps
+		 *******************************************/
+		
+		$data['salesreps'] = $this->model_replogic_sales_rep_management->getSalesReps($filters, $access, $currentUser);
+
+
+		/*******************************************
+		 * Get customers:
+		 * - make sure 'filter_customer_id' is not 
+		 *   passed to the getCustomers() model 
+		 *   function.
+		 *******************************************/
+		
+		$cfilters = $filters;
+		unset($cfilters['filter_customer_id']);
+		if ($isProspectCustomer) {
+			$data['customers'] = $this->model_customer_customer->getProspectiveCustomers($cfilters);
+		} else {
+			$data['customers'] = $this->model_customer_customer->getCustomers($cfilters, $isSalesManager, $currentUser);
+		}
+
+
+		/*******************************************
+		 * Locations | Google Map
+		 *******************************************/
+
+		$locations                 = $this->model_replogic_location_management->getLocations($filters);
+		$data['locations']         = array();
+		$data['markers_salesreps'] = array();
+		$data['markers_customers'] = array();
+		$data['markers_checkins']  = array();
+
+		foreach ($locations as $location) {
+			
+			# get sales rep
+			$salesrep = $this->model_replogic_sales_rep_management->getsalesrep($location['salesrep_id']); ;
+			$salesrep = $salesrep['salesrep_name'] ." ". $salesrep['salesrep_lastname'];
+			
+			# get customer or prospect based on type
+			if (strtolower($location['type']) === "new business") {
+
+				$customer = $this->model_customer_customer->getProspectiveCustomer($location['customer_id']);
+			
+				# get prospect address/location
+				$customerAddress   = $customer['address'];
+				$customerLatitude  = '';
+				$customerLongitude = '';
+
+			} else {
+				$customer = $this->model_customer_customer->getCustomer($location['customer_id']);
+			
+				# get customer address/location
+				$customerAddress   = $this->model_customer_customer->getAddress($customer['address_id']);
+				$customerLatitude  = $customerAddress['latitude'];
+				$customerLongitude = $customerAddress['longitude'];
+			}
+			
+			# last check in date/time
+			$lastCheckAgo = $this->getHowLongAgo($location['checkin']);
+			
+			# longitude and latitude
+			$latitude  = '';
+			$longitude = '';
+			
+			# store locations
+			$data['locations'][] = array(
+				'checkin_id'       => $location['checkin_id'],
+				'salesrep_id'      => $location['salesrep_id'],
+				'salesrep_name'    => $salesrep,
+				'customer_name'    => $customer['firstname'],
+				'last_check'       => $lastCheckAgo,
+				'checkin_location' => $location['checkin_location'],
+				'current_location' => $location['location']
+			);
+
+			# store sales reps current locations [Google Map]
+			$data['markers_salesreps'][] = array(
+				'latitude'  => $latitude,
+				'longitude' => $longitude,
+				'name'      => $salesrep,
+				'icon'      => 'view/image/gmap__location_icon.png',
+				'id'        => $location['checkin_id'],
+				'address'   => $location['location']
+			);
+
+			# store customers locations [Google Map]
+			$data['markers_customers'][] = array(
+				'latitude'     => $customerLatitude,
+				'longitude'    => $customerLongitude,
+				'name'         => $customer['firstname'],
+				'icon'         => 'view/image/gmap__customer_icon.png',
+				'id'           => $customer['customer_id'],
+				'address'      => $customerAddress,
+				'last_visited' => $lastCheckAgo,
+				'salesrep_name'=> $salesrep,
+				'salesrep_id'  => $location['salesrep_id']
+			);
+
+			# store sales reps gps locations [Google Map]
+			$data['markers_checkins'][]  = array(
+				'latitude'  => $latitude,
+				'longitude' => $longitude,
+				'name'      => $salesrep,
+				'icon'      => 'view/image/gmap__checkin_icon.png',
+				'id'        => $location['checkin_id'],
+				'address'   => $location['checkin_location']
+			);
+		}
+		$data['locations_map'] = $locationsMap;
+		
+
+		/*******************************************
+		 * Set page output data 
+		 *******************************************/
+		
+		$data['button_reload'] = $this->url->link('replogic/location_management', 'token=' . $data['token'] . $url, true);
+		$data['header']        = $this->load->controller('common/header');
+		$data['column_left']   = $this->load->controller('common/column_left');
+		$data['footer']        = $this->load->controller('common/footer');
+		$this->response->setOutput($this->load->view('replogic/location_management', $data));
+	}
+
 	protected function getList() {
 		
 		if (isset($this->request->get['filter_address'])) {
@@ -163,33 +415,27 @@ class ControllerReplogicLocationManagement extends Controller {
 		$current_user = $this->session->data['user_id'];
 		$current_user_group_id = $this->model_user_user->getUser($current_user); ;
 		$current_user_group = $this->model_user_user_group->getUserGroup($current_user_group_id['user_group_id']); ;
-		//print_r($current_user_group); exit;
-		if($current_user_group['name'] == 'Company admin' || $current_user_group['name'] == 'Administrator')
-		{
-			$data['access'] = 'yes';
-			$allaccess = true;
+		
+		if ($current_user_group_id['user_group_id'] == '15' || $current_user_group_id['user_group_id'] == '19') {
+			$data['access']  = 'yes';
+			$allaccess       = true;
 			$current_user_id = 0;
-		}
-		else
-		{ 
-			$data['access'] = 'yes';
-			$allaccess = false;
+		} else { 
+			$data['access']  = 'yes';
+			$allaccess       = false;
 			$current_user_id = $this->session->data['user_id'];
 			
 		}
 		
 		$location_total = $this->model_replogic_location_management->getTotalLocations($filter_data);
-		$results = $this->model_replogic_location_management->getLocations($filter_data);
 		
 		$this->load->model('replogic/sales_rep_management');
 		$this->load->model('customer/customer');
 		$this->load->model('user/team');
 		
-		if($current_user_group_id['user_group_id'] == '16')
-		{
+		if ($current_user_group_id['user_group_id'] == '16') {
 			$data['filtersales'] = 'yes';
-			if (isset($this->request->get['filter_team_id']))
-			{
+			if (isset($this->request->get['filter_team_id'])) {
 			
 				$filter_team_id = $this->request->get['filter_team_id'];
 				$data['salesReps'] = $this->model_replogic_sales_rep_management->getSalesRepByTeam($filter_team_id);
@@ -202,129 +448,129 @@ class ControllerReplogicLocationManagement extends Controller {
 				{
 					$data['customers'] = '';
 				}
-			} else if (!empty($filter_team_id))
-			{
+			} else if (!empty($filter_team_id)) {
 			
 				$data['salesReps'] = $this->model_replogic_sales_rep_management->getSalesRepByTeam($filter_team_id);
 			
 				if (isset($this->request->get['filter_salesrep_id'])) {
 				
 					$data['customers'] = $this->model_customer_customer->getCustomerBySalesRep($this->request->get['filter_salesrep_id']);
-				}
-				else
-				{
+				} else {
 					$data['customers'] = '';
 				}
 			} else {
 				$data['customers'] = '';
 				$data['salesReps'] = '';
 			}
-			$salesrep_id = $current_user; 
-			
+			$salesrep_id = $current_user;
 		}
 		else
 		{
 			$data['filtersales'] = 'no';
-			$data['customers'] = $this->model_customer_customer->getCustomers();
-			$data['salesReps'] = $this->model_replogic_sales_rep_management->getSalesRepsDropdown($allaccess=true);
-			$salesrep_id = '';
+			$data['customers']   = $this->model_customer_customer->getCustomers();
+			$data['salesReps']   = $this->model_replogic_sales_rep_management->getSalesRepsDropdown($allaccess=true);
+			$salesrep_id         = '';
 			
-			if($filter_customer_id)
-			{
+			# filter by cutomer id
+			if ($filter_customer_id) {
 				$filtercustomerinfo = $this->model_customer_customer->getCustomer($filter_customer_id);
 				$data['filter_customer'] = $filtercustomerinfo['firstname'];
-			}
-			else
-			{
+			} else {
 				$data['filter_customer'] = '';
 			}
 			
-			if($filter_salesrep_id)
-			{
-				$salesreinfo = $this->model_replogic_sales_rep_management->getsalesrep($filter_salesrep_id);
+			# filter by salesrep id
+			if ($filter_salesrep_id) {
+				$data['customers']       = $this->model_customer_customer->getCustomerBySalesRep($filter_salesrep_id);
+				$salesreinfo             = $this->model_replogic_sales_rep_management->getsalesrep($filter_salesrep_id);
 				$data['filter_salesrep'] = $salesreinfo['salesrep_name'] . ' ' . $salesreinfo['salesrep_lastname'];
-			}
-			else
-			{
+			} else {
 				$data['filter_salesrep'] = '';
 			}
 			
-			if($filter_team_id)
-			{
-				$teamsinfo = $this->model_user_team->getTeam($filter_team_id);
+			# filter by team id
+			if ($filter_team_id) {
+				$data['salesReps']       = $this->model_replogic_sales_rep_management->getSalesRepByTeam($filter_team_id);
+				$teamsinfo               = $this->model_user_team->getTeam($filter_team_id);
 				$data['filter_teamname'] = $teamsinfo['team_name'];
-			}
-			else
-			{
+			} else {
 				$data['filter_teamname'] = '';
 			}
 		 
 		}
+
+		$locations = $this->model_replogic_location_management->getLocations($filter_data);
 		
-		$filter_dataa = array('filter_salesrep_id' => $salesrep_id);
+		$filter_dataa  = array('filter_salesrep_id' => $salesrep_id);
 		$data['teams'] = $this->model_user_team->getTeams($filter_dataa);
-		
 		
 		$data['locations'] = array();
 		$locationsmaps = array();
-		foreach ($results as $result) {
+		
+		foreach ($locations as $location) {
 			
-		$salesrep = $this->model_replogic_sales_rep_management->getsalesrep($result['salesrep_id']); ;
-		$sales_rep = $salesrep['salesrep_name'] ." ". $salesrep['salesrep_lastname'];
-		
-		$customer = $this->model_customer_customer->getCustomer($result['customer_id']);
-		$customername = $customer['firstname'];
-		
-		$customeraddress = $this->model_customer_customer->getAddress($customer['address_id']);
-		$customerlatitude = $customeraddress['latitude'];
-		$customerlongitude = $customeraddress['longitude'];
-		
-		$team = $this->model_user_team->getTeam($salesrep['sales_team_id']); ;
-		$teamname = $team['team_name'];
-		
-		$time = strtotime($result['checkin']);
-		$last_check = date("d M Y g:i A", $time);
-		
-		$last_check_Ago = $this->getHowLongAgo($result['checkin']);
-		
-		$address = $result['location']; // Address
-		
-	// Get JSON results from this request
-		
-		$latitude = '';
-		$longitude = '';
-		
-		$url = "http://maps.google.com/maps/api/geocode/json?address=".urlencode($address)."&sensor=false&region=India";
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL, $url);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_PROXYPORT, 3128);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
-		$response = curl_exec($ch);
-		curl_close($ch);
-		$response_a = json_decode($response);
-		$latitude = $response_a->results[0]->geometry->location->lat;
-		$longitude = $response_a->results[0]->geometry->location->lng;
-		
-		$data['locations'][] = array(
-				'checkin_id' => $result['checkin_id'],
-				'salesrep_id' => $result['salesrep_id'],
-				'sales_manager'          => $sales_rep,
-				'team'          => $teamname,
-				'customer'          => $customername,
-				'last_check'          => $last_check_Ago,
-				'checkin_location'          => $result['checkin_location'],
-				'current_location'          => $result['location']
-				
+			$salesrep     = $this->model_replogic_sales_rep_management->getsalesrep($location['salesrep_id']); ;
+			$sales_rep    = $salesrep['salesrep_name'] ." ". $salesrep['salesrep_lastname'];
+			
+			$customer     = $this->model_customer_customer->getCustomer($location['customer_id']);
+			$customername = $customer['firstname'];
+			
+			$customeraddress   = $this->model_customer_customer->getAddress($customer['address_id']);
+			$customerlatitude  = $customeraddress['latitude'];
+			$customerlongitude = $customeraddress['longitude'];
+			
+			$team     = $this->model_user_team->getTeam($salesrep['sales_team_id']); ;
+			$teamname = $team['team_name'];
+			
+			$time = strtotime($location['checkin']);
+			$last_check = date("d M Y g:i A", $time);
+			
+			$last_check_Ago = $this->getHowLongAgo($location['checkin']);
+			
+			$address = $location['location']; // Address
+			
+			// Get JSON locations from this request
+			
+			$latitude = '';
+			$longitude = '';
+			
+			$url = "http://maps.google.com/maps/api/geocode/json?address=".urlencode($address)."&sensor=false&region=India";
+			$ch  = curl_init();
+			curl_setopt($ch, CURLOPT_URL, $url);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			curl_setopt($ch, CURLOPT_PROXYPORT, 3128);
+			curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+			$response   = curl_exec($ch);
+			curl_close($ch);
+			$response_a = json_decode($response);
+			$latitude   = $response_a->results[0]->geometry->location->lat;
+			$longitude  = $response_a->results[0]->geometry->location->lng;
+			
+			$data['locations'][] = array(
+				'checkin_id'       => $location['checkin_id'],
+				'salesrep_id'      => $location['salesrep_id'],
+				'salesrep_name'    => $sales_rep,
+				'team_name'        => $teamname,
+				'customer_name'    => $customername,
+				'last_check'       => $last_check_Ago,
+				'checkin_location' => $location['checkin_location'],
+				'current_location' => $location['location']
 			);
-		$locationsmaps[] = array('latitude'=>$latitude,'longitude'=>$longitude,'name'=>$sales_rep,'icon'=>'view/image/green-dot.png');
-		$locationsmaps[] = array('latitude'=>$customerlatitude,'longitude'=>$customerlongitude,'name'=>$customername,'icon'=>'view/image/blue-dot.png');
+
+			$gpsMarkersSalesReps[] = array('latitude'=>$latitude,'longitude'=>$longitude,'name'=>$sales_rep,'icon'=>'view/image/green-dot.png','id'=>$location['checkin_id']);
+			$gpsMarkersCustomers[] = array('latitude'=>$customerlatitude,'longitude'=>$customerlongitude,'name'=>$customername,'icon'=>'view/image/blue-dot.png','id'=>$customer['customer_id']);
+
+			$locationsmaps[] = array('latitude'=>$latitude,'longitude'=>$longitude,'name'=>$sales_rep,'icon'=>'view/image/green-dot.png','id'=>$location['checkin_id']);
+			$locationsmaps[] = array('latitude'=>$customerlatitude,'longitude'=>$customerlongitude,'name'=>$customername,'icon'=>'view/image/blue-dot.png','id'=>$customer['customer_id']);
 		
 		}
+		
+		// echo "<pre>";
+		// print_r($data['locations']);exit;
+
 		$data['locationsmaps'] = $locationsmaps;
-		 //print_r($locationsmaps); exit;
-	//print_r($data['locations']); exit;	
+		
 		$this->load->model('user/user_group');
 		$this->load->model('user/user');
 		$user_group_id = $this->model_user_user_group->getUserGroupByName('Sales Manager');
@@ -405,6 +651,8 @@ class ControllerReplogicLocationManagement extends Controller {
 		if (isset($this->request->get['order'])) {
 			$url .= '&order=' . $this->request->get['order'];
 		}
+
+		$data['token'] = $this->session->data['token'];
 		
 		$pagination = new Pagination();
 		$pagination->total = $location_total;
@@ -422,7 +670,7 @@ class ControllerReplogicLocationManagement extends Controller {
 		$data['header'] = $this->load->controller('common/header');
 		$data['column_left'] = $this->load->controller('common/column_left');
 		$data['footer'] = $this->load->controller('common/footer');
-		$this->response->setOutput($this->load->view('replogic/location_management_list', $data));
+		$this->response->setOutput($this->load->view('replogic/location_management', $data));
 	}
 	
 	public function getHowLongAgo($date, $display = array('Year', 'Month', 'Day', 'Hour', 'Minute', 'Second'), $ago = '') {
@@ -570,8 +818,8 @@ class ControllerReplogicLocationManagement extends Controller {
 			foreach($salesrep_infos as $salesrep_info)
 			{
 				$json[] = array(
-					'salesrep_id'        => $salesrep_info['salesrep_id'],
-					'name'              => $salesrep_info['salesrep_name']." ".$salesrep_info['salesrep_lastname']
+					'salesrep_id' => $salesrep_info['salesrep_id'],
+					'name'        => $salesrep_info['salesrep_name']." ".$salesrep_info['salesrep_lastname']
 				);
 			}
 		}
