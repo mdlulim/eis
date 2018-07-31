@@ -261,8 +261,112 @@ function validateAppointmentForm() {
     return valid;
 }
 
+// reset appointment form
 function resetAppointmentForm() {
     var form = $('#form__schedule-appointment');
     form.find('.form-group').removeClass('has-error').find('small.text-danger').remove();
     form[0].reset();
+}
+
+
+/********************************************* 
+ * Create Map Marker/Pin [Google Map]
+ *********************************************/
+
+function createMarker(data, type) {
+
+    // geocoder
+    geocoder.geocode({'address': data.address}, function(results, status) {
+        if (status === "OK") {
+            if (results.length) {
+                var coordinates = results[0].geometry.location;
+                var html   = getInfoWindowContent(data, type);
+                var marker = new google.maps.Marker({
+                    position: coordinates,
+                    name: data.id,
+                    map: map,
+                    icon: data.icon
+                });
+                google.maps.event.addListener(marker, 'click', function() {
+                    infoWindow.setContent(html);
+                    infoWindow.open(map, marker);
+                });
+                markers.push(marker);
+            }
+        } else {
+            /////// an error has occured: write relevant code underneath ///////
+        }
+    });
+}
+
+
+/********************************************* 
+ * Google Map Marker/Pin Info Window Content
+ *********************************************/
+
+function getInfoWindowContent(data, type) {
+    var html = ``;
+    switch(type) {
+
+        // Customer
+        case 'customer':
+            html += `<div class="gmap__infowindow ${type}">`;
+            html += `<div class="row">`;
+            html += `<div class="col__icon"><i class='material-icons'>&#xe0af</i></div>`;
+            html += `<div class="col__content"><b>${data.name}</b><br/>${data.address}</div>`;
+            html += `</div>`;
+            html += `<div class="row"><hr/></div>`;
+            html += `<div class="row">`;
+            html += `<div class="col__icon">&nbsp;</div>`;
+            html += `<div class="col__content"><b>Last visited:</b> ${data.last_visit}<br/>`;
+            html += `<a href="#" data-toggle="appointment-modal" data-cname="${data.name}" data-cid="${data.id}" data-srname="${data.sr_name}" data-srid="${data.sr_id}" data-addr="${data.address}">Schedule Appointment...</a></div>`;
+            html += `</div>`;
+            html += `</div>`;
+            break;
+        
+        // Sales Rep Checked-In Location
+        case 'checkin':
+            html += `<div class="gmap__infowindow ${type}">`;
+            html += `<div class="row">`;
+            html += `<div class="col__icon"><i class='material-icons'>event</i></div>`;
+            html += `<div class="col__content">${data.visit_time} &nbsp;&nbsp; ${data.visit_date}</div>`;
+            html += `</div>`;
+            html += `<div class="row"><hr/></div>`;
+            html += `<div class="row">`;
+            html += `<div class="col__icon"><i class='material-icons'>&#xe0af</i></div>`;
+            html += `<div class="col__content"><b>Customer Name:</b><br/>`;
+            html += `${data.customer}<br/>`;
+            html += `${data.customer_address}<br/>`;
+            html += `<span class="loc__last-checkin" style="margin-top:5px">`;
+            html += `<i class="material-icons">beenhere</i>`;
+            html += `<span>${data.last_seen} </span>`;
+            html += `</span></div>`;
+            html += `</div>`;
+            html += `<div class="row"><hr/></div>`;
+            html += `<div class="row">`;
+            html += `<div class="col__icon"><i class='material-icons text-danger'>&#xe55f</i></div>`;
+            html += `<div class="col__content"><b>GPS Address</b><br/>${data.gps_address}</div>`;
+            html += `</div>`;
+            html += `<div class="row" style="margin-top:13px">`;
+            html += `<div class="col__icon"><i class='material-icons' style="color:#32DB64">beenhere</i></div>`;
+            html += `<div class="col__content"><b>Rep Reported Address</b><br/>${data.address}</div>`;
+            html += `</div>`;
+            html += `</div>`;
+            break;
+        
+        // Sales Rep GPS Location
+        case 'salesrep':
+            html += `<div class="gmap__infowindow ${type}">`;
+            html += `<div class="row">`;
+            html += `<div class="col__icon"><i class='material-icons'>&#xe7fd</i></div>`;
+            html += `<div class="col__content">Sales Rep: <b>${data.name}</b></div>`;
+            html += `</div>`;
+            html += `<div class="row" style="margin-top:13px">`;
+            html += `<div class="col__icon"><i class='material-icons text-danger'>&#xe55f</i></div>`;
+            html += `<div class="col__content"><b>GPS Address</b><br/>${data.address}</div>`;
+            html += `</div>`;
+            html += `</div>`;
+            break;
+    }
+    return html;
 }

@@ -131,10 +131,10 @@
                                                 </div>
                                             </section>
                                             <footer>
-                                                <div class="row existing-business">
+                                                <div class="row <?php echo ($location['visit_type'] == 'New Business') ? 'new-business' : 'existing-business'; ?>">
                                                     <div class="col-sm-4 col-xs-4">
                                                         <span class="loc__last-checkin">
-                                                            <i class="material-icons">verified_user</i>
+                                                            <i class="material-icons">beenhere</i>
                                                             <span><?php echo $location['last_check']; ?></span>
                                                         </span>
                                                     </div>
@@ -160,7 +160,7 @@
                         <i></i>
                     </div>
                     <div class="lm-map-container">
-                        <div id="lm-map" data-></div>
+                        <div id="lm-map"></div>
                     </div>
                 </div>
             </div>
@@ -359,14 +359,20 @@
         <?php if (!empty($markers_checkins)) : ?>
             <?php foreach($markers_checkins as $marker_checkin) : ?>
                 var obj = {
-                    id      : '<?php echo $marker_checkin['id']?>',
-                    lat     : '<?php echo $marker_checkin['latitude']?>',
-                    lng     : '<?php echo $marker_checkin['longitude']?>',
-                    name    : '<?php echo $marker_checkin['name']?>',
-                    address : '<?php echo $marker_checkin['address']?>',
-                    icon    : '<?php echo $marker_checkin['icon']; ?>'
+                    id              : '<?php echo $marker_checkin['id']?>',
+                    lat             : '<?php echo $marker_checkin['latitude']?>',
+                    lng             : '<?php echo $marker_checkin['longitude']?>',
+                    name            : '<?php echo $marker_checkin['name']?>',
+                    customer        : '<?php echo $marker_checkin['customer']?>',
+                    customer_address: '<?php echo $marker_checkin['customer_address']?>',
+                    address         : '<?php echo $marker_checkin['address']?>',
+                    gps_address     : '<?php echo $marker_checkin['gps_address']?>',
+                    last_seen       : '<?php echo $marker_checkin['last_seen']; ?>',
+                    visit_date      : '<?php echo $marker_checkin['visit_date']; ?>',
+                    visit_time      : '<?php echo $marker_checkin['visit_time']; ?>',
+                    icon            : '<?php echo $marker_checkin['icon']; ?>'
                 }
-                createMarker(obj, "salesrep");
+                createMarker(obj, "checkin");
             <?php endforeach; ?>
         <?php endif; ?>
         // </use:php>
@@ -384,66 +390,6 @@
                 }
             }
         });
-    }
-
-    function createMarker(data, type) {
-
-        // geocoder
-        geocoder.geocode({'address': data.address}, function(results, status) {
-            if (status === "OK") {
-                if (results.length) {
-                    var coordinates = results[0].geometry.location;
-                    var html   = getInfoWindowContent(data, type);
-                    var marker = new google.maps.Marker({
-                        position: coordinates,
-                        name: data.id,
-                        map: map,
-                        icon: data.icon
-                    });
-                    google.maps.event.addListener(marker, 'click', function() {
-                        infoWindow.setContent(html);
-                        infoWindow.open(map, marker);
-                    });
-                    markers.push(marker);
-                }
-            } else {
-                /////// an error has occured: write relevant code underneath ///////
-            }
-        });
-    }
-
-    function getInfoWindowContent(data, type) {
-        var html = ``;
-        switch(type) {
-            case 'customer':
-                html += `<div class="gmap__infowindow ${type}">`;
-                html += `<div class="row">`;
-                html += `<div class="col__icon"><i class='material-icons'>&#xe0af</i></div>`;
-                html += `<div class="col__content"><b>${data.name}</b><br/>${data.address}</div>`;
-                html += `</div>`;
-                html += `<div class="row"><hr/></div>`;
-                html += `<div class="row">`;
-                html += `<div class="col__icon">&nbsp;</div>`;
-                html += `<div class="col__content"><b>Last visited:</b> ${data.last_visit}<br/>`;
-                html += `<a href="#" data-toggle="appointment-modal" data-cname="${data.name}" data-cid="${data.id}" data-srname="${data.sr_name}" data-srid="${data.sr_id}" data-addr="${data.address}">Schedule Appointment...</a></div>`;
-                html += `</div>`;
-                html += `</div>`;
-                break;
-            
-            case 'salesrep':
-                html += `<div class="gmap__infowindow ${type}">`;
-                html += `<div class="row">`;
-                html += `<div class="col__icon"><i class='material-icons'>&#xe7fd</i></div>`;
-                html += `<div class="col__content">Sales Rep: <b>${data.name}</b></div>`;
-                html += `</div>`;
-                html += `<div class="row" style="margin-top:13px">`;
-                html += `<div class="col__icon"><i class='material-icons text-danger'>&#xe55f</i></div>`;
-                html += `<div class="col__content"><b>GPS Address</b><br/>${data.address}</div>`;
-                html += `</div>`;
-                html += `</div>`;
-                break;
-        }
-        return html;
     }
 </script>
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCxPjLdmrrKDJKWM58YgvjEyRB6al2ASW0&callback=initMap"></script>

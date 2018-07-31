@@ -246,7 +246,8 @@ class ControllerReplogicLocationManagement extends Controller {
 				'customer_name'    => $customer['firstname'],
 				'last_check'       => $lastCheckAgo,
 				'checkin_location' => $location['checkin_location'],
-				'current_location' => $location['location']
+				'current_location' => $location['location'],
+				'visit_type'       => $location['type']
 			);
 
 			# store sales reps current locations [Google Map]
@@ -274,12 +275,18 @@ class ControllerReplogicLocationManagement extends Controller {
 
 			# store sales reps gps locations [Google Map]
 			$data['markers_checkins'][]  = array(
-				'latitude'  => $latitude,
-				'longitude' => $longitude,
-				'name'      => $salesrep,
-				'icon'      => 'view/image/gmap__checkin_icon.png',
-				'id'        => $location['checkin_id'],
-				'address'   => $location['checkin_location']
+				'latitude'         => $latitude,
+				'longitude'        => $longitude,
+				'name'             => $salesrep,
+				'icon'             => 'view/image/gmap__checkin_icon.png',
+				'id'               => $location['checkin_id'],
+				'customer'         => $customer['firstname'],
+				'address'          => $location['checkin_location'],
+				'customer_address' => $customerAddress,
+				'gps_address'      => $location['location'],
+				'visit_date'       => date('d M, Y', strtotime($location['start'])),
+				'visit_time'       => date('h:i A', strtotime($location['start'])),
+				'last_seen'        => $lastCheckAgo
 			);
 		}
 		$data['locations_map'] = $locationsMap;

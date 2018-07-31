@@ -217,9 +217,10 @@ input[type="radio"]:checked,
     border-left-color: #00B4DC;
 }
 .lm-leftnav-list-item > footer > div.row.new-business {
-    border-color: #666666;
+    border-left-color: #666666;
 }
-.lm-leftnav-list-item > footer .loc__last-checkin {
+.lm-leftnav-list-item > footer .loc__last-checkin,
+.loc__last-checkin {
     color: #fff;
     display: inline-block;
     background: #32DB64;
