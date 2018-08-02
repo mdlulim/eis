@@ -9,6 +9,24 @@ $_['text_add']         = 'Add Schedule Management';
 $_['text_edit']        = 'Edit Schedule Management';
 $_['text_confirm']        = 'Are you sure want to Delete Location Record ?';
 
+// Select
+$_['select_prospect_label'] = 'Prospect:';
+$_['select_prospect']       = 'All Prospects';
+$_['select_customer_label'] = 'Customer:';
+$_['select_customer']       = 'All Customers';
+$_['select_team_label']     = 'Team:';
+$_['select_team']           = 'All Teams';
+$_['select_salesrep_label'] = 'Sales Rep:';
+$_['select_salesrep']       = 'All Sales Reps';
+
+$_['radio_existing_business'] = 'Existing Business';
+$_['radio_new_business']      = 'New Business';
+
+// Map Legend [Icon Labels]
+$_['gmap_legend__checkin']  = 'Rep Checked In';
+$_['gmap_legend__location'] = 'Rep GPS Location';
+$_['gmap_legend__customer'] = 'Customer';
+
 // Column
 $_['column_name']      = 'Appointment Name';
 $_['column_action']    = 'Action';

@@ -5,44 +5,46 @@
     var $document = $(document);
     var token;
     var loader;
+    var pageId;
     var appointmentModal;
+    var modalLoader;
 
     $document.ready(function() {
         var pageFooter      = $('footer#footer');
         var lmWrapper       = $('.lm-wrapper');
         var lmContainer     = $('.lm-map-container');
-        var lmWrapperOffset = lmWrapper.offset().top;
-        var lmWrapperHeight = $window.height() - lmWrapperOffset - $window.scrollTop();
 
-        // set content height base on viewport
-        lmWrapper.css({"height": lmWrapperHeight + "px"});
-        lmContainer.css({"height": lmWrapperHeight + "px"});
+        if (lmContainer.length) {
+            var lmWrapperOffset = lmWrapper.offset().top;
+            var lmWrapperHeight = $window.height() - lmWrapperOffset - $window.scrollTop();
 
-        // remove pageFooter html
-        pageFooter.remove();
+            // set content height base on viewport
+            lmWrapper.css({"height": lmWrapperHeight + "px"});
+            lmContainer.css({"height": lmWrapperHeight + "px"});
+
+            // remove pageFooter html
+            pageFooter.remove();
+
+            // initialise date picker for appointment_date
+            var date  = new Date();
+            var today = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+            $('#input__appointment_date').datetimepicker({
+                minDate: today,
+                showTodayButton: true,
+                pickTime: false,
+                daysOfWeekDisabled: [0, 6],
+                format: 'dddd, DD MMMM YYYY'
+            });
+        }
 
         token            = $('#content').data('token');
         loader           = $('.loader-wrapper');
         appointmentModal = $('#modalScheduleAppointment');
+        modalLoader      = $('.modal__loader-overlay');
+        pageId           = $('#content').data('page-id');
 
         // hide loader
         loader.hide();
-
-        // initialise date picker for appointment_date
-        var date  = new Date();
-        var today = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-        $('#input__appointment_date').datetimepicker({
-            minDate: today,
-            showTodayButton: true,
-            pickTime: false,
-            daysOfWeekDisabled: [0, 6],
-            format: 'dddd, DD MMMM YYYY'
-        });
-        $('#input__appointment_time').datetimepicker({
-            minDate: new Date(),
-            pickDate: false,
-            format: 'h:mm A'
-        });
     });
 
     $document.on("click", ".lm-leftnav-toggle", function() {
@@ -89,17 +91,48 @@
         var salesrepId       = $(this).data('srid');
         var salesrepName     = $(this).data('srname');
         var appntmntAddress  = $(this).data('addr');
-
+        
         appointmentModal.find('input[name="customer_id"]').val(customerId);
         appointmentModal.find('span#customer_name').html(customerName);
         appointmentModal.find('input[name="salesrep_id"]').val(salesrepId);
         appointmentModal.find('span#salesrep_name').html(salesrepName);
         appointmentModal.find('#input__salesrep_name').val(salesrepName);
         appointmentModal.find('#input__appointment_address').val(appntmntAddress);
-        appointmentModal.modal('show');
+        appointmentModal.find('#input__customer_name').val(customerName);
+
+        // if location_management page check available times before show
+        if (pageId === "location_management") {
+            var date       = new Date().toDateString();
+            var url        = `index.php?route=replogic/schedule_management/getSalesRepAppointmentTimesByDate&token=${token}`;
+            $.ajax({
+                url       : url,
+                type      : 'GET',
+                data      : { salesrep_id: salesrepId, date: date },
+                dataType  : 'json',
+                beforeSend: function() {
+                    modalLoader.show();
+                },
+                success: function(json) {
+                    modalLoader.hide();
+                    if (json['booked_times']) {
+                        var times = json['booked_times'];
+                        $('.row__available-times>div')
+                        .removeClass('disabled selected')
+                        .each(function(k,v) {
+                            if (times.indexOf($(this).text()) >= 0) {
+                                $(this).addClass('disabled');
+                            }
+                        });
+                    }
+                    appointmentModal.modal('show');
+                }
+            });
+        } else {
+            appointmentModal.modal('show');
+        }
     });
 
-    $document.on("click", 'button[data-dismiss="modal"]', function() {
+    $document.on("hidden.bs.modal", '#modalScheduleAppointment', function() {
         resetAppointmentForm();
     });
 
@@ -108,14 +141,27 @@
     });
 
     $document.on("click", '#input__all_day_check', function() {
-        var durationInput = $('#input__appointment_duration');
+        var durationInput    = $('#input__appointment_duration');
+        var appointmentTimes = $('.row__available-times>div');
+        var appointmentTime  = $('#input__appointment_time');
+
+        appointmentTimes.removeClass('selected');
+        appointmentTime.val('');
         $('#input__appointment_duration option:selected').removeAttr('selected');
+
         if ($(this).is(":checked")) {
-            $('#input__appointment_duration option[value="1 Day"]').attr('selected', true);
-            durationInput.val('1 Day').attr('disabled', true);
+            $('#input__appointment_duration option[value="1 Day"]').prop('selected', true);
+            durationInput.val('1 Day');
+            appointmentTimes.each(function(k,v) {
+                if (!$(this).hasClass('disabled')) {
+                    $(this).addClass('selected');
+                    appointmentTime.val($(this).text());
+                    return false;
+                }
+            });
         } else {
-            $('#input__appointment_duration option[value="30 Minutes"]').attr('selected', true);
-            durationInput.val('30 Minutes').attr('disabled', false);
+            durationInput.val('30 minutes');
+            $('#input__appointment_duration option[value="0:30"]').prop('selected', true);
         }
     });
 
@@ -138,7 +184,7 @@
             function(isConfirm){
                 if (isConfirm) {
                     var token = $('#content').data('token');
-                    var url   = `index.php?route=replogic/location_management/scheduleAppointment&token=${token}`;
+                    var url   = `index.php?route=replogic/schedule_management/scheduleAppointment&token=${token}`;
                     var data  = $form.serialize();
                     $.ajax({
                         url      : url,
@@ -179,6 +225,50 @@
         if ($(this).val().length === 0) {
             $(this).after('<small class="text-danger bold">Enter appointment title<small>').closest('.form-group').addClass('has-error');
             $(this).closest('form').find('button[type="submit"]').attr('disabled', true);
+        }
+    });
+
+    $document.on("click", '.row__available-times>div', function() {
+        if (!$(this).hasClass('disabled')) {
+            $('.row__available-times>div').removeClass('selected');
+            $('#input__appointment_time').val($(this).text());
+            $(this).addClass('selected');
+        }
+    });
+
+    $document.on("change", '#input__appointment_date', function() {
+        var date       = $(this).val();
+        var salesrepId = $('#input__salesrep_id').val();
+        var url        = `index.php?route=replogic/schedule_management/getSalesRepAppointmentTimesByDate&token=${token}`;
+        $.ajax({
+            url       : url,
+            type      : 'GET',
+            data      : { salesrep_id: salesrepId, date: date },
+            dataType  : 'json',
+            beforeSend: function() {
+                // loader here...
+            },
+            success: function(json) {
+                if (json['booked_times']) {
+                    var times = json['booked_times'];
+                    $('.row__available-times>div')
+                    .removeClass('disabled selected')
+                    .each(function(k,v) {
+                        if (times.indexOf($(this).text()) >= 0) {
+                            $(this).addClass('disabled');
+                        }
+                    });
+                }
+            }
+        });
+    });
+
+    $document.on("change", '#input__appointment_duration', function() {
+        var allDayCheck = $('#input__all_day_check');
+        if ($(this).val() === "1 Day") {
+            allDayCheck.prop('checked', true);
+        } else {
+            allDayCheck.prop('checked', false);
         }
     });
 
@@ -249,6 +339,7 @@ function validateAppointmentForm() {
     var title    = $('#input__appointment_title');
     var customer = $('#input__customer_id');
     var salesrep = $('#input__salesrep_id');
+    var time     = $('#input__appointment_time');
     var valid    = true;
 
     // validate appointment title
@@ -258,12 +349,18 @@ function validateAppointmentForm() {
         valid = false;
     }
 
+    // validate appointment time
+    if (time.val().length === 0) {
+        swal("Error!", "Please select time of the appointment", "error");
+        valid = false;
+    }
+
     return valid;
 }
 
 // reset appointment form
 function resetAppointmentForm() {
-    var form = $('#form__schedule-appointment');
+    var form  = $('#form__schedule-appointment');
     form.find('.form-group').removeClass('has-error').find('small.text-danger').remove();
     form[0].reset();
 }

@@ -1,6 +1,6 @@
 <?php echo $header; ?>
 <?php echo $column_left; ?>
-<div id="content" class="lm__wrapper" data-token="<?php echo $token; ?>">
+<div id="content" class="lm__wrapper" data-page-id="location_management" data-token="<?php echo $token; ?>">
     <div class="page-header">
         <div class="container-fluid">
             <div class="pull-right">
@@ -17,14 +17,29 @@
         </div>
     </div>
     <div class="container-fluid">
+    
+        <!-- Warning messages -->
+        <?php if ($error_warning) : ?>
+        <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> <?php echo $error_warning; ?>
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+        </div>
+        <?php endif; ?>
+        <?php if ($success) : ?>
+        <div class="alert alert-success"><i class="fa fa-check-circle"></i> <?php echo $success; ?>
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+        </div>
+        <?php endif; ?>
+        <!-- /Warning messages -->
+
+        <!-- Filters -->
         <div class="lm-filters">
             <form action="" name="lm-filters" class="form-inline" id="frm-lm-filters">
                 <div class="row">
                     <div class="col-md-3">
                         <div class="form-group">
-                            <label for="lmf-team">Team:</label>
+                            <label for="lmf-team"><?php echo $select_team_label; ?></label>
                             <select id="lmf-team" name="teams" class="form-control">
-                                <option value="">All Teams</option>
+                                <option value=""><?php echo $select_team; ?></option>
                                 <?php if (!empty($teams)) : ?>
                                     <?php foreach($teams as $team) : ?>
                                     <option value="<?php echo $team['team_id']; ?>" <?php echo ($filter_team_id==$team['team_id']) ? 'selected' : ''; ?>>
@@ -37,9 +52,9 @@
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
-                            <label for="lmf-salesrep">Sales Rep:</label>
+                            <label for="lmf-salesrep"><?php echo $select_salesrep_label; ?></label>
                             <select id="lmf-salesrep" name="salesreps" class="form-control">
-                                <option value="">All Sales Reps</option>
+                                <option value=""><?php echo $select_salesrep; ?></option>
                                 <?php if (!empty($salesreps)) : ?>
                                     <?php foreach($salesreps as $salesrep) : ?>
                                     <option value="<?php echo $salesrep['salesrep_id']; ?>" <?php echo ($filter_salesrep_id==$salesrep['salesrep_id']) ? 'selected' : ''; ?>>
@@ -58,7 +73,7 @@
                                     <div class="radio">
                                         <label for="lmf-existing-business">
                                             <input id="lmf-existing-business" class="lmf-type" name="type" type="radio" value="customer" <?php echo ($filter_type=="customer") ? 'checked' : ''; ?>>
-                                            <span>Existing Business</span>
+                                            <span><?php echo $radio_existing_business; ?></span>
                                         </label>
                                     </div>
                                 </div>
@@ -68,7 +83,7 @@
                                     <div class="radio">
                                         <label for="lmf-new-business">
                                             <input id="lmf-new-business" class="lmf-type" name="type" value="prospect" type="radio" <?php echo ($filter_type=="prospect") ? 'checked' : ''; ?>>
-                                            <span>New Business</span>
+                                            <span><?php echo $radio_new_business; ?></span>
                                         </label>
                                     </div>
                                 </div>
@@ -93,6 +108,8 @@
                 </div>
             </form>
         </div>
+        <!-- /Filters -->
+
         <div class="row">
             <div class="col-md-12">
                 <div class="lm-wrapper">
@@ -152,6 +169,8 @@
                                         </div>
                                     </li>
                                     <?php endforeach; ?>
+                                <?php else: ?>
+                                <p class="no-data-found">No results found for the specified filters</p>
                                 <?php endif; ?>
                             </ul>
                         </div>
@@ -167,13 +186,19 @@
         </div>
     </div>
 </div>
+
+<!-- Modal(s) -->
 <div class="modal fade" id="modalScheduleAppointment" tabindex="-1" role="dialog" aria-labelledby="modalScheduleAppointmentLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
+            <div class="modal__loader-overlay"><div>Please waiting whilst processing...</div></div>
             <form id="form__schedule-appointment" action=" " method="post" novalidate>
+                <input type="hidden" name="appointment_type" id="input__appointment_type" value="<?php echo ($filter_type=='customer') ? 'Existing Business' : 'New Business'; ?>">
                 <input type="hidden" name="customer_id" id="input__customer_id">
                 <input type="hidden" name="salesrep_id" id="input__salesrep_id">
                 <input type="hidden" name="appointment_address" id="input__appointment_address">
+                <input type="hidden" name="appointment_time" id="input__appointment_time">
+                <input type="hidden" name="bcustomer_name" id="input__customer_name">
                 <input type="hidden" id="input__salesrep_name">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -189,7 +214,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="form-group required">
+                        <div class="form-group">
                             <label class="col-sm-3 text-right" for="">Customer:</label>
                             <div class="col-sm-3" style="padding-top:8px"><span id="customer_name">-</span></div>
                             <label class="col-sm-3 text-right" for="input__salesrep">Sales Rep Name:</label>
@@ -199,7 +224,7 @@
                     <div class="row">
                         <div class="form-group required">
                             <label class="col-sm-3 text-right" for="input__appointment_duration">Duration:</label>
-                            <div class="col-sm-4">
+                            <div class="col-sm-6">
                                 <select class="form-control" name="appointment_duration" id="input__appointment_duration">
                                     <option value="0:30" selected>30 minutes</option>
                                     <option value="1:00">1 hour</option>
@@ -222,7 +247,7 @@
                                     <option value="2 Weeks">2 Weeks</option>
                                 </select>
                             </div>
-                            <div class="col-sm-5">
+                            <div class="col-sm-3">
                                 <div class="checkbox">
                                     <label>
                                         <input name="appointment_duration_all_day" type="checkbox" id="input__all_day_check">
@@ -233,17 +258,29 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="form-group has-feedback required">
+                        <div class="form-group required">
                             <label class="col-sm-3 text-right">Date:</label>
-                            <div class="col-sm-4">
+                            <div class="col-sm-6">
                                 <div>
                                     <input type='text' name="appointment_date" id="input__appointment_date" class="form-control" value="<?php echo date('l, d F Y');?>" />
                                 </div>
                             </div>
-                            <label class="col-sm-2 text-right">Time:</label>
-                            <div class="col-sm-3">
-                                <div>
-                                    <input type='text' name="appointment_time" id="input__appointment_time" class="form-control" value="<?php echo date('g:i A');?>" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group required">
+                            <label class="col-sm-3 text-right">Available Times:</label>
+                            <div class="col-sm-9">
+                                <div class="row row__available-times">
+                                    <?php if (!empty($available_times)) : ?>
+                                        <?php foreach ($available_times as $time) : ?>
+                                            <?php if (in_array($time, $booked_times)) : ?>
+                                            <div class="col-sm-2 disabled"><?php echo $time; ?></div>
+                                            <?php else: ?>
+                                            <div class="col-sm-2"><?php echo $time; ?></div>
+                                            <?php endif; ?>
+                                        <?php endforeach; ?>
+                                    <?php endif; ?>
                                 </div>
                             </div>
                         </div>
@@ -265,6 +302,7 @@
         </div>
     </div>
 </div>
+<!-- /Modal(s) -->
 
 <!-- Page loader -->
 <div class="loader-wrapper">

@@ -25,7 +25,7 @@ class ControllerReplogicLocationManagement extends Controller {
 		$this->load->language('replogic/location_management');
 		$this->document->setTitle($this->language->get('heading_title'));
 		$this->load->model('replogic/location_management');
-		// $this->getList();
+		
 		$this->locationManagement();
 	}
 	
@@ -76,8 +76,12 @@ class ControllerReplogicLocationManagement extends Controller {
 		$this->load->model('user/team');
 		
 		$this->load->model('replogic/sales_rep_management');
+		$this->load->model('replogic/schedule_management');
 		$this->load->model('customer/customer');
 		$this->load->model('user/team');
+
+		# load language files
+		$this->load->language('replogic/location_management');
 
 		# route token
 		$data['token'] = $this->session->data['token'];
@@ -138,14 +142,14 @@ class ControllerReplogicLocationManagement extends Controller {
 			$url .= '&filter_type=' . $this->request->get['filter_type'];
 			$filters['filter_customer_type'] = "New Business";
 			$data['filter_type']             = $this->request->get['filter_type'];
-			$data['select_customer_label']   = 'Prospect:';
-			$data['select_customer']         = 'All Prospects';
+			$data['select_customer_label']   = $this->language->get('select_prospect_label');
+			$data['select_customer']         = $this->language->get('select_prospect');
 			$isProspectCustomer              = true;
 		} else {
 			$filters['filter_customer_type'] = "Existing Business";
 			$data['filter_type']             = "customer";
-			$data['select_customer_label']   = 'Customer:';
-			$data['select_customer']         = 'All Customers';
+			$data['select_customer_label']   = $this->language->get('select_customer_label');
+			$data['select_customer']         = $this->language->get('select_customer');
 			$isProspectCustomer              = false;
 		}
 
@@ -226,9 +230,15 @@ class ControllerReplogicLocationManagement extends Controller {
 				$customer = $this->model_customer_customer->getCustomer($location['customer_id']);
 			
 				# get customer address/location
-				$customerAddress   = $this->model_customer_customer->getAddress($customer['address_id']);
-				$customerLatitude  = $customerAddress['latitude'];
-				$customerLongitude = $customerAddress['longitude'];
+				$cAddress          = $this->model_customer_customer->getAddress($customer['address_id']);
+				$customerLatitude  = $cAddress['latitude'];
+				$customerLongitude = $cAddress['longitude'];
+				$customerAddress   = $cAddress['address_1'].", ";
+				$customerAddress  .= (!empty($cAddress['address_2'])) ? $cAddress['address_2'].", " : "";
+				$customerAddress  .= $cAddress['city'].", ";
+				$customerAddress  .= $cAddress['zone'].", ";
+				$customerAddress  .= $cAddress['country'].", ";
+				$customerAddress  .= $cAddress['postcode'];
 			}
 			
 			# last check in date/time
@@ -289,12 +299,38 @@ class ControllerReplogicLocationManagement extends Controller {
 				'last_seen'        => $lastCheckAgo
 			);
 		}
-		$data['locations_map'] = $locationsMap;
+
+		/*******************************************
+		 * Available and booked times
+		 *******************************************/
 		
+		$bookedTimesForToday     = $this->model_replogic_schedule_management->getSalesRepAppointmentTimesByDate($data['filter_salesrep_id'], date('Y-m-d'));
+		$data['booked_times']    = array();
+		$data['available_times'] = array("08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00");
+
+		if (!empty($bookedTimesForToday)) {
+			foreach($bookedTimesForToday as $time) {
+				$data['booked_times'][] = $time['appointment_time'];
+			}
+		}
 
 		/*******************************************
 		 * Set page output data 
 		 *******************************************/
+
+		$data['gmap_legend__checkin']  = $this->language->get('gmap_legend__checkin');
+		$data['gmap_legend__location'] = $this->language->get('gmap_legend__location');
+		$data['gmap_legend__customer'] = $this->language->get('gmap_legend__customer');
+
+		$data['heading_title']         = $this->language->get('heading_title');
+
+		$data['select_team_label']     = $this->language->get('select_team_label');
+		$data['select_team']           = $this->language->get('select_team');
+		$data['select_salesrep_label'] = $this->language->get('select_salesrep_label');
+		$data['select_salesrep']       = $this->language->get('select_salesrep');
+
+		$data['radio_existing_business'] = $this->language->get('radio_existing_business');
+		$data['radio_new_business']      = $this->language->get('radio_new_business');
 		
 		$data['button_reload'] = $this->url->link('replogic/location_management', 'token=' . $data['token'] . $url, true);
 		$data['header']        = $this->load->controller('common/header');
@@ -847,64 +883,6 @@ class ControllerReplogicLocationManagement extends Controller {
 				);
 			}
 		}
-		$this->response->addHeader('Content-Type: application/json');
-		$this->response->setOutput(json_encode($json));
-	}
-
-	public function scheduleAppointment() {
-		$json = array();
-		$this->load->model('replogic/schedule_management');
-
-		if ($this->request->server['REQUEST_METHOD'] == 'POST') {
-
-			$data         = $this->request->post;
-			$data['type'] = "Existing Business";
-
-			/*******************************************
-			 * This is used to determine appointment 
-			 * duration in hours and minutes.
-			 * -----------------------------------------
-			 * We assume that:
-			 * - A single day is equal to 12 hours
-			 * - A single week is equal to 5 days
-			 *******************************************/
-			
-			if ($this->request->post['appointment_duration_all_day']) {
-				$data['hour']    = 12; // 12 [hours a day]
-				$data['minutes'] = 0;
-			} else {
-
-				if (preg_match('/Day/', $this->request->post['appointment_duration'])) {
-					$duration 		 = explode(" ", $this->request->post['appointment_duration']);
-					$data['hour']    = intval($duration[0]) * 12; // (num of days) * 12 [hours a day]
-					$data['minutes'] = 0;
-				} elseif (preg_match('/Week/', $this->request->post['appointment_duration'])) {
-					$duration 		 = explode(" ", $this->request->post['appointment_duration']);
-					$data['hour']    = intval($duration[0]) * 5 * 12; // (num of weeks) * 5 [days a week] * 12 [hours a day]
-					$data['minutes'] = 0;
-				} else {
-					$duration        = explode(":", $this->request->post['appointment_duration']);
-					$data['hour']    = $duration[0];
-					$data['minutes'] = $duration[1];
-				}
-			}
-			// appointment date and time
-			$date = $this->request->post['appointment_date'];
-			$time = $this->request->post['appointment_time'];
-			$data['appointment_date'] = date("Y-m-d H:i:s", strtotime("$date $time"));
-
-			// save appointment to database using model
-			$appointmentId = $this->model_replogic_schedule_management->addScheduleManagement($data);
-			if (!empty($appointmentId) && is_numeric($appointmentId)) {
-				$json['success']        = true;
-				$json['message']        = "Appointment successfully created!";
-				$json['appointment_id'] = $appointmentId;
-			} else {
-				$json['success']        = false;
-				$json['error']          = 'An unexpected error has occurred, please try again.';
-			}
-		}
-
 		$this->response->addHeader('Content-Type: application/json');
 		$this->response->setOutput(json_encode($json));
 	}

@@ -93,6 +93,10 @@ class ModelReplogicLocationManagement extends Model {
 				$sql .= " AND ck.checkin >= '" . $fromdate . "' AND ck.checkin <= '" . $todate . "'";
 			}
 			
+			if (!empty($data['filter_date']))  { 
+				$sql .= " AND DATE_FORMAT(ck.checkin, '%Y-%m-%d') = '" . $this->db->escape($data['filter_date']) . "'";
+			}
+			
 			$sql .= " ORDER BY ck.checkin_id";
 			
 		} else {
@@ -124,6 +128,10 @@ class ModelReplogicLocationManagement extends Model {
 				$sql .= " AND ck.checkin >= '" . $fromdate . "' AND ck.checkin <= '" . $todate . "'";
 			}
 			
+			if (!empty($data['filter_date']))  { 
+				$sql .= " AND DATE_FORMAT(ck.checkin, '%Y-%m-%d') = '" . $this->db->escape($data['filter_date']) . "'";
+			}
+			
 			$sql .= " ORDER BY ck.checkin_id";
 
 		}
@@ -149,6 +157,12 @@ class ModelReplogicLocationManagement extends Model {
 		$query = $this->db->query($sql);
 
 		return $query->rows;
+	}
+
+	public function getSalesRepLocation($salesrep_id) {
+		$query = $this->db->query("SELECT DISTINCT * FROM " . DB_PREFIX . "salesrep_checkins WHERE salesrep_id = '" . (int)$salesrep_id . "' ORDER BY checkin_id DESC LIMIT 0,1");
+
+		return $query->row;
 	}
 
 	public function getLocation($checkin_id) {
