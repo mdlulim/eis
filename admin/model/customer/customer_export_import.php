@@ -1,6 +1,8 @@
 <?php
 class ModelCustomerCustomerExportImport extends Model {
+	
 	public function importCsvCustomerDataUpdate($data) {
+		
 	
 		$sql = "UPDATE ".DB_PREFIX."customer SET ";
 		
@@ -118,10 +120,11 @@ class ModelCustomerCustomerExportImport extends Model {
 	}
 	
 	public function importCsvCustomerDataInsert($data) { 
-	
+			
 		$sel = "SELECT * from ".DB_PREFIX."customer where email = '".$data['email']."'";
 		$query = $this->db->query($sel);
 		$val = $query->row;
+		
 		if($val)
 		{
 			$customer_id = $val['customer_id'];
@@ -131,14 +134,20 @@ class ModelCustomerCustomerExportImport extends Model {
 			$customer_id = '';
 		}
 		
-		if($customer_id)
+		if(!empty($customer_id) && $customer_id)
 		{
-			$sql = "UPDATE ".DB_PREFIX."customer SET ";
+			//if($data['companyname'] != '' && $data['telephone'] != '' && $data['email'] != '' && $data['paymentmethod'] != '' && $data['status'] != '' && $data['address1'] != '' && $data['city'] != '' && $data['country'] != '' && $data['region'] != ''){
+				$sql = "UPDATE ".DB_PREFIX."customer SET ";
+			//}
 		}
 		else
 		{
+		if($data['companyname'] != '' && $data['telephone'] != '' && $data['email'] != '' && $data['paymentmethod'] != '' && $data['status'] != '' && $data['address1'] != '' && $data['city'] != '' && $data['country'] != '' && $data['region'] != ''){
+			//var_dump("checked");die();
 			$sql = "INSERT INTO ".DB_PREFIX."customer SET ";
 			$sql .= "date_added = NOW(), ";
+		}
+			
 		}
 		
 		if ($this->config->get( 'customer_export_import_settings_companyname' ) && ($data['companyname'] != '') ) {
@@ -196,16 +205,21 @@ class ModelCustomerCustomerExportImport extends Model {
 			$sql1 .= " WHERE customer_id='".$customer_id."'";
 			$customer_id = $customer_id;
 		}
-		//echo $sql1; exit;
+		if ($customer_id == 57) { echo $sql1; exit; }
+		
 		$this->db->query($sql1);
+		
 		
 		if(empty($customer_id))
 		{
 			$customer_id = $this->db->getLastId();
 		}
 		
+		
 		if (!empty($data['address1']) || !empty($data['companyname']) || !empty($data['city']) || !empty($data['postcode']) || !empty($data['region']) || !empty($data['country']) )
 		{ 
+			//var_dump($data['address1']);
+			//var_dump($data['address1']);
 		
 			if($customer_id)
 			{ 
@@ -256,11 +270,10 @@ class ModelCustomerCustomerExportImport extends Model {
 			}
 			
 			$adr1 = rtrim($adr, ', '); 
-		//echo $adr1; exit;	
+		    //echo $adr1; exit;	
 			
 			$this->db->query($adr1);
 			$address_id = $this->db->getLastId();
-			
 			if($customer_id)
 			{
 				if ($this->config->get( 'customer_export_import_settings_defaultaddress' ) && ($data['defaultaddress'] != '')) 
