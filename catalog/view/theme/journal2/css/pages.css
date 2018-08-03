@@ -7,6 +7,8 @@
 .information-page #content > p + div {
   margin-top: 20px; }
 
+.text-left { text-align: left !important; }
+
 /******************************
  SHOPPING CART
 *******************************/
