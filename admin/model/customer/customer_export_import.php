@@ -62,9 +62,9 @@ class ModelCustomerCustomerExportImport extends Model {
 		if (!empty($data['address1']) || !empty($data['companyname']) || !empty($data['city']) || !empty($data['postcode']) || !empty($data['region']) || !empty($data['country']) )
 		{ 
 		
-			$dlt = "DELETE FROM ".DB_PREFIX."address where customer_id = '".(int)$data['customer_id']."' and firstname = '".$data['companyname']."' and lastname = '".$data['companyname']."' and company = '".$data['companyname']."' and address_1 = '".$data['address1']."' and city = '".$data['city']."' and postcode = '".$data['postcode']."' and country_id = '".$data['country']."' and zone_id = '".$data['region']."'"; 
+			// $dlt = "DELETE FROM ".DB_PREFIX."address where customer_id = '".(int)$data['customer_id']."' and firstname = '".$data['companyname']."' and lastname = '".$data['companyname']."' and company = '".$data['companyname']."' and address_1 = '".$data['address1']."' and city = '".$data['city']."' and postcode = '".$data['postcode']."' and country_id = '".$data['country']."' and zone_id = '".$data['region']."'"; 
 			
-			$this->db->query($dlt);
+			// $this->db->query($dlt);
 			
 			$adr = "INSERT ".DB_PREFIX."address SET ";
 			
@@ -118,9 +118,17 @@ class ModelCustomerCustomerExportImport extends Model {
 		
 		
 	}
+	public function deleteCustomerRowById($data, $customer_id){
+		if (!empty($customer_id) &&  empty($data['address1']) && empty($data['companyname']) && empty($data['city']) && empty($data['postcode']) && empty($data['region']) && empty($data['country']) )
+		{
+			$sqlCheck = "SELECT * ".DB_PREFIX."customer WHERE customer_id =".$customer_id;
+			$this->db->query($sqlCheck);
+		
+		}
+	}
 	
 	public function importCsvCustomerDataInsert($data) { 
-			
+		
 		$sel = "SELECT * from ".DB_PREFIX."customer where email = '".$data['email']."'";
 		$query = $this->db->query($sel);
 		$val = $query->row;
@@ -133,17 +141,16 @@ class ModelCustomerCustomerExportImport extends Model {
 		{
 			$customer_id = '';
 		}
+		$this->deleteCustomerRowById($data, $customer_id);
 		
-		if(!empty($customer_id) && $customer_id)
+		if(!empty($customer_id))
 		{
 			//if($data['companyname'] != '' && $data['telephone'] != '' && $data['email'] != '' && $data['paymentmethod'] != '' && $data['status'] != '' && $data['address1'] != '' && $data['city'] != '' && $data['country'] != '' && $data['region'] != ''){
 				$sql = "UPDATE ".DB_PREFIX."customer SET ";
 			//}
-		}
-		else
-		{
+		} else {
+			
 		if($data['companyname'] != '' && $data['telephone'] != '' && $data['email'] != '' && $data['paymentmethod'] != '' && $data['status'] != '' && $data['address1'] != '' && $data['city'] != '' && $data['country'] != '' && $data['region'] != ''){
-			//var_dump("checked");die();
 			$sql = "INSERT INTO ".DB_PREFIX."customer SET ";
 			$sql .= "date_added = NOW(), ";
 		}
@@ -199,14 +206,12 @@ class ModelCustomerCustomerExportImport extends Model {
 		}
 		
 		$sql1 = rtrim($sql, ', '); 
-		
+		//var_dump($sql1);
 		if($customer_id)
 		{
 			$sql1 .= " WHERE customer_id='".$customer_id."'";
 			$customer_id = $customer_id;
 		}
-		if ($customer_id == 57) { echo $sql1; exit; }
-		
 		$this->db->query($sql1);
 		
 		
@@ -218,15 +223,13 @@ class ModelCustomerCustomerExportImport extends Model {
 		
 		if (!empty($data['address1']) || !empty($data['companyname']) || !empty($data['city']) || !empty($data['postcode']) || !empty($data['region']) || !empty($data['country']) )
 		{ 
-			//var_dump($data['address1']);
-			//var_dump($data['address1']);
-		
+			
 			if($customer_id)
 			{ 
 				$dlt = "DELETE FROM ".DB_PREFIX."address where customer_id = '".(int)$customer_id."' and firstname = '".$data['companyname']."' and lastname = '".$data['companyname']."' and company = '".$data['companyname']."' and address_1 = '".$data['address1']."' and city = '".$data['city']."' and postcode = '".$data['postcode']."' and country_id = '".$data['country']."' and zone_id = '".$data['region']."'";
 			} 
 			
-			$this->db->query($dlt);
+			// $this->db->query($dlt);
 			
 			$adr = "INSERT ".DB_PREFIX."address SET ";
 			
@@ -274,7 +277,7 @@ class ModelCustomerCustomerExportImport extends Model {
 			
 			$this->db->query($adr1);
 			$address_id = $this->db->getLastId();
-			if($customer_id)
+			if($customer_id )
 			{
 				if ($this->config->get( 'customer_export_import_settings_defaultaddress' ) && ($data['defaultaddress'] != '')) 
 				{
@@ -626,6 +629,7 @@ class ModelCustomerCustomerExportImport extends Model {
 	    exit;
 		
 	}
+	
 	
 }
 ?>

@@ -33,7 +33,7 @@
       </div>
       <div class="panel-body">
         <div class="well">
-        	<h3>Filters</h3>
+          <h3>Filters</h3>
           <div class="row">
             <div class="col-sm-4">
               <div class="form-group">
