@@ -1,14 +1,30 @@
----------- Date: 2018-05-10 12:12:40 ~ IP : 116.73.214.28 ----------
-REQUEST URI : /rodney/admin/index.php?route=catalog/product&token=y4KbSf8AHoO9ghebaHZw1fFUzCsJURHZ
+---------- Date: 2018-08-02 15:43:56 ~ IP : ::1 ----------
+REQUEST URI : /boothsbs/admin/index.php?route=catalog/product&token=WVj69Samb18ZnaIFULz8upyxjrbZWdDe
 MOD DETAILS:
-   modFile   : /var/www/html/rodney/vqmod/xml/productViewOrder.xml
+   modFile   : /Applications/XAMPP/xamppfiles/htdocs/boothsbs/vqmod/xml/productViewOrder.xml
    id        : Product - View orders
    version   : 1.0.0
    vqmver    : 2.4.2
    author    : Nerdherd Developers
+VQModObject::parseMods - Could not resolve path for [admin/view/template/catalog/product_listc.tpl] (SKIPPED)
 
 File Name    : admin/view/template/catalog/product_list.tpl(8)
 VQModObject::applyMod - SEARCH NOT FOUND (ABORTING MOD): <button type="button" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-search"></i> <?php echo $button_filter; ?></button>
+----------------------------------------------------------------------
+
+
+---------- Date: 2018-08-02 15:44:00 ~ IP : ::1 ----------
+REQUEST URI : /boothsbs/admin/index.php?route=catalog/product/edit&token=WVj69Samb18ZnaIFULz8upyxjrbZWdDe&product_id=8160
+MOD DETAILS:
+   modFile   : /Applications/XAMPP/xamppfiles/htdocs/boothsbs/vqmod/xml/PSM_Prices_By_Customer_groups.xml
+   id        : Prices By Customer Groups
+   version   : 1.0.1 - oc2302
+   vqmver    : 2.1.6
+   author    : OC-addons - oc-addons.com
+
+File Name    : admin/view/template/catalog/product_form.tpl(0)
+VQModObject::applyMod - SEARCH NOT FOUND (ABORTING MOD): <input type="text" name="priceeeee" value="<?php echo $price; ?>" placeholder="<?php echo $entry_price; ?>" id="input-price" class="form-control" />
+
 ----------------------------------------------------------------------
 
 

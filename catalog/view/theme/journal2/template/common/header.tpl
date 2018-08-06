@@ -125,33 +125,35 @@ $('body').prepend('<iframe src="<?php echo $store; ?>" style="display: none;"></
 <!--[if lt IE 9]>
 <div class="old-browser"><?php echo $this->journal2->settings->get('old_browser_message', 'You are using an old browser. Please <a href="http://windows.microsoft.com/en-us/internet-explorer/download-ie">upgrade to a newer version</a> or <a href="http://browsehappy.com/">try a different browser</a>.'); ?></div>
 <![endif]-->
-<?php if ($this->journal2->settings->get('config_header_modules')):  ?>
+<?php if ($this->journal2->settings->get('config_header_modules')) :  ?>
     <?php echo $this->journal2->settings->get('config_header_modules'); ?>
 <?php endif; ?>
 <?php
     $header_type = $this->journal2->settings->get('header_type', 'default');
-    if ($header_type === 'extended') {
-        $header_type = 'default';
-    }
-    if ($header_type === 'compact') {
-        $header_type = 'compact';
-    }
-    if ($header_type === 'center') {
-        $header_type = 'center';
-    }
-    if ($header_type === 'mega') {
-        $header_type = 'mega';
-    }
-    if (class_exists('VQMod')) {
-        global $vqmod;
-        if ($vqmod !== null) {
-            require $vqmod->modCheck(DIR_TEMPLATE . $this->config->get('config_template') . "/template/journal2/headers/{$header_type}.tpl");
-        } else {
-            require VQMod::modCheck(DIR_TEMPLATE . $this->config->get('config_template') . "/template/journal2/headers/{$header_type}.tpl");
+      // if($this->config->get('config_store_id') !== 0 && $this->request->get['route'] !== 'account/login') { 
+            if ($header_type === 'extended') {
+                $header_type = 'default';
+            }
+            if ($header_type === 'compact') {
+                $header_type = 'compact';
+            }
+            if ($header_type === 'center') {
+                $header_type = 'center';
+            }
+            if ($header_type === 'mega') {
+                $header_type = 'mega';
+            }
+            if (class_exists('VQMod')) {
+                global $vqmod;
+                if ($vqmod !== null) {
+                    require $vqmod->modCheck(DIR_TEMPLATE . $this->config->get('config_template') . "/template/journal2/headers/{$header_type}.tpl");
+                } else {
+                    require VQMod::modCheck(DIR_TEMPLATE . $this->config->get('config_template') . "/template/journal2/headers/{$header_type}.tpl");
+                }
+            } else {
+                require modification(DIR_TEMPLATE . $this->config->get('config_template') . "/template/journal2/headers/{$header_type}.tpl");
         }
-    } else {
-        require modification(DIR_TEMPLATE . $this->config->get('config_template') . "/template/journal2/headers/{$header_type}.tpl");
-    }
+   // }
 ?>
 <?php if ($this->journal2->settings->get('config_top_modules')): ?>
 <div id="top-modules">

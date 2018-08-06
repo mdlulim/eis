@@ -28,7 +28,9 @@ class ModelJournal2Checkout extends Model {
         $this->load->model('checkout/order');
         $this->load->model('localisation/country');
         $this->load->model('localisation/zone');
+     
         $this->order_id = Journal2Utils::getProperty($this->session->data, 'order_id');
+       
         if ($this->order_id) {
             $this->order_data = $this->model_checkout_order->getOrder($this->order_id);
             $order_query = $this->db->query("SELECT customer_group_id FROM `" . DB_PREFIX . "order` WHERE order_id = '" . (int)$this->order_id . "'");
@@ -368,6 +370,7 @@ class ModelJournal2Checkout extends Model {
                 $this->order_data['shipping_zone_id']       = Journal2Utils::getProperty($this->session->data, 'shipping_address.zone_id', $this->config->get('config_zone_id'));
                 $this->order_data['shipping_postcode']      = Journal2Utils::getProperty($this->session->data, 'shipping_address.postcode', '');
             }
+            
             $this->order_id = $this->model_checkout_order->addOrder($this->order_data);
             $this->session->data['order_id'] = $this->order_id;
         }
