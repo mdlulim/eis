@@ -1,15 +1,12 @@
----------- Date: 2018-05-28 09:55:35 ~ IP : 41.0.159.4 ----------
-REQUEST URI : /ReplogicExtension/admin/index.php?route=catalog/product/edit&token=MQW4QvMdNkCwADGp1CtQxbxyWoYWeeAf&product_id=1757
+---------- Date: 2018-08-06 17:12:17 ~ IP : ::1 ----------
+REQUEST URI : /saleslogicmdu/admin/index.php?route=replogic/quotes_info&quote_id=35&token=348KmlHbIisGZIZxjMFPFJkCSOygVoog
 MOD DETAILS:
-   modFile   : /var/www/html/ReplogicExtension/vqmod/xml/PSM_Prices_By_Customer_groups.xml
-   id        : Prices By Customer Groups
-   version   : 1.0.1 - oc2302
-   vqmver    : 2.1.6
-   author    : OC-addons - oc-addons.com
-
-File Name    : admin/view/template/catalog/product_form.tpl(0)
-VQModObject::applyMod - SEARCH NOT FOUND (ABORTING MOD): <input type="text" name="priceeeee" value="<?php echo $price; ?>" placeholder="<?php echo $entry_price; ?>" id="input-price" class="form-control" />
-
+   modFile   : /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/vqmod/xml/productViewOrder.xml
+   id        : Product - View orders
+   version   : 1.0.0
+   vqmver    : 2.4.2
+   author    : Nerdherd Developers
+VQModObject::parseMods - Could not resolve path for [admin/view/template/catalog/product_listc.tpl] (SKIPPED)
 ----------------------------------------------------------------------
 
 

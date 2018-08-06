@@ -174,10 +174,8 @@ class ControllerProductSpecial extends Controller {
 				'price'       => $price,
 				'special'     => $special,
 
-                'date_end'    => $date_end,
-            	'model'       => $result['model'],
-        		'cart_qty'    => (isset($cartProductIds[$result['product_id']])) ? $cartProductIds[$result['product_id']] : 0,
-        		
+                'date_end'       => $date_end,
+            
 				'tax'         => $tax,
             	'model'       => $result['model'],
         		'cart_qty'    => (isset($cartProductIds[$result['product_id']])) ? $cartProductIds[$result['product_id']] : 0,
