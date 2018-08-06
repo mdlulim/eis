@@ -35,18 +35,61 @@
         <?php } ?>
       </h1>
       <?php echo $content_top; ?>
+      <div class="row datatable-custom-filters" data-filter-columns="[1,2,3]">
+        <div class="col-sm-6"><div id="export-buttons"></div></div>
+        <div class="col-sm-6 pull-right">
+          <form class="form-inline">
+            <div class="form-group">
+              <label class="sr-only">Search</label>
+              <div class="input-group">
+                <input type="text" class="form-control input-filter" placeholder="Search">
+                <div class="input-group-btn">
+                  <button type="button" class="btn btn-primary"><span class="fa fa-search"></span></button>
+                  <button type="button" class="btn btn-default dropdown-toggle">
+                    <span class="caret"></span>
+                  </button>
+                  <ul class="dropdown-menu dropdown-menu-right">
+                    <li>
+                      <a class="checkbox">
+                        <label>
+                          <input type="checkbox" checked="checked" value="1">Product Name
+                        </label>
+                      </a>
+                    </li>
+                    <li>
+                      <a class="checkbox">
+                        <label>
+                          <input type="checkbox" checked="checked" value="2">Category
+                        </label>
+                      </a>
+                    </li>
+                    <li>
+                      <a class="checkbox">
+                        <label>
+                          <input type="checkbox" checked="checked" value="3">SKU
+                        </label>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
       <form action="<?php echo $action; ?>" method="post" enctype="multipart/form-data">
         <div class="table-responsive cart-info">
-          <table class="table table-bordered">
+          <table class="table table-condensed">
             <thead>
               <tr>
-                <td class="text-center image"><?php echo $column_image; ?></td>
-                <td class="text-left name"><?php echo $column_name; ?></td>
-                <td class="text-left model"><?php echo $column_model; ?></td>
-                <td class="text-left quantity"><?php echo $column_quantity; ?></td>
-                <td class="text-right price"><?php echo $column_price; ?></td>
-                <td class="text-right total"><?php echo $column_total; ?></td>
-                <td></td>
+                <th class="text-left image"><?php echo $column_image; ?></th>
+                <th class="text-left name searchable"><?php echo $column_name; ?></th>
+                <th class="text-left category searchable">Category</th>
+                <th class="text-left model searchable">SKU</th>
+                <th class="text-left quantity"><?php echo $column_quantity; ?></th>
+                <th class="text-right price"><?php echo $column_price; ?></th>
+                <th class="text-right total"><?php echo $column_total; ?></th>
+                <th></th>
               </tr>
             </thead>
             <tbody>
@@ -55,7 +98,7 @@
                 <td class="text-center image"><?php if ($product['thumb']) { ?>
                   <a href="<?php echo $product['href']; ?>"><img src="<?php echo $product['thumb']; ?>" alt="<?php echo $product['name']; ?>" title="<?php echo $product['name']; ?>" class="img-thumbnail" /></a>
                   <?php } ?></td>
-                <td class="text-left name"><a href="<?php echo $product['href']; ?>"><?php echo $product['name']; ?></a>
+                <td class="text-left name searchable"><a href="<?php echo $product['href']; ?>"><?php echo $product['name']; ?></a>
                   <?php if (!$product['stock']) { ?>
                   <span class="text-danger">***</span>
                   <?php } ?>
@@ -73,24 +116,19 @@
                   <br />
                   <span class="label label-info"><?php echo $text_recurring_item; ?></span> <small><?php echo $product['recurring']; ?></small>
                   <?php } ?></td>
-                <td class="text-left model"><?php echo $product['model']; ?></td>
-                <td class="text-left quantity">
+                <td class="text-left category searchable"><?php echo $product['category']; ?></td>
+                <td class="text-left model searchable"><?php echo $product['model']; ?></td>
+                <td class="text-center quantity">
                   <span class="qty">
                     <a href="javascript:;" class="journal-stepper" onclick="Journal.removeProductFromCart(<?php echo $product['product_id']; ?>, this)">-</a>
                     <input name="quantity" value="<?php echo $product['cart_qty'] ?>" size="10" data-min-value="0" id="quantity_<?php echo $product['product_id']; ?>" class="form-control product-info1" type="text" data-cart-qty="<?php echo $product['cart_qty'] ?>" data-product-id="<?php echo $product['product_id'] ?>">
                     <a href="javascript:;" class="journal-stepper" onclick="Journal.addToCart(<?php echo $product['product_id']; ?>, this)">+</a>
                   </span>
-                  <!-- <div class="input-group btn-block" style="max-width: 200px;">
-                    <input type="text" name="quantity[<?php echo $product[version_compare(VERSION, '2.1', '<') ? 'key' : 'cart_id']; ?>]" value="<?php echo $product['quantity']; ?>" size="1" class="form-control" />
-                    <span class="input-group-btn">
-                    <button type="submit" data-toggle="tooltip" title="<?php echo $button_update; ?>" class="btn btn-primary"><i class="fa fa-refresh"></i></button>
-                    <button type="button" data-toggle="tooltip" title="<?php echo $button_remove; ?>" class="btn btn-danger" onclick="cart.remove('<?php echo $product[version_compare(VERSION, '2.1', '<') ? 'key' : 'cart_id']; ?>');"><i class="fa fa-times-circle"></i></button></span>
-                  </div> -->
                 </td>
                 <td class="text-right price"><?php echo $product['price']; ?></td>
                 <td class="text-right total"><?php echo $product['total']; ?></td>
                 <td class="text-right remove-from-cart">
-                    <button type="button" data-toggle="tooltip" title="<?php echo $button_remove; ?>" class="btn btn-danger btn-remove-cart-item" onclick="cart.remove('<?php echo $product[version_compare(VERSION, '2.1', '<') ? 'key' : 'cart_id']; ?>');"><i class="fa fa-trash-o"></i></button>
+                    <a href="#" data-toggle="tooltip" title="<?php echo $button_remove; ?>" class="btn-remove-cart-item" onclick="cart.remove('<?php echo $product[version_compare(VERSION, '2.1', '<') ? 'key' : 'cart_id']; ?>');"><i class="fa fa-trash-o"></i></a>
                 </td>
               </tr>
               <?php } ?>
@@ -113,8 +151,8 @@
             <tfoot>
               <?php foreach ($totals as $total) : ?>
               <tr>
-                <th colspan="5" align="right" class="text-right" style="padding:10px 15px; background-color:white"><?php echo $total['title']; ?></th>
-                <th align="center" class="text-center cart-subtotal" style="padding:10px 6px; background-color:white"><?php echo $total['text']; ?></th>
+                <th colspan="6" class="text-right" style=""><?php echo $total['title']; ?></th>
+                <th align="center" class="text-right cart-subtotal" style=""><?php echo $total['text']; ?></th>
                 <td style="padding:10px 6px; background-color:white">&nbsp;</td>
               </tr>
               <?php endforeach; ?>

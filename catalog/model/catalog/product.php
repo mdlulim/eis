@@ -408,9 +408,15 @@ class ModelCatalogProduct extends Model {
 	}
 
 	public function getCategories($product_id) {
-		$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "product_to_category WHERE product_id = '" . (int)$product_id . "'");
+		$query = $this->db->query("SELECT c.*, cd.name FROM " . DB_PREFIX . "product_to_category p2c INNER JOIN " . DB_PREFIX . "category c ON c.category_id = p2c.category_id INNER JOIN " . DB_PREFIX . "category_description cd ON cd.category_id = p2c.category_id WHERE product_id = '" . (int)$product_id . "'");
 
 		return $query->rows;
+	}
+
+	public function getProductBySku($sku) {
+		$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "product p LEFT JOIN " . DB_PREFIX . "product_description pd ON (p.product_id = pd.product_id) LEFT JOIN " . DB_PREFIX . "product_to_category p2c ON (p.product_id = p2c.product_id) WHERE pd.language_id = '" . (int)$this->config->get('config_language_id') . "' AND p.sku = '" . $sku . "'");
+
+		return $query->row;
 	}
 
 	public function getTotalProducts($data = array()) {

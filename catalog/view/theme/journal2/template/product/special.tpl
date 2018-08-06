@@ -171,7 +171,8 @@
       <?php } ?>
       <?php echo $content_bottom; ?></div>
     </div>
-    <script>Journal.applyView('<?php echo $this->journal2->settings->get("product_view", "grid"); ?>');</script>
+    <?php /* <script>Journal.applyView('<?php echo $this->journal2->settings->get("product_view", "grid"); ?>');</script> */ ?>
+    <script>Journal.applyView('table');</script>
     <?php if ($this->journal2->settings->get('show_countdown', 'never') !== 'never'): ?>
     <script>Journal.enableCountdown();</script>
     <?php endif; ?>

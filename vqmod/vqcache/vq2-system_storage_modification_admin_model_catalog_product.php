@@ -237,7 +237,7 @@ class ModelCatalogProduct extends Model {
 				}
 			}
 		}
-
+		
 		// custom price
 		
 		$this->db->query("DELETE FROM " . DB_PREFIX . "product_to_customer_group_prices WHERE product_id = '" . (int)$product_id . "'");
@@ -252,7 +252,7 @@ class ModelCatalogProduct extends Model {
 		        }
 		
 		// end custom price
-		
+
 		$this->db->query("DELETE FROM " . DB_PREFIX . "product_discount WHERE product_id = '" . (int)$product_id . "'");
 
 		if (isset($data['product_discount'])) {
