@@ -27,12 +27,16 @@ $_['text_trial_description']   = '%s every %d %s(s) for %d payment(s) then';
 $_['text_payment_description'] = '%s every %d %s(s) for %d payment(s)';
 $_['text_payment_cancel']      = '%s every %d %s(s) until canceled';
 
+// Import
 $_['button_import_to_cart']    = '
 <form id="form-cart-importer" enctype="multipart/form-data">
 	<input type="file" name="import" id="import" style="display:none">
 	<button type="button" class="btn btn-default btn-sm pull-right" id="import-cart"><i></i> Import to Cart</button>
 </form>';
 $_['import_success']           = 'You have added %s to your shopping cart!';
+$_['import_file_type_error']   = 'The file type imported is not supported, please upload your file in CSV, XLS and XLSX';
+$_['import_file_size_error']   = 'The File you have imported has exceeded the maximum size, please make sure that your file is not more than 5MB';
+$_['import_generic_error']     = 'An unexpected error has occured, please try again!';
 
 // Column
 $_['column_image']             = 'Image';

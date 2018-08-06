@@ -50,6 +50,9 @@
                             extend: 'csv'
                         }),
                         $.extend(true, {}, buttonCommon, {
+                            extend: 'excel'
+                        }),
+                        $.extend(true, {}, buttonCommon, {
                             extend: 'pdf'
                         })
                     ]
@@ -96,7 +99,7 @@
                 var fileSize = parseInt(file.size / 1024); // convert to KB
                 var formats  = [
                     'text/csv',
-                    // 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+                    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
                 ];
                 if (formats.indexOf(file.type) !== -1) {
                     if (fileSize <= maxSize) {

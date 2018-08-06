@@ -783,97 +783,171 @@ class ControllerCheckoutCart extends Controller {
 		$this->load->language('checkout/cart');
 		$this->load->model('catalog/product');
 
-		$json = array();
+		$json     = array();
+		$formats  = array('xls', 'xlsx', 'csv'); // supported file types
+		$colHeads = array('Product Name', 'Category', 'SKU', 'Quantity', 'Unit Price', 'Total'); // expected column headings
+		$maxSize  = 5097152;  // maximum file size (5MB)
 
 		if ($this->request->server['REQUEST_METHOD'] == 'POST') {
+
 			if (isset($this->request->files['import'] ) && is_uploaded_file($this->request->files['import']['tmp_name'])) {
 
 				$file = $_FILES['import']['tmp_name'];
+				$name = $this->request->files['import']['name'];
+				$size = $this->request->files['import']['size'];
+				$ext  = strtolower(pathinfo($name, PATHINFO_EXTENSION));
 
-				if ($handle = fopen($file, "r")) {
-				
-					set_time_limit(0);
-					ini_set('memory_limit', '1G');
-					ini_set("auto_detect_line_endings", true);
+				if (!in_array($ext, $formats)) {
 
-					$cartTotal = 0;
+					/******************************************************
+					 * File type error | type not supported
+					 ******************************************************/
 
-					while ($row = fgetcsv($handle, 1000, ",")) {
-						if (!empty($row[2]) && !empty($row[3])) {
+					$json['error'] = $this->language->get('import_file_type_error');
 
-							$found        = false;
-							$barcode      = $row[2];      # sku/barcode
-							$quantity     = (int)$row[3]; # quantity
-							
-							if (is_numeric($quantity)) {
+				} else {
+					
+					if ($size > $maxSize) {
 
-								$product_info = $this->model_catalog_product->getProductBySku($barcode);
+						/******************************************************
+						 * File size error | size limit exceeded
+						 ******************************************************/
 
-								if (!empty($product_info)) {
+						$json['error'] = $this->language->get('import_file_size_error');
 
-									$found = true;
+					} else {
 
-									$this->cart->set($product_info['product_id'], $quantity);
+						/******************************************************
+						 * Perform file import
+						 ******************************************************/	
 
-									// Unset all shipping and payment methods
-									unset($this->session->data['shipping_method']);
-									unset($this->session->data['shipping_methods']);
-									unset($this->session->data['payment_method']);
-									unset($this->session->data['payment_methods']);
+						$inputFileName = $file;
+						$inputFileType = PHPExcel_IOFactory::identify($inputFileName);
+						$objReader     = PHPExcel_IOFactory::createReader($inputFileType);
+						$objPHPExcel   = $objReader->load($inputFileName);
+						$sheet         = $objPHPExcel->getSheet(0);
+						$highestRow    = $sheet->getHighestRow();
+						$highestColumn = $sheet->getHighestColumn();
+						$detailsColumn = 2;
+						$fields        = array();
+						$dataRows      = array();
+						$header        = array();
 
-									// Totals
-									$this->load->model('extension/extension');
+						for ($row = 1; $row <= 1; $row++) { 
+							$header1 = $sheet->rangeToArray('A' . $row . ':' . $highestColumn . $row, NULL, FALSE, FALSE);
+						}
+						
+						// Check if row has right data [not headings]
+						if (!in_array($header1[0][0], $colHeads)) {
+							$detailsColumn++;
+							for ($row = 2; $row <= 2; $row++) {
+								$header1 = $sheet->rangeToArray('A' . $row . ':' . $highestColumn . $row, NULL, FALSE, FALSE);
+							}
+						}
+						
+						foreach ($header1 as $key => $val) {
+							$header = array_merge($val, $header);
+						}
 
-									$totals = array();
-									$taxes = $this->cart->getTaxes();
-									$total = 0;
-							
-									// Because __call can not keep var references so we put them into an array. 			
-									$total_data = array(
-										'totals' => &$totals,
-										'taxes'  => &$taxes,
-										'total'  => &$total
-									);
+						for ($row = $detailsColumn; $row <= $highestRow; $row++) {
+							$sheetdata1 = $sheet->rangeToArray('A' . $row . ':' . $highestColumn . $row, NULL, FALSE, FALSE);
+							$sheetdata  = array();
+							foreach ($sheetdata1 as $key => $val) {
+								$sheetdata = array_merge($val, $sheetdata);
+							}
+							$dataRows[] = array_combine($header, $sheetdata);
+						}
 
-									// Display prices
-									if ($this->customer->isLogged() || !$this->config->get('config_customer_price')) {
-										$sort_order = array();
+						/******************************************************
+						 * Add imported content to cart
+						 ******************************************************/
 
-										$results = $this->model_extension_extension->getExtensions('total');
+						foreach ($dataRows as $data) {
+							if (!empty($data) && count($data) > 0) {
 
-										foreach ($results as $key => $value) {
-											$sort_order[$key] = $this->config->get($value['code'] . '_sort_order');
-										}
-
-										array_multisort($sort_order, SORT_ASC, $results);
-
-										foreach ($results as $result) {
-											if ($this->config->get($result['code'] . '_status')) {
-												$this->load->model('extension/total/' . $result['code']);
-
-												// We have to put the totals in an array so that they pass by reference.
-												$this->{'model_extension_total_' . $result['code']}->getTotal($total_data);
+								$found    = false;
+								$barcode  = $data['SKU'];           # sku/barcode
+								$quantity = (int)$data['Quantity']; # quantity
+								
+								if (is_numeric($quantity)) {
+									
+									// get product by sku/barcode
+									$product = $this->model_catalog_product->getProductBySku($barcode);
+	
+									if (!empty($product)) {
+	
+										$found = true;
+	
+										$this->cart->set($product['product_id'], $quantity);
+	
+										// Unset all shipping and payment methods
+										unset($this->session->data['shipping_method']);
+										unset($this->session->data['shipping_methods']);
+										unset($this->session->data['payment_method']);
+										unset($this->session->data['payment_methods']);
+	
+										// Totals
+										$this->load->model('extension/extension');
+	
+										$totals = array();
+										$taxes  = $this->cart->getTaxes();
+										$total  = 0;
+								
+										// Because __call can not keep var references so we put them into an array. 			
+										$totalData = array(
+											'totals' => &$totals,
+											'taxes'  => &$taxes,
+											'total'  => &$total
+										);
+	
+										// Display prices
+										if ($this->customer->isLogged() || !$this->config->get('config_customer_price')) {
+											$sortOrder = array();
+	
+											$results = $this->model_extension_extension->getExtensions('total');
+	
+											foreach ($results as $key => $value) {
+												$sortOrder[$key] = $this->config->get($value['code'] . '_sort_order');
 											}
+	
+											array_multisort($sortOrder, SORT_ASC, $results);
+	
+											foreach ($results as $result) {
+												if ($this->config->get($result['code'] . '_status')) {
+													$this->load->model('extension/total/' . $result['code']);
+	
+													// We have to put the totals in an array so that they pass by reference.
+													$this->{'model_extension_total_' . $result['code']}->getTotal($totalData);
+												}
+											}
+	
+											$sortOrder = array();
+	
+											foreach ($totals as $key => $value) {
+												$sortOrder[$key] = $value['sort_order'];
+											}
+	
+											array_multisort($sortOrder, SORT_ASC, $totals);
 										}
-
-										$sort_order = array();
-
-										foreach ($totals as $key => $value) {
-											$sort_order[$key] = $value['sort_order'];
-										}
-
-										array_multisort($sort_order, SORT_ASC, $totals);
 									}
 								}
+								if (!$found && is_numeric($quantity)) {
+									$json['items_not_found'][] = $data;
+								}
 							}
-							if (!$found && is_numeric($row[3])) {
-								$json['items_not_found'][] = $row;
+						}
+
+						if (isset($found) && $found) {
+							$json['success'] = sprintf($this->language->get('import_success'), $this->cart->countProducts().' item(s)');
+							$json['total']   = sprintf($this->language->get('text_items'), $this->cart->countProducts() + (isset($this->session->data['vouchers']) ? count($this->session->data['vouchers']) : 0), $this->currency->format($total, $this->session->data['currency']));
+							$json['records'] = $dataRows;
+							$json['headers'] = $header;
+						} else {
+							if (!isset($json['error'])) {
+								$json['error'] = $this->language->get('import_generic_error');
 							}
 						}
 					}
-					$json['success'] = sprintf($this->language->get('import_success'), $this->cart->countProducts().' item(s)');
-
-					$json['total'] = sprintf($this->language->get('text_items'), $this->cart->countProducts() + (isset($this->session->data['vouchers']) ? count($this->session->data['vouchers']) : 0), $this->currency->format($total, $this->session->data['currency']));
 				}
 			}
 		}
