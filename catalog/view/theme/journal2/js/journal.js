@@ -1571,7 +1571,6 @@ Journal.SuperFilter.doFilter = function ($parent, url) {
         async: false,
         data: data,
         success: function (response) {
-            console.log('filter response')
             $parent.html($(response.replace(/\n/g, " ")).html());
             Journal.SuperFilter.setFilters($parent, url);
             if (isCollapsible) {
@@ -1604,7 +1603,6 @@ Journal.SuperFilter.doFilter = function ($parent, url) {
         type: 'get',
         data: data,
         success: function (response) {
-            console.log('product action response')
             var $html = $('<div>' + response.replace(/\n/g, " ") + '</div>');
 
             $(".main-products.product-list, .main-products.product-grid, .main-products.product-table").html($html.find('.product-list').html());
