@@ -289,7 +289,9 @@ class ControllerProductSearch extends Controller {
 					'price'       => $price,
 					'special'     => $special,
 
-                'date_end'       => $date_end,
+                    'date_end'    => $date_end,
+                	'model'  => $result['model'],
+            		'cart_qty' => (isset($cartProductIds[$result['product_id']])) ? $cartProductIds[$result['product_id']] : 0,
             
 					'tax'         => $tax,
                 	'model'  => $result['model'],

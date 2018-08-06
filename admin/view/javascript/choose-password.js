@@ -106,8 +106,9 @@
 						  	type: "success"
 						},
 						function() {
-		                    var token = getURLVar('token');
-		                    var redirect = "index.php?route=common/sales_dashboard&token="+token;
+							var token     = getURLVar('token');
+							var dashRoute = $('#content').attr('data-dash-route');
+		                    var redirect  = `index.php?route=${dashRoute}&token=${token}`;
 		                    $('.loader-wrapper').show();
 		                    location.href = redirect;
 						});

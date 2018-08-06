@@ -1,5 +1,5 @@
 <?=$header?>
-<div id="content" class="choose-password-wrapper">
+<div id="content" class="choose-password-wrapper" data-dash-route="dashboard_route">
   	<div class="container-fluid">
   		<br />
 	    <br />

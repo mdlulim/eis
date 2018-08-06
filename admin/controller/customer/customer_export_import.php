@@ -7,7 +7,6 @@ class ControllerCustomerCustomerExportImport extends Controller {
 		$this->load->model('customer/customer_export_import');
 		$this->getForm();
 	}
-
 	public function upload() {
 		
 		$this->load->language('customer/customer_export_import');
@@ -242,7 +241,6 @@ class ControllerCustomerCustomerExportImport extends Controller {
 											);
 								//echo $customer_id; exit;
 								//print_r($data_array); exit;
-								
 								if (!empty($customer_id)) // if column 1 is not empty
 								{ 
 									$this->model_customer_customer_export_import->importCsvCustomerDataUpdate($data_array);  // parse the data to model
@@ -570,10 +568,8 @@ class ControllerCustomerCustomerExportImport extends Controller {
 				
 			}
 		}
-
 		$this->response->redirect($this->url->link('customer/customer_export_import', 'token=' . $this->session->data['token'], true));
 	}
-
 	
 	public function download() {
 		$this->load->language( 'customer/customer_export_import' );
@@ -601,8 +597,6 @@ class ControllerCustomerCustomerExportImport extends Controller {
 		
 		$this->getForm();
 	}
-
-
 	public function settings() {
 		$this->load->language('customer/customer_export_import');
 		$this->document->setTitle($this->language->get('heading_title'));
@@ -616,8 +610,6 @@ class ControllerCustomerCustomerExportImport extends Controller {
 		}
 		$this->getForm();
 	}
-
-
 	protected function getForm() {
 		$data = array();
 		$data['heading_title'] = $this->language->get('heading_title');
@@ -633,7 +625,6 @@ class ControllerCustomerCustomerExportImport extends Controller {
 		$data['text_no'] = $this->language->get('text_no');
 		$data['text_loading_notifications'] = $this->language->get( 'text_loading_notifications' );
 		$data['text_retry'] = $this->language->get('text_retry');
-
 		$data['entry_export'] = $this->language->get( 'entry_export' );
 		$data['entry_import'] = $this->language->get( 'entry_import' );
 		$data['entry_export_type'] = $this->language->get( 'entry_export_type' );
@@ -652,23 +643,19 @@ class ControllerCustomerCustomerExportImport extends Controller {
 		$data['entry_settings_use_filter_id'] = $this->language->get( 'entry_settings_use_filter_id' );
 		$data['entry_settings_use_export_cache'] = $this->language->get( 'entry_settings_use_export_cache' );
 		$data['entry_settings_use_import_cache'] = $this->language->get( 'entry_settings_use_import_cache' );
-
 		$data['tab_export'] = $this->language->get( 'tab_export' );
 		$data['tab_import'] = $this->language->get( 'tab_import' );
 		$data['tab_settings'] = $this->language->get( 'tab_settings' );
-
 		$data['button_export'] = $this->language->get( 'button_export' );
 		$data['button_import'] = $this->language->get( 'button_import' );
 		$data['button_settings'] = $this->language->get( 'button_settings' );
 		$data['button_export_id'] = $this->language->get( 'button_export_id' );
 		$data['button_export_page'] = $this->language->get( 'button_export_page' );
-
 		$data['help_range_type'] = $this->language->get( 'help_range_type' );
 		$data['help_incremental_yes'] = $this->language->get( 'help_incremental_yes' );
 		$data['help_incremental_no'] = $this->language->get( 'help_incremental_no' );
 		$data['help_import'] = ($data['exist_filter']) ? $this->language->get( 'help_import' ) : $this->language->get( 'help_import_old' );
 		$data['help_format'] = $this->language->get( 'help_format' );
-
 		$data['error_select_file'] = $this->language->get('error_select_file');
 		$data['error_post_max_size'] = str_replace( '%1', ini_get('post_max_size'), $this->language->get('error_post_max_size') );
 		$data['error_upload_max_filesize'] = str_replace( '%1', ini_get('upload_max_filesize'), $this->language->get('error_upload_max_filesize') );
@@ -679,11 +666,9 @@ class ControllerCustomerCustomerExportImport extends Controller {
 		$data['error_no_news'] = $this->language->get('error_no_news');
 		$data['error_batch_number'] = $this->language->get('error_batch_number');
 		$data['error_min_item_id'] = $this->language->get('error_min_item_id');
-
 		if (!empty($this->session->data['export_import_error']['errstr'])) {
 			$this->error['warning'] = $this->session->data['export_import_error']['errstr'];
 		}
-
  		if (isset($this->error['warning'])) {
 			$data['error_warning'] = $this->error['warning'];
 			if (!empty($this->session->data['export_import_nochange'])) {
@@ -696,11 +681,9 @@ class ControllerCustomerCustomerExportImport extends Controller {
 		if (!empty($this->session->data['import_error'])) {
 				$data['error_warning'] .= $this->session->data['import_error'];
 			}
-
 		unset($this->session->data['import_error']);
 		unset($this->session->data['export_import_error']);
 		unset($this->session->data['export_import_nochange']);
-
 		if (isset($this->session->data['success'])) {
 			$data['success'] = $this->session->data['success'];
 		
@@ -708,7 +691,6 @@ class ControllerCustomerCustomerExportImport extends Controller {
 		} else {
 			$data['success'] = '';
 		}
-
 		$data['breadcrumbs'] = array();
 		$data['breadcrumbs'][] = array(
 			'text' => $this->language->get('text_home'),
@@ -718,43 +700,36 @@ class ControllerCustomerCustomerExportImport extends Controller {
 			'text' => $this->language->get('heading_title'),
 			'href' => $this->url->link('customer/customer_export_import', 'token=' . $this->session->data['token'], $this->ssl)
 		);
-
 		$data['back'] = $this->url->link('common/dashboard', 'token=' . $this->session->data['token'], $this->ssl);
 		$data['button_back'] = $this->language->get( 'button_back' );
 		$data['import'] = $this->url->link('customer/customer_export_import/upload', 'token=' . $this->session->data['token'], $this->ssl);
 		$data['export'] = $this->url->link('customer/customer_export_import/download', 'token=' . $this->session->data['token'], $this->ssl);
 		$data['settings'] = $this->url->link('customer/customer_export_import/settings', 'token=' . $this->session->data['token'], $this->ssl);
-
 		if (isset($this->request->post['export_type'])) {
 			$data['export_type'] = $this->request->post['export_type'];
 		} else {
 			$data['export_type'] = 'p';
 		}
-
 		if (isset($this->request->post['range_type'])) {
 			$data['range_type'] = $this->request->post['range_type'];
 		} else {
 			$data['range_type'] = 'id';
 		}
-
 		if (isset($this->request->post['min'])) {
 			$data['min'] = $this->request->post['min'];
 		} else {
 			$data['min'] = '';
 		}
-
 		if (isset($this->request->post['max'])) {
 			$data['max'] = $this->request->post['max'];
 		} else {
 			$data['max'] = '';
 		}
-
 		if (isset($this->request->post['incremental'])) {
 			$data['incremental'] = $this->request->post['incremental'];
 		} else {
 			$data['incremental'] = '1';
 		}
-
 		if (isset($this->request->post['customer_export_import_settings_firstname'])) {
 			$data['settings_firstname'] = $this->request->post['customer_export_import_settings_firstname'];
 		} else if ($this->config->get( 'customer_export_import_settings_firstname' )) {
@@ -762,7 +737,6 @@ class ControllerCustomerCustomerExportImport extends Controller {
 		} else {
 			$data['settings_firstname'] = '0';
 		}
-
 		if (isset($this->request->post['customer_export_import_settings_lastname'])) {
 			$data['settings_lastname'] = $this->request->post['customer_export_import_settings_lastname'];
 		} else if ($this->config->get( 'customer_export_import_settings_lastname' )) {
@@ -770,7 +744,6 @@ class ControllerCustomerCustomerExportImport extends Controller {
 		} else {
 			$data['settings_lastname'] = '0';
 		}
-
 		if (isset($this->request->post['customer_export_import_settings_email'])) {
 			$data['settings_email'] = $this->request->post['customer_export_import_settings_email'];
 		} else if ($this->config->get( 'customer_export_import_settings_email' )) {
@@ -778,7 +751,6 @@ class ControllerCustomerCustomerExportImport extends Controller {
 		} else {
 			$data['settings_email'] = '0';
 		}
-
 		if (isset($this->request->post['customer_export_import_settings_telephone'])) {
 			$data['settings_telephone'] = $this->request->post['customer_export_import_settings_telephone'];
 		} else if ($this->config->get( 'customer_export_import_settings_telephone' )) {
@@ -786,7 +758,6 @@ class ControllerCustomerCustomerExportImport extends Controller {
 		} else {
 			$data['settings_telephone'] = '0';
 		}
-
 		if (isset($this->request->post['customer_export_import_settings_companyname'])) {
 			$data['settings_companyname'] = $this->request->post['customer_export_import_settings_companyname'];
 		} else if ($this->config->get( 'customer_export_import_settings_companyname' )) {
@@ -794,7 +765,6 @@ class ControllerCustomerCustomerExportImport extends Controller {
 		} else {
 			$data['settings_companyname'] = '0';
 		}
-
 		if (isset($this->request->post['customer_export_import_settings_address1'])) {
 			$data['settings_address1'] = $this->request->post['customer_export_import_settings_address1'];
 		} else if ($this->config->get( 'customer_export_import_settings_address1' )) {
@@ -802,7 +772,6 @@ class ControllerCustomerCustomerExportImport extends Controller {
 		} else {
 			$data['settings_address1'] = '0';
 		}
-
 		if (isset($this->request->post['customer_export_import_settings_address2'])) {
 			$data['settings_address2'] = $this->request->post['customer_export_import_settings_address2'];
 		} else if ($this->config->get( 'customer_export_import_settings_address2' )) {
@@ -810,7 +779,6 @@ class ControllerCustomerCustomerExportImport extends Controller {
 		} else {
 			$data['settings_address2'] = '0';
 		}
-
 		if (isset($this->request->post['customer_export_import_settings_city'])) {
 			$data['settings_city'] = $this->request->post['customer_export_import_settings_city'];
 		} else if ($this->config->get( 'customer_export_import_settings_city' )) {
@@ -914,35 +882,25 @@ class ControllerCustomerCustomerExportImport extends Controller {
 		} else {
 			$data['settings_defaultaddress'] = '0';
 		}
-
 		
 		$data['token'] = $this->session->data['token'];
-
 		$this->document->addStyle('view/stylesheet/export_import.css');
-
 		$data['header'] = $this->load->controller('common/header');
 		$data['column_left'] = $this->load->controller('common/column_left');
 		$data['footer'] = $this->load->controller('common/footer');
-
 		$this->response->setOutput($this->load->view( ((version_compare(VERSION, '2.2.0.0') >= 0) ? 'customer/export_import' : 'customer/export_import.tpl'), $data));
 	}
-
-
 	protected function validateDownloadForm() {
 		if (!$this->user->hasPermission('access', 'customer/customer_export_import')) {
 			$this->error['warning'] = $this->language->get('error_permission');
 			return false;
 		}
-
 		return true;
 	}
-
-
 	protected function validateUploadForm() {
 		if (!$this->user->hasPermission('modify', 'customer/customer_export_import')) {
 			$this->error['warning'] = $this->language->get('error_permission');
 		} 
-
 		if (!isset($this->request->files['upload']['name'])) {
 			if (isset($this->error['warning'])) {
 				$this->error['warning'] .= "<br /\n" . $this->language->get( 'error_upload_name' );
@@ -959,7 +917,6 @@ class ControllerCustomerCustomerExportImport extends Controller {
 				}
 			}
 		}
-
 		if (!$this->error) { 
 			return true;
 		} else { 
@@ -967,18 +924,13 @@ class ControllerCustomerCustomerExportImport extends Controller {
 		}
 		
 	}
-
-
 	protected function validateSettingsForm() {
 		if (!$this->user->hasPermission('access', 'customer/customer_export_import')) {
 			$this->error['warning'] = $this->language->get('error_permission');
 			return false;
 		}
-
 		return true;
 	}
-
-
 	
 }
 ?>

@@ -164,15 +164,13 @@
                     <td><?=$appointment['customer_name']?></td>
                     <td><?=$appointment['salesrep_name']?></td>
                     <td><?=$appointment['appointment_date']?></td>
-                  <td><span class="label label-<?=(strtolower($appointment['appointment_type'])=='new business')? 'default' : 'primary' ?>" style="font-size:14px;"><?=$appointment['appointment_type']?></span></td>
+                    <td><span class="label label-<?=(strtolower($appointment['appointment_type'])=='new business')? 'default' : 'primary' ?>" style="font-size:14px;"><?=$appointment['appointment_type']?></span></td>
                     <td><?=$appointment['visit_date']?></td>
                     <td class="text-right">
                       <a href="<?=$appointment['view']?>" data-toggle="tooltip" title="<?=$appointment['customer_name']?>" class="btn btn-info"><i class="fa fa-eye"></i></a>
                     </td>
                   </tr>
                   <?php endforeach; ?>
-                  <?php else : ?>
-                  <tr><td class="text-center" colspan="6">No results!</td></tr>
                   <?php endif; ?>
                 </tbody>
               </table>
@@ -192,10 +190,8 @@
             </div>
             <div class="panel-body">
               <div id="map"></div>
-              <div id="legend"></div>
               <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA6ycZiGobIPuZ8wtXalf2m2MtxAzncn_Q&callback=initMap&sensor=false"></script>
               <script type="text/javascript">
-             
 								function initMap() {
 
 									var latlng = new google.maps.LatLng(-27.4457987, 21.4340156); // default location
@@ -215,43 +211,14 @@
 									var infowindow = new google.maps.InfoWindow(), marker, lat, lng;
 									var bounds = new google.maps.LatLngBounds();
 									
-									var icons = {
-									  parking: {
-										name: 'Rep Checked In',
-										icon: 'view/image/beenhere.png'
-									  },
-									  library: {
-										name: 'GPS Location',
-										icon: 'view/image/location_on.png'
-									  },
-									  info: {
-										name: 'Customer',
-										icon: 'view/image/customer01.png'
-									  }
-									};
 									
-									var legend = document.getElementById('legend');
-									for (var key in icons) {
-									  var type = icons[key];
-									  var name = type.name;
-                    var last_visited = type.name;
-									  var icon = type.icon;
-									  var div = document.createElement('div');
-									  div.innerHTML = '<img src="' + icon + '"> ' + name;
-									  legend.appendChild(div);
-									}
-							
-									map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(legend);
-
 									<?php foreach($locations_map as $key => $location) : ?>
-								
+									
 										<?php if($location['latitude'] != '' && $location['longitude'] != '' ) : ?>
 											
 											lat = '<?=$location['latitude']?>';
 											lng = '<?=$location['longitude']?>';
-											name = '<b><?=$location['name']?></b></b></p>';
-                      last_visited = '<?=$location['last_visited']?>';
-                      address = '<?=$location['address']?>';
+											name = '<?=$location['name']?>';
 							
 											marker = new google.maps.Marker({
 												position: new google.maps.LatLng(lat,lng),
@@ -262,7 +229,7 @@
 											
 											bounds.extend(marker.position); 
 											google.maps.event.addListener( marker, 'click', function(e){
-												infowindow.setContent( this.name )
+												infowindow.setContent( this.name );
 												infowindow.open( map, this );
 											}.bind( marker ) );
 											
@@ -286,11 +253,8 @@
 									<?php endif; ?>
 								}
 							</script>
-              				<style>
+              <style>
 							  #map { height: 400px; width: 100%; }
-							  #legend { font-family: Arial, sans-serif;background: #fff;border-radius: 5px;bottom:25px!important;right:100px!important; }
-							  #legend div { background:#FFFFFF;float:left;margin:5px;padding:5px;font-size:13px; }
-							  #legend img { vertical-align: middle; }
 							</style>
             </div>
           </div>
@@ -322,7 +286,6 @@
       </div>
     </div>
   </div>
-
   <!-- /Modal(s) -->
 
   <!-- Page loader -->

@@ -1,31 +1,20 @@
 <?php
 class ControllerReplogicSalesRepManagement extends Controller {
 	private $error = array();
-
 	public function index() {
 		$this->load->language('replogic/sales_rep_management');
-
 		$this->document->setTitle($this->language->get('heading_title'));
-
 		$this->load->model('replogic/sales_rep_management');
-
 		$this->getList();
 	}
-
 	public function add() {
 		$this->load->language('replogic/sales_rep_management');
-
 		$this->document->setTitle($this->language->get('heading_title'));
-
 		$this->load->model('replogic/sales_rep_management');
-
 		if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validateForm()) {
 			$this->model_replogic_sales_rep_management->addSalesRep($this->request->post);
-
 			$this->session->data['success'] = $this->language->get('text_success');
-
 			$url = '';
-
 			if (isset($this->request->get['filter_sales_rep_name'])) {
 			$url .= '&filter_sales_rep_name=' . urlencode(html_entity_decode($this->request->get['filter_sales_rep_name'], ENT_QUOTES, 'UTF-8'));
 			}
@@ -53,33 +42,23 @@ class ControllerReplogicSalesRepManagement extends Controller {
 			if (isset($this->request->get['sort'])) {
 				$url .= '&sort=' . $this->request->get['sort'];
 			}
-
 			if (isset($this->request->get['order'])) {
 				$url .= '&order=' . $this->request->get['order'];
 			}
-
 			if (isset($this->request->get['page'])) {
 				$url .= '&page=' . $this->request->get['page'];
 			}
-
 			$this->response->redirect($this->url->link('replogic/sales_rep_management', 'token=' . $this->session->data['token'] . $url, true));
 		}
-
 		$this->getForm();
 	}
-
 	public function edit() {
 		$this->load->language('replogic/sales_rep_management');
-
 		$this->document->setTitle($this->language->get('heading_title'));
-
 		$this->load->model('replogic/sales_rep_management');
-
 		if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validateForm()) {
 			$this->model_replogic_sales_rep_management->editSalesRep($this->request->get['salesrep_id'], $this->request->post);
-
 			$this->session->data['success'] = $this->language->get('text_success');
-
 			$url = '';
 			
 			if (isset($this->request->get['filter_sales_rep_name'])) {
@@ -270,10 +249,7 @@ class ControllerReplogicSalesRepManagement extends Controller {
 		}
 		$this->getList();
 	}
-
-	protected function getList() { 
-		
-		$this->load->model('user/team');
+	protected function getList() {
 		
 		if (isset($this->request->get['filter_sales_rep_name'])) {
 			$filter_sales_rep_name = $this->request->get['filter_sales_rep_name'];
@@ -291,13 +267,10 @@ class ControllerReplogicSalesRepManagement extends Controller {
 		
 		if (isset($this->request->get['filter_team_id'])) {
 			$filter_team_id = $this->request->get['filter_team_id'];
-			$teaminfo = $this->model_user_team->getTeam($filter_team_id);
-			$data['filter_team_name'] = $teaminfo['team_name'];
 		}
 		else
 		{
 			$filter_team_id = null;
-			$data['filter_team_name'] = '';
 		}
 		
 		if (isset($this->request->get['filter_customer_id'])) {
@@ -356,7 +329,7 @@ class ControllerReplogicSalesRepManagement extends Controller {
 		$data['breadcrumbs'] = array();
 		$data['breadcrumbs'][] = array(
 			'text' => $this->language->get('text_home'),
-			'href' => $this->url->link('common/dashboard', 'token=' . $this->session->data['token'], true)
+			'href' => $this->url->link(getDashboard($this->user), 'token=' . $this->session->data['token'], true)
 		);
 		
 		if (isset($this->request->get['team_id'])) {
@@ -427,7 +400,7 @@ class ControllerReplogicSalesRepManagement extends Controller {
 		}
 		$filter_dataa = array('filter_salesrep_id' => $filter_salesrep_id);
 		$data['teams'] = $this->model_user_team->getTeams($filter_dataa);
-		$data['customers'] = $this->model_customer_customer->getCustomers($filter_data, $allaccess, $this->session->data['user_id']);
+		$data['customers'] = $this->model_customer_customer->getCustomers();
 		
 		
 		$sales_rep_management_total = $this->model_replogic_sales_rep_management->getTotalScheduleManagement($filter_data,$allaccess, $current_user_id);
@@ -688,7 +661,7 @@ class ControllerReplogicSalesRepManagement extends Controller {
 		$data['breadcrumbs'] = array();
 		$data['breadcrumbs'][] = array(
 			'text' => $this->language->get('text_home'),
-			'href' => $this->url->link('common/dashboard', 'token=' . $this->session->data['token'], true)
+			'href' => $this->url->link(getDashboard($this->user), 'token=' . $this->session->data['token'], true)
 		);
 		$data['breadcrumbs'][] = array(
 			'text' => $this->language->get('heading_title'),
@@ -780,7 +753,7 @@ class ControllerReplogicSalesRepManagement extends Controller {
 			$data['team_id'] = $this->request->get['team_id'];
 		} 
 		$ignore = array(
-			'common/dashboard',
+			getDashboard($this->user),
 			'common/startup',
 			'common/login',
 			'common/logout',
@@ -874,20 +847,12 @@ class ControllerReplogicSalesRepManagement extends Controller {
 	
 	public function autocomplete() {
 		$json = array();
-
-		if (isset($this->request->get['filter_name']) || isset($this->request->get['filter_email'])) {
+		if (isset($this->request->get['filter_name'])) {
 			if (isset($this->request->get['filter_name'])) {
 				$filter_name = $this->request->get['filter_name'];
 			} else {
 				$filter_name = '';
 			}
-			
-			if (isset($this->request->get['filter_email'])) {
-				$filter_email = $this->request->get['filter_email'];
-			} else {
-				$filter_email = '';
-			}
-
 			$this->load->model('replogic/sales_rep_management');
 			$this->load->model('user/user_group');
 			$this->load->model('user/user');
@@ -909,7 +874,6 @@ class ControllerReplogicSalesRepManagement extends Controller {
 			
 			$filter_data = array(
 				'filter_sales_rep_name'  => $filter_name,
-				'filter_email'  => $filter_email,
 				'start'        => 0,
 				'limit'        => 5
 			);
@@ -918,8 +882,7 @@ class ControllerReplogicSalesRepManagement extends Controller {
 				$name = $result['salesrep_name'] . ' ' . $result['salesrep_lastname'];
 				$json[] = array(
 					'salesrep_id'       => $result['salesrep_id'],
-					'name'              => strip_tags(html_entity_decode($name, ENT_QUOTES, 'UTF-8')),
-					'email'       => $result['email']
+					'name'              => strip_tags(html_entity_decode($name, ENT_QUOTES, 'UTF-8'))
 				);
 			}
 		}

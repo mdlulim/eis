@@ -115,7 +115,7 @@ class ControllerUserTeam extends Controller {
 		$data['breadcrumbs'] = array();
 		$data['breadcrumbs'][] = array(
 			'text' => $this->language->get('text_home'),
-			'href' => $this->url->link('common/dashboard', 'token=' . $this->session->data['token'], true)
+			'href' => $this->url->link(getDashboard($this->user), 'token=' . $this->session->data['token'], true)
 		);
 		$data['breadcrumbs'][] = array(
 			'text' => $this->language->get('heading_title'),
@@ -177,16 +177,6 @@ class ControllerUserTeam extends Controller {
 				'edit'          => $this->url->link('user/team/edit', 'token=' . $this->session->data['token'] . '&team_id=' . $result['team_id'] . $url, true)
 			);
 		}
-		
-		if($current_user_group['name'] == 'Sales Manager')
-		{
-			$data['accessaddbtn'] = $team_total > 0 ? 'false' : 'true';
-		}
-		else
-		{
-			$data['accessaddbtn'] = 'true';
-		}
-
 		$data['heading_title'] = $this->language->get('heading_title');
 		
 		$data['text_list'] = $this->language->get('text_list');
@@ -525,22 +515,6 @@ class ControllerUserTeam extends Controller {
 	public function autocomplete() {
 		$json = array();
 		if (isset($this->request->get['filter_name'])) {
-			
-			$this->load->model('user/user_group');
-			$this->load->model('user/user');
-			$current_user = $this->session->data['user_id'];
-			$current_user_group_id = $this->model_user_user->getUser($current_user); ;
-			$current_user_group = $this->model_user_user_group->getUserGroup($current_user_group_id['user_group_id']);
-			if($current_user_group['name'] == 'Sales Manager')
-			{
-				$filter_salesrep_id = $current_user; 
-				
-			}
-			else
-			{
-				$filter_salesrep_id = ''; 
-			}
-			
 			if (isset($this->request->get['filter_name'])) {
 				$filter_name = $this->request->get['filter_name'];
 			} else {
@@ -549,7 +523,6 @@ class ControllerUserTeam extends Controller {
 			$this->load->model('user/team');
 			$filter_data = array(
 				'filter_team_name'  => $filter_name,
-				'filter_salesrep_id'  => $filter_salesrep_id,
 				'start'        => 0,
 				'limit'        => 5
 			);

@@ -1,7 +1,7 @@
 <?php
 class ControllerCommonDashboard extends Controller {
 	public function index() {
-		$this->load->language('common/dashboard');
+		$this->load->language(getDashboard($this->user));
 
 		$this->document->setTitle($this->language->get('heading_title'));
 
@@ -11,12 +11,12 @@ class ControllerCommonDashboard extends Controller {
 
 		$data['breadcrumbs'][] = array(
 			'text' => $this->language->get('text_home'),
-			'href' => $this->url->link('common/sales_dashboard', 'token=' . $this->session->data['token'], true)
+			'href' => $this->url->link(getDashboard($this->user), 'token=' . $this->session->data['token'], true)
 		);
 
 		$data['breadcrumbs'][] = array(
 			'text' => $this->language->get('heading_title'),
-			'href' => $this->url->link('common/sales_dashboard', 'token=' . $this->session->data['token'], true)
+			'href' => $this->url->link(getDashboard($this->user), 'token=' . $this->session->data['token'], true)
 		);
 
 		// Check install directory exists
@@ -545,7 +545,7 @@ class ControllerCommonDashboard extends Controller {
 			}
 		}
 		
-		$this->response->setOutput($this->load->view('common/dashboard', $data));
+		$this->response->setOutput($this->load->view(getDashboard($this->user), $data));
 	
 	}
 		

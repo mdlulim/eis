@@ -51,9 +51,9 @@ class ControllerCommonChoosePassword extends Controller {
 		
 		/*=====  End of Check Install Directory Exists  ======*/
 
-		$data['form_action'] = $this->url->link('common/choose_password', "token=$token", true);
-
-		$data['logged'] = false;
+		$data['form_action']     = $this->url->link('common/choose_password', "token=$token", true);
+		$data['logged']          = false;
+		$data['dashboard_route'] = getDashboard($this->user);
 
 		$this->response->setOutput($this->load->view('common/choose_password', $data));
 	}

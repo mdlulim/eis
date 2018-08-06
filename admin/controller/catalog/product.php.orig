@@ -345,10 +345,17 @@ class ControllerCatalogProduct extends Controller {
 
 		$data['breadcrumbs'] = array();
 
+<<<<<<< HEAD
+		// $data['breadcrumbs'][] = array(
+		// 	'text' => $this->language->get('text_home'),
+		// 	'href' => $this->url->link(getDashboard($this->user), 'token=' . $this->session->data['token'], true)
+		// );
+=======
 		$data['breadcrumbs'][] = array(
 			'text' => $this->language->get('text_home'),
 			'href' => $this->url->link(getDashboard($this->user), 'token=' . $this->session->data['token'], true)
 		);
+>>>>>>> ab459d3304dc096f2dca4c3bf36d69d5e595d8df
 
 		$data['breadcrumbs'][] = array(
 			'text' => $this->language->get('heading_title'),
@@ -764,10 +771,17 @@ class ControllerCatalogProduct extends Controller {
 
 		$data['breadcrumbs'] = array();
 
+<<<<<<< HEAD
+		// $data['breadcrumbs'][] = array(
+		// 	'text' => $this->language->get('text_home'),
+		// 	'href' => $this->url->link(getDashboard($this->user), 'token=' . $this->session->data['token'], true)
+		// );
+=======
 		$data['breadcrumbs'][] = array(
 			'text' => $this->language->get('text_home'),
 			'href' => $this->url->link(getDashboard($this->user), 'token=' . $this->session->data['token'], true)
 		);
+>>>>>>> ab459d3304dc096f2dca4c3bf36d69d5e595d8df
 
 		$data['breadcrumbs'][] = array(
 			'text' => $this->language->get('heading_title'),

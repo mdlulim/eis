@@ -85,7 +85,7 @@ class ControllerCommonSalesDashboard extends Controller {
 		
 		$filters = array();
 		$token = $this->session->data['token'];
-		$url = $this->url->link('common/sales_dashboard', "token=$token", true);
+		$url = $this->url->link(getDashboard($this->user), "token=$token", true);
 		$data['day_selected'] = "";
 		$data['week_selected'] = "";
 		$data['month_selected'] = "";
@@ -325,16 +325,14 @@ class ControllerCommonSalesDashboard extends Controller {
 		$locations = $this->model_replogic_location_management->getLocationsDash($filters);
 		$data['locations_map'] = array();
 
-		
-
 		if (!empty($locations) && is_array($locations)) {
 			foreach ($locations as $location) {
 				
 				# Check in address/location
-				$address = $location['location'];
+				$address = $location['checkin_location'];
 				
 				# curl
-				$url = "http://maps.google.com/maps/api/geocode/json?address=".urlencode($address)."&sensor=false";
+				$url = "http://maps.google.com/maps/api/geocode/json?address=".urlencode($address)."&sensor=false&region=India";
 				$ch = curl_init();
 				curl_setopt($ch, CURLOPT_URL, $url);
 				curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -348,30 +346,8 @@ class ControllerCommonSalesDashboard extends Controller {
 					$latitude = $decodedResponse->results[0]->geometry->location->lat;
 					$longitude = $decodedResponse->results[0]->geometry->location->lng;
 					
-					$data['locations_map'][] = array('latitude'=>$latitude,'longitude'=>$longitude,'name'=>$address." ( ".$location['salesrep_name']." )",'icon'=>'view/image/beenhere.png');
-					$data['locations_map'][] = array('latitude'=>$location['customer_lat'],'longitude'=>$location['customer_lng'],'name'=>$location['customer_name'],'last_visited'=>$location['checkin'],'icon'=>'view/image/customer01.png');
-				}
-				
-				# Gps Check in address/location
-				$gpsaddress = $location['checkin_location'];
-				
-				# curl
-				$url = "http://maps.google.com/maps/api/geocode/json?address=".urlencode($gpsaddress)."&sensor=false";
-				$ch = curl_init();
-				curl_setopt($ch, CURLOPT_URL, $url);
-				curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-				curl_setopt($ch, CURLOPT_PROXYPORT, 3128);
-				curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
-				curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
-				$response = curl_exec($ch);
-				curl_close($ch);
-				$decodedResponse = json_decode($response);
-				if (isset($decodedResponse->results[0])) {
-					$gpslatitude = $decodedResponse->results[0]->geometry->location->lat;
-					$gpslongitude = $decodedResponse->results[0]->geometry->location->lng;
-					
-					$data['locations_map'][] = array('latitude'=>$gpslatitude,'longitude'=>$gpslongitude,'name'=>$gpsaddress." ( ".$location['salesrep_name']." )",'icon'=>'view/image/location_on.png');
-					
+					$data['locations_map'][] = array('latitude'=>$latitude,'longitude'=>$longitude,'name'=>$location['salesrep_name'],'icon'=>'view/image/green-dot.png');
+					$data['locations_map'][] = array('latitude'=>$location['customer_lat'],'longitude'=>$location['customer_lng'],'name'=>$location['customer_name'],'icon'=>'view/image/blue-dot.png');
 				}
 			
 			}

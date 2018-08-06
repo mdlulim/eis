@@ -345,10 +345,10 @@ class ControllerCatalogProduct extends Controller {
 
 		$data['breadcrumbs'] = array();
 
-		// $data['breadcrumbs'][] = array(
-		// 	'text' => $this->language->get('text_home'),
-		// 	'href' => $this->url->link(getDashboard($this->user), 'token=' . $this->session->data['token'], true)
-		// );
+		$data['breadcrumbs'][] = array(
+			'text' => $this->language->get('text_home'),
+			'href' => $this->url->link(getDashboard($this->user), 'token=' . $this->session->data['token'], true)
+		);
 
 		$data['breadcrumbs'][] = array(
 			'text' => $this->language->get('heading_title'),
@@ -764,10 +764,10 @@ class ControllerCatalogProduct extends Controller {
 
 		$data['breadcrumbs'] = array();
 
-		// $data['breadcrumbs'][] = array(
-		// 	'text' => $this->language->get('text_home'),
-		// 	'href' => $this->url->link(getDashboard($this->user), 'token=' . $this->session->data['token'], true)
-		// );
+		$data['breadcrumbs'][] = array(
+			'text' => $this->language->get('text_home'),
+			'href' => $this->url->link(getDashboard($this->user), 'token=' . $this->session->data['token'], true)
+		);
 
 		$data['breadcrumbs'][] = array(
 			'text' => $this->language->get('heading_title'),
@@ -921,7 +921,7 @@ class ControllerCatalogProduct extends Controller {
 		if (isset($this->request->post['pricing'])) {
 			$data['pricing'] = $this->request->post['pricing'];
 		} elseif (isset($this->request->get['product_id'])) { 
-			//$data['pricing'] = $this->model_catalog_product->getProductCustomerGroupPrices($this->request->get['product_id']);
+			$data['pricing'] = $this->model_catalog_product->getProductCustomerGroupPrices($this->request->get['product_id']);
 		} else {
 			$data['pricing'] = array();
 		}

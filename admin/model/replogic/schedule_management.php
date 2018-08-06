@@ -225,6 +225,19 @@ class ModelReplogicScheduleManagement extends Model {
 		return $query->rows;
 	}
 	
+	public function getSalesRepAppointmentTimesByDate($salesrep_id, $appointment_date) {
+		$sql    = "SELECT DISTINCT DATE_FORMAT(appointment_date, '%H:00') AS appointment_start, DATE_FORMAT(DATE_ADD(appointment_date, INTERVAL CONCAT(duration_hours,':',duration_minutes) HOUR_MINUTE), '%H:00') AS appointment_end FROM " . DB_PREFIX . "appointment WHERE (DATE_FORMAT(appointment_date, '%Y-%m-%d') = '" . $this->db->escape($appointment_date) . "'  OR appointment_date=DATE_ADD('" . $this->db->escape($appointment_date) . "', INTERVAL CONCAT(duration_hours,':',duration_minutes) HOUR_MINUTE)) AND salesrep_id = " . (int)$this->db->escape($salesrep_id);
+		$query  = $this->db->query($sql);
+		$result = $query->rows;
+		$return = array();
+		if (!empty($result)) {
+			foreach($result as $value) {
+				$return[]['appointment_time'] = $value['appointment_start'];
+				$return[]['appointment_time'] = $value['appointment_end'];
+			}
+		}
+		return $return;
+	}
 	
 	public function getTotalScheduleManagement($data = array(), $allaccess, $current_user_id) {
 		

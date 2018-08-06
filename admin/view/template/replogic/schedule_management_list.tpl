@@ -32,7 +32,7 @@
       <div class="panel-body">
         
         <div class="well">
-        	<h3>Filters</h3>
+          <h3>Filters</h3>
           <div class="row">
             <div class="col-sm-4">
               <!--<div class="form-group">
@@ -42,9 +42,9 @@
               <div class="form-group">
                 <label class="control-label" for="input-price">Customer Name</label>
                 <input type="text" name="filter_customer" value="<?php echo $filter_customer; ?>" placeholder="Customer Name" id="input-customer" class="form-control" />
-   				<input type="hidden" name="filter_customer_id" value="<?php echo $filter_customer_id; ?>" id="customer_id">
+          <input type="hidden" name="filter_customer_id" value="<?php echo $filter_customer_id; ?>" id="customer_id">
                 <!--<select name="filter_customer_id" class="form-control">
-                	<option value="">Customer Name</option>
+                  <option value="">Customer Name</option>
                     <?php foreach ($customers as $customer) {  ?>
                 <?php if ($customer['customer_id'] == $filter_customer_id) { ?>
                 <option value="<?php echo $customer['customer_id']; ?>" selected="selected"><?php echo $customer['firstname']; ?></option>
@@ -69,13 +69,13 @@
                     </span>
                 </div>
            <style>
-		   .glyphicon-calendar:before {content: "\e109" !important; }
-		   </style>
-            	<script type="text/javascript">
+       .glyphicon-calendar:before {content: "\e109" !important; }
+       </style>
+              <script type="text/javascript">
             $(function () {
                 $('#filter_appointment_from').datetimepicker({
                      //defaultDate: new Date(),
-					// inline: true,
+          // inline: true,
                 });
             });
         </script>  
@@ -85,9 +85,9 @@
             <div class="col-sm-4">
               <div class="form-group">
                 <label class="control-label" for="input-price">Sales Rep Name</label>
-                	<input type="text" name="filter_salesrep" value="<?php echo $filter_salesrep; ?>" placeholder="Sales Rep Name" id="input-salesrep" class="form-control" />
+                  <input type="text" name="filter_salesrep" value="<?php echo $filter_salesrep; ?>" placeholder="Sales Rep Name" id="input-salesrep" class="form-control" />
                     <input type="hidden" name="filter_salesrep_id" value="<?php echo $filter_salesrep_id; ?>" />
-                	<!--<select name="filter_salesrep_id" id="input-sales_manager" class="form-control">
+                  <!--<select name="filter_salesrep_id" id="input-sales_manager" class="form-control">
                         <option value="">Select Sales Rep Name</option>
                         <?php foreach ($salesReps as $salesRep) { ?>
                         <?php if ($salesRep['salesrep_id'] == $filter_salesrep_id) { ?>
@@ -112,7 +112,7 @@
                     </span>
                 </div>
             
-        		<script type="text/javascript">
+            <script type="text/javascript">
             $(function () {
                 $('#filter_appointment_to').datetimepicker({
                     //defaultDate: new Date(),
@@ -127,7 +127,7 @@
               <div class="form-group">
                 <label class="control-label" for="input-price">Business Type</label>
                 
-                	<select name="filter_type" id="input-type" class="form-control">
+                  <select name="filter_type" id="input-type" class="form-control">
                         <option value="">Select Business Type</option>
                         <?php if($filter_type == 'New Business') { ?>
                             <option value="New Business" selected="selected">New Business</option>
@@ -142,8 +142,8 @@
                       </select>
               </div>
               <div class="form-group" style="margin-top:23px;">
-            		<button type="button" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-search"></i> Search</button>
-            		<button type="button" id="button-filter-reset" class="btn btn-primary pull-right" style="margin-right:10px;"><i class="fa fa-refresh"></i> Reset</button>  
+                <button type="button" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-search"></i> Search</button>
+                <button type="button" id="button-filter-reset" class="btn btn-primary pull-right" style="margin-right:10px;"><i class="fa fa-refresh"></i> Reset</button>  
               </div>
             </div>
             
@@ -156,58 +156,68 @@
             <table class="table table-bordered table-hover">
               <thead>
                 <tr>
-                  <td style="width: 1px;" class="text-center"><input type="checkbox" onclick="$('input[name*=\'selected\']').prop('checked', this.checked);" /></td>
-                  <td class="text-left"><?php if ($sort == 'appointment_name') { ?>
-                    <a href="<?php echo $sort_name; ?>" class="<?php echo strtolower($order); ?>"><?php echo $column_name; ?></a>
-                    <?php } else { ?>
-                    <a href="<?php echo $sort_name; ?>"><?php echo $column_name; ?></a>
-                    <?php } ?></td>
-                  <td class="text-left"><?php if ($sort == 'salesrepname') { ?>
-                    <a href="<?php echo $sort_salesrepname; ?>" class="<?php echo strtolower($order); ?>">Sales Rep Name</a>
-                    <?php } else { ?>
-                    <a href="<?php echo $sort_salesrepname; ?>">Sales Rep Name</a>
-                    <?php } ?></td>
-                  <td class="text-left"><?php if ($sort == 'type') { ?>
-                    <a href="<?php echo $sort_type; ?>" class="<?php echo strtolower($order); ?>">Business Type</a>
-                    <?php } else { ?>
-                    <a href="<?php echo $sort_type; ?>">Business Type</a>
-                    <?php } ?></td>
-                  <td class="text-left"><?php if ($sort == 'appointment_date') { ?>
+                  <th style="width: 1px;" class="text-center">
+                    <input type="checkbox" onclick="$('input[name*=\'selected\']').prop('checked', this.checked);" />
+                  </th>
+                  <th class="text-left">Customer</th>
+                  <th class="text-left">
+                    <?php if ($sort == 'salesrepname') : ?>
+                    <a href="<?php echo $sort_salesrepname; ?>" class="<?php echo strtolower($order); ?>">Sales Rep</a>
+                    <?php else: ?>
+                    <a href="<?php echo $sort_salesrepname; ?>">Sales Rep</a>
+                    <?php endif; ?>
+                  </th>
+                  <th class="text-left">
+                    <?php if ($sort == 'appointment_date') : ?>
                     <a href="<?php echo $sort_appointment_date; ?>" class="<?php echo strtolower($order); ?>">Appointment Date</a>
-                    <?php } else { ?>
+                    <?php else : ?>
                     <a href="<?php echo $sort_appointment_date; ?>">Appointment Date</a>
-                    <?php } ?></td>
-                  <td class="text-right"><?php echo $column_action; ?></td>
+                    <?php endif; ?>
+                  </th>
+                  <th class="text-left">
+                    <?php if ($sort == 'type') : ?>
+                    <a href="<?php echo $sort_type; ?>" class="<?php echo strtolower($order); ?>">Appointment Type</a>
+                    <?php else : ?>
+                    <a href="<?php echo $sort_type; ?>">Appointment Type</a>
+                    <?php endif; ?>
+                  </th>
+                  <th class="text-left">Visit Date</th>
+                  <th class="text-right"><?php echo $column_action; ?></th>
                 </tr>
               </thead>
               <tbody>
-                <?php if($access == 'yes') { ?>
-                <?php if ($schedule_managements) { ?>
-                    <?php foreach ($schedule_managements as $schedule_management) { ?>
-                        
-                            <tr>
-                              <td class="text-center"><?php if (in_array($schedule_management['appointment_id'], $selected)) { ?>
-                                <input type="checkbox" name="selected[]" value="<?php echo $schedule_management['appointment_id']; ?>" checked="checked" />
-                                <?php } else { ?>
-                                <input type="checkbox" name="selected[]" value="<?php echo $schedule_management['appointment_id']; ?>" />
-                                <?php } ?></td>
-                              <td class="text-left"><?php echo $schedule_management['appointment_name']; ?></td>
-                              <td class="text-left"><?php echo $schedule_management['sales_manager']; ?></td>
-                              <td class="text-left"><?php echo $schedule_management['type']; ?></td>
-                              <td class="text-left"><?php  echo $schedule_management['appointment_date']; ?></td>
-                              <td class="text-right"><!--<a href="<?php echo $schedule_management['tasks']; ?>" data-toggle="tooltip" title="Tasks" class="btn btn-primary"><i class="fa fa-tasks"></i></a>-->&nbsp;<a href="<?php echo $schedule_management['notes']; ?>" data-toggle="tooltip" title="Notes" class="btn btn-primary"><i class="fa fa-sticky-note"></i></a>&nbsp;<!--<a href="<?php echo $schedule_management['edit']; ?>" data-toggle="tooltip" title="<?php echo $button_edit; ?>" class="btn btn-primary"><i class="fa fa-pencil"></i></a>--><a href="<?php echo $schedule_management['view']; ?>" data-toggle="tooltip" title="View Appointment" class="btn btn-info"><i class="fa fa-eye"></i></a></td>
-                            </tr>
-                     <?php } ?>
-                    <?php } else { ?>
+                <?php if ($access == 'yes') : ?>
+                  <?php if (!empty($appointments)) : ?>
+                    <?php foreach ($appointments as $appointment) : ?>
                     <tr>
-                      <td class="text-center" colspan="5"><?php echo $text_no_results; ?></td>
+                      <td class="text-center">
+                        <?php if (in_array($appointment['appointment_id'], $selected)) : ?>
+                        <input type="checkbox" name="selected[]" value="<?php echo $appointment['appointment_id']; ?>" checked="checked" />
+                        <?php else : ?>
+                        <input type="checkbox" name="selected[]" value="<?php echo $appointment['appointment_id']; ?>" />
+                        <?php endif; ?>
+                      </td>
+                      <td class="text-left"><?php echo $appointment['customer_name']; ?></td>
+                      <td class="text-left"><?php echo $appointment['salesrep_name']; ?></td>
+                      <td class="text-left"><?php echo $appointment['appointment_date']; ?></td>
+                      <td class="text-left"><span class="label label-<?=(strtolower($appointment['appointment_type'])=='new business')? 'default' : 'primary' ?>" style="font-size:14px;"><?=$appointment['appointment_type']?></span></td>
+                      <td class="text-left"><?php echo $appointment['visit_date']; ?></td>
+                      <td class="text-right">
+                        <a href="<?php echo $appointment['notes']; ?>" data-toggle="tooltip" title="Notes" class="btn btn-primary"><i class="fa fa-sticky-note"></i></a>
+                        <a href="<?php echo $appointment['view']; ?>" data-toggle="tooltip" title="View Appointment" class="btn btn-info"><i class="fa fa-eye"></i></a>
+                      </td>
                     </tr>
-                    <?php } ?>
-                <?php } else { ?>
-                	<tr>
-                        <td class="text-center" colspan="5">You Don't have Permission to access the Schedule Manegement.</td>
-                    </tr>
-                <?php } ?>
+                    <?php endforeach; ?>
+                  <?php else : ?>
+                  <tr>
+                    <td class="text-center" colspan="7"><?php echo $text_no_results; ?></td>
+                  </tr>
+                  <?php endif; ?>
+                <?php else : ?>
+                <tr>
+                  <td class="text-center" colspan="7">You Don't have Permission to access the Schedule Manegement.</td>
+                </tr>
+                <?php endif; ?>
               </tbody>
             </table>
           </div>
@@ -222,109 +232,100 @@
 </div>
 <script type="text/javascript"><!--
 $('#button-filter').on('click', function() {
-	var url = 'index.php?route=replogic/schedule_management&token=<?php echo $token; ?>';
+  var url = 'index.php?route=replogic/schedule_management&token=<?php echo $token; ?>';
+  var filter_appointment_name = $('input[name=\'filter_appointment_name\']').val();
+  if (filter_appointment_name) {
+    url += '&filter_appointment_name=' + encodeURIComponent(filter_appointment_name);
+  }
 
-	var filter_appointment_name = $('input[name=\'filter_appointment_name\']').val();
+  var filter_salesrep_id = $('input[name=\'filter_salesrep_id\']').val();
 
-	if (filter_appointment_name) {
-		url += '&filter_appointment_name=' + encodeURIComponent(filter_appointment_name);
-	}
+  if (filter_salesrep_id) {
+    url += '&filter_salesrep_id=' + encodeURIComponent(filter_salesrep_id);
+  }
+  
+  var filter_customer_id = $('input[name=\'filter_customer_id\']').val();
 
-	var filter_salesrep_id = $('input[name=\'filter_salesrep_id\']').val();
+  if (filter_customer_id) {
+    url += '&filter_customer_id=' + encodeURIComponent(filter_customer_id);
+  }
 
-	if (filter_salesrep_id) {
-		url += '&filter_salesrep_id=' + encodeURIComponent(filter_salesrep_id);
-	}
-	
-	var filter_customer_id = $('input[name=\'filter_customer_id\']').val();
+  var filter_appointment_from = $('input[name=\'filter_appointment_from\']').val();
 
-	if (filter_customer_id) {
-		url += '&filter_customer_id=' + encodeURIComponent(filter_customer_id);
-	}
+  if (filter_appointment_from) {
+    url += '&filter_appointment_from=' + encodeURIComponent(filter_appointment_from);
+  }
+  
+  var filter_appointment_to = $('input[name=\'filter_appointment_to\']').val();
 
-	var filter_appointment_from = $('input[name=\'filter_appointment_from\']').val();
+  if (filter_appointment_to) {
+    url += '&filter_appointment_to=' + encodeURIComponent(filter_appointment_to);
+  }
 
-	if (filter_appointment_from) {
-		url += '&filter_appointment_from=' + encodeURIComponent(filter_appointment_from);
-	}
-	
-	var filter_appointment_to = $('input[name=\'filter_appointment_to\']').val();
+  var filter_type = $('select[name=\'filter_type\']').val();
 
-	if (filter_appointment_to) {
-		url += '&filter_appointment_to=' + encodeURIComponent(filter_appointment_to);
-	}
-
-	var filter_type = $('select[name=\'filter_type\']').val();
-
-	if (filter_type) {
-		url += '&filter_type=' + encodeURIComponent(filter_type);
-	}
+  if (filter_type) {
+    url += '&filter_type=' + encodeURIComponent(filter_type);
+  }
 //alert(url);
-	location = url;
+  location = url;
 });
 $('#button-filter-reset').on('click', function() {
-	var url = 'index.php?route=replogic/schedule_management&token=<?php echo $token; ?>';
-
-	location = url;
+  var url = 'index.php?route=replogic/schedule_management&token=<?php echo $token; ?>';
+  location = url;
 });
 //--></script>
 <script type="text/javascript"><!--
 $('input[name^=\'selected\']').on('change', function() {
-	
-	var selected = $('input[name^=\'selected\']:checked');
-
-	if (selected.length) {
-		$('#button-delete').prop('disabled', false);
-	}
-
+  
+  var selected = $('input[name^=\'selected\']:checked');
+  if (selected.length) {
+    $('#button-delete').prop('disabled', false);
+  }
 });
-
 $('#button-delete').prop('disabled', true);
-
 $('input[name^=\'selected\']:first').trigger('change');
-
 //--></script>
 <script type="text/javascript"><!--
 $('input[name=\'filter_customer\']').autocomplete({
-	'source': function(request, response) {
-		$.ajax({
-			url: 'index.php?route=customer/customer/autocomplete&token=<?php echo $token; ?>&filter_name=' +  encodeURIComponent(request),
-			dataType: 'json',
-			success: function(json) {
-				response($.map(json, function(item) {
-					return {
-						label: item['name'],
-						value: item['customer_id']
-					}
-				}));
-			}
-		});
-	},
-	'select': function(item) {
-		$('input[name=\'filter_customer\']').val(item['label']);
-		$('input[name=\'filter_customer_id\']').val(item['value']);
-	}
+  'source': function(request, response) {
+    $.ajax({
+      url: 'index.php?route=customer/customer/autocomplete&token=<?php echo $token; ?>&filter_name=' +  encodeURIComponent(request),
+      dataType: 'json',
+      success: function(json) {
+        response($.map(json, function(item) {
+          return {
+            label: item['name'],
+            value: item['customer_id']
+          }
+        }));
+      }
+    });
+  },
+  'select': function(item) {
+    $('input[name=\'filter_customer\']').val(item['label']);
+    $('input[name=\'filter_customer_id\']').val(item['value']);
+  }
 });
-
 $('input[name=\'filter_salesrep\']').autocomplete({
-	'source': function(request, response) {
-		$.ajax({
-			url: 'index.php?route=replogic/sales_rep_management/autocomplete&token=<?php echo $token; ?>&filter_name=' +  encodeURIComponent(request),
-			dataType: 'json',
-			success: function(json) {
-				response($.map(json, function(item) {
-					return {
-						label: item['name'],
-						value: item['salesrep_id']
-					}
-				}));
-			}
-		});
-	},
-	'select': function(item) {
-		$('input[name=\'filter_salesrep\']').val(item['label']);
-		$('input[name=\'filter_salesrep_id\']').val(item['value']);
-	}
+  'source': function(request, response) {
+    $.ajax({
+      url: 'index.php?route=replogic/sales_rep_management/autocomplete&token=<?php echo $token; ?>&filter_name=' +  encodeURIComponent(request),
+      dataType: 'json',
+      success: function(json) {
+        response($.map(json, function(item) {
+          return {
+            label: item['name'],
+            value: item['salesrep_id']
+          }
+        }));
+      }
+    });
+  },
+  'select': function(item) {
+    $('input[name=\'filter_salesrep\']').val(item['label']);
+    $('input[name=\'filter_salesrep_id\']').val(item['value']);
+  }
 });
 //--></script> 
 
