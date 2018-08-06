@@ -587,7 +587,7 @@ class ControllerReplogicOrderQuotes extends Controller {
 			);
 		}
 		
-		$data['customers'] = $this->model_customer_customer->getCustomers();
+		$data['customers'] = $this->model_customer_customer->getCustomers($data, $allaccess, $this->session->data['user_id']);
 		$data['allcustomer_contacts'] = $this->model_replogic_customer_contact->getcustomercontacts();
 		
 		if($current_user_group_id['user_group_id'] == '15' || $current_user_group_id['user_group_id'] == '19')

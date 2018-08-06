@@ -433,7 +433,7 @@ class ControllerReplogicSalesrepInfo extends Controller {
 		$user_group_id = $this->model_user_user_group->getUserGroupByName('Sales Manager');
 		$data['sales_managers'] = $this->model_user_user->getUsersByGroupId($user_group_id['user_group_id']);
 		
-		$data['customers'] = $this->model_customer_customer->getCustomers();
+		$data['customers'] = $this->model_customer_customer->getCustomers($data, $allaccess, $this->session->data['user_id']);
 		
 		$data['heading_title'] = $this->language->get('heading_title');
 		
@@ -709,7 +709,7 @@ class ControllerReplogicSalesrepInfo extends Controller {
 	   $data['salesReps'] = $this->model_replogic_sales_rep_management->getSalesRepsDropdown($allaccess, $current_user_id);
 	   
 	   $this->load->model('customer/customer');
-	   $data['customers'] = $this->model_customer_customer->getCustomers();
+	   $data['customers'] = $this->model_customer_customer->getCustomers('', $allacess = true, $this->session->data['user_id']);
 	
 		$data['sales_manager'] = $appointment_info['salesrep_id'];
 		
