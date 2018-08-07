@@ -128,6 +128,11 @@ table#customersByOrdersTbl.no-footer {
   background: linear-gradient(to bottom, #fff 0%, #dcdcdc 100%);
 }
 
+.lm-map-container {
+  width: 100%;
+  height: 400px;
+}
+
 /*=====  End of Dashboards  ======*/
 
 /*=============================================

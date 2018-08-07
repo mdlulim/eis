@@ -14,7 +14,7 @@
         var lmWrapper       = $('.lm-wrapper');
         var lmContainer     = $('.lm-map-container');
 
-        if (lmContainer.length) {
+        if (lmContainer.length && lmWrapper.length) {
             var lmWrapperOffset = lmWrapper.offset().top;
             var lmWrapperHeight = $window.height() - lmWrapperOffset - $window.scrollTop();
 

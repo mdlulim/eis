@@ -103,6 +103,7 @@ class ControllerReplogicQuotesInfo extends Controller {
 		$data['quote_status_denied'] = $this->language->get('quote_status_denied_id');
 
 		$url = '';
+		//var_dump($data['entry_payment_method']);die();
 
 		if (isset($this->request->get['filter_quote_id'])) {
 			$url .= '&filter_quote_id=' . $this->request->get['filter_quote_id'];
