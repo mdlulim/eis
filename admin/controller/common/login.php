@@ -28,6 +28,7 @@ class ControllerCommonLogin extends Controller {
 					$this->response->redirect($this->request->post['redirect'] . '&token=' . $this->session->data['token']);
 				}
 			} else {
+				$token = $this->session->data['token'];
 				if ($this->promptChangePassword()) {
 					$this->response->redirect($this->url->link(getDashboard($this->user), "token=$token&prompt_change_password=1", true));
 				} else {
