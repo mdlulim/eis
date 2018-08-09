@@ -1,10 +1,25 @@
 <?php echo $header; ?>
+
 <div id="container" class="container j-container">
-  <ul class="breadcrumb">
-    <?php foreach ($breadcrumbs as $breadcrumb) { ?>
-    <li><a href="<?php echo $breadcrumb['href']; ?>"><?php echo $breadcrumb['text']; ?></a></li>
-    <?php } ?>
-  </ul>
+<?php if ($this->config->get('config_store_id') == 0 && $this->request->get['route'] == 'account/login') : ?>
+<?php echo '<b>kirotest</b>'; ?>
+<style>
+    .header{
+        display: none;
+    }
+    #footer{
+        bottom: 0;
+        position: absolute;
+    }
+</style>
+<?php endif; ?>
+  <?php if($this->config->get('config_store_id') !== 0 && $this->request->get['route'] !== 'account/login') : ?>
+    <ul class="breadcrumb">
+      <?php foreach ($breadcrumbs as $breadcrumb) { ?>
+      <li><a href="<?php echo $breadcrumb['href']; ?>"><?php echo $breadcrumb['text']; ?></a></li>
+      <?php } ?>
+    </ul>
+  <?php endif; ?>
   <?php if ($success) { ?>
   <div class="alert alert-success success"><i class="fa fa-check-circle"></i> <?php echo $success; ?></div>
   <?php } ?>
@@ -22,6 +37,7 @@
     <div id="content" class="<?php echo $class; ?>">
       <?php echo $content_top; ?>
       <div class="row login-content">
+      <?php if ($this->config->get('config_store_id') !== 0 && $this->request->get['route'] !== 'account/login'):  ?>
         <div class="col-sm-6 left">
           <div class="well">
             <h2 class="secondary-title"><?php echo $text_new_customer; ?></h2>
@@ -32,12 +48,13 @@
             <hr/>
             <a href="<?php echo $register; ?>" class="btn btn-primary button"><?php echo $button_continue; ?></a></div>
         </div>
+      <?php endif; ?>
         <div class="col-sm-6 right">
           <div class="well">
-            <h2 class="secondary-title"><?php echo $text_returning_customer; ?></h2>
+            <h2 class="secondary-title"><?php if ($this->config->get('config_store_id') !== 0 && $this->request->get['route'] !== 'account/login') { echo $text_returning_customer;} else { echo 'Login';} ?></h2>
             <form action="<?php echo $action; ?>" method="post" enctype="multipart/form-data">
               <div class="login-wrap">
-                <p><?php echo $text_i_am_returning_customer; ?></p>
+                <p><?php if ($this->config->get('config_store_id') !== 0 && $this->request->get['route'] !== 'account/login') { echo $text_i_am_returning_customer; } ?></p>
               <div class="form-group">
                 <label class="control-label" for="input-email"><?php echo $entry_email; ?></label>
                 <input type="text" name="email" value="<?php echo $email; ?>" placeholder="<?php echo $entry_email; ?>" id="input-email" class="form-control" />
@@ -56,7 +73,7 @@
           </div>
         </div>
       </div>
-      <?php echo $content_bottom; ?></div>
+      <?php //echo $content_bottom; ?></div>
     </div>
 </div>
 <?php echo $footer; ?>
