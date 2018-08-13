@@ -105,13 +105,10 @@
                   <?php } ?>
                 </div>
               </div>
-              <div class="form-group required">
+              <div class="form-group">
                 <label class="col-sm-2 control-label" for="input-sku"><span data-toggle="tooltip" title="<?php echo $help_sku; ?>"><?php echo $entry_sku; ?></span></label>
                 <div class="col-sm-10">
                   <input type="text" name="sku" value="<?php echo $sku; ?>" placeholder="<?php echo $entry_sku; ?>" id="input-sku" class="form-control" />
-                  <?php if ($error_sku) { ?>
-                  <div class="text-danger"><?php echo $error_sku; ?></div>
-                  <?php } ?>
                 </div>
               </div>
               <!--<div class="form-group">

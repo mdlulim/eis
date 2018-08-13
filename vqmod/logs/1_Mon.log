@@ -1,5 +1,5 @@
----------- Date: 2018-08-06 17:12:17 ~ IP : ::1 ----------
-REQUEST URI : /saleslogicmdu/admin/index.php?route=replogic/quotes_info&quote_id=35&token=348KmlHbIisGZIZxjMFPFJkCSOygVoog
+---------- Date: 2018-08-13 08:33:26 ~ IP : ::1 ----------
+REQUEST URI : /saleslogicmdu/admin/index.php?route=replogic/sales_rep_management&token=V8keLb4wimLgEBidkfTJTRlJqhCPMNW4&team_id=1
 MOD DETAILS:
    modFile   : /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/vqmod/xml/productViewOrder.xml
    id        : Product - View orders
