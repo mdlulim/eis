@@ -14,16 +14,22 @@ class ControllerCustomerCustomerInfo extends Controller {
 		# stylesheets (CSS) files
 		$this->document->addStyle('view/javascript/bootstrap-sweetalert/sweetalert.css');
 		$this->document->addStyle('view/stylesheet/custom.css');
+		$this->document->addStyle('view/stylesheet/material-icons/material-icons.css');
+		$this->document->addStyle('view/javascript/datatables/datatables.min.css');
+		$this->document->addStyle('view/stylesheet/location_management.css');
 
 		# javascript (JS) files
 		$this->document->addScript('view/javascript/bootstrap-sweetalert/sweetalert.min.js');
 		$this->document->addScript('view/javascript/bootstrap-sweetalert/sweetalert-data.js');
 		$this->document->addScript('view/javascript/jquery-validation/dist/jquery.validate.min.js');
 		$this->document->addScript('view/javascript/customer.js');
+		$this->document->addScript('view/javascript/location_management.js');
 
 		/*=====  End of Add Files (Includes)  ======*/
 
 		$this->load->model('replogic/sales_rep_management');
+		$this->document->setTitle($this->language->get('heading_title'));
+		$data['heading_title'] = $this->language->get('heading_title');
 
 		// if AJAX | POST, send customer invitation
 		if ($this->request->server['REQUEST_METHOD'] == 'POST') {
@@ -169,7 +175,7 @@ class ControllerCustomerCustomerInfo extends Controller {
 
 		$data['customer_contacts'] = $this->model_replogic_customer_contact->getcustomercontacts($filter_data);
 		 
-		$data['customers'] = $this->model_customer_customer->getCustomers();
+		$data['customers'] = $this->model_customer_customer->getCustomers($filter_data, $allacess = true, $this->session->data['user_id']);
 		$data['allcustomer_contacts'] = $this->model_replogic_customer_contact->getcustomercontacts($filter_data = array('filter_customer_id' => $customer_id));
 		
 		$data['heading_title'] = $this->language->get('heading_title');
@@ -844,7 +850,7 @@ class ControllerCustomerCustomerInfo extends Controller {
 		if($current_user_group['name'] == 'Company admin' || $current_user_group['name'] == 'Administrator')
 		{
 			$data['access'] = 'yes';
-			$allaccess = true;
+			$getCustomers = true;
 			$current_user_id = 0;
 		}
 		else
@@ -891,7 +897,7 @@ class ControllerCustomerCustomerInfo extends Controller {
 		$user_group_id = $this->model_user_user_group->getUserGroupByName('Sales Manager');
 		$data['sales_managers'] = $this->model_user_user->getUsersByGroupId($user_group_id['user_group_id']);
 		
-		$data['customers'] = $this->model_customer_customer->getCustomers();
+		$data['customers'] = $this->model_customer_customer->getCustomers($data, $allacess, $current_user_id);
 		
 		$data['heading_title'] = $this->language->get('heading_title');
 		
@@ -1151,7 +1157,7 @@ class ControllerCustomerCustomerInfo extends Controller {
 	   $data['salesReps'] = $this->model_replogic_sales_rep_management->getSalesRepsDropdown($allaccess, $current_user_id);
 	   
 	   $this->load->model('customer/customer');
-	   $data['customers'] = $this->model_customer_customer->getCustomers(); ;
+	   $data['customers'] = $this->model_customer_customer->getCustomers('', $allacess, $this->session->data['user_id']);
 	
 		$data['sales_manager'] = $appointment_info['salesrep_id'];
 		
@@ -1291,7 +1297,7 @@ class ControllerCustomerCustomerInfo extends Controller {
 			);
 		}
 		
-		$data['customers'] = $this->model_customer_customer->getCustomers();
+		$data['customers'] = $this->model_customer_customer->getCustomers($data, $allacess, $this->session->data['user_id']);
 		$data['allcustomer_contacts'] = $this->model_replogic_customer_contact->getcustomercontacts($filter_data = array('filter_customer_id' => $customer_id));
 		
 		$data['heading_title'] = $this->language->get('heading_title');
@@ -1478,7 +1484,7 @@ class ControllerCustomerCustomerInfo extends Controller {
 
 		$data['customer_contacts'] = $this->model_replogic_customer_contact->getcustomercontacts($filter_data);
 		 
-		$data['customers'] = $this->model_customer_customer->getCustomers();
+		$data['customers'] = $this->model_customer_customer->getCustomers($filter_data, $allacess = true, $this->session->data['user_id']);
 		$data['allcustomer_contacts'] = $this->model_replogic_customer_contact->getcustomercontacts($filter_data = array('filter_customer_id' => $customer_id));
 		
 		$data['heading_title'] = $this->language->get('heading_title');
@@ -1625,7 +1631,7 @@ class ControllerCustomerCustomerInfo extends Controller {
 		$data['ccustomer_id'] = $customer_contact_info['customer_id'];
 		
 		$this->load->model('customer/customer');
-	   $data['customers'] = $this->model_customer_customer->getCustomers();
+	   $data['customers'] = $this->model_customer_customer->getCustomers('', $allacess = true, $this->session->data['user_id']);
 		
 		$data['header'] = $this->load->controller('common/header');
 		$data['column_left'] = $this->load->controller('common/column_left');
@@ -2471,11 +2477,16 @@ class ControllerCustomerCustomerInfo extends Controller {
 	}
 	
 	protected function getVisitsTab() {
+		$this->load->model('user/user_group');
+		$this->load->model('user/user');
+		$currentUser = $this->session->data['user_id'];
 		
 		$this->load->model('replogic/location_management');
-		$this->load->model('customer/customer');
 		$this->load->language('replogic/location_management');
 		$this->load->language('customer/customer_info');
+		$this->load->model('replogic/sales_rep_management');
+		$this->load->model('replogic/schedule_management');
+		$this->load->model('customer/customer');
 		
 		$customer_id = $this->request->get['customer_id'];
 		$data['customer_id'] = $customer_id;
@@ -2641,7 +2652,7 @@ class ControllerCustomerCustomerInfo extends Controller {
 		}
 		$data['teams'] = $this->model_user_team->getTeams();
 		
-		$data['customers'] = $this->model_customer_customer->getCustomers(); ;
+		$data['customers'] = $this->model_customer_customer->getCustomers($filter_data, $allacess, $this->session->data['user_id']); 
 		$data['salesReps'] = $this->model_replogic_sales_rep_management->getSalesRepsDropdown($allaccess, $current_user_id);
 		$data['locations'] = array();
 		$locationsmaps = array();
@@ -2792,6 +2803,120 @@ class ControllerCustomerCustomerInfo extends Controller {
 		$data['filter_salesrep_id'] = $filter_salesrep_id;
 		$data['sort'] = $sort;
 		$data['order'] = $order;
+		/** =============================================================================== */
+                                      // Location Management
+		/** =============================================================================== */
+		$token 			= $this->session->data['token'];
+		$data['token']      = $token;
+		$data['reload_cus_url'] = $this->url->link('customer/customer_info',$url."&token=$token",true);
+
+		/*******************************************
+		 * Locations | Google Map
+		 *******************************************/
+         
+		$locations = $this->model_replogic_location_management->getLocations($filters);
+		
+		
+		$data['markers_salesreps'] = array();
+		$data['markers_customers'] = array();
+		$data['markers_checkins']  = array();
+
+		foreach ($locations as $location) {
+			
+			# get sales rep
+			$salesrep = $this->model_replogic_sales_rep_management->getsalesrep($location['salesrep_id']); ;
+			$salesrep = $salesrep['salesrep_name'] ." ". $salesrep['salesrep_lastname'];
+			
+			# get customer or prospect based on type
+			if (strtolower($location['type']) === "new business") {
+
+				$customer = $this->model_customer_customer->getProspectiveCustomer($location['customer_id']);
+			
+				# get prospect address/location
+				$customerAddress   = $customer['address'];
+				$customerLatitude  = '';
+				$customerLongitude = '';
+
+			} else {
+				$customer = $this->model_customer_customer->getCustomer($location['customer_id']);
+			    # get customer address/location
+				$cAddress   = $this->model_customer_customer->getAddress($customer['address_id']);
+				$customerLatitude  = $cAddress['latitude'];
+				$customerLongitude = $cAddress['longitude'];
+				$customerAddress   = $cAddress['address_1'].", ";
+				$customerAddress  .= (!empty($cAddress['address_2'])) ? $cAddress['address_2'].", " : "";
+				$customerAddress  .= $cAddress['city'].", ";
+				$customerAddress  .= $cAddress['zone'].", ";
+				$customerAddress  .= $cAddress['country'].", ";
+				$customerAddress  .= $cAddress['postcode'];
+
+			}
+			
+			# last check in date/time
+			$lastCheckAgo = $this->getHowLongAgo($location['checkin']);
+			
+			# longitude and latitude
+			$latitude  = '';
+			$longitude = '';
+			
+			
+			# store sales reps current locations [Google Map]
+			$data['markers_salesreps'][] = array(
+				'latitude'  => $latitude,
+				'longitude' => $longitude,
+				'name'      => $salesrep,
+				'icon'      => 'view/image/gmap__location_icon.png',
+				'id'        => $location['checkin_id'],
+				'address'   => $location['location']
+			);
+
+			# store customers locations [Google Map]
+			$data['markers_customers'][] = array(
+				'latitude'     => $customerLatitude,
+				'longitude'    => $customerLongitude,
+				'name'         => $customer['firstname'],
+				'icon'         => 'view/image/gmap__customer_icon.png',
+				'id'           => $customer['customer_id'],
+				'address'      => $customerAddress,
+				'last_visited' => $lastCheckAgo,
+				'salesrep_name'=> $salesrep,
+				'salesrep_id'  => $location['salesrep_id']
+			);
+
+			# store sales reps gps locations [Google Map]
+		//if(!empty($location['markers_customers'])){
+			
+		//}
+			$data['markers_checkins'][]  = array(
+				'latitude'  => $latitude,
+				'longitude' => $longitude,
+				'name'      => $salesrep,
+				'icon'      => 'view/image/gmap__checkin_icon.png',
+				'id'        => $location['checkin_id'],
+				'address'   => $location['checkin_location']
+			);
+		}
+
+		//out($data['markers_salesreps']);die();
+
+		/*******************************************
+		 * Available and booked times
+		 *******************************************/
+		
+		$bookedTimesForToday     = $this->model_replogic_schedule_management->getSalesRepAppointmentTimesByDate($data['filter_salesrep_id'], date('Y-m-d'));
+		$data['booked_times']    = array();
+		$data['available_times'] = array("08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00");
+
+		if (!empty($bookedTimesForToday)) {
+			foreach($bookedTimesForToday as $time) {
+				$data['booked_times'][] = $time['appointment_time'];
+			}
+		}
+
+
+		/** ================================================================================ */
+		                              //END LOCATION MANAGEMENT
+		/** ================================================================================ */
 
 		$data['header'] = $this->load->controller('common/header');
 		$data['column_left'] = $this->load->controller('common/column_left');

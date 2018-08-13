@@ -101,7 +101,7 @@
         appointmentModal.find('#input__customer_name').val(customerName);
 
         // if location_management page check available times before show
-        if (pageId === "location_management") {
+        if (pageId === "location_management" || pageId === "sales_dashboard") {
             var date       = new Date().toDateString();
             var url        = `index.php?route=replogic/schedule_management/getSalesRepAppointmentTimesByDate&token=${token}`;
             $.ajax({
@@ -200,7 +200,13 @@
                                     type: "success"
                                 }, function() {
                                     // reload page
-                                    window.location.href = $('a#button-reload').attr('href');
+                                    if (pageId === "sales_dashboard") {
+                                        window.location.href = $('#content').attr('data-page-url');
+                                    } else if (pageId === "customer_info") {
+                                        window.location.href = $('#content').attr('data-page-url');
+                                    }  else{
+                                        window.location.href = $('a#button-reload').attr('href');
+                                    }
                                 });
                             } else {
                                 swal({

@@ -599,7 +599,8 @@ class ControllerCommonSalesDashboard extends Controller {
 		/*=====  End of Latest Appointments  ======*/
 
 
-
+		$data['token']      = $token;
+		$data['reload_url'] = $this->url->link('common/sales_dashboard', "token=$token", true);
 
 
 		/*******************************************
@@ -690,6 +691,21 @@ class ControllerCommonSalesDashboard extends Controller {
 		}
 
 		//out($data['markers_customers']);die();
+
+		/*******************************************
+		 * Available and booked times
+		 *******************************************/
+		
+		$bookedTimesForToday     = $this->model_replogic_schedule_management->getSalesRepAppointmentTimesByDate($data['filter_salesrep_id'], date('Y-m-d'));
+		$data['booked_times']    = array();
+		$data['available_times'] = array("08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00");
+
+		if (!empty($bookedTimesForToday)) {
+			foreach($bookedTimesForToday as $time) {
+				$data['booked_times'][] = $time['appointment_time'];
+			}
+		}
+
 		
 	
 		/*========================================================

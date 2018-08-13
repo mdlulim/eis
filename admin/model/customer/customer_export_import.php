@@ -149,11 +149,14 @@ class ModelCustomerCustomerExportImport extends Model {
 				$sql = "UPDATE ".DB_PREFIX."customer SET ";
 			//}
 		} else {
+			//var_dump($data['companyname'].'<br/>'.$data['telephone'].'<br/>'.$data['email'].'<br/>'.$data['status'].'<br/>'.$data['address1']);
 			
-		if($data['companyname'] != '' && $data['telephone'] != '' && $data['email'] != '' && $data['paymentmethod'] != '' && $data['status'] != '' && $data['address1'] != '' && $data['city'] != '' && $data['country'] != '' && $data['region'] != ''){
-			$sql = "INSERT INTO ".DB_PREFIX."customer SET ";
-			$sql .= "date_added = NOW(), ";
-		}
+			if(!empty($data['companyname']) && !empty($data['telephone'])  && !empty($data['email']) && !empty($data['status'])){
+				$sql = "INSERT INTO ".DB_PREFIX."customer SET ";
+				$sql .= "date_added = NOW(), ";
+				//var_dump(" No Id test:".$data['email']);
+			}
+			
 			
 		}
 		
@@ -206,7 +209,7 @@ class ModelCustomerCustomerExportImport extends Model {
 		}
 		
 		$sql1 = rtrim($sql, ', '); 
-		//var_dump($sql1);
+		var_dump($sql1);
 		if($customer_id)
 		{
 			$sql1 .= " WHERE customer_id='".$customer_id."'";
