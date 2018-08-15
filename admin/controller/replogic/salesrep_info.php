@@ -1009,7 +1009,7 @@ class ControllerReplogicSalesrepInfo extends Controller {
 		$data['customer_groups'] = $this->model_customer_customer_group->getCustomerGroups();
 		
 		$this->load->model('customer/customer');
-	    $data['dropdowncustomers'] = $this->model_customer_customer->getCustomers();
+	    $data['dropdowncustomers'] = $this->model_customer_customer->getCustomers('', $allaccess, $this->session->data['user_id']);
 
 		$this->load->model('setting/store');
 
@@ -1625,7 +1625,7 @@ class ControllerReplogicSalesrepInfo extends Controller {
 			);
 		}
 		
-		$data['customers'] = $this->model_customer_customer->getCustomers();
+		$data['customers'] = $this->model_customer_customer->getCustomers($data, $allaccess, $this->session->data['user_id']);
 
 		$data['heading_title'] = $this->language->get('heading_title');
 
@@ -2040,7 +2040,7 @@ class ControllerReplogicSalesrepInfo extends Controller {
 			);
 		}
 		
-	    $data['customers'] = $this->model_customer_customer->getCustomers();
+	    $data['customers'] = $this->model_customer_customer->getCustomers($data, $allaccess = true, $this->session->data['user_id']);
 		
 		$data['customercontacts'] = $this->model_replogic_customer_contact->getcustomercontacts();
 		

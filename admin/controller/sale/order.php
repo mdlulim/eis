@@ -239,7 +239,7 @@ class ControllerSaleOrder extends Controller {
 			);
 		}
 		
-		$data['customers'] = $this->model_customer_customer->getCustomers();
+		$data['customers'] = $this->model_customer_customer->getCustomers($filter_data, $allaccess = true, $this->session->data['user_id']);
 		
 		$this->load->model('replogic/sales_rep_management');
 		$this->load->model('replogic/customer_contact');
