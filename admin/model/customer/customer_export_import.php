@@ -1,10 +1,25 @@
 <?php
 class ModelCustomerCustomerExportImport extends Model {
-	
+
+	public function deleteCustomerRowById($data){
+		$result = null;
+		if ( !empty($data['customer_id']) && empty($data['address1']) && empty($data['companyname']) && empty($data['city']) && empty($data['postcode']) && empty($data['region']) && empty($data['country']) )
+		{
+			$sqlCheck = "SELECT * FROM ".DB_PREFIX."customer WHERE customer_id =".$data['customer_id'];
+			$result = $this->db->query($sqlCheck);
+		}
+
+		return $result;
+	}
 	public function importCsvCustomerDataUpdate($data) {
+		$customer_id = $data['customer_id'];
+
+		//$this->deleteCustomerRowById($data, $customer_id);
+
+	    if(!empty($data['companyname']) || !empty($data['telephone'])  || !empty($data['email']) || !empty($data['status'])){
+			$sql = "UPDATE ".DB_PREFIX."customer SET ";
+		}
 		
-	
-		$sql = "UPDATE ".DB_PREFIX."customer SET ";
 		
 		if ($this->config->get( 'customer_export_import_settings_companyname' ) && ($data['companyname'] != '') ) {
 			$sql .= "firstname = '".$data['companyname']."', ";
@@ -54,7 +69,10 @@ class ModelCustomerCustomerExportImport extends Model {
 		}
 		
 		$sql1 = rtrim($sql, ', '); 
-		$sql1 .= " WHERE customer_id='".$data['customer_id']."'";
+		if(empty($data['companyname']) || empty($data['telephone'])  || empty($data['email']) || empty($data['status'])){
+			$sql1 .= " WHERE customer_id='".$data['customer_id']."' ";
+		}
+		
 		
 		//echo $sql1; exit;
 		$this->db->query($sql1);
@@ -118,14 +136,7 @@ class ModelCustomerCustomerExportImport extends Model {
 		
 		
 	}
-	public function deleteCustomerRowById($data, $customer_id){
-		if (!empty($customer_id) &&  empty($data['address1']) && empty($data['companyname']) && empty($data['city']) && empty($data['postcode']) && empty($data['region']) && empty($data['country']) )
-		{
-			$sqlCheck = "SELECT * ".DB_PREFIX."customer WHERE customer_id =".$customer_id;
-			$this->db->query($sqlCheck);
-		
-		}
-	}
+	
 	
 	public function importCsvCustomerDataInsert($data) { 
 		
@@ -141,7 +152,8 @@ class ModelCustomerCustomerExportImport extends Model {
 		{
 			$customer_id = '';
 		}
-		$this->deleteCustomerRowById($data, $customer_id);
+		
+		//$this->deleteCustomerRowById($data, $customer_id);
 		
 		if(!empty($customer_id))
 		{
@@ -209,12 +221,9 @@ class ModelCustomerCustomerExportImport extends Model {
 		}
 		
 		$sql1 = rtrim($sql, ', '); 
-		var_dump($sql1);
-		if($customer_id)
-		{
-			$sql1 .= " WHERE customer_id='".$customer_id."'";
-			$customer_id = $customer_id;
-		}
+		//var_dump($sql1);
+		//$sql1 .= " WHERE customer_id='".$customer_id."'";
+
 		$this->db->query($sql1);
 		
 		

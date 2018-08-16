@@ -299,7 +299,7 @@ class ControllerReplogicLocationManagement extends Controller {
 				'last_seen'        => $lastCheckAgo
 			);
 		}
-
+        var_dump($data['markers_customers']);die();
 		/*******************************************
 		 * Available and booked times
 		 *******************************************/

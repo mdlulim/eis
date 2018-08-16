@@ -240,9 +240,37 @@ class ControllerCustomerCustomerExportImport extends Controller {
 												
 											);
 								//echo $customer_id; exit;
-								//print_r($data_array); exit;
-								if (!empty($customer_id)) // if column 1 is not empty
+								//print_r($data_array['customer_id']);
+								// $checkData = $this->model_customer_customer_export_import->deleteCustomerRowById($data_array);
+								// if ($checkData == true){
+								// } else{
+								// 	$data_array = array(
+								// 		'customer_id' => '',
+								// 		'companyname' => $companyname,
+								// 		'telephone' => $telephone,
+								// 		'email' => $email,
+								// 		'companygroup' => $customer_group_id,
+								// 		'paymentmethod' => $paymentmethod,
+								// 		'salesrep' => $salesrep_id,
+								// 		'status' => $status,
+								// 		'address1' => $address1,
+								// 		'address2' => $address2,
+								// 		'city' => $city,
+								// 		'postcode' => $postcode,
+								// 		'country' => $country_id,
+								// 		'region' => $zone_id,
+								// 		'defaultaddress' => $defaultaddress
+										
+								// 	);
+								// 	$customer_id = '';
+                             
+								// }
+								if ( !empty($data_array['customer_id']) && empty($data_array['address1']) && empty($data_array['companyname']) && empty($data_array['city']) && empty($data_array['postcode']) && empty($data_array['region']) && empty($data_array['country']) ){
+									
+								}else{
+									if (!empty($customer_id)) // if column 1 is not empty
 								{ 
+									
 									$this->model_customer_customer_export_import->importCsvCustomerDataUpdate($data_array);  // parse the data to model
 									
 								}
@@ -252,6 +280,8 @@ class ControllerCustomerCustomerExportImport extends Controller {
 									$this->model_customer_customer_export_import->importCsvCustomerDataInsert($data_array);
 								
 								}
+								}
+								
 							}
 						}
 						$this->session->data['success'] = ''.ucfirst($ext).' Successfully Imported!';	
