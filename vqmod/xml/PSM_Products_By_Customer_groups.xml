@@ -611,7 +611,7 @@
 		 		 AND p2s.store_id = '" . (int)$this->config->get('config_store_id') . "'
 			]]></search>
 			<add><![CDATA[
-				AND p2cg.customer_group_id = '" . (int)$this->config->get('config_customer_group_id') . "'
+				#AND p2cg.customer_group_id = '" . (int)$this->config->get('config_customer_group_id') . "'
 			]]></add>
 		</operation>
         

@@ -170,7 +170,7 @@ class ControllerReplogicQuotesInfo extends Controller {
 		$data['store_url'] = $this->request->server['HTTPS'] ? HTTPS_CATALOG : HTTP_CATALOG;
 		$data['store_name'] = $this->config->get('config_name');
 		
-
+		
 		$data['token'] = $this->session->data['token'];
 
 		$quote_id = $this->request->get['quote_id'];

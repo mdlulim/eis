@@ -6,6 +6,6 @@ vqmod/logs/
 vqmod/mods.cache
 config.php
 admin/config.php
-vqmod/vqcache/*
+vqmod/vqcache/
 .DS_Store
-journal-cache/*
+journal-cache/
