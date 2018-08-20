@@ -157,15 +157,11 @@ class ModelCustomerCustomerExportImport extends Model {
 		
 		if(!empty($customer_id))
 		{
-			//if($data['companyname'] != '' && $data['telephone'] != '' && $data['email'] != '' && $data['paymentmethod'] != '' && $data['status'] != '' && $data['address1'] != '' && $data['city'] != '' && $data['country'] != '' && $data['region'] != ''){
-				$sql = "UPDATE ".DB_PREFIX."customer SET ";
-			//}
+			$sql = "UPDATE ".DB_PREFIX."customer SET ";
 		} else {
-			//var_dump($data['companyname'].'<br/>'.$data['telephone'].'<br/>'.$data['email'].'<br/>'.$data['status'].'<br/>'.$data['address1']);
-			
 			if(!empty($data['companyname']) && !empty($data['telephone'])  && !empty($data['email']) && !empty($data['status'])){
-				$sql = "INSERT INTO ".DB_PREFIX."customer SET ";
-				$sql .= "date_added = NOW(), ";
+				$sql = 'INSERT INTO '.DB_PREFIX.'customer SET ';
+				$sql .= 'date_added = NOW(), ';
 				//var_dump(" No Id test:".$data['email']);
 			}
 			
@@ -173,37 +169,46 @@ class ModelCustomerCustomerExportImport extends Model {
 		}
 		
 		if ($this->config->get( 'customer_export_import_settings_companyname' ) && ($data['companyname'] != '') ) {
-			$sql .= "firstname = '".$data['companyname']."', ";
-			$sql .= "lastname = '".$data['companyname']."', ";
+			$companyname = $data['companyname'] ;
+			$sql .= 'firstname ="'.$companyname.'", ';
+			$sql .= 'lastname ="'.$companyname.'", ';
+			//$sql .= "lastname = ".$data['companyname'].", ";
 		}
 		
 		if ($this->config->get( 'customer_export_import_settings_email' ) && ($data['email'] != '') ) {
 			if($this->uploadValidateEmail($data['customer_id'], $data['email']))
 			{
-				$sql .= "email = '".$data['email']."', ";
+				$email =  $data['email'];
+				$sql .= 'email ="'.$email.'", ';
+				//$sql .= "email = '".$data['email']."', ";
 			}
 		}
 		
 		if ($this->config->get( 'customer_export_import_settings_paymentmethod' ) && ($data['paymentmethod'] != '') ) {
-			$sql .= "payment_method = '".$data['paymentmethod']."', ";
+			$payment_method =  $data['paymentmethod'];
+			$sql .= 'payment_method ="'.$payment_method.'", ';
+			//$sql .= "payment_method = '".$data['paymentmethod']."', ";
 		}
 		
 		if ($this->config->get( 'customer_export_import_settings_telephone' ) && ($data['telephone'] != '')) {
-			$sql .= "telephone = '".$data['telephone']."', ";
+			$telephone =  $data['telephone'];
+			$sql .= 'telephone ="'.$telephone.'", ';
+			//$sql .= "telephone = '".$data['telephone']."', ";
 		}
 		
 		if ($this->config->get( 'customer_export_import_settings_salesrep' ) && ($data['salesrep'] != '')) {
-			$sql .= "salesrep_id = '". (int)$data['salesrep']."', ";
+			$sql .= 'salesrep_id = '. (int)$data['salesrep'].', ';
 		}
 		
 		if ($this->config->get( 'customer_export_import_settings_companygroup' ) && ($data['companygroup'] != '')) {
 			if($data['companygroup'] == 0)
 			{
-				$sql .= "customer_group_id = '1', ";
+				$customer_group_id =1;
+				$sql .= 'customer_group_id ='.$customer_group_id.', ';
 			}
 			else
 			{
-				$sql .= "customer_group_id = '". (int)$data['companygroup']."', ";
+				$sql .= 'customer_group_id = '. (int)$data['companygroup'].', ';
 			}
 		}
 	
@@ -217,11 +222,12 @@ class ModelCustomerCustomerExportImport extends Model {
 			{
 				$data['status'] = 0;
 			}
-			$sql .= "status = '".$data['status']."', ";
+			$sql .= 'status = '.$data['status'].', ';
 		}
 		
 		$sql1 = rtrim($sql, ', '); 
-		//var_dump($sql1);
+		//var_dump($sql1);die();
+	//	var_dump('<br />');
 		//$sql1 .= " WHERE customer_id='".$customer_id."'";
 
 		$this->db->query($sql1);
@@ -243,45 +249,45 @@ class ModelCustomerCustomerExportImport extends Model {
 			
 			// $this->db->query($dlt);
 			
-			$adr = "INSERT ".DB_PREFIX."address SET ";
+			$adr = 'INSERT '.DB_PREFIX.'address SET ';
 			
 			if($customer_id)
 			{
-				$adr .= "customer_id = '".(int)$customer_id."', ";
+				$adr .= 'customer_id = '.(int)$customer_id.', ';
 			}
 			else
 			{
-				$adr .= "customer_id = '".(int)$data['customer_id']."', ";
+				$adr .= 'customer_id = '.(int)$data['customer_id'].', ';
 			}
 			
 			if ($this->config->get( 'customer_export_import_settings_companyname' ) && ($data['companyname'] != '') ) {
-				$adr .= "firstname = '".$data['companyname']."', ";
-				$adr .= "lastname = '".$data['companyname']."', ";
-				$adr .= "company = '".$data['companyname']."', ";
+				$adr .= 'firstname = "'.$data['companyname'].'", ';
+				$adr .= 'lastname = "'.$data['companyname'].'", ';
+				$adr .= 'company = "'.$data['companyname'].'", ';
 			}
 			
 			if ($this->config->get( 'customer_export_import_settings_address1' ) && ($data['address1'] != '') ) {
-				$adr .= "address_1 = '".$data['address1']."', ";
+				$adr .= 'address_1 = "'.$data['address1'].'", ';
 			}
 			
 			if ($this->config->get( 'customer_export_import_settings_address2' ) && ($data['address2'] != '') ) {
-				$adr .= "address_2 = '".$data['address2']."', ";
+				$adr .= 'address_2 = "'.$data['address2'].'", ';
 			}
 			
 			if ($this->config->get( 'customer_export_import_settings_city' ) && ($data['city'] != '') ) {
-				$adr .= "city = '".$data['city']."', ";
+				$adr .= 'city = "'.$data['city'].'", ';
 			}
 			
 			if ($this->config->get( 'customer_export_import_settings_postcode' ) && ($data['postcode'] != '') ) {
-				$adr .= "postcode = '".$data['postcode']."', ";
+				$adr .= 'postcode = "'.$data['postcode'].'", ';
 			}
 			
 			if ($this->config->get( 'customer_export_import_settings_country' ) && ($data['country'] != '') ) {
-				$adr .= "country_id = '".$data['country']."', ";
+				$adr .= 'country_id = "'.$data['country'].'", ';
 			}
 			
 			if ($this->config->get( 'customer_export_import_settings_region' ) && ($data['region'] != '') ) {
-				$adr .= "zone_id = '".$data['region']."', ";
+				$adr .= 'zone_id = '.$data['region'].', ';
 			}
 			
 			$adr1 = rtrim($adr, ', '); 
