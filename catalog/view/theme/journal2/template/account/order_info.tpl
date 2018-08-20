@@ -24,7 +24,11 @@
     <?php $class = 'col-sm-12'; ?>
     <?php } ?>
     <div id="content" class="<?php echo $class; ?>">
-      <h1 class="heading-title"><?php echo $heading_title; ?></h1>
+      <h1 class="heading-title"><?php echo $heading_title; ?>
+      <span><a href="<?php echo $reorderAll; ?>" class="btn btn-primary" style="float:right;margin-right: 3px;background-color: silver;margin-top: 3px;" onclick="return confirm('Please note that all current cart items will be replaced with contents from this order, should line Items have no stock or are disabled it will not be added to your cart.');">
+  <i class="fa fa-repeat"></i> Reorder </a></span>
+
+      </h1>
       <?php echo $content_top; ?>
       <table class="table table-bordered table-hover list">
         <thead>

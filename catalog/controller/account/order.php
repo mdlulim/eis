@@ -326,7 +326,7 @@ class ControllerAccountOrder extends Controller {
 					'return'   => $this->url->link('account/return/add', 'order_id=' . $order_info['order_id'] . '&product_id=' . $product['product_id'], true)
 				);
 			}
-
+			$data['reorderAll'] = $this->url->link('account/order/reorderAll', 'order_id=' . $order_info['order_id'] , true);
 			// Voucher
 			$data['vouchers'] = array();
 
@@ -525,8 +525,7 @@ class ControllerAccountOrder extends Controller {
 							}
 						}
 
-						//$this->cart->add($order_product_info['product_id'], $order_product_info['quantity'], $option_data);
-						$this->cart->add($order_product_info['product_id'], 0 , $option_data);
+						$this->cart->add($order_product_info['product_id'], $order_product_info['quantity'], $option_data);
 
 					 	$this->session->data['success'] = sprintf($this->language->get('text_success_reorder'), $this->url->link('checkout/cart'));
 
@@ -537,7 +536,7 @@ class ControllerAccountOrder extends Controller {
 				}
 			}
 		}
-
-		$this->response->redirect($this->url->link('account/order/info', 'order_id=' . $order_id));
+		
+		$this->response->redirect($this->url->link('checkout/cart'));
 	}
 }
