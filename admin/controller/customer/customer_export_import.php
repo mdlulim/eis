@@ -179,7 +179,6 @@ class ControllerCustomerCustomerExportImport extends Controller {
 							
 							
 							
-							
 							if(!empty($salesrep))
 								{
 									$sales = $this->model_replogic_sales_rep_management->getSalesrepByName($salesrep);
@@ -239,23 +238,31 @@ class ControllerCustomerCustomerExportImport extends Controller {
 												'defaultaddress' => $defaultaddress
 												
 											);
-								
-								if ( !empty($data_array['customer_id']) && empty($data_array['address1']) && empty($data_array['companyname']) && empty($data_array['city']) && empty($data_array['postcode']) && empty($data_array['region']) && empty($data_array['country']) ){
-									
-								}else{
-									if (!empty($customer_id)) // if column 1 is not empty
-									{ 
+											//var_dump('test id'.$customer_id);
 										
-										$this->model_customer_customer_export_import->importCsvCustomerDataUpdate($data_array);  // parse the data to model
+										if($data_array['email'] != ''){
+											//var_dump($data_array['email']);
+										//var_dump("<br />");
+											// if($this->model_customer_customer_export_import->checkEmailIfExist($email) == true){
+											// 	$this->model_customer_customer_export_import->importCsvCustomerDataUpdate($data_array);  // parse the data to model
+											// }else{
+												$this->model_customer_customer_export_import->importCsvCustomerDataInsert($data_array);
+											//}
+										}
+								// if (empty(!$data_array['address1']) || !empty($data_array['companyname']) || !empty($data_array['city']) || !empty($data_array['postcode']) || !empty($data_array['region']) || !empty($data_array['country']) ){
+								// 	if (!empty($customer_id)) // if column 1 is not empty
+								// 	{ 
 										
-									}
-									else
-									{
+								// 		$this->model_customer_customer_export_import->importCsvCustomerDataUpdate($data_array);  // parse the data to model
+										
+								// 	}
+								// 	else
+								// 	{
 									
-										$this->model_customer_customer_export_import->importCsvCustomerDataInsert($data_array);
+								// 		$this->model_customer_customer_export_import->importCsvCustomerDataInsert($data_array);
 									
-									}
-								}
+								// 	}
+								// }
 								
 							}
 						}
