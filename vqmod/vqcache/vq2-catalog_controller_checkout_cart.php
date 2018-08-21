@@ -809,8 +809,8 @@ class ControllerCheckoutCart extends Controller {
 		$this->load->model('catalog/product');
 
 		$json     = array();
-		$formats  = array('xls', 'xlsx', 'csv', 'ods');
-		$colHeads = array('Product Name', 'Category', 'SKU', 'Quantity', 'Unit Price', 'Total');
+		$formats  = array('xls', 'xlsx', 'csv'); // supported file types
+		$colHeads = array('Product Name', 'Category', 'SKU', 'Quantity', 'Unit Price', 'Total'); // expected column headings
 		$maxSize  = 5097152;  // maximum file size (5MB)
 
 		if ($this->request->server['REQUEST_METHOD'] == 'POST') {
@@ -861,7 +861,6 @@ class ControllerCheckoutCart extends Controller {
 						for ($row = 1; $row <= 1; $row++) { 
 							$header1 = $sheet->rangeToArray('A' . $row . ':' . $highestColumn . $row, NULL, FALSE, FALSE);
 						}
-
 						
 						// Check if row has right data [not headings]
 						if (!in_array($header1[0][0], $colHeads)) {
@@ -968,6 +967,10 @@ class ControllerCheckoutCart extends Controller {
 							$json['total']   = sprintf($this->language->get('text_items'), $this->cart->countProducts() + (isset($this->session->data['vouchers']) ? count($this->session->data['vouchers']) : 0), $this->currency->format($total, $this->session->data['currency']));
 							$json['records'] = $dataRows;
 							$json['headers'] = $header;
+						} else {
+							if (!isset($json['error'])) {
+								$json['error'] = $this->language->get('import_generic_error');
+							}
 						}
 					}
 				}
