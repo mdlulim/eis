@@ -27,6 +27,18 @@ class ControllerCustomerCustomer extends Controller {
 		$this->getList();
 	}
 
+	public function get_customer_contacts() {
+		if ($this->request->server['REQUEST_METHOD'] == 'GET') {
+			if (!empty($this->request->get['customer_id'])) {
+				$this->load->model('replogic/customer_contact');
+				$json = array();
+				$customerContacts = $this->model_replogic_customer_contact->getcustomercontacts(array('filter_customer_id'=>$this->request->get['customer_id']));
+				$json['customer_contacts'] = $customerContacts;
+				$this->response->addHeader('Content-Type: application/json');
+				$this->response->setOutput(json_encode($json));
+			}
+		}
+	}
 
 	public function invitation() {
 		$json['success'] = false;
@@ -1326,7 +1338,7 @@ class ControllerCustomerCustomer extends Controller {
 
 		if (!isset($this->request->get['customer_id'])) {
 			$this->response->setOutput($this->load->view('customer/customer_add_form', $data));
-		} else { 
+		} else {
 			$this->response->setOutput($this->load->view('customer/customer_form', $data));
 		}
 		

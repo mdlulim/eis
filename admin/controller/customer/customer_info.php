@@ -14,22 +14,16 @@ class ControllerCustomerCustomerInfo extends Controller {
 		# stylesheets (CSS) files
 		$this->document->addStyle('view/javascript/bootstrap-sweetalert/sweetalert.css');
 		$this->document->addStyle('view/stylesheet/custom.css');
-		$this->document->addStyle('view/stylesheet/material-icons/material-icons.css');
-		$this->document->addStyle('view/javascript/datatables/datatables.min.css');
-		$this->document->addStyle('view/stylesheet/location_management.css');
 
 		# javascript (JS) files
 		$this->document->addScript('view/javascript/bootstrap-sweetalert/sweetalert.min.js');
 		$this->document->addScript('view/javascript/bootstrap-sweetalert/sweetalert-data.js');
 		$this->document->addScript('view/javascript/jquery-validation/dist/jquery.validate.min.js');
 		$this->document->addScript('view/javascript/customer.js');
-		$this->document->addScript('view/javascript/location_management.js');
 
 		/*=====  End of Add Files (Includes)  ======*/
 
 		$this->load->model('replogic/sales_rep_management');
-		$this->document->setTitle($this->language->get('heading_title'));
-		$data['heading_title'] = $this->language->get('heading_title');
 
 		// if AJAX | POST, send customer invitation
 		if ($this->request->server['REQUEST_METHOD'] == 'POST') {
@@ -175,7 +169,7 @@ class ControllerCustomerCustomerInfo extends Controller {
 
 		$data['customer_contacts'] = $this->model_replogic_customer_contact->getcustomercontacts($filter_data);
 		 
-		$data['customers'] = $this->model_customer_customer->getCustomers($filter_data, $allacess = true, $this->session->data['user_id']);
+		$data['customers'] = $this->model_customer_customer->getCustomers($filter_data, $allaccess = true, $this->session->data['user_id']);
 		$data['allcustomer_contacts'] = $this->model_replogic_customer_contact->getcustomercontacts($filter_data = array('filter_customer_id' => $customer_id));
 		
 		$data['heading_title'] = $this->language->get('heading_title');
@@ -850,7 +844,7 @@ class ControllerCustomerCustomerInfo extends Controller {
 		if($current_user_group['name'] == 'Company admin' || $current_user_group['name'] == 'Administrator')
 		{
 			$data['access'] = 'yes';
-			$getCustomers = true;
+			$allaccess = true;
 			$current_user_id = 0;
 		}
 		else
@@ -897,7 +891,7 @@ class ControllerCustomerCustomerInfo extends Controller {
 		$user_group_id = $this->model_user_user_group->getUserGroupByName('Sales Manager');
 		$data['sales_managers'] = $this->model_user_user->getUsersByGroupId($user_group_id['user_group_id']);
 		
-		$data['customers'] = $this->model_customer_customer->getCustomers($data, $allacess, $current_user_id);
+		$data['customers'] = $this->model_customer_customer->getCustomers($data, $allaccess = true ,$this->session->data['user_id']);
 		
 		$data['heading_title'] = $this->language->get('heading_title');
 		
@@ -1157,7 +1151,7 @@ class ControllerCustomerCustomerInfo extends Controller {
 	   $data['salesReps'] = $this->model_replogic_sales_rep_management->getSalesRepsDropdown($allaccess, $current_user_id);
 	   
 	   $this->load->model('customer/customer');
-	   $data['customers'] = $this->model_customer_customer->getCustomers('', $allacess, $this->session->data['user_id']);
+	   $data['customers'] = $this->model_customer_customer->getCustomers('', $allaccess ,$this->session->data['user_id']); ;
 	
 		$data['sales_manager'] = $appointment_info['salesrep_id'];
 		
@@ -1297,7 +1291,7 @@ class ControllerCustomerCustomerInfo extends Controller {
 			);
 		}
 		
-		$data['customers'] = $this->model_customer_customer->getCustomers($data, $allacess, $this->session->data['user_id']);
+		$data['customers'] = $this->model_customer_customer->getCustomers($data, $allaccess = true ,$this->session->data['user_id']);
 		$data['allcustomer_contacts'] = $this->model_replogic_customer_contact->getcustomercontacts($filter_data = array('filter_customer_id' => $customer_id));
 		
 		$data['heading_title'] = $this->language->get('heading_title');
@@ -1484,7 +1478,7 @@ class ControllerCustomerCustomerInfo extends Controller {
 
 		$data['customer_contacts'] = $this->model_replogic_customer_contact->getcustomercontacts($filter_data);
 		 
-		$data['customers'] = $this->model_customer_customer->getCustomers($filter_data, $allacess = true, $this->session->data['user_id']);
+		$data['customers'] = $this->model_customer_customer->getCustomers($filter_data, $allaccess = true ,$this->session->data['user_id']);
 		$data['allcustomer_contacts'] = $this->model_replogic_customer_contact->getcustomercontacts($filter_data = array('filter_customer_id' => $customer_id));
 		
 		$data['heading_title'] = $this->language->get('heading_title');
@@ -1631,7 +1625,7 @@ class ControllerCustomerCustomerInfo extends Controller {
 		$data['ccustomer_id'] = $customer_contact_info['customer_id'];
 		
 		$this->load->model('customer/customer');
-	   $data['customers'] = $this->model_customer_customer->getCustomers('', $allacess = true, $this->session->data['user_id']);
+	   $data['customers'] = $this->model_customer_customer->getCustomers('', $allaccess = true ,$this->session->data['user_id']);
 		
 		$data['header'] = $this->load->controller('common/header');
 		$data['column_left'] = $this->load->controller('common/column_left');
@@ -2477,16 +2471,11 @@ class ControllerCustomerCustomerInfo extends Controller {
 	}
 	
 	protected function getVisitsTab() {
-		$this->load->model('user/user_group');
-		$this->load->model('user/user');
-		$currentUser = $this->session->data['user_id'];
 		
 		$this->load->model('replogic/location_management');
+		$this->load->model('customer/customer');
 		$this->load->language('replogic/location_management');
 		$this->load->language('customer/customer_info');
-		$this->load->model('replogic/sales_rep_management');
-		$this->load->model('replogic/schedule_management');
-		$this->load->model('customer/customer');
 		
 		$customer_id = $this->request->get['customer_id'];
 		$data['customer_id'] = $customer_id;
@@ -2652,42 +2641,40 @@ class ControllerCustomerCustomerInfo extends Controller {
 		}
 		$data['teams'] = $this->model_user_team->getTeams();
 		
-		$data['customers'] = $this->model_customer_customer->getCustomers($filter_data, $allacess, $this->session->data['user_id']); 
+		$data['customers'] = $this->model_customer_customer->getCustomers($filter_data, $allaccess ,$this->session->data['user_id']); ;
 		$data['salesReps'] = $this->model_replogic_sales_rep_management->getSalesRepsDropdown($allaccess, $current_user_id);
 		$data['locations'] = array();
 		$locationsmaps = array();
 		foreach ($results as $result) {
 			
-		$salesrepinfo = $this->model_replogic_sales_rep_management->getsalesrep($result['salesrep_id']);
-		$salesrepname = $salesrepinfo['salesrep_name']." ".$salesrepinfo['salesrep_lastname'];
-		
-		$team = $this->model_user_team->getTeam($salesrep['sales_team_id']); ;
-		$teamname = $team['team_name'];
-		
-		$time = strtotime($result['checkin']);
-		$last_check = date("d M Y g:i A", $time);
-		
-		$last_check_Ago = $this->getHowLongAgo($result['checkin']);
-		
-		$from = $result['start'];
-		$to = $result['end'];
-		$duration = $this->dateDiff($from, $to);
-		
-		$time = strtotime($result['checkin']);
-		$visitdate = date("d-m-Y g:i A", $time);
-		
-		$data['locations'][] = array(
-				'checkin_id' => $result['checkin_id'],
-				'visitdate'          => $visitdate,
-				'duration'          => $duration,
-				'salesrepname'          => $salesrepname,
-				'last_check'          => $last_check_Ago,
-				'checkin_location'          => $result['checkin_location'],
-				'location'          => $result['location'],
-				'view'          => $this->url->link('customer/customer_info/visitsView', 'token=' . $this->session->data['token'] . '&checkin_id=' . $result['checkin_id'] . $url, true)
-				
+			$salesrepinfo = $this->model_replogic_sales_rep_management->getsalesrep($result['salesrep_id']);
+			$salesrepname = $salesrepinfo['salesrep_name']." ".$salesrepinfo['salesrep_lastname'];
+			
+			$team = $this->model_user_team->getTeam($salesrep['sales_team_id']); ;
+			$teamname = $team['team_name'];
+			
+			$time = strtotime($result['checkin']);
+			$last_check = date("d M Y g:i A", $time);
+			
+			$last_check_Ago = $this->getHowLongAgo($result['checkin']);
+			
+			$from = $result['start'];
+			$to = $result['end'];
+			$duration = $this->dateDiff($from, $to);
+			
+			$time      = strtotime($result['checkin']);
+			$visitdate = date("d-m-Y g:i A", $time);
+			
+			$data['locations'][] = array(
+				'checkin_id'       => $result['checkin_id'],
+				'visitdate'        => $visitdate,
+				'duration'         => $duration,
+				'salesrepname'     => $salesrepname,
+				'last_check'       => $last_check_Ago,
+				'checkin_location' => $result['checkin_location'],
+				'location'         => $result['location'],
+				'view'             => $this->url->link('customer/customer_info/checkins', 'token=' . $this->session->data['token'] . '&checkin_id=' . $result['checkin_id'] . $url, true)	
 			);
-		
 		}
 	
 		$this->load->model('user/user_group');
@@ -2803,120 +2790,6 @@ class ControllerCustomerCustomerInfo extends Controller {
 		$data['filter_salesrep_id'] = $filter_salesrep_id;
 		$data['sort'] = $sort;
 		$data['order'] = $order;
-		/** =============================================================================== */
-                                      // Location Management
-		/** =============================================================================== */
-		$token 			= $this->session->data['token'];
-		$data['token']      = $token;
-		$data['reload_cus_url'] = $this->url->link('customer/customer_info',$url."&token=$token",true);
-
-		/*******************************************
-		 * Locations | Google Map
-		 *******************************************/
-         
-		$locations = $this->model_replogic_location_management->getLocations($filters);
-		
-		
-		$data['markers_salesreps'] = array();
-		$data['markers_customers'] = array();
-		$data['markers_checkins']  = array();
-
-		foreach ($locations as $location) {
-			
-			# get sales rep
-			$salesrep = $this->model_replogic_sales_rep_management->getsalesrep($location['salesrep_id']); ;
-			$salesrep = $salesrep['salesrep_name'] ." ". $salesrep['salesrep_lastname'];
-			
-			# get customer or prospect based on type
-			if (strtolower($location['type']) === "new business") {
-
-				$customer = $this->model_customer_customer->getProspectiveCustomer($location['customer_id']);
-			
-				# get prospect address/location
-				$customerAddress   = $customer['address'];
-				$customerLatitude  = '';
-				$customerLongitude = '';
-
-			} else {
-				$customer = $this->model_customer_customer->getCustomer($location['customer_id']);
-			    # get customer address/location
-				$cAddress   = $this->model_customer_customer->getAddress($customer['address_id']);
-				$customerLatitude  = $cAddress['latitude'];
-				$customerLongitude = $cAddress['longitude'];
-				$customerAddress   = $cAddress['address_1'].", ";
-				$customerAddress  .= (!empty($cAddress['address_2'])) ? $cAddress['address_2'].", " : "";
-				$customerAddress  .= $cAddress['city'].", ";
-				$customerAddress  .= $cAddress['zone'].", ";
-				$customerAddress  .= $cAddress['country'].", ";
-				$customerAddress  .= $cAddress['postcode'];
-
-			}
-			
-			# last check in date/time
-			$lastCheckAgo = $this->getHowLongAgo($location['checkin']);
-			
-			# longitude and latitude
-			$latitude  = '';
-			$longitude = '';
-			
-			
-			# store sales reps current locations [Google Map]
-			$data['markers_salesreps'][] = array(
-				'latitude'  => $latitude,
-				'longitude' => $longitude,
-				'name'      => $salesrep,
-				'icon'      => 'view/image/gmap__location_icon.png',
-				'id'        => $location['checkin_id'],
-				'address'   => $location['location']
-			);
-
-			# store customers locations [Google Map]
-			$data['markers_customers'][] = array(
-				'latitude'     => $customerLatitude,
-				'longitude'    => $customerLongitude,
-				'name'         => $customer['firstname'],
-				'icon'         => 'view/image/gmap__customer_icon.png',
-				'id'           => $customer['customer_id'],
-				'address'      => $customerAddress,
-				'last_visited' => $lastCheckAgo,
-				'salesrep_name'=> $salesrep,
-				'salesrep_id'  => $location['salesrep_id']
-			);
-
-			# store sales reps gps locations [Google Map]
-		//if(!empty($location['markers_customers'])){
-			
-		//}
-			$data['markers_checkins'][]  = array(
-				'latitude'  => $latitude,
-				'longitude' => $longitude,
-				'name'      => $salesrep,
-				'icon'      => 'view/image/gmap__checkin_icon.png',
-				'id'        => $location['checkin_id'],
-				'address'   => $location['checkin_location']
-			);
-		}
-
-		//out($data['markers_salesreps']);die();
-
-		/*******************************************
-		 * Available and booked times
-		 *******************************************/
-		
-		$bookedTimesForToday     = $this->model_replogic_schedule_management->getSalesRepAppointmentTimesByDate($data['filter_salesrep_id'], date('Y-m-d'));
-		$data['booked_times']    = array();
-		$data['available_times'] = array("08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00");
-
-		if (!empty($bookedTimesForToday)) {
-			foreach($bookedTimesForToday as $time) {
-				$data['booked_times'][] = $time['appointment_time'];
-			}
-		}
-
-
-		/** ================================================================================ */
-		                              //END LOCATION MANAGEMENT
-		/** ================================================================================ */
 
 		$data['header'] = $this->load->controller('common/header');
 		$data['column_left'] = $this->load->controller('common/column_left');
@@ -3062,6 +2935,190 @@ class ControllerCustomerCustomerInfo extends Controller {
 		$data['footer'] = $this->load->controller('common/footer');
 
 		$this->response->setOutput($this->load->view('customer/customer_info_visits_view', $data));
+	}
+
+	public function checkins() {
+
+		$url     = '';
+		$data    = array();
+		$access  = true;
+
+		/*==================================
+		=       Add Files (Includes)       =
+		==================================*/
+
+		# stylesheets (CSS) files
+		$this->document->addStyle('view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.css');
+		$this->document->addStyle('view/stylesheet/material-icons/material-icons.css');
+		$this->document->addStyle('view/javascript/bootstrap-sweetalert/sweetalert.css');
+		$this->document->addStyle('view/stylesheet/custom.css');
+		$this->document->addStyle('view/stylesheet/location_management.css');
+		$this->document->addStyle('view/stylesheet/customer_checkins.css');
+
+		# javascript (JS) files
+		$this->document->addScript('view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.js');
+		$this->document->addScript('view/javascript/bootstrap-sweetalert/sweetalert.min.js');
+		$this->document->addScript('view/javascript/bootstrap-sweetalert/sweetalert-data.js');
+		$this->document->addScript('view/javascript/location_management.js');
+
+		# language
+		$this->load->language('replogic/location_management');
+		$this->load->language('customer/customer_info');
+
+		# models
+		$this->load->model('replogic/location_management');
+		$this->load->model('customer/customer');
+		$this->load->model('replogic/sales_rep_management');
+		$this->load->model('replogic/schedule_management');
+
+		/*=====  End of Add Files (Includes)  ======*/
+
+		$this->document->setTitle($this->language->get('heading_title'));
+		
+		# page title
+		$data['heading_title'] = $this->language->get('heading_title');
+		$data['token']         = $this->session->data['token'];
+
+		/*******************************************
+		 * Check-in information
+		 *******************************************/
+		
+		$checkin = $this->model_replogic_location_management->getLocation($this->request->get['checkin_id']);
+		
+		# sales rep
+		$salesrep                 = $this->model_replogic_sales_rep_management->getsalesrep($checkin['salesrep_id']);
+		$data['salesrep_id']      = $checkin['salesrep_id'];
+		$data['salesrep_name']    = $salesrep['salesrep_name']." ".$salesrep['salesrep_lastname'];
+		
+		# appointment
+		$appointment              = $this->model_replogic_schedule_management->getappointment($checkin['appointment_id']);
+		$data['appointment_id']   = $checkin['appointment_id'];
+		$data['appointment_name'] = $appointment['appointment_name'];
+		
+		
+		# customer
+		if (strtolower($appointment['type']) === "new business") {
+
+			$customer              = $this->model_customer_customer->getProspectiveCustomer($checkin['customer_id']);
+			$data['customer_name'] = $customer['name'];
+
+			# get prospect address/location
+			$customerAddress       = $customer['address'];
+
+		} else {
+			$customer              = $this->model_customer_customer->getCustomer($checkin['customer_id']);
+			$data['customer_name'] = $customer['firstname'];
+		
+			# get customer address/location
+			$cAddress              = $this->model_customer_customer->getAddress($customer['address_id']);
+			$customerAddress       = $cAddress['address_1'].", ";
+			$customerAddress      .= (!empty($cAddress['address_2'])) ? $cAddress['address_2'].", " : "";
+			$customerAddress      .= $cAddress['city'].", ";
+			$customerAddress      .= $cAddress['zone'].", ";
+			$customerAddress      .= $cAddress['country'].", ";
+			$customerAddress      .= $cAddress['postcode'];
+		}
+		$data['customer_id']      = $checkin['customer_id'];
+		$data['customer_address'] = $customerAddress; 
+
+		# location
+		$data['location']         = $checkin['location'];
+		$data['start']            = date('l, d F Y', strtotime($checkin['start']));
+		$data['end']              = date('l, d F Y', strtotime($checkin['end']));
+		$data['checkin_time']     = date('h:i A', strtotime($checkin['checkin']));
+		$data['checkin_date']     = date('d F, Y', strtotime($checkin['checkin']));
+		$data['checkout']         = date('l, d F Y', strtotime($checkin['checkout']));
+		$data['checkin_location'] = $checkin['checkin_location'];
+		$data['checkin']          = $this->getHowLongAgo($checkin['checkin']);
+		$data['remarks']          = $checkin['remarks'];
+
+		# map markers
+		$data['marker_salesrep']  = array(
+			'id'        => $checkin['checkin_id'],
+			'latitude'  => '',
+			'longitude' => '',
+			'name'      => $data['salesrep_name'],
+			'address'   => $checkin['location'],
+			'icon'      => 'view/image/gmap__location_icon.png'
+		);
+		$data['marker_customer']  = array(
+			'latitude'     => '',
+			'longitude'    => '',
+			'name'         => $data['customer_name'],
+			'id'           => $checkin['customer_id'],
+			'address'      => $data['customer_address'],
+			'last_visited' => $data['checkin'],
+			'salesrep_name'=> $data['salesrep_name'],
+			'salesrep_id'  => $checkin['salesrep_id'],
+			'icon'         => 'view/image/gmap__customer_icon.png'
+		);
+		$data['marker_checkin']   = array(
+			'latitude'         => '',
+			'longitude'        => '',
+			'name'             => $data['salesrep_name'],
+			'id'               => $checkin['checkin_id'],
+			'customer'         => $data['customer_name'],
+			'address'          => $data['checkin_location'],
+			'customer_address' => $data['customer_address'],
+			'gps_address'      => $data['location'],
+			'visit_date'       => date('d M, Y', strtotime($checkin['start'])),
+			'visit_time'       => date('h:i A', strtotime($checkin['start'])),
+			'last_seen'        => $data['checkin'],
+			'icon'             => 'view/image/gmap__checkin_icon.png'
+		);
+
+		/*******************************************
+		 * Breadcrumbs
+		 *******************************************/
+		
+		$data['breadcrumbs']   = array();
+		$data['breadcrumbs'][] = array(
+			'text' => $this->language->get('text_home'),
+			'href' => $this->url->link(getDashboard($this->user), 'token=' . $data['token'], true)
+		);
+		$data['breadcrumbs'][] = array(
+			'text' => 'Customer Management',
+			'href' => $this->url->link('customer/customer', 'token=' . $data['token'], true)
+		);
+		$data['breadcrumbs'][] = array(
+			'text' => $this->language->get('breadcrum_title'),
+			'href' => $this->url->link('customer/customer_info&type=visits', 'customer_id=' . $checkin['customer_id'] . '&token=' . $data['token'], true)
+		);
+
+		$data['cancel_button']     = $this->url->link('customer/customer_info&type=visits', 'customer_id=' . $checkin['customer_id'] . '&token=' . $data['token'], true);
+		$data['text_view_checkin'] = $this->language->get('text_view_checkin');
+
+		/*******************************************
+		 * Available and booked times
+		 *******************************************/
+		
+		$bookedTimesForToday     = $this->model_replogic_schedule_management->getSalesRepAppointmentTimesByDate($checkin['salesrep_id'], date('Y-m-d'));
+		$data['booked_times']    = array();
+		$data['available_times'] = array("08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00");
+
+		if (!empty($bookedTimesForToday)) {
+			foreach($bookedTimesForToday as $time) {
+				$data['booked_times'][] = $time['appointment_time'];
+			}
+		}
+
+		/*******************************************
+		 * Set page output data 
+		 *******************************************/
+
+		$data['gmap_legend__checkin']  = $this->language->get('gmap_legend__checkin');
+		$data['gmap_legend__location'] = $this->language->get('gmap_legend__location');
+		$data['gmap_legend__customer'] = $this->language->get('gmap_legend__customer');
+
+		$data['text_location']      = $this->language->get('text_location');
+		$data['label_remarks']      = $this->language->get('label_remarks');
+		$data['text_button_cancel'] = $this->language->get('text_button_cancel');
+
+		$data['header']      = $this->load->controller('common/header');
+		$data['column_left'] = $this->load->controller('common/column_left');
+		$data['footer']      = $this->load->controller('common/footer');
+
+		$this->response->setOutput($this->load->view('customer/customer_info_checkins', $data));
 	}
 	
 	public function dateDiff($time1, $time2, $precision = 6) {
