@@ -163,22 +163,7 @@
             <h4 class="modal-title" id="myModalLabel">Sales Rep Location</h4>
           </div>
           <div class="modal-body">
-              <div style="float:left;width:100%;">
-              <div class="form-group">
-                    <label for="inputName" class="control-label">Self Reported Location</label>
-                    <input class="form-control" id="popupselfreport" value="" type="text" readonly="readonly">
-                </div>
-                <div class="form-group">
-                    <label for="inputName" class="control-label">GPS Check In Location</label>
-                    <input class="form-control" id="popupgps" value="" type="text" readonly="readonly">
-                </div>
-                <div class="form-group">
-                    <label for="inputName" class="control-label">Customer Address</label>
-                    <input class="form-control" id="popupcustomer" value="" type="text" readonly="readonly">
-                </div>
-              </div>
               <div id="map-canvas"></div>
-              <div id="legend"></div>
           </div>
           <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
@@ -196,7 +181,6 @@
 		  $('#modalcheckinid').val(checkinid);
 		  e.preventDefault();
 		  $('#map-canvas').empty();
-		  $('#legend').empty();
           $('#popupmyModal').modal('show');
       });
  
@@ -209,31 +193,18 @@
 		  	  type: 'post',
 		  	  data: 'checkin_id='+checkinid,
 		  	  dataType: 'json',
-			  beforeSend: function() {
-				  $('#popupselfreport').val('');
-				  $('#popupgps').val('');
-				  $('#popupcustomer').val('');
-				},
               success: function (responce) {
 
-                 	  var selflocation = responce['selflocation'];
-					  var gpslocation = responce['gpslocation'];
-					  var customeraddress = responce['customeraddress'];
-					  
-					  $('#popupselfreport').val(selflocation);
-				      $('#popupgps').val(gpslocation);
-				      $('#popupcustomer').val(customeraddress);
-                      
+                 
+                      var data = responce;
                       var locations = [];
 
                       // validation: remove any null values to prevent map errors
-                      for (var i=0; i<responce['mappin'].length; i++) { 
-                          
-						  if (responce['mappin'][i].latitude != null && responce['mappin'][i].latitude != "null" && responce['mappin'][i].longitude != null && responce['mappin'][i].longitude != "null") {
-                              locations.push({latitude: responce['mappin'][i].latitude, longitude: responce['mappin'][i].longitude, name: responce['mappin'][i].name, icon: responce['mappin'][i].icon});
+                      for (var i=0; i<data.length; i++) { 
+                          if (data[i].latitude != null && data[i].latitude != "null" && data[i].longitude != null && data[i].longitude != "null") {
+                              locations.push({latitude: data[i].latitude, longitude: data[i].longitude, name: data[i].name, icon: data[i].icon});
                           }
                       }
-					  
                       // initialize map with markers
                       initialize(locations);
                   
@@ -254,32 +225,7 @@
 
           var infowindow = new google.maps.InfoWindow();
 		  var bounds = new google.maps.LatLngBounds();
-		  
-		  var icons = {
-						  parking: {
-							name: 'Rep Checked In',
-							icon: 'view/image/salesrep-checkin.png'
-						  },
-						  library: {
-							name: 'GPS Location',
-							icon: 'view/image/GPS.png'
-						  },
-						  info: {
-							name: 'Customer',
-							icon: 'view/image/customer2.png'
-						  }
-						};
-						
-			var legend = document.getElementById('legend');
-			for (var key in icons) {
-			  var type = icons[key];
-			  var name = type.name;
-			  var icon = type.icon;
-			  var div = document.createElement('div');
-			  div.innerHTML = '<img src="' + icon + '"> ' + name;
-			  legend.appendChild(div);
-			}
-		  
+
           var marker, i;
 
           // loop through locations and create markers for the map
@@ -306,20 +252,7 @@
       };
   
 </script>
-  <style>
-	#map { height: 450px; width: 100%; }
-	#map-canvas { height: 400px;width: 100%;margin-top:15px;float:left; }
-	#legend { font-family: Arial, sans-serif;background: #fff;border-radius: 5px;float:right; }
-	#legend div { background:#FFFFFF;float:left;margin:5px;padding:5px;font-size:13px; }
-	#legend img { vertical-align: middle; }
-	
-	.modal-body{float:left;padding-top:0px;}
-	.modal-body .form-group {width:100%!important;clear:both;padding:9px 0px;}
-	.modal-body .form-group + .form-group{border-top:none!important;}
-	.modal-body .form-group .control-label {float:left;width:145px!important;margin-top:8px;}
-	.modal-body .form-group .form-control {float:left;width:418px!important;}
-
-  </style>
+  
 
 
 <script type="text/javascript"><!--

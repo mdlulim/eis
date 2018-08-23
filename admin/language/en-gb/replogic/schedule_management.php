@@ -8,7 +8,6 @@ $_['text_list']        = 'Appointments';
 $_['text_add']         = 'Add Appointment';
 $_['text_edit']        = 'Edit Appointment';
 $_['text_confirm']        = 'Are you sure want to Delete Appointment ?';
-$_['text_appointment_add_success']     = 'Appointment successfully created!';
 
 // Column
 $_['column_name']      = 'Appointment Name';

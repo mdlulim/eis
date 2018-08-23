@@ -62,9 +62,57 @@ class ControllerCommonChoosePassword extends Controller {
 		$json['success'] = false;
 		if ($this->validateForm()) {
 			$this->load->model('user/user');
-			$uid = $this->session->data['user_id'];
+			$uid      = $this->session->data['user_id'];
 			$password = $this->request->post['password'];
 			$this->model_user_user->changePassword($uid, $password);
+
+			/*******************************************************
+			 * Send change password email using Mandrill
+			 *******************************************************/
+
+			# get user information
+			$userInfo = $this->model_user_user->getUser($uid);
+
+			# build data array for email
+			$email['subject'] = 'Password Changed';
+			$email['to']      = array('email'=>$userInfo['email'], 'name'=>$userInfo['firstname']);
+			$email['from']    = array('email'=>$this->config->get('config_email'), 'name'=>$this->config->get('config_name'));
+
+			# message for email
+			$email['message'] = array(
+				'subject' => $email['subject'],
+				'to'      => array(
+					array(
+						'email' => $email['to']['email'],
+						'type'  => 'to'
+					)
+				),
+				'global_merge_vars' => array(
+					array(
+						'name'    => 'STORE_URL',
+						'content' => $this->config->get('config_url')
+					),
+					array(
+						'name'    => 'STORE_NAME',
+						'content' => $this->config->get('config_owner')
+					),
+					array(
+						'name'    => 'STORE_EMAIL',
+						'content' => $this->config->get('config_email')
+					),
+					array(
+						'name'    => 'HELP_GUIDE',
+						'content' => 'https://help.saleslogic.io/portal/home'
+					),
+					array(
+						'name'    => 'MANAGER_EMAIL',
+						'content' => $this->config->get('config_email')
+					),
+				)
+			);
+			$template['name'] = 'baselogic-change-password';
+			$emailResult      = sendEmail($email, false, $template, "mandrill");
+
 			$json['success'] = true;
 			$json['message'] = "Your password has been changed successfully.";
 		}

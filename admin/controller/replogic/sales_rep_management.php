@@ -400,7 +400,7 @@ class ControllerReplogicSalesRepManagement extends Controller {
 		}
 		$filter_dataa = array('filter_salesrep_id' => $filter_salesrep_id);
 		$data['teams'] = $this->model_user_team->getTeams($filter_dataa);
-		$data['customers'] = $this->model_customer_customer->getCustomers($filter_dataa, $allaccess, $this->session->data['user_id']);
+		$data['customers'] = $this->model_customer_customer->getCustomers();
 		
 		
 		$sales_rep_management_total = $this->model_replogic_sales_rep_management->getTotalScheduleManagement($filter_data,$allaccess, $current_user_id);

@@ -1,5 +1,5 @@
 <?=$header?><?=$column_left?>
-  <div id="content" class="sales-dashboard-wrapper" data-page-id="sales_dashboard" data-token="<?php echo $token; ?>" data-page-url="<?php echo $reload_url; ?>">
+  <div id="content" class="sales-dashboard-wrapper">
 
     <div class="page-header">
       <div class="container-fluid">
@@ -189,9 +189,7 @@
               </h3>
             </div>
             <div class="panel-body">
-              <div class="lm-map-container">
-                   <div id="lm-map"> </div>
-              </div>
+              <div class="lm-map-container"><div class="lm-map" id="lm-map"></div></div>
 
 <?php
 /* ====================================================================================

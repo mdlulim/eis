@@ -7,17 +7,6 @@ $_['breadcrum_title']    = 'Sales Rep Info';
 $_['text_success']     = 'Success: You have modified Sales Representative!';
 $_['text_list']        = 'Sales Rep Info : ';
 
-// Select
-$_['select_prospect_label'] = 'Prospect:';
-$_['select_prospect']       = 'All Prospects';
-$_['select_customer_label'] = 'Customer:';
-$_['select_customer']       = 'All Customers';
-
-// Map Legend [Icon Labels]
-$_['gmap_legend__checkin']  = 'Rep Checked In';
-$_['gmap_legend__location'] = 'Rep GPS Location';
-$_['gmap_legend__customer'] = 'Customer';
-
 // Column
 $_['column_name']      = 'Sales Rep Name';
 $_['column_action']    = 'Action';

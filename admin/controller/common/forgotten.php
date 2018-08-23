@@ -18,38 +18,73 @@ class ControllerCommonForgotten extends Controller {
 		$this->load->model('user/user');
 
 		if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validate()) {
+
 			$this->load->language('mail/forgotten');
 
-			$code = token(40);
+			/*******************************************************
+			 * Send reset password email using Mandrill
+			 *******************************************************/
 
-			$this->model_user_user->editCode($this->request->post['email'], $code);
+			$userInfo = $this->model_user_user->getUserByEmail($this->request->post['email']);
 
-			$subject = sprintf($this->language->get('text_subject'), html_entity_decode($this->config->get('config_name'), ENT_QUOTES, 'UTF-8'));
+			if (!empty($userInfo)) {
 
-			$message  = sprintf($this->language->get('text_greeting'), html_entity_decode($this->config->get('config_name'), ENT_QUOTES, 'UTF-8')) . "\n\n";
-			$message .= $this->language->get('text_change') . "\n\n";
-			$message .= $this->url->link('common/reset', 'code=' . $code, true) . "\n\n";
-			$message .= sprintf($this->language->get('text_ip'), $this->request->server['REMOTE_ADDR']) . "\n\n";
+				# auto-generate random/temporary password
+				$password = randomPassword(6, '1234567890qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM');
 
-			$mail = new Mail();
-			$mail->protocol = $this->config->get('config_mail_protocol');
-			$mail->parameter = $this->config->get('config_mail_parameter');
-			$mail->smtp_hostname = $this->config->get('config_mail_smtp_hostname');
-			$mail->smtp_username = $this->config->get('config_mail_smtp_username');
-			$mail->smtp_password = html_entity_decode($this->config->get('config_mail_smtp_password'), ENT_QUOTES, 'UTF-8');
-			$mail->smtp_port = $this->config->get('config_mail_smtp_port');
-			$mail->smtp_timeout = $this->config->get('config_mail_smtp_timeout');
+				# update password in DB
+				$this->model_user_user->editPassword($userInfo['user_id'], $password);
 
-			$mail->setTo($this->request->post['email']);
-			$mail->setFrom($this->config->get('config_email'));
-			$mail->setSender(html_entity_decode($this->config->get('config_name'), ENT_QUOTES, 'UTF-8'));
-			$mail->setSubject(html_entity_decode($subject, ENT_QUOTES, 'UTF-8'));
-			$mail->setText(html_entity_decode($message, ENT_QUOTES, 'UTF-8'));
-			$mail->send();
+				# build data array for email
+				$email['subject'] = 'Password Reset Confirmation';
+				$email['to']      = array('email'=>$userInfo['email'], 'name'=>$userInfo['firstname']);
+				$email['from']    = array('email'=>$this->config->get('config_email'), 'name'=>$this->config->get('config_name'));
 
-			$this->session->data['success'] = $this->language->get('text_success');
-
-			$this->response->redirect($this->url->link('common/login', '', true));
+				# message for email
+				$email['message'] = array(
+			        'subject' => $email['subject'],
+			        'to'      => array(
+			            array(
+			                'email' => $email['to']['email'],
+			                'type'  => 'to'
+			            )
+			        ),
+			        'global_merge_vars' => array(
+			            array(
+			                'name'    => 'PASSWORD',
+			                'content' => $password
+			            ),
+			            array(
+			                'name'    => 'STORE_URL',
+			                'content' => $this->config->get('config_url')
+			            ),
+			            array(
+			                'name'    => 'STORE_NAME',
+			                'content' => $this->config->get('config_owner')
+			            ),
+			            array(
+			                'name'    => 'STORE_EMAIL',
+			                'content' => $this->config->get('config_email')
+			            ),
+			            array(
+			                'name'    => 'HELP_GUIDE',
+			                'content' => 'https://help.saleslogic.io/portal/home'
+			            ),
+			            array(
+			                'name'    => 'MANAGER_EMAIL',
+			                'content' => $this->config->get('config_email')
+			            ),
+			        )
+			    );
+				$template['name'] = 'baselogic-reset-password';
+				$emailResult      = sendEmail($email, false, $template, "mandrill");
+				if (isset($emailResult[0]['status']) && ($emailResult[0]['status'] == "sent" || $emailResult[0]['status'] == "queued" || $emailResult[0]['status'] == "scheduled")) {
+					$this->session->data['success'] = $this->language->get('text_success');
+					$this->response->redirect($this->url->link('common/login', '', true));
+				} else {
+					$this->error['warning'] = $this->language->get('error_generic');
+				}
+			}
 		}
 
 		$data['heading_title'] = $this->language->get('heading_title');

@@ -63,10 +63,6 @@ class ModelUserUser extends Model {
 			$sql .= " AND username LIKE '%" . $this->db->escape($data['filter_name']) . "%'";
 		}
 		
-		if (!empty($data['filter_user_group_id'])) {
-			$sql .= " AND user_group_id LIKE '" . $this->db->escape($data['filter_user_group_id']) . "'";
-		}
-		
 		if (isset($data['filter_status']) && !is_null($data['filter_status'])) {
 			$sql .= " AND status = '" . $this->db->escape($data['filter_status']) . "'";
 		}
@@ -119,10 +115,6 @@ class ModelUserUser extends Model {
 		
 		if (!empty($data['filter_name'])) {
 			$sql .= " AND username = '" . $this->db->escape($data['filter_name']) . "'";
-		}
-		
-		if (!empty($data['filter_user_group_id'])) {
-			$sql .= " AND user_group_id LIKE '" . $this->db->escape($data['filter_user_group_id']) . "'";
 		}
 		
 		if (isset($data['filter_status']) && !is_null($data['filter_status'])) {

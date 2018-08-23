@@ -37,7 +37,7 @@
                 <label class="control-label" for="input-name"><?php echo $entry_name; ?></label>
                 <input type="text" name="filter_name" value="<?php echo $filter_name; ?>" placeholder="<?php echo $entry_name; ?>" id="input-name" class="form-control" />
                <!--<select name="filter_affiliate_id" class="form-control">
-                	<option value="">Select Affiliate Name</option>
+                  <option value="">Select Affiliate Name</option>
                     <?php foreach ($Dropdownaffiliates as $Daffiliate) {  ?>
                 <?php if ($Daffiliate['affiliate_id'] == $filter_affiliate_id) { ?>
                 <option value="<?php echo $Daffiliate['affiliate_id']; ?>" selected="selected"><?php echo $Daffiliate['name']; ?></option>
@@ -178,97 +178,94 @@
   </div>
   <script type="text/javascript"><!--
 $('#button-filter').on('click', function() {
-	url = 'index.php?route=marketing/affiliate&token=<?php echo $token; ?>';
-	
-	var filter_name = $('input[name=\'filter_name\']').val();
-	
-	if (filter_name) {
-		url += '&filter_name=' + encodeURIComponent(filter_name);
-	}
-	
-	var filter_affiliate_id = $('select[name=\'filter_affiliate_id\']').val();
-
-	if (filter_affiliate_id) {
-		url += '&filter_affiliate_id=' + encodeURIComponent(filter_affiliate_id);
-	}
-	
-	var filter_email = $('input[name=\'filter_email\']').val();
-	
-	if (filter_email) {
-		url += '&filter_email=' + encodeURIComponent(filter_email);
-	}
-		
-	var filter_status = $('select[name=\'filter_status\']').val();
-	
-	if (filter_status != '*') {
-		url += '&filter_status=' + encodeURIComponent(filter_status); 
-	}	
-	
-	var filter_approved = $('select[name=\'filter_approved\']').val();
-	
-	if (filter_approved != '*') {
-		url += '&filter_approved=' + encodeURIComponent(filter_approved);
-	}	
-	
-	var filter_date_added = $('input[name=\'filter_date_added\']').val();
-	
-	if (filter_date_added) {
-		url += '&filter_date_added=' + encodeURIComponent(filter_date_added);
-	}
-	
-	location = url;
+  url = 'index.php?route=marketing/affiliate&token=<?php echo $token; ?>';
+  
+  var filter_name = $('input[name=\'filter_name\']').val();
+  
+  if (filter_name) {
+    url += '&filter_name=' + encodeURIComponent(filter_name);
+  }
+  
+  var filter_affiliate_id = $('select[name=\'filter_affiliate_id\']').val();
+  if (filter_affiliate_id) {
+    url += '&filter_affiliate_id=' + encodeURIComponent(filter_affiliate_id);
+  }
+  
+  var filter_email = $('input[name=\'filter_email\']').val();
+  
+  if (filter_email) {
+    url += '&filter_email=' + encodeURIComponent(filter_email);
+  }
+    
+  var filter_status = $('select[name=\'filter_status\']').val();
+  
+  if (filter_status != '*') {
+    url += '&filter_status=' + encodeURIComponent(filter_status); 
+  } 
+  
+  var filter_approved = $('select[name=\'filter_approved\']').val();
+  
+  if (filter_approved != '*') {
+    url += '&filter_approved=' + encodeURIComponent(filter_approved);
+  } 
+  
+  var filter_date_added = $('input[name=\'filter_date_added\']').val();
+  
+  if (filter_date_added) {
+    url += '&filter_date_added=' + encodeURIComponent(filter_date_added);
+  }
+  
+  location = url;
 });
 $('#button-filter-reset').on('click', function() {
-	
-	var url = 'index.php?route=marketing/affiliate&token=<?php echo $token; ?>';
-
-	location = url;
+  
+  var url = 'index.php?route=marketing/affiliate&token=<?php echo $token; ?>';
+  location = url;
 });
 //--></script> 
   <script type="text/javascript"><!--
 $('input[name=\'filter_name\']').autocomplete({
-	'source': function(request, response) {
-		$.ajax({
-			url: 'index.php?route=marketing/affiliate/autocomplete&token=<?php echo $token; ?>&filter_name=' +  encodeURIComponent(request),
-			dataType: 'json',			
-			success: function(json) {
-				response($.map(json, function(item) {
-					return {
-						label: item['name'],
-						value: item['affiliate_id']
-					}
-				}));
-			}
-		});
-	},
-	'select': function(item) {
-		$('input[name=\'filter_name\']').val(item['label']);
-	}	
+  'source': function(request, response) {
+    $.ajax({
+      url: 'index.php?route=marketing/affiliate/autocomplete&token=<?php echo $token; ?>&filter_name=' +  encodeURIComponent(request),
+      dataType: 'json',     
+      success: function(json) {
+        response($.map(json, function(item) {
+          return {
+            label: item['name'],
+            value: item['affiliate_id']
+          }
+        }));
+      }
+    });
+  },
+  'select': function(item) {
+    $('input[name=\'filter_name\']').val(item['label']);
+  } 
 });
-
 $('input[name=\'filter_email\']').autocomplete({
-	'source': function(request, response) {
-		$.ajax({
-			url: 'index.php?route=marketing/affiliate/autocomplete&token=<?php echo $token; ?>&filter_email=' +  encodeURIComponent(request),
-			dataType: 'json',			
-			success: function(json) {
-				response($.map(json, function(item) {
-					return {
-						label: item['email'],
-						value: item['affiliate_id']
-					}
-				}));
-			}
-		});
-	},
-	'select': function(item) {
-		$('input[name=\'filter_email\']').val(item['label']);
-	}	
+  'source': function(request, response) {
+    $.ajax({
+      url: 'index.php?route=marketing/affiliate/autocomplete&token=<?php echo $token; ?>&filter_email=' +  encodeURIComponent(request),
+      dataType: 'json',     
+      success: function(json) {
+        response($.map(json, function(item) {
+          return {
+            label: item['email'],
+            value: item['affiliate_id']
+          }
+        }));
+      }
+    });
+  },
+  'select': function(item) {
+    $('input[name=\'filter_email\']').val(item['label']);
+  } 
 });
 //--></script> 
   <script type="text/javascript"><!--
 $('.date').datetimepicker({
-	pickTime: false
+  pickTime: false
 });
 //--></script></div>
 <?php echo $footer; ?>

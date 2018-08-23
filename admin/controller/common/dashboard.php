@@ -446,7 +446,7 @@ class ControllerCommonDashboard extends Controller {
 		$latitude = '';
 		$longitude = '';
 		
-		$url = "http://maps.google.com/maps/api/geocode/json?address=".urlencode($address)."&sensor=false";
+		$url = "http://maps.google.com/maps/api/geocode/json?address=".urlencode($address)."&sensor=false&region=India";
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $url);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -459,31 +459,8 @@ class ControllerCommonDashboard extends Controller {
 		$latitude = $response_a->results[0]->geometry->location->lat;
 		$longitude = $response_a->results[0]->geometry->location->lng;
 		
-		$gpslatitude = '';
-		$gpslongitude = '';
-		$gpsaddress = $result['checkin_location']; // Address
-		
-		$url1 = "http://maps.google.com/maps/api/geocode/json?address=".urlencode($gpsaddress)."&sensor=false";
-		$chh = curl_init();
-		curl_setopt($chh, CURLOPT_URL, $url1);
-		curl_setopt($chh, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($chh, CURLOPT_PROXYPORT, 3128);
-		curl_setopt($chh, CURLOPT_SSL_VERIFYHOST, 0);
-		curl_setopt($chh, CURLOPT_SSL_VERIFYPEER, 0);
-		$responsee = curl_exec($chh);
-		curl_close($chh);
-		$responsee_a = json_decode($responsee);
-		$gpslatitude = $responsee_a->results[0]->geometry->location->lat;
-		$gpslongitude = $responsee_a->results[0]->geometry->location->lng;
-		
-		// Sales Rep Pin
-		$locationsmaps[] = array('latitude'=>$latitude,'longitude'=>$longitude,'name'=>$address." ( ".$sales_rep." )",'icon'=>'view/image/beenhere');
-		
-		// Customer Map Pin
-		$locationsmaps[] = array('latitude'=>$customerlatitude,'longitude'=>$customerlongitude,'name'=>$customername,'icon'=>'view/image/customer01.png');
-		
-		// Sales Rep Gps Map Pin
-		$locationsmaps[] = array('latitude'=>$gpslatitude,'longitude'=>$gpslongitude,'name'=>$gpsaddress." ( ".$sales_rep." )",'icon'=>'view/image/location_on.png');
+		$locationsmaps[] = array('latitude'=>$latitude,'longitude'=>$longitude,'name'=>$sales_rep,'icon'=>'view/image/green-dot.png');
+		$locationsmaps[] = array('latitude'=>$customerlatitude,'longitude'=>$customerlongitude,'name'=>$customername,'icon'=>'view/image/blue-dot.png');
 		
 		}
 		$data['locationsmaps'] = $locationsmaps;

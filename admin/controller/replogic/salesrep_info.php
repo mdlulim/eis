@@ -433,7 +433,7 @@ class ControllerReplogicSalesrepInfo extends Controller {
 		$user_group_id = $this->model_user_user_group->getUserGroupByName('Sales Manager');
 		$data['sales_managers'] = $this->model_user_user->getUsersByGroupId($user_group_id['user_group_id']);
 		
-		$data['customers'] = $this->model_customer_customer->getCustomers($data, $allaccess, $this->session->data['user_id']);
+		$data['customers'] = $this->model_customer_customer->getCustomers();
 		
 		$data['heading_title'] = $this->language->get('heading_title');
 		
@@ -709,7 +709,7 @@ class ControllerReplogicSalesrepInfo extends Controller {
 	   $data['salesReps'] = $this->model_replogic_sales_rep_management->getSalesRepsDropdown($allaccess, $current_user_id);
 	   
 	   $this->load->model('customer/customer');
-	   $data['customers'] = $this->model_customer_customer->getCustomers('', $allacess = true, $this->session->data['user_id']);
+	   $data['customers'] = $this->model_customer_customer->getCustomers();
 	
 		$data['sales_manager'] = $appointment_info['salesrep_id'];
 		
@@ -1009,7 +1009,7 @@ class ControllerReplogicSalesrepInfo extends Controller {
 		$data['customer_groups'] = $this->model_customer_customer_group->getCustomerGroups();
 		
 		$this->load->model('customer/customer');
-	    $data['dropdowncustomers'] = $this->model_customer_customer->getCustomers('', $allaccess, $this->session->data['user_id']);
+	    $data['dropdowncustomers'] = $this->model_customer_customer->getCustomers();
 
 		$this->load->model('setting/store');
 
@@ -1625,7 +1625,7 @@ class ControllerReplogicSalesrepInfo extends Controller {
 			);
 		}
 		
-		$data['customers'] = $this->model_customer_customer->getCustomers($data, $allaccess, $this->session->data['user_id']);
+		$data['customers'] = $this->model_customer_customer->getCustomers();
 
 		$data['heading_title'] = $this->language->get('heading_title');
 
@@ -2040,7 +2040,7 @@ class ControllerReplogicSalesrepInfo extends Controller {
 			);
 		}
 		
-	    $data['customers'] = $this->model_customer_customer->getCustomers($data, $allaccess = true, $this->session->data['user_id']);
+	    $data['customers'] = $this->model_customer_customer->getCustomers();
 		
 		$data['customercontacts'] = $this->model_replogic_customer_contact->getcustomercontacts();
 		

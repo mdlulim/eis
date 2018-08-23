@@ -39,7 +39,7 @@ class ModelUserTeam extends Model {
 		$sql = "SELECT * FROM " . DB_PREFIX . "team";
 		
 		if (!empty($data['filter_team_name']) || !empty($data['filter_salesrep_id'])) {
-			$sql .= " WHERE team_id > '0'";
+			$sql .= " where team_id > '0'";
 		}
 		
 		if (!empty($data['filter_team_name'])) {

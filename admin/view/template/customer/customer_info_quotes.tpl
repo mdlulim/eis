@@ -51,11 +51,6 @@
                 <label class="control-label" for="input-order-id"><?php echo $entry_quote_id; ?></label>
                 <input type="text" name="filter_quote_id" value="<?php echo $filter_quote_id; ?>" placeholder="<?php echo $entry_quote_id; ?>" id="input-order-id" class="form-control" />
               </div>
-              <!--<div class="form-group">
-                <label class="control-label" for="input-customer"><?php echo $entry_customer; ?></label>
-                <input type="text" name="filter_customer" value="<?php echo $filter_customer; ?>" placeholder="<?php echo $entry_customer; ?>" id="input-customer" class="form-control" />
-   				   <input type="hidden" name="filter_customer_id" value="<?php echo $filter_customer_id; ?>" id="customer_id">          
-              </div>-->
             </div>
             <div class="col-sm-3">
               <div class="form-group">
@@ -154,16 +149,6 @@
                     	<?php if($order['view']) { ?>
                         <a href="<?php echo $order['view']; ?>" data-toggle="tooltip" title="View Quote" class="btn btn-info"><i class="fa fa-eye"></i></a>
                    		<?php } ?>
-                        <?php if($order['order_id'] == '' && $order['status'] != '2' && $order['status'] != '1') { ?>
-                        	<!-- <a href="<?php echo $order['approve']; ?>" data-toggle="tooltip" title="Approve" class="btn btn-success"><i class="fa fa-check"></i></a>
-                        	<a href="javascript:void();" data-toggle="tooltip" title="Decline" onclick="onpopup(<?php echo $order['quote_id']; ?>);" class="btn btn-danger decline"><i class="fa fa-times"></i></a> -->
-                           <!-- <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#myModal" data-whatever="@getbootstrap"><i class="fa fa-times"></i>Decline</button>-->
-                        <?php } else { ?>
-                        	
-                            <!-- <a href="javascript:void();" disabled  data-toggle="tooltip" title="Approve" class="btn btn-success"><i class="fa fa-check"></i></a>
-                            <a href="javascript:void();" data-toggle="tooltip" title="Decline" disabled class="btn btn-danger decline"><i class="fa fa-times"></i></a> -->
-                        	
-                        <?php } ?>
                     
                     </td>
                     

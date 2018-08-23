@@ -4,6 +4,7 @@ $_['heading_title']              = 'Orders';
 
 // Text
 $_['text_success']               = 'Success: You have modified orders!';
+$_['text_cancel_success']        = 'Order successfully cancelled!';
 $_['text_list']                  = 'Order List';
 $_['text_add']                   = 'Add Order';
 $_['text_edit']                  = 'Edit Order';
@@ -68,7 +69,7 @@ $_['column_status']              = 'Status';
 $_['column_date_added']          = 'Date Added';
 $_['column_date_modified']       = 'Date Modified';
 $_['column_total']               = 'Order Value';
-$_['column_image']               = 'Images';
+$_['column_image']               = 'Image';
 $_['column_product']             = 'Product';
 $_['column_model']               = 'Model';
 $_['column_quantity']            = 'Quantity';
@@ -138,3 +139,5 @@ $_['error_warning']              = 'Warning: Please check the form carefully for
 $_['error_permission']           = 'Warning: You do not have permission to modify orders!';
 $_['error_action']               = 'Warning: Could not complete this action!';
 $_['error_filetype']			 = 'Invalid file type!';
+$_['error_order_not_found']      = 'Order not found!';
+$_['error_generic']              = 'An unexpected error has occured, please try again!';

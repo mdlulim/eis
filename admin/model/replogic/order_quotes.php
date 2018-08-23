@@ -110,6 +110,12 @@ class ModelReplogicOrderQuotes extends Model {
 		return $query->row;
 	}
 	
+	public function denyQuote($quote_id, $reason, $status) {
+		$query = $this->db->query("UPDATE " . DB_PREFIX . "replogic_order_quote set status = '" . (int)$status . "', comments = '".$reason."', date_modified = NOW() WHERE quote_id = '" . (int)$quote_id . "'");
+
+		return $query->row;
+	}
+	
 	public function QuoteOrderIdUpdate($quote_id, $order_id) {
 		$query = $this->db->query("UPDATE " . DB_PREFIX . "replogic_order_quote set order_id = '". $order_id ."' WHERE quote_id = '" . (int)$quote_id . "'");
 

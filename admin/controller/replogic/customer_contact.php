@@ -269,7 +269,7 @@ class ControllerReplogicCustomerContact extends Controller {
 			);
 		}
 		
-		$data['customers'] = $this->model_customer_customer->getCustomers($filter_data, $allacess = true, $this->session->data['user_id']);
+		$data['customers'] = $this->model_customer_customer->getCustomers();
 		$data['allcustomer_contacts'] = $this->model_replogic_customer_contact->getcustomercontacts($filter_data = array('filter_customer_id' => $customer_id));
 		
 		$data['heading_title'] = $this->language->get('heading_title');
@@ -434,7 +434,7 @@ class ControllerReplogicCustomerContact extends Controller {
 
 		$data['breadcrumbs'][] = array(
 			'text' => $this->language->get('text_home'),
-			'href' => $this->url->link('common/sales_dashboard', 'token=' . $this->session->data['token'], true)
+			'href' => $this->url->link(getDashboard($this->user), 'token=' . $this->session->data['token'], true)
 		);
 
 		$data['breadcrumbs'][] = array(
@@ -458,7 +458,7 @@ class ControllerReplogicCustomerContact extends Controller {
 		$data['ccustomer_id'] = $customer_contact_info['customer_id'];
 		
 		$this->load->model('customer/customer');
-	   $data['customers'] = $this->model_customer_customer->getCustomers($data, $allacess, $this->session->data['user_id']);
+	   $data['customers'] = $this->model_customer_customer->getCustomers();
 		
 		$data['header'] = $this->load->controller('common/header');
 		$data['column_left'] = $this->load->controller('common/column_left');
@@ -563,7 +563,7 @@ class ControllerReplogicCustomerContact extends Controller {
 
 		$data['breadcrumbs'][] = array(
 			'text' => $this->language->get('text_home'),
-			'href' => $this->url->link('common/sales_dashboard', 'token=' . $this->session->data['token'], true)
+			'href' => $this->url->link(getDashboard($this->user), 'token=' . $this->session->data['token'], true)
 		);
 
 		$data['breadcrumbs'][] = array(
@@ -639,7 +639,7 @@ class ControllerReplogicCustomerContact extends Controller {
 		}
 		
 		$this->load->model('customer/customer');
-	    $data['customers'] = $this->model_customer_customer->getCustomers('', $allacess, $this->session->data['user_id']);
+	    $data['customers'] = $this->model_customer_customer->getCustomers();
 	    if (isset($this->request->post['customer_id'])) {
 			$data['customer_id'] = $this->request->post['customer_id'];
 		} elseif (!empty($customer_contact_info)) {
@@ -649,7 +649,7 @@ class ControllerReplogicCustomerContact extends Controller {
 		}
 
 		$ignore = array(
-			'common/dashboard',
+			getDashboard($this->user),
 			'common/startup',
 			'common/login',
 			'common/logout',

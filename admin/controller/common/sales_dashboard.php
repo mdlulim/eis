@@ -24,18 +24,17 @@ class ControllerCommonSalesDashboard extends Controller {
 		$this->document->addScript('view/javascript/common.js');
 		$this->document->addScript('view/javascript/dashboard.js');
 		$this->document->addScript('view/javascript/location_management.js');
-
-		
-		# controller(s)
-		$data['header'] = $this->load->controller('common/header');
-		$data['column_left'] = $this->load->controller('common/column_left');
-		$data['footer'] = $this->load->controller('common/footer');
 		
 		/*=====  End of Add Files (Includes)  ======*/
 
 		$this->load->language('common/sales_dashboard');
 		$this->document->setTitle($this->language->get('heading_title'));
 		$data['heading_title'] = $this->language->get('heading_title');
+		
+		# controller(s)
+		$data['header'] = $this->load->controller('common/header');
+		$data['column_left'] = $this->load->controller('common/column_left');
+		$data['footer'] = $this->load->controller('common/footer');
 		
 		/*======================================================
 		=            Check Install Directory Exists            =
@@ -746,7 +745,7 @@ class ControllerCommonSalesDashboard extends Controller {
 		// 	}
 		// }
 		// # location-management view more link
-		// $data['location_view_more'] = $this->url->link('replogic/location_management', "token=$token", true);
+	    $data['location_view_more'] = $this->url->link('replogic/location_management', "token=$token", true);
 		
 		/*=====  End of Location Management [Google Map]  ======*/
 

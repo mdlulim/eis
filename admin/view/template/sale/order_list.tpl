@@ -1,11 +1,11 @@
 <?php echo $header; ?><?php echo $column_left; ?>
-<div id="content">
+<div id="content" data-token="<?php echo $token; ?>">
   <div class="page-header">
     <div class="container-fluid">
       <div class="pull-right">
         <button type="submit" id="button-shipping" form="form-order" formaction="<?php echo $shipping; ?>" formtarget="_blank" data-toggle="tooltip" title="<?php echo $button_shipping_print; ?>" class="btn btn-info"><i class="fa fa-truck"></i></button>
         <button type="submit" id="button-invoice" form="form-order" formaction="<?php echo $invoice; ?>" formtarget="_blank" data-toggle="tooltip" title="<?php echo $button_invoice_print; ?>" class="btn btn-info"><i class="fa fa-print"></i></button>
-        <a href="<?php echo $add; ?>" data-toggle="tooltip" title="<?php echo $button_add; ?>" class="btn btn-primary"><i class="fa fa-plus"></i></a>
+        <a id="createOrder" href="<?php echo $add; ?>" data-toggle="tooltip" title="<?php echo $button_add; ?>" class="btn btn-primary"><i class="fa fa-plus"></i></a>
         <button type="button" id="button-delete" form="form-order" formaction="<?php echo $delete; ?>" data-toggle="tooltip" title="<?php echo $button_delete; ?>" class="btn btn-danger"><i class="fa fa-trash-o"></i></button>
       </div>
       <h1><?php echo $heading_title; ?></h1>
@@ -33,7 +33,7 @@
       </div>
       <div class="panel-body">
         <div class="well">
-        	<h3>Filters</h3>
+          <h3>Filters</h3>
           <div class="row">
             <div class="col-sm-4">
               <div class="form-group">
@@ -229,6 +229,63 @@
       </div>
     </div>
   </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="createOrderModal" tabindex="-1" role="dialog" aria-labelledby="createOrderModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <form action="<?php echo $create_order_action; ?>" method="get">
+          <input type="hidden" name="route" value="sale/order/add">
+          <input type="hidden" name="token" value="<?php echo $token; ?>">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="createOrderModalLabel">
+              Create New Order
+            </h4>
+          </div>
+          <div class="modal-body">
+            <p><strong>Create a new order for a customer</strong></p>
+            <div class="row">
+              <div class="form-group">
+                <label class="col-sm-4 col-xs-12 text-right">Customer:</label>
+                <div class="col-sm-8 col-xs-12">
+                  <select class="form-control" name="customer">
+                    <option value="">Select Customer</option>
+                    <?php if (!empty($customers)) : ?>
+                    <?php foreach($customers as $key => $customer) : ?>
+                    <option value="<?php echo $customer['customer_id']; ?>" data-contract-pricing="<?php echo $customer['customer_group']; ?>">
+                      <?php echo $customer['firstname']; ?>
+                    </option>
+                    <?php endforeach; ?>
+                    <?php endif; ?>                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="form-group">
+                <label class="col-sm-4 col-xs-12 text-right">Contract Pricing:</label>
+                <div class="col-sm-8 col-xs-12">
+                  <input type="text" class="form-control" name="contract_pricing" value="--" disabled="disabled" />
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="form-group">
+                <label class="col-sm-4 col-xs-12 text-right">Comment:</label>
+                <div class="col-sm-8 col-xs-12">
+                  <textarea class="form-control" name="comment"></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" id="createOrderBtn" class="btn btn-primary" disabled="disabled">Continue</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
   <style>
   .form-group + .form-group{border-top:none;}
   </style>
@@ -397,4 +454,10 @@ $('.date').datetimepicker({
   pickTime: false
 });
 //--></script></div>
+
+<!-- Page loader -->
+<div class="loader-wrapper" style="display:none">
+  <div class="loader"></div>
+</div>
+<!-- /Page loader -->
 <?php echo $footer; ?> 

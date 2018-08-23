@@ -99,11 +99,6 @@
                     <?php } else { ?>
                     <a href="<?php echo $sort_username; ?>"><?php echo $column_username; ?></a>
                     <?php } ?></td>
-                    <td class="text-left"><?php if ($sort == 'usergroup') { ?>
-                    <a href="<?php echo $sort_usergroup; ?>" class="<?php echo strtolower($order); ?>">User Group</a>
-                    <?php } else { ?>
-                    <a href="<?php echo $sort_usergroup; ?>">User Group</a>
-                    <?php } ?></td>
                   <td class="text-left"><?php if ($sort == 'status') { ?>
                     <a href="<?php echo $sort_status; ?>" class="<?php echo strtolower($order); ?>"><?php echo $column_status; ?></a>
                     <?php } else { ?>
@@ -127,7 +122,6 @@
                     <input type="checkbox" name="selected[]" value="<?php echo $user['user_id']; ?>" />
                     <?php } ?></td>
                   <td class="text-left"><?php echo $user['username']; ?></td>
-                  <td class="text-left"><?php echo $user['usergroup']; ?></td>
                   <td class="text-left"><?php echo $user['status']; ?></td>
                   <td class="text-left"><?php echo $user['date_added']; ?></td>
                   <td class="text-right"><!--<a href="<?php echo $user['edit']; ?>" data-toggle="tooltip" title="<?php echo $button_edit; ?>" class="btn btn-primary"><i class="fa fa-pencil"></i></a>--><a href="<?php echo $user['view']; ?>" data-toggle="tooltip" title="View User" class="btn btn-info"><i class="fa fa-eye"></i></a></td>
@@ -171,50 +165,35 @@ $('#button-delete').prop('disabled', true);
   </style>
 <script type="text/javascript"><!--
 $('#button-filter').on('click', function() {
-	var url = 'index.php?route=user/user&token=<?php echo $token; ?>';
-
-	var filter_name = $('input[name=\'filter_name\']').val();
-
-	if (filter_name != '') {
-		url += '&filter_name=' + encodeURIComponent(filter_name);
-	}
-	
-	var filter_dateadded = $('input[name=\'filter_dateadded\']').val();
-
-	if (filter_dateadded) {
-		url += '&filter_dateadded=' + encodeURIComponent(filter_dateadded);
-	}
-	
-	var filter_status = $('select[name=\'filter_status\']').val();
-
-	if (filter_status != '*') {
-		url += '&filter_status=' + encodeURIComponent(filter_status);
-	}
-	
-	var filter_user_group_id = $('select[name=\'filter_user_group_id\']').val();
-
-	if (filter_user_group_id != '*') {
-		url += '&filter_user_group_id=' + encodeURIComponent(filter_user_group_id);
-	}
-
-	location = url;
+  var url = 'index.php?route=user/user&token=<?php echo $token; ?>';
+  var filter_name = $('input[name=\'filter_name\']').val();
+  if (filter_name != '*') {
+    url += '&filter_name=' + encodeURIComponent(filter_name);
+  }
+  
+  var filter_dateadded = $('input[name=\'filter_dateadded\']').val();
+  if (filter_dateadded) {
+    url += '&filter_dateadded=' + encodeURIComponent(filter_dateadded);
+  }
+  
+  var filter_status = $('select[name=\'filter_status\']').val();
+  if (filter_status != '*') {
+    url += '&filter_status=' + encodeURIComponent(filter_status);
+  }
+  location = url;
 });
-
 $('#button-filter-reset').on('click', function() {
-	
-	var url = 'index.php?route=user/user&token=<?php echo $token; ?>';
-
-	location = url;
+  
+  var url = 'index.php?route=user/user&token=<?php echo $token; ?>';
+  location = url;
 });
-
 $(function () 
 {
-		$('#filter_dateadded').datetimepicker({
-			 pickTime: false
-		});
-				
+    $('#filter_dateadded').datetimepicker({
+       pickTime: false
+    });
+        
 });
-
 //--></script>
 <script type="text/javascript"><!--
 $('input[name=\'filter_name\']').autocomplete({

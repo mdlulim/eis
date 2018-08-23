@@ -3,6 +3,24 @@ class ControllerReplogicQuotesInfo extends Controller {
 	private $error = array();
 
 	public function index() {
+
+		/*==================================
+		=       Add Files (Includes)       =
+		==================================*/
+
+		# stylesheets (CSS) files
+		$this->document->addStyle('view/javascript/bootstrap-sweetalert/sweetalert.css');
+		$this->document->addStyle('view/stylesheet/custom.css');
+		$this->document->addStyle('view/stylesheet/quotes.css');
+
+		# javascript (JS) files
+		$this->document->addScript('view/javascript/bootstrap-sweetalert/sweetalert.min.js');
+		$this->document->addScript('view/javascript/bootstrap-sweetalert/sweetalert-data.js');
+		$this->document->addScript('view/javascript/functions.js');
+		$this->document->addScript('view/javascript/quotes_info.js');
+
+		/*=====  End of Add Files (Includes)  ======*/
+
 		$this->load->language('replogic/order_quotes');
 
 		$this->document->setTitle($this->language->get('heading_title'));
@@ -103,7 +121,6 @@ class ControllerReplogicQuotesInfo extends Controller {
 		$data['quote_status_denied'] = $this->language->get('quote_status_denied_id');
 
 		$url = '';
-		//var_dump($data['entry_payment_method']);die();
 
 		if (isset($this->request->get['filter_quote_id'])) {
 			$url .= '&filter_quote_id=' . $this->request->get['filter_quote_id'];
@@ -165,10 +182,10 @@ class ControllerReplogicQuotesInfo extends Controller {
 			'href' => $this->url->link('replogic/order_quotes', 'token=' . $this->session->data['token'] . $url, true)
 		);
 
-		$data['cancel'] = $this->url->link('replogic/order_quotes', 'token=' . $this->session->data['token'] . $url, true);
-		$data['decline']  = $this->url->link('replogic/order_quotes/decline', 'token=' . $this->session->data['token'] . $url, true);
+		$data['cancel_url'] = $this->url->link('replogic/order_quotes', 'token=' . $this->session->data['token'] . $url, true);
+		$data['deny_url']   = $this->url->link('replogic/order_quotes/deny', 'token=' . $this->session->data['token'] . $url, true);
 		
-		$data['store_url'] = $this->request->server['HTTPS'] ? HTTPS_CATALOG : HTTP_CATALOG;
+		$data['store_url']  = $this->request->server['HTTPS'] ? HTTPS_CATALOG : HTTP_CATALOG;
 		$data['store_name'] = $this->config->get('config_name');
 		
 
@@ -231,45 +248,56 @@ class ControllerReplogicQuotesInfo extends Controller {
 		$data['ccemail'] = $cust_con['email'];
 		$data['cctelephone'] = $cust_con['telephone_number'];
 		$data['quote_id'] = $quote_id;
+			
+		$data['products'] = array();
+		$objct = json_decode($quote_info['cart']);
+		$array = (array) $objct;
+		//print_r($array); exit;
+		$products = $array['cart_items'];
 		
-		$data['access'] = false;
+		foreach ($products as $product) { 
+			$singleproduct = $this->model_catalog_product->getProduct($product->id);
 			
-			$data['products'] = array();
-			$objct = json_decode($quote_info['cart']);
-			$array = (array) $objct;
-			//print_r($array); exit;
-			$products = $array['cart_items'];
-			
-			foreach ($products as $product) { 
-				$singleproduct = $this->model_catalog_product->getProduct($product->id);
-				
-				$this->load->model('tool/image');
-				$iquery = $this->db->query("SELECT image FROM " . DB_PREFIX . "product WHERE product_id = '" . $product->id . "'");
-				if (is_file(DIR_IMAGE . $iquery->row['image'])) {
-					$image = $this->model_tool_image->resize($iquery->row['image'], 40, 40);
-				} else {
-					$image = $this->model_tool_image->resize('tsc_image.png', 40, 40);
-				}
-				$data['products'][] = array(
-					'product_id' => $product->id,
-					'name'       => $product->name,
-					'sku'      => $product->sku,
-					'model'      => $singleproduct['model'],
-					'option'     => '',
-					'quantity'   => $product->qty,
-					'image'   		   => $image,
-					'price'      => $this->currency->format($product->unit_price, 'ZAR', '1.0000'),
-					'total'      => $this->currency->format($product->total_price, 'ZAR', '1.0000'),
-					'href'     		   => $this->url->link('catalog/product/edit', 'token=' . $this->session->data['token'] . '&product_id=' . $product->id, true),
-					'reward'     => ''
-				);
+			$this->load->model('tool/image');
+			$iquery = $this->db->query("SELECT image FROM " . DB_PREFIX . "product WHERE product_id = '" . $product->id . "'");
+			if (is_file(DIR_IMAGE . $iquery->row['image'])) {
+				$image = $this->model_tool_image->resize($iquery->row['image'], 40, 40);
+			} else {
+				$image = $this->model_tool_image->resize('tsc_image.png', 40, 40);
 			}
-			//print_r($data['order_products']); exit;
-			$data['vouchers'] = array();
-			$data['totals'] = $this->currency->format($array['cart_total_price'], 'ZAR', '1.0000');
-			
-			// The URL we send API requests to
-			$data['catalog'] = $this->request->server['HTTPS'] ? HTTPS_CATALOG : HTTP_CATALOG;
+			$data['products'][] = array(
+				'product_id' => $product->id,
+				'name'       => $product->name,
+				'sku'      => $product->sku,
+				'model'      => $singleproduct['model'],
+				'option'     => '',
+				'quantity'   => $product->qty,
+				'image'   		   => $image,
+				'price'      => $this->currency->format($product->unit_price, 'ZAR', '1.0000'),
+				'total'      => $this->currency->format($product->total_price, 'ZAR', '1.0000'),
+				'href'     		   => $this->url->link('catalog/product/edit', 'token=' . $this->session->data['token'] . '&product_id=' . $product->id, true),
+				'reward'     => ''
+			);
+		}
+		//print_r($data['order_products']); exit;
+		$data['vouchers'] = array();
+		$data['totals'] = $this->currency->format($array['cart_total_price'], 'ZAR', '1.0000');
+
+		$this->load->model('user/user_group');
+		$this->load->model('user/user');
+		$current_user = $this->session->data['user_id'];
+		$current_user_group_id = $this->model_user_user->getUser($current_user);
+		$current_user_group = $this->model_user_user_group->getUserGroup($current_user_group_id['user_group_id']); ;
+		if ($current_user_group_id['user_group_id'] == '15' || $current_user_group_id['user_group_id'] == '19') {
+			$data['access'] = true;
+			$current_user_id = 0;
+		} else { 
+			$data['access'] = false;
+			$current_user_id = $this->session->data['user_id'];
+		}
+		
+		// The URL we send API requests to
+		$data['catalog'] = $this->request->server['HTTPS'] ? HTTPS_CATALOG : HTTP_CATALOG;
 		
 		$this->load->model('user/api');
 
@@ -286,11 +314,15 @@ class ControllerReplogicQuotesInfo extends Controller {
 			$data['api_ip'] = '';
 		}
 
+		$data['order_status_id'] = $this->language->get('order_status_confirmed_id');
+		$data['currency_code'] = $this->config->get('config_currency');
+		$data['token'] = $this->session->data['token'];
+
 		$data['header'] = $this->load->controller('common/header');
 		$data['column_left'] = $this->load->controller('common/column_left');
 		$data['footer'] = $this->load->controller('common/footer');
 
-		$this->response->setOutput($this->load->view('replogic/order_quotes_details', $data));
+		$this->response->setOutput($this->load->view('replogic/quotes_info', $data));
 	}
 
 }
