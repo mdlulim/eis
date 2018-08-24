@@ -38,7 +38,7 @@
       <div class="row datatable-custom-filters" data-filter-columns="[1,2,3]">
         <div class="col-sm-6"><div id="export-buttons"></div></div>
         <div class="col-sm-6 pull-right">
-          <form class="form-inline">
+          <form class="form-inline" style="float:right">
             <div class="form-group">
               <label class="sr-only">Search</label>
               <div class="input-group">
@@ -199,5 +199,6 @@
       </div>
       <?php echo $content_bottom; ?></div>
     </div>
+    <?php echo (!empty($import_modal)) ? $import_modal : ''; ?>
 </div>
 <?php echo $footer; ?> 
