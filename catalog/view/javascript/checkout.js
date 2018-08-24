@@ -56,7 +56,6 @@
                         $.extend(true, {}, buttonCommon, {
                             extend: 'pdfHtml5'
 
-
                         })
                     ]
                 }).container().appendTo('#export-buttons');
