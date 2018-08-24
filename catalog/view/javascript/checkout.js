@@ -44,20 +44,31 @@
                 var exportButtons = new $.fn.dataTable.Buttons(oTable, {
                     buttons: [
                         $.extend(true, {}, buttonCommon, {
-                            extend: 'copy'
+                            extend: 'copyHtml5'
                         }),
                         $.extend(true, {}, buttonCommon, {
-                            extend: 'csv'
+                            extend: 'csvHtml5'
                         }),
                         // $.extend(true, {}, buttonCommon, {
-                        //     extend: 'excel'
+                        //     extend: 'excelHtml5'
                         // }),
                         $.extend(true, {}, buttonCommon, {
-                            extend: 'pdf'
+                            extend: 'pdfHtml5'
                         })
                     ]
                 }).container().appendTo('#export-buttons');
                 createFilter(oTable, oFilterColumns);
+
+                
+            }
+            if ($('.cart__items-not-found table.table').length) {
+                var vOptions = {
+                    "sDom"           : "<t><'row'<'col-md-12'i p>>",
+                    "oLanguage"      : {"sLengthMenu":"_MENU_ ","sInfo":"Showing _START_ to _END_ of _TOTAL_"},
+                    "iDisplayLength" : 50,
+                    "bSort"          : false
+                };
+                $('.cart__items-not-found table.table').DataTable(vOptions);
             }
         });
 
@@ -85,70 +96,12 @@
             $(this).parent().find('.input-group-btn').removeClass('open');
         });
 
-        $(document).on('click', '#import-cart', function(e) {
-            e.preventDefault();
-            var fileInput = $(this).parent().find('input');
-            fileInput.trigger('click');
+        $(document).on('change', 'form#form-cart-importer>input[type="file"]', function() {
+            Importer.uploadFile(this);
         });
 
-        $(document).on('change', 'form#form-cart-importer>input[type="file"]', function() {
-            var file = $(this)[0].files[0];
-            if (file) {
-                var error;
-                var maxSize  = 5000; // 5000 KB => 5MB (Max)
-                var fileSize = parseInt(file.size / 1024); // convert to KB
-                var formats  = [
-                    'text/csv',
-                    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-                ];
-                if (formats.indexOf(file.type) !== -1) {
-                    if (fileSize <= maxSize) {
-                        swal({
-                            title: "Are you sure?",
-                            text: `You are about to import "${file.name}" to your shopping cart.`,
-                            type: "warning",
-                            showCancelButton: true,
-                            confirmButtonClass: "btn-info",
-                            confirmButtonText: "Yes, import it!",
-                            closeOnConfirm: false,
-                            showLoaderOnConfirm: true
-                        },
-                        function(isConfirm) {
-                            if (isConfirm) {
-                                var formData = new FormData(document.getElementById("form-cart-importer"));
-                                $.ajax({
-                                    url: 'index.php?route=checkout/cart/import',
-                                    type: 'post',
-                                    dataType: 'json',
-                                    data: formData,
-                                    processData: false,
-                                    contentType: false,
-                                    success: function(json) {
-                                        if (json['success']) {
-                                            swal({
-                                                title: "Success",
-                                                text: json['success'],
-                                                type: "success"
-                                            },
-                                            function() {
-                                                window.location.href = 'index.php?route=checkout/cart';
-                                            });
-                                        } else {
-                                            swal("Error!", json['error'], "error");
-                                        }
-                                    }
-                                });
-                            }
-                        });
-                    } else {
-                        error = `The selected file "${file.name} [${file.size/1024} KB]" exceeds the maximum upload size of 5000KB.`;
-                        swal("Invalid File Size!", error, "error");
-                    }
-                } else {
-                    error = `Invalid file format chosen. Only CSV files are allowed.`;
-                    swal("Invalid File Type!", error, "error");
-                }
-            }
+        $(document).on('click', 'button#button-continue', function() {
+            Importer.addItemsToCart(this);
         });
     };
 
