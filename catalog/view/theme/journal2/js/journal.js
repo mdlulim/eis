@@ -362,6 +362,13 @@ Journal.showNotification = function (message, image, buttons) {
     return true;
 };
 
+// trigger event for the specified element
+Journal.triggerEvent = function(event, element) {
+	if (typeof $(element).length !== "undefined") {
+		$(element).trigger(event);
+	}
+};
+
 Journal.enableQuickView = function () {
     $('.quickview-button').remove();
     $('.product-wrapper .image, .product-list-item .image').each(function () {

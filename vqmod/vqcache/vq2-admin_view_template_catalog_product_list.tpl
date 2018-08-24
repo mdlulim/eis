@@ -81,14 +81,14 @@
       </div>
       <div class="panel-body">
         <div class="well">
-        	<h3>Filters</h3>
+          <h3>Filters</h3>
           <div class="row">
             <div class="col-sm-4">
               <div class="form-group">
                 <label class="control-label" for="input-name"><?php echo $entry_name; ?></label>
-                <!--<input type="text" name="filter_name" value="<?php echo $filter_name; ?>" placeholder="<?php echo $entry_name; ?>" id="input-name" class="form-control" />-->
-                <select name="filter_product_id" class="form-control">
-                	<option value="">Select Product</option>
+                <input type="text" name="filter_name" value="<?php echo $filter_name; ?>" placeholder="<?php echo $entry_name; ?>" id="input-name" class="form-control" />
+                <!--<select name="filter_product_id" class="form-control">
+                  <option value="">Select Product</option>
                     <?php foreach ($Dropdownproducts as $Dproduct) {  ?>
                 <?php if ($Dproduct['product_id'] == $filter_product_id) { ?>
                 <option value="<?php echo $Dproduct['product_id']; ?>" selected="selected"><?php echo $Dproduct['name']; ?></option>
@@ -97,13 +97,13 @@
                 <?php } ?>
                 <?php } ?>
                     
-                </select>
+                </select>-->
               </div>
               <div class="form-group">
                 <label class="control-label" for="input-model"><?php echo $entry_model; ?></label>
-                <!--<input type="text" name="filter_model" value="<?php echo $filter_model; ?>" placeholder="<?php echo $entry_model; ?>" id="input-model" class="form-control" />-->
-                <select name="filter_model" class="form-control">
-                	<option value="">Select Model</option>
+                <input type="text" name="filter_model" value="<?php echo $filter_model; ?>" placeholder="<?php echo $entry_model; ?>" id="input-model" class="form-control" />
+                <!--<select name="filter_model" class="form-control">
+                  <option value="">Select Model</option>
                     <?php foreach ($Dropdownmodels as $Dmodel) {  ?>
                 <?php if ($Dmodel['model'] == $filter_model) { ?>
                 <option value="<?php echo $Dmodel['model']; ?>" selected="selected"><?php echo $Dmodel['model']; ?></option>
@@ -112,12 +112,13 @@
                 <?php } ?>
                 <?php } ?>
                     
-                </select>
+                </select>-->
               </div>
             </div>
             <div class="col-sm-4">
               <div class="form-group">
                 <label class="control-label" for="input-price"><?php echo $entry_price; ?></label>
+
                 <input type="text" name="filter_price" value="<?php echo $filter_price; ?>" placeholder="<?php echo $entry_price; ?>" id="input-price" class="form-control" />
               </div>
               <div class="form-group">
@@ -142,7 +143,7 @@
                   <?php } ?>
                 </select>
               </div>
-              <!--<div class="form-group">
+              <!--div class="form-group">
                 <label class="control-label" for="input-image"><?php echo $entry_image; ?></label>
                 <select name="filter_image" id="input-image" class="form-control">
                   <option value="*"></option>
@@ -157,7 +158,7 @@
                   <option value="0"><?php echo $text_disabled; ?></option>
                   <?php } ?>
                 </select>
-              </div>-->
+              </div-->
               <button type="button" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-search"></i> Search</button>
               <button type="button" id="button-filter-reset" class="btn btn-primary pull-right" style="margin-right:10px;"><i class="fa fa-refresh"></i> Reset</button>
             </div>
@@ -170,7 +171,7 @@
                 <tr>
                   <td style="width: 1px;" class="text-center"><input type="checkbox" onclick="$('input[name*=\'selected\']').prop('checked', this.checked);" /></td>
                   <td class="text-center"><?php echo $column_image; ?></td>
-                  <td class="text-left" width="420"><?php if ($sort == 'pd.name') { ?>
+                  <td class="text-left"><?php if ($sort == 'pd.name') { ?>
                     <a href="<?php echo $sort_name; ?>" class="<?php echo strtolower($order); ?>"><?php echo $column_name; ?></a>
                     <?php } else { ?>
                     <a href="<?php echo $sort_name; ?>"><?php echo $column_name; ?></a>
@@ -435,104 +436,86 @@
 			
   <script type="text/javascript"><!--
 $('#button-filter').on('click', function() {
-	var url = 'index.php?route=catalog/product&token=<?php echo $token; ?>';
-
-	var filter_name = $('input[name=\'filter_name\']').val();
-
-	if (filter_name) {
-		url += '&filter_name=' + encodeURIComponent(filter_name);
-	}
-
-	var filter_product_id = $('select[name=\'filter_product_id\']').val();
-	
-	if (filter_product_id) {
-		url += '&filter_product_id=' + encodeURIComponent(filter_product_id);
-	}
-
-	/*var filter_model = $('input[name=\'filter_model\']').val();
-	
-	if (filter_model) {
-		url += '&filter_model=' + encodeURIComponent(filter_model);
-	}*/
-	
-	var filter_model = $('select[name=\'filter_model\']').val();
-
-	if (filter_model) {
-		url += '&filter_model=' + encodeURIComponent(filter_model);
-	}
-
-	var filter_price = $('input[name=\'filter_price\']').val();
-
-	if (filter_price) {
-		url += '&filter_price=' + encodeURIComponent(filter_price);
-	}
-
-	var filter_quantity = $('input[name=\'filter_quantity\']').val();
-
-	if (filter_quantity) {
-		url += '&filter_quantity=' + encodeURIComponent(filter_quantity);
-	}
-
-	var filter_status = $('select[name=\'filter_status\']').val();
-
-	if (filter_status != '*') {
-		url += '&filter_status=' + encodeURIComponent(filter_status);
-	}
-
+  var url = 'index.php?route=catalog/product&token=<?php echo $token; ?>';
+  var filter_name = $('input[name=\'filter_name\']').val();
+  if (filter_name) {
+    url += '&filter_name=' + encodeURIComponent(filter_name);
+  }
+  var filter_product_id = $('select[name=\'filter_product_id\']').val();
+  if (filter_product_id) {
+    url += '&filter_product_id=' + encodeURIComponent(filter_product_id);
+  }
+  var filter_model = $('input[name=\'filter_model\']').val();
+  
+  if (filter_model) {
+    url += '&filter_model=' + encodeURIComponent(filter_model);
+  }
+  
+  /*var filter_model = $('select[name=\'filter_model\']').val();
+  if (filter_model) {
+    url += '&filter_model=' + encodeURIComponent(filter_model);
+  }*/
+  var filter_price = $('input[name=\'filter_price\']').val();
+  if (filter_price) {
+    url += '&filter_price=' + encodeURIComponent(filter_price);
+  }
+  var filter_quantity = $('input[name=\'filter_quantity\']').val();
+  if (filter_quantity) {
+    url += '&filter_quantity=' + encodeURIComponent(filter_quantity);
+  }
+  var filter_status = $('select[name=\'filter_status\']').val();
+  if (filter_status != '*') {
+    url += '&filter_status=' + encodeURIComponent(filter_status);
+  }
   /*var filter_image = $('select[name=\'filter_image\']').val();
-
   if (filter_image != '*') {
     url += '&filter_image=' + encodeURIComponent(filter_image);
   }*/
-
-	location = url;
+  location = url;
 });
-
 $('#button-filter-reset').on('click', function() {
   var url = 'index.php?route=catalog/product&token=<?php echo $token; ?>';
-
   location = url;
 });
 //--></script>
   <script type="text/javascript"><!--
 $('input[name=\'filter_name\']').autocomplete({
-	'source': function(request, response) {
-		$.ajax({
-			url: 'index.php?route=catalog/product/autocomplete&token=<?php echo $token; ?>&filter_name=' +  encodeURIComponent(request),
-			dataType: 'json',
-			success: function(json) {
-				response($.map(json, function(item) {
-					return {
-						label: item['name'],
-						value: item['product_id']
-					}
-				}));
-			}
-		});
-	},
-	'select': function(item) {
-		$('input[name=\'filter_name\']').val(item['label']);
-	}
+  'source': function(request, response) {
+    $.ajax({
+      url: 'index.php?route=catalog/product/autocomplete&token=<?php echo $token; ?>&filter_name=' +  encodeURIComponent(request),
+      dataType: 'json',
+      success: function(json) {
+        response($.map(json, function(item) {
+          return {
+            label: item['name'],
+            value: item['product_id']
+          }
+        }));
+      }
+    });
+  },
+  'select': function(item) {
+    $('input[name=\'filter_name\']').val(item['label']);
+  }
 });
-
 $('input[name=\'filter_model\']').autocomplete({
-	'source': function(request, response) {
-		$.ajax({
-			url: 'index.php?route=catalog/product/autocomplete&token=<?php echo $token; ?>&filter_model=' +  encodeURIComponent(request),
-			dataType: 'json',
-			success: function(json) {
-				response($.map(json, function(item) {
-					return {
-						label: item['model'],
-						value: item['product_id']
-					}
-				}));
-			}
-		});
-	},
-	'select': function(item) {
-		$('input[name=\'filter_model\']').val(item['label']);
-	}
+  'source': function(request, response) {
+    $.ajax({
+      url: 'index.php?route=catalog/product/autocomplete&token=<?php echo $token; ?>&filter_model=' +  encodeURIComponent(request),
+      dataType: 'json',
+      success: function(json) {
+        response($.map(json, function(item) {
+          return {
+            label: item['model'],
+            value: item['product_id']
+          }
+        }));
+      }
+    });
+  },
+  'select': function(item) {
+    $('input[name=\'filter_model\']').val(item['label']);
+  }
 });
 //--></script></div>
 <?php echo $footer; ?>

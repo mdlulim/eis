@@ -50,10 +50,11 @@
                             extend: 'csvHtml5'
                         }),
                         // $.extend(true, {}, buttonCommon, {
-                        //     extend: 'excelHtml5'
+       //     extend: 'excelHtml5'
                         // }),
                         $.extend(true, {}, buttonCommon, {
                             extend: 'pdfHtml5'
+
                         })
                     ]
                 }).container().appendTo('#export-buttons');
