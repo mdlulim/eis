@@ -46,7 +46,7 @@ class ControllerCheckoutCart extends Controller {
 		);
 
 		if ($this->cart->hasProducts() || !empty($this->session->data['vouchers'])) {
-			$data['heading_title'] = $this->language->get('heading_title') . $this->language->get('button_import_to_cart');
+			$data['heading_title'] = $this->language->get('heading_title') . $this->language->get('button_import_to_cart') . $this->language->get('button_clear_cart');
 
 			$data['text_recurring_item'] = $this->language->get('text_recurring_item');
 			$data['text_next'] = $this->language->get('text_next');
@@ -1074,6 +1074,24 @@ class ControllerCheckoutCart extends Controller {
 
 			$this->response->setOutput($this->load->view('checkout/cart_import_items', $data));
 		}
+	}
+
+	public function clear() {
+
+		$this->load->language('checkout/cart');
+
+		$json = array();
+
+		if ($this->request->server['REQUEST_METHOD'] == 'DELETE') {
+			// clear cart
+			$this->cart->clear();
+			$json['success'] = true;
+		}
+		if (!isset($json['success']) && !isset($json['error'])) {
+			$json['error'] = $this->language->get('import_generic_error');
+		}
+		$this->response->addHeader('Content-Type: application/json');
+		$this->response->setOutput(json_encode($json));
 	}
 
 	public function import() {

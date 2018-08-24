@@ -36,6 +36,10 @@ $_['button_import_to_cart']    = '
 	<input type="file" name="import" id="import" style="display:none">
 	<button type="button" class="btn btn-default btn-sm pull-right" id="import-cart" onclick="Importer.triggerFileUpload(this);"><i></i> Import to Cart</button>
 </form>';
+
+// Clear cart
+$_['button_clear_cart'] = '<button type="button" class="btn btn-default btn-sm pull-right" id="clear-cart" onclick="cart.clear();"><i></i> Clear Cart</button>';
+
 $_['import_success']           = 'You have added %s to your shopping cart!';
 $_['import_file_type_error']   = 'The file type imported is not supported, please upload your file in CSV, XLS and XLSX';
 $_['import_file_size_error']   = 'The File you have imported has exceeded the maximum size, please make sure that your file is not more than 5MB';
