@@ -1,7 +1,14 @@
+<<<<<<< HEAD
 ---------- Date: 2018-08-13 08:51:40 ~ IP : ::1 ----------
 REQUEST URI : /flmkzn/index.php?route=account/account
 MOD DETAILS:
    modFile   : /Applications/XAMPP/xamppfiles/htdocs/flmkzn/vqmod/xml/productViewOrder.xml
+=======
+---------- Date: 2018-08-13 08:33:26 ~ IP : ::1 ----------
+REQUEST URI : /saleslogicmdu/admin/index.php?route=replogic/sales_rep_management&token=V8keLb4wimLgEBidkfTJTRlJqhCPMNW4&team_id=1
+MOD DETAILS:
+   modFile   : /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/vqmod/xml/productViewOrder.xml
+>>>>>>> 996baad46c4283079de4786e830afae1a1054996
    id        : Product - View orders
    version   : 1.0.0
    vqmver    : 2.4.2

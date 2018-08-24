@@ -1,0 +1,130 @@
+<file path="catalog/model/account/customer.php" email_template="customer.register">
+	<operation>
+		<search index="0"><![CDATA[$customer_id = $this->db->getLastId();]]></search>
+		<add position="after"><![CDATA[		$this->load->model('extension/mail/template');
+
+		$template_load = array('key' => 'customer.register');
+
+		$template_load['customer_id'] = $customer_id;
+
+		if (!empty($customer_group_info['customer_group_id'])) {
+			$template_load['customer_group_id'] = $customer_group_info['customer_group_id'];
+		}
+
+		$template = $this->model_extension_mail_template->load($template_load);
+
+		$template_data = $data;
+
+		// Custom fields
+		if (!empty($data['custom_field'])) {
+			$this->load->model('account/custom_field');
+
+			if (!empty($data['customer_group_id'])) {
+				$customer_group_id = $data['customer_group_id'];
+			} else {
+				$customer_group_id = $this->config->get('config_customer_group_id');
+			}
+
+			$custom_fields = $this->model_account_custom_field->getCustomFields($customer_group_id);
+
+			foreach($custom_fields as $custom_field){
+				if (isset($data['custom_field'][$custom_field['location']][$custom_field['custom_field_id']])) {
+					$template_data['custom_field_' . $custom_field['location'] . '_' . $custom_field['custom_field_id'] . '_name'] = $custom_field['name'];
+					$template_data['custom_field_' . $custom_field['location'] . '_' . $custom_field['custom_field_id'] . '_value'] = $data['custom_field'][$custom_field['location']][$custom_field['custom_field_id']];
+				}
+			}
+		}
+
+		$template_data['newsletter'] = $this->language->get((isset($data['newsletter']) && $data['newsletter'] == 1) ? 'text_yes' : 'text_no');
+
+		$template_data['account_login'] = $this->url->link('account/login', '', true);
+
+		$template_data['customer_group'] = (isset($customer_group_info['name'])) ? $customer_group_info['name'] : '';
+
+        if ((isset($customer_group_info['approval']) && $customer_group_info['approval']) || $this->config->get('config_customer_approval')) {
+         	$template_data['customer_text'] = $this->language->get('text_approval');
+        } else {
+           	$template_data['customer_text'] = $this->language->get('text_login');
+        }]]></add>
+	</operation>
+	<operation>
+		<search index="0"><![CDATA[$address_id = $this->db->getLastId();]]></search>
+		<add position="after"><![CDATA[
+		if ($address_id) {
+			$country = '';
+			$iso_code_2 = '';
+			$iso_code_3 = '';
+			$address_format = '';
+			$zone = '';
+			$zone_code = '';
+
+			if (!empty($data['country_id'])) {
+				$this->load->model('localisation/country');
+
+				$country_info = $this->model_localisation_country->getCountry($data['country_id']);
+
+				if ($country_info) {
+					$country = $country_info['name'];
+					$iso_code_2 = $country_info['iso_code_2'];
+					$iso_code_3 = $country_info['iso_code_3'];
+					$address_format = $country_info['address_format'];
+				}
+			}
+
+			if (!empty($data['zone_id'])) {
+				$this->load->model('localisation/zone');
+
+				$zone_info = $this->model_localisation_zone->getZone($data['zone_id']);
+
+				if ($zone_info) {
+					$zone = $zone_info['name'];
+					$zone_code = $zone_info['code'];
+				}
+			}
+
+			$address_data = array(
+				'address_id'     => $address_id,
+				'firstname'      => $data['firstname'],
+				'lastname'       => $data['lastname'],
+				'company'        => $data['company'],
+				'address_1'      => $data['address_1'],
+				'address_2'      => $data['address_2'],
+				'postcode'       => $data['postcode'],
+				'city'           => $data['city'],
+				'zone_id'        => $data['zone_id'],
+				'zone'           => $zone,
+				'zone_code'      => $zone_code,
+				'country_id'     => $data['country_id'],
+				'country'        => $country,
+				'iso_code_2'     => $iso_code_2,
+				'iso_code_3'     => $iso_code_3
+			);
+
+			$find = array();
+			$replace = array();
+
+			foreach(array_keys($address_data) as $key) {
+				$find[$key] = '{'.$key.'}';
+				$replace[$key] =  $address_data[$key];
+			}
+
+			if (!$address_format) {
+				$address_format = '{firstname} {lastname}' . "\n" . '{company}' . "\n" . '{address_1}' . "\n" . '{address_2}' . "\n" . '{city} {postcode}' . "\n" . '{zone}' . "\n" . '{country}';
+			}
+
+			$template_data['address'] = str_replace(array("\r\n", "\r", "\n"), '<br />', preg_replace(array("/\s\s+/", "/\r\r+/", "/\n\n+/"), '<br />', trim(str_replace($find, $replace, $address_format))));
+			$template_data['address_zone'] = $zone;
+			$template_data['address_country'] = $country;
+		}]]></add>
+	</operation>
+	<operation>
+		<search index="0"><![CDATA[$mail->send();]]></search>
+		<add position="replace"><![CDATA[$template->addData($template_data);
+
+		$template->hook($mail);
+
+		$mail->send();
+
+		$this->model_extension_mail_template->sent();]]></add>
+	</operation>
+</file>
