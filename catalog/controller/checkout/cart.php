@@ -1269,13 +1269,10 @@ class ControllerCheckoutCart extends Controller {
 								// clear first before import
 								$this->cart->clear();
 
-								foreach($products as $product) {
-									if (!empty($product['cart_import_quantity'])) {
+								// add products/items to cart
+								$this->cart->bulk_add($products);
 
-										// add item to cart
-										$this->cart->add($product['product_id'], $product['cart_import_quantity']);
-									}
-								}
+								// success response
 								$json['success'] = sprintf($this->language->get('import_success'), $this->cart->countProducts().' item(s)');
 								$json['total']   = sprintf($this->language->get('text_items'), $this->cart->countProducts() + (isset($this->session->data['vouchers']) ? count($this->session->data['vouchers']) : 0), $this->currency->format($total, $this->session->data['currency']));
 							}
