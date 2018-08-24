@@ -75,7 +75,7 @@ class ModelReplogicOrderQuotes extends Model {
 
 			$sql .= " LIMIT " . (int)$data['start'] . "," . (int)$data['limit'];
 		}
-		
+//echo $sql; exit;
 		$query = $this->db->query($sql);
 
 		return $query->rows;
@@ -106,6 +106,12 @@ class ModelReplogicOrderQuotes extends Model {
 	
 	public function Declinestatuschange($quote_id, $reason) {
 		$query = $this->db->query("UPDATE " . DB_PREFIX . "replogic_order_quote set status = '3', comments = '".$reason."' WHERE quote_id = '" . (int)$quote_id . "'");
+
+		return $query->row;
+	}
+	
+	public function denyQuote($quote_id, $reason, $status) {
+		$query = $this->db->query("UPDATE " . DB_PREFIX . "replogic_order_quote set status = '" . (int)$status . "', comments = '".$reason."', date_modified = NOW() WHERE quote_id = '" . (int)$quote_id . "'");
 
 		return $query->row;
 	}

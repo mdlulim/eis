@@ -61,43 +61,46 @@ class ModelReplogicLocationManagement extends Model {
 	
 	public function getLocations($data = array()) {
 		
-		if(!isset($data['filter_team_id']))
-		{
-			$sql = "SELECT * FROM " . DB_PREFIX . "salesrep_checkins";
+		if (!isset($data['filter_team_id'])) {
+
+			$sql = "SELECT ck.*, a.type FROM " . DB_PREFIX . "salesrep_checkins ck INNER JOIN " . DB_PREFIX . "appointment a ON a.appointment_id = ck.appointment_id ";
 				
 			if (isset($data['filter_groupby_salesrep'])) {
-				$sql .= " WHERE checkin_id IN (SELECT MAX(checkin_id) FROM " . DB_PREFIX . "salesrep_checkins GROUP BY salesrep_id)";
-			}
-			else
-			{
-				$sql .= " where checkin_id > '0'";
+				$sql .= " WHERE ck.checkin_id IN (SELECT MAX(checkin_id) FROM " . DB_PREFIX . "salesrep_checkins GROUP BY salesrep_id)";
+			} else {
+				$sql .= " WHERE ck.checkin_id > '0'";
 			}
 			
 			if (isset($data['filter_address'])) {
-				$sql .= " AND location LIKE '%" . $data['filter_address'] . "%'";
+				$sql .= " AND ck.location LIKE '%" . $data['filter_address'] . "%'";
 			} 
 	
 			if (!empty($data['filter_salesrep_id'])) {
-				$sql .= " AND salesrep_id = '" . (int)$data['filter_salesrep_id'] . "'";
+				$sql .= " AND ck.salesrep_id = '" . (int)$data['filter_salesrep_id'] . "'";
+			}
+
+			if (isset($data['filter_customer_type'])) {
+				$sql .= " AND a.type = '" . $data['filter_customer_type'] . "'";
 			}
 	
 			if (!empty($data['filter_customer_id'])) {
-				$sql .= " AND customer_id = '" . (int)$data['filter_customer_id'] . "'";
+				$sql .= " AND ck.customer_id = '" . (int)$data['filter_customer_id'] . "'";
 			}
 			
-			if (!empty($data['filter_date_from']) && !empty($data['filter_date_to'])) 
-			{ 
+			if (!empty($data['filter_date_from']) && !empty($data['filter_date_to']))  { 
 				$fromdate = date('Y-m-d H:i:s', strtotime($data['filter_date_from'])); 
 				$todate = date('Y-m-d H:i:s', strtotime($data['filter_date_to'])); 
-				$sql .= " AND checkin >= '" . $fromdate . "' AND checkin <= '" . $todate . "'";
+				$sql .= " AND ck.checkin >= '" . $fromdate . "' AND ck.checkin <= '" . $todate . "'";
 			}
 			
-			$sql .= " ORDER BY checkin_id";
+			if (!empty($data['filter_date']))  { 
+				$sql .= " AND DATE_FORMAT(ck.checkin, '%Y-%m-%d') = '" . $this->db->escape($data['filter_date']) . "'";
+			}
 			
-		}
-		else
-		{
-			$sql = "SELECT * FROM oc_salesrep_checkins ck left join oc_salesrep sr on ck.salesrep_id = sr.salesrep_id where sr.sales_team_id = ".$data['filter_team_id'].""; 
+			$sql .= " ORDER BY ck.checkin_id";
+			
+		} else {
+			$sql = "SELECT ck.*, a.type FROM oc_salesrep_checkins ck INNER JOIN " . DB_PREFIX . "appointment a ON a.appointment_id = ck.appointment_id LEFT JOIN oc_salesrep sr on ck.salesrep_id = sr.salesrep_id where sr.sales_team_id = ".$data['filter_team_id'].""; 
 			
 			if (isset($data['filter_groupby_salesrep'])) {
 				$sql .= " AND ck.checkin_id IN (SELECT MAX(ck.checkin_id) FROM " . DB_PREFIX . "salesrep_checkins GROUP BY ck.salesrep_id)";	
@@ -110,16 +113,23 @@ class ModelReplogicLocationManagement extends Model {
 			if (!empty($data['filter_salesrep_id'])) {
 				$sql .= " AND ck.salesrep_id = '" . (int)$data['filter_salesrep_id'] . "'";
 			}
+
+			if (isset($data['filter_customer_type'])) {
+				$sql .= " AND a.type = '" . $data['filter_customer_type'] . "'";
+			}
 	
 			if (!empty($data['filter_customer_id'])) {
 				$sql .= " AND ck.customer_id = '" . (int)$data['filter_customer_id'] . "'";
 			}
 			
-			if (!empty($data['filter_date_from']) && !empty($data['filter_date_to'])) 
-			{ 
+			if (!empty($data['filter_date_from']) && !empty($data['filter_date_to'])) { 
 				$fromdate = date('Y-m-d H:i:s', strtotime($data['filter_date_from'])); 
 				$todate = date('Y-m-d H:i:s', strtotime($data['filter_date_to'])); 
 				$sql .= " AND ck.checkin >= '" . $fromdate . "' AND ck.checkin <= '" . $todate . "'";
+			}
+			
+			if (!empty($data['filter_date']))  { 
+				$sql .= " AND DATE_FORMAT(ck.checkin, '%Y-%m-%d') = '" . $this->db->escape($data['filter_date']) . "'";
 			}
 			
 			$sql .= " ORDER BY ck.checkin_id";
@@ -143,10 +153,16 @@ class ModelReplogicLocationManagement extends Model {
 
 			$sql .= " LIMIT " . (int)$data['start'] . "," . (int)$data['limit'];
 		}
-//echo $sql; exit;
+		
 		$query = $this->db->query($sql);
 
 		return $query->rows;
+	}
+
+	public function getSalesRepLocation($salesrep_id) {
+		$query = $this->db->query("SELECT DISTINCT * FROM " . DB_PREFIX . "salesrep_checkins WHERE salesrep_id = '" . (int)$salesrep_id . "' ORDER BY checkin_id DESC LIMIT 0,1");
+
+		return $query->row;
 	}
 
 	public function getLocation($checkin_id) {

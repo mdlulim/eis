@@ -594,6 +594,8 @@ class ModelSaleOrder extends Model {
 			$sql .= ($condition) ? " AND " : " WHERE ";
 			$sql .= "tm.sales_manager=".$filters['filter_user'];
 		}
+
+		$sql .= ($condition) ? " AND ct.customer_id != 0 " : " WHERE ct.customer_id != 0 ";
 		
 		/*=====  End of Filters  ======*/
 

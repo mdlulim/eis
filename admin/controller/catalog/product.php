@@ -1435,6 +1435,40 @@ class ControllerCatalogProduct extends Controller {
 		return !$this->error;
 	}
 
+	public function get_products() {
+
+		if ($this->request->server['REQUEST_METHOD'] == 'GET') {
+		
+			$this->load->model('catalog/product');
+			$this->load->model('tool/image');
+
+			$json['products'] = array();
+
+			$products = $this->model_catalog_product->getProducts();
+
+			foreach ($products as $product) {
+				if (is_file(DIR_IMAGE . $product['image'])) {
+					$image = $this->model_tool_image->resize($product['image'], 40, 40);
+				} else {
+					$image = $this->model_tool_image->resize('tsc_image.png', 40, 40);
+				}
+				$json['products'][] = array(
+					'product_id' => $product['product_id'],
+					'name'       => $product['name'],
+					'image'      => $image,
+					'model'      => $product['model'],
+					'quantity'   => $product['quantity'],
+					'price'      => $product['price'],
+					'total'      => $product['total'],
+					'reward'     => $product['reward']
+				);
+			}
+			$this->response->addHeader('Content-Type: application/json');
+			$this->response->setOutput(json_encode($json));
+		}
+
+	}
+
 	public function autocomplete() {
 		$json = array();
 

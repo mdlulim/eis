@@ -1,0 +1,74 @@
+label {
+    font-weight: 600;
+}
+.lm-wrapper {
+    padding-top: 0;
+}
+.lm-wrapper .lm-leftnav {
+    top: 0;
+}
+.lm-wrapper .lm-leftnav.open {
+    padding: 15px 18px;
+}
+.lm-wrapper .lm-leftnav.open .lm-leftnav-header {
+    padding-top: 5px;
+}
+.lm-leftnav-header h4 {
+    font-weight: 600;
+    padding: 0;
+    margin: 0;
+}
+.vlist-item {
+    padding: 10px 0;
+}
+.vlist-item-header {
+    padding-top: 3px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #eee;
+    font-weight: 600;
+}
+.vlist-item-header i {
+    float: left;
+    margin-right: 6px;
+}
+.vlist-item-body {
+    padding: 16px 0;
+}
+.loc__customer-name > span {
+    margin-left: 0;
+}
+.loc__customer-address {
+    clear: both;
+    display: block;
+    font-weight: normal;
+    padding: 7px 0 3px 22px;
+}
+.loc_salesrep-name {
+    display: block;
+    padding-bottom: 10px;
+    font-weight: 600;
+}
+.loc_salesrep-name i {
+    float: left;
+    padding-top: 2px;
+    margin-right: 13px;
+}
+.loc__current-location {
+    font-weight: 600;
+    margin-top: 15px;
+}
+.loc__current-location-icon {
+    margin-top: 10px;
+}
+.loc__current-location-icon .fa-map-marker {
+    font-size: 20px;
+    margin-right: 5px;
+}
+hr.loc__hr {
+    margin-top: 17px;
+    margin-bottom: 7px;
+}
+#remarks {
+    min-height: 150px;
+}
+#lm-map { height: 100%; }

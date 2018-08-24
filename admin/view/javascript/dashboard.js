@@ -23,9 +23,9 @@
                     closeOnConfirm: false
                 },
                 function() {
-                    var token = getURLVar('token');
-                    var redirect = "index.php?route=common/choose_password&token="+token;
-                    location.href = redirect;
+                    var token      = getURLVar('token');
+                    var redirect   = "index.php?route=common/choose_password&token="+token;
+                    location.href  = redirect;
                 });
             }
         });

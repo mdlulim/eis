@@ -100,6 +100,28 @@ $(document).ready(function() {
 		}
 	});
 
+	// Navbar-header > a
+	$(document).on('click', '.navbar-header>a', function(e) {
+		e.preventDefault();
+		var href  = $(this).attr('href');
+		if (localStorage.getItem('dashboard') !== undefined && localStorage.getItem('dashboard') !== null) {
+			var dashboard = localStorage.getItem('dashboard');
+			location.href = href.replace('sales_dashboard', dashboard);
+		} else {
+			localStorage.setItem('dashboard', 'sales_dashboard');
+			location.href = href;
+		}
+	});
+
+	// .dropdown-menu > li > a
+	$(document).on('click', '.dropdown-menu > li > a', function(e) {
+		if ($(this).attr('href').indexOf('sales_dashboard') !== -1) {
+			localStorage.setItem('dashboard', 'sales_dashboard');
+		} else if ($(this).attr('href').indexOf('orders_dashboard') !== -1) {
+			localStorage.setItem('dashboard', 'orders_dashboard');
+		}
+	});
+
 	// Tooltip remove fixed
 	$(document).on('click', '[data-toggle=\'tooltip\']', function(e) {
 		$('body > .tooltip').remove();

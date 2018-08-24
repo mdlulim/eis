@@ -2,22 +2,100 @@
 class ControllerSaleOrder extends Controller {
 	private $error = array();
 	public function index() {
+
+		/*==================================
+		=       Add Files (Includes)       =
+		==================================*/
+
+		# stylesheets (CSS) files
+		$this->document->addStyle('view/stylesheet/custom.css');
+		$this->document->addStyle('view/stylesheet/order.css');
+
+		# javascript (JS) files
+		$this->document->addScript('view/javascript/functions.js');
+		$this->document->addScript('view/javascript/order_list.js');
+
+		/*=====  End of Add Files (Includes)  ======*/
+
 		$this->load->language('sale/order');
 		$this->document->setTitle($this->language->get('heading_title'));
 		$this->load->model('sale/order');
 		$this->getList();
 	}
+
 	public function add() {
+
+		/*==================================
+		=       Add Files (Includes)       =
+		==================================*/
+
+		# stylesheets (CSS) files
+		$this->document->addStyle('view/javascript/bootstrap-sweetalert/sweetalert.css');
+		$this->document->addStyle('view/stylesheet/custom.css');
+		$this->document->addStyle('view/stylesheet/order.css');
+
+		# javascript (JS) files
+		$this->document->addScript('view/javascript/bootstrap-sweetalert/sweetalert.min.js');
+		$this->document->addScript('view/javascript/bootstrap-sweetalert/sweetalert-data.js');
+		$this->document->addScript('view/javascript/functions.js');
+		$this->document->addScript('view/javascript/order_add.js');
+
+		/*=====  End of Add Files (Includes)  ======*/
+
 		$this->load->language('sale/order');
 		$this->document->setTitle($this->language->get('heading_title'));
 		$this->load->model('sale/order');
-		$this->getForm();
+		$this->getForm('order_add');
 	}
-	public function edit() {
+
+	public function processing() {
+
+		/*==================================
+		=       Add Files (Includes)       =
+		==================================*/
+
+		# stylesheets (CSS) files
+		$this->document->addStyle('view/javascript/bootstrap-sweetalert/sweetalert.css');
+		$this->document->addStyle('view/stylesheet/custom.css');
+		$this->document->addStyle('view/stylesheet/order.css');
+
+		# javascript (JS) files
+		$this->document->addScript('view/javascript/bootstrap-sweetalert/sweetalert.min.js');
+		$this->document->addScript('view/javascript/bootstrap-sweetalert/sweetalert-data.js');
+		$this->document->addScript('view/javascript/functions.js');
+		$this->document->addScript('view/javascript/order_processing.js');
+
+		/*=====  End of Add Files (Includes)  ======*/
+
 		$this->load->language('sale/order');
 		$this->document->setTitle($this->language->get('heading_title'));
 		$this->load->model('sale/order');
-		$this->getForm();
+		$this->getForm('order_processing');
+	}
+
+	public function edit() {
+
+		/*==================================
+		=       Add Files (Includes)       =
+		==================================*/
+
+		# stylesheets (CSS) files
+		$this->document->addStyle('view/javascript/bootstrap-sweetalert/sweetalert.css');
+		$this->document->addStyle('view/stylesheet/custom.css');
+		$this->document->addStyle('view/stylesheet/order.css');
+
+		# javascript (JS) files
+		$this->document->addScript('view/javascript/bootstrap-sweetalert/sweetalert.min.js');
+		$this->document->addScript('view/javascript/bootstrap-sweetalert/sweetalert-data.js');
+		$this->document->addScript('view/javascript/functions.js');
+		$this->document->addScript('view/javascript/order_edit.js');
+
+		/*=====  End of Add Files (Includes)  ======*/
+
+		$this->load->language('sale/order');
+		$this->document->setTitle($this->language->get('heading_title'));
+		$this->load->model('sale/order');
+		$this->getForm('order_edit');
 	}
 	
 	public function delete() {
@@ -212,8 +290,8 @@ class ControllerSaleOrder extends Controller {
 			
 			$ord = $this->model_sale_order->getOrder($result['order_id']);
 			$cstdetails = $this->model_customer_customer->getCustomer($ord['customer_id']);
-			$salesrep = $this->model_replogic_sales_rep_management->getsalesrep($cstdetails['salesrep_id']);
-			$salesrepname = $salesrep['salesrep_name'].' '.$salesrep['salesrep_lastname'];
+			$salesrep = @$this->model_replogic_sales_rep_management->getsalesrep($cstdetails['salesrep_id']);
+			$salesrepname = @$salesrep['salesrep_name'].' '.@$salesrep['salesrep_lastname'];
 			
 			$time = strtotime($result['date_added']);
 			$date_added = date("d F, Y g:i A", $time);
@@ -239,15 +317,15 @@ class ControllerSaleOrder extends Controller {
 			);
 		}
 		
-		$data['customers'] = $this->model_customer_customer->getCustomers();
+		
 		
 		$this->load->model('replogic/sales_rep_management');
 		$this->load->model('replogic/customer_contact');
 		$this->load->model('user/user_group');
 		$this->load->model('user/user');
 		$current_user = $this->session->data['user_id'];
-		$current_user_group_id = $this->model_user_user->getUser($current_user); ;
-		$current_user_group = $this->model_user_user_group->getUserGroup($current_user_group_id['user_group_id']); ;
+		$current_user_group_id = $this->model_user_user->getUser($current_user);
+		$current_user_group = $this->model_user_user_group->getUserGroup($current_user_group_id['user_group_id']);
 		
 		if($current_user_group_id['user_group_id'] == '15' || $current_user_group_id['user_group_id'] == '19')
 		{
@@ -260,6 +338,9 @@ class ControllerSaleOrder extends Controller {
 			$current_user_id = $this->session->data['user_id'];
 			
 		}
+
+		$data['customers'] = $this->model_customer_customer->getCustomers($filter_data, false, $current_user_id);
+
 		$data['salesrepnames'] = $this->model_replogic_sales_rep_management->getSalesRepsDropdown($allaccess, $current_user_id);
 		$data['customercontacts'] = $this->model_replogic_customer_contact->getcustomercontacts();
 		
@@ -437,91 +518,100 @@ class ControllerSaleOrder extends Controller {
 		$data['order'] = $order;
 		$this->load->model('localisation/order_status');
 		$data['order_statuses'] = $this->model_localisation_order_status->getOrderStatuses();
+
+		$data['create_order_action'] = $this->url->link('sale/order/add', 'token=' . $this->session->data['token'], true);
 		
 		$data['header'] = $this->load->controller('common/header');
 		$data['column_left'] = $this->load->controller('common/column_left');
 		$data['footer'] = $this->load->controller('common/footer');
 		$this->response->setOutput($this->load->view('sale/order_list', $data));
 	}
-	public function getForm() {
-		$data['heading_title'] = $this->language->get('heading_title');
-		$data['text_form'] = !isset($this->request->get['order_id']) ? $this->language->get('text_add') : $this->language->get('text_edit');
-		$data['text_no_results'] = $this->language->get('text_no_results');
-		$data['text_default'] = $this->language->get('text_default');
-		$data['text_select'] = $this->language->get('text_select');
-		$data['text_none'] = $this->language->get('text_none');
-		$data['text_loading'] = $this->language->get('text_loading');
-		$data['text_ip_add'] = sprintf($this->language->get('text_ip_add'), $this->request->server['REMOTE_ADDR']);
-		$data['text_product'] = $this->language->get('text_product');
-		$data['text_voucher'] = $this->language->get('text_voucher');
-		$data['text_order_detail'] = $this->language->get('text_order_detail');
-		$data['entry_store'] = $this->language->get('entry_store');
-		$data['entry_customer'] = $this->language->get('entry_customer');
-		$data['entry_customer_group'] = $this->language->get('entry_customer_group');
-		$data['entry_firstname'] = $this->language->get('entry_firstname');
-		$data['entry_lastname'] = $this->language->get('entry_lastname');
-		$data['entry_email'] = $this->language->get('entry_email');
-		$data['entry_telephone'] = $this->language->get('entry_telephone');
-		$data['entry_fax'] = $this->language->get('entry_fax');
-		$data['entry_comment'] = $this->language->get('entry_comment');
-		$data['entry_affiliate'] = $this->language->get('entry_affiliate');
-		$data['entry_address'] = $this->language->get('entry_address');
-		$data['entry_company'] = $this->language->get('entry_company');
-		$data['entry_address_1'] = $this->language->get('entry_address_1');
-		$data['entry_address_2'] = $this->language->get('entry_address_2');
-		$data['entry_city'] = $this->language->get('entry_city');
-		$data['entry_postcode'] = $this->language->get('entry_postcode');
-		$data['entry_zone'] = $this->language->get('entry_zone');
-		$data['entry_zone_code'] = $this->language->get('entry_zone_code');
-		$data['entry_country'] = $this->language->get('entry_country');
-		$data['entry_product'] = $this->language->get('entry_product');
-		$data['entry_option'] = $this->language->get('entry_option');
-		$data['entry_quantity'] = $this->language->get('entry_quantity');
-		$data['entry_to_name'] = $this->language->get('entry_to_name');
-		$data['entry_to_email'] = $this->language->get('entry_to_email');
-		$data['entry_from_name'] = $this->language->get('entry_from_name');
-		$data['entry_from_email'] = $this->language->get('entry_from_email');
-		$data['entry_theme'] = $this->language->get('entry_theme');
-		$data['entry_message'] = $this->language->get('entry_message');
-		$data['entry_amount'] = $this->language->get('entry_amount');
-		$data['entry_currency'] = $this->language->get('entry_currency');
+
+	public function getForm($view_name='') {
+		$data['heading_title']         = $this->language->get('heading_title');
+		$data['text_form']             = !isset($this->request->get['order_id']) ? $this->language->get('text_add') : $this->language->get('text_edit');
+		$data['text_no_results']       = $this->language->get('text_no_results');
+		$data['text_default']          = $this->language->get('text_default');
+		$data['text_select']           = $this->language->get('text_select');
+		$data['text_none']             = $this->language->get('text_none');
+		$data['text_loading']          = $this->language->get('text_loading');
+		$data['text_ip_add']           = sprintf($this->language->get('text_ip_add'), $this->request->server['REMOTE_ADDR']);
+		$data['text_product']          = $this->language->get('text_product');
+		$data['text_voucher']          = $this->language->get('text_voucher');
+		$data['text_order_detail']     = $this->language->get('text_order_detail');
+		$data['entry_store']           = $this->language->get('entry_store');
+		$data['entry_customer']        = $this->language->get('entry_customer');
+		$data['entry_customer_group']  = $this->language->get('entry_customer_group');
+		$data['entry_firstname']       = $this->language->get('entry_firstname');
+		$data['entry_lastname']        = $this->language->get('entry_lastname');
+		$data['entry_email']           = $this->language->get('entry_email');
+		$data['entry_telephone']       = $this->language->get('entry_telephone');
+		$data['entry_fax']             = $this->language->get('entry_fax');
+		$data['entry_comment']         = $this->language->get('entry_comment');
+		$data['entry_affiliate']       = $this->language->get('entry_affiliate');
+		$data['entry_address']         = $this->language->get('entry_address');
+		$data['entry_company']         = $this->language->get('entry_company');
+		$data['entry_address_1']       = $this->language->get('entry_address_1');
+		$data['entry_address_2']       = $this->language->get('entry_address_2');
+		$data['entry_city']            = $this->language->get('entry_city');
+		$data['entry_postcode']        = $this->language->get('entry_postcode');
+		$data['entry_zone']            = $this->language->get('entry_zone');
+		$data['entry_zone_code']       = $this->language->get('entry_zone_code');
+		$data['entry_country']         = $this->language->get('entry_country');
+		$data['entry_product']         = $this->language->get('entry_product');
+		$data['entry_option']          = $this->language->get('entry_option');
+		$data['entry_quantity']        = $this->language->get('entry_quantity');
+		$data['entry_to_name']         = $this->language->get('entry_to_name');
+		$data['entry_to_email']        = $this->language->get('entry_to_email');
+		$data['entry_from_name']       = $this->language->get('entry_from_name');
+		$data['entry_from_email']      = $this->language->get('entry_from_email');
+		$data['entry_theme']           = $this->language->get('entry_theme');
+		$data['entry_message']         = $this->language->get('entry_message');
+		$data['entry_amount']          = $this->language->get('entry_amount');
+		$data['entry_currency']        = $this->language->get('entry_currency');
 		$data['entry_shipping_method'] = $this->language->get('entry_shipping_method');
-		$data['entry_payment_method'] = $this->language->get('entry_payment_method');
-		$data['entry_coupon'] = $this->language->get('entry_coupon');
-		$data['entry_voucher'] = $this->language->get('entry_voucher');
-		$data['entry_reward'] = $this->language->get('entry_reward');
-		$data['entry_order_status'] = $this->language->get('entry_order_status');
-		$data['column_product'] = $this->language->get('column_product');
-		$data['column_model'] = $this->language->get('column_model');
-		$data['column_quantity'] = $this->language->get('column_quantity');
-		$data['column_price'] = $this->language->get('column_price');
-		$data['column_total'] = $this->language->get('column_total');
-		$data['column_action'] = $this->language->get('column_action');
-		$data['button_save'] = $this->language->get('button_save');
-		$data['button_cancel'] = $this->language->get('button_cancel');
-		$data['button_continue'] = $this->language->get('button_continue');
-		$data['button_back'] = $this->language->get('button_back');
-		$data['button_refresh'] = $this->language->get('button_refresh');
-		$data['button_product_add'] = $this->language->get('button_product_add');
-		$data['button_voucher_add'] = $this->language->get('button_voucher_add');
-		$data['button_apply'] = $this->language->get('button_apply');
-		$data['button_upload'] = $this->language->get('button_upload');
-		$data['button_remove'] = $this->language->get('button_remove');
-		$data['button_ip_add'] = $this->language->get('button_ip_add');
-		$data['tab_order'] = $this->language->get('tab_order');
-		$data['tab_customer'] = $this->language->get('tab_customer');
-		$data['tab_payment'] = $this->language->get('tab_payment');
-		$data['tab_shipping'] = $this->language->get('tab_shipping');
-		$data['tab_product'] = $this->language->get('tab_product');
-		$data['tab_voucher'] = $this->language->get('tab_voucher');
-		$data['tab_total'] = $this->language->get('tab_total');
+		$data['entry_payment_method']  = $this->language->get('entry_payment_method');
+		$data['entry_coupon']          = $this->language->get('entry_coupon');
+		$data['entry_voucher']         = $this->language->get('entry_voucher');
+		$data['entry_reward']          = $this->language->get('entry_reward');
+		$data['entry_order_status']    = $this->language->get('entry_order_status');
+		$data['column_image']          = $this->language->get('column_image');
+		$data['column_product']        = $this->language->get('column_product');
+		$data['column_model']          = $this->language->get('column_model');
+		$data['column_quantity']       = $this->language->get('column_quantity');
+		$data['column_price']          = $this->language->get('column_price');
+		$data['column_total']          = $this->language->get('column_total');
+		$data['column_action']         = $this->language->get('column_action');
+		$data['button_save']           = $this->language->get('button_save');
+		$data['button_cancel']         = $this->language->get('button_cancel');
+		$data['button_continue']       = $this->language->get('button_continue');
+		$data['button_back']           = $this->language->get('button_back');
+		$data['button_refresh']        = $this->language->get('button_refresh');
+		$data['button_product_add']    = $this->language->get('button_product_add');
+		$data['button_voucher_add']    = $this->language->get('button_voucher_add');
+		$data['button_apply']          = $this->language->get('button_apply');
+		$data['button_upload']         = $this->language->get('button_upload');
+		$data['button_remove']         = $this->language->get('button_remove');
+		$data['button_ip_add']         = $this->language->get('button_ip_add');
+		$data['tab_order']             = $this->language->get('tab_order');
+		$data['tab_customer']          = $this->language->get('tab_customer');
+		$data['tab_payment']           = $this->language->get('tab_payment');
+		$data['tab_shipping']          = $this->language->get('tab_shipping');
+		$data['tab_product']           = $this->language->get('tab_product');
+		$data['tab_voucher']           = $this->language->get('tab_voucher');
+		$data['tab_total']             = $this->language->get('tab_total');
+
+		// order statuses
 		$orderStatuses = array(
 			'pending'    => $this->language->get('order_status_pending_id'),
 			'processing' => $this->language->get('order_status_processing_id'),
 			'confirmed'  => $this->language->get('order_status_confirmed_id'),
 			'cancelled'  => $this->language->get('order_status_cancelled_id')
 		);
+		$data['order_statuses'] = $orderStatuses;
+
 		$url = '';
+
 		if (isset($this->request->get['filter_order_id'])) {
 			$url .= '&filter_order_id=' . $this->request->get['filter_order_id'];
 		}
@@ -561,6 +651,7 @@ class ControllerSaleOrder extends Controller {
 		if (isset($this->request->get['page'])) {
 			$url .= '&page=' . $this->request->get['page'];
 		}
+		
 		$data['breadcrumbs'] = array();
 		$data['breadcrumbs'][] = array(
 			'text' => $this->language->get('text_home'),
@@ -570,20 +661,14 @@ class ControllerSaleOrder extends Controller {
 			'text' => $this->language->get('heading_title'),
 			'href' => $this->url->link('sale/order', 'token=' . $this->session->data['token'] . $url, true)
 		);
-		if(isset($this->request->get['type']))
-		{
-			if(isset($this->request->get['csalesrep_id']))
-			{
+
+		if (isset($this->request->get['type'])) {
+			if (isset($this->request->get['csalesrep_id'])) {
 				$data['cancel'] = $this->url->link('replogic/salesrep_info', 'token=' . $this->session->data['token'] . '&type=orders&salesrep_id='.$this->request->get['csalesrep_id'] .  $url, true);
-			}
-			else
-			{
+			} else {
 				$data['cancel'] = $this->url->link('customer/customer_info', 'token=' . $this->session->data['token'] . '&type=orders&customer_id='.$this->request->get['customer_id'] .  $url, true);
 			}
-			
-		}
-		else
-		{
+		} else {
 			$data['cancel'] = $this->url->link('sale/order', 'token=' . $this->session->data['token'] . $url, true);
 		}
 		
@@ -598,25 +683,26 @@ class ControllerSaleOrder extends Controller {
 				$order_info = $this->model_sale_order->getOrder($this->request->get['order_id']);
 			}
 		}
+
 		if (!empty($order_info)) {
-			$data['order_id'] = $this->request->get['order_id'];
-			$data['store_id'] = $order_info['store_id'];
-			$data['store_url'] = $this->request->server['HTTPS'] ? HTTPS_CATALOG : HTTP_CATALOG;
-			$data['customer'] = $order_info['customer'];
-			$data['customer_id'] = $order_info['customer_id'];
-			$data['customer_group_id'] = $order_info['customer_group_id'];
-			$data['firstname'] = $order_info['firstname'];
-			$data['lastname'] = $order_info['lastname'];
-			$data['email'] = $order_info['email'];
-			$data['telephone'] = $order_info['telephone'];
-			$data['fax'] = $order_info['fax'];
+			$data['order_id']             = $this->request->get['order_id'];
+			$data['store_id']             = $order_info['store_id'];
+			$data['store_url']            = $this->request->server['HTTPS'] ? HTTPS_CATALOG : HTTP_CATALOG;
+			$data['customer']             = $order_info['customer'];
+			$data['customer_id']          = $order_info['customer_id'];
+			$data['customer_group_id']    = $order_info['customer_group_id'];
+			$data['firstname']            = $order_info['firstname'];
+			$data['lastname']             = $order_info['lastname'];
+			$data['email']                = $order_info['email'];
+			$data['telephone']            = $order_info['telephone'];
+			$data['fax']                  = $order_info['fax'];
 			$data['account_custom_field'] = $order_info['custom_field'];
+
 			$this->load->model('customer/customer');
-			
-			
 			$this->load->model('customer/customer_group');
 			$this->load->model('replogic/sales_rep_management');
 			$this->load->model('replogic/customer_contact');
+
 			$customer_group_info = $this->model_customer_customer_group->getCustomerGroup($order_info['customer_group_id']);
 			if ($customer_group_info) {
 				$data['customer_group'] = $customer_group_info['name'];
@@ -626,102 +712,97 @@ class ControllerSaleOrder extends Controller {
 			
 			$data['customer_group_id'] = $order_info['customer_group_id'];
 			
-			if($order_info['customer_id'] > 0)
-			{
-				$cust = $this->model_customer_customer->getCustomer($order_info['customer_id']);
+			if ($order_info['customer_id'] > 0) {
+				$cust                = $this->model_customer_customer->getCustomer($order_info['customer_id']);
 				$data['shipaddress'] = $this->model_customer_customer->getAddress($cust['address_id']);
-				$data['addresses'] = $this->model_customer_customer->getAddresses($order_info['customer_id']);
-				$data['address_id'] = $cust['address_id'];
+				$data['addresses']   = $this->model_customer_customer->getAddresses($order_info['customer_id']);
+				$data['address_id']  = $cust['address_id'];
 			
-				$quote_info = $this->model_sale_order->getQuotesByOrderId($order_info['order_id']);
+				$quote_info          = $this->model_sale_order->getQuotesByOrderId($order_info['order_id']);
 			
 				$this->load->model('replogic/customer_contact');
-				$cust_con = $this->model_replogic_customer_contact->getcustomercontact($quote_info['customer_contact_id']);
+				$cust_con            = $this->model_replogic_customer_contact->getcustomercontact($quote_info['customer_contact_id']);
 				$data['ccfirstname'] = $cust_con['first_name'];
-				$data['cclastname'] = $cust_con['last_name'];
-				$data['ccemail'] = $cust_con['email'];
+				$data['cclastname']  = $cust_con['last_name'];
+				$data['ccemail']     = $cust_con['email'];
 				$data['cctelephone'] = $cust_con['telephone_number'];
-				$data['quote_id'] = $quote_info['quote_id'];
+				$data['quote_id']    = $quote_info['quote_id'];
 				
 				$this->load->model('replogic/sales_rep_management');
-				$salesrep = $this->model_replogic_sales_rep_management->getsalesrep($quote_info['salesrep_id']);
+				$salesrep            = $this->model_replogic_sales_rep_management->getsalesrep($quote_info['salesrep_id']);
 				
 				$data['ssfirstname'] = $salesrep['salesrep_name'];
-				$data['sslastname'] = $salesrep['salesrep_lastname'];
-				
+				$data['sslastname']  = $salesrep['salesrep_lastname'];
+
 				$data['Qdate_added'] = date('d M, Y', strtotime($quote_info['date_added']));
-			}
-			else
-			{
-				$arr = array('firstname'=>$order_info['firstname'],'lastname'=>$order_info['lastname'],'company'=>$order_info['shipping_company'],'address_1'=>$order_info['shipping_address_1'],'address_2'=>$order_info['shipping_address_2'],'city'=>$order_info['shipping_city'],'postcode'=>$order_info['shipping_postcode'],'zone'=>$order_info['shipping_zone'],'country'=>$order_info['shipping_country'],'country_id'=>$order_info['shipping_country_id'],'zone_id'=>$order_info['shipping_zone_id']);
+			} else {
+				$arr                 = array('firstname'=>$order_info['firstname'],'lastname'=>$order_info['lastname'],'company'=>$order_info['shipping_company'],'address_1'=>$order_info['shipping_address_1'],'address_2'=>$order_info['shipping_address_2'],'city'=>$order_info['shipping_city'],'postcode'=>$order_info['shipping_postcode'],'zone'=>$order_info['shipping_zone'],'country'=>$order_info['shipping_country'],'country_id'=>$order_info['shipping_country_id'],'zone_id'=>$order_info['shipping_zone_id']);
 				$data['shipaddress'] = $arr;
 				
-				$ads[] = array('address_1'=>$order_info['shipping_address_1'],'address_2'=>$order_info['shipping_address_2'],'city'=>$order_info['shipping_city'],'postcode'=>$order_info['shipping_postcode'],'zone'=>$order_info['shipping_zone'],'country'=>$order_info['shipping_country'],'country_id'=>$order_info['shipping_country_id'],'zone_id'=>$order_info['shipping_zone_id']);
-				$data['addresses'] = $ads;
+				$ads[]               = array('address_1'=>$order_info['shipping_address_1'],'address_2'=>$order_info['shipping_address_2'],'city'=>$order_info['shipping_city'],'postcode'=>$order_info['shipping_postcode'],'zone'=>$order_info['shipping_zone'],'country'=>$order_info['shipping_country'],'country_id'=>$order_info['shipping_country_id'],'zone_id'=>$order_info['shipping_zone_id']);
+				$data['addresses']   = $ads;
 				
-				$data['address_id'] = '';
+				$data['address_id']  = '';
 				$data['ccfirstname'] = '';
-				$data['cclastname'] = '';
-				$data['ccemail'] = '';
+				$data['cclastname']  = '';
+				$data['ccemail']     = '';
 				$data['cctelephone'] = '';
-				$data['quote_id'] = '';
+				$data['quote_id']    = '';
 				
 				$data['ssfirstname'] = '';
-				$data['sslastname'] = '';
+				$data['sslastname']  = '';
 				
 				$data['Qdate_added'] = '';
 			}
 			
 			$data['isReplogic'] = $order_info['isReplogic'];
 			
-			if($order_info['isReplogic'])
-			{
+			if ($order_info['isReplogic']) {
 				$data['channelname'] = 'Saleslogic Rep';
-			}
-			else
-			{
+			} else {
 				$data['channelname'] = $order_info['store_name'];
 			}
 		
-			$data['customer_contact_id'] = $quote_info['customer_contact_id'];
-			$cust_con = $this->model_replogic_customer_contact->getcustomercontact($quote_info['customer_contact_id']);
+			$data['customer_contact_id']  = $quote_info['customer_contact_id'];
+			$cust_con                     = $this->model_replogic_customer_contact->getcustomercontact($quote_info['customer_contact_id']);
 			
-			$data['ccfirstname'] = $cust_con['first_name'];
-			$data['cclastname'] = $cust_con['last_name'];
-			$data['ccemail'] = $cust_con['email'];
-			$data['cctelephone'] = $cust_con['telephone_number'];
+			$data['ccfirstname']          = $cust_con['first_name'];
+			$data['cclastname']           = $cust_con['last_name'];
+			$data['ccemail']              = $cust_con['email'];
+			$data['cctelephone']          = $cust_con['telephone_number'];
 			
-			$data['Odate_added'] = date('d M, Y', strtotime($order_info['date_added']));
-			$data['payment_firstname'] = $order_info['payment_firstname'];
-			$data['payment_lastname'] = $order_info['payment_lastname'];
-			$data['payment_company'] = $order_info['payment_company'];
-			$data['payment_address_1'] = $order_info['payment_address_1'];
-			$data['payment_address_2'] = $order_info['payment_address_2'];
-			$data['payment_city'] = $order_info['payment_city'];
-			$data['payment_postcode'] = $order_info['payment_postcode'];
-			$data['payment_country_id'] = $order_info['payment_country_id'];
-			$data['payment_zone_id'] = $order_info['payment_zone_id'];
+			$data['Odate_added']          = date('d M, Y', strtotime($order_info['date_added']));
+			$data['payment_firstname']    = $order_info['payment_firstname'];
+			$data['payment_lastname']     = $order_info['payment_lastname'];
+			$data['payment_company']      = $order_info['payment_company'];
+			$data['payment_address_1']    = $order_info['payment_address_1'];
+			$data['payment_address_2']    = $order_info['payment_address_2'];
+			$data['payment_city']         = $order_info['payment_city'];
+			$data['payment_postcode']     = $order_info['payment_postcode'];
+			$data['payment_country_id']   = $order_info['payment_country_id'];
+			$data['payment_zone_id']      = $order_info['payment_zone_id'];
 			$data['payment_custom_field'] = $order_info['payment_custom_field'];
-			$data['payment_method'] = $order_info['payment_method'];
-			$data['payment_code'] = $order_info['payment_code'];
-			$data['shipping_firstname'] = $order_info['shipping_firstname'];
-			$data['shipping_lastname'] = $order_info['shipping_lastname'];
-			$data['shipping_company'] = $order_info['shipping_company'];
-			$data['shipping_address_1'] = $order_info['shipping_address_1'];
-			$data['shipping_address_2'] = $order_info['shipping_address_2'];
-			$data['shipping_city'] = $order_info['shipping_city'];
-			$data['shipping_postcode'] = $order_info['shipping_postcode'];
-			$data['shipping_country_id'] = $order_info['shipping_country_id'];
-			$data['shipping_zone_id'] = $order_info['shipping_zone_id'];
-			$data['shipping_custom_field'] = $order_info['shipping_custom_field'];
-			$data['shipping_method'] = $order_info['shipping_method'];
-			$data['shipping_code'] = $order_info['shipping_code'];
+			$data['payment_method']       = $order_info['payment_method'];
+			$data['payment_code']         = $order_info['payment_code'];
+			$data['shipping_firstname']   = $order_info['shipping_firstname'];
+			$data['shipping_lastname']    = $order_info['shipping_lastname'];
+			$data['shipping_company']     = $order_info['shipping_company'];
+			$data['shipping_address_1']   = $order_info['shipping_address_1'];
+			$data['shipping_address_2']   = $order_info['shipping_address_2'];
+			$data['shipping_city']        = $order_info['shipping_city'];
+			$data['shipping_postcode']    = $order_info['shipping_postcode'];
+			$data['shipping_country_id']  = $order_info['shipping_country_id'];
+			$data['shipping_zone_id']     = $order_info['shipping_zone_id'];
+			$data['shipping_custom_field']= $order_info['shipping_custom_field'];
+			$data['shipping_method']      = $order_info['shipping_method'];
+			$data['shipping_code']        = $order_info['shipping_code'];
+
 			// Products
 			$data['order_products'] = array();
 			$this->load->model('tool/image');
 			$products = $this->model_sale_order->getOrderProducts($this->request->get['order_id']);
+
 			foreach ($products as $product) {
-				
 				if (is_file(DIR_IMAGE . $product['image'])) {
 					$image = $this->model_tool_image->resize($product['image'], 40, 40);
 				} else {
@@ -756,13 +837,13 @@ class ControllerSaleOrder extends Controller {
 				}
 			}
 			$data['order_status_id'] = $order_info['order_status_id'];
-			$data['comment'] = $order_info['comment'];
-			$data['affiliate_id'] = $order_info['affiliate_id'];
-			$data['affiliate'] = $order_info['affiliate_firstname'] . ' ' . $order_info['affiliate_lastname'];
-			$data['currency_code'] = $order_info['currency_code'];
+			$data['comment']         = $order_info['comment'];
+			$data['affiliate_id']    = $order_info['affiliate_id'];
+			$data['affiliate']       = $order_info['affiliate_firstname'] . ' ' . $order_info['affiliate_lastname'];
+			$data['currency_code']   = $order_info['currency_code'];
 			
 			$data['totals'] = array();
-			$totals = $this->model_sale_order->getOrderTotals($order_info['order_id']);
+			$totals         = $this->model_sale_order->getOrderTotals($order_info['order_id']);
 			foreach ($totals as $total) {
 				$data['totals'][] = array(
 					'title' => $total['title'],
@@ -773,7 +854,7 @@ class ControllerSaleOrder extends Controller {
 			
 		} else {
 			$data['order_id'] = 0;
-			$data['store_id'] = 0;
+			$data['store_id'] = $this->config->get('config_store_id');
 			$data['store_url'] = $this->request->server['HTTPS'] ? HTTPS_CATALOG : HTTP_CATALOG;
 			
 			$data['customer'] = '';
@@ -821,6 +902,7 @@ class ControllerSaleOrder extends Controller {
 			$data['coupon'] = '';
 			$data['voucher'] = '';
 			$data['reward'] = '';
+			$data['order_status_id'] = $this->language->get('order_status_confirmed_id');
 		}
 		// Stores
 		$this->load->model('setting/store');
@@ -836,9 +918,49 @@ class ControllerSaleOrder extends Controller {
 				'name'     => $result['name']
 			);
 		}
+
+		// customer details
+		$this->load->model('customer/customer');
+		if (!empty($this->request->get['customer'])) {
+			$data['customer']  = $this->model_customer_customer->getCustomer($this->request->get['customer']);
+			$data['addresses'] = $this->model_customer_customer->getAddresses($this->request->get['customer']);
+			$url              .= '&customer=' . $this->request->get['customer'];
+		} else {
+			$data['customer']  = $this->model_customer_customer->getCustomer($data['customer_id']);
+			$data['addresses'] = $this->model_customer_customer->getAddresses($data['customer_id']);
+		}
+		
 		// Customer Groups
 		$this->load->model('customer/customer_group');
-		$data['customer_groups'] = $this->model_customer_customer_group->getCustomerGroups();
+		$customer_group = $this->model_customer_customer_group->getCustomerGroup($data['customer']['customer_group_id']);
+		if (!empty($customer_group)) {
+			$data['customer_group'] = $customer_group['name'];
+		} else {
+			$data['customer_group'] = '';
+		}
+
+		// get current user
+		$this->load->model('user/user');
+		$data['user'] = $this->model_user_user->getUser($this->session->data['user_id']);
+
+		// customer address
+		$data['customer_address'] = $this->model_customer_customer->getAddress($data['customer']['address_id']);
+
+		// customer contact
+		$this->load->model('replogic/customer_contact');
+		if (!empty($this->request->get['customer_contact'])) {
+			$data['contact'] = $this->model_replogic_customer_contact->getcustomercontact($this->request->get['customer_contact']);
+			$url            .= '&customer_contact=' . $this->request->get['customer_contact'];
+		} elseif (!empty($order_info['isReplogic']) && $order_info['isReplogic'] == 1) {
+			$data['contact'] = $this->model_replogic_customer_contact->getcustomercontact($quote_info['customer_contact_id']);
+		} else {
+			$data['contact']['customer_con_id']  = 0;
+			$data['contact']['first_name']       = $data['customer']['firstname'];
+			$data['contact']['last_name']        = '';
+			$data['contact']['email']            = $data['customer']['email'];
+			$data['contact']['telephone_number'] = $data['customer']['telephone'];
+		}
+
 		// Custom Fields
 		$this->load->model('customer/custom_field');
 		$data['custom_fields'] = array();
@@ -858,22 +980,56 @@ class ControllerSaleOrder extends Controller {
 				'sort_order'         => $custom_field['sort_order']
 			);
 		}
-		$this->load->model('localisation/order_status');
-		$data['order_statuses'] = $this->model_localisation_order_status->getOrderStatuses();
+
+		// get products
+		$data['products'] = array();
+		$this->load->model('catalog/product');
+		$this->load->model('tool/image');
+		$products = $this->model_catalog_product->getProducts();
+		foreach ($products as $product) {
+			if (is_file(DIR_IMAGE . $product['image'])) {
+				$image = $this->model_tool_image->resize($product['image'], 40, 40);
+			} else {
+				$image = $this->model_tool_image->resize('tsc_image.png', 40, 40);
+			}
+			
+			$data['products'][] = array(
+				'product_id' => $product['product_id'],
+				'name'       => $product['name'],
+				'image'      => $image,
+				'model'      => $product['model'],
+				'quantity'   => $product['quantity'],
+				'price'      => $product['price'],
+				'total'      => $product['total'],
+				'reward'     => $product['reward']
+			);
+		}
+
+		// comment
+		if (empty($data['comment'])) {
+			$data['comment'] = (!empty($this->request->get['comment'])) ? $this->request->get['comment'] : '';
+		}
+
+		// get countries
 		$this->load->model('localisation/country');
 		$data['countries'] = $this->model_localisation_country->getCountries();
-		$this->load->model('localisation/currency');
-		$data['currencies'] = $this->model_localisation_currency->getCurrencies();
+
+		// get zones
+		$this->load->model('localisation/zone');
+		$data['zones'] = $this->model_localisation_zone->getZonesByCountryId($data['customer_address']['country_id']);
+
 		$data['voucher_min'] = $this->config->get('config_voucher_min');
+
 		$this->load->model('sale/voucher_theme');
 		$data['voucher_themes'] = $this->model_sale_voucher_theme->getVoucherThemes();
+
 		// API login
 		$data['catalog'] = $this->request->server['HTTPS'] ? HTTPS_CATALOG : HTTP_CATALOG;
 		
 		$this->load->model('user/api');
 		$api_info = $this->model_user_api->getApi($this->config->get('config_api_id'));
+
 		if ($api_info) {
-			
 			$data['api_id'] = $api_info['api_id'];
 			$data['api_key'] = $api_info['key'];
 			$data['api_ip'] = $this->request->server['REMOTE_ADDR'];
@@ -882,15 +1038,51 @@ class ControllerSaleOrder extends Controller {
 			$data['api_key'] = '';
 			$data['api_ip'] = '';
 		}
-		$data['header'] = $this->load->controller('common/header');
-		$data['column_left'] = $this->load->controller('common/column_left');
-		$data['footer'] = $this->load->controller('common/footer');
-		if (!empty($order_info)) {
-			$this->response->setOutput($this->load->view('sale/order_form_new', $data));
+
+		$data['process_order_url'] = $this->url->link('sale/order/processing', 'token=' . $this->session->data['token'] . $url, true);
+		$data['add_order_url'] = $this->url->link('sale/order/add', 'token=' . $this->session->data['token'] . $url, true);
+		$data['cancel_url'] = $this->url->link('sale/order', 'token=' . $this->session->data['token'] . $url, true);
+		$data['back_url'] = $this->url->link('sale/order/info', 'token=' . $this->session->data['token'] . '&order_id=' . $data['order_id'] . $url, true);
+
+		// get order date
+		if (!empty($order_info['date_added'])) {
+			$data['order_date'] = date('d F, Y', strtotime($order_info['date_added']));
 		} else {
-			$this->response->setOutput($this->load->view('sale/order_form', $data));
+			$data['order_date'] = date('d F, Y');
+		}
+
+		// out($data);die;
+
+		// get currency
+		$this->load->model('localisation/currency');
+		$data['currency']    = $this->model_localisation_currency->getCurrencyByCode($data['currency_code']);
+
+		$data['header']      = $this->load->controller('common/header');
+		$data['column_left'] = $this->load->controller('common/column_left');
+		$data['footer']      = $this->load->controller('common/footer');
+		if (!empty($order_info)) {
+			switch ($view_name) {
+				case 'order_edit':
+					$this->response->setOutput($this->load->view('sale/order_edit', $data));
+					break;
+
+				default:
+					$this->response->setOutput($this->load->view('sale/order_form_new', $data));
+					break;
+			}
+		} else {
+			switch ($view_name) {
+				case 'order_processing':
+					$this->response->setOutput($this->load->view('sale/order_processing', $data));
+					break;
+
+				default:
+					$this->response->setOutput($this->load->view('sale/order_add', $data));
+					break;
+			}
 		}
 	}
+
 	public function info() {
 		$this->load->model('sale/order');
 		if (isset($this->request->get['order_id'])) {
@@ -1209,6 +1401,8 @@ class ControllerSaleOrder extends Controller {
 				$data['order_status'] = '';
 			}
 			$data['order_statuses'] = $this->model_localisation_order_status->getOrderStatuses();
+			$data['order_status_pending_id'] = $this->language->get('order_status_pending_id');
+			$data['order_status_processing_id'] = $this->language->get('order_status_processing_id');
 			
 			if($order_info['customer_id'] > 0)
 			{
@@ -1218,20 +1412,20 @@ class ControllerSaleOrder extends Controller {
 				$quote_info = $this->model_sale_order->getQuotesByOrderId($order_info['order_id']);
 			
 				$this->load->model('replogic/customer_contact');
-				$cust_con = $this->model_replogic_customer_contact->getcustomercontact($quote_info['customer_contact_id']);
-				$data['ccfirstname'] = $cust_con['first_name'];
-				$data['cclastname'] = $cust_con['last_name'];
-				$data['ccemail'] = $cust_con['email'];
-				$data['cctelephone'] = $cust_con['telephone_number'];
-				$data['quote_id'] = $quote_info['quote_id'];
+				$cust_con = $this->model_replogic_customer_contact->getcustomercontact(@$quote_info['customer_contact_id']);
+				$data['ccfirstname'] = @$cust_con['first_name'];
+				$data['cclastname'] = @$cust_con['last_name'];
+				$data['ccemail'] = @$cust_con['email'];
+				$data['cctelephone'] = @$cust_con['telephone_number'];
+				$data['quote_id'] = @$quote_info['quote_id'];
 				
 				$this->load->model('replogic/sales_rep_management');
-				$salesrep = $this->model_replogic_sales_rep_management->getsalesrep($quote_info['salesrep_id']);
+				$salesrep = $this->model_replogic_sales_rep_management->getsalesrep(@$quote_info['salesrep_id']);
 				
-				$data['ssfirstname'] = $salesrep['salesrep_name'];
-				$data['sslastname'] = $salesrep['salesrep_lastname'];
+				$data['ssfirstname'] = @$salesrep['salesrep_name'];
+				$data['sslastname'] = @$salesrep['salesrep_lastname'];
 				
-				$data['Qdate_added'] = date('d M, Y', strtotime($quote_info['date_added']));
+				$data['Qdate_added'] = date('d M, Y', strtotime(@$quote_info['date_added']));
 			}
 			else
 			{
@@ -1489,6 +1683,7 @@ class ControllerSaleOrder extends Controller {
 		$this->response->addHeader('Content-Type: application/json');
 		$this->response->setOutput(json_encode($json));
 	}
+
 	public function addReward() {
 		$this->load->language('sale/order');
 		$json = array();
@@ -1514,6 +1709,7 @@ class ControllerSaleOrder extends Controller {
 		$this->response->addHeader('Content-Type: application/json');
 		$this->response->setOutput(json_encode($json));
 	}
+
 	public function removeReward() {
 		$this->load->language('sale/order');
 		$json = array();
@@ -1536,6 +1732,7 @@ class ControllerSaleOrder extends Controller {
 		$this->response->addHeader('Content-Type: application/json');
 		$this->response->setOutput(json_encode($json));
 	}
+
 	public function addCommission() {
 		$this->load->language('sale/order');
 		$json = array();
@@ -1561,6 +1758,7 @@ class ControllerSaleOrder extends Controller {
 		$this->response->addHeader('Content-Type: application/json');
 		$this->response->setOutput(json_encode($json));
 	}
+
 	public function removeCommission() {
 		$this->load->language('sale/order');
 		$json = array();
@@ -1583,6 +1781,7 @@ class ControllerSaleOrder extends Controller {
 		$this->response->addHeader('Content-Type: application/json');
 		$this->response->setOutput(json_encode($json));
 	}
+
 	public function history() {
 		$this->load->language('sale/order');
 		$data['text_no_results'] = $this->language->get('text_no_results');
@@ -1616,6 +1815,7 @@ class ControllerSaleOrder extends Controller {
 		$data['results'] = sprintf($this->language->get('text_pagination'), ($history_total) ? (($page - 1) * 10) + 1 : 0, ((($page - 1) * 10) > ($history_total - 10)) ? $history_total : ((($page - 1) * 10) + 10), $history_total, ceil($history_total / 10));
 		$this->response->setOutput($this->load->view('sale/order_history', $data));
 	}
+
 	public function invoice() {
 		$this->load->language('sale/order');
 		$data['title'] = $this->language->get('text_invoice');
@@ -1808,6 +2008,7 @@ class ControllerSaleOrder extends Controller {
 		}
 		$this->response->setOutput($this->load->view('sale/order_invoice', $data));
 	}
+
 	public function shipping() {
 		$this->load->language('sale/order');
 		$data['title'] = $this->language->get('text_shipping');
@@ -1976,5 +2177,27 @@ class ControllerSaleOrder extends Controller {
 			}
 		}
 		$this->response->setOutput($this->load->view('sale/order_shipping', $data));
+	}
+
+	public function cancel() {
+		$this->load->language('sale/order');
+		$json = array();
+		if (!$this->user->hasPermission('modify', 'sale/order')) {
+			$json['error'] = $this->language->get('error_permission');
+		} else {
+			$json['error'] = $this->language->get('error_generic');
+			if (isset($this->request->get['order_id'])) {
+				$this->load->model('sale/order');
+				$order = $this->model_sale_order->getOrder($this->request->get['order_id']);
+				if (!empty($order)) {
+					$this->model_sale_order->updateOrderStatus($order['order_id'], $this->language->get('order_status_cancelled_id'));
+					$json['success'] = $this->language->get('text_cancel_success');
+				} else {
+					$json['error']   = $this->language->get('error_order_not_found');
+				}
+			}
+		}
+		$this->response->addHeader('Content-Type: application/json');
+		$this->response->setOutput(json_encode($json));
 	}
 }

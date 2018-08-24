@@ -43,18 +43,7 @@
               <div class="form-group">
                 <label class="control-label" for="input-customer"><?php echo $entry_customer; ?></label>
                 <input type="text" name="filter_customer" value="<?php echo $filter_customer; ?>" placeholder="<?php echo $entry_customer; ?>" id="input-customer" class="form-control" />
-             <input type="hidden" name="filter_customer_id" value="<?php echo $filter_customer_id; ?>" id="customer_id">
-                   <!--<select name="filter_customer_id" class="form-control">
-                  <option value="">Select Customer Name</option>
-                    <?php foreach ($customers as $customer) {  ?>
-                <?php if ($customer['customer_id'] == $filter_customer_id) { ?>
-                <option value="<?php echo $customer['customer_id']; ?>" selected="selected"><?php echo $customer['firstname']; ?></option>
-                <?php } else { ?>
-                <option value="<?php echo $customer['customer_id']; ?>"><?php echo $customer['firstname']; ?></option>
-                <?php } ?>
-                <?php } ?>
-                    
-                </select>-->          
+             <input type="hidden" name="filter_customer_id" value="<?php echo $filter_customer_id; ?>" id="customer_id">       
               </div>
             </div>
             <div class="col-sm-4">
@@ -75,61 +64,13 @@
                       <?php endif; ?>
                     <?php endforeach; ?>
                   <?php endif; ?>
-
-
-                  <!-- <?php if ($filter_order_status == '0') { ?>
-                  <option value="0" selected="selected">Awaiting Approval</option>
-                  <?php } else { ?>
-                  <option value="0">Awaiting Approval</option>
-                  <?php } ?>
-                  
-                  <?php if ($filter_order_status == '1') { ?>
-                  <option value="1" selected="selected">Approved</option>
-                  <?php } else { ?>
-                  <option value="1">Approved</option>
-                  <?php } ?>
-                  
-                  <?php if ($filter_order_status == '3') { ?>
-                  <option value="3" selected="selected">Processing</option>
-                  <?php } else { ?>
-                  <option value="3">Processing</option>
-                  <?php } ?>
-                  
-                  <?php if ($filter_order_status == '2') { ?>
-                  <option value="2" selected="selected">Declined</option>
-                  <?php } else { ?>
-                  <option value="2">Declined</option>
-                  <?php } ?> -->
                   
                 </select>
               </div>
-              <!--<div class="form-group">
-                <label class="control-label" for="input-total"><?php echo $entry_total; ?></label>
-                <input type="text" name="filter_total" value="<?php echo $filter_total; ?>" placeholder="<?php echo $entry_total; ?>" id="input-total" class="form-control" />
-              </div>-->
-              <!--<div class="form-group">
-                <label class="control-label" for="input-date-modified"><?php echo $entry_date_modified; ?></label>
-                <div class="input-group date">
-                  <input type="text" name="filter_date_modified" value="<?php echo $filter_date_modified; ?>" placeholder="<?php echo $entry_date_modified; ?>" data-date-format="YYYY-MM-DD" id="input-date-modified" class="form-control" />
-                  <span class="input-group-btn">
-                  <button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
-                  </span></div>
-              </div>-->
               <div class="form-group">
                 <label class="control-label" for="input-customer">Customer Contact Name</label>
-                <input type="text" name="filter_customercontact" value="<?php echo $filter_customercontact; ?>" placeholder="Customer Contact" id="input-customer-contact" class="form-control" />
-             <input type="hidden" name="filter_customer_contact_id" value="<?php echo $filter_customer_contact_id; ?>" id="customer_contact_id">
-                   <!--<select name="filter_customer_contact_id" class="form-control">
-                  <option value="">Select Customer Contact Name</option>
-                    <?php foreach ($allcustomer_contacts as $allcustomer_contact) {  ?>
-                <?php if ($allcustomer_contact['customer_con_id'] == $filter_customer_contact_id) { ?>
-                <option value="<?php echo $allcustomer_contact['customer_con_id']; ?>" selected="selected"><?php echo $allcustomer_contact['first_name']; ?> <?php echo $allcustomer_contact['last_name']; ?></option>
-                <?php } else { ?>
-                <option value="<?php echo $allcustomer_contact['customer_con_id']; ?>"><?php echo $allcustomer_contact['first_name']; ?> <?php echo $allcustomer_contact['last_name']; ?></option>
-                <?php } ?>
-                <?php } ?>
-                    
-                </select> -->        
+                <input type="text" name="filter_customercontact" value="<?php echo @$filter_customercontact; ?>" placeholder="Customer Contact" id="input-customer-contact" class="form-control" />
+             <input type="hidden" name="filter_customer_contact_id" value="<?php echo $filter_customer_contact_id; ?>" id="customer_contact_id">     
               </div>
             </div>
             <div class="col-sm-4">
@@ -143,19 +84,8 @@
               </div>
               <div class="form-group">
                 <label class="control-label" for="input-customer">Sales Rep Name</label>
-                   <input type="text" name="filter_salesrep" value="<?php echo $filter_salesrep; ?>" placeholder="Sales Rep Name" id="input-salesrep" class="form-control" />
-                   <input type="hidden" name="filter_salesrepid" value="<?php echo $filter_salesrepid; ?>" />
-                   <!--<select name="filter_salesrepid" class="form-control">
-                  <option value="">Select Sales Rep Name</option>
-                    <?php foreach ($salesrepnames as $salesrepname) {  ?>
-                <?php if ($salesrepname['salesrep_id'] == $filter_salesrepid) { ?>
-                <option value="<?php echo $salesrepname['salesrep_id']; ?>" selected="selected"><?php echo $salesrepname['salesrep_name']; ?> <?php echo $salesrepname['salesrep_lastname']; ?></option>
-                <?php } else { ?>
-                <option value="<?php echo $salesrepname['salesrep_id']; ?>"><?php echo $salesrepname['salesrep_name']; ?> <?php echo $salesrepname['salesrep_lastname']; ?></option>
-                <?php } ?>
-                <?php } ?>
-                    
-                </select>-->         
+                   <input type="text" name="filter_salesrep" value="<?php echo @$filter_salesrep; ?>" placeholder="Sales Rep Name" id="input-salesrep" class="form-control" />
+                   <input type="hidden" name="filter_salesrepid" value="<?php echo $filter_salesrepid; ?>" />        
               </div>
               <div>
               <button type="button" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-search"></i> Search</button>
@@ -250,16 +180,6 @@
                       <?php if($order['view']) { ?>
                         <a href="<?php echo $order['view']; ?>" data-toggle="tooltip" title="View Quote" class="btn btn-info"><i class="fa fa-eye"></i></a>
                       <?php } ?>
-                        <?php if($order['order_id'] == '' && $order['status'] != '2') { ?>
-                          <!--<a href="<?php echo $order['approve']; ?>" data-toggle="tooltip" title="Convert to Order" class="btn btn-success"><i class="fa fa-check"></i></a>-->
-                          <!--<a href="javascript:void();" data-toggle="tooltip" title="Decline" onclick="onpopup(<?php echo $order['quote_id']; ?>);" class="btn btn-danger decline"><i class="fa fa-times"></i></a>-->
-                           
-                        <?php } else { ?>
-                          
-                           <!-- <a href="javascript:void();" disabled  data-toggle="tooltip" title="Converted to Order" class="btn btn-success"><i class="fa fa-check"></i></a>-->
-                            <!--<a href="javascript:void();" data-toggle="tooltip" title="Decline" disabled class="btn btn-danger decline"><i class="fa fa-times"></i></a>-->
-                          
-                        <?php } ?>
                     
                     </td>
                     
@@ -534,7 +454,7 @@ $('#button-delete').click(function(){
    $('#form-order').attr('action', '<?php echo $delete; ?>');
 });
 $('#button-deny').click(function(){
-   $('#form-order').attr('action', '<?php echo $button-deny; ?>');
+   $('#form-order').attr('action', '<?php echo $deny; ?>');
 });
 function Confirmbtn(action, msg)
 {
@@ -543,11 +463,11 @@ function Confirmbtn(action, msg)
   {
       if(action == 'delete')
     {
-      var faction = '<?php echo $delete; ?>';
+      var faction = '<?php echo @$delete; ?>';
     }
     else
     {
-      var faction = '<?php echo $deny; ?>';
+      var faction = '<?php echo @$deny; ?>';
     }
     var newul = faction.replace(/&amp;/g, "&");
     $('#form-order').attr('action', newul);

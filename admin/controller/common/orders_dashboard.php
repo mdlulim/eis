@@ -11,23 +11,26 @@ class ControllerCommonOrdersDashboard extends Controller {
 		# stylesheets (CSS) files
 		$this->document->addStyle('view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.css');
 		$this->document->addStyle('view/javascript/datatables/datatables.min.css');
+		$this->document->addStyle('view/javascript/bootstrap-sweetalert/sweetalert.css');
 		$this->document->addStyle('view/stylesheet/custom.css');
 
 		# javascript (JS) files
 		$this->document->addScript('view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.js');
 		$this->document->addScript('view/javascript/datatables/datatables.min.js');
+		$this->document->addScript('view/javascript/bootstrap-sweetalert/sweetalert.min.js');
+		$this->document->addScript('view/javascript/bootstrap-sweetalert/sweetalert-data.js');
 		$this->document->addScript('view/javascript/dashboard.js');
-		
-		# controller(s)
-		$data['header'] = $this->load->controller('common/header');
-		$data['column_left'] = $this->load->controller('common/column_left');
-		$data['footer'] = $this->load->controller('common/footer');
 		
 		/*=====  End of Add Files (Includes)  ======*/
 
 		$this->load->language('common/orders_dashboard');
 		$this->document->setTitle($this->language->get('heading_title'));
 		$data['heading_title'] = $this->language->get('heading_title');
+		
+		# controller(s)
+		$data['header'] = $this->load->controller('common/header');
+		$data['column_left'] = $this->load->controller('common/column_left');
+		$data['footer'] = $this->load->controller('common/footer');
 		
 		/*======================================================
 		=            Check Install Directory Exists            =

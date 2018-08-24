@@ -145,7 +145,7 @@ class ControllerUserUser extends Controller {
 		$data['subject'] = 'Welcome to Saleslogic';
 		$data['to']      = array('email'=>$user_info['email'], 'name'=>$user_info['firstname']);
 		$data['from']    = array('email'=>$this->config->get('config_email'), 'name'=>$this->config->get('config_name'));
-		$data['subject'] = 'Welcome to Saleslogic';
+		
 		switch ($emailClient) {
 			case 'mandrill':
 				# message
@@ -158,6 +158,10 @@ class ControllerUserUser extends Controller {
 			            )
 			        ),
 			        'global_merge_vars' => array(
+			            array(
+			                'name'    => 'USERNAME',
+			                'content' => $user_info['username']
+			            ),
 			            array(
 			                'name'    => 'PASSWORD',
 			                'content' => $user_info['password']
@@ -189,7 +193,8 @@ class ControllerUserUser extends Controller {
 			
 			default:
 				# message
-				$data['message'] = 'Welcome to Saleslogic. Your new password is : '.$user_info['password'].'. To access the portal, go to: '.$this->config->get('config_url').' To log in, use this email address and your password.';
+				$data['message'] = 'Welcome to Saleslogic. Your username is : '.$user_info['username'].'. Your password is : '.$user_info['password'].'. To access the portal, go to: '.$this->config->get('config_url').' To log in, use this email address and your password.';
+				
 				# build email message [html]
 				$this->load->model('extension/mail/template');
 				$tempData = array(

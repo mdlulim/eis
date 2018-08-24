@@ -118,7 +118,7 @@ class ControllerReportCustomerActivity extends Controller {
 		}
 		
 		$this->load->model('customer/customer');
-		$data['customers'] = $this->model_customer_customer->getCustomers();
+		$data['customers'] = $this->model_customer_customer->getCustomers($filter_data, $allaccess = true,$this->session->data['user_id']);
 
 		$data['heading_title'] = $this->language->get('heading_title');
 

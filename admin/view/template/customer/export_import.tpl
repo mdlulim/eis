@@ -354,6 +354,7 @@
 	</div>
 
 <script type="text/javascript"><!--
+
 function getNotifications() {
 	$('#export_import_notification').html('<i class="fa fa-info-circle"></i><button type="button" class="close" data-dismiss="alert">&times;</button> <div id="export_import_loading"><img src="view/image/export-import/loading.gif" /><?php echo $text_loading_notifications; ?></div>');
 	setTimeout(
@@ -382,6 +383,7 @@ function getNotifications() {
 		500
 	);
 }
+
 function check_range_type(export_type) {
 	if ((export_type=='p') || (export_type=='c') || (export_type=='u')) {
 		$('#range_type').show();
@@ -393,34 +395,45 @@ function check_range_type(export_type) {
 		$('#range_type').hide();
 	}
 }
+
 $(document).ready(function() {
+
 	check_range_type($('input[name=export_type]:checked').val());
+
 	$("#range_type_id").click(function() {
 		$(".page").hide();
 		$(".id").show();
 	});
+
 	$("#range_type_page").click(function() {
 		$(".id").hide();
 		$(".page").show();
 	});
+
 	$('input[name=export_type]').click(function() {
 		check_range_type($(this).val());
 	});
+
 	$('span.close').click(function() {
 		$(this).parent().remove();
 	});
+
 	$('a[data-toggle="tab"]').click(function() {
 		$('#export_import_notification').remove();
 	});
+
 	getNotifications();
 });
+
 function checkFileSize(id) {
 	// See also http://stackoverflow.com/questions/3717793/javascript-file-upload-size-validation for details
 	var input, file, file_size;
+
 	if (!window.FileReader) {
 		// The file API isn't yet supported on user's browser
 		return true;
 	}
+
 	input = document.getElementById(id);
 	if (!input) {
 		// couldn't find the file input element
@@ -457,30 +470,37 @@ function checkFileSize(id) {
 		return true;
 	}
 }
+
 function uploadData() {
 	if (checkFileSize('upload')) {
 		$('#import').submit();
 	}
 }
+
 function isNumber(txt){ 
 	var regExp=/^[\d]{1,}$/;
 	return regExp.test(txt); 
 }
+
 function validateExportForm(id) {
 	var export_type = $('input[name=export_type]:checked').val();
 	if ((export_type!='c') && (export_type!='p') && (export_type!='u')) {
 		return true;
 	}
+
 	var val = $("input[name=range_type]:checked").val();
 	var min = $("input[name=min]").val();
 	var max = $("input[name=max]").val();
+
 	if ((min=='') && (max=='')) {
 		return true;
 	}
+
 	if (!isNumber(min) || !isNumber(max)) {
 		alert("<?php echo $error_param_not_number; ?>");
 		return false;
 	}
+
 	var count_item;
 	switch (export_type) {
 		case 'p': count_item = <?php echo $count_product-1; ?>;  break;
@@ -502,6 +522,7 @@ function validateExportForm(id) {
 		default:  maxItemId = parseInt( <?php echo $max_customer_id; ?> ); break;
 	
 	}
+
 	if (val=="page") {  // Min for the batch size, Max for the batch number
 		if (parseInt(max) <= 0) {
 			alert("<?php echo $error_batch_number; ?>");
@@ -525,19 +546,25 @@ function validateExportForm(id) {
 	}
 	return true;
 }
+
 function downloadData() {
 	if (validateExportForm('export')) {
 		$('#export').submit();
 	}
 }
+
 function updateSettings() {
 	$('#settings').submit();
 }
+
 $('#upload').bind('change', function() {
+
   var filesize = AlertFilesize();
   var txt = 'File Size ' + filesize; 
   $("#siz").html(txt);
+
 });
+
 function AlertFilesize(){
     if(window.ActiveXObject){
         var fso = new ActiveXObject("Scripting.FileSystemObject");
@@ -547,11 +574,13 @@ function AlertFilesize(){
     }else{
         var sizeinbytes = document.getElementById('upload').files[0].size;
     }
+
     var fSExt = new Array('Bytes', 'KB', 'MB', 'GB');
     fSize = sizeinbytes; i=0;while(fSize>900){fSize/=1024;i++;}
 	var fsize = (Math.round(fSize*100)/100)+' '+fSExt[i];
     return fsize;
 }
+
 //--></script>
 <style>
 #tab-settings table tbody tr td label input[type="checkbox"] {margin-right:5px;}

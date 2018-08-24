@@ -124,6 +124,12 @@ $_['entry_total']                = 'Total';
 $_['entry_date_added']           = 'Date Added';
 $_['entry_date_modified']        = 'Date Modified';
 
+// Order Statuses
+$_['order_status_pending_id']    = 1;       # Pending
+$_['order_status_processing_id'] = 2;       # Processing
+$_['order_status_confirmed_id']  = 5;       # Confirmed
+$_['order_status_cancelled_id']  = 7;       # Cancelled
+
 // Quote Statuses
 $_['quote_status_pending_id']    = 1;
 $_['quote_status_converted_id']  = 2;

@@ -320,7 +320,7 @@ class ControllerReplogicScheduleManagement extends Controller {
 		$user_group_id = $this->model_user_user_group->getUserGroupByName('Sales Manager');
 		$data['sales_managers'] = $this->model_user_user->getUsersByGroupId($user_group_id['user_group_id']);
 		
-		$data['customers'] = $this->model_customer_customer->getCustomers();
+		$data['customers'] = $this->model_customer_customer->getCustomers($filter_data, $allaccess ,$this->session->data['user_id']);
 		
 		if($filter_customer_id)
 		{
@@ -1210,4 +1210,118 @@ class ControllerReplogicScheduleManagement extends Controller {
 		$this->response->addHeader('Content-Type: application/json');
 		$this->response->setOutput(json_encode($customer));
 	}	
+
+	public function scheduleAppointment() {
+
+		$this->load->model('replogic/schedule_management');
+		$this->load->language('replogic/schedule_management');
+
+		$json = array();
+
+		if (!$this->user->hasPermission('modify', 'replogic/schedule_management')) {
+
+			/*******************************************
+			 * If user does not have modify permissions
+			 *******************************************/
+
+			$json['success'] = true;
+			$json['error']   = $this->language->get('error_schedule_management');
+
+		} elseif ($this->request->server['REQUEST_METHOD'] == 'POST') {
+
+			$bookedTimes = array();
+			$results     = $this->model_replogic_schedule_management->getSalesRepAppointmentTimesByDate($this->request->post['salesrep_id'], date('Y-m-d', strtotime($this->request->post['appointment_date'])));
+
+			if (!empty($results)) {
+				foreach($results as $value) {
+					$bookedTimes[] = $value['appointment_time'];
+				}
+			}
+
+			if (in_array(date('H', strtotime($this->request->post['appointment_time'])), $bookedTimes)) {
+
+				/*******************************************
+				 * If scheduled date/time is already booked
+				 *******************************************/
+
+				$json['success'] = false;
+				$json['error']   = $this->language->get('error_time_already_booked');
+
+			} else {
+
+				/*******************************************
+				 * Schedule Appointment
+				 *******************************************/
+
+				$data         = $this->request->post;
+				$data['type'] = $this->request->post['appointment_type'];
+
+				/*******************************************
+				 * This is used to determine appointment 
+				 * duration in hours and minutes.
+				 * -----------------------------------------
+				 * We assume that:
+				 * - A single day is equal to 12 hours
+				 * - A single week is equal to 5 days
+				 *******************************************/
+				
+				if ($this->request->post['appointment_duration_all_day']) {
+					$data['hour']    = 12; // 12 [hours a day]
+					$data['minutes'] = 0;
+				} else {
+
+					if (preg_match('/Day/', $this->request->post['appointment_duration'])) {
+						$duration 		 = explode(" ", $this->request->post['appointment_duration']);
+						$data['hour']    = intval($duration[0]) * 12; // (num of days) * 12 [hours a day]
+						$data['minutes'] = 0;
+					} elseif (preg_match('/Week/', $this->request->post['appointment_duration'])) {
+						$duration 		 = explode(" ", $this->request->post['appointment_duration']);
+						$data['hour']    = intval($duration[0]) * 5 * 12; // (num of weeks) * 5 [days a week] * 12 [hours a day]
+						$data['minutes'] = 0;
+					} else {
+						$duration        = explode(":", $this->request->post['appointment_duration']);
+						$data['hour']    = $duration[0];
+						$data['minutes'] = $duration[1];
+					}
+				}
+				// appointment date and time
+				$date = $this->request->post['appointment_date'];
+				$time = $this->request->post['appointment_time'];
+				$data['appointment_date'] = date("Y-m-d H:i:s", strtotime("$date $time"));
+
+				// save appointment to database using model
+				$appointmentId = $this->model_replogic_schedule_management->addScheduleManagement($data);
+				if (!empty($appointmentId) && is_numeric($appointmentId)) {
+					$json['success']        = true;
+					$json['message']        = $this->language->get('text_appointment_add_success');
+					$json['appointment_id'] = $appointmentId;
+				} else {
+					$json['success']        = false;
+					$json['error']          = $this->language->get('error_appointment_add_generic');
+				}
+			}
+		}
+
+		$this->response->addHeader('Content-Type: application/json');
+		$this->response->setOutput(json_encode($json));
+	}
+
+	public function getSalesRepAppointmentTimesByDate() {
+		$json = array();
+		$this->load->model('replogic/schedule_management');
+
+		if (!empty($this->request->get['salesrep_id']) && !empty($this->request->get['date'])) {
+			$date  = date('Y-m-d', strtotime($this->request->get['date']));
+			$times = $this->model_replogic_schedule_management->getSalesRepAppointmentTimesByDate($this->request->get['salesrep_id'], $date);
+			$json['booked_times'] = array();
+			$json['date'] = $date;
+			if (!empty($times)) {
+				foreach($times as $time) {
+					$json['booked_times'][] = $time['appointment_time'];
+				}
+			}
+		}
+		$this->response->addHeader('Content-Type: application/json');
+		$this->response->setOutput(json_encode($json));
+	}
 }

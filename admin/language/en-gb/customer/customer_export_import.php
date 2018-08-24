@@ -193,4 +193,4 @@ $_['help_incremental_no']                   = '(Delete all old data before Impor
 $_['help_import']                           = 'Spreadsheet can have categories, products, attribute definitions, option definitions, or filter definitions. ';
 $_['help_import_old']                       = 'Spreadsheet can have categories, products, attribute definitions, or option definitions. ';
 $_['help_format']                           = 'Do an Export first to see the exact format of the worksheets!';
-?> 
+?>

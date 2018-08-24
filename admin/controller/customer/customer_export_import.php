@@ -45,9 +45,9 @@ class ControllerCustomerCustomerExportImport extends Controller {
 					$objReader = PHPExcel_IOFactory::createReader($inputfiletype);
 					$objPHPExcel = $objReader->load($inputfilename);
 					$sheet = $objPHPExcel->getSheet(0); 
-					$highestRow = $sheet->getHighestRow(); 
-					$highestColumn = $sheet->getHighestColumn();
-					 
+					$highestRow = $sheet->getHighestDataRow(); 
+					$highestColumn = $sheet->getHighestDataColumn();
+					 //echo $highestColumn; exit;
 					for ($row = 1; $row <= 1; $row++)
 					{ 
 						$header1 = $sheet->rangeToArray('A' . $row . ':' . $highestColumn . $row, NULL, FALSE, FALSE);
@@ -106,16 +106,36 @@ class ControllerCustomerCustomerExportImport extends Controller {
 					//$newsletterExportSettings 	? array_push($fields, 'Newsletter') : '';
 					//$approvedExportSettings 	? array_push($fields, 'Approved') : '';
 					
-					
+					//var_dump($fields);die();
 					
 					//print_r($fields); exit;	
 					
 					$array1 = $header;
 					$array2 = $fields;
-						//print_r($array2); exit;
-					if($array1 === array_intersect($array1, $array2) && $array2 === array_intersect($array2, $array1)) 
-					{ 
-						//echo 'Equal';
+
+					//====================================================================
+					//        Check field to be imported if they exist
+					//====================================================================
+					$fields_exist = 0;
+ 				    foreach($fields as $fieldValue){
+						if (in_array($fieldValue, $header)){
+							$field_exist = 1;
+							
+						}
+						
+					}
+					//var_dump($field_exist);
+					//if($array1 === array_intersect($array1, $array2) && $array2 === array_intersect($array2, $array1)) 
+					// var_dump($field_exist);
+					// if($fields_exist == 1){ 
+					// 	var_dump("field they exist".$fields_exist );
+					// }else{
+					// 	var_dump("field are not exist".$fields_exist );
+					// }
+					//die();
+					//var_dump($field_exist); die();
+					if($field_exist == 1){ 
+						//var_dump($field_exist); die();
 						
 						for ($row = 2; $row <= $highestRow; $row++)
 						{ 
@@ -132,10 +152,9 @@ class ControllerCustomerCustomerExportImport extends Controller {
 						
 						//print_r($all_rows); exit;
 						$customer_id = '';
-						foreach($all_rows as $all_row)
-						{
+						foreach($all_rows as $all_row){
 							if(!empty($all_row) && count($all_row) > 0)
-							{
+							{	
 							$customer_id = $all_row['Customer ID'] ? $all_row['Customer ID'] : '';
 							//$firstname = $all_row['First Name'] ? $all_row['First Name'] : '';
 							//$lastname = $all_row['Last Name'] ? $all_row['Last Name'] : '';
@@ -157,7 +176,6 @@ class ControllerCustomerCustomerExportImport extends Controller {
 							//$newsletter = $all_row['Newsletter'] ? $all_row['Newsletter'] : '';
 							//$approved = $all_row['Approved'] ? $all_row['Approved'] : '';
 							$defaultaddress = $all_row['Default Address'] ? $all_row['Default Address'] : '';
-							
 							
 							
 							
@@ -220,20 +238,34 @@ class ControllerCustomerCustomerExportImport extends Controller {
 												'defaultaddress' => $defaultaddress
 												
 											);
-								//echo $customer_id; exit;
-								//print_r($data_array); exit;
-								if (!empty($customer_id)) // if column 1 is not empty
-								{ 
-									$this->model_customer_customer_export_import->importCsvCustomerDataUpdate($data_array);  // parse the data to model
+											//var_dump('test id'.$customer_id);
+										
+										if($data_array['email'] != ''){
+											//var_dump($data_array['email']);
+										//var_dump("<br />");
+											// if($this->model_customer_customer_export_import->checkEmailIfExist($email) == true){
+											// 	$this->model_customer_customer_export_import->importCsvCustomerDataUpdate($data_array);  // parse the data to model
+											// }else{
+												$this->model_customer_customer_export_import->importCsvCustomerDataInsert($data_array);
+											//}
+										}
+								// if (empty(!$data_array['address1']) || !empty($data_array['companyname']) || !empty($data_array['city']) || !empty($data_array['postcode']) || !empty($data_array['region']) || !empty($data_array['country']) ){
+								// 	if (!empty($customer_id)) // if column 1 is not empty
+								// 	{ 
+										
+								// 		$this->model_customer_customer_export_import->importCsvCustomerDataUpdate($data_array);  // parse the data to model
+										
+								// 	}
+								// 	else
+								// 	{
 									
-								}
-								else
-								{
-									$this->model_customer_customer_export_import->importCsvCustomerDataInsert($data_array); 
-								}
+								// 		$this->model_customer_customer_export_import->importCsvCustomerDataInsert($data_array);
+									
+								// 	}
+								// }
+								
 							}
 						}
-						
 						$this->session->data['success'] = ''.ucfirst($ext).' Successfully Imported!';	
 						
 					} else 
@@ -674,13 +706,13 @@ class ControllerCustomerCustomerExportImport extends Controller {
 		$data['breadcrumbs'] = array();
 		$data['breadcrumbs'][] = array(
 			'text' => $this->language->get('text_home'),
-			'href' => $this->url->link(getDashboard($this->user), 'token=' . $this->session->data['token'], $this->ssl)
+			'href' => $this->url->link('common/dashboard', 'token=' . $this->session->data['token'], $this->ssl)
 		);
 		$data['breadcrumbs'][] = array(
 			'text' => $this->language->get('heading_title'),
 			'href' => $this->url->link('customer/customer_export_import', 'token=' . $this->session->data['token'], $this->ssl)
 		);
-		$data['back'] = $this->url->link(getDashboard($this->user), 'token=' . $this->session->data['token'], $this->ssl);
+		$data['back'] = $this->url->link('common/dashboard', 'token=' . $this->session->data['token'], $this->ssl);
 		$data['button_back'] = $this->language->get( 'button_back' );
 		$data['import'] = $this->url->link('customer/customer_export_import/upload', 'token=' . $this->session->data['token'], $this->ssl);
 		$data['export'] = $this->url->link('customer/customer_export_import/download', 'token=' . $this->session->data['token'], $this->ssl);

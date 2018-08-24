@@ -119,7 +119,7 @@
                               <td class="text-left"><?php echo $location['location']; ?></td>
                               <td class="text-left" width="200"><?php  echo $location['checkin_location']; ?></td>
                               <td class="text-right">
-                    			<a href="javascript:void()" data-id="<?php  echo $location['checkin_id']; ?>" title="View Map" class="btn btn-primary popmap"><i class="fa fa-map"></i></a>
+                    			      <!-- <a href="javascript:void()" data-id="<?php  echo $location['checkin_id']; ?>" title="View Map" class="btn btn-primary popmap"><i class="fa fa-map"></i></a> -->
                                 <a href="<?php echo $location['view']; ?>" data-toggle="tooltip" title="<?php echo $button_view; ?>" class="btn btn-info"><i class="fa fa-eye"></i></a>
                                 </td>
                             </tr>
