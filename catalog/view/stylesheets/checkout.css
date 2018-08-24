@@ -231,7 +231,8 @@
  *  Import to cart
  ********************************************************/
 
-button#import-cart {
+button#import-cart,
+button#clear-cart {
   margin: 8px;
   background-color: #fff;
   color: initial;
@@ -240,10 +241,14 @@ button#import-cart {
 }
 button#import-cart:not('.disabled'):active,
 button#import-cart:not('.disabled'):focus,
-button#import-cart:not('.disabled'):hover {
+button#import-cart:not('.disabled'):hover,
+button#clear-cart:not('.disabled'):active,
+button#clear-cart:not('.disabled'):focus,
+button#clear-cart:not('.disabled'):hover {
   color: rgb(70, 130, 180); 
 }
-button#import-cart > i:before {
+button#import-cart > i:before,
+button#clear-cart > i:before {
   color: inherit;
   content: "\f019";
   font-family: 'FontAwesome';
@@ -257,6 +262,10 @@ button#import-cart > i:before {
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
 }
+button#clear-cart > i:before {
+  content: "\f1f8";
+}
+button#import-cart.disabled,
 button#import-cart.disabled {
   color: #999;
   cursor: not-allowed; 
@@ -265,6 +274,7 @@ button#import-cart.disabled {
 form#form-cart-importer {
   display: inline;
 }
+
 
 /********************************************************
  *  DataTable file export buttons

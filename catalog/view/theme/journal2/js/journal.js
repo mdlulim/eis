@@ -913,6 +913,36 @@ if (Journal.isOC2) {
         });
     };
 
+    cart.clear = function() {
+        var baseUrl = 'index.php?route=checkout/cart';
+        swal({
+            title: "Are you sure?",
+            text: 'You are about to clear shopping cart.',
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonClass: "btn-danger",
+            confirmButtonText: "Yes, clear!",
+            closeOnConfirm: true,
+            showLoaderOnConfirm: true
+        },
+        function (isConfirm) {
+            if (isConfirm) {
+                $.ajax({
+                    url: `${baseUrl}/clear`,
+                    type: 'delete',
+                    dataType: 'json',
+                    success: function(json) {
+                        if (json['success']) {
+                            location.href = baseUrl;
+                        } else {
+                            swal("Error!", json['error'], "error");
+                        }
+                    }
+                });
+            }
+        });
+    };
+
     voucher.remove = function(key) {
         $.ajax({
             url: 'index.php?route=checkout/cart/remove',
