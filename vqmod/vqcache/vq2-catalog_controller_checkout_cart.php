@@ -110,11 +110,13 @@ class ControllerCheckoutCart extends Controller {
 			}
 
 			$data['products'] = array();
-
-			$products = $this->cart->getProducts();
+			$products         = $this->cart->getProducts();
 
 			foreach ($products as $product) {
 				$product_total = 0;
+
+				// get cart product id
+				$cartProductIds[$product['product_id']] = $product['quantity'];
 
 				foreach ($products as $product_2) {
 					if ($product_2['product_id'] == $product['product_id']) {
@@ -1292,54 +1294,16 @@ class ControllerCheckoutCart extends Controller {
 								// clear first before import
 								$this->cart->clear();
 
-								foreach($products as $product) {
-									if (!empty($product['cart_import_quantity'])) {
+								// add products/items to cart
+								$this->cart->bulk_add($products);
 
-										// add item to cart
-										$this->cart->add($product['product_id'], $product['cart_import_quantity']);
-										
-										$totals = array();
-										$taxes  = $this->cart->getTaxes();
-										$total  = 0;
-								
-										// Because __call can not keep var references so we put them into an array. 			
-										$totalData = array(
-											'totals' => &$totals,
-											'taxes'  => &$taxes,
-											'total'  => &$total
-										);
+								// foreach($products as $product) {
+								// 	if (!empty($product['cart_import_quantity'])) {
 
-										// Display prices
-										if ($this->customer->isLogged() || !$this->config->get('config_customer_price')) {
-											$sortOrder = array();
-
-											$results = $this->model_extension_extension->getExtensions('total');
-
-											foreach ($results as $key => $value) {
-												$sortOrder[$key] = $this->config->get($value['code'] . '_sort_order');
-											}
-
-											array_multisort($sortOrder, SORT_ASC, $results);
-
-											foreach ($results as $result) {
-												if ($this->config->get($result['code'] . '_status')) {
-													$this->load->model('extension/total/' . $result['code']);
-
-													// We have to put the totals in an array so that they pass by reference.
-													$this->{'model_extension_total_' . $result['code']}->getTotal($totalData);
-												}
-											}
-
-											$sortOrder = array();
-
-											foreach ($totals as $key => $value) {
-												$sortOrder[$key] = $value['sort_order'];
-											}
-
-											array_multisort($sortOrder, SORT_ASC, $totals);
-										}
-									}
-								}
+								// 		// add item to cart
+								// 		$this->cart->add($product['product_id'], $product['cart_import_quantity']);
+								// 	}
+								// }
 								$json['success'] = sprintf($this->language->get('import_success'), $this->cart->countProducts().' item(s)');
 								$json['total']   = sprintf($this->language->get('text_items'), $this->cart->countProducts() + (isset($this->session->data['vouchers']) ? count($this->session->data['vouchers']) : 0), $this->currency->format($total, $this->session->data['currency']));
 							}
