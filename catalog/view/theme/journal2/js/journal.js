@@ -362,6 +362,13 @@ Journal.showNotification = function (message, image, buttons) {
     return true;
 };
 
+// trigger event for the specified element
+Journal.triggerEvent = function(event, element) {
+	if (typeof $(element).length !== "undefined") {
+		$(element).trigger(event);
+	}
+};
+
 Journal.enableQuickView = function () {
     $('.quickview-button').remove();
     $('.product-wrapper .image, .product-list-item .image').each(function () {
@@ -849,7 +856,7 @@ if (Journal.isOC2) {
 
                     if ($(element).closest('tr').find('td.total').length) {
                         var price    = parseInt($(element).closest('tr').find('td.price').html().match(/\d+/));
-                        var quantity = parseInt($(element).val());
+                        var quantity = parseInt($(element).parent().find('input[name="quantity"]').val());
                         var currency = (json['currency'].toLowerCase() == "zar") ? "R" : json['currency'];
                         var newPrice = (price * quantity).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
                         $(element).closest('tr').find('td.total').html(currency + ' ' + newPrice);
