@@ -10,7 +10,7 @@
                 var aOptions = {
                     "sDom"           : "<t><'row'<'col-md-12'i p>>",
                     "oLanguage"      : {"sLengthMenu":"_MENU_ ","sInfo":"Showing _START_ to _END_ of _TOTAL_"},
-                    "iDisplayLength" : 10,
+                    "iDisplayLength" : 50,
                     "bSort"          : false
                 };
                 oTable = $('.cart-info>table.table').DataTable(aOptions);
@@ -49,9 +49,9 @@
                         $.extend(true, {}, buttonCommon, {
                             extend: 'csv'
                         }),
-                        $.extend(true, {}, buttonCommon, {
-                            extend: 'excel'
-                        }),
+                        // $.extend(true, {}, buttonCommon, {
+                        //     extend: 'excel'
+                        // }),
                         $.extend(true, {}, buttonCommon, {
                             extend: 'pdf'
                         })
