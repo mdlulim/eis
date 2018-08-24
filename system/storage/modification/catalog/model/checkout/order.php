@@ -6,16 +6,46 @@ class ModelCheckoutOrder extends Model {
 
 		$order_id = $this->db->getLastId();
 
-		// ArchIntegration
+		/******************************************************** 
+		 * Arch Integration
+		 ********************************************************/
+
 		if (INTEGRATION_ID == '1') {
 
 			$this->load->model('extension/erp/arch');
 			
 			$debtor_code = $this->model_extension_erp_arch->getDebtorCode($this->customer->getId());
 
-			$send_quote = $this->model_extension_erp_arch->submitNewQuotation($debtor_code , $order_id , $data['products']);
+			$send_quote  = $this->model_extension_erp_arch->submitNewQuotation($debtor_code , $order_id , $data['products']);
 
-			$this->addOrderHistory($order_id,2,'sent to arch',true);
+			$this->addOrderHistory($order_id, 2, 'sent to arch', true);
+		}
+
+		/******************************************************** 
+		 * Stock2Shop Integration
+		 ********************************************************/
+
+		if (INTEGRATION_ID == '2') {
+
+			$this->load->model('extension/erp/stock2shop');
+
+			// order details
+			$params['order'] = array(
+				"line_items"      => $data['products'],
+				"shipping_lines"  => $data['shipping_lines'],
+				"shipping_total"  => $data['shipping_total'],
+    			"sub_total"       => $data['cart_sub_total'],
+    			"tax_description" => $data['tax_description'],
+    			"tax_total"       => $data['tax_total'],
+    			"total"           => $data['total']
+			);
+
+			// create order
+			$response = $this->model_extension_erp_stock2shop->confirmOrder($params);
+
+			// add transaction to order history
+			$this->addOrderHistory($order_id, 2, 'sent to stock2shop : ' . json_encode($response), true);
+
 		}
 		
 		// Products
