@@ -19,6 +19,12 @@ define('DIR_UPLOAD', '/Applications/XAMPP/htdocs/boothsbs/system/storage/upload/
 define('DIR_CATALOG', '/Applications/XAMPP/htdocs/boothsbs/catalog/');
 define('HELP_GUIDE','https://help.saleslogic.io/portal/home');
 define('ARCH_API','http://ecommerce.archsoftware.co.za/Service.svc?WSDL');
+/**
+ * Define integration global variable 
+ * 1. Arch = 1
+ * 2. Stock2shop = 2
+ */
+define('INTEGRATION_ID','1');
 
 // Saleslogic Rep API Base URL
 define('REP_API_BASE_URL', 'https://api.saleslogic.io/api/v1/');

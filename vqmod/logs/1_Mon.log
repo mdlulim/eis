@@ -1,12 +1,20 @@
+<<<<<<< HEAD
 ---------- Date: 2018-08-27 12:14:29 ~ IP : ::1 ----------
 REQUEST URI : /saleslogicmdu/admin/index.php?route=catalog/category&token=2zkQ6a16qS38hfWfOtS68CxZUjqnawgq
 MOD DETAILS:
    modFile   : /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/vqmod/xml/productViewOrder.xml
+=======
+---------- Date: 2018-08-13 08:51:40 ~ IP : ::1 ----------
+REQUEST URI : /flmkzn/index.php?route=account/account
+MOD DETAILS:
+   modFile   : /Applications/XAMPP/xamppfiles/htdocs/flmkzn/vqmod/xml/productViewOrder.xml
+>>>>>>> 3d46a15ee13b89f220ab57342b6a6bdce6fe9534
    id        : Product - View orders
    version   : 1.0.0
    vqmver    : 2.4.2
    author    : Nerdherd Developers
 VQModObject::parseMods - Could not resolve path for [admin/view/template/catalog/product_listc.tpl] (SKIPPED)
+<<<<<<< HEAD
 ----------------------------------------------------------------------
 
 
@@ -47,6 +55,8 @@ MOD DETAILS:
 
 File Name    : admin/view/template/catalog/product_list.tpl(8)
 VQModObject::applyMod - SEARCH NOT FOUND (ABORTING MOD): <button type="button" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-search"></i> <?php echo $button_filter; ?></button>
+=======
+>>>>>>> 3d46a15ee13b89f220ab57342b6a6bdce6fe9534
 ----------------------------------------------------------------------
 
 
