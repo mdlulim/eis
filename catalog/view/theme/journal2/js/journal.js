@@ -849,7 +849,7 @@ if (Journal.isOC2) {
 
                     if ($(element).closest('tr').find('td.total').length) {
                         var price    = parseInt($(element).closest('tr').find('td.price').html().match(/\d+/));
-                        var quantity = parseInt($(element).val());
+                        var quantity = parseInt($(element).parent().find('input[name="quantity"]').val());
                         var currency = (json['currency'].toLowerCase() == "zar") ? "R" : json['currency'];
                         var newPrice = (price * quantity).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
                         $(element).closest('tr').find('td.total').html(currency + ' ' + newPrice);

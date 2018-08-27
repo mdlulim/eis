@@ -39,7 +39,11 @@
               <td class="text-right"><?php echo $order['products']; ?></td>
               <td class="text-left"><?php echo $order['name']; ?></td>
               <td class="text-right"><?php echo $order['total']; ?></td>
-              <td class="text-right"><a href="<?php echo $order[version_compare(VERSION, '2.2', '<') ? 'href' : 'view']; ?>" data-toggle="tooltip" title="<?php echo $button_view; ?>" class="btn btn-info btn-primary"><i class="fa fa-eye"></i></a></td>
+              <td class="text-right">
+                <a href="<?php echo $order[version_compare(VERSION, '2.2', '<') ? 'href' : 'view']; ?>" data-toggle="tooltip" title="<?php echo $button_view; ?>" class="btn btn-info btn-primary"><i class="fa fa-eye"></i></a>
+                <a href="<?php echo $order[version_compare(VERSION, '2.2', '<') ? 'href' : 'reorder']; ?>" data-toggle="tooltip" title="Reorder" class="btn btn-info btn-primary" onclick="return confirm('Please note that all current cart items will be replaced with contents from this order, should line Items have no stock or are disabled it will not be added to your cart.');"
+  ><i class="fa fa-repeat"></i></a>
+              </td>
             </tr>
             <?php } ?>
           </tbody>
