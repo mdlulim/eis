@@ -5,11 +5,12 @@ class ControllerCheckoutCart extends Controller {
 		/*==================================
 		=       Add Files (Includes)       =
 		==================================*/
-		
+
 		# stylesheets (CSS) files
 		$this->document->addStyle('admin/view/javascript/bootstrap-sweetalert/sweetalert.css');
 		$this->document->addStyle('catalog/view/javascript/datatables/datatables.min.css');
 		$this->document->addStyle('catalog/view/javascript/datatables/buttons/buttons.datatables.min.css');
+		$this->document->addStyle('catalog/view/stylesheets/custom.css');
 		$this->document->addStyle('catalog/view/stylesheets/checkout.css');
 
 		# javascript (JS) files
@@ -22,6 +23,7 @@ class ControllerCheckoutCart extends Controller {
 		$this->document->addScript('catalog/view/javascript/pdfmake/pdfmake.min.js');
 		$this->document->addScript('catalog/view/javascript/pdfmake/vfs_fonts.js');
 		$this->document->addScript('catalog/view/javascript/datatables/buttons/buttons.html5.min.js');
+		$this->document->addScript('catalog/view/javascript/importer.js');
 		$this->document->addScript('catalog/view/javascript/checkout.js');
 
 		/*=====  End of Add Files (Includes)  ======*/
@@ -44,7 +46,7 @@ class ControllerCheckoutCart extends Controller {
 		);
 
 		if ($this->cart->hasProducts() || !empty($this->session->data['vouchers'])) {
-			$data['heading_title'] = $this->language->get('heading_title') . $this->language->get('button_import_to_cart');
+			$data['heading_title'] = $this->language->get('heading_title') . $this->language->get('button_import_to_cart') . $this->language->get('button_clear_cart');
 
 			$data['text_recurring_item'] = $this->language->get('text_recurring_item');
 			$data['text_next'] = $this->language->get('text_next');
@@ -108,11 +110,13 @@ class ControllerCheckoutCart extends Controller {
 			}
 
 			$data['products'] = array();
-
-			$products = $this->cart->getProducts();
+			$products         = $this->cart->getProducts();
 
 			foreach ($products as $product) {
 				$product_total = 0;
+
+				// get cart product id
+				$cartProductIds[$product['product_id']] = $product['quantity'];
 
 				foreach ($products as $product_2) {
 					if ($product_2['product_id'] == $product['product_id']) {
@@ -303,6 +307,7 @@ class ControllerCheckoutCart extends Controller {
 			$data['column_right'] = $this->load->controller('common/column_right');
 			$data['content_top'] = $this->load->controller('common/content_top');
 			$data['content_bottom'] = $this->load->controller('common/content_bottom');
+			$data['import_modal'] = $this->load->view('module/import_cart');
 			$data['footer'] = $this->load->controller('common/footer');
 			$data['header'] = $this->load->controller('common/header');
 
@@ -322,6 +327,7 @@ class ControllerCheckoutCart extends Controller {
 			$data['column_right'] = $this->load->controller('common/column_right');
 			$data['content_top'] = $this->load->controller('common/content_top');
 			$data['content_bottom'] = $this->load->controller('common/content_bottom');
+			$data['import_modal'] = $this->load->view('module/import_cart');
 			$data['footer'] = $this->load->controller('common/footer');
 			$data['header'] = $this->load->controller('common/header');
 
@@ -388,12 +394,6 @@ class ControllerCheckoutCart extends Controller {
 			if (!$json) {
 				$this->cart->add($this->request->post['product_id'], $quantity, $option, $recurring_id);
 
-
-                if (strpos($this->config->get('config_template'), 'journal2') === 0) {
-                    $this->load->model('tool/image');
-                    $json['image'] = Journal2Utils::resizeImage($this->model_tool_image, $product_info['image'], $this->config->get('config_image_cart_width'), $this->config->get('config_image_cart_height'));
-                }
-            
 
                 if (strpos($this->config->get('config_template'), 'journal2') === 0) {
                     $this->load->model('tool/image');
@@ -785,9 +785,10 @@ class ControllerCheckoutCart extends Controller {
 		$this->response->setOutput(json_encode($json));
 	}
 
-	public function import() {
+	public function import_old() {
 		$this->load->language('checkout/cart');
 		$this->load->model('catalog/product');
+		$this->load->model('extension/extension');
 
 		set_time_limit(0);
 		ini_set('memory_limit', '1G');
@@ -842,6 +843,7 @@ class ControllerCheckoutCart extends Controller {
 						$fields        = array();
 						$dataRows      = array();
 						$header        = array();
+						$found         = true;
 
 						for ($row = 1; $row <= 1; $row++) { 
 							$header1 = $sheet->rangeToArray('A' . $row . ':' . $highestColumn . $row, NULL, FALSE, FALSE);
@@ -876,6 +878,7 @@ class ControllerCheckoutCart extends Controller {
 						$quantities = array();
 						$dataItems  = array();
 
+						// loop through data rows [from imported file]
 						foreach ($dataRows as $data) {
 							if (!empty($data) && count($data) > 0) {
 								
@@ -894,6 +897,12 @@ class ControllerCheckoutCart extends Controller {
 
 						if (!empty($products) && count($products) > 0) {
 
+							// Unset all shipping and payment methods
+							unset($this->session->data['shipping_method']);
+							unset($this->session->data['shipping_methods']);
+							unset($this->session->data['payment_method']);
+							unset($this->session->data['payment_methods']);
+
 							$found = true;
 
 							// clear first before import
@@ -908,15 +917,6 @@ class ControllerCheckoutCart extends Controller {
 									$quantity = $quantities[$key];
 
 									$this->cart->set($product['product_id'], $quantity);
-	
-									// Unset all shipping and payment methods
-									unset($this->session->data['shipping_method']);
-									unset($this->session->data['shipping_methods']);
-									unset($this->session->data['payment_method']);
-									unset($this->session->data['payment_methods']);
-
-									// Totals
-									$this->load->model('extension/extension');
 
 									$totals = array();
 									$taxes  = $this->cart->getTaxes();
@@ -967,6 +967,7 @@ class ControllerCheckoutCart extends Controller {
 							$json['total']   = sprintf($this->language->get('text_items'), $this->cart->countProducts() + (isset($this->session->data['vouchers']) ? count($this->session->data['vouchers']) : 0), $this->currency->format($total, $this->session->data['currency']));
 							$json['records'] = $dataRows;
 							$json['headers'] = $header;
+							$json['found']   = $products;
 						} else {
 							if (!isset($json['error'])) {
 								$json['error'] = $this->language->get('import_generic_error');
@@ -977,6 +978,315 @@ class ControllerCheckoutCart extends Controller {
 			}
 		}
 
+		$this->response->addHeader('Content-Type: application/json');
+		$this->response->setOutput(json_encode($json));
+	}
+
+	public function items_not_found() {
+
+		if (!empty($this->request->post['items'])) {
+							
+			// convert json to array
+			$decodedText   = html_entity_decode($this->request->post['items']);
+			$data['items'] = json_decode($decodedText, true);
+		
+			/*==================================
+			=       Add Files (Includes)       =
+			==================================*/
+
+			# stylesheets (CSS) files
+			$this->document->addStyle('catalog/view/javascript/datatables/datatables.min.css');
+			$this->document->addStyle('catalog/view/javascript/datatables/buttons/buttons.datatables.min.css');
+			$this->document->addStyle('catalog/view/stylesheets/custom.css');
+			$this->document->addStyle('catalog/view/stylesheets/checkout.css');
+
+			# javascript (JS) files
+			$this->document->addScript('catalog/view/javascript/datatables/datatables.min.js');
+			$this->document->addScript('catalog/view/javascript/datatables/buttons/datatables.buttons.min.js');
+			$this->document->addScript('catalog/view/javascript/datatables/buttons/buttons.flash.min.js');
+			$this->document->addScript('catalog/view/javascript/jszip/jszip.min.js');
+			$this->document->addScript('catalog/view/javascript/pdfmake/pdfmake.min.js');
+			$this->document->addScript('catalog/view/javascript/pdfmake/vfs_fonts.js');
+			$this->document->addScript('catalog/view/javascript/datatables/buttons/buttons.html5.min.js');
+			$this->document->addScript('catalog/view/javascript/checkout.js');
+
+			/*=====  End of Add Files (Includes)  ======*/
+			
+
+			$this->load->language('checkout/cart');
+
+			$this->document->setTitle($this->language->get('heading_title'));
+
+			/******************************************************
+			 * Breadcrumbs
+			 ******************************************************/
+
+			$data['breadcrumbs'] = array();
+
+			$data['breadcrumbs'][] = array(
+				'href' => $this->url->link('common/home'),
+				'text' => $this->language->get('text_home')
+			);
+
+			$data['breadcrumbs'][] = array(
+				'href' => $this->url->link('checkout/cart'),
+				'text' => $this->language->get('heading_title')
+			);
+
+			/******************************************************
+			 * Output content
+			 ******************************************************/
+			
+			$data['heading_title']   = $this->language->get('heading_title');
+			$data['error_warning']   = $this->language->get('warning_import_items_not_found');
+			$data['button_continue'] = $this->language->get('button_continue');
+			$data['continue']        = $this->url->link('common/home');
+
+			$data['column_left']     = $this->load->controller('common/column_left');
+			$data['column_right']    = $this->load->controller('common/column_right');
+			$data['content_top']     = $this->load->controller('common/content_top');
+			$data['content_bottom']  = $this->load->controller('common/content_bottom');
+			$data['footer']          = $this->load->controller('common/footer');
+			$data['header']          = $this->load->controller('common/header');
+
+			$this->response->setOutput($this->load->view('checkout/cart_import_items', $data));
+		}
+	}
+
+	public function clear() {
+
+		$this->load->language('checkout/cart');
+
+		$json = array();
+
+		if ($this->request->server['REQUEST_METHOD'] == 'DELETE') {
+			// clear cart
+			$this->cart->clear();
+			$json['success'] = true;
+		}
+		if (!isset($json['success']) && !isset($json['error'])) {
+			$json['error'] = $this->language->get('import_generic_error');
+		}
+		$this->response->addHeader('Content-Type: application/json');
+		$this->response->setOutput(json_encode($json));
+	}
+
+	public function import() {
+
+		$this->load->language('checkout/cart');
+		$this->load->model('catalog/product');
+		$this->load->model('extension/extension');
+
+		set_time_limit(0);
+		ini_set('memory_limit', '1G');
+		ini_set("auto_detect_line_endings", true);
+
+		$json     = array();
+		$formats  = array('xls', 'xlsx', 'csv'); // supported file types
+		$colHeads = array('Product Name', 'Category', 'SKU', 'Quantity', 'Unit Price', 'Total'); // expected column headings
+		$maxSize  = 5097152;  // maximum file size (5MB)
+
+		if ($this->request->server['REQUEST_METHOD'] == 'POST') {
+
+			if (isset($this->request->get['action'])) {
+
+				switch ($this->request->get['action']) {
+
+					/******************************************************
+					 * Check and Upload file content
+					 ******************************************************/
+
+					case "upload":
+
+						if (isset($this->request->files['import'] ) && is_uploaded_file($this->request->files['import']['tmp_name'])) {
+
+							$file = $_FILES['import']['tmp_name'];
+							$name = $this->request->files['import']['name'];
+							$size = $this->request->files['import']['size'];
+							$ext  = strtolower(pathinfo($name, PATHINFO_EXTENSION));
+
+							if (!in_array($ext, $formats)) {
+
+								/******************************************************
+								 * File type error | type not supported
+								 ******************************************************/
+
+								$json['error'] = $this->language->get('import_file_type_error');
+
+							} else {
+								
+								if ($size > $maxSize) {
+
+									/******************************************************
+									 * File size error | size limit exceeded
+									 ******************************************************/
+
+									$json['error'] = $this->language->get('import_file_size_error');
+
+								} else {
+
+									/******************************************************
+									 * Perform file import
+									 ******************************************************/	
+
+									$inputFileName = $file;
+									$inputFileType = PHPExcel_IOFactory::identify($inputFileName);
+									$objReader     = PHPExcel_IOFactory::createReader($inputFileType);
+									$objPHPExcel   = $objReader->load($inputFileName);
+									$sheet         = $objPHPExcel->getSheet(0);
+									$highestRow    = $sheet->getHighestRow();
+									$highestColumn = $sheet->getHighestColumn();
+									$detailsColumn = 2;
+									$fields        = array();
+									$dataRows      = array();
+									$header        = array();
+									$found         = true;
+
+									for ($row = 1; $row <= 1; $row++) { 
+										$header1 = $sheet->rangeToArray('A' . $row . ':' . $highestColumn . $row, NULL, FALSE, FALSE);
+									}
+									
+									// Check if row has right data [not headings]
+									if (!in_array($header1[0][0], $colHeads)) {
+										$detailsColumn++;
+										for ($row = 2; $row <= 2; $row++) {
+											$header1 = $sheet->rangeToArray('A' . $row . ':' . $highestColumn . $row, NULL, FALSE, FALSE);
+										}
+									}
+									
+									foreach ($header1 as $key => $val) {
+										$header = array_merge($val, $header);
+									}
+
+									for ($row = $detailsColumn; $row <= $highestRow; $row++) {
+										$sheetdata1 = $sheet->rangeToArray('A' . $row . ':' . $highestColumn . $row, NULL, FALSE, FALSE);
+										$sheetdata  = array();
+										foreach ($sheetdata1 as $key => $val) {
+											$sheetdata = array_merge($val, $sheetdata);
+										}
+										$dataRows[] = array_combine($header, $sheetdata);
+									}
+			
+									$barcodes   = array();
+									$quantities = array();
+									$dataItems  = array();
+			
+									// loop through data rows [from imported file]
+									foreach ($dataRows as $data) {
+										if (!empty($data) && count($data) > 0) {
+											
+											$barcode  = $data['SKU'];           # sku/barcode
+											$quantity = (int)$data['Quantity']; # quantity
+											
+											if (!empty($barcode) && !empty($quantity) && is_numeric($quantity)) {
+												$barcodes[]   = $barcode;
+												$quantities[] = $quantity;
+												$dataItems[]  = array('sku'=>$barcode, 'quantity'=>$quantity);
+											}
+										}
+									}
+			
+									// find multiple products from database
+									$products      = $this->model_catalog_product->getProductsBySku(implode("','",$barcodes));
+									$json['items'] = $dataItems;
+
+									if (!empty($products) && is_array($products)) {
+										foreach($dataItems as $key => $item) {
+											$skuCode  = array_column($products, 'sku');
+											$foundKey = array_search($item['sku'], $skuCode);
+											if ($foundKey === false) {
+												$json['not_found'][] = $item;
+											} else {
+												$json['found'][] = $item;
+											}
+										}
+										if (empty($json['not_found'])) {
+											$json['success'] = $this->language->get('text_upload_success');
+										} else {
+											$json['warning'] = sprintf($this->language->get('error_import_upload'), count($json['found']), count($json['items']));
+										}
+									}
+								}
+							}
+						}
+						break;
+
+					/******************************************************
+					 * Validate import data
+					 ******************************************************/
+
+					case "validate":
+
+						if (!empty($this->request->post['products']) && is_array($this->request->post['products'])) {
+
+							$barcodes   = array();
+							$quantities = array();
+
+							foreach($this->request->post['products'] as $item) {
+								$barcodes[]   = $item['sku'];
+								$quantities[] = $item['quantity'];
+							}
+							
+							// find multiple products from database
+							$products = $this->model_catalog_product->getProductsBySku(implode("','", $barcodes));
+
+							if (!empty($products) && count($products) > 0) {
+								$returnProducts = [];
+								foreach($products as $k => &$product) {
+									$key = array_search($product['sku'], $barcodes);
+									if ($key !== false) {
+										$product['cart_import_quantity'] = $quantities[$key];
+										$returnProducts[]                = $product;
+									}
+								}
+								$json['products'] = json_encode($returnProducts);
+								$json['success']  = $this->language->get('text_validate_success');
+							}
+						}
+						
+						break;
+
+					/******************************************************
+					 * Add products to cart
+					 ******************************************************/
+					
+					case "add_to_cart":
+
+						if (!empty($this->request->post['products'])) {
+							
+							// convert json to array
+							$decodedText = html_entity_decode($this->request->post['products']);
+							$products    = json_decode($decodedText, true);
+
+							if (is_array($products)) {
+
+								// Unset all shipping and payment methods
+								unset($this->session->data['shipping_method']);
+								unset($this->session->data['shipping_methods']);
+								unset($this->session->data['payment_method']);
+								unset($this->session->data['payment_methods']);
+	
+								// clear first before import
+								$this->cart->clear();
+
+								// add products/items to cart
+								$this->cart->bulk_add($products);
+
+								// success response
+								$json['success'] = sprintf($this->language->get('import_success'), $this->cart->countProducts().' item(s)');
+								$json['total']   = sprintf($this->language->get('text_items'), $this->cart->countProducts() + (isset($this->session->data['vouchers']) ? count($this->session->data['vouchers']) : 0), $this->currency->format($total, $this->session->data['currency']));
+							}
+						} else {
+							$json['error'] = $this->language->get('error_import_cart');
+						}
+
+						break;
+				}
+			}
+		}
+		if (!isset($json['success']) && !isset($json['error']) && !isset($json['warning'])) {
+			$json['error'] = $this->language->get('import_generic_error');
+		}
 		$this->response->addHeader('Content-Type: application/json');
 		$this->response->setOutput(json_encode($json));
 	}
