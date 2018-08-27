@@ -10,6 +10,9 @@ class ControllerProductCategory extends Controller {
                 $this->load->model('journal2/product');
             
 
+                $this->load->model('journal2/product');
+            
+
 		$this->load->model('tool/image');
 
 		if (isset($this->request->get['filter'])) {
@@ -98,7 +101,7 @@ class ControllerProductCategory extends Controller {
 			$this->document->setDescription($category_info['meta_description']);
 			$this->document->setKeywords($category_info['meta_keyword']);
 
-			$data['heading_title'] = $category_info['name'];
+			$data['heading_title'] = $category_info['name'] . sprintf($this->language->get('button_add_category_to_cart'), $data['category_id']);
 
 			$data['text_refine'] = $this->language->get('text_refine');
 			$data['text_empty'] = $this->language->get('text_empty');
@@ -242,19 +245,52 @@ class ControllerProductCategory extends Controller {
                 if (count($additional_images) > 0) {
                     $image2 = $this->model_tool_image->resize($additional_images[0]['image'], $this->config->get('config_image_product_width'), $this->config->get('config_image_product_height'));
                 }
+            
 
+                $date_end = false;
+                if (strpos($this->config->get('config_template'), 'journal2') === 0 && $special && $this->journal2->settings->get('show_countdown', 'never') !== 'never') {
+                    $this->load->model('journal2/product');
+                    $date_end = $this->model_journal2_product->getSpecialCountdown($result['product_id']);
+                    if ($date_end === '0000-00-00') {
+                        $date_end = false;
+                    }
+                }
+            
+
+                $additional_images = $this->model_catalog_product->getProductImages($result['product_id']);
+
+                $image2 = false;
+
+                if (count($additional_images) > 0) {
+                    $image2 = $this->model_tool_image->resize($additional_images[0]['image'], $this->config->get('config_image_product_width'), $this->config->get('config_image_product_height'));
+                }
+            
 				$data['products'][] = array(
 					'product_id'  => $result['product_id'],
 					'thumb'       => $image,
-					'thumb2'       => $image2,
-	            	'labels'        => $this->model_journal2_product->getLabels($result['product_id']),
+
+                'thumb2'       => $image2,
+            
+
+                'labels'        => $this->model_journal2_product->getLabels($result['product_id']),
+            
+
+                'thumb2'       => $image2,
+            
+
+                'labels'        => $this->model_journal2_product->getLabels($result['product_id']),
+            
 					'name'        => $result['name'],
 					'description' => utf8_substr(strip_tags(html_entity_decode($result['description'], ENT_QUOTES, 'UTF-8')), 0, $this->config->get($this->config->get('config_theme') . '_product_description_length')) . '..',
 					'price'       => $price,
 					'special'     => $special,
 
-                	'date_end'       => $date_end,
-                	'model'  => $result['model'],
+                'date_end'       => $date_end,
+            
+
+                'date_end'       => $date_end,
+            
+                	'model'       => $result['model'],
             		'cart_qty' => (isset($cartProductIds[$result['product_id']])) ? $cartProductIds[$result['product_id']] : 0,
 					'tax'         => $tax,
 					'minimum'     => $result['minimum'] > 0 ? $result['minimum'] : 1,
