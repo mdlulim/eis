@@ -6,7 +6,7 @@
       <!--<a href="<?php echo $repair; ?>" data-toggle="tooltip" title="<?php echo $button_rebuild; ?>" class="btn btn-default"><i class="fa fa-refresh"></i></a>-->
         <button type="button" data-toggle="tooltip" title="<?php echo $button_delete; ?>" class="btn btn-danger" onclick="confirm('<?php echo $text_confirm; ?>') ? $('#form-category').submit() : false;"><i class="fa fa-trash-o"></i></button>
       </div>
-      <h1><?php echo $heading_title; ?></h1>
+      <h1>test <?php echo $heading_title; ?></h1>
       <ul class="breadcrumb">
         <?php foreach ($breadcrumbs as $breadcrumb) { ?>
         <li><a href="<?php echo $breadcrumb['href']; ?>"><?php echo $breadcrumb['text']; ?></a></li>
@@ -55,12 +55,26 @@
             </div>
           </div>
         </div>
-        <form action="<?php echo $delete; ?>" method="post" enctype="multipart/form-data" id="form-category">
+        <form action="" method="post" enctype="multipart/form-data" id="form-category">
           <div class="table-responsive">
             <table class="table table-bordered table-hover">
               <thead>
                 <tr>
-                  <td style="width: 1px;" class="text-center"><input type="checkbox" onclick="$('input[name*=\'selected\']').prop('checked', this.checked);" /></td>
+                  <td style="width: auto;" class="">
+                    <ul class="" style="padding: 0px;">
+                     <li style="display: inline-block">
+                     <input type="checkbox" onclick="$('input[name*=\'selected\']').prop('checked', this.checked);" />
+                     </li>
+                      <li style="display: inline-block">
+                        <select id="massaction" class="form-control" onchange="massAction()" style="width: 63px; height: 19px;" >
+                           <option value="">Action</option>
+                           <option value="enable">Enable</option>
+                           <option value="disable">Disable</option>
+                           <option type="button" value="delete">Delete</option>
+                        </select>
+                     </li>
+                  </ul>
+                  </td>
                   <td width="100"class="left"><?php echo $column_id; ?></td>
                   <td class="text-left"><?php if ($sort == 'name') { ?>
                     <a href="<?php echo $sort_name; ?>" class="<?php echo strtolower($order); ?>"><?php echo $column_name; ?></a>
@@ -126,6 +140,25 @@
   </div>
 </div>
 <script type="text/javascript">
+function massAction() {
+    var selectedValue = document.getElementById("massaction").value;
+   
+    if(selectedValue == "enable"){
+      var url = 'index.php?route=catalog/category/enableCategory&token=<?php echo $token; ?>';
+      document.getElementById("form-category").action = url;  //Setting form action to "success.php" page
+      confirm('<?php echo "Are you sure you want to enable selected Category?"; ?>') ? $('#form-category').submit() : false;
+    }else if(selectedValue == "disable"){
+      var url = 'index.php?route=catalog/category/disableCategory&token=<?php echo $token; ?>';
+      document.getElementById("form-category").action = url;  //Setting form action to "success.php" page
+      confirm('<?php echo "Are you sure you want to disable selected Category?"; ?>') ? $('#form-category').submit() : false;
+    }else if(selectedValue == "delete"){
+       var url = 'index.php?route=catalog/category/delete&token=<?php echo $token; ?>';
+       document.getElementById("form-category").action = url;  //Setting form action to "success.php" page
+      confirm('<?php echo $text_confirm; ?>') ? $('#form-category').submit() : false;
+    }
+
+}
+
 function filter(){
 url="index.php?route=catalog/category&token=<?php echo $token; ?>";
 var c=$('input[name=\'filter_name\']').val();

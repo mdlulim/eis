@@ -228,7 +228,7 @@ function massAction() {
        var url = 'index.php?route=catalog/product/delete&token=<?php echo $token; ?>';
        document.getElementById("form-product").action = url;  //Setting form action to "success.php" page
       confirm('<?php echo $text_confirm; ?>') ? $('#form-product').submit() : false;
-}
+    }
 
 }
 $('#button-filter').on('click', function() {

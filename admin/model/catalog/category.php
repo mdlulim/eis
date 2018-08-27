@@ -54,6 +54,19 @@ class ModelCatalogCategory extends Model {
 		return $category_id;
 	}
 
+	public function enableCategory($product_id) {
+		$status = 1;
+		$dateModified = date("Y-m-d h:i:s");
+		$sql = "UPDATE " . DB_PREFIX . "category SET status =" .$status. ", date_modified ='".$dateModified."'  WHERE category_id = " . (int)$product_id;
+	    $this->db->query($sql);
+	}
+	public function disableCategory($product_id) {
+		$status = 0;
+		$dateModified = date("Y-m-d h:i:s");
+		$sql = "UPDATE " . DB_PREFIX . "category SET status =" .$status. ", date_modified ='".$dateModified."'  WHERE category_id = " . (int)$product_id;
+		$this->db->query($sql);
+	}
+
 	public function editCategory($category_id, $data) {
 		$this->db->query("UPDATE " . DB_PREFIX . "category SET parent_id = '" . (int)$data['parent_id'] . "', `top` = '" . (isset($data['top']) ? (int)$data['top'] : 0) . "', `column` = '" . (int)$data['column'] . "', sort_order = '" . (int)$data['sort_order'] . "', status = '" . (int)$data['status'] . "', date_modified = NOW() WHERE category_id = '" . (int)$category_id . "'");
 
