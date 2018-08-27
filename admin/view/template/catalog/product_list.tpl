@@ -18,7 +18,7 @@
     <?php if ($error_warning) { ?>
     <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> <?php echo $error_warning; ?>
       <button type="button" class="close" data-dismiss="alert">&times;</button>
-    </div>
+      </div>
     <?php } ?>
     <?php if ($success) { ?>
     <div class="alert alert-success"><i class="fa fa-check-circle"></i> <?php echo $success; ?>
@@ -114,12 +114,26 @@
             </div>
           </div>
         </div>
-        <form action="<?php echo $delete; ?>" method="post" enctype="multipart/form-data" id="form-product">
+        <form action="" method="post" enctype="multipart/form-data" id="form-product">
           <div class="table-responsive">
             <table class="table table-bordered table-hover">
               <thead>
                 <tr>
-                  <td style="width: 1px;" class="text-center"><input type="checkbox" onclick="$('input[name*=\'selected\']').prop('checked', this.checked);" /></td>
+                  <td style="width: auto;">
+                  <ul class="" style="padding: 0px;">
+                     <li style="display: inline-block">
+                     <input type="checkbox" onclick="$('input[name*=\'selected\']').prop('checked', this.checked);" />
+                     </li>
+                      <li style="display: inline-block">
+                        <select id="massaction" class="form-control" onchange="massAction()" style="width: 63px; height: 19px;" >
+                           <option value="">Action</option>
+                           <option value="enable">Enable</option>
+                           <option value="disable">Disable</option>
+                           <option type="button" value="delete">Delete</option>
+                        </select>
+                     </li>
+                  </ul>
+                  </td>
                   <td class="text-center"><?php echo $column_image; ?></td>
                   <td class="text-left"><?php if ($sort == 'pd.name') { ?>
                     <a href="<?php echo $sort_name; ?>" class="<?php echo strtolower($order); ?>"><?php echo $column_name; ?></a>
@@ -199,6 +213,24 @@
     </div>
   </div>
   <script type="text/javascript"><!--
+function massAction() {
+    var selectedValue = document.getElementById("massaction").value;
+   
+    if(selectedValue == "enable"){
+      var url = 'index.php?route=catalog/product/enableProduct&token=<?php echo $token; ?>';
+      document.getElementById("form-product").action = url;  //Setting form action to "success.php" page
+      confirm('<?php echo $text_enable; ?>') ? $('#form-product').submit() : false;
+    }else if(selectedValue == "disable"){
+      var url = 'index.php?route=catalog/product/disableProduct&token=<?php echo $token; ?>';
+      document.getElementById("form-product").action = url;  //Setting form action to "success.php" page
+      confirm('<?php echo $text_disable; ?>') ? $('#form-product').submit() : false;
+    }else if(selectedValue == "delete"){
+       var url = 'index.php?route=catalog/product/delete&token=<?php echo $token; ?>';
+       document.getElementById("form-product").action = url;  //Setting form action to "success.php" page
+      confirm('<?php echo $text_confirm; ?>') ? $('#form-product').submit() : false;
+}
+
+}
 $('#button-filter').on('click', function() {
   var url = 'index.php?route=catalog/product&token=<?php echo $token; ?>';
   var filter_name = $('input[name=\'filter_name\']').val();
