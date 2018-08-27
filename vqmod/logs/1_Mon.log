@@ -1,12 +1,15 @@
----------- Date: 2018-08-13 08:51:40 ~ IP : ::1 ----------
-REQUEST URI : /flmkzn/index.php?route=account/account
+---------- Date: 2018-08-27 12:32:53 ~ IP : 197.97.24.150 ----------
+REQUEST URI : /ameertest/admin/index.php?route=catalog/product/edit&token=BFFBb8oKNmWyX87q7Zp9ab4uuW7mLiOy&product_id=954
 MOD DETAILS:
-   modFile   : /Applications/XAMPP/xamppfiles/htdocs/flmkzn/vqmod/xml/productViewOrder.xml
-   id        : Product - View orders
-   version   : 1.0.0
-   vqmver    : 2.4.2
-   author    : Nerdherd Developers
-VQModObject::parseMods - Could not resolve path for [admin/view/template/catalog/product_listc.tpl] (SKIPPED)
+   modFile   : /var/www/html/Websites-Disk1/ameertest/vqmod/xml/PSM_Prices_By_Customer_groups.xml
+   id        : Prices By Customer Groups
+   version   : 1.0.1 - oc2302
+   vqmver    : 2.1.6
+   author    : OC-addons - oc-addons.com
+
+File Name    : admin/view/template/catalog/product_form.tpl(0)
+VQModObject::applyMod - SEARCH NOT FOUND (ABORTING MOD): <input type="text" name="priceeeee" value="<?php echo $price; ?>" placeholder="<?php echo $entry_price; ?>" id="input-price" class="form-control" />
+
 ----------------------------------------------------------------------
 
 
