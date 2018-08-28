@@ -648,7 +648,7 @@ class ControllerCustomerCustomer extends Controller {
 				'date_added'     => date($this->language->get('date_format_short'), strtotime($result['date_added'])),
 				'approve'        => $approve,
 				'unlock'         => $unlock,
-				'wholesale_activity' => $wholesale_activity,
+				'wholesale_activity' => $this->customerActivity($result),
 				'view'          => $this->url->link('customer/customer_info', 'token=' . $this->session->data['token'] . '&type=general&customer_id=' . $result['customer_id'] . $url, true),
 				'edit'           => $this->url->link('customer/customer/edit', 'token=' . $this->session->data['token'] . '&customer_id=' . $result['customer_id'] . $url, true)
 			);
@@ -851,6 +851,32 @@ class ControllerCustomerCustomer extends Controller {
 		$data['footer'] = $this->load->controller('common/footer');
 
 		$this->response->setOutput($this->load->view('customer/customer_list', $data));
+	}
+
+	protected function customerActivity($customer) {
+		if (!empty($customer['invited'])) {
+			if ($customer['invited'] == 1) {
+				if (!empty($customer['key'])) {
+					switch($customer['key']) {
+
+						/**********************************************************
+						 * Last activity: Customer has been invited
+						 **********************************************************/
+						case 'customer_invitation':
+							return 'Invited';
+							break;
+
+						/**********************************************************
+						 * Last activity: Customer has logged in
+						 **********************************************************/
+						case 'login':
+							return 'Last Login ' . date('Y-m-d H:i A', strtotime($customer['last_activity_date']));
+							break;
+					}
+				}
+			}
+		}
+		return 'Not Invited';
 	}
 
 	protected function getForm() {
