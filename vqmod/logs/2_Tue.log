@@ -1,7 +1,7 @@
----------- Date: 2018-05-29 16:14:27 ~ IP : ::1 ----------
-REQUEST URI : /ReplogicExtension/admin/index.php?route=common/login
+---------- Date: 2018-08-28 11:58:13 ~ IP : 127.0.0.1 ----------
+REQUEST URI : /hub/admin/
 MOD DETAILS:
-   modFile   : /Applications/XAMPP/xamppfiles/htdocs/ReplogicExtension/vqmod/xml/productViewOrder.xml
+   modFile   : /Applications/XAMPP/xamppfiles/htdocs/hub/vqmod/xml/productViewOrder.xml
    id        : Product - View orders
    version   : 1.0.0
    vqmver    : 2.4.2
