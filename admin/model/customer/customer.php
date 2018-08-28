@@ -156,12 +156,12 @@ class ModelCustomerCustomer extends Model {
 	public function getCustomers($data = array(), $allaccess=false, $current_user_id) {
 		if($allaccess)
 		{
-			$sql = "SELECT c.*, CONCAT(c.firstname) AS name, cgd.name AS customer_group, ca.key, ca.data AS customer_activity, ca.date_added AS last_activity_date FROM " . DB_PREFIX . "customer c LEFT JOIN " . DB_PREFIX . "customer_group_description cgd ON (c.customer_group_id = cgd.customer_group_id) LEFT JOIN " . DB_PREFIX . "customer_activity ca ON ca.customer_id = c.customer_id LEFT JOIN oc_salesrep sr on sr.salesrep_id = c.salesrep_id LEFT JOIN oc_team tm on tm.team_id = sr.sales_team_id WHERE tm.sales_manager = '".$current_user_id."' and cgd.language_id = '" . (int)$this->config->get('config_language_id') . "'";
+			$sql = "SELECT c.*, CONCAT(c.firstname) AS name, cgd.name AS customer_group, ca.key, ca.data AS customer_activity, MAX(ca.date_added) AS last_activity_date FROM " . DB_PREFIX . "customer c LEFT JOIN " . DB_PREFIX . "customer_group_description cgd ON (c.customer_group_id = cgd.customer_group_id) LEFT JOIN " . DB_PREFIX . "customer_activity ca ON ca.customer_id = c.customer_id AND ca.key = 'login' LEFT JOIN oc_salesrep sr on sr.salesrep_id = c.salesrep_id LEFT JOIN oc_team tm on tm.team_id = sr.sales_team_id WHERE tm.sales_manager = '".$current_user_id."' and cgd.language_id = '" . (int)$this->config->get('config_language_id') . "'";
 			
 		}
 		else
 		{
-			$sql = "SELECT c.*, CONCAT(c.firstname) AS name, cgd.name AS customer_group, ca.key, ca.data AS customer_activity, ca.date_added AS last_activity_date FROM " . DB_PREFIX . "customer c LEFT JOIN " . DB_PREFIX . "customer_group_description cgd ON (c.customer_group_id = cgd.customer_group_id) LEFT JOIN " . DB_PREFIX . "customer_activity ca ON ca.customer_id = c.customer_id LEFT JOIN oc_salesrep sr on sr.salesrep_id = c.salesrep_id WHERE cgd.language_id = '" . (int)$this->config->get('config_language_id') . "'";
+			$sql = "SELECT c.*, CONCAT(c.firstname) AS name, cgd.name AS customer_group, ca.key, ca.data AS customer_activity, MAX(ca.date_added) AS last_activity_date FROM " . DB_PREFIX . "customer c LEFT JOIN " . DB_PREFIX . "customer_group_description cgd ON (c.customer_group_id = cgd.customer_group_id) LEFT JOIN " . DB_PREFIX . "customer_activity ca ON ca.customer_id = c.customer_id AND ca.key = 'login' LEFT JOIN oc_salesrep sr on sr.salesrep_id = c.salesrep_id WHERE cgd.language_id = '" . (int)$this->config->get('config_language_id') . "'";
 		}
 		$implode = array();
 		if (!empty($data['filter_name'])) {
@@ -226,11 +226,6 @@ class ModelCustomerCustomer extends Model {
 			$sql .= " DESC";
 		} else {
 			$sql .= " ASC";
-		}
-		if (preg_match('/ORDER BY/', $sql)) {
-			$sql .= " , customer_activity DESC";
-		} else {
-			$sql .= " ORDER customer_activity DESC";
 		}
 		if (isset($data['start']) || isset($data['limit'])) {
 			if ($data['start'] < 0) {

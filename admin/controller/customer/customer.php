@@ -860,17 +860,17 @@ class ControllerCustomerCustomer extends Controller {
 					switch($customer['key']) {
 
 						/**********************************************************
-						 * Last activity: Customer has been invited
-						 **********************************************************/
-						case 'customer_invitation':
-							return 'Invited';
-							break;
-
-						/**********************************************************
 						 * Last activity: Customer has logged in
 						 **********************************************************/
 						case 'login':
 							return 'Last Login ' . date('Y-m-d H:i A', strtotime($customer['last_activity_date']));
+							break;
+
+						/**********************************************************
+						 * Last activity: Customer has been invited
+						 **********************************************************/
+						default:
+							return 'Invited';
 							break;
 					}
 				}
