@@ -15,9 +15,9 @@ $_['text_option_value']      = 'Option Value';
 $_['text_percent']           = 'Percentage';
 $_['text_amount']            = 'Fixed Amount';
 
-$_['text_confirm']            = 'Are you sure you want to delete the Product?';
-$_['text_enable']            = 'Are you sure you want to enable the Product(s)?';
-$_['text_disable']            = 'Are you sure you want to disable the Product(s)?';
+$_['text_confirm']            = 'Are you sure you want to delete selected Product?';
+$_['text_enable']            = 'Are you sure you want to enable selected Product(s)?';
+$_['text_disable']            = 'Are you sure you want to disable selected Product(s)?';
 
 // Column
 $_['column_name']            = 'Product Name';

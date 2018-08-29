@@ -100,7 +100,7 @@ class ControllerReportCustomerReward extends Controller {
 		}
 		
 		$this->load->model('customer/customer');
-		$data['Dropdowncustomers'] = $this->model_customer_customer->getCustomers($filter_data, $allaccess = true,$this->session->data['user_id']);
+		$data['Dropdowncustomers'] = $this->model_customer_customer->getCustomers();
 		
 		$data['heading_title'] = $this->language->get('heading_title');
 

@@ -76,6 +76,37 @@ class ControllerCatalogCategory extends Controller {
 		$this->getForm();
 	}
 
+	public function disableCategory() {
+		$this->load->language('catalog/category');
+		$this->document->setTitle($this->language->get('heading_title'));
+		$this->load->model('catalog/category');
+        
+		if (isset($this->request->post['selected'])) {
+			foreach ($this->request->post['selected'] as $product_id) {
+				$this->model_catalog_category->disableCategory($product_id);
+			}
+
+			$this->request->post['selected'] = null;
+			 $this->session->data['success'] = $this->language->get('text_success');
+		}
+		$this->getList();
+	} 
+	public function enableCategory() {
+		$this->load->language('catalog/category');
+		$this->document->setTitle($this->language->get('heading_title'));
+		$this->load->model('catalog/category');
+
+		if (isset($this->request->post['selected'])) {
+            
+			foreach ($this->request->post['selected'] as $product_id) {
+				$this->model_catalog_category->enableCategory($product_id);
+			}
+			$this->request->post['selected'] = null;
+			$this->session->data['success'] = $this->language->get('text_success');		
+		}
+		$this->getList();
+	}
+
 	public function delete() {
 		$this->load->language('catalog/category');
 
@@ -219,7 +250,8 @@ class ControllerCatalogCategory extends Controller {
 		$data['text_list'] = $this->language->get('text_list');
 		$data['text_no_results'] = $this->language->get('text_no_results');
 		$data['text_confirm'] = $this->language->get('text_confirm');
-
+		$data['text_enable'] = $this->language->get('text_enable');
+		$data['text_disable'] = $this->language->get('text_disable');
 		$data['column_name'] = $this->language->get('column_name');
 		$data['column_sort_order'] = $this->language->get('column_sort_order');
 		$data['column_action'] = $this->language->get('column_action');

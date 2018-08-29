@@ -8,6 +8,8 @@ $_['text_list']              = 'Category List';
 $_['text_add']               = 'Add Category';
 $_['text_edit']              = 'Edit Category';
 $_['text_default']           = 'Default';
+$_['text_enable']            = 'Are you sure you want to enable selected category?';
+$_['text_disable']            = 'Are you sure you want to disable selected category?';
 
 // Column
 $_['column_name']            = 'Category Name';

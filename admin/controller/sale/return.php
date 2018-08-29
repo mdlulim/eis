@@ -416,7 +416,7 @@ class ControllerSaleReturn extends Controller {
 		}
 		
 		$this->load->model('customer/customer');
-		$data['customers'] = $this->model_customer_customer->getCustomers($filter_data, $allaccess = true,$this->session->data['user_id']);
+		$data['customers'] = $this->model_customer_customer->getCustomers();
 		
 		$this->load->model('catalog/product');
 		$data['products'] = $this->model_catalog_product->getProducts();

@@ -198,11 +198,11 @@
                         </div>
                       </div>-->
                       <?php foreach ($custom_fields as $custom_field) { ?>
-                      <?php if ($custom_field['location'] == 'account' || $custom_field['location'] == 'approval') { ?>
+                      <?php if ($custom_field['location'] == 'account') { ?>
                       <?php if ($custom_field['type'] == 'select') { ?>
                       <div class="form-group custom-field custom-field<?php echo $custom_field['custom_field_id']; ?>" data-sort="<?php echo $custom_field['sort_order']; ?>">
-                        <label class="col-sm-3 control-label" for="input-custom-field<?php echo $custom_field['custom_field_id']; ?>"><?php echo $custom_field['name']; ?></label>
-                        <div class="col-sm-9">
+                        <label class="col-sm-2 control-label" for="input-custom-field<?php echo $custom_field['custom_field_id']; ?>"><?php echo $custom_field['name']; ?></label>
+                        <div class="col-sm-10">
                           <select name="custom_field[<?php echo $custom_field['custom_field_id']; ?>]" id="input-custom-field<?php echo $custom_field['custom_field_id']; ?>" class="form-control">
                             <option value=""><?php echo $text_select; ?></option>
                             <?php foreach ($custom_field['custom_field_value'] as $custom_field_value) { ?>
@@ -1164,8 +1164,8 @@ $('#content').delegate('button[id^=\'button-custom-field\'], button[id^=\'button
         success: function(json) {
           $(node).parent().find('.text-danger').remove();
           if (json['error']) {
-            $(node).parent().find('input[type=\'hidden\']').after('<div class="text-danger">' + json['error'] + '</div  >');
-          ≥÷÷÷÷÷÷÷÷÷÷÷÷}
+            $(node).parent().find('input[type=\'hidden\']').after('<div class="text-danger">' + json['error'] + '</div>');
+          }
           if (json['success']) {
             alert(json['success']);
           }

@@ -61,7 +61,7 @@
                 <div class="col-sm-11">
                   <div class="tab-content">
                     <div class="tab-pane active" id="tab-customer">
-                      Test mdudu
+                      
                       <div class="form-group">
                         <label class="col-sm-3 control-label" for="input-firstname"><?php //echo $entry_firstname; ?>Company Name</label>
                         <div class="col-sm-9">
