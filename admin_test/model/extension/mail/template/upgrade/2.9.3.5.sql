@@ -1,1 +1,0 @@
-ALTER TABLE `oc_emailtemplate_config` ADD `emailtemplate_config_showcase_padding` VARCHAR(32) AFTER `emailtemplate_config_showcase_title`;
