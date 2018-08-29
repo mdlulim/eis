@@ -168,6 +168,8 @@
     $document.on("submit", '#form__schedule-appointment', function(e) {
         e.preventDefault();
         var $form = $(this);
+        var $data = $form.serialize();
+        
         // validate form 
         if (validateAppointmentForm()) {
             appointmentModal.modal('hide');
@@ -185,11 +187,10 @@
                 if (isConfirm) {
                     var token = $('#content').data('token');
                     var url   = `index.php?route=replogic/schedule_management/scheduleAppointment&token=${token}`;
-                    var data  = $form.serialize();
                     $.ajax({
                         url      : url,
                         type     : 'POST',
-                        data     : data,
+                        data     : $data,
                         dataType : 'json',
                         success  :  function(json) {
                             if (json['success']) {

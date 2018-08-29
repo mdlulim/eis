@@ -8,6 +8,7 @@ $_['text_list']        = 'Appointments';
 $_['text_add']         = 'Add Appointment';
 $_['text_edit']        = 'Edit Appointment';
 $_['text_confirm']        = 'Are you sure want to Delete Appointment ?';
+$_['text_appointment_add_success']     = 'Appointment successfully created!';
 
 // Column
 $_['column_name']      = 'Appointment Name';
@@ -37,3 +38,5 @@ $_['error_bcustomer_name']       = 'Please Enter Customer Name!';
 $_['error_address']       = 'Please Enter Address!';
 $_['error_type']       = 'Please Select Business Type!';
 $_['error_appointment_address']       = 'Please Enter Address!';
+$_['error_appointment_add_generic'] = 'An unexpected error has occurred, please try again.';
+$_['error_time_already_booked'] = 'Sales Rep already booked for the same date/time slot.';
