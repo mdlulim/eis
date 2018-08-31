@@ -292,11 +292,11 @@ class Cart {
 
 	public function bulk_add($products) {
 		$query = $this->db->query("SELECT COUNT(*) AS total FROM " . DB_PREFIX . "cart WHERE api_id = '" . (isset($this->session->data['api_id']) ? (int)$this->session->data['api_id'] : 0) . "' AND customer_id = '" . (int)$this->customer->getId() . "' AND session_id = '" . $this->db->escape($this->session->getId()) . "' AND product_id = '" . (int)$product_id . "' AND recurring_id = '" . (int)$recurring_id . "' AND `option` = '" . $this->db->escape(json_encode($option)) . "'");
+
 		if (!$query->row['total']) {
 			if (!empty($products) && is_array($products)) {
 				$first     = true;
-				$bulkQuery = "INSERT INTO " . DB_PREFIX . "cart VALUES()";
-				$bulkQuery = "INSERT INTO " . DB_PREFIX . "cart (api_id, customer_id, session_id, product_id, recurring_id, option, quantity, date_added) VALUES ";
+				$bulkQuery = "INSERT INTO " . DB_PREFIX . "cart (`api_id`, `customer_id`, `session_id`, `product_id`, `recurring_id`, `option`, `quantity`, `date_added`) VALUES ";
 				foreach($products as $product) {
 					$option      = array();
 					$recurringId = 0;

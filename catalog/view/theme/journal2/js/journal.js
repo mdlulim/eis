@@ -801,7 +801,7 @@ if (Journal.isOC2) {
                     }, 100);
 
                     if (Journal.scrollToTop) {
-                        $('html, body').animate({ scrollTop: 0 }, 'slow');
+                        // $('html, body').animate({ scrollTop: 0 }, 'slow');
                     }
 
                     $('#cart ul').load('index.php?route=common/cart/info ul li');
@@ -845,7 +845,7 @@ if (Journal.isOC2) {
                     }, 100);
 
                     if (Journal.scrollToTop) {
-                        $('html, body').animate({ scrollTop: 0 }, 'slow');
+                        // $('html, body').animate({ scrollTop: 0 }, 'slow');
                     }
 
                     if ($('th.cart-subtotal').length) {
@@ -1011,7 +1011,7 @@ function addToCart(product_id, quantity) {
                 $('.success').fadeIn('slow');
 
                 if (Journal.scrollToTop) {
-                    $('html, body').animate({ scrollTop: 0 }, 'slow');
+                    // $('html, body').animate({ scrollTop: 0 }, 'slow');
                 }
 
                 $('#cart-total').html(json['total']);
@@ -1058,7 +1058,7 @@ Journal.addToCart = function (product_id, element) {
                 }, 100);
 
                 if (Journal.scrollToTop) {
-                    $('html, body').animate({ scrollTop: 0 }, 'slow');
+                    // $('html, body').animate({ scrollTop: 0 }, 'slow');
                 }
 
                 $('#cart ul').load('index.php?route=common/cart/info ul li');
@@ -1108,7 +1108,7 @@ $(document).on('keydown', 'input[name="quantity"]', function(e) {
                         }, 100);
 
                         if (Journal.scrollToTop) {
-                            $('html, body').animate({ scrollTop: 0 }, 'slow');
+                            // $('html, body').animate({ scrollTop: 0 }, 'slow');
                         }
 
                         $('#cart ul').load('index.php?route=common/cart/info ul li');
@@ -1157,7 +1157,7 @@ Journal.removeProductFromCart = function (product_id, element) {
                 }, 100);
 
                 if (Journal.scrollToTop) {
-                    $('html, body').animate({ scrollTop: 0 }, 'slow');
+                    // $('html, body').animate({ scrollTop: 0 }, 'slow');
                 }
 
                 $('#cart ul').load('index.php?route=common/cart/info ul li');
@@ -1198,7 +1198,7 @@ Journal.addCategoryToCart = function (category_id, element) {
                 }, 100);
 
                 if (Journal.scrollToTop) {
-                    $('html, body').animate({ scrollTop: 0 }, 'slow');
+                    // $('html, body').animate({ scrollTop: 0 }, 'slow');
                 }
             }
         }
@@ -1235,7 +1235,7 @@ function addToCartnew(product_id, quantity) {
                 $('.success').fadeIn('slow');
 
                 if (Journal.scrollToTop) {
-                    $('html, body').animate({ scrollTop: 0 }, 'slow');
+                    // $('html, body').animate({ scrollTop: 0 }, 'slow');
                 }
 
                 $('#cart-total').html(json['total']);
@@ -2125,7 +2125,6 @@ Journal.infiniteScroll = function () {
             if (Journal.isOC2) {
                 if (localStorage.getItem('display') == 'list') {
                     $(this).find('.product-thumb').removeClass('product-wrapper');
-
                 } else {
                     $(this).find('.product-thumb').addClass('product-wrapper');
                 }
@@ -2133,6 +2132,11 @@ Journal.infiniteScroll = function () {
                 if ($.totalStorage('display') === 'grid') {
                     $(this).html('<div class="product-wrapper">' + $(this).html() + '</div>')
                     $(this).find('.caption, .button-group').wrapAll('<div class="product-details"/>')
+                }
+            }
+            if (localStorage.getItem('display') == 'table') {
+                if (!$(this).hasClass('product-table-view-headings')) {
+                    $(this).removeClass('product-grid-item xs-50 sm-33 md-33 lg-25 xl-25').addClass('product-table-row xs-100 sm-100 md-100 lg-100 xl-100');
                 }
             }
 

@@ -1,7 +1,16 @@
 var Importer = {};
 
 Importer.fileMaxSize = 5000;
-Importer.fileFormats = ['text/csv', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'];
+Importer.fileFormats = [
+    'text/csv', 
+    'text/x-csv',
+    'application/vnd.ms-excel', 
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    'application/csv',
+    'application/x-csv',
+    'text/comma-separated-values',
+    'text/x-comma-separated-values'
+];
 
 Importer.init = function() {
     
@@ -14,6 +23,7 @@ Importer.triggerFileUpload = function (element) {
 
 Importer.uploadFile = function(input) {
     var file = $(input)[0].files[0];
+    console.log(file);
     if (file) {
         var error;
         var fileSize = parseInt(file.size / 1024); // convert to KB
@@ -44,7 +54,55 @@ Importer.uploadFile = function(input) {
                             contentType: false,
                             success: function(json) {
                                 if (json['success']) {
-                                    $('#modalImportCart').modal('show');
+                                    var products = json['found'];
+                                    swal({
+                                        title: "Continue?",
+                                        text: json['success'],
+                                        type: "success",
+                                        showCancelButton: true,
+                                        confirmButtonClass: "btn-info",
+                                        confirmButtonText: "Yes, continue!",
+                                        closeOnConfirm: true,
+                                        showLoaderOnConfirm: true
+                                    },
+                                    function (isConfirm) {
+                                        if (isConfirm) {
+                                            var postData      = {};
+                                            postData.products = products;
+                                            $.ajax({
+                                                url: `${postUrl}&action=validate`,
+                                                type: 'post',
+                                                dataType: 'json',
+                                                data: postData,
+                                                beforeSend: function() {
+                                                    ajaxLoader.addClass('load');
+                                                    importModal.modal('show');
+                                                    importModal.find('button').attr('disabled', true);
+                                                    importModal.find('button[data-action="add_to_cart"]').prop('disabled', true).html('Processing...');
+                                                },
+                                                success: function(json) {
+                                                    importModal.find('button').attr('disabled', false);
+                                                    importModal.find('button[data-action="add_to_cart"]').attr('disabled', false).html('Continue');
+                                                    if (json['success']) {
+                                                        ajaxLoader.removeClass('load');
+                                                        importModal.find('.text-area').append(`<div class="alert alert-success">${json['success']}</div>`);
+                                                        $('#steps-uid-0-t-1').find('.current-info').remove();
+                                                        $('#steps-uid-0-t-1').parent().removeClass('current').addClass('done');
+                                                        $('#steps-uid-0-t-2').parent().addClass('current');
+                                                        localStorage.setItem('cart_products', json['products']);
+                                                    } else {
+                                                        ajaxLoader.removeClass('load');
+                                                        importModal.modal('hide');
+                                                        swal("Error!", json['error'], "error");
+                                                    }
+                                                }
+                                            });
+                                        } else {
+                                            var hiddenForm = $('#form__import-items-not-found');
+                                            hiddenForm.find('input[name="items"]').val(JSON.stringify(json['not_found']));
+                                            hiddenForm.submit();
+                                        }
+                                    });
                                 } else {
                                     if (json['warning']) {
                                         var products = json['found'];
@@ -60,7 +118,7 @@ Importer.uploadFile = function(input) {
                                         },
                                         function (isConfirm) {
                                             if (isConfirm) {
-                                                var postData   = {};
+                                                var postData      = {};
                                                 postData.products = products;
                                                 $.ajax({
                                                     url: `${postUrl}&action=validate`,

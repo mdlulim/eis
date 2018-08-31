@@ -1168,6 +1168,8 @@ class ControllerCheckoutCart extends Controller {
 										} else {
 											$json['warning'] = sprintf($this->language->get('error_import_upload'), count($json['found']), count($json['items']));
 										}
+									} else {
+										$json['error'] = 'Imported item(s) were not found!';
 									}
 								}
 							}
