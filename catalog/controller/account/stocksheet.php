@@ -57,7 +57,7 @@ class ControllerAccountStocksheet extends Controller {
 		$data['button_continue'] = $this->language->get('button_continue');
 		$data['button_cart'] = $this->language->get('button_cart');
         $data['button_remove'] = $this->language->get('button_remove');
-        $data['addStocksheetToCart']= $this->url->link('account/addStocksheetToCart',true);
+        $data['addStocksheetToCart'] = $this->url->link('account/stocksheet/addStocksheetToCart');
 
 		if (isset($this->session->data['success'])) {
 			$data['success'] = $this->session->data['success'];
@@ -113,7 +113,7 @@ class ControllerAccountStocksheet extends Controller {
                     'remove'     => $this->url->link('account/stocksheet', 'remove=' . $product_info['sku'])
 				);
 			} else {
-				$this->model_account_wishlist->deleteWishlist($result['product_id']);
+				$this->model_account_stocksheet->deleteStocksheet($result['sku']);
 			}
 		}
 
@@ -188,12 +188,11 @@ class ControllerAccountStocksheet extends Controller {
 				
 				foreach($results as $_product_info){
 					$this->load->model('catalog/product');
-                    $product_info = $this->model_catalog_product->getProductSku($result['sku']);
-					
+                    $product_info = $this->model_catalog_product->getProductSku($_product_info['sku']);
 					if ($product_info) {
 						$option_data = array();
-
-						/*$order_options = $this->model_account_order->getOrderOptions($_product_info['order_id'], $order_product_id);
+                        $this->load->model('account/order');
+						$order_options = $this->model_account_order->getOrderOptions('1', $product_info['product_id']);
 
 						foreach ($order_options as $order_option) {
 							if ($order_option['type'] == 'select' || $order_option['type'] == 'radio' || $order_option['type'] == 'image') {
@@ -205,7 +204,7 @@ class ControllerAccountStocksheet extends Controller {
 							} elseif ($order_option['type'] == 'file') {
 								$option_data[$order_option['product_option_id']] = $this->encryption->encrypt($order_option['value']);
 							}
-						}*/
+						}
 
 						$this->cart->add($product_info['product_id'], $_product_info['quantity'], $option_data);
 
