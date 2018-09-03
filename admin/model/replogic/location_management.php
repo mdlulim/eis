@@ -59,7 +59,7 @@ class ModelReplogicLocationManagement extends Model {
 
 	}
 	
-	public function getLocations($data = array()) {
+	public function getLocations($data = array(), $group_by_salesrep=false) {
 		
 		if (!isset($data['filter_team_id'])) {
 
@@ -96,6 +96,10 @@ class ModelReplogicLocationManagement extends Model {
 			if (!empty($data['filter_date']))  { 
 				$sql .= " AND DATE_FORMAT(ck.checkin, '%Y-%m-%d') = '" . $this->db->escape($data['filter_date']) . "'";
 			}
+
+			if ($group_by_salesrep) {
+				$sql .= " GROUP BY ck.salesrep_id";
+			}
 			
 			$sql .= " ORDER BY ck.checkin_id";
 			
@@ -130,6 +134,10 @@ class ModelReplogicLocationManagement extends Model {
 			
 			if (!empty($data['filter_date']))  { 
 				$sql .= " AND DATE_FORMAT(ck.checkin, '%Y-%m-%d') = '" . $this->db->escape($data['filter_date']) . "'";
+			}
+
+			if ($group_by_salesrep) {
+				$sql .= " GROUP BY ck.salesrep_id";
 			}
 			
 			$sql .= " ORDER BY ck.checkin_id";

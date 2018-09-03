@@ -204,7 +204,7 @@ class ControllerReplogicLocationManagement extends Controller {
 		 * Locations | Google Map
 		 *******************************************/
 
-		$locations                 = $this->model_replogic_location_management->getLocations($filters);
+		$locations                 = $this->model_replogic_location_management->getLocations($filters, true);
 		$data['locations']         = array();
 		$data['markers_salesreps'] = array();
 		$data['markers_customers'] = array();
@@ -327,9 +327,9 @@ class ControllerReplogicLocationManagement extends Controller {
 		$data['select_team']           = $this->language->get('select_team');
 		$data['select_salesrep_label'] = $this->language->get('select_salesrep_label');
 		$data['select_salesrep']       = $this->language->get('select_salesrep');
-
-		$data['radio_existing_business'] = $this->language->get('radio_existing_business');
-		$data['radio_new_business']      = $this->language->get('radio_new_business');
+		
+		$data['select_existing_business'] = $this->language->get('select_existing_business');
+		$data['select_new_business']      = $this->language->get('select_new_business');
 		
 		$data['button_reload'] = $this->url->link('replogic/location_management', 'token=' . $data['token'] . $url, true);
 		$data['header']        = $this->load->controller('common/header');
