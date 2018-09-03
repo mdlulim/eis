@@ -67,27 +67,12 @@
                         </div>
                     </div>
                     <div class="col-md-3">
-                        <div class="row">
-                            <div class="col-xs-6">
-                                <div class="form-group">
-                                    <div class="radio">
-                                        <label for="lmf-existing-business">
-                                            <input id="lmf-existing-business" class="lmf-type" name="type" type="radio" value="customer" <?php echo ($filter_type=="customer") ? 'checked' : ''; ?>>
-                                            <span><?php echo $radio_existing_business; ?></span>
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xs-6">
-                                <div class="form-group">
-                                    <div class="radio">
-                                        <label for="lmf-new-business">
-                                            <input id="lmf-new-business" class="lmf-type" name="type" value="prospect" type="radio" <?php echo ($filter_type=="prospect") ? 'checked' : ''; ?>>
-                                            <span><?php echo $radio_new_business; ?></span>
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="form-group">
+                            <label for="lmf-type">Type:</label>
+                            <select id="lmf-type" name="type" class="form-control">
+                                <option value="customer" <?php echo (empty($filter_type) || $filter_type=='customer') ? 'selected' : ''; ?>><?php echo $select_existing_business; ?></option>
+                                <option value="prospect" <?php echo ($filter_type=='prospect') ? 'selected' : ''; ?>><?php echo $select_new_business; ?></option>
+                            </select>
                         </div>
                     </div>
                     <div class="col-md-3">

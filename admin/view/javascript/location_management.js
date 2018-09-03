@@ -76,7 +76,7 @@
         window.location.href = url;
     });
 
-    $document.on("click", 'input.lmf-type', function() {
+    $document.on("change", 'select#lmf-type', function() {
         var obj = { type: $(this).val() };
         var url = filterStateChange(obj, token);
         loader.show();

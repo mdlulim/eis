@@ -19,8 +19,8 @@ $_['select_team']           = 'All Teams';
 $_['select_salesrep_label'] = 'Sales Rep:';
 $_['select_salesrep']       = 'All Sales Reps';
 
-$_['radio_existing_business'] = 'Existing Business';
-$_['radio_new_business']      = 'New Business';
+$_['select_existing_business'] = 'Existing Business';
+$_['select_new_business']      = 'New Business';
 
 // Map Legend [Icon Labels]
 $_['gmap_legend__checkin']  = 'Rep Checked In';
