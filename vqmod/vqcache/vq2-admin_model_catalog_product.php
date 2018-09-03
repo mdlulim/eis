@@ -340,6 +340,20 @@ class ModelCatalogProduct extends Model {
 
 		$this->cache->delete('product');
 	}
+	public function enableProduct($product_id) {
+		$status = 1;
+		$dateModified = date("Y-m-d h:i:s");
+		$sql = "UPDATE " . DB_PREFIX . "product SET status =" .$status. ", date_modified ='".$dateModified."'  WHERE product_id = " . (int)$product_id;
+	    $this->db->query($sql);
+	}
+	public function disableProduct($product_id) {
+		$status = 0;
+		$dateModified = date("Y-m-d h:i:s");
+		$sql = "UPDATE " . DB_PREFIX . "product SET status =" .$status. ", date_modified ='".$dateModified."'  WHERE product_id = " . (int)$product_id;
+		$this->db->query($sql);
+	}
+
+
 
 	public function copyProduct($product_id) {
 		$query = $this->db->query("SELECT DISTINCT * FROM " . DB_PREFIX . "product p WHERE p.product_id = '" . (int)$product_id . "'");
@@ -416,6 +430,8 @@ class ModelCatalogProduct extends Model {
 
 		$this->cache->delete('product');
 	}
+
+
 
 
       public function saveproductname($product_id,$value,$column) {

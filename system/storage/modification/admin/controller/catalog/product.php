@@ -165,11 +165,37 @@ class ControllerCatalogProduct extends Controller {
 			foreach ($this->request->post['selected'] as $product_id) {
 				$this->model_catalog_product->disableProduct($product_id);
 			}
+<<<<<<< HEAD
 
 			 $this->session->data['success'] = $this->language->get('text_success');
 		}
 		$this->getList();
 	} 
+=======
+			$this->request->post['selected'] = null;
+			$this->session->data['success'] = $this->language->get('text_success');
+		}
+		$this->getList();
+	} 
+	public function assignProduct() {
+		//Assign multiple products to a category
+		$this->load->language('catalog/product');
+		$this->document->setTitle($this->language->get('heading_title'));
+		$this->load->model('catalog/product');
+		
+		if (($this->request->server['REQUEST_METHOD'] == 'POST')) {
+			foreach ($this->request->post['selected'] as $product_id) {
+				$this->model_catalog_product->assignProduct($product_id, $this->request->post);
+			}
+			
+			$this->session->data['success'] = $this->language->get('text_success');
+
+			$this->response->redirect($this->url->link('catalog/product', 'token=' . $this->session->data['token'] . $url, true));
+		}
+		$this->getList();
+	}
+
+>>>>>>> d91bb71eb3f7c52e85b1d9650980882a5069eae5
 	public function enableProduct() {
 		$this->load->language('catalog/product');
 		$this->document->setTitle($this->language->get('heading_title'));
@@ -179,6 +205,10 @@ class ControllerCatalogProduct extends Controller {
 			foreach ($this->request->post['selected'] as $product_id) {
 				$this->model_catalog_product->enableProduct($product_id);
 			}
+<<<<<<< HEAD
+=======
+			$this->request->post['selected'] = null;
+>>>>>>> d91bb71eb3f7c52e85b1d9650980882a5069eae5
 			$this->session->data['success'] = $this->language->get('text_success');		
 		}
 		$this->getList();
@@ -302,6 +332,8 @@ class ControllerCatalogProduct extends Controller {
 	}
 
 	protected function getList() {
+		
+
 		if (isset($this->request->get['filter_name'])) {
 			$filter_name = $this->request->get['filter_name'];
 		} else {
@@ -484,6 +516,8 @@ class ControllerCatalogProduct extends Controller {
 		$data['text_disabled'] = $this->language->get('text_disabled');
 		$data['text_no_results'] = $this->language->get('text_no_results');
 		$data['text_confirm'] = $this->language->get('text_confirm');
+		$data['text_enable'] = $this->language->get('text_enable');
+		$data['text_disable'] = $this->language->get('text_disable');
 
 		$data['column_image'] = $this->language->get('column_image');
 		$data['column_name'] = $this->language->get('column_name');
@@ -506,6 +540,21 @@ class ControllerCatalogProduct extends Controller {
 		$data['button_delete'] = $this->language->get('button_delete');
 		$data['button_filter'] = $this->language->get('button_filter');
 
+		$data['product_categories'] = array();
+
+		foreach ($categories as $category_id) {
+			$category_info = $this->model_catalog_category->getCategory($category_id);
+            if ($category_info) {
+				$data['product_categories'][] = array(
+					'category_id' => $category_info['category_id'],
+					'name'        => ($category_info['path']) ? $category_info['path'] . ' &gt; ' . $category_info['name'] : $category_info['name']
+				);
+			}
+		}
+		$data['help_category'] = $this->language->get('help_category');
+		$data['entry_category'] = $this->language->get('entry_category');
+		$data['action'] = $this->url->link('catalog/product/assignProduct', 'token=' . $this->session->data['token'], true);
+		
 		$data['token'] = $this->session->data['token'];
 
 		if (isset($this->error['warning'])) {
@@ -1169,7 +1218,7 @@ class ControllerCatalogProduct extends Controller {
 				);
 			}
 		}
-
+		
 		// Filters
 		$this->load->model('catalog/filter');
 
