@@ -165,13 +165,6 @@ class ControllerCatalogProduct extends Controller {
 			foreach ($this->request->post['selected'] as $product_id) {
 				$this->model_catalog_product->disableProduct($product_id);
 			}
-<<<<<<< HEAD
-
-			 $this->session->data['success'] = $this->language->get('text_success');
-		}
-		$this->getList();
-	} 
-=======
 			$this->request->post['selected'] = null;
 			$this->session->data['success'] = $this->language->get('text_success');
 		}
@@ -195,7 +188,6 @@ class ControllerCatalogProduct extends Controller {
 		$this->getList();
 	}
 
->>>>>>> d91bb71eb3f7c52e85b1d9650980882a5069eae5
 	public function enableProduct() {
 		$this->load->language('catalog/product');
 		$this->document->setTitle($this->language->get('heading_title'));
@@ -205,10 +197,7 @@ class ControllerCatalogProduct extends Controller {
 			foreach ($this->request->post['selected'] as $product_id) {
 				$this->model_catalog_product->enableProduct($product_id);
 			}
-<<<<<<< HEAD
-=======
 			$this->request->post['selected'] = null;
->>>>>>> d91bb71eb3f7c52e85b1d9650980882a5069eae5
 			$this->session->data['success'] = $this->language->get('text_success');		
 		}
 		$this->getList();

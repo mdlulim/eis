@@ -179,8 +179,6 @@ class ModelCatalogProduct extends Model {
 		$this->db->query($sql);
 	}
 	public function assignProduct($product_id, $data){
-		//var_dump($product_id);
-		//var_dump($data['product_category']);die;
 		$this->db->query("DELETE FROM " . DB_PREFIX . "product_to_category WHERE product_id = '" . (int)$product_id . "'");
 
 		if (isset($data['product_category'])) {
