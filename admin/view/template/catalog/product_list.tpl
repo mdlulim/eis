@@ -217,12 +217,12 @@
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Assign Products</h4>
+          <h4 class="modal-title">Assign Products To Contact Pricing</h4>
         </div>
         <div class="modal-body">
         <!--form action="" method="post" enctype="multipart/form-data" id="form-assign-product" class="form-horizontal" -->
-          <div class="form-group">
-                  <label class="col-sm-2 control-label" for="input-category"><span data-toggle="tooltip" title="<?php echo $help_category; ?>"><?php echo $entry_category; ?></span></label>
+         
+          <div class="form-group" id="myCategory" style="display: none;">
                   <div class="col-sm-10">
                     <input type="text" name="category" value="" placeholder="<?php echo $entry_category; ?>" id="input-category" class="form-control" />
                     <div id="product-category" class="well well-sm" style="height: 150px; overflow: auto;">
@@ -235,6 +235,28 @@
                   </div>
                 </div>
           </div>
+        
+          <div class="" id="myStore">
+                <label class="col-sm-2 control-label"></label>
+                <div class="col-sm-10">
+                  <div class="well well-sm" style="height: 150px; overflow: auto;">
+                    
+                    <?php foreach ($groups as $group) { ?>
+                    <div class="checkbox">
+                      <label>
+                        <?php if (in_array($group['customer_group_id'], $product_store)) { ?>
+                        <input type="checkbox" name="product_store[]" value="<?php echo $group['customer_group_id']; ?>" checked="checked" />
+                        <?php echo $group['name']; ?>
+                        <?php } else { ?>
+                        <input type="checkbox" name="product_store[]" value="<?php echo $group['customer_group_id'] ?>" />
+                        <?php echo $group['name']; ?>
+                        <?php } ?>
+                      </label>
+                    </div>
+                    <?php } ?>
+                  </div>
+                </div>
+              </div>
         
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -256,7 +278,10 @@
       </div>
     </div>
   </div>
+
   <script type="text/javascript"><!--
+
+
 $('form input[type="checkbox"]').on('change', function() {
 	if ($('form input[type="checkbox"]:checked').length > 0) {
 		$('.btnBulkAssign').prop('disabled', false);
@@ -264,7 +289,7 @@ $('form input[type="checkbox"]').on('change', function() {
 		$('.btnBulkAssign').prop('disabled', true);
     }
 });
-
+//Assign Option
 function massAction(elem) {
 
     var clickedValue = elem.id;
@@ -274,12 +299,20 @@ function massAction(elem) {
       document.getElementById("form-product").action = url;  //Setting form action to "success.php" page
       confirm('<?php echo $text_enable; ?>') ? $('#form-product').submit() : false;
     }else if(clickedValue == 2){
-      //Assigin
-       var url = 'index.php?route=catalog/product/assignProduct&token=<?php echo $token; ?>';
-      document.getElementById("form-product").action = url;  //Setting form action to "success.php" page
-      confirm('<?php echo "Are you sure?"; ?>') ? $('#form-product').submit() : false;
-
-       
+       var url = 'index.php?route=catalog/product/assignProductToCustomerGroup&token=<?php echo $token; ?>';
+       document.getElementById("form-product").action = url;  //Setting form action to "success.php" page
+       confirm('<?php echo "Are you sure?"; ?>') ? $('#form-product').submit() : false;
+          //Assigin
+          // if(document.getElementById('r1').checked) {  //Assign products to stare
+          //   var url = 'index.php?route=catalog/product/assignProductToStore&token=<?php echo $token; ?>';
+          //   document.getElementById("form-product").action = url;  //Setting form action to "success.php" page
+          //   confirm('<?php echo "Are you sure?"; ?>') ? $('#form-product').submit() : false;
+          // } else if(document.getElementById('r2').checked) { //Assign products to Categorys
+          //   var url = 'index.php?route=catalog/product/assignProduct&token=<?php echo $token; ?>';
+          //   document.getElementById("form-product").action = url;  //Setting form action to "success.php" page
+          //   confirm('<?php echo "Are you sure?"; ?>') ? $('#form-product').submit() : false;
+          // } 
+    
     } else if(clickedValue == 3){
       //Disable
       var url = 'index.php?route=catalog/product/disableProduct&token=<?php echo $token; ?>';

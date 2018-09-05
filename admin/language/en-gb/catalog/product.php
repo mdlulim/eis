@@ -46,6 +46,7 @@ $_['entry_location']         = 'Location';
 $_['entry_shipping']         = 'Requires Shipping';
 $_['entry_manufacturer']     = 'Manufacturer';
 $_['entry_store']            = 'Stores';
+$_['entry_assign']            = 'Assign';
 $_['entry_date_available']   = 'Date Available';
 $_['entry_quantity']         = 'Quantity';
 $_['entry_minimum']          = 'Minimum Quantity';

@@ -156,6 +156,23 @@ class ControllerCatalogProduct extends Controller {
 		}
 		$this->getList();
 	}
+	public function assignProductToCustomerGroup() {
+		//Assign multiple products to stoe
+		$this->load->language('catalog/product');
+		$this->document->setTitle($this->language->get('heading_title'));
+		$this->load->model('catalog/product');
+		
+		if (($this->request->server['REQUEST_METHOD'] == 'POST')) {
+			foreach ($this->request->post['selected'] as $product_id) {
+				$this->model_catalog_product->assignProductToCustomerGroup($product_id, $this->request->post);
+			}
+			
+			$this->session->data['success'] = $this->language->get('text_success');
+
+			$this->response->redirect($this->url->link('catalog/product', 'token=' . $this->session->data['token'] . $url, true));
+		}
+		$this->getList();
+	}
 
 	public function enableProduct() {
 		$this->load->language('catalog/product');
@@ -513,6 +530,13 @@ class ControllerCatalogProduct extends Controller {
 		$data['entry_category'] = $this->language->get('entry_category');
 		$data['action'] = $this->url->link('catalog/product/assignProduct', 'token=' . $this->session->data['token'], true);
 		
+		$this->load->model('customer/customer_group');
+		$this->load->model('catalog/product');
+		$data['groups'] = $this->model_customer_customer_group->getCustomerGroups();
+		$data['entry_store'] = $this->language->get('entry_store');
+		$data['entry_assign'] = $this->language->get('entry_assign');
+		
+
 		$data['token'] = $this->session->data['token'];
 
 		if (isset($this->error['warning'])) {
@@ -935,6 +959,8 @@ class ControllerCatalogProduct extends Controller {
 		$this->load->model('setting/store');
 
 		$data['stores'] = $this->model_setting_store->getStores();
+		
+		$data['all_stores'] = $this->model_setting_store->getAllStores();
 
 		if (isset($this->request->post['product_store'])) {
 			$data['product_store'] = $this->request->post['product_store'];
@@ -984,7 +1010,6 @@ class ControllerCatalogProduct extends Controller {
 		$this->load->model('catalog/product');
 		$data['groups'] = $this->model_customer_customer_group->getCustomerGroups();
 		
-		//print_r($data['groups']); exit;
 		
 		if (isset($this->request->post['pricing'])) {
 			$data['pricing'] = $this->request->post['pricing'];
@@ -993,7 +1018,6 @@ class ControllerCatalogProduct extends Controller {
 		} else {
 			$data['pricing'] = array();
 		}
-	//print_r($data['pricing']); exit;
 
 		$this->load->model('localisation/tax_class');
 
