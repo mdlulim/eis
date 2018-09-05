@@ -75,10 +75,8 @@ class ControllerCustomerCustomer extends Controller {
 			# if B2B customer and send invitation checked
 			# send wholesale customer email invitation
 			if (!empty($customerId) && is_numeric($customerId)) {
-				if (isset($this->request->post['customer_group_id']) && $this->request->post['customer_group_id'] == 3) {
-					if (isset($this->request->post['send_invitation']) && $this->request->post['send_invitation'] == "yes") {
-						$this->sendCustomerInvitation($customerId);
-					}
+				if (isset($this->request->post['send_invitation']) && $this->request->post['send_invitation'] == "yes") {
+					$this->sendCustomerInvitation($customerId);
 				}
 			}
 
@@ -2117,84 +2115,81 @@ class ControllerCustomerCustomer extends Controller {
 				# get customer information
 				$customer = $this->model_customer_customer->getCustomer($customerId);
 
-				if (isset($customer['customer_group_id']) && $customer['customer_group_id'] != 1) {
+				# auto-generate password
+				$password = randomPassword();
 
-					# auto-generate password
-					$password = randomPassword();
+				# update customer password
+				$this->model_customer_customer->updateCustomerPassword($customer['customer_id'], $password);
 
-					# update customer password
-					$this->model_customer_customer->updateCustomerPassword($customer['customer_id'], $password);
+				# add/log customer activity
+				$this->model_customer_customer->addCustomerActivity($customer['customer_id'], $customer['ip'], $this->request->post);
 
-					# add/log customer activity
-					$this->model_customer_customer->addCustomerActivity($customer['customer_id'], $customer['ip'], $this->request->post);
+				# build data array
+				$data['to']      = array('email'=>$customer['email'], 'name'=>$customer['firstname']);
+				$data['from']    = array('email'=>$this->config->get('config_email'), 'name'=>$this->config->get('config_name'));
+				$data['subject'] = 'New Wholesale Account';
 
-					# build data array
-					$data['to']      = array('email'=>$customer['email'], 'name'=>$customer['firstname']);
-					$data['from']    = array('email'=>$this->config->get('config_email'), 'name'=>$this->config->get('config_name'));
-					$data['subject'] = 'New Wholesale Account';
+				switch ($emailClient) {
+					case 'mandrill':
+						# message
+						$data['message'] = array(
+							'subject' => $data['subject'],
+							'to'      => array(
+								array(
+									'email' => $data['to']['email'],
+									'type'  => 'to'
+								)
+							),
+							'global_merge_vars' => array(
+								array(
+									'name'    => 'PASSWORD',
+									'content' => $password
+								),
+								array(
+									'name'    => 'CUSTOMER_NAME',
+									'content' => $customer['firstname']
+								),
+								array(
+									'name'    => 'STORE_URL',
+									'content' => $storeUrl
+								),
+								array(
+									'name'    => 'STORE_NAME',
+									'content' => $this->config->get('config_owner')
+								),
+								array(
+									'name'    => 'STORE_EMAIL',
+									'content' => $companyEmail
+								),
+								array(
+									'name'    => 'HELP_GUIDE',
+									'content' => HELP_GUIDE
+								)
+							)
+						);
+						$template['name'] = 'baselogic-customer-invite';
+						$emailResult      = sendEmail($data, false, $template, $emailClient);
+						$json['success']  = (isset($emailResult[0]['status']) && (
+											$emailResult[0]['status'] == "sent" || 
+											$emailResult[0]['status'] == "queued" || 
+											$emailResult[0]['status'] == "scheduled"));
+						break;
+					
+					default:
+						$data['message'] = 'Good day '.$customer['firstname'].', '.$this->config->get('config_owner').' has invited you to purchase stock via their secure online wholesale portal. To access the portal, go to: '.$this->config->get('config_url').'. To log in, use this email address as your username. Your password is : '.$password;
 
-					switch ($emailClient) {
-						case 'mandrill':
-							# message
-							$data['message'] = array(
-						        'subject' => $data['subject'],
-						        'to'      => array(
-						            array(
-						                'email' => $data['to']['email'],
-						                'type'  => 'to'
-						            )
-						        ),
-						        'global_merge_vars' => array(
-						            array(
-						                'name'    => 'PASSWORD',
-						                'content' => $password
-						            ),
-						            array(
-						                'name'    => 'CUSTOMER_NAME',
-						                'content' => $customer['firstname']
-						            ),
-						            array(
-						                'name'    => 'STORE_URL',
-						                'content' => $storeUrl
-						            ),
-						            array(
-						                'name'    => 'STORE_NAME',
-						                'content' => $this->config->get('config_owner')
-						            ),
-						            array(
-						                'name'    => 'STORE_EMAIL',
-						                'content' => $companyEmail
-						            ),
-						            array(
-						                'name'    => 'HELP_GUIDE',
-						                'content' => HELP_GUIDE
-						            )
-						        )
-						    );
-							$template['name'] = 'baselogic-customer-invite';
-							$emailResult      = sendEmail($data, false, $template, $emailClient);
-							$json['success']  = (isset($emailResult[0]['status']) && (
-								                $emailResult[0]['status'] == "sent" || 
-								                $emailResult[0]['status'] == "queued" || 
-								                $emailResult[0]['status'] == "scheduled"));
-							break;
-						
-						default:
-							$data['message'] = 'Good day '.$customer['firstname'].', '.$this->config->get('config_owner').' has invited you to purchase stock via their secure online wholesale portal. To access the portal, go to: '.$this->config->get('config_url').'. To log in, use this email address as your username. Your password is : '.$password;
+						$tempData = array('emailtemplate_key' => 'customer.invite');
+						$template = $this->model_extension_mail_template->load($tempData);
+						$template->data['password']      = $password;
+						$template->data['customer_name'] = $customer['firstname'];
+						$template->data['_url']          = $this->config->get('config_url');
+						$template->data['_name']         = $this->config->get('config_owner');
+						$template->data['_email']        = $this->config->get('config_email');
+						$template->data['help_guide']    = HELP_GUIDE;
 
-							$tempData = array('emailtemplate_key' => 'customer.invite');
-							$template = $this->model_extension_mail_template->load($tempData);
-							$template->data['password']      = $password;
-							$template->data['customer_name'] = $customer['firstname'];
-							$template->data['_url']          = $this->config->get('config_url');
-							$template->data['_name']         = $this->config->get('config_owner');
-							$template->data['_email']        = $this->config->get('config_email');
-							$template->data['help_guide']    = HELP_GUIDE;
-
-							# send email invitation
-							sendEmail($data, $settings, $template);
-							break;
-					}
+						# send email invitation
+						sendEmail($data, $settings, $template);
+						break;
 				}
 			}
 				
