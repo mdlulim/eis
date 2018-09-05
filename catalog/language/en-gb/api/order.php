@@ -14,3 +14,8 @@ $_['error_no_shipping']      = 'Warning: No Shipping options are available!';
 $_['error_stock']            = 'Warning: Products marked with *** are not available in the desired quantity or not in stock!';
 $_['error_minimum']          = 'Warning: Minimum order amount for %s is %s!';
 $_['error_not_found']        = 'Warning: Order could not be found!';
+
+// Quote Statuses
+$_['quote_status_pending_id']    = 1;
+$_['quote_status_converted_id']  = 2;
+$_['quote_status_denied_id']     = 3;
