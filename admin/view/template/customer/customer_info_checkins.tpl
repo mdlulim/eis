@@ -99,7 +99,7 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="row">
+                                                        <!--<div class="row">
                                                             <div class="col-xs-12">
                                                                 <hr class="loc__hr">
                                                             </div>
@@ -111,7 +111,7 @@
                                                                     <textarea class="form-control" id="remarks" disabled><?php echo $remarks; ?></textarea>
                                                                 </div>
                                                             </div>
-                                                        </div>
+                                                        </div>-->
                                                     </div>
                                                 </div>
                                             </div>

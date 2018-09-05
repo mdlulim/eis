@@ -230,10 +230,22 @@ class ModelReplogicScheduleManagement extends Model {
 		$query  = $this->db->query($sql);
 		$result = $query->rows;
 		$return = array();
+		$times  = array();
 		if (!empty($result)) {
 			foreach($result as $value) {
-				$return[]['appointment_time'] = $value['appointment_start'];
-				$return[]['appointment_time'] = $value['appointment_end'];
+				if ($value['appointment_start'] == $value['appointment_end']) {
+					$return[]['appointment_time'] = $value['appointment_start'];
+					$times[] = $value['appointment_start'];
+				} else {
+					$start  = strtotime($value['appointment_start']);
+					$end    = strtotime($value['appointment_end']);
+					for( $i=$start; $i<=$end; $i+=300) {
+						if (!in_array(date("H:00", $i), $times)) {
+							$return[]['appointment_time'] = date("H:00", $i);
+							$times[] = date("H:00", $i);
+						}
+					}
+				}
 			}
 		}
 		return $return;

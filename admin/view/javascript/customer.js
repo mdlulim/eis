@@ -2,13 +2,13 @@
     "use strict";
 
     var initStateChange = function () {
-    	$(document).on('change', 'select[name="customer_group_id"]', function() {
-			if($(this).val() != '1') {
-				$("#wholesal").show();
-			} else {
-				$("#wholesal").hide();
-			}
-		});
+    	// $(document).on('change', 'select[name="customer_group_id"]', function() {
+		// 	if($(this).val() != '1') {
+		// 		$("#wholesal").show();
+		// 	} else {
+		// 		$("#wholesal").hide();
+		// 	}
+		// });
 		$(document).on('change', '#send_invitation', function () {
 			if ($(this).is(':checked')) {
 				$(this).val('yes');

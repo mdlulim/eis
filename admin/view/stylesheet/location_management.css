@@ -293,7 +293,7 @@ input[type="radio"]:checked,
 .lm-map-container {
     border: 1px solid #eee;
 }
-#lm-map { height: 400px; width: 100%; }
+#lm-map { height: 100%; width: 100%; }
 
 .gmap__infowindow {
     display: block;
