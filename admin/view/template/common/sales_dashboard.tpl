@@ -196,8 +196,8 @@
    DO NOT REMOVE CODE BELOW THIS LINE [ Google Map | JavaScript ]
    ==================================================================================== */
 ?>
-<script>
 
+<script>
     var map;
     var markers = [];
     var infoWindow;
@@ -250,10 +250,10 @@
         <?php endif; ?>
         // </use:php>
 
-
         /*************************************************************
          * Customer location
          *************************************************************/
+
         // <use:php> 
         // # loop through location markers
         <?php if (!empty($markers_customers)) : ?>
@@ -275,10 +275,10 @@
         <?php endif; ?>
         // </use:php>
 
-
         /*************************************************************
          * GPS [Check-in] location
          *************************************************************/
+
         // <use:php> 
         // # loop through location markers
         <?php if (!empty($markers_checkins)) : ?>

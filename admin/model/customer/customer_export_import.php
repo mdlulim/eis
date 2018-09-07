@@ -229,9 +229,9 @@ class ModelCustomerCustomerExportImport extends Model {
 			}
 			$sql .= 'status = '.$data['status'].', ';
 		}
-		
 		$sql1 = rtrim($sql, ', '); 
         if(empty($val['email'])){
+		
 		}else{
 			$sql1 .= ' WHERE email="'.$data['email'].'"';
 		}
@@ -250,6 +250,7 @@ class ModelCustomerCustomerExportImport extends Model {
 			if($customer_id)
 			{ 
 				$dlt = "DELETE FROM ".DB_PREFIX."address where customer_id = '".(int)$customer_id."' and firstname = '".$data['companyname']."' and lastname = '".$data['companyname']."' and company = '".$data['companyname']."' and address_1 = '".$data['address1']."' and city = '".$data['city']."' and postcode = '".$data['postcode']."' and country_id = '".$data['country']."' and zone_id = '".$data['region']."'";
+				$this->db->query($dlt);
 			} 
 			
 			// $this->db->query($dlt);
