@@ -105,6 +105,24 @@ class ControllerCatalogCategory extends Controller {
 		$this->getList();
 	}
 
+	public function assignCategoryToCustomerGroup() {
+		//Assign multiple products to stoe
+		$this->load->language('catalog/category');
+		$this->document->setTitle($this->language->get('heading_title'));
+		$this->load->model('catalog/category');
+		
+	  if (($this->request->server['REQUEST_METHOD'] == 'POST')) {
+		foreach ($this->request->post['selected'] as $category_id) {
+			$this->model_catalog_category->assignCategoryToCustomerGroup($category_id, $this->request->post);
+		}
+			
+			$this->session->data['success'] = $this->language->get('text_success');
+
+			$this->response->redirect($this->url->link('catalog/category', 'token=' . $this->session->data['token'] . $url, true));
+		}
+		$this->getList();
+	}
+
 	public function delete() {
 		$this->load->language('catalog/category');
 
@@ -172,8 +190,8 @@ class ControllerCatalogCategory extends Controller {
 	}
 
 	protected function getList() {
-	
-		die("test");
+	   echo('Test category');exit();
+	   //die("test");
 		if (isset($this->request->get['sort'])) {
 			$sort = $this->request->get['sort'];
 		} else {
@@ -305,14 +323,6 @@ class ControllerCatalogCategory extends Controller {
 		if (isset($this->request->get['order'])) {
 			$url .= '&order=' . $this->request->get['order'];
 		}
-
-		$this->load->model('customer/customer_group');
-		$this->load->model('catalog/product');
-		$data['groups'] = $this->model_customer_customer_group->getCustomerGroups();
-		$data['entry_store'] = $this->language->get('entry_store');
-		$data['entry_assign'] = $this->language->get('entry_assign');
-
-		var_dump($data['groups']);die;
 
 		$pagination = new Pagination();
 		$pagination->total = $category_total;

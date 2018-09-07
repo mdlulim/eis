@@ -1,5 +1,5 @@
 <?=$header?><?=$column_left?>
-  <div id="content" class="sales-dashboard-wrapper">
+  <div id="content" class="sales-dashboard-wrapper" data-page-id="sales_dashboard" data-token="<?php echo $token; ?>" data-page-url="<?php echo $page_url; ?>">
 
     <div class="page-header">
       <div class="container-fluid">

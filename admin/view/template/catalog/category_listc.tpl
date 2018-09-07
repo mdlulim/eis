@@ -5,7 +5,7 @@
       <div class="pull-right"><a href="<?php echo $add; ?>" data-toggle="tooltip" title="<?php echo $button_add; ?>" class="btn btn-primary"><i class="fa fa-plus"></i></a> 
       <!--<a href="<?php echo $repair; ?>" data-toggle="tooltip" title="<?php echo $button_rebuild; ?>" class="btn btn-default"><i class="fa fa-refresh"></i></a>-->
         <button type="button" id="1" data-toggle="tooltip" title="Enable" class="btn btn-success btnBulkAssign" onclick="massAction(this)" disabled><i class="fa fa-play"></i></button>
-        <button type="button" id = "4"data-toggle="modal" data-target="#myModal" title="Assign" class="btn btn-info btnBulkAssign" disabled><i class="fa fa-link"></i></button>
+        <button type="button" data-toggle="modal" data-target="#myModal" title="Assign" class="btn btn-info btnBulkAssign" disabled><i class="fa fa-link"></i></button>
         <button type="button" id="2" data-toggle="tooltip" title="Disable" class="btn btn-warning btnBulkAssign" onclick="massAction(this)" disabled><i class="fa fa-pause"></i></button>
         <button type="button" id="3" data-toggle="tooltip" title="<?php echo $button_delete; ?>" class="btn btn-danger btnBulkAssign" onclick="massAction(this)" disabled><i class="fa fa-trash-o"></i></button>
       </div>
@@ -63,20 +63,9 @@
             <table class="table table-bordered table-hover">
               <thead>
                 <tr>
-                  <td style="width: 1px;" class="">
-                    <!--ul class="" style="padding: 0px;">
-                     <li style="display: inline-block" --> 
+                  <td style="width: 1px;" class=""> 
                      <input type="checkbox" onclick="$('input[name*=\'selected\']').prop('checked', this.checked);" />
-                     <!--/li>
-                      <li style="display: inline-block">
-                        <select id="massaction" class="form-control" onchange="massAction()" style="width: 63px; height: 19px;" >
-                           <option value="">Action</option>
-                           <option value="enable">Enable</option>
-                           <option value="disable">Disable</option>
-                           <option type="button" value="delete">Delete</option>
-                        </select>
-                     </li>
-                  </ul -->
+                    
                   </td>
                   <td width="100"class="left"><?php echo $column_id; ?></td>
                   <td class="text-left"><?php if ($sort == 'name') { ?>
@@ -170,10 +159,10 @@
                     <div class="checkbox">
                       <label>
                         <?php if (in_array($group['customer_group_id'], $product_store)) { ?>
-                        <input type="checkbox" name="product_store[]" value="<?php echo $group['customer_group_id']; ?>" checked="checked" />
+                        <input type="checkbox" name="customer_group[]" value="<?php echo $group['customer_group_id']; ?>" checked="checked" />
                         <?php echo $group['name']; ?>
                         <?php } else { ?>
-                        <input type="checkbox" name="product_store[]" value="<?php echo $group['customer_group_id'] ?>" />
+                        <input type="checkbox" name="customer_group[]" value="<?php echo $group['customer_group_id'] ?>" />
                         <?php echo $group['name']; ?>
                         <?php } ?>
                       </label>
@@ -231,9 +220,9 @@ function massAction(elem) {
       confirm('<?php echo $text_confirm; ?>') ? $('#form-category').submit() : false;
     }else if(clickedValue == 4){
        //Assigin
-       var url = 'index.php?route=catalog/product/assignCategoryToCustomerGroup&token=<?php echo $token; ?>';
-       document.getElementById("form-product").action = url;  //Setting form action to "success.php" page
-       confirm('<?php echo "Are you sure?"; ?>') ? $('#form-product').submit() : false;
+       var url = 'index.php?route=catalog/category/assignCategoryToCustomerGroup&token=<?php echo $token; ?>';
+       document.getElementById("form-category").action = url;  //Setting form action to "success.php" page
+       confirm('<?php echo "Are you sure?"; ?>') ? $('#form-category').submit() : false;
      
     }
 

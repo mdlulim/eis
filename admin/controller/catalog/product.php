@@ -149,7 +149,7 @@ class ControllerCatalogProduct extends Controller {
 			foreach ($this->request->post['selected'] as $product_id) {
 				$this->model_catalog_product->assignProduct($product_id, $this->request->post);
 			}
-			
+			$this->request->post['selected'] = null;
 			$this->session->data['success'] = $this->language->get('text_success');
 
 			$this->response->redirect($this->url->link('catalog/product', 'token=' . $this->session->data['token'] . $url, true));
@@ -166,7 +166,7 @@ class ControllerCatalogProduct extends Controller {
 			foreach ($this->request->post['selected'] as $product_id) {
 				$this->model_catalog_product->assignProductToCustomerGroup($product_id, $this->request->post);
 			}
-			
+			$this->request->post['selected'] = null;
 			$this->session->data['success'] = $this->language->get('text_success');
 
 			$this->response->redirect($this->url->link('catalog/product', 'token=' . $this->session->data['token'] . $url, true));
@@ -201,7 +201,7 @@ class ControllerCatalogProduct extends Controller {
 			foreach ($this->request->post['selected'] as $product_id) {
 				$this->model_catalog_product->deleteProduct($product_id);
 			}
-
+			
 			$this->session->data['success'] = $this->language->get('text_success');
 
 			$url = '';

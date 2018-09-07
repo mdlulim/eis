@@ -302,16 +302,6 @@ function massAction(elem) {
        var url = 'index.php?route=catalog/product/assignProductToCustomerGroup&token=<?php echo $token; ?>';
        document.getElementById("form-product").action = url;  //Setting form action to "success.php" page
        confirm('<?php echo "Are you sure?"; ?>') ? $('#form-product').submit() : false;
-          //Assigin
-          // if(document.getElementById('r1').checked) {  //Assign products to stare
-          //   var url = 'index.php?route=catalog/product/assignProductToStore&token=<?php echo $token; ?>';
-          //   document.getElementById("form-product").action = url;  //Setting form action to "success.php" page
-          //   confirm('<?php echo "Are you sure?"; ?>') ? $('#form-product').submit() : false;
-          // } else if(document.getElementById('r2').checked) { //Assign products to Categorys
-          //   var url = 'index.php?route=catalog/product/assignProduct&token=<?php echo $token; ?>';
-          //   document.getElementById("form-product").action = url;  //Setting form action to "success.php" page
-          //   confirm('<?php echo "Are you sure?"; ?>') ? $('#form-product').submit() : false;
-          // } 
     
     } else if(clickedValue == 3){
       //Disable

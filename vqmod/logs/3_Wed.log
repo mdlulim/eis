@@ -84,3 +84,39 @@ VQModObject::applyMod - SEARCH NOT FOUND (ABORTING MOD): <button type="button" i
 ----------------------------------------------------------------------
 
 
+---------- Date: 2018-09-05 11:37:01 ~ IP : ::1 ----------
+REQUEST URI : /saleslogicmdu/admin/index.php?route=catalog/category&token=sRV6frqiwEEDPYj0YS6X6e1o6Z7n3eW8
+MOD DETAILS:
+   modFile   : /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/vqmod/xml/productViewOrder.xml
+   id        : Product - View orders
+   version   : 1.0.0
+   vqmver    : 2.4.2
+   author    : Nerdherd Developers
+VQModObject::parseMods - Could not resolve path for [admin/view/template/catalog/product_listc.tpl] (SKIPPED)
+----------------------------------------------------------------------
+
+
+---------- Date: 2018-09-05 11:40:34 ~ IP : ::1 ----------
+REQUEST URI : /saleslogicmdu/admin/index.php?route=catalog/category&token=sRV6frqiwEEDPYj0YS6X6e1o6Z7n3eW8
+MOD DETAILS:
+   modFile   : /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/vqmod/xml/productViewOrder.xml
+   id        : Product - View orders
+   version   : 1.0.0
+   vqmver    : 2.4.2
+   author    : Nerdherd Developers
+VQModObject::parseMods - Could not resolve path for [admin/view/template/catalog/product_listc.tpl] (SKIPPED)
+----------------------------------------------------------------------
+
+
+---------- Date: 2018-09-05 12:01:40 ~ IP : ::1 ----------
+REQUEST URI : /saleslogicmdu/admin/index.php?route=extension/modification/refresh&token=sRV6frqiwEEDPYj0YS6X6e1o6Z7n3eW8
+MOD DETAILS:
+   modFile   : /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/vqmod/xml/productViewOrder.xml
+   id        : Product - View orders
+   version   : 1.0.0
+   vqmver    : 2.4.2
+   author    : Nerdherd Developers
+VQModObject::parseMods - Could not resolve path for [admin/view/template/catalog/product_listc.tpl] (SKIPPED)
+----------------------------------------------------------------------
+
+

@@ -1,15 +1,14 @@
----------- Date: 2018-08-30 09:23:24 ~ IP : ::1 ----------
-REQUEST URI : /saleslogicmdu/admin/index.php?route=catalog/product/edit&token=cHgAB2jClboNfW0YlCKFHRo72B3BCRGa&product_id=1944
+---------- Date: 2018-09-06 15:22:44 ~ IP : ::1 ----------
+REQUEST URI : /saleslogicmdu/admin/index.php?route=catalog/product&token=2VSorFrAIyze2Gv5n2wmYQ48ZbZAqRlZ
 MOD DETAILS:
-   modFile   : /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/vqmod/xml/PSM_Prices_By_Customer_groups.xml
-   id        : Prices By Customer Groups
-   version   : 1.0.1 - oc2302
-   vqmver    : 2.1.6
-   author    : OC-addons - oc-addons.com
+   modFile   : /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/vqmod/xml/productViewOrder.xml
+   id        : Product - View orders
+   version   : 1.0.0
+   vqmver    : 2.4.2
+   author    : Nerdherd Developers
 
-File Name    : admin/view/template/catalog/product_form.tpl(0)
-VQModObject::applyMod - SEARCH NOT FOUND (ABORTING MOD): <input type="text" name="priceeeee" value="<?php echo $price; ?>" placeholder="<?php echo $entry_price; ?>" id="input-price" class="form-control" />
-
+File Name    : admin/view/template/catalog/product_list.tpl(8)
+VQModObject::applyMod - SEARCH NOT FOUND (ABORTING MOD): <button type="button" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-search"></i> <?php echo $button_filter; ?></button>
 ----------------------------------------------------------------------
 
 
