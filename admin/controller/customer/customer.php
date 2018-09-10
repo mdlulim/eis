@@ -1973,7 +1973,7 @@ class ControllerCustomerCustomer extends Controller {
 
 	protected function sendCustomerInvitation($customer_id) {
 
-		$emailClient = "mandrill";
+		$emailClient = $this->config->get('config_mail_client');
 
 		$this->load->model('customer/customer');
 		$this->load->model('setting/setting');
@@ -2083,7 +2083,7 @@ class ControllerCustomerCustomer extends Controller {
 
 	protected function sendBulkCustomerInvitation() {
 
-		$emailClient = "mandrill";
+		$emailClient = $this->config->get('config_mail_client');
 
 		# load model
 		$this->load->model('customer/customer');

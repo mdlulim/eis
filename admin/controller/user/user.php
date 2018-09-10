@@ -140,7 +140,7 @@ class ControllerUserUser extends Controller {
 		echo json_encode($json);
 	}
 	protected function sendUserInvitation($user_info) {
-		$emailClient = "mandrill";
+		$emailClient = $this->config->get('config_mail_client');
 		# build data array
 		$data['subject'] = 'Welcome to Saleslogic';
 		$data['to']      = array('email'=>$user_info['email'], 'name'=>$user_info['firstname']);
