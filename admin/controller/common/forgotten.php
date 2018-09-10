@@ -21,10 +21,6 @@ class ControllerCommonForgotten extends Controller {
 
 			$this->load->language('mail/forgotten');
 
-			/*******************************************************
-			 * Send reset password email using Mandrill
-			 *******************************************************/
-
 			$userInfo = $this->model_user_user->getUserByEmail($this->request->post['email']);
 
 			if (!empty($userInfo)) {
@@ -35,54 +31,66 @@ class ControllerCommonForgotten extends Controller {
 				# update password in DB
 				$this->model_user_user->editPassword($userInfo['user_id'], $password);
 
+				# get mail client
+				$emailClient = $this->config->get('config_mail_client');
+
 				# build data array for email
 				$email['subject'] = 'Password Reset Confirmation';
 				$email['to']      = array('email'=>$userInfo['email'], 'name'=>$userInfo['firstname']);
 				$email['from']    = array('email'=>$this->config->get('config_email'), 'name'=>$this->config->get('config_name'));
 
-				# message for email
-				$email['message'] = array(
-			        'subject' => $email['subject'],
-			        'to'      => array(
-			            array(
-			                'email' => $email['to']['email'],
-			                'type'  => 'to'
-			            )
-			        ),
-			        'global_merge_vars' => array(
-			            array(
-			                'name'    => 'PASSWORD',
-			                'content' => $password
-			            ),
-			            array(
-			                'name'    => 'STORE_URL',
-			                'content' => $this->config->get('config_url')
-			            ),
-			            array(
-			                'name'    => 'STORE_NAME',
-			                'content' => $this->config->get('config_owner')
-			            ),
-			            array(
-			                'name'    => 'STORE_EMAIL',
-			                'content' => $this->config->get('config_email')
-			            ),
-			            array(
-			                'name'    => 'HELP_GUIDE',
-			                'content' => 'https://help.saleslogic.io/portal/home'
-			            ),
-			            array(
-			                'name'    => 'MANAGER_EMAIL',
-			                'content' => $this->config->get('config_email')
-			            ),
-			        )
-			    );
-				$template['name'] = 'baselogic-reset-password';
-				$emailResult      = sendEmail($email, false, $template, "mandrill");
-				if (isset($emailResult[0]['status']) && ($emailResult[0]['status'] == "sent" || $emailResult[0]['status'] == "queued" || $emailResult[0]['status'] == "scheduled")) {
-					$this->session->data['success'] = $this->language->get('text_success');
-					$this->response->redirect($this->url->link('common/login', '', true));
-				} else {
-					$this->error['warning'] = $this->language->get('error_generic');
+				switch ($emailClient) {
+					case 'mandrill':
+
+						/*******************************************************
+						 * Send reset password email using Mandrill
+						 *******************************************************/
+
+						# message for email
+						$email['message'] = array(
+							'subject' => $email['subject'],
+							'to'      => array(
+								array(
+									'email' => $email['to']['email'],
+									'type'  => 'to'
+								)
+							),
+							'global_merge_vars' => array(
+								array(
+									'name'    => 'PASSWORD',
+									'content' => $password
+								),
+								array(
+									'name'    => 'STORE_URL',
+									'content' => $this->config->get('config_url')
+								),
+								array(
+									'name'    => 'STORE_NAME',
+									'content' => $this->config->get('config_owner')
+								),
+								array(
+									'name'    => 'STORE_EMAIL',
+									'content' => $this->config->get('config_email')
+								),
+								array(
+									'name'    => 'HELP_GUIDE',
+									'content' => 'https://help.saleslogic.io/portal/home'
+								),
+								array(
+									'name'    => 'MANAGER_EMAIL',
+									'content' => $this->config->get('config_email')
+								),
+							)
+						);
+						$template['name'] = 'baselogic-reset-password';
+						$emailResult      = sendEmail($email, false, $template, $emailClient);
+						if (isset($emailResult[0]['status']) && ($emailResult[0]['status'] == "sent" || $emailResult[0]['status'] == "queued" || $emailResult[0]['status'] == "scheduled")) {
+							$this->session->data['success'] = $this->language->get('text_success');
+							$this->response->redirect($this->url->link('common/login', '', true));
+						} else {
+							$this->error['warning'] = $this->language->get('error_generic');
+						}
+						break;
 				}
 			}
 		}

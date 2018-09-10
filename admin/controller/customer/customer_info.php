@@ -3628,7 +3628,7 @@ class ControllerCustomerCustomerInfo extends Controller {
 
 		$json['success'] = false;
 
-		$emailClient = 'mandrill';
+		$emailClient = $this->config->get('config_mail_client');
 
 		# get rep settings
 		$repSettings  = $this->model_setting_setting->getRepSettings();

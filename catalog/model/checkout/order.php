@@ -562,6 +562,7 @@ class ModelCheckoutOrder extends Model {
 	
 				// Order Totals
 				$data['totals'] = array();
+				$orderTotal     = '';
 				
 				$order_total_query = $this->db->query("SELECT * FROM `" . DB_PREFIX . "order_total` WHERE order_id = '" . (int)$order_id . "' ORDER BY sort_order ASC");
 	
@@ -570,6 +571,9 @@ class ModelCheckoutOrder extends Model {
 						'title' => $total['title'],
 						'text'  => $this->currency->format($total['value'], $order_info['currency_code'], $order_info['currency_value']),
 					);
+					if ($total['code'] === 'total') {
+						$orderTotal = $this->currency->format($total['value'], $order_info['currency_code'], $order_info['currency_value']);
+					}
 				}
 	
 				// Text Mail
@@ -637,8 +641,21 @@ class ModelCheckoutOrder extends Model {
 					$text .= $language->get('text_new_comment') . "\n\n";
 					$text .= $order_info['comment'] . "\n\n";
 				}
-	
+
+				// Get company id
+				$query     = $this->db->query("SELECT * FROM " . DB_PREFIX . "rep_settings order by company_id asc LIMIT 1");
+				$row       = $query->row;
+				$companyId = $row['company_id'];
+			
 				$text .= $language->get('text_new_footer') . "\n\n";
+
+				// Add data for the order confirmation email 
+				$data['company_address'] = str_replace(',', '<br/>', $this->config->get('config_address'));
+				$data['cust_name']       = $customer_info['firstname'];
+				$data['order_date']      = date('F d, Y', strtotime($order_info['date_added']));
+				$data['order_total']     = $orderTotal;
+				$data['support_email']   = $this->config->get('config_email');
+				$data['order_url']       = ORDER_ONLINE_URL.'?cid='.$companyId.'&id='.$order_id;
 	
 				$mail = new Mail();
 				$mail->protocol = $this->config->get('config_mail_protocol');
@@ -653,7 +670,7 @@ class ModelCheckoutOrder extends Model {
 				$mail->setFrom($this->config->get('config_email'));
 				$mail->setSender(html_entity_decode($order_info['store_name'], ENT_QUOTES, 'UTF-8'));
 				$mail->setSubject(html_entity_decode($subject, ENT_QUOTES, 'UTF-8'));
-				$mail->setHtml($this->load->view('mail/order', $data));
+				$mail->setHtml($this->load->view('mail/order-new', $data));
 				$mail->setText($text);
 				$mail->send();
 	
@@ -741,7 +758,7 @@ class ModelCheckoutOrder extends Model {
 					$mail->setFrom($this->config->get('config_email'));
 					$mail->setSender(html_entity_decode($order_info['store_name'], ENT_QUOTES, 'UTF-8'));
 					$mail->setSubject(html_entity_decode($subject, ENT_QUOTES, 'UTF-8'));
-					$mail->setHtml($this->load->view('mail/order', $data));
+					$mail->setHtml($this->load->view('mail/order-new', $data));
 					$mail->setText($text);
 					$mail->send();
 	

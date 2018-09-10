@@ -2086,16 +2086,28 @@ Journal.infiniteScroll = function () {
 
         $(items).each(function () {
             if (Journal.isOC2) {
-                if (localStorage.getItem('display') == 'list') {
-                    $(this).find('.product-thumb').removeClass('product-wrapper');
-
+            	if (localStorage.getItem('display') == 'list') {
+                	if ($(this).find('.head-proddetails').length === 0) {
+                    	$(this).find('.product-thumb').removeClass('product-wrapper');
+                	} else {
+                		$(this).html('').removeClass('product-list-item xs-100 sm-100 md-100 lg-100 xl-100');
+                	}
                 } else {
-                    $(this).find('.product-thumb').addClass('product-wrapper');
+                	if ($(this).find('.head-proddetails').length === 0) {
+                    	$(this).find('.product-thumb').addClass('product-wrapper');
+                	} else {
+                		$(this).html('').removeClass('product-grid-item xs-50 sm-50 md-25 lg-20 xl-16 display-icon inline-button');
+                	}
                 }
             } else {
                 if ($.totalStorage('display') === 'grid') {
                     $(this).html('<div class="product-wrapper">' + $(this).html() + '</div>')
                     $(this).find('.caption, .button-group').wrapAll('<div class="product-details"/>')
+                }
+            }
+            if (localStorage.getItem('display') == 'table') {
+                if (!$(this).hasClass('product-table-view-headings')) {
+                    $(this).removeClass('product-grid-item xs-50 sm-33 md-33 lg-25 xl-25').addClass('product-table-row xs-100 sm-100 md-100 lg-100 xl-100');
                 }
             }
 
@@ -2105,6 +2117,11 @@ Journal.infiniteScroll = function () {
     });
 
     Journal.SuperFilter.$ias.on('rendered', function (items) {
+
+    	if ($('.product-table-view-headings').length >= 2) {
+    		$('.product-table-view-headings')[1].remove();
+        }
+        
         $('.ias-loader').remove();
 
         if(Journal.quickViewStatus) {
