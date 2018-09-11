@@ -125,8 +125,8 @@
                     <a href="javascript:;" class="journal-stepper" onclick="Journal.addToCart(<?php echo $product['product_id']; ?>, this)">+</a>
                   </span>
                 </td>
-                <td class="text-right price"><?php echo $product['price']; ?></td>
-                <td class="text-right total"><?php echo $product['total']; ?></td>
+                <td class="text-right price"><?php echo (!$this->config->get('config_hide_price')) ? $product['price'] : ''; ?></td>
+                <td class="text-right total"><?php echo (!$this->config->get('config_hide_price')) ? $product['total'] : ''; ?></td>
                 <td class="text-right remove-from-cart">
                     <a href="#" data-toggle="tooltip" title="<?php echo $button_remove; ?>" class="btn-remove-cart-item" onclick="cart.remove('<?php echo $product[version_compare(VERSION, '2.1', '<') ? 'key' : 'cart_id']; ?>');"><i class="fa fa-trash-o"></i></a>
                 </td>
@@ -148,6 +148,7 @@
               </tr>
               <?php } ?>
             </tbody>
+            <?php if (!$this->config->get('config_hide_price')) { ?>
             <tfoot>
               <?php foreach ($totals as $total) : ?>
               <tr>
@@ -157,6 +158,7 @@
               </tr>
               <?php endforeach; ?>
             </tfoot>
+            <?php } ?>
           </table>
         </div>
       </form>

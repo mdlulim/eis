@@ -862,6 +862,12 @@ PRODUCT LABELS
   opacity: 1;
   visibility: visible; }
 
+.product-table .quickview-button {
+  -webkit-backface-visibility: hidden !important;
+  visibility: visible !important;
+  display: none !important;
+}
+
 .quickview {
   /* animate in */
   /* animate out */ }

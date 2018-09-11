@@ -46,7 +46,7 @@
             <td class="text-left name"><a href="<?php echo $product['href']; ?>"><?php echo $product['name']; ?></a></td>
             <td class="text-left model"><?php echo $product['model']; ?></td>
             <td class="text-right stock"><input type="text" name="stock" value="<?php echo $product['stock']; ?>" maxlength="4" size="4"/></td>
-            <td class="text-right price"><?php if ($product['price']) { ?>
+            <td class="text-right price"><?php if (!$this->config->get('config_hide_price') && $product['price']) { ?>
               <div class="price">
                 <?php if (!$product['special']) { ?>
                 <?php echo $product['price']; ?>
