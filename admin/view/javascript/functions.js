@@ -1192,7 +1192,7 @@ Quotes.init = function() {
 					var storeId     = customerTab.find('input[name="store_id"]').val()
 
 		            /**********************************************
-					*            Modify Customer Group            
+					*            Modify Customer [Custom Fields]            
 					***********************************************/
 
 		            var utoken          = $('#content').data('token');
@@ -1205,7 +1205,7 @@ Quotes.init = function() {
 		                crossDomain: true,
 		                success    :  function(json) {
 		                    if (json['error']) {
-		                    	var message = (json['error']) ? json['error'] : 'Failed to add customer. An unexpected error occured.';
+		                    	var message = (json['error']) ? json['error'] : 'An unexpected error occured.';
 		                    	if (typeof swal === "function") {
 				            		swal("Error!", message, "error");
 				            	} else {
