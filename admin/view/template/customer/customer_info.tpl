@@ -81,7 +81,6 @@
                           <input type="text" name="email" value="<?php echo $email; ?>" placeholder="<?php echo $entry_email; ?>" id="input-email" class="form-control" disabled="disabled" />
                         </div>
                       </div>
-                         <?php if($customer_group_id != '1') { ?> 
                       <h2 class="drawline"></h2>
                       <div class="form-group" id="wholesal"  >
                         <label class="col-sm-3 control-label" for="input-customer-group">Wholesale Invitation Status</label>
@@ -97,7 +96,6 @@
                           </a>
                         </div>
                       </div>
-                       <?php } ?> 
                       <div class="form-group">
                         <label class="col-sm-3 control-label" for="input-customer-group">Contract Pricing</label>
                         <div class="col-sm-9">
