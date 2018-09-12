@@ -860,18 +860,15 @@ class ControllerCustomerCustomer extends Controller {
 						/**********************************************************
 						 * Last activity: Customer has logged in
 						 **********************************************************/
-						case 'login':
-							return 'Last Login ' . date('Y-m-d H:i A', strtotime($customer['last_activity_date']));
-							break;
+						case 'login': return 'Last Login ' . date('Y-m-d H:i A', strtotime($customer['last_activity_date']));
 
 						/**********************************************************
 						 * Last activity: Customer has been invited
 						 **********************************************************/
-						default:
-							return 'Invited';
-							break;
+						default: return 'Invited';
 					}
 				}
+				return 'Invited';
 			}
 		}
 		return 'Not Invited';
