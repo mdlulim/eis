@@ -7,6 +7,19 @@ class ControllerAccountAccount extends Controller {
 			$this->response->redirect($this->url->link('account/login', '', true));
 		}
 
+		/*==================================
+		=       Add Files (Includes)       =
+		==================================*/
+
+		# stylesheets (CSS) files
+		$this->document->addStyle('catalog/view/javascript/bootstrap-sweetalert/sweetalert.css');
+
+		# javascript (JS) files
+		$this->document->addScript('catalog/view/javascript/bootstrap-sweetalert/sweetalert.min.js');
+		$this->document->addScript('catalog/view/javascript/bootstrap-sweetalert/sweetalert-data.js');
+
+		/*=====  End of Add Files (Includes)  ======*/
+
 		$this->load->language('account/account');
 
 		$this->document->setTitle($this->language->get('heading_title'));
