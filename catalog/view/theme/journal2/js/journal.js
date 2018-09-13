@@ -2136,7 +2136,7 @@ Journal.infiniteScroll = function () {
             }
             if (localStorage.getItem('display') == 'table') {
                 if (!$(this).hasClass('product-table-view-headings')) {
-                    $(this).removeClass('product-grid-item xs-50 sm-33 md-33 lg-25 xl-25').addClass('product-table-row xs-100 sm-100 md-100 lg-100 xl-100');
+                    $(this).removeClass('product-grid-item xs-50 sm-33 md-33 lg-25 xl-25 md-25 lg-16 xl-16').addClass('product-table-row xs-100 sm-100 md-100 lg-100 xl-100');
                 }
             }
 
