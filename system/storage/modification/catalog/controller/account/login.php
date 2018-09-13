@@ -93,7 +93,7 @@ class ControllerAccountLogin extends Controller {
 			} else {
 				$customerInfo = $this->model_account_customer->getCustomer($this->customer->getId());
 				$url          = (isset($customerInfo['prompt_change_password']) && $customerInfo['prompt_change_password'] == 1) ? '&change_password=1' : '';
-				$this->response->redirect($this->url->link('common/home', $url, true));
+				$this->response->redirect($this->url->link('account/account', $url, true));
 			}
 		}
 
