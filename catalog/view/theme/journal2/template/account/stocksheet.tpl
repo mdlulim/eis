@@ -30,6 +30,7 @@
       </h1>
       <?php echo $content_top; ?>
       <div class="content wishlist-info">
+      <?php if ($products) { ?>
       <div class="row datatable-custom-filters" data-filter-columns="[1,2,3]">
         <div class="col-sm-6"><div id="export-buttons"></div></div>
         <div class="col-sm-6 pull-right">
@@ -72,7 +73,6 @@
           </form>
         </div>
       </div>
-      <?php if ($products) { ?>
         <div class="table-responsive">
       <table class="table table-bordered table-hover">
         <thead>
