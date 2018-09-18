@@ -7,6 +7,32 @@ class ControllerAccountStocksheet extends Controller {
 			$this->response->redirect($this->url->link('account/login', '', true));
 		}
 
+		/*==================================
+		=       Add Files (Includes)       =
+		==================================*/
+
+		# stylesheets (CSS) files
+		$this->document->addStyle('admin/view/javascript/bootstrap-sweetalert/sweetalert.css');
+		$this->document->addStyle('catalog/view/javascript/datatables/datatables.min.css');
+		$this->document->addStyle('catalog/view/javascript/datatables/buttons/buttons.datatables.min.css');
+		$this->document->addStyle('catalog/view/stylesheets/custom.css');
+		$this->document->addStyle('catalog/view/stylesheets/stocksheet.css');
+
+		# javascript (JS) files
+		$this->document->addScript('admin/view/javascript/bootstrap-sweetalert/sweetalert.min.js');
+		$this->document->addScript('admin/view/javascript/bootstrap-sweetalert/sweetalert-data.js');
+		$this->document->addScript('catalog/view/javascript/datatables/datatables.min.js');
+		$this->document->addScript('catalog/view/javascript/datatables/buttons/datatables.buttons.min.js');
+		$this->document->addScript('catalog/view/javascript/datatables/buttons/buttons.flash.min.js');
+		$this->document->addScript('catalog/view/javascript/jszip/jszip.min.js');
+		$this->document->addScript('catalog/view/javascript/pdfmake/pdfmake.min.js');
+		$this->document->addScript('catalog/view/javascript/pdfmake/vfs_fonts.js');
+		$this->document->addScript('catalog/view/javascript/datatables/buttons/buttons.html5.min.js');
+		$this->document->addScript('catalog/view/javascript/importer.js');
+		$this->document->addScript('catalog/view/javascript/stocksheet.js');
+
+		/*=====  End of Add Files (Includes)  ======*/
+
 		$this->load->language('account/stocksheet');
 
 		$this->load->model('account/stocksheet');
@@ -117,6 +143,9 @@ class ControllerAccountStocksheet extends Controller {
 			}
 		}
 
+		$data['import_modal'] = $this->load->view('module/import_stocksheet');
+		$data['button_import'] = $this->language->get('button_import');
+
 		$data['continue'] = $this->url->link('account/account', '', true);
 
 		$data['column_left'] = $this->load->controller('common/column_left');
@@ -218,5 +247,216 @@ class ControllerAccountStocksheet extends Controller {
 		}
 		
 		$this->response->redirect($this->url->link('checkout/cart'));
+	}
+
+	public function import() {
+
+		$this->load->language('account/stocksheet');
+		$this->load->model('account/stocksheet');
+		$this->load->model('catalog/product');
+
+		set_time_limit(0);
+		ini_set('memory_limit', '1G');
+		ini_set("auto_detect_line_endings", true);
+
+		$json     = array();
+		$formats  = array('xls', 'xlsx', 'csv'); // supported file types
+		$colHeads = array('Product Name', 'Category', 'SKU', 'Quantity', 'Unit Price', 'Total'); // expected column headings
+		$maxSize  = 5097152;  // maximum file size (5MB)
+
+		if ($this->request->server['REQUEST_METHOD'] == 'POST') {
+
+			if (isset($this->request->get['action'])) {
+
+				switch ($this->request->get['action']) {
+
+					/******************************************************
+					 * Check and Upload file content
+					 ******************************************************/
+
+					case "upload":
+
+						if (isset($this->request->files['import'] ) && is_uploaded_file($this->request->files['import']['tmp_name'])) {
+
+							$file = $_FILES['import']['tmp_name'];
+							$name = $this->request->files['import']['name'];
+							$size = $this->request->files['import']['size'];
+							$ext  = strtolower(pathinfo($name, PATHINFO_EXTENSION));
+
+							if (!in_array($ext, $formats)) {
+
+								/******************************************************
+								 * File type error | type not supported
+								 ******************************************************/
+
+								$json['error'] = $this->language->get('import_file_type_error');
+
+							} else {
+								
+								if ($size > $maxSize) {
+
+									/******************************************************
+									 * File size error | size limit exceeded
+									 ******************************************************/
+
+									$json['error'] = $this->language->get('import_file_size_error');
+
+								} else {
+
+									/******************************************************
+									 * Perform file import
+									 ******************************************************/	
+
+									$inputFileName = $file;
+									$inputFileType = PHPExcel_IOFactory::identify($inputFileName);
+									$objReader     = PHPExcel_IOFactory::createReader($inputFileType);
+									$objPHPExcel   = $objReader->load($inputFileName);
+									$sheet         = $objPHPExcel->getSheet(0);
+									$highestRow    = $sheet->getHighestRow();
+									$highestColumn = $sheet->getHighestColumn();
+									$detailsColumn = 2;
+									$fields        = array();
+									$dataRows      = array();
+									$header        = array();
+									$found         = true;
+
+									for ($row = 1; $row <= 1; $row++) { 
+										$header1 = $sheet->rangeToArray('A' . $row . ':' . $highestColumn . $row, NULL, FALSE, FALSE);
+									}
+									
+									// Check if row has right data [not headings]
+									if (!in_array($header1[0][0], $colHeads)) {
+										$detailsColumn++;
+										for ($row = 2; $row <= 2; $row++) {
+											$header1 = $sheet->rangeToArray('A' . $row . ':' . $highestColumn . $row, NULL, FALSE, FALSE);
+										}
+									}
+									
+									foreach ($header1 as $key => $val) {
+										$header = array_merge($val, $header);
+									}
+
+									for ($row = $detailsColumn; $row <= $highestRow; $row++) {
+										$sheetdata1 = $sheet->rangeToArray('A' . $row . ':' . $highestColumn . $row, NULL, FALSE, FALSE);
+										$sheetdata  = array();
+										foreach ($sheetdata1 as $key => $val) {
+											$sheetdata = array_merge($val, $sheetdata);
+										}
+										$dataRows[] = array_combine($header, $sheetdata);
+									}
+			
+									$barcodes   = array();
+									$quantities = array();
+									$dataItems  = array();
+			
+									// loop through data rows [from imported file]
+									foreach ($dataRows as $data) {
+										if (!empty($data) && count($data) > 0) {
+											
+											$barcode  = $data['SKU'];           # sku/barcode
+											$quantity = (int)$data['Quantity']; # quantity
+											
+											if (!empty($barcode) && !empty($quantity) && is_numeric($quantity)) {
+												$barcodes[]   = $barcode;
+												$quantities[] = $quantity;
+												$dataItems[]  = array('sku'=>$barcode, 'quantity'=>$quantity);
+											}
+										}
+									}
+			
+									// find multiple products from database
+									$products      = $this->model_catalog_product->getProductsBySku(implode("','",$barcodes));
+									$json['items'] = $dataItems;
+
+									if (!empty($products) && is_array($products)) {
+										foreach($dataItems as $key => $item) {
+											$skuCode  = array_column($products, 'sku');
+											$foundKey = array_search($item['sku'], $skuCode);
+											if ($foundKey === false) {
+												$json['not_found'][] = $item;
+											} else {
+												$json['found'][] = $item;
+											}
+										}
+										if (empty($json['not_found'])) {
+											$json['success'] = $this->language->get('text_upload_success');
+										} else {
+											$json['warning'] = sprintf($this->language->get('error_import_upload'), count($json['found']), count($json['items']));
+										}
+									}
+								}
+							}
+						}
+						break;
+
+					/******************************************************
+					 * Validate import data
+					 ******************************************************/
+
+					case "validate":
+
+						if (!empty($this->request->post['products']) && is_array($this->request->post['products'])) {
+
+							$barcodes   = array();
+							$quantities = array();
+
+							foreach($this->request->post['products'] as $item) {
+								$barcodes[]   = $item['sku'];
+								$quantities[] = $item['quantity'];
+							}
+							
+							// find multiple products from database
+							$products = $this->model_catalog_product->getProductsBySku(implode("','", $barcodes));
+
+							if (!empty($products) && count($products) > 0) {
+								$returnProducts = [];
+								foreach($products as $k => &$product) {
+									$key = array_search($product['sku'], $barcodes);
+									if ($key !== false) {
+										$product['import_quantity'] = $quantities[$key];
+										$returnProducts[]           = $product;
+									}
+								}
+								$json['products'] = json_encode($returnProducts);
+								$json['success']  = $this->language->get('text_validate_success');
+							}
+						}
+						
+						break;
+
+					/******************************************************
+					 * Add products to cart
+					 ******************************************************/
+					
+					case "add_to_stocksheet":
+
+						if (!empty($this->request->post['products'])) {
+							
+							// convert json to array
+							$decodedText = html_entity_decode($this->request->post['products']);
+							$products    = json_decode($decodedText, true);
+
+							if (is_array($products)) {
+
+								// add products/items to stock sheet
+								$this->model_account_stocksheet->bulkAddStocksheet($products);
+
+								// success response
+								$json['success'] = sprintf($this->language->get('import_success'), count($products).' item(s)');
+								$json['total']   = sprintf($this->language->get('text_wishlist'), $this->model_account_wishlist->getTotalWishlist());
+							}
+						} else {
+							$json['error'] = $this->language->get('error_import_stocksheet');
+						}
+
+						break;
+				}
+			}
+		}
+		if (!isset($json['success']) && !isset($json['error']) && !isset($json['warning'])) {
+			$json['error'] = $this->language->get('import_generic_error');
+		}
+		$this->response->addHeader('Content-Type: application/json');
+		$this->response->setOutput(json_encode($json));
 	}
 }

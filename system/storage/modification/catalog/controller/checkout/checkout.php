@@ -1,63 +1,25 @@
 <?php
 class ControllerCheckoutCheckout extends Controller {
 	public function index() {
-
-		$storeId = $this->config->get('config_store_id');
-
 		// Validate cart has products and has stock.
 		if ((!$this->cart->hasProducts() && empty($this->session->data['vouchers'])) || (!$this->cart->hasStock() && !$this->config->get('config_stock_checkout'))) {
 			$this->response->redirect($this->url->link('checkout/cart'));
 		}
-		
-		if ($storeId === 0 && INTEGRATION_ID == '1') {
 
-			/*************************************************
-			 * If Arch Integration and Store ID = '0' 
-			 *  - Only redirect to cart if all products in
-			 *    cart have zero quantity. This will allow
-			 *    checkout ONLY on items/products with 
-			 *    quantity >= 1
-			 *************************************************/
-			
-			$products      = $this->cart->getProducts();
-			$allowCheckout = false;
+		// Validate minimum quantity requirements.
+		$products = $this->cart->getProducts();
 
-			foreach ($products as $product) {
-				$product_total = 0;
-				foreach ($products as $product_2) {
-					if ($product_2['product_id'] == $product['product_id']) {
-						$product_total += $product_2['quantity'];
-					}
-				}
-				if ($product_total > 0) {
-					$allowCheckout = true;
+		foreach ($products as $product) {
+			$product_total = 0;
+
+			foreach ($products as $product_2) {
+				if ($product_2['product_id'] == $product['product_id']) {
+					$product_total += $product_2['quantity'];
 				}
 			}
 
-			if (!$allowCheckout) {
+			if ($product['minimum'] > $product_total) {
 				$this->response->redirect($this->url->link('checkout/cart'));
-			}
-			
-		} else {
-
-			/*************************************************
-			 * Validate minimum quantity requirements.
-			 *************************************************/
-			
-			$products = $this->cart->getProducts();
-
-			foreach ($products as $product) {
-				$product_total = 0;
-
-				foreach ($products as $product_2) {
-					if ($product_2['product_id'] == $product['product_id']) {
-						$product_total += $product_2['quantity'];
-					}
-				}
-
-				if ($product['minimum'] > $product_total) {
-					$this->response->redirect($this->url->link('checkout/cart'));
-				}
 			}
 		}
 
@@ -74,9 +36,10 @@ class ControllerCheckoutCheckout extends Controller {
 			$this->document->addScript('http://cdn.klarna.com/public/kitt/toc/v1.0/js/klarna.terms.min.js');
 		}
 
-		if (strpos($this->config->get('config_template'), 'journal2') === 0 && $this->journal2->settings->get('journal_checkout')) {
-			return new Action('journal2/checkout');
-		}
+
+                if (strpos($this->config->get('config_template'), 'journal2') === 0 && $this->journal2->settings->get('journal_checkout')) {
+                    return new Action('journal2/checkout');
+                }
             
 		$data['breadcrumbs'] = array();
 

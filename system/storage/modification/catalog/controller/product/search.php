@@ -289,11 +289,11 @@ class ControllerProductSearch extends Controller {
 					'price'       => $price,
 					'special'     => $special,
 
-                    'date_end'    => $date_end,
-                	'model'  => $result['model'],
-            		'cart_qty' => (isset($cartProductIds[$result['product_id']])) ? $cartProductIds[$result['product_id']] : 0,
+                'date_end'       => $date_end,
             
 					'tax'         => $tax,
+                	'model'  => $result['model'],
+            		'cart_qty' => (isset($cartProductIds[$result['product_id']])) ? $cartProductIds[$result['product_id']] : 0,
 					'minimum'     => $result['minimum'] > 0 ? $result['minimum'] : 1,
 					'rating'      => $result['rating'],
 					'href'        => $this->url->link('product/product', 'product_id=' . $result['product_id'] . $url)

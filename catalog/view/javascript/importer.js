@@ -23,7 +23,6 @@ Importer.triggerFileUpload = function (element) {
 
 Importer.uploadFile = function(input) {
     var file = $(input)[0].files[0];
-    console.log(file);
     if (file) {
         var error;
         var fileSize = parseInt(file.size / 1024); // convert to KB
@@ -41,9 +40,21 @@ Importer.uploadFile = function(input) {
                 },
                 function(isConfirm) {
                     if (isConfirm) {
-                        var formData    = new FormData(document.getElementById("form-cart-importer"));
-                        var postUrl     = 'index.php?route=checkout/cart/import';
-                        var importModal = $('#modalImportCart');
+                        if ($("#form-cart-importer").length) {
+                            var formData      = new FormData(document.getElementById("form-cart-importer"));
+                            var postUrl       = 'index.php?route=checkout/cart/import';
+                            var importModal   = $('#modalImportCart');
+                            var actionButton  = 'button[data-action="add_to_cart"]';
+                            var localstoreVar = 'cart_products';
+                        } else if ($("#form-stocksheet-importer").length) {
+                            var formData      = new FormData(document.getElementById("form-stocksheet-importer"));
+                            var postUrl       = 'index.php?route=account/stocksheet/import';
+                            var importModal   = $('#modalImportStocksheet');
+                            var actionButton  = 'button[data-action="add_to_stocksheet"]';
+                            var localstoreVar = 'stocksheet_products';
+                        }
+                        
+                        
                         var ajaxLoader  = importModal.find('.ajax__loader');
                         $.ajax({
                             url: `${postUrl}&action=upload`,
@@ -78,18 +89,18 @@ Importer.uploadFile = function(input) {
                                                     ajaxLoader.addClass('load');
                                                     importModal.modal('show');
                                                     importModal.find('button').attr('disabled', true);
-                                                    importModal.find('button[data-action="add_to_cart"]').prop('disabled', true).html('Processing...');
+                                                    importModal.find(actionButton).prop('disabled', true).html('Processing...');
                                                 },
                                                 success: function(json) {
                                                     importModal.find('button').attr('disabled', false);
-                                                    importModal.find('button[data-action="add_to_cart"]').attr('disabled', false).html('Continue');
+                                                    importModal.find(actionButton).attr('disabled', false).html('Continue');
                                                     if (json['success']) {
                                                         ajaxLoader.removeClass('load');
                                                         importModal.find('.text-area').append(`<div class="alert alert-success">${json['success']}</div>`);
                                                         $('#steps-uid-0-t-1').find('.current-info').remove();
                                                         $('#steps-uid-0-t-1').parent().removeClass('current').addClass('done');
                                                         $('#steps-uid-0-t-2').parent().addClass('current');
-                                                        localStorage.setItem('cart_products', json['products']);
+                                                        localStorage.setItem(localstoreVar, json['products']);
                                                     } else {
                                                         ajaxLoader.removeClass('load');
                                                         importModal.modal('hide');
@@ -129,18 +140,18 @@ Importer.uploadFile = function(input) {
                                                         ajaxLoader.addClass('load');
                                                         importModal.modal('show');
                                                         importModal.find('button').attr('disabled', true);
-                                                        importModal.find('button[data-action="add_to_cart"]').prop('disabled', true).html('Processing...');
+                                                        importModal.find(actionButton).prop('disabled', true).html('Processing...');
                                                     },
                                                     success: function(json) {
                                                         importModal.find('button').attr('disabled', false);
-                                                        importModal.find('button[data-action="add_to_cart"]').attr('disabled', false).html('Continue');
+                                                        importModal.find(actionButton).attr('disabled', false).html('Continue');
                                                         if (json['success']) {
                                                             ajaxLoader.removeClass('load');
                                                             importModal.find('.text-area').append(`<div class="alert alert-success">${json['success']}</div>`);
                                                             $('#steps-uid-0-t-1').find('.current-info').remove();
                                                             $('#steps-uid-0-t-1').parent().removeClass('current').addClass('done');
                                                             $('#steps-uid-0-t-2').parent().addClass('current');
-                                                            localStorage.setItem('cart_products', json['products']);
+                                                            localStorage.setItem(localstoreVar, json['products']);
                                                         } else {
                                                             ajaxLoader.removeClass('load');
                                                             importModal.modal('hide');
@@ -224,3 +235,56 @@ Importer.addItemsToCart = function(element) {
         location.href = 'index.php?route=checkout/cart';
     }
 };
+
+Importer.addItemsToStocksheet = function(element) {
+    var postUrl     = 'index.php?route=account/stocksheet/import&action=' + $(element).attr('data-action');
+    var finish      = ($(element).attr('data-action') === "finish");
+    var postData    = { products: localStorage.getItem('stocksheet_products') };
+    var importModal = $('#modalImportStocksheet');
+    var ajaxLoader  = importModal.find('.ajax__loader');
+    if (!finish) {
+        $.ajax({
+            url: postUrl,
+            type: 'post',
+            dataType: 'json',
+            data: postData,
+            beforeSend: function() {
+                importModal.find('button').attr('disabled', true);
+                ajaxLoader.addClass('load');
+                importModal.find('.alert').remove();
+                $(element).prop('disabled', true).html('Processing...');
+            },
+            success: function(json) {
+                importModal.find('button').attr('disabled', false);
+                ajaxLoader.removeClass('load');
+                if (json['success']) {
+                    importModal.find('.text-area').append(`<div class="alert alert-success">${json['success']}</div>`);
+                    $('#steps-uid-0-t-2').find('.current-info').remove();
+                    $('#steps-uid-0-t-2').parent().removeClass('current').addClass('done');
+                    $('#steps-uid-0-t-3').parent().addClass('current');
+                    $(element).attr('data-action', 'finish').attr('disabled', false).html('Finish');
+                } else {
+                    $(element).attr('disabled', false).html('Continue');
+                    importModal.modal('hide');
+                    swal("Error!", json['error'], "error");
+                }
+            },
+            error: function(xhr,status,error) {
+                if (status.indexOf("error") !== -1) {
+                    importModal.find('button').attr('disabled', false);
+                    ajaxLoader.removeClass('load');
+                    importModal.modal('hide');
+                    $(element).html('Continue');
+                    swal("Error!", 'An unexpected error has occured. Please try again', "error");
+                }
+            }
+        });
+    } else {
+        importModal.find('button').attr('disabled', true);
+        importModal.find('.alert').remove();
+        ajaxLoader.addClass('load');
+        $(element).html('Refreshing...');
+        location.href = 'index.php?route=account/stocksheet';
+    }
+};
+
