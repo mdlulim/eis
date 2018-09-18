@@ -31,7 +31,7 @@
       <?php echo $content_top; ?>
       <div class="content wishlist-info">
       <?php if ($products) { ?>
-      <div class="row datatable-custom-filters" data-filter-columns="[1,2,3]">
+      <div class="row datatable-custom-filters" data-filter-columns="[1,2]">
         <div class="col-sm-6"><div id="export-buttons"></div></div>
         <div class="col-sm-6 pull-right">
           <form class="form-inline" style="float:right">
@@ -48,21 +48,14 @@
                     <li>
                       <a class="checkbox">
                         <label>
-                          <input type="checkbox" checked="checked" value="1">Product Name
+                          <input type="checkbox" checked="checked" value="1"><?php echo $column_name; ?>
                         </label>
                       </a>
                     </li>
                     <li>
                       <a class="checkbox">
                         <label>
-                          <input type="checkbox" checked="checked" value="2">Category
-                        </label>
-                      </a>
-                    </li>
-                    <li>
-                      <a class="checkbox">
-                        <label>
-                          <input type="checkbox" checked="checked" value="3">SKU
+                          <input type="checkbox" checked="checked" value="2"><?php echo $column_model; ?>
                         </label>
                       </a>
                     </li>
