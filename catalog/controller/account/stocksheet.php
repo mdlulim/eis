@@ -261,7 +261,7 @@ class ControllerAccountStocksheet extends Controller {
 
 		$json     = array();
 		$formats  = array('xls', 'xlsx', 'csv'); // supported file types
-		$colHeads = array('Product Name', 'Category', 'SKU', 'Quantity', 'Stock', 'Unit Price', 'Total'); // expected column headings
+		$colHeads = array('Product Name', 'Category', 'SKU', 'Model', 'Quantity', 'Stock', 'Unit Price', 'Total'); // expected column headings
 		$maxSize  = 5097152;  // maximum file size (5MB)
 
 		if ($this->request->server['REQUEST_METHOD'] == 'POST') {
@@ -353,7 +353,7 @@ class ControllerAccountStocksheet extends Controller {
 									foreach ($dataRows as $data) {
 										if (!empty($data) && count($data) > 0) {
 											
-											$barcode  = $data['SKU'];           # sku/barcode
+											$barcode  = (!empty($data['Model'])) ? $data['Model'] : $data['SKU'];           # sku/barcode
 											$quantity = (!empty($data['Stock'])) ? (int)$data['Stock'] : (int)$data['Quantity']; # quantity
 											
 											if (!empty($barcode) && !empty($quantity) && is_numeric($quantity)) {
@@ -383,6 +383,8 @@ class ControllerAccountStocksheet extends Controller {
 										} else {
 											$json['warning'] = sprintf($this->language->get('error_import_upload'), count($json['found']), count($json['items']));
 										}
+									} else {
+										$json['error'] = $this->language->get('import_no_items_found_error');
 									}
 								}
 							}

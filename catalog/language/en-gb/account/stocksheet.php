@@ -26,10 +26,11 @@ $_['button_import'] = '
     </button>
 </form>';
 
-$_['import_success']           = 'You have added %s to your stock sheet!';
-$_['import_file_type_error']   = 'The file type imported is not supported, please upload your file in CSV, XLS and XLSX';
-$_['import_file_size_error']   = 'The File you have imported has exceeded the maximum size, please make sure that your file is not more than 5MB';
-$_['import_generic_error']     = 'An unexpected error has occured, please try again!';
+$_['import_success']              = 'You have added %s to your stock sheet!';
+$_['import_file_type_error']      = 'The file type imported is not supported, please upload your file in CSV, XLS and XLSX';
+$_['import_file_size_error']      = 'The File you have imported has exceeded the maximum size, please make sure that your file is not more than 5MB';
+$_['import_generic_error']        = 'An unexpected error has occured, please try again!';
+$_['import_no_items_found_error'] = 'Items could not be found in the system!';
 
 // Warning
 $_['warning_import_items_not_found'] = 'Below is the list of records [or items] imported to stock sheet that were not found in the system.';
