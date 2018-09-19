@@ -55,7 +55,11 @@
         <input type="hidden" name="lastname" value="<?php echo $firstname; ?>" />
         <input type="hidden" name="store_id" value="0" />
         <input type="hidden" name="telephone" value="<?php echo $telephone; ?>" />
-         
+        <?php if (!empty($custom_fields)) : ?>
+        <?php foreach($custom_fields as $cfid => $cfval) : ?>
+        <input type="hidden" name="custom_field[<?php echo $cfid; ?>]" value="<?php echo $cfval; ?>" />
+        <?php endforeach; ?>
+        <?php endif; ?>
     </div>
     
     <div id="tab-shipping" style="display:none">

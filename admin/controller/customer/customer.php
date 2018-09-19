@@ -860,18 +860,15 @@ class ControllerCustomerCustomer extends Controller {
 						/**********************************************************
 						 * Last activity: Customer has logged in
 						 **********************************************************/
-						case 'login':
-							return 'Last Login ' . date('Y-m-d H:i A', strtotime($customer['last_activity_date']));
-							break;
+						case 'login': return 'Last Login ' . date('Y-m-d H:i A', strtotime($customer['last_activity_date']));
 
 						/**********************************************************
 						 * Last activity: Customer has been invited
 						 **********************************************************/
-						default:
-							return 'Invited';
-							break;
+						default: return 'Invited';
 					}
 				}
+				return 'Invited';
 			}
 		}
 		return 'Not Invited';
@@ -1973,7 +1970,7 @@ class ControllerCustomerCustomer extends Controller {
 
 	protected function sendCustomerInvitation($customer_id) {
 
-		$emailClient = "mandrill";
+		$emailClient = $this->config->get('config_mail_client');
 
 		$this->load->model('customer/customer');
 		$this->load->model('setting/setting');
@@ -2082,8 +2079,13 @@ class ControllerCustomerCustomer extends Controller {
 	}
 
 	protected function sendBulkCustomerInvitation() {
+					
+		set_time_limit(0);
+		ini_set('memory_limit', '1G');
 
-		$emailClient = "mandrill";
+		$emailClient  = $this->config->get('config_mail_client');
+		$customers    = array();
+		$allCustomers = false;
 
 		# load model
 		$this->load->model('customer/customer');
@@ -2108,12 +2110,24 @@ class ControllerCustomerCustomer extends Controller {
 
 		# send mail and output JSON encoded results back to JS
 		if (isset($this->request->post['customers']) && is_array($this->request->post['customers'])) {
-			foreach ($this->request->post['customers'] as $key => $value) {
+			$customers    = $this->request->post['customers'];
+		} else if (isset($this->request->post['all_customers']) && $this->request->post['all_customers']) {
+			# get all customers [with selected filters on the page]
+			$customers    = $this->model_customer_customer->getCustomers($this->request->post['filters']);
+			$allCustomers = true;
+		}
+		if (!empty($customers)) {
+			foreach ($customers as $key => $value) {
 
-				$customerId = $value['id'];
+				if ($allCustomers) {
+					$customer = $value;
+				} else {
 
-				# get customer information
-				$customer = $this->model_customer_customer->getCustomer($customerId);
+					$customerId = $value['id'];
+
+					# get customer information
+					$customer = $this->model_customer_customer->getCustomer($customerId);
+				}
 
 				# auto-generate password
 				$password = randomPassword();

@@ -65,23 +65,33 @@
 
     var initBulkSendInvitation = function () {
     	$(document).on('click', '#button-invitation', function() {
-    		var form = $('#form-customer');
+			var form = $('#form-customer');
+			var allCustomers = $('input.check__bulk-select-all');
     		var customers = form.find('input[name^="selected"]');
     		var postUrl = form.attr('action').replace('customer/customer/delete', 'customer/customer/invitation');
-    		var postData = {};
+			var postData = {};
+			var text = '';
     		postData.ajax = 1;
-    		postData.send_bulk_invitation = 1;
+			postData.send_bulk_invitation = 1;
+			postData.all_customers = false;
     		postData.customers = [];
 
     		if (customers.length > 0) {
-    			for (var i = 0; i < customers.length; i++) {
-    				if ($(customers[i]).is(':checked')) {
-    					var customer = {
-    						id: customers[i].value
-    					};
-    					postData.customers.push(customer);
-    				}
-    			}
+				if (allCustomers.is(':checked')) {
+					postData.filters = getAllUrlParams(location.href);
+					postData.all_customers = true;
+					text = "You are about to send invitation to all selected customers.";
+				} else {
+					for (var i = 0; i < customers.length; i++) {
+						if ($(customers[i]).is(':checked')) {
+							var customer = {
+								id: customers[i].value
+							};
+							postData.customers.push(customer);
+						}
+					}
+					text = "You are about to send invitation to "+postData.customers.length+" selected customer(s).";
+				}
     		} else {
     			swal("Error!", "Please select customer(s) to send invitation to.", "error");
     			return false;
@@ -89,7 +99,7 @@
 
     		swal({
 				title: "Are you sure?",
-				text: "You are about to send invitation to "+postData.customers.length+" selected customer(s).",
+				text: text,
 				type: "warning",
 				showCancelButton: true,
 				confirmButtonClass: "btn-info",
@@ -106,13 +116,14 @@
 		    				$('.loader-wrapper').show();
 		    			},
 		    			success: function(xhr) {
-		    				var res = $.parseJSON(xhr);
+							var res         = $.parseJSON(xhr);
+							var successText = ($('input.check__bulk-select-all').is(':checked')) ? "Email invitation has been sent to all selected customers." : "Email invitation has been sent to "+postData.customers.length+" customer(s).";
 		    				$('.loader-wrapper').hide();
 		    				if (res.success) {
 		    					$('input[type="checkbox"]').prop('checked', false);
 			    				$('#button-delete').prop('disabled', true);
 	    						$('#button-invitation').prop('disabled', true);
-		    					swal("Sent!", "Email invitation has been sent to "+postData.customers.length+" customer(s).", "success");
+		    					swal("Sent!", successText, "success");
 		    				} else {
 		    					if (res.error !== undefined)
 		    						swal("Error!", res.error, "error");

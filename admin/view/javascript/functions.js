@@ -194,6 +194,7 @@ Orders.init = function(callback) {
 	                dataType   : 'json',
 	                crossDomain: true,
 	                success:  function(json) {
+	                	console.log(json)
 	                    if (json['error']) {
 	                    	var message = (json['error']) ? json['error'] : 'Failed to add customer. An unexpected error occured.';
 	                    	if (typeof swal === "function") {
@@ -232,7 +233,15 @@ Orders.init = function(callback) {
 	                crossDomain: true,
 	                success:  function(json) {
 	                    if (json['error']) {
-	                    	var message = (json['error']) ? json['error'] : 'Failed to add customer. An unexpected error occured.';
+							var message = '';
+							if (typeof json['error'] === "object") {
+								Object.keys(json['error']).forEach(function(key) {
+								    message += `${key}: ${json['error'][key]} `;
+								});
+							} else {
+								message = (json['error']) ? json['error'] : 'Failed to add customer. An unexpected error occured.';
+							}
+	                    	
 	                    	if (typeof swal === "function") {
 			            		swal("Error!", message, "error");
 			            	} else {
@@ -430,7 +439,9 @@ Orders.updateProduct = function(key, product_id, quantity) {
 		data      : {key: key, quantity: quantity},
 		dataType  : 'json',
 		beforeSend: function() {
-			$('.loader-wrapper').show();
+			if ($('.sweet-overlay').length === 0) {
+				$('.loader-wrapper').show();
+			}
 		},
 		complete  : function() {
 			$('.loader-wrapper').hide();
@@ -471,7 +482,9 @@ Orders.removeProduct = function(key, product_id) {
 		data      : { key: key },
 		dataType  : 'json',
 		beforeSend: function() {
-			$('.loader-wrapper').show();
+			if ($('.sweet-overlay').length === 0) {
+				$('.loader-wrapper').show();
+			}
 		},
 		complete  : function() {
 			$('.loader-wrapper').hide();
@@ -515,7 +528,9 @@ Orders.getProducts = function(token) {
 		dataType   : 'json',
 		crossDomain: true,
 		beforeSend : function() {
-			$('.loader-wrapper').show();
+			if ($('.sweet-overlay').length === 0) {
+				$('.loader-wrapper').show();
+			}
 		},
 		complete   : function() {
 			$('.loader-wrapper').hide();
@@ -1017,7 +1032,9 @@ Orders.save = function(token, scallback) {
 		dataType   : 'json',
 		crossDomain: true,
 		beforeSend : function() {
-			$('.loader-wrapper').show();
+			if ($('.sweet-overlay').length === 0) {
+				$('.loader-wrapper').show();
+			}
 		},
 		complete: function() {
 			$('.loader-wrapper').hide();
@@ -1121,6 +1138,11 @@ Quotes.init = function() {
 				dataType   : 'json',
 				data       : 'key='+apiKey,
 				crossDomain: true,
+				beforeSend : function() {
+					if ($('.sweet-overlay').length === 0) {
+						$('.loader-wrapper').show();
+					}
+				},
 				success: function(json) {
 
 					// remove page loader
@@ -1170,7 +1192,7 @@ Quotes.init = function() {
 					var storeId     = customerTab.find('input[name="store_id"]').val()
 
 		            /**********************************************
-					*            Modify Customer Group            
+					*            Modify Customer [Custom Fields]            
 					***********************************************/
 
 		            var utoken          = $('#content').data('token');
@@ -1183,7 +1205,7 @@ Quotes.init = function() {
 		                crossDomain: true,
 		                success    :  function(json) {
 		                    if (json['error']) {
-		                    	var message = (json['error']) ? json['error'] : 'Failed to add customer. An unexpected error occured.';
+		                    	var message = (json['error']) ? json['error'] : 'An unexpected error occured.';
 		                    	if (typeof swal === "function") {
 				            		swal("Error!", message, "error");
 				            	} else {
@@ -1201,28 +1223,36 @@ Quotes.init = function() {
 						***********************************************/
 
 			            var custApiUrl      = `${catalog}index.php?route=api/customer&callfrom=orderform&token=${token}&store_id=${storeId}`;
-			            var custApiPostData = {
-			                store_id         : storeId,
-			                currency         : customerTab.find('input[name="currency"]').val(),
-			                customer         : customerTab.find('input[name="customer"]').val(),
-			                customer_id      : customerTab.find('input[name="customer_id"]').val(),
-			                customer_group_id: customerTab.find('input[name="customer_group_id"]').val(),
-			                firstname        : customerTab.find('input[name="firstname"]').val(),
-			                lastname         : customerTab.find('input[name="lastname"]').val(),
-			                email            : customerTab.find('input[name="email"]').val(),
-			                telephone        : customerTab.find('input[name="telephone"]').val()
-			            };
 			            $.ajax({
 			                url        : custApiUrl,
 			                type       : 'post',
 			                dataType   : 'json',
-			                data       : custApiPostData,
+			                data       : $('#tab-customer input').serialize(),
 			                crossDomain: true,
 			                success:  function(json) {
 			                    if (json['error']) {
-			                    	var message = (json['error']) ? json['error'] : 'Failed to add customer. An unexpected error occured.';
+			                    	var message = '';
+									if (typeof json['error'] === "object") {
+										Object.keys(json['error']).forEach(function(key) {
+										    message += `${key}: ${json['error'][key]} `;
+										});
+									} else {
+										message = (json['error']) ? json['error'] : 'Failed to add customer. An unexpected error occured.';
+									}
+
 			                    	if (typeof swal === "function") {
-					            		swal("Error!", message, "error");
+					            		// swal("Error!", message, "error");
+					            		swal({
+										  	title: "Error!",
+										  	text: message,
+										  	type: "error"
+										},
+										function(){
+										  	var utoken           = $('#content').data('token');
+											var url              = `index.php?route=replogic/order_quotes&token=${utoken}`;
+											window.location.href = url;
+											$('.loader-wrapper').show();
+										});
 					            	} else {
 					            		alert(message);
 					            	}
@@ -1267,7 +1297,9 @@ Quotes.getProducts = function(token) {
 		dataType   : 'json',
 		crossDomain: true,
 		beforeSend : function() {
-			$('.loader-wrapper').show();
+			if ($('.sweet-overlay').length === 0) {
+				$('.loader-wrapper').show();
+			}
 		},
 		complete   : function() {
 			$('.loader-wrapper').hide();
@@ -1485,7 +1517,9 @@ Quotes.convert = function(token, scallback) {
 		dataType   : 'json',
 		crossDomain: true,
 		beforeSend : function() {
-			$('.loader-wrapper').show();
+			if ($('.sweet-overlay').length === 0) {
+				$('.loader-wrapper').show();
+			}
 		},
 		complete: function() {
 			$('.loader-wrapper').hide();
@@ -1535,7 +1569,9 @@ Quotes.deny = function(quote_id, reason) {
 		dataType  : 'json',
 		data      : {quote_id: quote_id, reason: reason},
 		beforeSend: function() {
-			$('.loader-wrapper').show();
+			if ($('.sweet-overlay').length === 0) {
+				$('.loader-wrapper').show();
+			}
 		},
 		success   : function(json) {
 			if (json['success']) {

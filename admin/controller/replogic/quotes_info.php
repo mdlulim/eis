@@ -222,6 +222,7 @@ class ControllerReplogicQuotesInfo extends Controller {
 		$data['customer_group_id'] = $cust['customer_group_id'];
 		$data['customer_id'] = $quote_info['customer_id'];
 		$data['customer_contact_id'] = $quote_info['customer_contact_id'];
+		$data['custom_fields'] = json_decode($cust['custom_field'], true);
 		
 		$salesrep = $this->model_replogic_sales_rep_management->getsalesrep($quote_info['salesrep_id']);
 		

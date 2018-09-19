@@ -141,7 +141,7 @@
             <table class="table table-bordered table-hover">
               <thead>
                 <tr>
-                  <td style="width: 1px;" class="text-center"><input type="checkbox" onclick="$('input[name*=\'selected\']').prop('checked', this.checked);" /></td>
+                  <td style="width: 1px;" class="text-center"><input type="checkbox" class="check__bulk-select-all" onclick="$('input[name*=\'selected\']').prop('checked', this.checked);" /></td>
                   <td class="text-left"><?php if ($sort == 'name') { ?>
                     <a href="<?php echo $sort_name; ?>" class="<?php echo strtolower($order); ?>"><?php echo $column_name; ?></a>
                     <?php } else { ?>
@@ -253,6 +253,9 @@ $('input[name^=\'selected\']').on('change', function() {
   {
     $('#button-delete').prop('disabled', true);
     $('#button-invitation').prop('disabled', true);
+  }
+  if (selected.length < 50) {
+    $('input[type="checkbox"].check__bulk-select-all').prop('checked', false);
   }
 });
 $('#button-delete').prop('disabled', true);

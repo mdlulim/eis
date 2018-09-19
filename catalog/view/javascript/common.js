@@ -32,6 +32,22 @@ $(document).ready(function() {
 		}
 	});
 
+	// Check if user prompt change password [first login]
+	if (getURLVar('change_password') === '1' && getURLVar('route') !== 'account/password') {
+		swal({
+			title: "Choose Your Password",
+			text: "You logged in with a system generated password. You will now be asked to choose your own password.",
+			type: "info",
+			showCancelButton: false,
+			confirmButtonClass: "btn btn-info",
+			confirmButtonText: "Ok, proceed",
+			closeOnConfirm: false
+		},
+		function() {
+			location.href = "index.php?route=account/choose_password";
+		});
+	}
+
 	// Currency
 	$('#form-currency .currency-select').on('click', function(e) {
 		e.preventDefault();
