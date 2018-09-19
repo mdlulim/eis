@@ -18,19 +18,18 @@
             });
             var buttonCommon = {
                 exportOptions: {
-                    columns: [1,2,3,4,5,6],
+                    columns: [1,2,3,4],
                     format: {
                         body: function(data, row, column, node) {
                             switch (column) {
                                 case 0:
                                     return $(data).html();
 
-                                case 3:
-                                    return $(data).find('input').val();
+                                case 2:
+                                    return $(data).val();
 
-                                case 4:
-                                case 5:
-                                    return data.replace( /[R,]/g, '' );
+                                case 3:
+                                    return $(data).html().trim().replace( /[R,]/g, '' ).replace(' ','');
 
                                 default:
                                     return data;
@@ -78,9 +77,9 @@
 
 function createFilter(table, columns) {
     var input = $('.datatable-custom-filters input.input-filter').on("keyup", function() {
-        if (this.value.trim() != '') {
+        // if (this.value.trim() != '') {
             table.draw();
-        }
+        // }
     });
     $.fn.dataTable.ext.search.push(function(settings, searchData, index, rowData, counter) {
         var val = input.val().toLowerCase();

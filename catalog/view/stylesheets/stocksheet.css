@@ -38,9 +38,9 @@
     border-right: 4px solid transparent;
     border-left: 4px solid transparent; 
   }  
-  .datatable-custom-filters .input-group-btn {
+  /* .datatable-custom-filters .input-group-btn {
     width: 165px;
-  }
+  } */
   .datatable-custom-filters .dropdown-menu {
     position: absolute !important;
     top: 100%;

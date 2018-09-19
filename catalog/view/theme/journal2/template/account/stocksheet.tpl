@@ -41,9 +41,9 @@
                 <input type="text" class="form-control input-filter" placeholder="Search">
                 <div class="input-group-btn">
                   <button type="button" class="btn btn-primary"><span class="fa fa-search"></span></button>
-                  <button type="button" class="btn btn-default dropdown-toggle">
+                  <!--<button type="button" class="btn btn-default dropdown-toggle">
                     <span class="caret"></span>
-                  </button>
+                  </button>-->
                   <ul class="dropdown-menu dropdown-menu-right">
                     <li>
                       <a class="checkbox">
