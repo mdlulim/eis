@@ -162,6 +162,7 @@ class ControllerCatalogPrice extends Controller {
         $data['add'] = $this->url->link('catalog/price/add', 'token=' . $this->session->data['token'] . $url, 'SSL');
         $data['delete'] = $this->url->link('catalog/price/delete', 'token=' . $this->session->data['token'] . $url, 'SSL');
         $data['import_csv'] = $this->url->link('catalog/price/importCSV', 'token=' . $this->session->data['token'] . $url, 'SSL');
+        $data['export_csv'] = $this->url->link('catalog/price/exportCSV', 'token=' . $this->session->data['token'] . $url, 'SSL');
         $data['prices'] = array();
         $filter_data = array(
             'filter_sku'  => $filter_sku,
@@ -580,5 +581,74 @@ class ControllerCatalogPrice extends Controller {
         $data['column_left']    = $this->load->controller('common/column_left');
         $data['footer']         = $this->load->controller('common/footer');
         $this->response->setOutput($this->load->view('catalog/import_csv.tpl', $data));
+    }
+
+    public function download() {
+        $this->load->language('catalog/price');
+        $data['heading_title']  = $this->language->get('heading_title');
+        $this->load->model('catalog/price');
+		if (($this->request->server['REQUEST_METHOD'] == 'POST')) {
+					//die('test me');
+					// $min = null;
+					// if (isset( $this->request->post['min'] ) && ($this->request->post['min']!='')) {
+					// 	$min = $this->request->post['min'];
+					// }
+					// $max = null;
+					// if (isset( $this->request->post['max'] ) && ($this->request->post['max']!='')) {
+					// 	$max = $this->request->post['max'];
+					// }
+					
+					// if (($min==null) || ($max==null)) {
+					// 	$this->model_catalog_price->downloadCsv();
+					// } elseif(($min!=null) || ($max!=null)) {
+					// 	$this->model_catalog_price->downloadCsv($min, $max);
+                    // }
+                    $this->model_catalog_price->downloadCsv($min, $max);
+					
+			}
+			//$this->response->redirect( $this->url->link( 'customer/customer_export_import', 'token='.$this->request->get['token'], $this->ssl) );
+		
+		$this->getForm();
+	}
+
+    public function exportCSV(){
+        $this->load->language('catalog/price');
+        $data['heading_title']  = $this->language->get('heading_title');
+        $this->load->model('catalog/price');
+        $this->data['cancel'] = $this->url->link('catalog/price', 'token=' . $this->session->data['token'] . $url, 'SSL');
+        // cancel url
+        $this->data['action'] = $this->url->link('catalog/price/exportCSV', 'token=' . $this->session->data['token'] . $url, 'SSL');
+        // current page url
+        // Breadcrumbs start here
+        $this->data['breadcrumbs'] = array();
+        $this->data['breadcrumbs'][] = array('text' => $this->language->get('text_home'),
+            'href' => $this->url->link('common/home', 'token=' . $this->session->data['token'], 'SSL'), 'separator' => false);
+        //home page link
+        $this->data['breadcrumbs'][] = array('text' => "Import CSV",
+            'href' => $this->url->link('catalog/price', 'token=' . $this->session->data['token'] . $url, 'SSL'), 'separator' => ' :: ');
+        //product page link
+        // breadcrumbs end here
+        if (($this->request->server['REQUEST_METHOD'] == 'POST') ) {
+            
+           // $this->model_catalog_price->exportCsvData(); 
+            //$this->session->data['success'] = 'CSV Successfully exported!';
+           // $this->response->redirect($this->url->link('catalog/price', 'token=' . $this->session->data['token'] . $url, 'SSL'));
+        }
+       // $this->load->model('catalog/contract');
+        $data['export'] = $this->url->link('catalog/price/download', 'token=' . $this->session->data['token'] . $url, 'SSL');
+        
+        $data['tab_export']         = "Export";
+        $data['entry_export']       = $this->language->get( 'entry_export' );
+		$data['entry_import']       = $this->language->get( 'entry_import' );
+		$data['entry_export_type']  = $this->language->get( 'entry_export_type' );
+		$data['entry_range_type']   = $this->language->get( 'entry_range_type' );
+        $data['entry_start_id']     = $this->language->get( 'entry_start_id' );
+        $data['help_range_type']    = $this->language->get( 'help_range_type' );
+        $data['button_export']      = $this->language->get( 'button_export' );
+        $data['contracts']          = $this->model_catalog_price->getCustomerGroups();
+        $data['header']             = $this->load->controller('common/header');
+        $data['column_left']        = $this->load->controller('common/column_left');
+        $data['footer']             = $this->load->controller('common/footer');
+        $this->response->setOutput($this->load->view('catalog/export_csv.tpl', $data));
     }
 }
