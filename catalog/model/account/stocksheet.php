@@ -16,7 +16,7 @@ class ModelAccountStocksheet extends Model {
 				$bulkInsert .= "('" . (int)$this->customer->getId() . "', ";
 				$bulkInsert .= "'" . (int)$product['sku'] . "', ";
 				$bulkInsert .= "NOW(), ";
-				$bulkInsert .= "'" . (int)$product['import_quantity'] . "')";
+				$bulkInsert .= "'0')";
 				$first       = false;
 			}
 			$bulkInsert.= ";";

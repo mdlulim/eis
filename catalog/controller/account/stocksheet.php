@@ -356,7 +356,7 @@ class ControllerAccountStocksheet extends Controller {
 											$barcode  = (!empty($data['Model'])) ? $data['Model'] : $data['SKU'];           # sku/barcode
 											$quantity = (!empty($data['Stock'])) ? (int)$data['Stock'] : (int)$data['Quantity']; # quantity
 											
-											if (!empty($barcode) && !empty($quantity) && is_numeric($quantity)) {
+											if (!empty($barcode)) {
 												$barcodes[]   = $barcode;
 												$quantities[] = $quantity;
 												$dataItems[]  = array('sku'=>$barcode, 'quantity'=>$quantity);
