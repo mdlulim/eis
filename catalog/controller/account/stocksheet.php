@@ -261,7 +261,7 @@ class ControllerAccountStocksheet extends Controller {
 
 		$json     = array();
 		$formats  = array('xls', 'xlsx', 'csv'); // supported file types
-		$colHeads = array('Product Name', 'Category', 'SKU', 'Quantity', 'Unit Price', 'Total'); // expected column headings
+		$colHeads = array('Product Name', 'Category', 'SKU', 'Quantity', 'Stock', 'Unit Price', 'Total'); // expected column headings
 		$maxSize  = 5097152;  // maximum file size (5MB)
 
 		if ($this->request->server['REQUEST_METHOD'] == 'POST') {
@@ -354,7 +354,7 @@ class ControllerAccountStocksheet extends Controller {
 										if (!empty($data) && count($data) > 0) {
 											
 											$barcode  = $data['SKU'];           # sku/barcode
-											$quantity = (int)$data['Quantity']; # quantity
+											$quantity = (!empty($data['Stock'])) ? (int)$data['Stock'] : (int)$data['Quantity']; # quantity
 											
 											if (!empty($barcode) && !empty($quantity) && is_numeric($quantity)) {
 												$barcodes[]   = $barcode;
