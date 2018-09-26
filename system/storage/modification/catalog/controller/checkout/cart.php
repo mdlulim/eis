@@ -891,7 +891,7 @@ class ControllerCheckoutCart extends Controller {
 								$barcode  = $data['SKU'];           # sku/barcode
 								$quantity = (int)$data['Quantity']; # quantity
 								
-								if (!empty($barcode) && !empty($quantity) && is_numeric($quantity)) {
+								if (!empty($barcode) && is_numeric($quantity)) {
 									$barcodes[]   = $barcode;
 									$quantities[] = $quantity;
 								}
