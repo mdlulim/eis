@@ -67,7 +67,7 @@
         </div>
       </div>
         <div class="table-responsive">
-      <table class="table table-bordered table-hover">
+      <table class="table table-bordered table-hover" data-order='[[1, "asc"]]'>
         <thead>
           <tr>
             <td class="text-left image"><?php echo $column_image; ?></td>

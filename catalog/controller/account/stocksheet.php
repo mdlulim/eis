@@ -100,7 +100,7 @@ class ControllerAccountStocksheet extends Controller {
 		foreach ($results as $result) {
 			$product_info = $this->model_catalog_product->getProductSku($result['sku']);
 
-			if ($product_info) {
+			if (!empty($product_info)) {
 				if ($product_info['image']) {
 					$image = $this->model_tool_image->resize($product_info['image'], $this->config->get($this->config->get('config_theme') . '_image_wishlist_width'), $this->config->get($this->config->get('config_theme') . '_image_wishlist_height'));
 				} else {
@@ -353,13 +353,13 @@ class ControllerAccountStocksheet extends Controller {
 									foreach ($dataRows as $data) {
 										if (!empty($data) && count($data) > 0) {
 											
-											$barcode  = (!empty($data['Model'])) ? $data['Model'] : $data['SKU'];           # sku/barcode
+											$barcode  = (!empty($data['Model'])) ? (string)$data['Model'] : (string)$data['SKU'];           # sku/barcode
 											$quantity = (!empty($data['Stock'])) ? (int)$data['Stock'] : (int)$data['Quantity']; # quantity
 											
 											if (!empty($barcode)) {
-												$barcodes[]   = $barcode;
+												$barcodes[]   = (string)$barcode;
 												$quantities[] = $quantity;
-												$dataItems[]  = array('sku'=>$barcode, 'quantity'=>$quantity);
+												$dataItems[]  = array('sku'=>(string)$barcode, 'quantity'=>$quantity);
 											}
 										}
 									}
@@ -403,7 +403,7 @@ class ControllerAccountStocksheet extends Controller {
 							$quantities = array();
 
 							foreach($this->request->post['products'] as $item) {
-								$barcodes[]   = $item['sku'];
+								$barcodes[]   = (string)$item['sku'];
 								$quantities[] = $item['quantity'];
 							}
 							

@@ -9,7 +9,8 @@
                 "sDom"           : "<t><'row'<'col-md-12'i p>>",
                 "oLanguage"      : {"sLengthMenu":"_MENU_ ","sInfo":"Showing _START_ to _END_ of _TOTAL_"},
                 "iDisplayLength" : 50,
-                "bSort"          : false
+                "bSort"          : true,
+                "aaSorting"      : [[1, 'asc']]
             };
             oTable = $('.wishlist-info table.table').DataTable(aOptions);
             var oFilterColumns = [];

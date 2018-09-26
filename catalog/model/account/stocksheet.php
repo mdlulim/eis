@@ -7,24 +7,21 @@ class ModelAccountStocksheet extends Model {
 	}
 	public function bulkAddStocksheet($products) {
 		if (!empty($products)) {
-			$prodSku    = array();
+
+			# first delete to start importing from a clean slate
+			$this->db->query("DELETE FROM " . DB_PREFIX . "stocksheet WHERE `customer_id` = '" . (int)$this->customer->getId() . "'");
+
 			$first      = true;
 			$bulkInsert = "INSERT INTO " . DB_PREFIX . "stocksheet (`customer_id`, `sku`, `date_added`, `quantity`) VALUES ";
 			foreach($products as $product) {
-				$prodSku[]   = $product['sku'];
 				$bulkInsert .= ($first) ? "" : ",";
 				$bulkInsert .= "('" . (int)$this->customer->getId() . "', ";
-				$bulkInsert .= "'" . (int)$product['sku'] . "', ";
+				$bulkInsert .= "'" . (string)$product['sku'] . "', ";
 				$bulkInsert .= "NOW(), ";
 				$bulkInsert .= "'0')";
 				$first       = false;
 			}
 			$bulkInsert.= ";";
-
-			# first delete to avoid duplicates
-			if (!empty($prodSku)) {
-				$this->db->query("DELETE FROM " . DB_PREFIX . "stocksheet WHERE `customer_id` = '" . (int)$this->customer->getId() . "' AND `sku` IN ('" . implode("','", $prodSku) . "')");
-			}
 
 			# insert product into stock sheet
 			$this->db->query($bulkInsert);

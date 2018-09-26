@@ -28,9 +28,15 @@ Importer.uploadFile = function(input) {
         var fileSize = parseInt(file.size / 1024); // convert to KB
         if (Importer.fileFormats.indexOf(file.type) !== -1) {
             if (fileSize <= Importer.fileMaxSize) {
+                var text = '';
+                if ($("#form-cart-importer").length) {
+                    text = `You are about to import   "${file.name}"  to your shopping cart.`;
+                } else if ($("#form-stocksheet-importer").length) {
+                    text = `You are about to import   "${file.name}"  to your stock sheet.`;
+                }
                 swal({
                     title: "Are you sure?",
-                    text: `You are about to import   "${file.name}"  to your shopping cart.`,
+                    text: text,
                     type: "warning",
                     showCancelButton: true,
                     confirmButtonClass: "btn-info",
