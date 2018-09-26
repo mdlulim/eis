@@ -470,6 +470,13 @@ class ControllerCustomerCustomer extends Controller {
 		} else {
 			$filter_status = null;
 		}
+		
+		if (isset($this->request->get['filter_wholesale'])) {
+			$filter_wholesale = $this->request->get['filter_wholesale'];
+			
+		} else {
+			$filter_wholesale = null;
+		}
 
 		if (isset($this->request->get['filter_approved'])) {
 			$filter_approved = $this->request->get['filter_approved'];
@@ -537,6 +544,10 @@ class ControllerCustomerCustomer extends Controller {
 			$url .= '&filter_approved=' . $this->request->get['filter_approved'];
 		}
 
+		if (isset($this->request->get['filter_wholesale'])) {
+			$url .= '&filter_wholesale=' . $this->request->get['filter_wholesale'];
+		}
+
 		if (isset($this->request->get['filter_ip'])) {
 			$url .= '&filter_ip=' . $this->request->get['filter_ip'];
 		}
@@ -583,6 +594,7 @@ class ControllerCustomerCustomer extends Controller {
 			'filter_customer_group_id' => $filter_customer_group_id,
 			'filter_status'            => $filter_status,
 			'filter_approved'          => $filter_approved,
+			'filter_wholesale'          => $filter_wholesale,
 			'filter_date_added'        => $filter_date_added,
 			'filter_ip'                => $filter_ip,
 			'sort'                     => $sort,
@@ -634,7 +646,7 @@ class ControllerCustomerCustomer extends Controller {
 			} else {
 				$wholesale_activity = ($result['invited'] == 1) ? 'Invited' : 'Not Invited';
 			}
-
+		    //var_dump($this->customerActivity($result));
 			$data['customers'][] = array(
 				'customer_id'    => $result['customer_id'],
 				//'name'           => $result['name'],
@@ -651,7 +663,7 @@ class ControllerCustomerCustomer extends Controller {
 				'edit'           => $this->url->link('customer/customer/edit', 'token=' . $this->session->data['token'] . '&customer_id=' . $result['customer_id'] . $url, true)
 			);
 		}
-		
+		//die;
 		$data['customerdropdown'] = $this->model_customer_customer->getCustomers('',$allaccess,$current_user_id);
 		//print_r($data['customerdropdown']); exit;
 		$data['heading_title'] = $this->language->get('heading_title');
@@ -681,6 +693,7 @@ class ControllerCustomerCustomer extends Controller {
 		$data['entry_approved'] = $this->language->get('entry_approved');
 		$data['entry_ip'] = $this->language->get('entry_ip');
 		$data['entry_date_added'] = $this->language->get('entry_date_added');
+		$data['entry_wholesale'] = $this->language->get('entry_wholesale');
 
 		$data['button_approve'] = $this->language->get('button_approve');
 		$data['button_add'] = $this->language->get('button_add');
@@ -797,6 +810,10 @@ class ControllerCustomerCustomer extends Controller {
 			$url .= '&filter_approved=' . $this->request->get['filter_approved'];
 		}
 
+		if (isset($this->request->get['filter_wholesale'])) {
+			$url .= '&filter_wholesale=' . $this->request->get['filter_wholesale'];
+		}
+
 		if (isset($this->request->get['filter_ip'])) {
 			$url .= '&filter_ip=' . $this->request->get['filter_ip'];
 		}
@@ -830,6 +847,7 @@ class ControllerCustomerCustomer extends Controller {
 		$data['filter_customer_group_id'] = $filter_customer_group_id;
 		$data['filter_status'] = $filter_status;
 		$data['filter_approved'] = $filter_approved;
+		$data['filter_wholesale'] = $filter_wholesale;
 		$data['filter_ip'] = $filter_ip;
 		$data['filter_date_added'] = $filter_date_added;
 
@@ -1041,6 +1059,11 @@ class ControllerCustomerCustomer extends Controller {
 
 		if (isset($this->request->get['filter_approved'])) {
 			$url .= '&filter_approved=' . $this->request->get['filter_approved'];
+		}
+
+		if (isset($this->request->get['filter_wholesale'])) {
+			$url .= '&filter_wholesale=' . $this->request->get['filter_wholesale'];
+			die("Has Data");
 		}
 		
 		if (isset($this->request->get['filter_ip'])) {
@@ -1305,6 +1328,14 @@ class ControllerCustomerCustomer extends Controller {
 			$data['approved'] = $customer_info['approved'];
 		} else {
 			$data['approved'] = true;
+		}
+		
+		if (isset($this->request->post['filter_wholesale'])) {
+			$data['filter_wholesale'] = $this->request->post['filter_wholesale'];
+		} elseif (!empty($customer_info)) {
+			$data['filter_wholesale'] = $customer_info['filter_wholesale'];
+		} else {
+			$data['filter_wholesale'] = true;
 		}
 		
 		if (!empty($customer_info)) {

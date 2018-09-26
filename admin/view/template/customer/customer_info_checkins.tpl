@@ -1,6 +1,6 @@
 <?php echo $header; ?>
 <?php echo $column_left; ?>
-<div id="content" class="lm__wrapper" data-page-id="customer_info_checkins" data-token="<?php echo $token; ?>" data-salesrep-id="<?php echo $salesrep_id; ?>">
+<div id="content" class="lm__wrapper" data-page-id="customer_info_checkins" data-token="<?php echo $token; ?>" data-salesrep-id="<?php echo $salesrep_id; ?>" data-page-url="<?php echo $page_url; ?>">
     <div class="page-header">
         <div class="container-fluid">
             <div class="pull-right">

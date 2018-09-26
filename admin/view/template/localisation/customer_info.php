@@ -3117,7 +3117,7 @@ class ControllerCustomerCustomerInfo extends Controller {
 		$data['header']      = $this->load->controller('common/header');
 		$data['column_left'] = $this->load->controller('common/column_left');
 		$data['footer']      = $this->load->controller('common/footer');
-        $data['page_url']    = $this->url->link('customer/customer_info&type=visits', 'customer_id=' . $checkin['customer_id'] . '&token=' . $data['token'], true);
+
 		$this->response->setOutput($this->load->view('customer/customer_info_checkins', $data));
 	}
 	

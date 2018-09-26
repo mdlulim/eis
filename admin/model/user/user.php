@@ -55,14 +55,20 @@ class ModelUserUser extends Model {
 	}
 
 	public function getUsers($data = array()) {
+
 		$sql = "SELECT * FROM `" . DB_PREFIX . "user`";
 		
 		$sql .= " where user_id > 0";
-		
+		//var_dump($data);die;
 		if (!empty($data['filter_name'])) {
 			$sql .= " AND username LIKE '%" . $this->db->escape($data['filter_name']) . "%'";
 		}
 		
+		if (!empty($data['filter_user_group_id'])) {
+			
+			$sql .= " AND user_group_id = '" . $this->db->escape($data['filter_user_group_id']) . "'";
+		}
+
 		if (isset($data['filter_status']) && !is_null($data['filter_status'])) {
 			$sql .= " AND status = '" . $this->db->escape($data['filter_status']) . "'";
 		}
@@ -75,6 +81,7 @@ class ModelUserUser extends Model {
 
 		$sort_data = array(
 			'username',
+			'user_group_id',
 			'status',
 			'date_added'
 		);
@@ -108,7 +115,7 @@ class ModelUserUser extends Model {
 		return $query->rows;
 	}
 
-	public function getTotalUsers($data= array()) {
+	public function getTotalUsers($data= array()) { 
 		$sql = "SELECT COUNT(*) AS total FROM `" . DB_PREFIX . "user`";
 		
 		$sql .= " where user_id > 0";
@@ -136,6 +143,16 @@ class ModelUserUser extends Model {
 		$query = $this->db->query("SELECT * FROM `" . DB_PREFIX . "user` WHERE user_group_id = '" . (int)$user_group_id . "'");
 
 		return $query->rows;
+	}
+	
+	public function getUserGroups() {
+		$query = $this->db->query("SELECT * FROM `" . DB_PREFIX . "user_group`");
+		return $query->rows;
+	}
+
+	public function getGroupNameNyId($user_group_id) {
+		$query = $this->db->query("SELECT * FROM `" . DB_PREFIX . "user_group` WHERE user_group_id = '" . (int)$user_group_id . "'");
+        return $query->rows[0]['name'];
 	}
 	
 	public function getTotalUsersByGroupId($user_group_id) {
