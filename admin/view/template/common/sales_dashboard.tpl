@@ -210,7 +210,7 @@
         var legend  = document.createElement('div');
         legend.id   = 'gmap-legend';
         var content = [];
-        content.push('<div class="col__legend"><img src="view/image/gmap__checkin_icon.png" /> Rep Checked In</div>');
+        content.push('<!--div class="col__legend"><img src="view/image/gmap__checkin_icon.png" /> Rep Checked In</div -->');
         content.push('<div class="col__legend"><img src="view/image/gmap__location_icon.png" /> Rep GPS Location</div>');
         content.push('<div class="col__legend"><img src="view/image/gmap__customer_icon.png" /> Customer</div>');
         legend.innerHTML = content.join('');
