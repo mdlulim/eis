@@ -1,6 +1,15 @@
 <?php
 class ControllerCommonHeader extends Controller {
 	public function index() {
+		if ($this->config->get('config_store_id') == 0) {
+			// Check customer isn't logged in
+			if (!$this->customer->isLogged()) {
+				// Redirect if route isn't account/login
+				if (empty($this->request->get['route']) || $this->request->get['route'] != 'account/login') {
+					$this->response->redirect($this->url->link('account/login', '', 'SSL'));
+				}
+			}
+		}
 		// Analytics
 		$this->load->model('extension/extension');
 
