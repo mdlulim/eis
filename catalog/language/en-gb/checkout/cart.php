@@ -30,6 +30,8 @@ $_['text_payment_cancel']      = '%s every %d %s(s) until canceled';
 $_['text_upload_success']      = 'File successfully uploaded and validated.';
 $_['text_validate_success']    = 'Successfully validated import. Click continue button below to Add Items to Shopping Cart!';
 
+$_['text_add_multiple_success']= 'You have successfully added %s item(s) to your shopping cart!';
+
 // Import
 $_['button_import_to_cart']    = '
 <form id="form-cart-importer" enctype="multipart/form-data">
@@ -62,6 +64,7 @@ $_['error_minimum']            = 'Minimum order amount for %s is %s!';
 $_['error_required']           = '%s required!';
 $_['error_product']            = 'Warning: There are no products in your cart!';
 $_['error_recurring_required'] = 'Please select a payment recurring!';
+$_['error_no_product_to_add']  = 'Sorry, no products to add to cart!'; 
 
 $_['error_import_upload']      = '%s out of %s item(s) found in the system. Do you wish to continue importing or view items?';
 $_['error_import_cart']        = 'Sorry, no items to add to cart. An unexpected error has occured. Please cancel and try again!';

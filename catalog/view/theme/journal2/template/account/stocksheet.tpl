@@ -23,8 +23,9 @@
         <?php echo $heading_title; ?>
         <?php echo $button_import; ?>
         <span>
-          <a href="<?php echo $addStocksheetToCart; ?>" class="btn btn-default btn-sm pull-right" onclick="return confirm('Please note that all current cart items will be replaced with contents from this order, should line Items have no stock or are disabled it will not be added to your cart.');">
-            <i class="fa fa-repeat"></i> Add sheet to cart 
+          <a href="<?php echo $addStocksheetToCart; ?>" class="btn btn-default btn-sm pull-right btn-add-sheet-to-cart">
+            <i class="fa fa-repeat"></i> 
+            Add sheet to cart 
           </a>
         </span>
       </h1>
@@ -86,7 +87,7 @@
               <?php } ?></td>
             <td class="text-left name"><a href="<?php echo $product['href']; ?>"><?php echo $product['name']; ?></a></td>
             <td class="text-left model"><?php echo $product['model']; ?></td>
-            <td class="text-right stock"><input type="text" name="stock" value="<?php echo $product['stock']; ?>" maxlength="4" size="4"/></td>
+            <td class="text-right stock"><input type="text" name="stock" data-product-id="<?php echo $product['product_id']; ?>" value="<?php echo $product['stock']; ?>" maxlength="4" size="4"/></td>
             <td class="text-right price">
               <?php if (!$this->config->get('config_hide_price') && $product['price']) { ?>
               <div class="price">

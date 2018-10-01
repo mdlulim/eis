@@ -74,6 +74,56 @@
         $(this).parent().find('.input-group-btn').removeClass('open');
     });
 
+    $(document).on('click', '.btn-remove', function(e) {
+        if (!confirm('Are you sure you want to remove the selected item?')) {
+            e.preventDefault();
+        }
+    });
+
+    $(document).on('click', '.btn-add-sheet-to-cart', function(e) {
+        e.preventDefault();
+        var text = 'Please note that all current cart items will be replaced with contents from this order, should line Items have no stock or are disabled it will not be added to your cart.';
+        swal({
+            title: "Continue?",
+            text: text,
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonClass: "btn-warning",
+            confirmButtonText: "Yes, continue!",
+            closeOnConfirm: true,
+            showLoaderOnConfirm: true
+        },
+        function (isConfirm) {
+            if (isConfirm) {
+                var postData = [];
+                var data     = oTable.rows().data();
+                data.each(function (value, index) {
+                    var input    = oTable.cell(index, 3).nodes().to$().find('input');
+                    var quantity = parseInt(input.val());
+                    if (quantity > 0) {
+                        postData.push({
+                            product_id           : parseInt(input.attr('data-product-id')),
+                            cart_import_quantity : quantity
+                        });
+                    }
+                });
+                $.ajax({
+                    url     : 'index.php?route=checkout/cart/addmultiple',
+                    type    : 'POST',
+                    data    : { products: postData },
+                    dataType: 'json',
+                    success : function(json) {
+                        if (json['success']) {
+                            location.href = 'index.php?route=checkout/cart'
+                        } else {
+                            swal('Error!', json['error'], 'error');
+                        }
+                    }
+                });
+            }
+        });
+    });
+
 }(jQuery));
 
 function createFilter(table, columns) {
