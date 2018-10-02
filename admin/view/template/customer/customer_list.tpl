@@ -137,7 +137,6 @@
                 <input type="text" name="filter_ip" value="<?php echo $filter_ip; ?>" placeholder="<?php echo $entry_ip; ?>" id="input-ip" class="form-control" />
               </div>-->
 
-            </div>
             <div class="col-sm-4">
 
               <div class="form-group">
