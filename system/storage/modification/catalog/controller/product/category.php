@@ -100,8 +100,8 @@ class ControllerProductCategory extends Controller {
 			$this->document->setTitle($category_info['meta_title']);
 			$this->document->setDescription($category_info['meta_description']);
 			$this->document->setKeywords($category_info['meta_keyword']);
-
-			$data['heading_title'] = $category_info['name'];
+			
+			$data['heading_title'] = $category_info['name'] . sprintf($this->language->get('button_add_category_to_cart'), $data['category_id']);
 
 			$data['text_refine'] = $this->language->get('text_refine');
 			$data['text_empty'] = $this->language->get('text_empty');
