@@ -5,6 +5,11 @@ class ModelAccountStocksheet extends Model {
 
 		$this->db->query("INSERT INTO " . DB_PREFIX . "customer_wishlist SET customer_id = '" . (int)$this->customer->getId() . "', product_id = '" . (int)$product_id . "', date_added = NOW()");
 	}
+	public function addStocksheet($sku) {
+		$this->db->query("DELETE FROM " . DB_PREFIX . "stocksheet WHERE customer_id = '" . (int)$this->customer->getId() . "' AND sku = '" . $sku . "'");
+
+		$this->db->query("INSERT INTO " . DB_PREFIX . "stocksheet SET customer_id = '" . (int)$this->customer->getId() . "', sku = '" . $sku . "', quantity = 0, date_added = NOW()");
+	}
 	public function bulkAddStocksheet($products) {
 		if (!empty($products)) {
 

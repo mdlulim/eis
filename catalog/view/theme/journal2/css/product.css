@@ -271,6 +271,12 @@ PRODUCT PAGE
         .product-info .right .wishlist-compare .links span {
           line-height: 24px;
           display: none; }
+        .product-info .right .wishlist-compare .links a.add-to-stocksheet:before {
+          content: "\f0f6" !important;
+        }
+        .product-info .right .wishlist-compare .links a {
+          font-size: 13px !important;
+        }
     .product-info .right .review img {
       top: 2px;
       position: relative;

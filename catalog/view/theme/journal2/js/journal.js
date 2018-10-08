@@ -1388,6 +1388,25 @@ function addToCompare(product_id) {
     });
 }
 
+function addToStockSheet(product_id) {
+    $.ajax({
+        url: 'index.php?route=account/stocksheet/add',
+        type: 'post',
+        data: 'product_id=' + product_id,
+        dataType: 'json',
+        success: function(json) {
+            $('.success, .warning, .attention, .information').remove();
+
+            if (json['success']) {
+                if (!Journal.showNotification(json['success'], json['image'])) {
+                    $('#notification').html('<div class="success" style="display: none;">' + json['success'] + '<img src="catalog/view/theme/default/image/close.png" alt="" class="close" /></div>');
+                }
+                $('.success').fadeIn('slow');
+            }
+        }
+    });
+}
+
 Journal.SuperFilter = {};
 
 Journal.SuperFilter.firstLoad = true;

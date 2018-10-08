@@ -159,7 +159,7 @@ class ControllerAccountStocksheet extends Controller {
 	}
 
 	public function add() {
-		$this->load->language('account/wishlist');
+		$this->load->language('account/stocksheet');
 
 		$json = array();
 
@@ -176,13 +176,13 @@ class ControllerAccountStocksheet extends Controller {
 		if ($product_info) {
 			if ($this->customer->isLogged()) {
 				// Edit customers cart
-				$this->load->model('account/wishlist');
+				$this->load->model('account/stocksheet');
 
-				$this->model_account_wishlist->addWishlist($this->request->post['product_id']);
+				$this->model_account_stocksheet->addStocksheet($product_info['sku']);
 
-				$json['success'] = sprintf($this->language->get('text_success'), $this->url->link('product/product', 'product_id=' . (int)$this->request->post['product_id']), $product_info['name'], $this->url->link('account/wishlist'));
+				$json['success'] = sprintf($this->language->get('text_success'), $this->url->link('product/product', 'product_id=' . (int)$this->request->post['product_id']), $product_info['name'], $this->url->link('account/stocksheet'));
 
-				$json['total'] = sprintf($this->language->get('text_wishlist'), $this->model_account_wishlist->getTotalWishlist());
+				$json['total'] = sprintf($this->language->get('text_stocklist'), $this->model_account_stocksheet->getTotalWishlist());
 			} else {
 				if (!isset($this->session->data['wishlist'])) {
 					$this->session->data['wishlist'] = array();
@@ -192,7 +192,7 @@ class ControllerAccountStocksheet extends Controller {
 
 				$this->session->data['wishlist'] = array_unique($this->session->data['wishlist']);
 
-				$json['success'] = sprintf($this->language->get('text_login'), $this->url->link('account/login', '', true), $this->url->link('account/register', '', true), $this->url->link('product/product', 'product_id=' . (int)$this->request->post['product_id']), $product_info['name'], $this->url->link('account/wishlist'));
+				$json['success'] = sprintf($this->language->get('text_login'), $this->url->link('account/login', '', true), $this->url->link('account/register', '', true), $this->url->link('product/product', 'product_id=' . (int)$this->request->post['product_id']), $product_info['name'], $this->url->link('account/stocksheet'));
 
 				$json['total'] = sprintf($this->language->get('text_wishlist'), (isset($this->session->data['wishlist']) ? count($this->session->data['wishlist']) : 0));
 			}
