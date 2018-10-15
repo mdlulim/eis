@@ -1,0 +1,5 @@
+#product-list-table table>tbody>tr>td.prd-quantity>input,
+#product-list-table table>tbody>tr>td.quantity>input {
+	max-width: 100px;
+	display: inline-block;
+}
