@@ -17,3 +17,15 @@ VQModObject::parseMods - Could not resolve path for [admin/view/template/catalog
 ----------------------------------------------------------------------
 
 
+---------- Date: 2018-10-26 09:56:30 ~ IP : ::1 ----------
+REQUEST URI : /hub-development-branch/admin/index.php?route=sale/order&token=gTJnNRCTKg1q1c8UJa5VOpvGWqyDp5H3
+MOD DETAILS:
+   modFile   : /Applications/XAMPP/xamppfiles/htdocs/hub-development-branch/vqmod/xml/productViewOrder.xml
+   id        : Product - View orders
+   version   : 1.0.0
+   vqmver    : 2.4.2
+   author    : Nerdherd Developers
+VQModObject::parseMods - Could not resolve path for [admin/view/template/catalog/product_listc.tpl] (SKIPPED)
+----------------------------------------------------------------------
+
+
