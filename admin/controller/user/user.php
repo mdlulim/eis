@@ -573,6 +573,18 @@ class ControllerUserUser extends Controller {
 	
 	public function view() {
 		
+		/*==================================
+		=       Add Files (Includes)       =
+		==================================*/
+		# stylesheets (CSS) files
+		$this->document->addStyle('view/javascript/bootstrap-sweetalert/sweetalert.css');
+		$this->document->addStyle('view/stylesheet/custom.css');
+		# javascript (JS) files
+		$this->document->addScript('view/javascript/bootstrap-sweetalert/sweetalert.min.js');
+		$this->document->addScript('view/javascript/bootstrap-sweetalert/sweetalert-data.js');
+		$this->document->addScript('view/javascript/user.js');
+		/*=====  End of Add Files (Includes)  ======*/
+		
 		$this->load->language('user/user');
 		$this->document->setTitle($this->language->get('heading_title'));
 		$this->load->model('user/user');
