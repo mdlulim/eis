@@ -5,20 +5,6 @@ class ModelCheckoutOrder extends Model {
 
 		$order_id = $this->db->getLastId();
 
-		/******************************************************** 
-		 * Arch Integration
-		 ********************************************************/
-
-		if (INTEGRATION_ID == '1') {
-
-			$this->load->model('extension/erp/arch');
-			
-			$debtor_code = $this->model_extension_erp_arch->getDebtorCode($this->customer->getId());
-
-			$send_quote  = $this->model_extension_erp_arch->submitNewQuotation($debtor_code , $order_id , $data['products']);
-
-			$this->addOrderHistory($order_id, 2, 'sent to arch', true);
-		}
 
 		/******************************************************** 
 		 * Stock2Shop Integration
