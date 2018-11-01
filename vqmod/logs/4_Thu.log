@@ -1,7 +1,19 @@
----------- Date: 2018-08-23 12:33:45 ~ IP : ::1 ----------
-REQUEST URI : /saleslogicmdu/admin/index.php?route=catalog/product&token=i6kuMu5cqUk1PS8KciNvIRvU8X6XYdBa
+---------- Date: 2018-11-01 09:55:43 ~ IP : ::1 ----------
+REQUEST URI : /uat02/admin/
 MOD DETAILS:
-   modFile   : /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/vqmod/xml/productViewOrder.xml
+   modFile   : /Applications/XAMPP/xamppfiles/htdocs/uat02/vqmod/xml/productViewOrder.xml
+   id        : Product - View orders
+   version   : 1.0.0
+   vqmver    : 2.4.2
+   author    : Nerdherd Developers
+VQModObject::parseMods - Could not resolve path for [admin/view/template/catalog/product_listc.tpl] (SKIPPED)
+----------------------------------------------------------------------
+
+
+---------- Date: 2018-11-01 09:56:17 ~ IP : ::1 ----------
+REQUEST URI : /uat02/admin/index.php?route=catalog/product&token=dG6N0QVhbQOPfvJINmoH0PCfnKTwMMjZ
+MOD DETAILS:
+   modFile   : /Applications/XAMPP/xamppfiles/htdocs/uat02/vqmod/xml/productViewOrder.xml
    id        : Product - View orders
    version   : 1.0.0
    vqmver    : 2.4.2

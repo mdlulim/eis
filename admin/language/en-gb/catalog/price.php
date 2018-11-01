@@ -13,6 +13,12 @@ $_['text_list']         		= 'Contract Price Lists';
 $_['text_add']          		= 'Add Contract Price';
 $_['text_edit']         		= 'Edit Contract Price';
 $_['text_import']               = 'Import Contract Price';
+$_['entry_export']                          = 'Export requested data to a XLS spreadsheet file.';
+$_['entry_export_type']                     = 'Select what data you want to export:';
+$_['entry_range_type']                      = 'Please select the data range you want to export:';
+$_['entry_start_id']                        = 'Id From:';
+$_['help_range_type']                       = '(Optional, leave empty if not needed)';
+$_['button_export']                         = 'Export';
 $_['text_confirm']               = 'Are you sure that you want to delete this contract price?';
 // Column
 $_['column_sku']   	= 'SKU';

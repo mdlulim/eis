@@ -249,6 +249,12 @@ class ControllerCatalogAttribute extends Controller {
 		
 		$data['token'] = $this->session->data['token'];
 
+		$this->load->model('customer/customer_group');
+		$this->load->model('catalog/product');
+		$data['groups'] = $this->model_customer_customer_group->getCustomerGroups();
+		$data['entry_store'] = $this->language->get('entry_store');
+		$data['entry_assign'] = $this->language->get('entry_assign');
+
 		if (isset($this->error['warning'])) {
 			$data['error_warning'] = $this->error['warning'];
 		} else {
