@@ -53,6 +53,7 @@ $_['entry_points']          = 'Points';
 $_['entry_name']            = 'Customer Name';
 $_['entry_ip']              = 'IP';
 $_['entry_date_added']      = 'Date Added';
+$_['entry_wholesale']      = 'Wholesale Activity';
 
 // Help
 $_['help_safe']             = 'Set to true to avoid this customer from being caught by the anti-fraud system';

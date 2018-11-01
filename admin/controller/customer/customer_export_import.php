@@ -112,7 +112,6 @@ class ControllerCustomerCustomerExportImport extends Controller {
 					
 					$array1 = $header;
 					$array2 = $fields;
-
 					//====================================================================
 					//        Check field to be imported if they exist
 					//====================================================================
