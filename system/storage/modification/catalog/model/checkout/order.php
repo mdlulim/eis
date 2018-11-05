@@ -649,7 +649,7 @@ class ModelCheckoutOrder extends Model {
 				$query     = $this->db->query("SELECT * FROM " . DB_PREFIX . "rep_settings order by company_id asc LIMIT 1");
 				$row       = $query->row;
 				$companyId = $row['company_id'];
-	
+			
 				$text .= $language->get('text_new_footer') . "\n\n";
 
 				// Add data for the order confirmation email 
@@ -673,7 +673,7 @@ class ModelCheckoutOrder extends Model {
 				$mail->setFrom($this->config->get('config_email'));
 				$mail->setSender(html_entity_decode($order_info['store_name'], ENT_QUOTES, 'UTF-8'));
 				$mail->setSubject(html_entity_decode($subject, ENT_QUOTES, 'UTF-8'));
-				$mail->setHtml($this->load->view('mail/order', $data));
+				$mail->setHtml($this->load->view('mail/order-new', $data));
 				$mail->setText($text);
 				$mail->send();
 	
@@ -761,7 +761,7 @@ class ModelCheckoutOrder extends Model {
 					$mail->setFrom($this->config->get('config_email'));
 					$mail->setSender(html_entity_decode($order_info['store_name'], ENT_QUOTES, 'UTF-8'));
 					$mail->setSubject(html_entity_decode($subject, ENT_QUOTES, 'UTF-8'));
-					$mail->setHtml($this->load->view('mail/order', $data));
+					$mail->setHtml($this->load->view('mail/order-new', $data));
 					$mail->setText($text);
 					$mail->send();
 	

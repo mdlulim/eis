@@ -54,12 +54,14 @@ $_['entry_date_modified'] = 'Date Modified';
 $_['help_product']        = '(Autocomplete)';
 
 // Error
-$_['error_warning']       = 'Warning: Please check the form carefully for errors!';
-$_['error_permission']    = 'Warning: You do not have permission to modify returns!';
-$_['error_order_id']      = 'Order ID required!';
-$_['error_firstname']     = 'First Name must be between 1 and 32 characters!';
-$_['error_lastname']      = 'Last Name must be between 1 and 32 characters!';
-$_['error_email']         = 'E-Mail Address does not appear to be valid!';
-$_['error_telephone']     = 'Telephone must be between 3 and 32 characters!';
-$_['error_product']       = 'Product Name must be greater than 3 and less than 255 characters!';
-$_['error_model']         = 'Product Model must be greater than 3 and less than 64 characters!';
+$_['error_return_confirm_order']       = 'Please ensure that your order is confirmed before returning a product.';
+$_['error_return_order_not_match']     = 'The order number you supplied does not exist in our system, please check your purchase order number again and key in the correct order number';
+$_['error_warning']                    = 'Warning: Please check the form carefully for errors!';
+$_['error_permission']                 = 'Warning: You do not have permission to modify returns!';
+$_['error_order_id']                   = 'Order ID required!';
+$_['error_firstname']                  = 'First Name must be between 1 and 32 characters!';
+$_['error_lastname']                   = 'Last Name must be between 1 and 32 characters!';
+$_['error_email']                      = 'E-Mail Address does not appear to be valid!';
+$_['error_telephone']                  = 'Telephone must be between 3 and 32 characters!';
+$_['error_product']                    = 'Product Name must be greater than 3 and less than 255 characters!';
+$_['error_model']                      = 'Product Model must be greater than 3 and less than 64 characters!';
