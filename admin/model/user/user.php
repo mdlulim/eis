@@ -63,6 +63,11 @@ class ModelUserUser extends Model {
 			$sql .= " AND username LIKE '%" . $this->db->escape($data['filter_name']) . "%'";
 		}
 		
+		if (!empty($data['filter_user_group_id'])) {
+			
+			$sql .= " AND user_group_id = '" . $this->db->escape($data['filter_user_group_id']) . "'";
+		}
+
 		if (isset($data['filter_status']) && !is_null($data['filter_status'])) {
 			$sql .= " AND status = '" . $this->db->escape($data['filter_status']) . "'";
 		}
@@ -75,6 +80,7 @@ class ModelUserUser extends Model {
 
 		$sort_data = array(
 			'username',
+			'user_group_id',
 			'status',
 			'date_added'
 		);
@@ -143,7 +149,17 @@ class ModelUserUser extends Model {
 
 		return $query->row['total'];
 	}
+	
+	public function getUserGroups() {
+		$query = $this->db->query("SELECT * FROM `" . DB_PREFIX . "user_group`");
+		return $query->rows;
+	}
 
+	public function getGroupNameNyId($user_group_id) {
+		$query = $this->db->query("SELECT * FROM `" . DB_PREFIX . "user_group` WHERE user_group_id = '" . (int)$user_group_id . "'");
+        return $query->rows[0]['name'];
+	}
+	
 	public function getTotalUsersByEmail($email) {
 		$query = $this->db->query("SELECT COUNT(*) AS total FROM `" . DB_PREFIX . "user` WHERE LCASE(email) = '" . $this->db->escape(utf8_strtolower($email)) . "'");
 
