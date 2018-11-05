@@ -5,7 +5,7 @@
       <div class="pull-right"><a href="<?php echo $add; ?>" data-toggle="tooltip" title="<?php echo $button_add; ?>" class="btn btn-primary"><i class="fa fa-plus"></i></a>
         <button type="button" id="button-delete" data-toggle="tooltip" title="<?php echo $button_delete; ?>" class="btn btn-danger" onclick="confirm('<?php echo $text_confirm; ?>') ? $('#form-user').submit() : false;"><i class="fa fa-trash-o"></i></button>
       </div>
-      <h1><?php echo $heading_title; ?></h1>
+      <h1> <?php echo $heading_title; ?></h1>
       <ul class="breadcrumb">
         <?php foreach ($breadcrumbs as $breadcrumb) { ?>
         <li><a href="<?php echo $breadcrumb['href']; ?>"><?php echo $breadcrumb['text']; ?></a></li>
@@ -33,7 +33,7 @@
         <div class="well">
           <h3>Filters</h3>
           <div class="row">
-            <div class="col-sm-4">
+            <div class="col-sm-3">
               <div class="form-group">
                 <label class="control-label" for="input-name">User Name</label>
                 <input type="text" name="filter_name" value="<?php echo $filter_name; ?>" placeholder="<?php echo $filter_name; ?>" id="input-name" class="form-control" />
@@ -49,7 +49,7 @@
                 </select>-->
               </div>
             </div>
-            <div class="col-sm-4">  
+            <div class="col-sm-3">  
               <div class="form-group fromdate">
                 <label class="control-label" for="input-model">Date Added</label>
                 <div class='input-group date' id='filter_dateadded'>
@@ -61,7 +61,7 @@
                
               </div>
             </div>
-            <div class="col-sm-4">
+            <div class="col-sm-3">
               <div class="form-group">
                 <label class="control-label" for="input-status">Status</label>
                 <select name="filter_status" id="input-status" class="form-control">
@@ -77,10 +77,57 @@
                   <option value="0"><?php echo $text_disabled; ?></option>
                   <?php } ?>
                 </select>
+              </div></div>
+
+                 <div class="col-sm-3">
+              <div class="form-group">
+                <label class="control-label" for="input-user-group-id">User Groups</label>
+                <select name="filter_user_group_id" id="input-user-group-id" class="form-control">
+                  <option value="*">Select User Group</option>
+                  <?php if ($filter_user_group_id) { ?>
+                  <option value="<?php echo $filter_user_group_id; ?>" selected="selected">
+                  <?php
+                     foreach ($user_groups as $usergroup) {
+                       if($usergroup['user_group_id'] == $filter_user_group_id){
+                          echo $usergroup['name'];break;
+                       }
+                     }
+                   ?></option>
+                  <?php } else { ?>
+                  <option value="<?php echo $filter_user_group_id; ?>">
+                    <?php
+                     foreach ($user_groups as $usergroup) {
+                       if($usergroup['user_group_id'] == $filter_user_group_id){
+                          echo $usergroup['name'];break;
+                       }
+                     }
+                   ?>
+                  </option>
+                  <?php } ?>
+                  <?php if (!$filter_user_group_id && !is_null($filter_user_group_id)) { ?>
+                  <option value="<?php echo $filter_user_group_id; ?>" selected="selected">
+                    <?php
+                     foreach ($user_groups as $usergroup) {
+                       if($usergroup['user_group_id'] == $filter_user_group_id){
+                          echo $usergroup['name'];break;
+                       }
+                     }
+                   ?>
+                  </option>
+                   <?php foreach ($user_groups as $usergroup) { ?>
+                  <option value="<?php echo $usergroup['user_group_id']; ?>"><?php echo $usergroup['name']; ?></option>
+                  <?php }} else { ?>
+                   <?php foreach ($user_groups as $usergroup) { ?>
+                  <option value="<?php echo $usergroup['user_group_id']; ?>"><?php echo $usergroup['name']; ?></option>
+                  <?php }} ?>
+                </select>
               </div>
+              </div>
+              <div class="col-sm-12">
               <div class="form-group">
                 <button type="button" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-search"></i> Search</button>
                 <button type="button" id="button-filter-reset" class="btn btn-primary pull-right" style="margin-right:10px;"><i class="fa fa-refresh"></i> Reset</button>  
+              </div>
               </div>
             </div>
             
@@ -98,6 +145,11 @@
                     <a href="<?php echo $sort_username; ?>" class="<?php echo strtolower($order); ?>"><?php echo $column_username; ?></a>
                     <?php } else { ?>
                     <a href="<?php echo $sort_username; ?>"><?php echo $column_username; ?></a>
+                    <?php } ?></td>
+                  <td class="text-left"><?php if ($sort == 'user_group') { ?>
+                    <a href="<?php echo $sort_user_group; ?>" class="<?php echo strtolower($order); ?>"><?php echo $column_user_group; ?></a>
+                    <?php } else { ?>
+                    <a href="<?php echo $sort_user_group; ?>"><?php echo $column_user_group; ?></a>
                     <?php } ?></td>
                   <td class="text-left"><?php if ($sort == 'status') { ?>
                     <a href="<?php echo $sort_status; ?>" class="<?php echo strtolower($order); ?>"><?php echo $column_status; ?></a>
@@ -122,6 +174,7 @@
                     <input type="checkbox" name="selected[]" value="<?php echo $user['user_id']; ?>" />
                     <?php } ?></td>
                   <td class="text-left"><?php echo $user['username']; ?></td>
+                  <td class="text-left"><?php echo $user['user_group']; ?></td>
                   <td class="text-left"><?php echo $user['status']; ?></td>
                   <td class="text-left"><?php echo $user['date_added']; ?></td>
                   <td class="text-right"><!--<a href="<?php echo $user['edit']; ?>" data-toggle="tooltip" title="<?php echo $button_edit; ?>" class="btn btn-primary"><i class="fa fa-pencil"></i></a>--><a href="<?php echo $user['view']; ?>" data-toggle="tooltip" title="View User" class="btn btn-info"><i class="fa fa-eye"></i></a></td>
@@ -166,9 +219,16 @@ $('#button-delete').prop('disabled', true);
 <script type="text/javascript"><!--
 $('#button-filter').on('click', function() {
   var url = 'index.php?route=user/user&token=<?php echo $token; ?>';
+
   var filter_name = $('input[name=\'filter_name\']').val();
   if (filter_name != '*') {
     url += '&filter_name=' + encodeURIComponent(filter_name);
+  }
+
+  var filter_usergroup_id = $('select[name=\'filter_user_group_id\']').val();
+  if (filter_usergroup_id != '*') {
+    url += '&filter_user_group_id=' + encodeURIComponent(filter_usergroup_id);
+   
   }
   
   var filter_dateadded = $('input[name=\'filter_dateadded\']').val();
