@@ -342,6 +342,7 @@
                   </div>
                 </div>
               </div>
+              
               <div class="form-group">
                 <label class="col-sm-2 control-label" for="input-filter"><span data-toggle="tooltip" title="<?php echo $help_filter; ?>"><?php echo $entry_filter; ?></span></label>
                 <div class="col-sm-10">
@@ -355,6 +356,7 @@
                   </div>
                 </div>
               </div>
+
               <div class="form-group">
                 <label class="col-sm-2 control-label"><?php echo $entry_store; ?></label>
                 <div class="col-sm-10">
@@ -386,6 +388,7 @@
                   </div>
                 </div>
               </div>
+              
               <div class="form-group">
                 <label class="col-sm-2 control-label" for="input-download"><span data-toggle="tooltip" title="<?php echo $help_download; ?>"><?php echo $entry_download; ?></span></label>
                 <div class="col-sm-10">
