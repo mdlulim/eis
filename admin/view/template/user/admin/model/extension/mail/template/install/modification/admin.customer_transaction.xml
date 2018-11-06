@@ -1,0 +1,52 @@
+<file path="admin/model/customer/customer.php" email_template="admin.customer_transaction">
+	<operation>
+		<search index="0"><![CDATA[$message  = sprintf($this->language->get('text_transaction_received')]]></search>
+		<add position="after"><![CDATA[
+			$this->load->model('extension/mail/template');
+
+			$template_load = array('key' =>'admin.customer_transaction');
+
+			if (isset($customer_info['store_id'])) {
+				$template_load['store_id'] = $customer_info['store_id'];
+			}
+
+			if (isset($customer_info['language_id'])) {
+				$template_load['language_id'] = $customer_info['language_id'];
+			}
+
+			if (isset($customer_info['customer_id'])) {
+				$template_load['customer_id'] = $customer_info['customer_id'];
+			}
+
+			$template = $this->model_extension_mail_template->load($template_load);
+
+			$template->data['amount'] = $amount;
+			$template->data['description'] = $description;
+
+			$template->addData($customer_info, 'customer');
+
+			if ($order_id) {
+				$this->load->model('sale/order');
+				$order_info = $this->model_sale_order->getOrder($order_id);
+
+				$template->addData($order_info, 'order');
+			}
+
+			$template->data['customer_transaction_received'] = $this->currency->format($amount, $this->config->get('config_currency'));
+			$template->data['customer_transaction_total'] = $this->currency->format($this->getTransactionTotal($customer_id), $this->config->get('config_currency'));
+		]]></add>
+	</operation>
+	<operation>
+		<search index="1"><![CDATA[$mail->send();]]></search>
+		<add position="replace"><![CDATA[
+            $template->data['transaction_received'] = sprintf($template->data['text_transaction_received'], $template->data['customer_transaction_received']);
+			$template->data['transaction_total'] = sprintf($template->data['text_transaction_total'], $template->data['customer_transaction_total']);
+
+			$template->build();
+			$template->hook($mail);
+
+			$mail->send();
+			
+			$this->model_extension_mail_template->sent();]]></add>
+	</operation>
+</file>
