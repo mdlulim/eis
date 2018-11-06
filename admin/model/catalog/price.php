@@ -97,20 +97,14 @@ class ModelCatalogPrice extends Model {
         return $query->row['total'];
     }
     public function importCsvData($data,$contract){
-        $sku = $data['sku'];
-        $price = $data['price'];
-        $contract = $data['contract'];
+        $sku = $data[0];
+        $price = $data[1];
         /*$this->db->query("REPLACE INTO `" . DB_PREFIX . "price_to_contract` SET sku = '" .  $sku . "',
         contract_id = '" . $contract . "' ,price ='". $price ."'");
 */
-        $sql = "SELECT * FROM " . DB_PREFIX . "customer_group_description WHERE name LIKE '".$contract."' ";
-        $query = $this->db->query($sql);
-
-        $customer_group_id = $query->row['customer_group_id'];
-        
         $product_id = $this->getProductID($sku);
-        $this->db->query( "REPLACE INTO `" . DB_PREFIX . "product_to_customer_group_prices` SET product_id='".$product_id['product_id']."', customer_group_id ='".$customer_group_id."' , price ='".$price."'");
-        $this->db->query( "REPLACE INTO `" . DB_PREFIX . "product_to_customer_group` SET product_id='".$product_id['product_id']."', customer_group_id ='".$customer_group_id."'");
+        $this->db->query( "REPLACE INTO `" . DB_PREFIX . "product_to_customer_group_prices` SET product_id='".$product_id['product_id']."', customer_group_id ='".$contract."' , price ='".$price."'");
+        $this->db->query( "REPLACE INTO `" . DB_PREFIX . "product_to_customer_group` SET product_id='".$product_id['product_id']."', customer_group_id ='".$contract."'");
     }
 
     public function getContactPricingExport($min,$max) {

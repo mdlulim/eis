@@ -14,15 +14,8 @@
             </div>
         </div>
         <div class="container-fluid">
-            <?php 
-            if ($warning_error) { ?>
-            <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> <?php echo $warning_error; ?>
-                <button type="button" class="close" data-dismiss="alert">&times;</button>
-            </div>
-            <?php } ?>
-            <?php 
-            if ($success) { ?>
-            <div class="alert alert-success"><i class="fa fa-exclamation-circle"></i> <?php echo $success; ?>
+            <?php if ($error_warning) { ?>
+            <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> <?php echo $error_warning; ?>
                 <button type="button" class="close" data-dismiss="alert">&times;</button>
             </div>
             <?php } ?>
@@ -32,7 +25,7 @@
                 </div>
                 <div class="panel-body">
                     <form action="<?php echo $action; ?>" method="post" enctype="multipart/form-data" id="form-filter" class="form-horizontal">
-                      
+
                         <div class="form-group">
                             <label class="col-sm-2 control-label" for="input-contract">Choose Contract</label>
                             <div class="col-sm-10">
@@ -47,13 +40,7 @@
                         </div>
 
                         <div class="form-group">
-								<p class="col-sm-8"> Import from a XLS, XLSX, CSV or ODS spreadsheet file <br />
-										<?php echo $entry_import; ?>
-										<span class="help">Do an Export first to see the exact format of the worksheets!<?php echo $help_format; ?></span>
-								</p>
-                        </div>
-                        <div class="form-group">
-                           <label class="col-sm-2 control-label" for="input-sort-order">Choose file</label>
+                            <label class="col-sm-2 control-label" for="input-sort-order">Choose file</label>
                             <div class="col-sm-10">
                                 <input type="file" name="csv" value="" />
                                 <?php if ($error_csv) { ?>
