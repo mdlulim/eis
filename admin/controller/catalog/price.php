@@ -548,9 +548,6 @@ class ControllerCatalogPrice extends Controller {
         $this->data['action'] = $this->url->link('catalog/price/importCSV', 'token=' . $this->session->data['token'] . $url, 'SSL');
         // current page url
         // Breadcrumbs start here
-        $data['cancel'] = $this->url->link('catalog/price', 'token=' . $this->session->data['token'] . $url, 'SSL');
-        
-        $data['warning_error'] = '';
         $this->data['breadcrumbs'] = array();
         $this->data['breadcrumbs'][] = array('text' => $this->language->get('text_home'),
             'href' => $this->url->link('common/home', 'token=' . $this->session->data['token'], 'SSL'), 'separator' => false);
@@ -564,112 +561,21 @@ class ControllerCatalogPrice extends Controller {
             $handle = fopen($file,"r");
             $contract = $this->request->post['contract_id'];
             //iterate through records
-
-            if ((isset( $this->request->files['csv'] )) && (is_uploaded_file($this->request->files['csv']['tmp_name']))) 
-			{
-                $ext = strtolower(pathinfo($this->request->files['csv']['name'], PATHINFO_EXTENSION));
-               
-				if (($ext != 'xls') && ($ext != 'xlsx') && ($ext != 'ods') && ($ext != 'csv')) 
-				{ 
-					$this->session->data['import_error'] = 'The file type imported is not supported, please upload your file in CSV, XLS, XLSX and  ODS';
-				}
-				else
-				{
-					$maxsize    = 5097152;
-					if(($this->request->files['csv']['size'] <= $maxsize) || ($this->request->files['csv']["size"] != 0)) 
-					{
-                        $file = $_FILES['csv']['tmp_name'];
-					
-                        $inputfilename = $file;
-                        $inputfiletype = PHPExcel_IOFactory::identify($inputfilename);
-                        $objReader = PHPExcel_IOFactory::createReader($inputfiletype);
-                        $objPHPExcel = $objReader->load($inputfilename);
-                        $sheet = $objPHPExcel->getSheet(0); 
-                        $highestRow = $sheet->getHighestDataRow(); 
-                        $highestColumn = $sheet->getHighestDataColumn();
-
-                         //echo $highestColumn; exit;
-                        for ($row = 1; $row <= 1; $row++)
-                        { 
-                            $header1 = $sheet->rangeToArray('A' . $row . ':' . $highestColumn . $row, NULL, FALSE, FALSE);
-                        }
-                        
-                        $header = array();
-                        foreach   ($header1 as $key => $val)
-                        {
-                            $header = array_merge($val, $header);
-                        }
-
-                        $fields = array('SKU');
-                        array_push($fields, 'Contact Pricing');
-                        array_push($fields, 'Price');
-                        $array1 = $header;
-                        $array2 = $fields;
-
-                        $fields_exist = 0;
-                        foreach($fields as $fieldValue){
-                            if (in_array($fieldValue, $header)){
-                                $field_exist = 1;
-                                
-                            }
-                            
-                        }
-                        //------------------------------ Start -----------------------------------------
-                       
-                        if($field_exist = 1 && $array1 == $array2){ 
-                            
-                        
-                            for ($row = 2; $row <= $highestRow; $row++)
-                            { 
-                                //  Read a row of data into an array
-                                    $sheetdata1 = $sheet->rangeToArray('A' . $row . ':' . $highestColumn . $row, NULL, FALSE, FALSE);
-                                    $sheetdata = array();
-                                    foreach   ($sheetdata1 as $key => $val)
-                                    {
-                                        $sheetdata = array_merge($val, $sheetdata);
-                                    }
-                                    $all_rows[] = array_combine($header, $sheetdata);
-                            }
-                            
-                            $sku = '';
-                            foreach($all_rows as $all_row){
-                                if(!empty($all_row) && count($all_row) > 0)
-                                {	
-                                $sku = $all_row['SKU'] ? $all_row['SKU'] : '';
-                                $contract = $all_row['Contact Pricing'] ? $all_row['Contact Pricing'] : '';
-                                $price = $all_row['Price'] ? $all_row['Price'] : '';
-                            
-                                $data_array = array(
-                                                    'sku' => $sku,
-                                                    'contract' => $contract,
-                                                    'price' => $price,
-                                                );       
-                                  $this->model_catalog_price->importCsvData($data_array,$contract);           
-                               }
-                            }
-                            $this->session->data['success'] = ''.ucfirst($ext).' Successfully Imported!';
-                            $data['warning_error'] = '';
-                            $data['success'] = ''.ucfirst($ext).' Successfully Imported!';	
-                            
-                        } else 
-                        { 
-                          //  $this->session->data['warning_error'] = ''.ucfirst($ext).' Not Imported! <br> File Header Not Set Proper or Missing some Column on '.ucfirst($ext).' or Speling mismatch on '.$ext.' Header section as per Setting Tab. <br> Better to Export First to View Exact File Format!';	
-                            $data['warning_error'] = ''.ucfirst($ext).' Not Imported! <br> File Header Not Set Proper or Missing some Column on '.ucfirst($ext).' or Speling mismatch on '.$ext.' Header section as per Setting Tab. <br> Better to Export First to View Exact File Format!';	
-                       }
-                        
-					} else { 
-                       // $this->session->data['warning_error'] = ''.ucfirst($ext).' Not Imported! <br> File Header Not Set Proper or Missing some Column on '.ucfirst($ext).' or Speling mismatch on '.$ext.' Header section as per Setting Tab. <br> Better to Export First to View Exact File Format!';	
-                        $data['warning_error'] = 'The File '.ucfirst($ext).' you have imported has exceeded the maximum size, please make sure that your file is not more than 5MB';
-					}
-                } 
-            } else  {
-                $this->session->data['warning_error'] = 'Please Select the file to Import';
+            while ($data = fgetcsv($handle,1000,",","'")) // parses the line it reads for fields in CSV format and returns an array containing the fields read.
+            {
+                if ($data[0]!='') // if column 1 is not empty
+                {
+                    $this->model_catalog_price->importCsvData($data,$contract);  // parse the data to model
+                }
+                else
+                {
+                    // in case of errors, put debug code here
+                }
             }
-            //var_dump($data['warning_error']);die;
-            //$this->response->redirect($this->url->link('catalog/price/importCSV', 'token=' . $this->session->data['token'] . $url, 'SSL'));
-                  		
-		}
-        // $this->load->model('catalog/contract');
+            $this->session->data['success'] = 'CSV Successfully Imported!';
+            $this->response->redirect($this->url->link('catalog/price', 'token=' . $this->session->data['token'] . $url, 'SSL'));
+        }
+       // $this->load->model('catalog/contract');
         $data['contracts'] = $this->model_catalog_price->getCustomerGroups();
         $data['header']         = $this->load->controller('common/header');
         $data['column_left']    = $this->load->controller('common/column_left');
@@ -682,9 +588,22 @@ class ControllerCatalogPrice extends Controller {
         $data['heading_title']  = $this->language->get('heading_title');
         $this->load->model('catalog/price');
 		if (($this->request->server['REQUEST_METHOD'] == 'POST')) {
+					//die('test me');
+					// $min = null;
+					// if (isset( $this->request->post['min'] ) && ($this->request->post['min']!='')) {
+					// 	$min = $this->request->post['min'];
+					// }
+					// $max = null;
+					// if (isset( $this->request->post['max'] ) && ($this->request->post['max']!='')) {
+					// 	$max = $this->request->post['max'];
+					// }
 					
+					// if (($min==null) || ($max==null)) {
+					// 	$this->model_catalog_price->downloadCsv();
+					// } elseif(($min!=null) || ($max!=null)) {
+					// 	$this->model_catalog_price->downloadCsv($min, $max);
+                    // }
                     $this->model_catalog_price->downloadCsv($min, $max);
-                    $data['success'] = 'Successfully exported!';
 					
 			}
 			//$this->response->redirect( $this->url->link( 'customer/customer_export_import', 'token='.$this->request->get['token'], $this->ssl) );
@@ -701,25 +620,22 @@ class ControllerCatalogPrice extends Controller {
         $this->data['action'] = $this->url->link('catalog/price/exportCSV', 'token=' . $this->session->data['token'] . $url, 'SSL');
         // current page url
         // Breadcrumbs start here
-        $data['back'] = $this->url->link('catalog/price', 'token=' . $this->session->data['token'] . $url, 'SSL');
-        
         $this->data['breadcrumbs'] = array();
         $this->data['breadcrumbs'][] = array('text' => $this->language->get('text_home'),
             'href' => $this->url->link('common/home', 'token=' . $this->session->data['token'], 'SSL'), 'separator' => false);
         //home page link
-        $this->data['breadcrumbs'][] = array('text' => "Import",
+        $this->data['breadcrumbs'][] = array('text' => "Import CSV",
             'href' => $this->url->link('catalog/price', 'token=' . $this->session->data['token'] . $url, 'SSL'), 'separator' => ' :: ');
         //product page link
         // breadcrumbs end here
-        if (($this->request->server['REQUEST_METHOD']) ) {
+        if (($this->request->server['REQUEST_METHOD'] == 'POST') ) {
             
-           //$this->model_catalog_price->exportCsvData(); 
-           $data['export'] = $this->url->link('catalog/price/download', 'token=' . $this->session->data['token'] . $url, 'SSL');
-      
-           $data['success'] = 'Successfully exported!';
-           //$this->response->redirect($this->url->link('catalog/price', 'token=' . $this->session->data['token'] . $url, 'SSL'));
+           // $this->model_catalog_price->exportCsvData(); 
+            //$this->session->data['success'] = 'CSV Successfully exported!';
+           // $this->response->redirect($this->url->link('catalog/price', 'token=' . $this->session->data['token'] . $url, 'SSL'));
         }
        // $this->load->model('catalog/contract');
+        $data['export'] = $this->url->link('catalog/price/download', 'token=' . $this->session->data['token'] . $url, 'SSL');
         
         $data['tab_export']         = "Export";
         $data['entry_export']       = $this->language->get( 'entry_export' );
