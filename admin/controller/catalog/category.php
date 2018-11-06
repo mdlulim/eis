@@ -190,8 +190,6 @@ class ControllerCatalogCategory extends Controller {
 	}
 
 	protected function getList() {
-	   echo('Test category');exit();
-	   //die("test");
 		if (isset($this->request->get['sort'])) {
 			$sort = $this->request->get['sort'];
 		} else {
