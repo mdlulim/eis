@@ -1,7 +1,19 @@
----------- Date: 2018-05-23 07:54:16 ~ IP : 197.97.24.150 ----------
-REQUEST URI : /ReplogicExtension/admin/index.php?route=catalog/product&token=wJ15cF878ioLhWgVoi60VaTgd6cLJyem
+---------- Date: 2018-11-07 12:11:35 ~ IP : ::1 ----------
+REQUEST URI : /uat02/admin/
 MOD DETAILS:
-   modFile   : /var/www/html/ReplogicExtension/vqmod/xml/productViewOrder.xml
+   modFile   : /Applications/XAMPP/xamppfiles/htdocs/uat02/vqmod/xml/productViewOrder.xml
+   id        : Product - View orders
+   version   : 1.0.0
+   vqmver    : 2.4.2
+   author    : Nerdherd Developers
+VQModObject::parseMods - Could not resolve path for [admin/view/template/catalog/product_listc.tpl] (SKIPPED)
+----------------------------------------------------------------------
+
+
+---------- Date: 2018-11-07 12:13:16 ~ IP : ::1 ----------
+REQUEST URI : /uat02/admin/index.php?route=catalog/product&token=FEK8M5jHRpb7eU2tBX440fxwDyM5lOQi
+MOD DETAILS:
+   modFile   : /Applications/XAMPP/xamppfiles/htdocs/uat02/vqmod/xml/productViewOrder.xml
    id        : Product - View orders
    version   : 1.0.0
    vqmver    : 2.4.2
