@@ -225,13 +225,13 @@ class ControllerUserUser extends Controller {
 		} else {
 			$filter_name = null;
 		}
-		
+
 		if (isset($this->request->get['filter_user_group_id'])) {
 			$filter_user_group_id = $this->request->get['filter_user_group_id'];
 		} else {
 			$filter_user_group_id = null;
 		} 
-
+		
 		if (isset($this->request->get['filter_status'])) {
 			$filter_status = $this->request->get['filter_status'];
 		} else {
@@ -306,17 +306,14 @@ class ControllerUserUser extends Controller {
 			'limit' => $this->config->get('config_limit_admin')
 		);
 
-		//var_dump($filter_data);die;
 		$user_groups = $this->model_user_user->getUserGroups();
 		foreach ($user_groups as $group) {
-			//var_dump($this->model_user_user->getGroupNameNyId($result['user_group_id']));die;
 			$data['user_groups'][] = array(
 				'user_group_id'    => $group['user_group_id'],
 				'name'   => $group['name'],
 			);
 		}
 
-		//var_dump($data['user_groups']);die;
 		$user_total = $this->model_user_user->getTotalUsers($filter_data);
 		$results = $this->model_user_user->getUsers($filter_data);
 		foreach ($results as $result) {
@@ -416,7 +413,6 @@ class ControllerUserUser extends Controller {
 		// $data['entry_confirm'] = $this->language->get('entry_confirm');
 		$data['entry_firstname'] = $this->language->get('entry_firstname');
 		$data['entry_lastname'] = $this->language->get('entry_lastname');
-		$data['entry_user_group'] = $this->language->get('entry_user_group');
 		$data['entry_email'] = $this->language->get('entry_email');
 		$data['entry_image'] = $this->language->get('entry_image');
 		$data['entry_status'] = $this->language->get('entry_status');
@@ -462,10 +458,6 @@ class ControllerUserUser extends Controller {
 			$url .= '&filter_name=' . $this->request->get['filter_name'];
 		}
 		
-		if (isset($this->request->get['filter_user_group_id'])) {
-			$url .= '&filter_user_group_id=' . $this->request->get['filter_user_group_id'];
-		}
-
 		if (isset($this->request->get['filter_status'])) {
 			$url .= '&filter_status=' . $this->request->get['filter_status'];
 		}
@@ -604,6 +596,18 @@ class ControllerUserUser extends Controller {
 	
 	public function view() {
 		
+		/*==================================
+		=       Add Files (Includes)       =
+		==================================*/
+		# stylesheets (CSS) files
+		$this->document->addStyle('view/javascript/bootstrap-sweetalert/sweetalert.css');
+		$this->document->addStyle('view/stylesheet/custom.css');
+		# javascript (JS) files
+		$this->document->addScript('view/javascript/bootstrap-sweetalert/sweetalert.min.js');
+		$this->document->addScript('view/javascript/bootstrap-sweetalert/sweetalert-data.js');
+		$this->document->addScript('view/javascript/user.js');
+		/*=====  End of Add Files (Includes)  ======*/
+		
 		$this->load->language('user/user');
 		$this->document->setTitle($this->language->get('heading_title'));
 		$this->load->model('user/user');
@@ -619,7 +623,6 @@ class ControllerUserUser extends Controller {
 		// $data['entry_confirm'] = $this->language->get('entry_confirm');
 		$data['entry_firstname'] = $this->language->get('entry_firstname');
 		$data['entry_lastname'] = $this->language->get('entry_lastname');
-		$data['entry_user_group'] = $this->language->get('entry_user_group');
 		$data['entry_email'] = $this->language->get('entry_email');
 		$data['entry_image'] = $this->language->get('entry_image');
 		$data['entry_status'] = $this->language->get('entry_status');

@@ -55,11 +55,10 @@ class ModelUserUser extends Model {
 	}
 
 	public function getUsers($data = array()) {
-
 		$sql = "SELECT * FROM `" . DB_PREFIX . "user`";
 		
 		$sql .= " where user_id > 0";
-		//var_dump($data);die;
+		
 		if (!empty($data['filter_name'])) {
 			$sql .= " AND username LIKE '%" . $this->db->escape($data['filter_name']) . "%'";
 		}
@@ -115,7 +114,7 @@ class ModelUserUser extends Model {
 		return $query->rows;
 	}
 
-	public function getTotalUsers($data= array()) { 
+	public function getTotalUsers($data= array()) {
 		$sql = "SELECT COUNT(*) AS total FROM `" . DB_PREFIX . "user`";
 		
 		$sql .= " where user_id > 0";
@@ -145,6 +144,12 @@ class ModelUserUser extends Model {
 		return $query->rows;
 	}
 	
+	public function getTotalUsersByGroupId($user_group_id) {
+		$query = $this->db->query("SELECT COUNT(*) AS total FROM `" . DB_PREFIX . "user` WHERE user_group_id = '" . (int)$user_group_id . "'");
+
+		return $query->row['total'];
+	}
+	
 	public function getUserGroups() {
 		$query = $this->db->query("SELECT * FROM `" . DB_PREFIX . "user_group`");
 		return $query->rows;
@@ -155,12 +160,6 @@ class ModelUserUser extends Model {
         return $query->rows[0]['name'];
 	}
 	
-	public function getTotalUsersByGroupId($user_group_id) {
-		$query = $this->db->query("SELECT COUNT(*) AS total FROM `" . DB_PREFIX . "user` WHERE user_group_id = '" . (int)$user_group_id . "'");
-
-		return $query->row['total'];
-	}
-
 	public function getTotalUsersByEmail($email) {
 		$query = $this->db->query("SELECT COUNT(*) AS total FROM `" . DB_PREFIX . "user` WHERE LCASE(email) = '" . $this->db->escape(utf8_strtolower($email)) . "'");
 

@@ -93,14 +93,14 @@
             </div>
           </div>
           <?php if ($show_resend_password) { ?>
-          <!--<div class="form-group">
+          <div class="form-group">
             <div class="col-sm-10 col-sm-push-2">
               <a href="javascript:void()" class="btn btn-default" id="resend-password" data-username='<?=$firstname?>' data-userid='<?=$user_id?>' data-token='<?=$token?>'>
                 <i class="fa fa-send"></i>
                 Resend Password
               </a>
             </div>
-          </div>-->
+          </div>
           <?php } ?>
         </form>
       </div>

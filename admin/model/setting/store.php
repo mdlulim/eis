@@ -49,11 +49,7 @@ class ModelSettingStore extends Model {
 
 		return $store_data;
 	}
-    public function getAllStores() {
-		$query = $this->db->query("SELECT COUNT(*) AS total FROM " . DB_PREFIX . "store");
 
-		return $query;
-	}
 	public function getTotalStores() {
 		$query = $this->db->query("SELECT COUNT(*) AS total FROM " . DB_PREFIX . "store");
 

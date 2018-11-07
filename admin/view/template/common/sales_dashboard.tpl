@@ -1,5 +1,5 @@
 <?=$header?><?=$column_left?>
-  <div id="content" class="sales-dashboard-wrapper" data-page-id="sales_dashboard" data-token="<?php echo $token; ?>" data-page-url="<?php echo $page_url; ?>">
+  <div id="content" class="sales-dashboard-wrapper">
 
     <div class="page-header">
       <div class="container-fluid">
@@ -196,8 +196,8 @@
    DO NOT REMOVE CODE BELOW THIS LINE [ Google Map | JavaScript ]
    ==================================================================================== */
 ?>
-
 <script>
+
     var map;
     var markers = [];
     var infoWindow;
@@ -210,7 +210,7 @@
         var legend  = document.createElement('div');
         legend.id   = 'gmap-legend';
         var content = [];
-        content.push('<!-- div class="col__legend"><img src="view/image/gmap__checkin_icon.png" /> Rep Checked In</div -->');
+        content.push('<div class="col__legend"><img src="view/image/gmap__checkin_icon.png" /> Rep Checked In</div>');
         content.push('<div class="col__legend"><img src="view/image/gmap__location_icon.png" /> Rep GPS Location</div>');
         content.push('<div class="col__legend"><img src="view/image/gmap__customer_icon.png" /> Customer</div>');
         legend.innerHTML = content.join('');
@@ -250,10 +250,10 @@
         <?php endif; ?>
         // </use:php>
 
+
         /*************************************************************
          * Customer location
          *************************************************************/
-
         // <use:php> 
         // # loop through location markers
         <?php if (!empty($markers_customers)) : ?>
@@ -275,10 +275,10 @@
         <?php endif; ?>
         // </use:php>
 
+
         /*************************************************************
          * GPS [Check-in] location
          *************************************************************/
-
         // <use:php> 
         // # loop through location markers
         <?php if (!empty($markers_checkins)) : ?>

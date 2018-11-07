@@ -745,9 +745,7 @@ class ControllerCommonSalesDashboard extends Controller {
 		// 	}
 		// }
 		// # location-management view more link
-		$data['location_view_more'] = $this->url->link('replogic/location_management', "token=$token", true);
-		$data['page_url'] = $this->url->link('common/sales_dashboard', "token=$token", true);
-		
+	    $data['location_view_more'] = $this->url->link('replogic/location_management', "token=$token", true);
 		
 		/*=====  End of Location Management [Google Map]  ======*/
 
