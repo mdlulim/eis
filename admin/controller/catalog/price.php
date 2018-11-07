@@ -548,6 +548,7 @@ class ControllerCatalogPrice extends Controller {
         $this->data['action'] = $this->url->link('catalog/price/importCSV', 'token=' . $this->session->data['token'] . $url, 'SSL');
         // current page url
         // Breadcrumbs start here
+        $data['warning_error'] = '';
         $this->data['breadcrumbs'] = array();
         $this->data['breadcrumbs'][] = array('text' => $this->language->get('text_home'),
             'href' => $this->url->link('common/home', 'token=' . $this->session->data['token'], 'SSL'), 'separator' => false);
@@ -561,21 +562,112 @@ class ControllerCatalogPrice extends Controller {
             $handle = fopen($file,"r");
             $contract = $this->request->post['contract_id'];
             //iterate through records
-            while ($data = fgetcsv($handle,1000,",","'")) // parses the line it reads for fields in CSV format and returns an array containing the fields read.
-            {
-                if ($data[0]!='') // if column 1 is not empty
-                {
-                    $this->model_catalog_price->importCsvData($data,$contract);  // parse the data to model
-                }
-                else
-                {
-                    // in case of errors, put debug code here
-                }
+
+            if ((isset( $this->request->files['csv'] )) && (is_uploaded_file($this->request->files['csv']['tmp_name']))) 
+			{
+                $ext = strtolower(pathinfo($this->request->files['csv']['name'], PATHINFO_EXTENSION));
+               
+				if (($ext != 'xls') && ($ext != 'xlsx') && ($ext != 'ods') && ($ext != 'csv')) 
+				{ 
+					$this->session->data['import_error'] = 'The file type imported is not supported, please upload your file in CSV, XLS, XLSX and  ODS';
+				}
+				else
+				{
+					$maxsize    = 5097152;
+					if(($this->request->files['csv']['size'] <= $maxsize) || ($this->request->files['csv']["size"] != 0)) 
+					{
+                        $file = $_FILES['csv']['tmp_name'];
+					
+                        $inputfilename = $file;
+                        $inputfiletype = PHPExcel_IOFactory::identify($inputfilename);
+                        $objReader = PHPExcel_IOFactory::createReader($inputfiletype);
+                        $objPHPExcel = $objReader->load($inputfilename);
+                        $sheet = $objPHPExcel->getSheet(0); 
+                        $highestRow = $sheet->getHighestDataRow(); 
+                        $highestColumn = $sheet->getHighestDataColumn();
+
+                         //echo $highestColumn; exit;
+                        for ($row = 1; $row <= 1; $row++)
+                        { 
+                            $header1 = $sheet->rangeToArray('A' . $row . ':' . $highestColumn . $row, NULL, FALSE, FALSE);
+                        }
+                        
+                        $header = array();
+                        foreach   ($header1 as $key => $val)
+                        {
+                            $header = array_merge($val, $header);
+                        }
+
+                        $fields = array('SKU');
+                        array_push($fields, 'Contact Pricing');
+                        array_push($fields, 'Price');
+                        $array1 = $header;
+                        $array2 = $fields;
+
+                        $fields_exist = 0;
+                        foreach($fields as $fieldValue){
+                            if (in_array($fieldValue, $header)){
+                                $field_exist = 1;
+                                
+                            }
+                            
+                        }
+                        //------------------------------ Start -----------------------------------------
+                       
+                        if($field_exist = 1 && $array1 == $array2){ 
+                            
+                        
+                            for ($row = 2; $row <= $highestRow; $row++)
+                            { 
+                                //  Read a row of data into an array
+                                    $sheetdata1 = $sheet->rangeToArray('A' . $row . ':' . $highestColumn . $row, NULL, FALSE, FALSE);
+                                    $sheetdata = array();
+                                    foreach   ($sheetdata1 as $key => $val)
+                                    {
+                                        $sheetdata = array_merge($val, $sheetdata);
+                                    }
+                                    $all_rows[] = array_combine($header, $sheetdata);
+                            }
+                            
+                            $sku = '';
+                            foreach($all_rows as $all_row){
+                                if(!empty($all_row) && count($all_row) > 0)
+                                {	
+                                $sku = $all_row['SKU'] ? $all_row['SKU'] : '';
+                                $contract = $all_row['Contact Pricing'] ? $all_row['Contact Pricing'] : '';
+                                $price = $all_row['Price'] ? $all_row['Price'] : '';
+                            
+                                $data_array = array(
+                                                    'sku' => $sku,
+                                                    'contract' => $contract,
+                                                    'price' => $price,
+                                                );       
+                                  $this->model_catalog_price->importCsvData($data_array,$contract);           
+                               }
+                            }
+                            $this->session->data['success'] = ''.ucfirst($ext).' Successfully Imported!';
+                            $data['warning_error'] = '';
+                            $data['success'] = ''.ucfirst($ext).' Successfully Imported!';	
+                            
+                        } else 
+                        { 
+                          //  $this->session->data['warning_error'] = ''.ucfirst($ext).' Not Imported! <br> File Header Not Set Proper or Missing some Column on '.ucfirst($ext).' or Speling mismatch on '.$ext.' Header section as per Setting Tab. <br> Better to Export First to View Exact File Format!';	
+                            $data['warning_error'] = ''.ucfirst($ext).' Not Imported! <br> File Header Not Set Proper or Missing some Column on '.ucfirst($ext).' or Speling mismatch on '.$ext.' Header section as per Setting Tab. <br> Better to Export First to View Exact File Format!';	
+                       }
+                        
+					} else { 
+                       // $this->session->data['warning_error'] = ''.ucfirst($ext).' Not Imported! <br> File Header Not Set Proper or Missing some Column on '.ucfirst($ext).' or Speling mismatch on '.$ext.' Header section as per Setting Tab. <br> Better to Export First to View Exact File Format!';	
+                        $data['warning_error'] = 'The File '.ucfirst($ext).' you have imported has exceeded the maximum size, please make sure that your file is not more than 5MB';
+					}
+                } 
+            } else  {
+                $this->session->data['warning_error'] = 'Please Select the file to Import';
             }
-            $this->session->data['success'] = 'CSV Successfully Imported!';
-            $this->response->redirect($this->url->link('catalog/price', 'token=' . $this->session->data['token'] . $url, 'SSL'));
-        }
-       // $this->load->model('catalog/contract');
+            //var_dump($data['warning_error']);die;
+            //$this->response->redirect($this->url->link('catalog/price/importCSV', 'token=' . $this->session->data['token'] . $url, 'SSL'));
+                  		
+		}
+        // $this->load->model('catalog/contract');
         $data['contracts'] = $this->model_catalog_price->getCustomerGroups();
         $data['header']         = $this->load->controller('common/header');
         $data['column_left']    = $this->load->controller('common/column_left');

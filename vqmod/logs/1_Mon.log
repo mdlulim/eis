@@ -1,7 +1,14 @@
+<<<<<<< HEAD
 ---------- Date: 2018-11-05 15:02:09 ~ IP : ::1 ----------
 REQUEST URI : /uat02/admin/index.php?route=catalog/product&token=uaLngqVmkn7DB0vGCcw54OThOvezNdeb
 MOD DETAILS:
    modFile   : /Applications/XAMPP/xamppfiles/htdocs/uat02/vqmod/xml/productViewOrder.xml
+=======
+---------- Date: 2018-09-17 09:11:44 ~ IP : ::1 ----------
+REQUEST URI : /saleslogicmdu/admin/index.php?route=catalog/product&token=RH26a0VgfR2HbFXZwkcPXroIUtq5i5RW
+MOD DETAILS:
+   modFile   : /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/vqmod/xml/productViewOrder.xml
+>>>>>>> 001ae0bbd0cf58cf067ff4d130cc346561cfc100
    id        : Product - View orders
    version   : 1.0.0
    vqmver    : 2.4.2
