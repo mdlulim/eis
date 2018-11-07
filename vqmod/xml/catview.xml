@@ -24,7 +24,7 @@
 			</search>
 			<add><![CDATA[			
 				protected function getListc() {
-		
+	
 		if (isset($this->request->get['filter_name'])) {
 			$filter_name = $this->request->get['filter_name'];
 		} else {
@@ -164,6 +164,12 @@
 		$data['button_edit'] = $this->language->get('button_edit');
 		$data['button_delete'] = $this->language->get('button_delete');
 		$data['button_rebuild'] = $this->language->get('button_rebuild');
+
+		$this->load->model('customer/customer_group');
+		$this->load->model('catalog/product');
+		$data['groups'] = $this->model_customer_customer_group->getCustomerGroups();
+		$data['entry_store'] = $this->language->get('entry_store');
+		$data['entry_assign'] = $this->language->get('entry_assign');
 
 		if (isset($this->error['warning'])) {
 			$data['error_warning'] = $this->error['warning'];

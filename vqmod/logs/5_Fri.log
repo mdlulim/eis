@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 ---------- Date: 2018-08-17 11:07:25 ~ IP : ::1 ----------
 REQUEST URI : /flmkzn/index.php?route=account/order
@@ -21,11 +22,89 @@ VQModObject::parseMods - Could not resolve path for [admin/view/template/catalog
 REQUEST URI : /hub-development-branch/admin/index.php?route=sale/order&token=gTJnNRCTKg1q1c8UJa5VOpvGWqyDp5H3
 MOD DETAILS:
    modFile   : /Applications/XAMPP/xamppfiles/htdocs/hub-development-branch/vqmod/xml/productViewOrder.xml
+=======
+---------- Date: 2018-09-14 08:43:49 ~ IP : ::1 ----------
+REQUEST URI : /saleslogicmdu/admin/index.php?route=catalog/product&token=ClRDD6C1imLs9mCyg7s3rBxOac69a3Qc
+MOD DETAILS:
+   modFile   : /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/vqmod/xml/productViewOrder.xml
+>>>>>>> 001ae0bbd0cf58cf067ff4d130cc346561cfc100
    id        : Product - View orders
    version   : 1.0.0
    vqmver    : 2.4.2
    author    : Nerdherd Developers
-VQModObject::parseMods - Could not resolve path for [admin/view/template/catalog/product_listc.tpl] (SKIPPED)
+
+File Name    : admin/view/template/catalog/product_list.tpl(8)
+VQModObject::applyMod - SEARCH NOT FOUND (ABORTING MOD): <button type="button" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-search"></i> <?php echo $button_filter; ?></button>
+----------------------------------------------------------------------
+
+
+---------- Date: 2018-09-14 08:50:36 ~ IP : ::1 ----------
+REQUEST URI : /saleslogicmdu/admin/index.php?route=catalog/product&token=ClRDD6C1imLs9mCyg7s3rBxOac69a3Qc
+MOD DETAILS:
+   modFile   : /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/vqmod/xml/productViewOrder.xml
+   id        : Product - View orders
+   version   : 1.0.0
+   vqmver    : 2.4.2
+   author    : Nerdherd Developers
+
+File Name    : admin/view/template/catalog/product_list.tpl(8)
+VQModObject::applyMod - SEARCH NOT FOUND (ABORTING MOD): <button type="button" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-search"></i> <?php echo $button_filter; ?></button>
+----------------------------------------------------------------------
+
+
+---------- Date: 2018-09-14 08:51:31 ~ IP : ::1 ----------
+REQUEST URI : /saleslogicmdu/admin/index.php?route=catalog/product&token=ClRDD6C1imLs9mCyg7s3rBxOac69a3Qc
+MOD DETAILS:
+   modFile   : /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/vqmod/xml/productViewOrder.xml
+   id        : Product - View orders
+   version   : 1.0.0
+   vqmver    : 2.4.2
+   author    : Nerdherd Developers
+
+File Name    : admin/view/template/catalog/product_list.tpl(8)
+VQModObject::applyMod - SEARCH NOT FOUND (ABORTING MOD): <button type="button" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-search"></i> <?php echo $button_filter; ?></button>
+----------------------------------------------------------------------
+
+
+---------- Date: 2018-09-14 08:55:06 ~ IP : ::1 ----------
+REQUEST URI : /saleslogicmdu/admin/index.php?route=catalog/product&token=ClRDD6C1imLs9mCyg7s3rBxOac69a3Qc
+MOD DETAILS:
+   modFile   : /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/vqmod/xml/productViewOrder.xml
+   id        : Product - View orders
+   version   : 1.0.0
+   vqmver    : 2.4.2
+   author    : Nerdherd Developers
+
+File Name    : admin/view/template/catalog/product_list.tpl(8)
+VQModObject::applyMod - SEARCH NOT FOUND (ABORTING MOD): <button type="button" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-search"></i> <?php echo $button_filter; ?></button>
+----------------------------------------------------------------------
+
+
+---------- Date: 2018-09-14 08:57:27 ~ IP : ::1 ----------
+REQUEST URI : /saleslogicmdu/admin/index.php?route=catalog/product&token=ClRDD6C1imLs9mCyg7s3rBxOac69a3Qc
+MOD DETAILS:
+   modFile   : /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/vqmod/xml/productViewOrder.xml
+   id        : Product - View orders
+   version   : 1.0.0
+   vqmver    : 2.4.2
+   author    : Nerdherd Developers
+
+File Name    : admin/view/template/catalog/product_list.tpl(8)
+VQModObject::applyMod - SEARCH NOT FOUND (ABORTING MOD): <button type="button" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-search"></i> <?php echo $button_filter; ?></button>
+----------------------------------------------------------------------
+
+
+---------- Date: 2018-09-14 10:24:37 ~ IP : ::1 ----------
+REQUEST URI : /saleslogicmdu/admin/index.php?route=catalog/product&token=ClRDD6C1imLs9mCyg7s3rBxOac69a3Qc
+MOD DETAILS:
+   modFile   : /Applications/XAMPP/xamppfiles/htdocs/saleslogicmdu/vqmod/xml/productViewOrder.xml
+   id        : Product - View orders
+   version   : 1.0.0
+   vqmver    : 2.4.2
+   author    : Nerdherd Developers
+
+File Name    : admin/view/template/catalog/product_list.tpl(8)
+VQModObject::applyMod - SEARCH NOT FOUND (ABORTING MOD): <button type="button" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-search"></i> <?php echo $button_filter; ?></button>
 ----------------------------------------------------------------------
 
 

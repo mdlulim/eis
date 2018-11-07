@@ -83,6 +83,7 @@
 		 		 protected function getList() {
 			]]></search>
 			<add><![CDATA[
+			
                 $this->load->model('setting/setting');
 				if (isset($this->request->post['config_show_admin_category_customer_groups_in_category_list'])) {
 			         $data['config_show_admin_category_customer_groups_in_category_list'] = $this->request->post['config_show_admin_category_customer_groups_in_category_list'];

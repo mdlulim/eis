@@ -35,6 +35,18 @@
                 daysOfWeekDisabled: [0, 6],
                 format: 'dddd, DD MMMM YYYY'
             });
+        } else {
+            if ($('#input__appointment_date').length) {
+                var date  = new Date();
+                var today = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+                $('#input__appointment_date').datetimepicker({
+                    minDate: today,
+                    showTodayButton: true,
+                    pickTime: false,
+                    daysOfWeekDisabled: [0, 6],
+                    format: 'dddd, DD MMMM YYYY'
+                });
+            }
         }
 
         token            = $('#content').data('token');
@@ -101,7 +113,7 @@
         appointmentModal.find('#input__customer_name').val(customerName);
 
         // if location_management page check available times before show
-        if (pageId === "location_management" || pageId === "sales_dashboard") {
+        if (pageId === "location_management" || pageId === "sales_dashboard" || pageId === "customer_info_checkins") {
             var date       = new Date().toDateString();
             var url        = `index.php?route=replogic/schedule_management/getSalesRepAppointmentTimesByDate&token=${token}`;
             $.ajax({
@@ -203,7 +215,8 @@
                                     // reload page
                                     if (pageId === "sales_dashboard") {
                                         window.location.href = $('#content').attr('data-page-url');
-                                    } else if (pageId === "customer_info") {
+                                        return false;
+                                    } else if (pageId === "customer_info_checkins") {
                                         window.location.href = $('#content').attr('data-page-url');
                                     }  else{
                                         window.location.href = $('a#button-reload').attr('href');
