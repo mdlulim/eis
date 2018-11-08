@@ -4,9 +4,9 @@
     <div class="container-fluid">
       <div class="pull-right">
         <?php if($delete) { ?>
-        <button type="button" id="button-delete" form="form-order" data-toggle="tooltip" title="<?php echo $button_delete; ?>" class="btn btn-danger" onclick="Confirmbtn('delete','Are you sure want to Delete Quotes ?')"><i class="fa fa-trash-o"></i></button>
+        <button type="button" id="button-delete" form="form-order" data-toggle="tooltip" title="<?php echo $button_delete; ?>" class="btn btn-danger"><i class="fa fa-trash-o"></i></button>
         <?php } ?>
-        <button type="button" id="button-deny" form="form-order" onclick="Confirmbtn('deny','Are you sure want to Deny Quotes ?')" data-toggle="tooltip" title="Deny Quote(s)" class="btn btn-danger"><i class="fa fa-times"></i></button>
+        <button type="button" id="button-deny" form="form-order" data-toggle="tooltip" title="Deny Quote(s)" class="btn btn-danger"><i class="fa fa-times"></i></button>
       </div>
       <h1><?php echo $heading_title; ?></h1>
       <ul class="breadcrumb">
@@ -404,15 +404,15 @@ $('input[name^=\'selected\']:first').trigger('change');
 $('#button-shipping, #button-invoice').on('click', function(e) {
   $('#form-order').attr('action', this.getAttribute('formAction'));
 });
-$('#button-delete').on('click', function(e) {
-  $('#form-order').attr('action', this.getAttribute('formAction'));
+// $('#button-delete').on('click', function(e) {
+//   $('#form-order').attr('action', this.getAttribute('formAction'));
   
-  if (confirm('<?php echo $text_confirm; ?>')) {
-    $('#form-order').submit();
-  } else {
-    return false;
-  }
-});
+//   if (confirm('<?php echo $text_confirm; ?>')) {
+//     $('#form-order').submit();
+//   } else {
+//     return false;
+//   }
+// });
 //--></script> 
   <script src="view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
   <link href="view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.css" type="text/css" rel="stylesheet" media="screen" />
@@ -451,33 +451,44 @@ $('input:checkbox').change(function () {
   }
 })
 $('#button-delete').click(function(){
-   $('#form-order').attr('action', '<?php echo $delete; ?>');
+  var url = 'index.php?route=replogic/order_quotes/delete&token=<?php echo $token; ?>';
+  document.getElementById("form-order").action = url; 
+  confirm('<?php echo "Are you sure you want to delete selected Quate(s)?"; ?>') ? $('#form-order').submit() : false;
+    
+  //  $('#form-order').attr('action', '<?php echo $delete; ?>');
+  //   $('#form-order').submit();
 });
 $('#button-deny').click(function(){
-   $('#form-order').attr('action', '<?php echo $deny; ?>');
+   var url = 'index.php?route=replogic/order_quotes/deny&token=<?php echo $token; ?>';
+   document.getElementById("form-order").action = url; 
+   confirm('<?php echo "Are you sure you want to Deny selected Quate(s)?"; ?>') ? $('#form-order').submit() : false;
+   
+  //  $('#form-order').attr('action', '<?php echo $deny; ?>');
+  //   $('#form-order').submit();
 });
-function Confirmbtn(action, msg)
-{
-  var x = confirm(msg);
-  if (x)
-  {
-      if(action == 'delete')
-    {
-      var faction = '<?php echo @$delete; ?>';
-    }
-    else
-    {
-      var faction = '<?php echo @$deny; ?>';
-    }
-    var newul = faction.replace(/&amp;/g, "&");
-    $('#form-order').attr('action', newul);
-    $('#form-order').submit()
-    return true;
-  }
-  else {
-    return false;
- }
-}
+// function Confirmbtn(action, msg)
+// {
+//   var x = confirm(msg);
+//   alert("action"+x);
+//   if (x)
+//   {
+//       if(action == 'delete')
+//     {
+//       var faction = '<?php echo @$delete; ?>';
+//     }
+//     else
+//     {
+//       var faction = '<?php echo @$deny; ?>';
+//     }
+//     var newul = faction.replace(/&amp;/g, "&");
+//     $('#form-order').attr('action', newul);
+//     $('#form-order').submit()
+//     return true;
+//   }
+//   else {
+//     return false;
+//  }
+// }
 //--></script>
 <style>
   .form-group + .form-group{border-top:none;}
