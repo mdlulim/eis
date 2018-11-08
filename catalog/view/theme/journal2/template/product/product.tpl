@@ -304,7 +304,7 @@
           <div class="countdown-wrapper"><div class="expire-text"><?php echo $this->journal2->settings->get('countdown_product_page_title'); ?></div><div class="countdown"></div></div>
           <script>Journal.countdown($('.right .countdown'), '<?php echo $date_end; ?>');</script>
           <?php endif; ?>
-          <?php if ($price) { ?>
+          <?php if (!$this->config->get('config_hide_price') && $price) { ?>
           <ul class="list-unstyled price" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
             <meta itemprop="itemCondition" content="http://schema.org/NewCondition" />
             <meta itemprop="priceCurrency" content="<?php echo $this->journal2->settings->get('product_price_currency'); ?>" />
@@ -532,6 +532,7 @@
               <span class="links">
                   <a onclick="addToWishList('<?php echo $product_id; ?>');"><?php echo $button_wishlist; ?></a>
                   <a onclick="addToCompare('<?php echo $product_id; ?>');"><?php echo $button_compare; ?></a>
+                  <a onclick="addToStockSheet('<?php echo $product_id; ?>');" class="add-to-stocksheet"><?php echo $button_stocksheet; ?></a>
               </span>
             </div>
           <?php if ($review_status) { ?>
@@ -609,6 +610,7 @@
                   <?php if($this->journal2->settings->get('product_grid_wishlist_icon_position') === 'image' && $this->journal2->settings->get('product_grid_wishlist_icon_display', '') === 'icon'): ?>
                   <div class="wishlist"><a onclick="addToWishList('<?php echo $product['product_id']; ?>');" class="hint--top" data-hint="<?php echo $button_wishlist; ?>"><i class="wishlist-icon"></i><span class="button-wishlist-text"><?php echo $button_wishlist;?></span></a></div>
                   <div class="compare"><a onclick="addToCompare('<?php echo $product['product_id']; ?>');" class="hint--top" data-hint="<?php echo $button_compare; ?>"><i class="compare-icon"></i><span class="button-compare-text"><?php echo $button_compare;?></span></a></div>
+                  <div class="stocksheet"><a onclick="addToStockSheet('<?php echo $product['product_id']; ?>');" class="hint--top" data-hint="<?php echo $button_stocksheet; ?>"><i class="compare-icon"></i><span class="button-compare-text"><?php echo $button_stocksheet; ?></span></a></div>
                   <?php endif; ?>
                 </div>
                 <div class="product-details">
@@ -626,7 +628,7 @@
                       <?php } ?>
                     </div>
                     <?php } ?>
-                    <?php if ($product['price']) { ?>
+                    <?php if (!$this->config->get('config_hide_price') && $product['price']) { ?>
                     <p class="price">
                       <?php if (!$product['special']) { ?>
                       <?php echo $product['price']; ?>
@@ -651,6 +653,7 @@
                     <?php endif; ?>
                     <div class="wishlist"><a onclick="addToWishList('<?php echo $product['product_id']; ?>');" class="hint--top" data-hint="<?php echo $button_wishlist; ?>"><i class="wishlist-icon"></i><span class="button-wishlist-text"><?php echo $button_wishlist;?></span></a></div>
                     <div class="compare"><a onclick="addToCompare('<?php echo $product['product_id']; ?>');" class="hint--top" data-hint="<?php echo $button_compare; ?>"><i class="compare-icon"></i><span class="button-compare-text"><?php echo $button_compare;?></span></a></div>
+                    <div class="stocksheet"><a onclick="addToStockSheet('<?php echo $product['product_id']; ?>');" class="hint--top" data-hint="<?php echo $button_stocksheet; ?>"><i class="compare-icon"></i><span class="button-compare-text"><?php echo $button_stocksheet; ?></span></a></div>
                   </div>
                 </div>
               </div>

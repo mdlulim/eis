@@ -5,6 +5,33 @@ class ModelCheckoutOrder extends Model {
 
 		$order_id = $this->db->getLastId();
 
+		/******************************************************** 
+		 * Stock2Shop Integration
+		 ********************************************************/
+
+		if (INTEGRATION_ID == '2') {
+
+			$this->load->model('extension/erp/stock2shop');
+
+			// order details
+			$params['order'] = array(
+				"line_items"      => $data['products'],
+				"shipping_lines"  => $data['shipping_lines'],
+				"shipping_total"  => $data['shipping_total'],
+    			"sub_total"       => $data['cart_sub_total'],
+    			"tax_description" => $data['tax_description'],
+    			"tax_total"       => $data['tax_total'],
+    			"total"           => $data['total']
+			);
+
+			// create order
+			$response = $this->model_extension_erp_stock2shop->confirmOrder($params);
+
+			// add transaction to order history
+			$this->addOrderHistory($order_id, 2, 'sent to stock2shop : ' . json_encode($response), true);
+
+		}
+
 		// Products
 		if (isset($data['products'])) {
 			foreach ($data['products'] as $product) {

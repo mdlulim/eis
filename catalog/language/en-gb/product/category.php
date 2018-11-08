@@ -22,3 +22,6 @@ $_['text_rating_desc']  = 'Rating (Highest)';
 $_['text_model_asc']    = 'Model (A - Z)';
 $_['text_model_desc']   = 'Model (Z - A)';
 $_['text_limit']        = 'Show:';
+
+// add category to cart
+$_['button_add_category_to_cart'] = '<button type="button" class="btn btn-default btn-sm pull-right" id="add-category-to-cart" onclick="Journal.addCategoryToCart(%s, this);"><i></i> Add Category to Cart</button>';

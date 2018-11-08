@@ -128,7 +128,7 @@
                         <div class="product-details">
                             <div class="caption">
                             <div class="name"><a href="<?php echo $product['href']; ?>"><?php echo $product['name']; ?></a></div>
-                            <?php if ($product['price']) { ?>
+                            <?php if (!$this->config->get('config_hide_price') && $product['price']) { ?>
                             <div class="price">
                                 <?php if (!$product['special']) { ?>
                                 <?php echo $product['price']; ?>
