@@ -94,8 +94,8 @@
                 <?php } ?></td>
               <td class="text-left"><?php echo $product['model']; ?></td>
               <td class="text-right"><?php echo $product['quantity']; ?></td>
-              <td class="text-right"><?php echo $product['price']; ?></td>
-              <td class="text-right"><?php echo $product['total']; ?></td>
+              <td class="text-right"><?php echo (!$this->config->get('config_hide_price')) ? $product['price'] : ''; ?></td>
+              <td class="text-right"><?php echo (!$this->config->get('config_hide_price')) ? $product['total'] : ''; ?></td>
               <td class="text-right" style="white-space: nowrap;"><?php if ($product['reorder']) { ?>
                 <a href="<?php echo $product['reorder']; ?>" data-toggle="tooltip" title="<?php echo $button_reorder; ?>" class="btn btn-primary"><i class="fa fa-shopping-cart"></i></a>
                 <?php } ?>
@@ -115,6 +115,7 @@
             </tr>
             <?php } ?>
           </tbody>
+          <?php if (!$this->config->get('config_hide_price')) { ?>
           <tfoot>
             <?php foreach ($totals as $total) { ?>
             <tr>
@@ -127,6 +128,7 @@
             </tr>
             <?php } ?>
           </tfoot>
+          <?php } ?>
         </table>
       </div>
       <?php if ($comment) { ?>

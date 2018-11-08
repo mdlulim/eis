@@ -8,7 +8,7 @@ class ModelExtensionPaymentQuotation extends Model {
 		if ($this->config->get('quotation_total') > 0 && $this->config->get('quotation_total') > $total) {
 			$status = false;
 		} elseif (!$this->cart->hasShipping()) {
-			$status = false;
+			$status = true;
 		} elseif (!$this->config->get('quotation_geo_zone_id')) {
 			$status = true;
 		} elseif ($query->num_rows) {

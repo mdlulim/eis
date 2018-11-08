@@ -205,7 +205,7 @@ class ControllerJournal2Checkout extends Controller {
             );
         }
 
-        $this->model_journal2_checkout->save();
+       //@kiro: $this->model_journal2_checkout->save();
 
         $this->response->setOutput($this->renderView('journal2/checkout/checkout.tpl'));
 

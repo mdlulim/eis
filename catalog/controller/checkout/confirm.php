@@ -1,7 +1,9 @@
 <?php
 class ControllerCheckoutConfirm extends Controller {
 	public function index() {
+
 		$redirect = '';
+		$storeId  = $this->config->get('config_store_id');
 
 		if ($this->cart->hasShipping()) {
 			// Validate if shipping address has been set.
@@ -34,22 +36,62 @@ class ControllerCheckoutConfirm extends Controller {
 			$redirect = $this->url->link('checkout/cart');
 		}
 
-		// Validate minimum quantity requirements.
-		$products = $this->cart->getProducts();
+		if ($storeId === 0 && INTEGRATION_ID == '1') {
 
-		foreach ($products as $product) {
-			$product_total = 0;
+			/*************************************************
+			 * If Arch Integration and Store ID = '0' 
+			 *  - Only redirect to cart if all products in
+			 *    cart have zero quantity. This will allow
+			 *    checkout ONLY on items/products with 
+			 *    quantity >= 1.
+			 *  - Unset [or remove from cart] all products 
+			 *    with ZERO quantities.
+			 *************************************************/
 
-			foreach ($products as $product_2) {
-				if ($product_2['product_id'] == $product['product_id']) {
-					$product_total += $product_2['quantity'];
+			// Validate minimum quantity requirements.
+			$products      = $this->cart->getProducts();
+			$allowCheckout = false;
+
+			foreach ($products as $product) {
+				$product_total = 0;
+				foreach ($products as $product_2) {
+					if ($product_2['product_id'] == $product['product_id']) {
+						$product_total += $product_2['quantity'];
+					}
+				}
+				if ($product_total > 0) {
+					$allowCheckout = true;
+				} else {
+					$this->cart->remove($product['cart_id']);
 				}
 			}
 
-			if ($product['minimum'] > $product_total) {
+			if (!$allowCheckout) {
 				$redirect = $this->url->link('checkout/cart');
+			}
 
-				break;
+		} else {
+
+			/*************************************************
+			 * Validate minimum quantity requirements.
+			 *************************************************/
+			
+			$products = $this->cart->getProducts();
+
+			foreach ($products as $product) {
+				$product_total = 0;
+
+				foreach ($products as $product_2) {
+					if ($product_2['product_id'] == $product['product_id']) {
+						$product_total += $product_2['quantity'];
+					}
+				}
+
+				if ($product['minimum'] > $product_total) {
+					$redirect = $this->url->link('checkout/cart');
+
+					break;
+				}
 			}
 		}
 

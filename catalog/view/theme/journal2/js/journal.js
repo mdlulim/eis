@@ -362,6 +362,13 @@ Journal.showNotification = function (message, image, buttons) {
     return true;
 };
 
+// trigger event for the specified element
+Journal.triggerEvent = function(event, element) {
+	if (typeof $(element).length !== "undefined") {
+		$(element).trigger(event);
+	}
+};
+
 Journal.enableQuickView = function () {
     $('.quickview-button').remove();
     $('.product-wrapper .image, .product-list-item .image').each(function () {
@@ -794,7 +801,7 @@ if (Journal.isOC2) {
                     }, 100);
 
                     if (Journal.scrollToTop) {
-                        $('html, body').animate({ scrollTop: 0 }, 'slow');
+                        // $('html, body').animate({ scrollTop: 0 }, 'slow');
                     }
 
                     $('#cart ul').load('index.php?route=common/cart/info ul li');
@@ -838,7 +845,7 @@ if (Journal.isOC2) {
                     }, 100);
 
                     if (Journal.scrollToTop) {
-                        $('html, body').animate({ scrollTop: 0 }, 'slow');
+                        // $('html, body').animate({ scrollTop: 0 }, 'slow');
                     }
 
                     if ($('th.cart-subtotal').length) {
@@ -913,6 +920,36 @@ if (Journal.isOC2) {
         });
     };
 
+    cart.clear = function() {
+        var baseUrl = 'index.php?route=checkout/cart';
+        swal({
+            title: "Are you sure?",
+            text: 'You are about to clear shopping cart.',
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonClass: "btn-danger",
+            confirmButtonText: "Yes, clear!",
+            closeOnConfirm: true,
+            showLoaderOnConfirm: true
+        },
+        function (isConfirm) {
+            if (isConfirm) {
+                $.ajax({
+                    url: `${baseUrl}/clear`,
+                    type: 'delete',
+                    dataType: 'json',
+                    success: function(json) {
+                        if (json['success']) {
+                            location.href = baseUrl;
+                        } else {
+                            swal("Error!", json['error'], "error");
+                        }
+                    }
+                });
+            }
+        });
+    };
+
     voucher.remove = function(key) {
         $.ajax({
             url: 'index.php?route=checkout/cart/remove',
@@ -974,7 +1011,7 @@ function addToCart(product_id, quantity) {
                 $('.success').fadeIn('slow');
 
                 if (Journal.scrollToTop) {
-                    $('html, body').animate({ scrollTop: 0 }, 'slow');
+                    // $('html, body').animate({ scrollTop: 0 }, 'slow');
                 }
 
                 $('#cart-total').html(json['total']);
@@ -1021,7 +1058,7 @@ Journal.addToCart = function (product_id, element) {
                 }, 100);
 
                 if (Journal.scrollToTop) {
-                    $('html, body').animate({ scrollTop: 0 }, 'slow');
+                    // $('html, body').animate({ scrollTop: 0 }, 'slow');
                 }
 
                 $('#cart ul').load('index.php?route=common/cart/info ul li');
@@ -1071,7 +1108,7 @@ $(document).on('keydown', 'input[name="quantity"]', function(e) {
                         }, 100);
 
                         if (Journal.scrollToTop) {
-                            $('html, body').animate({ scrollTop: 0 }, 'slow');
+                            // $('html, body').animate({ scrollTop: 0 }, 'slow');
                         }
 
                         $('#cart ul').load('index.php?route=common/cart/info ul li');
@@ -1120,7 +1157,7 @@ Journal.removeProductFromCart = function (product_id, element) {
                 }, 100);
 
                 if (Journal.scrollToTop) {
-                    $('html, body').animate({ scrollTop: 0 }, 'slow');
+                    // $('html, body').animate({ scrollTop: 0 }, 'slow');
                 }
 
                 $('#cart ul').load('index.php?route=common/cart/info ul li');
@@ -1161,7 +1198,7 @@ Journal.addCategoryToCart = function (category_id, element) {
                 }, 100);
 
                 if (Journal.scrollToTop) {
-                    $('html, body').animate({ scrollTop: 0 }, 'slow');
+                    // $('html, body').animate({ scrollTop: 0 }, 'slow');
                 }
             }
         }
@@ -1198,7 +1235,7 @@ function addToCartnew(product_id, quantity) {
                 $('.success').fadeIn('slow');
 
                 if (Journal.scrollToTop) {
-                    $('html, body').animate({ scrollTop: 0 }, 'slow');
+                    // $('html, body').animate({ scrollTop: 0 }, 'slow');
                 }
 
                 $('#cart-total').html(json['total']);
@@ -1346,6 +1383,25 @@ function addToCompare(product_id) {
                 if (Journal.scrollToTop) {
                     $('html, body').animate({ scrollTop: 0 }, 'slow');
                 }
+            }
+        }
+    });
+}
+
+function addToStockSheet(product_id) {
+    $.ajax({
+        url: 'index.php?route=account/stocksheet/add',
+        type: 'post',
+        data: 'product_id=' + product_id,
+        dataType: 'json',
+        success: function(json) {
+            $('.success, .warning, .attention, .information').remove();
+
+            if (json['success']) {
+                if (!Journal.showNotification(json['success'], json['image'])) {
+                    $('#notification').html('<div class="success" style="display: none;">' + json['success'] + '<img src="catalog/view/theme/default/image/close.png" alt="" class="close" /></div>');
+                }
+                $('.success').fadeIn('slow');
             }
         }
     });
@@ -2086,12 +2142,8 @@ Journal.infiniteScroll = function () {
 
         $(items).each(function () {
             if (Journal.isOC2) {
-            	if (localStorage.getItem('display') == 'list') {
-                	if ($(this).find('.head-proddetails').length === 0) {
-                    	$(this).find('.product-thumb').removeClass('product-wrapper');
-                	} else {
-                		$(this).html('').removeClass('product-list-item xs-100 sm-100 md-100 lg-100 xl-100');
-                	}
+                if (localStorage.getItem('display') == 'list') {
+                    $(this).find('.product-thumb').removeClass('product-wrapper');
                 } else {
                 	if ($(this).find('.head-proddetails').length === 0) {
                     	$(this).find('.product-thumb').addClass('product-wrapper');
@@ -2107,7 +2159,7 @@ Journal.infiniteScroll = function () {
             }
             if (localStorage.getItem('display') == 'table') {
                 if (!$(this).hasClass('product-table-view-headings')) {
-                    $(this).removeClass('product-grid-item xs-50 sm-33 md-33 lg-25 xl-25').addClass('product-table-row xs-100 sm-100 md-100 lg-100 xl-100');
+                    $(this).removeClass('product-grid-item xs-50 sm-33 md-33 lg-25 xl-25 md-25 lg-16 xl-16').addClass('product-table-row xs-100 sm-100 md-100 lg-100 xl-100');
                 }
             }
 

@@ -95,9 +95,9 @@ class ModelExtensionErpArch extends Model {
             out($e);
         }
     }
-
-    public function submitNewQuotation ($debtor_code,$order_number ,$products) {
+    public function submitNewQuotation ($debtor_code,$order_number ,$products,$order_status) {
         // ArchSubmitNewQuotationCall
+        $this->load->model('checkout/order');
         if (is_array($products)) {
             $xmlProductList = "";
             foreach ($products as $key => $value) {
@@ -113,7 +113,7 @@ class ModelExtensionErpArch extends Model {
         $xmlBody  = "    <tem:request>";
         $xmlBody .= "        <spi1:DebtorCode>" . $debtor_code . "</spi1:DebtorCode>";
         $xmlBody .= "        <spi1:ProductList>". $xmlProductList . "</spi1:ProductList>";
-        $xmlBody .= "        <spi1:TransactionTrackingNumber>" . $order_number . "</spi1:TransactionTrackingNumber>";
+        $xmlBody .= "        <spi1:TransactionTrackingNumber> </spi1:TransactionTrackingNumber>";
         $xmlBody .= "    </tem:request>";
         $xmlns    = "xmlns:spi1=\"http://schemas.datacontract.org/2004/07/Spinnaker.Arch.BL.BusinessObjectReaders.ECommerce.Readers.Request\"";
       
@@ -122,11 +122,24 @@ class ModelExtensionErpArch extends Model {
         $transaction_tracking_number = $result['s_Body']['SubmitNewQuotationResponse']['SubmitNewQuotationResult']['a_TransactionTrackingNumber'];
         
         if ($success =='true') { 
-            return $transaction_tracking_number;
+            $this->model_checkout_order->addOrderHistory($order_number, $order_status,'Pricing Applied <br/> TTN : '.$transaction_tracking_number,true);
+           $this->acceptQuotation($order_number, $transaction_tracking_number);
+            //return $transaction_tracking_number;
+            return true;
         } else {
             return false;
         }
        
+    }
+
+    public function acceptQuotation ($order_number,$ttn){
+        $xmlBody  = "    <tem:request>";
+        $xmlBody .= "        <spi1:OrderNumber>". $order_number ."</spi1:OrderNumber>";
+        $xmlBody .= "        <spi1:TransactionTrackingNumber>". $ttn ."</spi1:TransactionTrackingNumber>";
+        $xmlBody .= "    </tem:request>";
+        $xmlns    = "xmlns:spi1=\"http://schemas.datacontract.org/2004/07/Spinnaker.Arch.BL.BusinessObjectReaders.ECommerce.Readers.Request\"";
+      
+        $result   = $this->post("AcceptQuotation", $xmlBody, $xmlns);
     }
 
     public function getDebtorCode($customer_id) {
