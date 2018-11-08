@@ -38,8 +38,8 @@
                             </span>
                         </div>
                     </td>
-                    <td class="text-right price"><?php echo $product['price']; ?></td>
-                    <td class="text-right total"><?php echo $product['total']; ?></td>
+                    <td class="text-right price"><?php echo (!$this->config->get('config_hide_price')) ? $product['price'] : ''; ?></td>
+                    <td class="text-right total"><?php echo (!$this->config->get('config_hide_price')) ? $product['total'] : ''; ?></td>
                 </tr>
             <?php } ?>
             <?php foreach ($vouchers as $voucher) { ?>
@@ -52,6 +52,7 @@
                 </tr>
             <?php } ?>
             </tbody>
+            <?php if (!$this->config->get('config_hide_price')) { ?>
             <tfoot>
             <?php foreach ($totals as $total) { ?>
                 <tr>
@@ -60,6 +61,7 @@
                 </tr>
             <?php } ?>
             </tfoot>
+            <?php } ?>
         </table>
     </div>
     <div id="payment-confirm-button" class="payment-<?php echo Journal2Utils::getProperty($registry->get('session')->data, 'payment_method.code'); ?>">
