@@ -13,7 +13,6 @@ class ControllerReplogicScheduleManagement extends Controller {
 		$this->document->setTitle($this->language->get('heading_title'));
 		$this->load->model('replogic/schedule_management');
 		if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validateForm()) {
-			
 			$lastid = $this->model_replogic_schedule_management->addScheduleManagement($this->request->post);
 			$this->session->data['success'] = $this->language->get('text_success');
 			$url = '';
@@ -285,7 +284,7 @@ class ControllerReplogicScheduleManagement extends Controller {
 		
 		$schedule_management_total = $this->model_replogic_schedule_management->getTotalScheduleManagement($filter_data, $allaccess, $current_user_id);
 		$results = $this->model_replogic_schedule_management->getScheduleManagement($filter_data, $allaccess, $current_user_id);
-		//print_r($results); exit;
+		
 		$this->load->model('replogic/sales_rep_management');
 		 $data['salesReps'] = $this->model_replogic_sales_rep_management->getSalesRepsDropdown($allaccess, $current_user_id);
 		
@@ -298,13 +297,20 @@ class ControllerReplogicScheduleManagement extends Controller {
 			# visit date
 			$visitDate = (!empty($result['checkin']) && $result['checkin']<>"") ? date("D d M Y", strtotime($result['checkin'])) : "";
 			$visitDate.= (!empty($result['checkin']) && $result['checkin']<>"") ? " at " . date("<b>g:i A</b>", strtotime($result['checkin'])) : "";
+			$apointResult = $this->model_replogic_schedule_management->getprospective($result['customer_id']);
+			//var_dump($apointResult['name']);die;
+			if ($result['type'] == "New Business"){
+				$ustomer_Name = $apointResult['name'];
+			}else{
+				$ustomer_Name = $result['customer_name'];
+			}
 			
 			$data['appointments'][] = array(
 				'appointment_id'   => $result['appointment_id'],
 				'appointment_name' => $result['appointment_name'],
 				'appointment_type' => $result['type'],
 				'salesrep_name'    => $result['salesrepname'],
-				'customer_name'    => $result['customer_name'],
+				'customer_name'    => $ustomer_Name,
 				'appointment_date' => $appointmentDate,
 				'visit_date'       => $visitDate,
 				'tasks'            => $this->url->link('replogic/tasks', 'token=' . $this->session->data['token'] . '&appointment_id=' . $result['appointment_id'] . $url, true),
