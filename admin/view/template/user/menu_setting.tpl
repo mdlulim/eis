@@ -59,12 +59,15 @@
                                 <?php if (is_array($parent['children']) && !empty($parent['children'])) : ?>
                                 	<ul class="child-menu">
                                 	<?php foreach($parent['children'] as $k2 => $child) : ?>
+									 <?php  if($child['title'] != "Customer Contacts") { ?>
 						  				<li class="child-item child-item1 <?=(isset($child['children'])) ? 'has-child' : '' ?>">
+                                         
                                 			<input name="menu_id[]" value="<?php echo $child['menu_id']?>" type="checkbox" <?=(in_array($child['menu_id'], $check)) ? 'checked="checked"' : '' ?> />
 						  					<a href="javascript:void()">
 						  						<?=$child['title']?>
 						  					</a>
 						  					<i></i>
+
 						  					<?php if (is_array($child['children']) && !empty($child['children'])) : ?>
 						  						<ul class="grandchild-menu">
 						  						<?php foreach($child['children'] as $k3 => $grandchild) : ?>
@@ -91,7 +94,9 @@
 					  							</ul>
 					  						<?php endif; ?>
                             			</li>
-                            		<?php endforeach; ?>
+                            		
+									  
+									<?php } endforeach; ?>
                             		</ul>
                                 <?php endif; ?>
           					</li>
