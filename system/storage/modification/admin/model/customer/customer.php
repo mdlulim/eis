@@ -807,4 +807,74 @@ class ModelCustomerCustomer extends Model {
 		return $add_id;
 	}
 	
+	public function getProspectiveCustomer($prospect_id) { 
+		$query = $this->db->query("SELECT DISTINCT p.*, p.prospect_id AS customer_id, p.name AS firstname FROM " . DB_PREFIX . "prospective_customer p WHERE p.prospect_id = " . (int)$prospect_id);
+		return $query->row;
+	}
+	
+	public function getProspectiveCustomers($data = array()) {
+
+		$sql  = "SELECT p.*, p.prospect_id AS customer_id, p.name AS firstname FROM " . DB_PREFIX . "prospective_customer p ";
+		$sql .= "INNER JOIN " . DB_PREFIX . "salesrep_checkins c on c.customer_id = p.prospect_id ";
+		$sql .= "INNER JOIN " . DB_PREFIX . "appointment a on a.appointment_id = c.appointment_id ";
+		$sql .= "LEFT JOIN " . DB_PREFIX . "salesrep sr on sr.salesrep_id = c.salesrep_id ";
+		$sql .= "WHERE a.type = 'New Business' ";
+		
+		$implode = array();
+
+		if (!empty($data['filter_name'])) {
+			$implode[] = "CONCAT(c.firstname, ' ', c.lastname) LIKE '%" . $this->db->escape($data['filter_name']) . "%'";
+		}
+		
+		if (!empty($data['filter_salesrep_id'])) {
+			$implode[] = "c.salesrep_id = '" . (int)$data['filter_salesrep_id'] . "'";
+		}
+		
+		if (!empty($data['filter_team_id'])) {
+			$implode[] = "sr.sales_team_id = '" . (int)$data['filter_team_id'] . "'";
+		}
+		
+		if (!empty($data['filter_customer_id'])) {
+			$implode[] = "p.prospect_id = '" . (int)$data['filter_customer_id'] . "'";
+		}
+		
+		if (!empty($data['filter_date_added'])) {
+			$implode[] = "DATE(p.created) = DATE('" . $this->db->escape($data['filter_date_added']) . "')";
+		}
+
+		if ($implode) {
+			$sql .= " AND " . implode(" AND ", $implode);
+		}
+
+		$sort_data = array(
+			'name',
+			'p.created'
+		);
+		$sql .= " GROUP BY p.prospect_id";
+
+		if (isset($data['sort']) && in_array($data['sort'], $sort_data)) {
+			$sql .= " ORDER BY " . $data['sort'];
+		} else {
+			$sql .= " ORDER BY name";
+		}
+		if (isset($data['order']) && ($data['order'] == 'DESC')) {
+			$sql .= " DESC";
+		} else {
+			$sql .= " ASC";
+		}
+		
+		if (isset($data['start']) || isset($data['limit'])) {
+			if ($data['start'] < 0) {
+				$data['start'] = 0;
+			}
+			if ($data['limit'] < 1) {
+				$data['limit'] = 20;
+			}
+			$sql .= " LIMIT " . (int)$data['start'] . "," . (int)$data['limit'];
+		}
+		
+		$query = $this->db->query($sql);
+		return $query->rows;
+	}
+	
 }
