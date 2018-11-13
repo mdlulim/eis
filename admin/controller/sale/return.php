@@ -8,7 +8,6 @@ class ControllerSaleReturn extends Controller {
 		$this->document->setTitle($this->language->get('heading_title'));
 
 		$this->load->model('sale/return');
-
 		$this->getList();
 	}
 
@@ -18,9 +17,7 @@ class ControllerSaleReturn extends Controller {
 		$this->document->setTitle($this->language->get('heading_title'));
 
 		$this->load->model('sale/return');
-
 		if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validateForm()) {
-			
 			$order_id = $this->request->post['order_id'];
 			$customer_id = $this->request->post['customer_id'];
 
@@ -1012,6 +1009,42 @@ class ControllerSaleReturn extends Controller {
 				$this->error['warning'] = $this->language->get('error_return_confirm_order');
 			}else if($result == 0){
 				$this->error['warning']  = $this->language->get('error_return_order_not_match');
+			}
+			 
+			
+			// Products
+			$data['order_products'] = array();
+			$this->load->model('tool/image');
+			$this->load->model('sale/order');
+			$products = $this->model_sale_order->getOrderProducts($order_id);
+			
+			$productId = $this->request->post['product_id'];
+			$quantity = $this->request->post['quantity'];
+			$flag = 0;
+			$flag_quantity = 0;
+			foreach ($products as $product) {
+				if($productId == $product['product_id']){
+					$flag = 1;
+					break;
+				}
+
+				if(($quantity > $product['quantity'])){
+					$flag_quantity = 1;
+					break;
+				}else if ($quantity <= 0){
+					$flag_quantity = 2;
+					break;
+				}
+			}
+
+			if($flag == 0){
+				$this->error['warning']  = $this->language->get('error_return_product_not_match');
+			}
+
+			if($flag_quantity == 1){
+				$this->error['warning']  = $this->language->get('error_return_product_quantity_more');
+			}else if($flag_quantity == 2){
+				$this->error['warning']  = $this->language->get('error_return_product_quantity_less');
 			}
 
 		return !$this->error;

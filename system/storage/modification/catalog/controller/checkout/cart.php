@@ -302,7 +302,7 @@ class ControllerCheckoutCart extends Controller {
 					}
 				}
 			}
-			$data['remove'] = $this->url->link('checkout/cart', '', true);
+
 			$data['column_left'] = $this->load->controller('common/column_left');
 			$data['column_right'] = $this->load->controller('common/column_right');
 			$data['content_top'] = $this->load->controller('common/content_top');
@@ -891,7 +891,7 @@ class ControllerCheckoutCart extends Controller {
 								$barcode  = $data['SKU'];           # sku/barcode
 								$quantity = (int)$data['Quantity']; # quantity
 								
-								if (!empty($barcode) && is_numeric($quantity)) {
+								if (!empty($barcode) && !empty($quantity) && is_numeric($quantity)) {
 									$barcodes[]   = $barcode;
 									$quantities[] = $quantity;
 								}
@@ -1184,7 +1184,7 @@ class ControllerCheckoutCart extends Controller {
 											$barcode  = $data['SKU'];           # sku/barcode
 											$quantity = (int)$data['Quantity']; # quantity
 											
-											if (!empty($barcode) && is_numeric($quantity)) {
+											if (!empty($barcode) && !empty($quantity) && is_numeric($quantity)) {
 												$barcodes[]   = $barcode;
 												$quantities[] = $quantity;
 												$dataItems[]  = array('sku'=>$barcode, 'quantity'=>$quantity);
@@ -1292,44 +1292,6 @@ class ControllerCheckoutCart extends Controller {
 		}
 		if (!isset($json['success']) && !isset($json['error']) && !isset($json['warning'])) {
 			$json['error'] = $this->language->get('import_generic_error');
-		}
-		$this->response->addHeader('Content-Type: application/json');
-		$this->response->setOutput(json_encode($json));
-	}
-
-	public function addmultiple() {
-
-		$this->load->language('checkout/cart');
-		$this->load->model('catalog/product');
-		$this->load->model('extension/extension');
-
-		set_time_limit(0);
-		ini_set('memory_limit', '1G');
-		ini_set("auto_detect_line_endings", true);
-
-		if ($this->request->server['REQUEST_METHOD'] == 'POST') {
-
-			if (!empty($this->request->post['products']) && is_array($this->request->post['products'])) {
-
-				// Unset all shipping and payment methods
-				unset($this->session->data['shipping_method']);
-				unset($this->session->data['shipping_methods']);
-				unset($this->session->data['payment_method']);
-				unset($this->session->data['payment_methods']);
-
-				// clear first before import
-				$this->cart->clear();
-
-				// add products/items to cart
-				$this->cart->bulk_add($this->request->post['products']);
-
-				// success response
-				$json['success'] = sprintf($this->language->get('text_add_multiple_success'), $this->cart->countProducts());
-				$json['total']   = sprintf($this->language->get('text_items'), $this->cart->countProducts() + (isset($this->session->data['vouchers']) ? count($this->session->data['vouchers']) : 0), $this->currency->format($total, $this->session->data['currency']));
-				
-			} else {
-				$json['error'] = $this->language->get('error_no_product_to_add');
-			}
 		}
 		$this->response->addHeader('Content-Type: application/json');
 		$this->response->setOutput(json_encode($json));
