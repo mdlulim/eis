@@ -163,6 +163,8 @@ class ControllerCatalogPrice extends Controller {
         $data['delete'] = $this->url->link('catalog/price/delete', 'token=' . $this->session->data['token'] . $url, 'SSL');
         $data['import_csv'] = $this->url->link('catalog/price/importCSV', 'token=' . $this->session->data['token'] . $url, 'SSL');
         $data['export_csv'] = $this->url->link('catalog/price/exportCSV', 'token=' . $this->session->data['token'] . $url, 'SSL');
+        $data['text_export']  = $this->language->get('text_export');
+        $data['txt_import']  = $this->language->get('txt_import');
         $data['prices'] = array();
         $filter_data = array(
             'filter_sku'  => $filter_sku,
@@ -541,21 +543,29 @@ class ControllerCatalogPrice extends Controller {
     }
     public function importCSV(){
         $this->load->language('catalog/price');
-        $data['heading_title']  = $this->language->get('heading_title');
         $this->load->model('catalog/price');
-        $this->data['cancel'] = $this->url->link('catalog/price', 'token=' . $this->session->data['token'] . $url, 'SSL');
+        $data['heading_title']  = $this->language->get('heading_title');
+        $data['text_export']  = $this->language->get('text_export');
+        $data['text_import']  = $this->language->get('text_import');
+        
+        $data['cancel'] = $this->url->link('catalog/price', 'token=' . $this->session->data['token'] . $url, 'SSL');
         // cancel url
-        $this->data['action'] = $this->url->link('catalog/price/importCSV', 'token=' . $this->session->data['token'] . $url, 'SSL');
+        $data['action'] = $this->url->link('catalog/price/importCSV', 'token=' . $this->session->data['token'] . $url, 'SSL');
         // current page url
+
         // Breadcrumbs start here
         $data['warning_error'] = '';
-        $this->data['breadcrumbs'] = array();
-        $this->data['breadcrumbs'][] = array('text' => $this->language->get('text_home'),
-            'href' => $this->url->link('common/home', 'token=' . $this->session->data['token'], 'SSL'), 'separator' => false);
+        $data['breadcrumbs'] = array();
+        $data['breadcrumbs'][] = array('text' => $this->language->get('text_home'),
+            'href' => $this->url->link('common/sales_dashboard', 'token=' . $this->session->data['token'], 'SSL'), 'separator' => false);
         //home page link
-        $this->data['breadcrumbs'][] = array('text' => "Import CSV",
+        $data['breadcrumbs'][] = array('text' => $this->language->get('column_contract'),
             'href' => $this->url->link('catalog/price', 'token=' . $this->session->data['token'] . $url, 'SSL'), 'separator' => ' :: ');
-        //product page link
+            
+        $data['breadcrumbs'][] = array('text' => $this->language->get('txt_import'),
+            'href' => $this->url->link('catalog/price/importCSV', 'token=' . $this->session->data['token'] . $url, 'SSL'), 'separator' => ' :: ');
+        
+            //product page link
         // breadcrumbs end here
         if (($this->request->server['REQUEST_METHOD'] == 'POST') ) {
             $file = $_FILES['csv']['tmp_name'];
@@ -705,21 +715,26 @@ class ControllerCatalogPrice extends Controller {
 
     public function exportCSV(){
         $this->load->language('catalog/price');
-        $data['heading_title']  = $this->language->get('heading_title');
         $this->load->model('catalog/price');
-        $this->data['cancel'] = $this->url->link('catalog/price', 'token=' . $this->session->data['token'] . $url, 'SSL');
+        $data['heading_title']  = $this->language->get('heading_title');
+        $data['text_export']  = $this->language->get('text_export');
+        $data['text_import']  = $this->language->get('text_import');
+        $data['back'] = $this->url->link('catalog/price', 'token=' . $this->session->data['token'] . $url, 'SSL');
         // cancel url
-        $this->data['action'] = $this->url->link('catalog/price/exportCSV', 'token=' . $this->session->data['token'] . $url, 'SSL');
+        $data['action'] = $this->url->link('catalog/price/exportCSV', 'token=' . $this->session->data['token'] . $url, 'SSL');
         // current page url
         // Breadcrumbs start here
-        $this->data['breadcrumbs'] = array();
-        $this->data['breadcrumbs'][] = array('text' => $this->language->get('text_home'),
+        $data['breadcrumbs'] = array();
+        $data['breadcrumbs'][] = array('text' => $this->language->get('text_home'),
             'href' => $this->url->link('common/home', 'token=' . $this->session->data['token'], 'SSL'), 'separator' => false);
         //home page link
-        $this->data['breadcrumbs'][] = array('text' => "Import CSV",
+        
+        $data['breadcrumbs'][] = array('text' =>$this->language->get('column_contract'),
             'href' => $this->url->link('catalog/price', 'token=' . $this->session->data['token'] . $url, 'SSL'), 'separator' => ' :: ');
-        //product page link
-        // breadcrumbs end here
+            $data['breadcrumbs'][] = array('text' =>$this->language->get('text_export'),
+            'href' => $this->url->link('catalog/price/exportCSV', 'token=' . $this->session->data['token'] . $url, 'SSL'), 'separator' => ' :: ');
+        
+            // breadcrumbs end here
         if (($this->request->server['REQUEST_METHOD'] == 'POST') ) {
             
            // $this->model_catalog_price->exportCsvData(); 
