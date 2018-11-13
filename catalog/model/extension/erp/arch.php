@@ -86,7 +86,6 @@ class ModelExtensionErpArch extends Model {
                 curl_close($soapCh);
                 print $err;
             } else {
-                
                 curl_close($soapCh);
                 $log_response = new Log ('response.log');
                 $log_response->write($xmlResponse);
@@ -115,7 +114,7 @@ class ModelExtensionErpArch extends Model {
         $xmlBody  = "    <tem:request>";
         $xmlBody .= "        <spi1:DebtorCode>" . $debtor_code . "</spi1:DebtorCode>";
         $xmlBody .= "        <spi1:ProductList>". $xmlProductList . "</spi1:ProductList>";
-        $xmlBody .= "        <spi1:TransactionTrackingNumber> </spi1:TransactionTrackingNumber>";
+        $xmlBody .= "        <spi1:TransactionTrackingNumber>0</spi1:TransactionTrackingNumber>";
         $xmlBody .= "    </tem:request>";
         $xmlns    = "xmlns:spi1=\"http://schemas.datacontract.org/2004/07/Spinnaker.Arch.BL.BusinessObjectReaders.ECommerce.Readers.Request\"";
       
