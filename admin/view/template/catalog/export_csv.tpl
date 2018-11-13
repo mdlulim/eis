@@ -7,9 +7,10 @@
 			</div>
 			<h1><?php echo $heading_title; ?></h1>
 			<ul class="breadcrumb">
-				<li><a href="<?php echo $breadcrumb['href']; ?>">Export CSV</a></li>
-			
-			</ul>
+                <?php foreach ($breadcrumbs as $breadcrumb) { ?>
+                <li><a href="<?php echo $breadcrumb['href']; ?>"><?php echo $breadcrumb['text']; ?></a></li>
+                <?php } ?>
+            </ul>
 		</div>
 	</div>
 	<div class="container-fluid">
@@ -47,7 +48,7 @@
 								</tr>
 								<tr>
 									<td style="vertical-align:top;">
-										<?php echo $entry_export_type; ?><br />
+										<!-- ?php echo $entry_export_type; ? --><br />
 										
                                         <input style="display: none;" type="radio" name="export_type" value="u" checked="checked" />
 										<?php echo $text_export_type_customer; ?>
@@ -58,7 +59,7 @@
 								<tr id="range_type">
 									<td style="vertical-align:top;"><br/>
 										<input  style="display: none;" type="hidden" name="range_type" value="id" id="range_type_id" checked="checked">
-										<span  style="display: none;" class="id" style="margin-right: 5px;float:left;margin-top:7px;"><?php echo $entry_start_id; ?></span>
+										<span  style="display: none;" class="id" style="margin-right: 5px;float:left;margin-top:7px;"><!--?php echo $entry_start_id; ? --></span>
 										<input  style="display: none;" type="text" name="min" value="<?php echo $min; ?>" placeholder="Id From" class="form-control" style="float:left;width:150px;" />
 										<span  style="display: none;" class="id" style="margin-right: 10px;margin-left:10px;float:left;margin-top:7px;"><?php echo $entry_end_id; ?></span>
 										<input  style="display: none;" type="text" name="max" value="<?php echo $max; ?>" placeholder="Id To" class="form-control" style="float:left;width:150px;" />
