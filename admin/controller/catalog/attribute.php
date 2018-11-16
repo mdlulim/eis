@@ -141,6 +141,12 @@ class ControllerCatalogAttribute extends Controller {
 		} else {
 			$filter_attribute_id = null;
 		}
+
+		if (isset($this->request->get['filter_name'])) {
+			$filter_name= $this->request->get['filter_name'];
+		} else {
+			$filter_name = null;
+		}
 		
 		if (isset($this->request->get['filter_attribute_group_id'])) {
 			$filter_attribute_group_id = $this->request->get['filter_attribute_group_id'];
@@ -168,6 +174,9 @@ class ControllerCatalogAttribute extends Controller {
 
 		$url = '';
 
+		if (isset($this->request->get['filter_name'])) {
+			$url .= '&filter_name=' . $this->request->get['filter_name'];
+		}
 		if (isset($this->request->get['filter_attribute_id'])) {
 			$url .= '&filter_attribute_id=' . $this->request->get['filter_attribute_id'];
 		}
@@ -206,6 +215,7 @@ class ControllerCatalogAttribute extends Controller {
 		$data['attributes'] = array();
 
 		$filter_data = array(
+			'filter_name'  => $filter_name,
 			'filter_attribute_id'  => $filter_attribute_id,
 			'filter_attribute_group_id'  => $filter_attribute_group_id,
 			'sort'  => $sort,

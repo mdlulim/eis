@@ -36,7 +36,9 @@
             <div class="col-sm-6">
               <div class="form-group">
                 <label class="control-label" for="input-name"><?php echo $column_name; ?></label>
-                <select name="filter_attribute_id" id="input-type" class="form-control">
+                <input type="text" name="filter_name" value="<?php echo $filter_name; ?>" placeholder="Attribute Name" id="filter_name" class="form-control" />
+                 
+                <!--select name="filter_attribute_id" id="input-type" class="form-control">
                 	<option value="">Select Attribute Name</option>
                      <?php foreach ($Allattributes as $Allattribute) { ?>
                         <?php if ($Allattribute['attribute_id'] == $filter_attribute_id) { ?>
@@ -46,7 +48,7 @@
                         <?php } ?>
                      <?php } ?>
                    
-              </select>
+              </select -->
               </div>
               
             </div>
@@ -140,25 +142,47 @@
 $('#button-filter').on('click', function() {
 	var url = 'index.php?route=catalog/attribute&token=<?php echo $token; ?>';
 	
-	var filter_attribute_id = $('select[name=\'filter_attribute_id\']').val();
+  var filter_name = $('input[name=\'filter_name\']').val();
+  if (filter_name) {
+		url += '&filter_name=' + encodeURIComponent(filter_name);
+	}
 
+	var filter_attribute_id = $('select[name=\'filter_attribute_id\']').val();
 	if (filter_attribute_id) {
 		url += '&filter_attribute_id=' + encodeURIComponent(filter_attribute_id);
 	}
 	
 	var filter_attribute_group_id = $('select[name=\'filter_attribute_group_id\']').val();
-
 	if (filter_attribute_group_id) {
 		url += '&filter_attribute_group_id=' + encodeURIComponent(filter_attribute_group_id);
 	}
 	
-//alert(url);
 	location = url;
 });
 
 $('#button-filter-reset').on('click', function() {
 	var url = 'index.php?route=catalog/attribute&token=<?php echo $token; ?>';
 	location = url;
+});
+$('input[name=\'filter_name\']').autocomplete({
+	'source': function(request, response) {
+		$.ajax({
+			url: 'index.php?route=catalog/attribute/autocomplete&token=<?php echo $token; ?>&filter_name=' +  encodeURIComponent(request),
+			dataType: 'json',			
+			success: function(json) {
+				response($.map(json, function(item) {
+					return {
+						attribute_id: item['attribute_id'],
+						label: item['name']		
+					}
+				}));
+			}
+		});
+	},
+	'select': function(item, ui) {
+		$('input[name=\'filter_name\']').val(item['label']);
+		$('input[name=\'filter_attribute_id\']').val(item['attribute_id']);
+	}
 });
 </script>
 <?php echo $footer; ?>
