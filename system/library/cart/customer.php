@@ -23,7 +23,7 @@ class Customer {
 			if ($customer_query->num_rows) {
 
 				// set timezone to south african timezone
-				$this->db->query('set @session.time_zone="+02:00";');
+				$this->db->query('SET @@session.time_zone = "+02:00";');
 			
 				$this->customer_id = $customer_query->row['customer_id'];
 				$this->firstname = $customer_query->row['firstname'];
@@ -56,6 +56,10 @@ class Customer {
 		}
 
 		if ($customer_query->num_rows) {
+
+			// set timezone to south african timezone
+			$this->db->query('SET @@session.time_zone = "+02:00";');
+			
 			$this->session->data['customer_id'] = $customer_query->row['customer_id'];
 
 			$this->customer_id = $customer_query->row['customer_id'];

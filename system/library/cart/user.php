@@ -41,7 +41,7 @@ class User {
 		if ($user_query->num_rows) {
 
 			// set timezone to south african timezone
-			$this->db->query('set @session.time_zone="+02:00";');
+			$this->db->query('SET @@session.time_zone = "+02:00";');
 
 			$this->session->data['user_id'] = $user_query->row['user_id'];
 
