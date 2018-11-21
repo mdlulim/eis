@@ -3,7 +3,7 @@ class ModelAccountApi extends Model {
 	public function getApiByKey($key) {
 
 		// set timezone to south african timezone
-		$this->db->query('set @session.time_zone="+02:00";');
+		$this->db->query('SET @@session.time_zone = "+02:00";');
 		
 		$query = $this->db->query("SELECT * FROM `" . DB_PREFIX . "api` WHERE `key` = '" . $this->db->escape($key) . "' AND status = '1'");
 
