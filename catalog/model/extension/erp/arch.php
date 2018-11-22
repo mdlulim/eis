@@ -9,8 +9,8 @@ class ModelExtensionErpArch extends Model {
         . '\<'          // LOCATE A LEFT WICKET
         . '/{0,1}'      // MAYBE FOLLOWED BY A SLASH
         . '.*?'         // ANYTHING OR NOTHING
-        . ')'           // END GROUP PATTERN
-        . '('           // GROUP PATTERN 2
+        . ')'           // END PATTERN
+        . '('           // GROUP PATTERN 2 
         . ':{1}'        // A COLON (EXACTLY ONE)
         . ')'           // END GROUP PATTERN
         . '#'           // REGEX DELIMITER
@@ -124,15 +124,28 @@ class ModelExtensionErpArch extends Model {
         
         if ($success =='true') { 
             $this->model_checkout_order->addOrderHistory($order_number, $order_status,'Pricing Applied <br/> TTN : '.$transaction_tracking_number,true);
-           $this->acceptQuotation($order_number, $transaction_tracking_number);
+            //$this->acceptQuotation($order_number, $transaction_tracking_number);
+            $this->getQuotation($transaction_tracking_number);
             //return $transaction_tracking_number;
             return true;
+
         } else {
+
             return false;
         }
        
     }
 
+    public function getQuotation($ttn){
+        $xmlBody  = "    <tem:request>";
+        $xmlBody .= "        <spi1:TransactionTrackingNumber>". $ttn ."</spi1:TransactionTrackingNumber>";
+        $xmlBody .= "    </tem:request>";
+        $xmlns    = "xmlns:spi1=\"http://schemas.datacontract.org/2004/07/Spinnaker.Arch.BL.BusinessObjectReaders.ECommerce.Readers.Request\"";
+      
+        $result   = $this->post("GetQuotation", $xmlBody, $xmlns);
+        $log_response = new Log ('getQuotation.log');
+        $log_response->write($result);
+    }
     public function acceptQuotation ($order_number,$ttn){
         $xmlBody  = "    <tem:request>";
         $xmlBody .= "        <spi1:OrderNumber>". $order_number ."</spi1:OrderNumber>";
@@ -141,6 +154,7 @@ class ModelExtensionErpArch extends Model {
         $xmlns    = "xmlns:spi1=\"http://schemas.datacontract.org/2004/07/Spinnaker.Arch.BL.BusinessObjectReaders.ECommerce.Readers.Request\"";
       
         $result   = $this->post("AcceptQuotation", $xmlBody, $xmlns);
+       
     }
 
     public function getDebtorCode($customer_id) {
