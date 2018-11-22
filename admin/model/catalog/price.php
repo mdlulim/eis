@@ -191,7 +191,6 @@ class ModelCatalogPrice extends Model {
 		
 		$table_columns = array(array('name' => 'SKU','required'=>'1','size'=>'15'));
 		
-		//$skuExportSettings 	? array_push($table_columns, array('name' => 'SKU','required'=>'1','size'=>'25')) : '';
 		$cnameExportSettings 	? array_push($table_columns, array('name' => 'Contact Pricing','required'=>'1','size'=>'15')) : '';
 		$priceExportSettings 	? array_push($table_columns, array('name' => 'Price','required'=>'1','size'=>'25')) : '';
 	    //print_r($table_columns); exit;
@@ -235,7 +234,7 @@ class ModelCatalogPrice extends Model {
 		
 		$this->load->model('catalog/price');
 		$contactPricingList 	= $this->model_catalog_price->getContactPricingExport($min,$max);
-		//var_dump($contactPricingList);die;
+		
 		$excel_row = 2;
 		foreach ($contactPricingList as $key => $contactPricing) {
     		
@@ -268,7 +267,6 @@ class ModelCatalogPrice extends Model {
 	  	header('Content-Type: application/vnd.ms-excel');
 	  	header('Content-Disposition: attachment;filename="' . $filename . '"');
 	  	$object_writer->save('php://output');
-		
 		
     }
     

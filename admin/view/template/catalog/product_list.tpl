@@ -40,32 +40,11 @@
               <div class="form-group">
                 <label class="control-label" for="input-name"><?php echo $entry_name; ?></label>
                 <input type="text" name="filter_name" value="<?php echo $filter_name; ?>" placeholder="<?php echo $entry_name; ?>" id="input-name" class="form-control" />
-                <!--<select name="filter_product_id" class="form-control">
-                  <option value="">Select Product</option>
-                    <?php foreach ($Dropdownproducts as $Dproduct) {  ?>
-                <?php if ($Dproduct['product_id'] == $filter_product_id) { ?>
-                <option value="<?php echo $Dproduct['product_id']; ?>" selected="selected"><?php echo $Dproduct['name']; ?></option>
-                <?php } else { ?>
-                <option value="<?php echo $Dproduct['product_id']; ?>"><?php echo $Dproduct['name']; ?></option>
-                <?php } ?>
-                <?php } ?>
-                    
-                </select>-->
               </div>
               <div class="form-group">
                 <label class="control-label" for="input-model"><?php echo $entry_model; ?></label>
                 <input type="text" name="filter_model" value="<?php echo $filter_model; ?>" placeholder="<?php echo $entry_model; ?>" id="input-model" class="form-control" />
-                <!--<select name="filter_model" class="form-control">
-                  <option value="">Select Model</option>
-                    <?php foreach ($Dropdownmodels as $Dmodel) {  ?>
-                <?php if ($Dmodel['model'] == $filter_model) { ?>
-                <option value="<?php echo $Dmodel['model']; ?>" selected="selected"><?php echo $Dmodel['model']; ?></option>
-                <?php } else { ?>
-                <option value="<?php echo $Dmodel['model']; ?>"><?php echo $Dmodel['model']; ?></option>
-                <?php } ?>
-                <?php } ?>
-                    
-                </select>-->
+              
               </div>
             </div>
             <div class="col-sm-4">
@@ -96,22 +75,7 @@
                   <?php } ?>
                 </select>
               </div>
-              <!--div class="form-group">
-                <label class="control-label" for="input-image"><?php echo $entry_image; ?></label>
-                <select name="filter_image" id="input-image" class="form-control">
-                  <option value="*"></option>
-                  <?php if ($filter_image) { ?>
-                  <option value="1" selected="selected"><?php echo $text_enabled; ?></option>
-                  <?php } else { ?>
-                  <option value="1"><?php echo $text_enabled; ?></option>
-                  <?php } ?>
-                  <?php if (!$filter_image && !is_null($filter_image)) { ?>
-                  <option value="0" selected="selected"><?php echo $text_disabled; ?></option>
-                  <?php } else { ?>
-                  <option value="0"><?php echo $text_disabled; ?></option>
-                  <?php } ?>
-                </select>
-              </div-->
+              
               <button type="button" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-search"></i> Search</button>
               <button type="button" id="button-filter-reset" class="btn btn-primary pull-right" style="margin-right:10px;"><i class="fa fa-refresh"></i> Reset</button>
             </div>
@@ -123,19 +87,9 @@
               <thead>
                 <tr>
                   <td style="width: 1px;">
-                  <!--ul class="" style="padding: 0px;">
-                     <li style="display: inline-block" -->
+                  
                      <input type="checkbox" onclick="$('input[name*=\'selected\']').prop('checked', this.checked);" />
-                     <!--/li>
-                      <li style="display: inline-block">
-                        <select id="massaction" class="form-control" onchange="massAction()" style="width: 63px; height: 19px;" >
-                           <option value="">Action</option>
-                           <option value="enable">Enable</option>
-                           <option value="disable">Disable</option>
-                           <option type="button" value="delete">Delete</option>
-                        </select>
-                     </li>
-                  </ul -->
+                   
                   </td>
                   <td class="text-center"><?php echo $column_image; ?></td>
                   <td class="text-left"><?php if ($sort == 'pd.name') { ?>

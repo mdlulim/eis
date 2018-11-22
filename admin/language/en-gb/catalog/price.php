@@ -9,6 +9,7 @@
 $_['heading_title']     		= 'Contract Pricing';
 // Text
 $_['text_success']      		= 'Success: You have modified a Price!';
+$_['text_success_export']      	= 'CSV Successfully exported!';
 $_['text_list']         		= 'Contract Price Lists';
 $_['text_export']         		= 'Export';
 $_['txt_import']         		= 'Import';
