@@ -570,7 +570,7 @@ class ControllerCommonSalesDashboard extends Controller {
 
 		if (!empty($appointments) && is_array($appointments)) {
 			foreach ($appointments as $appointment) {
-
+               
 				# appointment date
 				$appointmentDate = date("D d M Y", strtotime($appointment['appointment_date'])); 
 				$appointmentDate.= " at " . date("<b>g:i A</b>", strtotime($appointment['appointment_date']));
@@ -578,11 +578,18 @@ class ControllerCommonSalesDashboard extends Controller {
 				# visit date
 				$visitDate = (!empty($appointment['checkin']) && $appointment['checkin']<>"") ? date("D d M Y", strtotime($appointment['checkin'])) : "";
 				$visitDate.= (!empty($appointment['checkin']) && $appointment['checkin']<>"") ? " at " . date("<b>g:i A</b>", strtotime($appointment['checkin'])) : "";
+				$apointResult = $this->model_replogic_schedule_management->getprospective($appointment['customer_id']);
+				
+				if ($appointment['type'] == "New Business"){
+					$customer_Name = $apointResult['name'];
+				}else{
+					$customer_Name = $appointment['customer_name'];
+				}
 				
 				$data['appointments'][] = array(
 					'appointment_id' => $appointment['appointment_id'],
 					'appointment_name' => $appointment['appointment_name'],
-					'customer_name' => $appointment['customer_name'],
+					'customer_name' => $customer_Name ,//$appointment['customer_name'],
 					'salesrep_name' => $appointment['salesrep_name'],
 					'appointment_date' => $appointmentDate,
 					'appointment_type' => $appointment['type'],
