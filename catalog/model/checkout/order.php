@@ -655,7 +655,7 @@ class ModelCheckoutOrder extends Model {
 				$data['order_date']      = date('F d, Y', strtotime($order_info['date_added']));
 				$data['order_total']     = $orderTotal;
 				$data['support_email']   = $this->config->get('config_email');
-				$data['order_url']       = ORDER_ONLINE_URL.'?cid='.$companyId.'&id='.$order_id;
+				$data['order_url']       = ORDER_ONLINE_URL.'?cid='.$companyId.'&id='.$order_id.'&key='.ORDER_ONLINE_KEY;
 	
 				$mail = new Mail();
 				$mail->protocol = $this->config->get('config_mail_protocol');
