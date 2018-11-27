@@ -70,7 +70,6 @@ class ModelReplogicScheduleManagement extends Model {
 		$query = $this->db->query("SELECT DISTINCT * FROM " . DB_PREFIX . "prospective_customer WHERE prospect_id = '" . (int)$prospect_id . "'");
 
 		return $query->row;
-		
 	}
 
 	public function getAppointments($filters) {
@@ -219,7 +218,7 @@ class ModelReplogicScheduleManagement extends Model {
 
 			$sql .= " LIMIT " . (int)$data['start'] . "," . (int)$data['limit'];
 		}
-//echo $sql; exit;
+    //echo $sql; exit;
 		$query = $this->db->query($sql);
 
 		return $query->rows;
