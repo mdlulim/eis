@@ -178,7 +178,7 @@
                     <?php if ($sort == 'type') : ?>
                     <a href="<?php echo $sort_type; ?>" class="<?php echo strtolower($order); ?>">Appointment Type</a>
                     <?php else : ?>
-                    <a href="<?php echo $sort_type; ?>">Appointment Type</a>
+                    <a href="<?php echo $sort_type; ?>">Business Type</a>
                     <?php endif; ?>
                   </th>
                   <th class="text-left">Visit Date</th>
