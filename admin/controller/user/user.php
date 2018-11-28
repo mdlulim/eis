@@ -140,11 +140,19 @@ class ControllerUserUser extends Controller {
 		echo json_encode($json);
 	}
 	protected function sendUserInvitation($user_info) {
+
+		$this->load->model('setting/setting');
+
 		$emailClient = $this->config->get('config_mail_client');
 		# build data array
 		$data['subject'] = 'Welcome to Saleslogic';
 		$data['to']      = array('email'=>$user_info['email'], 'name'=>$user_info['firstname']);
 		$data['from']    = array('email'=>$this->config->get('config_email'), 'name'=>$this->config->get('config_name'));
+
+		# get rep settings
+		$repSettings  = $this->model_setting_setting->getRepSettings();
+		$storeUrl     = $repSettings['store_url'] . 'admin';
+		$companyEmail = $repSettings['email'];
 		
 		switch ($emailClient) {
 			case 'mandrill':
@@ -168,7 +176,7 @@ class ControllerUserUser extends Controller {
 			            ),
 			            array(
 			                'name'    => 'STORE_URL',
-			                'content' => $this->config->get('config_url')
+			                'content' => $storeUrl
 			            ),
 			            array(
 			                'name'    => 'STORE_NAME',
@@ -176,7 +184,7 @@ class ControllerUserUser extends Controller {
 			            ),
 			            array(
 			                'name'    => 'STORE_EMAIL',
-			                'content' => $this->config->get('config_email')
+			                'content' => $companyEmail
 			            ),
 			            array(
 			                'name'    => 'HELP_GUIDE',
