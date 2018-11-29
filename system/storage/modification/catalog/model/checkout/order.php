@@ -806,7 +806,7 @@ class ModelCheckoutOrder extends Model {
 				$data['order_date']               = date('F d, Y', strtotime($order_info['date_added']));
 				$data['support_email']            = $this->config->get('config_email');
 				$data['order_url']                = ORDER_ONLINE_URL . '?cid=' . $company_id . '&id=' . $order_id . '&key=' . ORDER_ONLINE_KEY;
-				$data['text_update_order_status'] = $language->get('text_update_order_status') . '<br/>' . $order_status;
+				$data['text_update_order_status'] = $language->get('text_update_order_status') . '<br/><strong>' . $order_status . '</strong>';
 				$data['text_new_link']            = $language->get('text_new_link') . '<br/>';
 				$data['store_name']               = $order_info['store_name'];
 				$data['text_update_footer']       = $language->get('text_update_footer');
