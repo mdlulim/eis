@@ -479,6 +479,7 @@ class ControllerCatalogProduct extends Controller {
 		$product_total = $this->model_catalog_product->getTotalProducts($filter_data);
 
 		$results = $this->model_catalog_product->getProducts($filter_data);
+		out($results);die;
 
 		foreach ($results as $result) {
 			if (is_file(DIR_IMAGE . $result['image'])) {
@@ -498,7 +499,6 @@ class ControllerCatalogProduct extends Controller {
 					break;
 				}
 			}
-
 			$data['products'][] = array(
 				'product_id' => $result['product_id'],
 				'image'      => $image,
@@ -511,6 +511,7 @@ class ControllerCatalogProduct extends Controller {
 				'edit'       => $this->url->link('catalog/product/edit', 'token=' . $this->session->data['token'] . '&product_id=' . $result['product_id'] . $url, true)
 			);
 		}
+		out($filter_data);die;
 		
 		//$data['Dropdownproducts'] = $this->model_catalog_product->getProducts();
 		//$data['Dropdownmodels'] = $this->model_catalog_product->getProductsModel();

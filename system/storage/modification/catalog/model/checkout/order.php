@@ -658,7 +658,7 @@ class ModelCheckoutOrder extends Model {
 				$data['order_date']      = date('F d, Y', strtotime($order_info['date_added']));
 				$data['order_total']     = $orderTotal;
 				$data['support_email']   = $this->config->get('config_email');
-				$data['order_url']       = ORDER_ONLINE_URL.'?cid='.$companyId.'&id='.$order_id;
+				$data['order_url']       = ORDER_ONLINE_URL.'?cid='.$companyId.'&id='.$order_id.'&key='.ORDER_ONLINE_KEY;
 	
 				$mail = new Mail();
 				$mail->protocol = $this->config->get('config_mail_protocol');
@@ -784,6 +784,18 @@ class ModelCheckoutOrder extends Model {
 				$language->load('mail/order');
 	
 				$subject = sprintf($language->get('text_update_subject'), html_entity_decode($order_info['store_name'], ENT_QUOTES, 'UTF-8'), $order_id);
+
+				// Get company id
+				$rep_settings_query = $this->db->query("SELECT * FROM " . DB_PREFIX . "rep_settings order by company_id asc LIMIT 1");
+				
+				// Add data for the order confirmation email 
+				$data['company_address']          = str_replace(',', '<br/>', $this->config->get('config_address'));
+				$data['cust_name']                = $customer_info['firstname'];
+				$data['order_date']               = date('F d, Y', strtotime($order_info['date_added']));
+				$data['support_email']            = $this->config->get('config_email');
+				$data['order_url']                = ORDER_ONLINE_URL.'?cid=' . $rep_settings_query->row['company_id'] . '&id='.$order_id.'&key='.ORDER_ONLINE_KEY;
+				$data['text_update_order_status'] = $this->language->get('text_update_order_status') . '<br/>' . $order_status_query->row['name'];
+				$data['text_new_link']            = $this->language->get('text_new_link') . '<br/>';
 	
 				$message  = $language->get('text_update_order') . ' ' . $order_id . "\n";
 				$message .= $language->get('text_update_date_added') . ' ' . date($language->get('date_format_short'), strtotime($order_info['date_added'])) . "\n\n";
@@ -797,7 +809,7 @@ class ModelCheckoutOrder extends Model {
 	
 				if ($order_info['customer_id']) {
 					$message .= $language->get('text_update_link') . "\n";
-					$message .= $order_info['store_url'] . 'index.php?route=account/order/info&order_id=' . $order_id . "\n\n";
+					$message .= $data['order_url'] . "\n\n";
 				}
 	
 				if ($comment) {
@@ -806,20 +818,22 @@ class ModelCheckoutOrder extends Model {
 				}
 	
 				$message .= $language->get('text_update_footer');
-	
-				$mail = new Mail();
-				$mail->protocol = $this->config->get('config_mail_protocol');
-				$mail->parameter = $this->config->get('config_mail_parameter');
+
+				// send mail
+				$mail                = new Mail();
+				$mail->protocol      = $this->config->get('config_mail_protocol');
+				$mail->parameter     = $this->config->get('config_mail_parameter');
 				$mail->smtp_hostname = $this->config->get('config_mail_smtp_hostname');
 				$mail->smtp_username = $this->config->get('config_mail_smtp_username');
 				$mail->smtp_password = html_entity_decode($this->config->get('config_mail_smtp_password'), ENT_QUOTES, 'UTF-8');
-				$mail->smtp_port = $this->config->get('config_mail_smtp_port');
-				$mail->smtp_timeout = $this->config->get('config_mail_smtp_timeout');
+				$mail->smtp_port     = $this->config->get('config_mail_smtp_port');
+				$mail->smtp_timeout  = $this->config->get('config_mail_smtp_timeout');
 	
 				$mail->setTo($order_info['email']);
 				$mail->setFrom($this->config->get('config_email'));
 				$mail->setSender(html_entity_decode($order_info['store_name'], ENT_QUOTES, 'UTF-8'));
 				$mail->setSubject(html_entity_decode($subject, ENT_QUOTES, 'UTF-8'));
+				$mail->setHtml($this->load->view('mail/order-new', $data));
 				$mail->setText($message);
 				$mail->send();
 			}
