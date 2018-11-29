@@ -797,6 +797,7 @@ class ModelCheckoutOrder extends Model {
 				$data['text_update_order_status'] = $this->language->get('text_update_order_status') . '<br/>' . $order_status_query->row['name'];
 				$data['text_new_link']            = $this->language->get('text_new_link') . '<br/>';
 	
+				// Build text message
 				$message  = $language->get('text_update_order') . ' ' . $order_id . "\n";
 				$message .= $language->get('text_update_date_added') . ' ' . date($language->get('date_format_short'), strtotime($order_info['date_added'])) . "\n\n";
 	
@@ -833,7 +834,7 @@ class ModelCheckoutOrder extends Model {
 				$mail->setFrom($this->config->get('config_email'));
 				$mail->setSender(html_entity_decode($order_info['store_name'], ENT_QUOTES, 'UTF-8'));
 				$mail->setSubject(html_entity_decode($subject, ENT_QUOTES, 'UTF-8'));
-				$mail->setHtml($this->load->view('mail/order-new', $data));
+				$mail->setHtml($this->load->view('mail/order_update', $data));
 				$mail->setText($message);
 				$mail->send();
 			}
