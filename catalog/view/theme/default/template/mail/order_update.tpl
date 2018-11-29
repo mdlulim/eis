@@ -152,7 +152,7 @@
                                     </tr>
                                     <tr>
                                       <td>
-                                        <?php echo $reply_text; ?>
+                                        <?php echo $text_update_footer; ?>
                                       </td>
                                     </tr>
                                     <tr>
@@ -173,20 +173,6 @@
                               </tr>
                             </table>
 
-                          </td>
-                        </tr>
-                        <tr>
-                          <td height="10" style="font-size:10px; line-height:10px;">&nbsp;</td>
-                        </tr>
-                      </table>
-
-                      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-                        <tr>
-                          <td height="10" style="font-size:10px; line-height:10px;">&nbsp;</td>
-                        </tr>
-                        <tr>
-                          <td align="center" valign="top">
-                            <hr style="border-top:1px solid #E9E9EA;"/>
                           </td>
                         </tr>
                         <tr>
