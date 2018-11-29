@@ -789,6 +789,7 @@ class ModelCheckoutOrder extends Model {
 				$rep_settings_query = $this->db->query("SELECT * FROM " . DB_PREFIX . "rep_settings order by company_id asc LIMIT 1");
 				
 				// Add data for the order confirmation email 
+				$data['order_id']                 = $order_id;
 				$data['company_address']          = str_replace(',', '<br/>', $this->config->get('config_address'));
 				$data['cust_name']                = $customer_info['firstname'];
 				$data['order_date']               = date('F d, Y', strtotime($order_info['date_added']));
@@ -796,6 +797,8 @@ class ModelCheckoutOrder extends Model {
 				$data['order_url']                = ORDER_ONLINE_URL.'?cid=' . $rep_settings_query->row['company_id'] . '&id='.$order_id.'&key='.ORDER_ONLINE_KEY;
 				$data['text_update_order_status'] = $language->get('text_update_order_status') . '<br/>' . $order_status_query->row['name'];
 				$data['text_new_link']            = $language->get('text_new_link') . '<br/>';
+				$data['store_name']               = $order_info['store_name'];
+				$data['text_update_footer']       = $language->get('text_update_footer');
 	
 				// Build text message
 				$message  = $language->get('text_update_order') . ' ' . $order_id . "\n";
