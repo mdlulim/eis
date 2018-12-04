@@ -96,6 +96,10 @@ class ModelReplogicLocationManagement extends Model {
 			if (!empty($data['filter_date']))  { 
 				$sql .= " AND DATE_FORMAT(ck.checkin, '%Y-%m-%d') = '" . $this->db->escape($data['filter_date']) . "'";
 			}
+			
+			if (!empty($data['filter_month']))  { 
+				$sql .= " AND DATE_FORMAT(ck.checkin, '%Y-%m') = '" . $this->db->escape($data['filter_month']) . "'";
+			}
 
 			if ($group_by_salesrep) {
 				$sql .= " GROUP BY ck.salesrep_id";
@@ -134,6 +138,10 @@ class ModelReplogicLocationManagement extends Model {
 			
 			if (!empty($data['filter_date']))  { 
 				$sql .= " AND DATE_FORMAT(ck.checkin, '%Y-%m-%d') = '" . $this->db->escape($data['filter_date']) . "'";
+			}
+			
+			if (!empty($data['filter_month']))  { 
+				$sql .= " AND DATE_FORMAT(ck.checkin, '%Y-%m') = '" . $this->db->escape($data['filter_month']) . "'";
 			}
 
 			if ($group_by_salesrep) {
