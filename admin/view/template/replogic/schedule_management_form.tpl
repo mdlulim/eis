@@ -142,45 +142,42 @@
               <?php } ?>
             </div>
           </div>
-          
           <div class="form-group required">
-            <label class="col-sm-2 control-label" for="input-username"><?php echo $entry_appointment_date; ?></label>
+            <label class="col-sm-2 control-label" for="input-username"><?php echo $entry_duration; ?></label>
             
-            <div class="input-group date" style="padding-left:14px;">
-                  <!--<input type="text" name="appointment_date" value="<?php echo $appointment_date; ?>" placeholder="YYYY-MM-DD" data-date-format="YYYY-MM-DD HH:mm:ss" id="input-date-added" class="form-control" style="width:163px;" />
-                  <span class="input-group-btn" style="float:left;">
-                  <button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
-                  </span>-->
-                  
-                
-                <div class='input-group date' id='datetimepicker5'>
-                    <input name="appointment_date" type='text' value="<?php echo $appointment_date; ?>"  placeholder="DD-MM-YYYY hh:mm A" class="form-control" data-date-format="DD-MM-YYYY hh:mm A" class="form-control"  />
-                    <span class="input-group-addon">
-                        <span class="glyphicon glyphicon-calendar"></span>
-                    </span>
+            <div class="col-sm-3 col-xs-6">
+              <select class="form-control" name="appointment_duration" id="input__appointment_duration">
+                <option value="0:30" selected>30 minutes</option>
+                <option value="1:00">1 hour</option>
+                <option value="1:30">1.5 hours</option>
+                <option value="2:00">2 hours</option>
+                <option value="3:00">3 hours</option>
+                <option value="4:00">4 hours</option>
+                <option value="5:00">5 hours</option>
+                <option value="6:00">6 hours</option>
+                <option value="7:00">7 hours</option>
+                <option value="8:00">8 hours</option>
+                <option value="9:00">9 hours</option>
+                <option value="10:00">10 hours</option>
+                <option value="11:00">11 hours</option>
+                <option value="1 Day">1 day</option>
+                <option value="2 Days">2 days</option>
+                <option value="3 Day">3 days</option>
+                <option value="4 Day">4 days</option>
+                <option value="1 Week">1 Week</option>
+                <option value="2 Weeks">2 Weeks</option>
+              </select>
+            </div>
+            <div class="col-sm-7 col-xs-6">
+                <div class="checkbox">
+                    <label>
+                        <input name="appointment_duration_all_day" type="checkbox" id="input__all_day_check">
+                        &nbsp;All day meeting
+                    </label>
                 </div>
-           <style>
-		   .glyphicon-calendar:before {content: "\e109" !important; }
-		   </style>
-        		<script type="text/javascript">
-            $(function () {
-                $('#datetimepicker5').datetimepicker({
-                    defaultDate: new Date(),
-                   
-                });
-            });
-        </script>
-      
-                     <?php if ($error_appointment_date) { ?>
-                  <div class="text-danger" style="width:100%;margin-top:40px;"><?php echo $error_appointment_date; ?></div>
-                  <?php } ?>
             </div>
             
-          </div>
-          <div class="form-group required">
-            <label class="col-sm-2 control-label" for="input-username">Appointment Duration</label>
-            
-            
+            <!--
                 <div class="input-group" style="float:left;margin-left:15px;">
                 <select name="hour" class="form-control" style="float:left;width:135px;">
                     <option value="">Select Hours</option>
@@ -233,8 +230,26 @@
               		<div class="text-danger" style="width:100%;margin-top:40px;"><?php echo $error_minutes; ?></div>
               <?php } ?>
               </div>
-              
+              -->
             
+            
+          </div>
+          
+          <div class="form-group required">
+            <label class="col-sm-2 control-label" for="input-username"><?php echo $entry_appointment_date; ?></label>
+            
+            <div class="input-group date" style="padding-left:14px;">
+                <div class='input-group date'>
+                    <input id="input__appointment_date" name="appointment_date" type='text' value="<?php echo $appointment_date; ?>" class="form-control" class="form-control"  />
+                    <span class="input-group-addon">
+                        <span class="fa fa-calendar"></span>
+                    </span>
+                </div>
+      
+                <?php if ($error_appointment_date) : ?>
+                  <div class="text-danger" style="width:100%;margin-top:40px;"><?php echo $error_appointment_date; ?></div>
+                <?php endif; ?>
+            </div>
             
           </div>
           <div class="form-group">

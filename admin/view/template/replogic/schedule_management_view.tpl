@@ -148,7 +148,7 @@
             
           </div>
           <div class="form-group">
-            <label class="col-sm-2 control-label" for="input-username">Appointment Duration</label>
+            <label class="col-sm-2 control-label" for="input-username"><?php echo $entry_duration; ?></label>
             
             
                 <div class="input-group" style="float:left;margin-left:15px;">

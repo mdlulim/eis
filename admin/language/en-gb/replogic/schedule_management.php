@@ -5,23 +5,24 @@ $_['heading_title']    = 'Appointments';
 // Text
 $_['text_success']     = 'Success: You have modified Appointments!';
 $_['text_list']        = 'Appointments';
-$_['text_add']         = 'Add Appointment';
+$_['text_add']         = 'Create Appointment';
 $_['text_edit']        = 'Edit Appointment';
 $_['text_confirm']        = 'Are you sure want to Delete Appointment ?';
 $_['text_appointment_add_success']     = 'Appointment successfully created!';
 
 // Column
-$_['column_name']      = 'Appointment Name';
+$_['column_name']      = 'Appointment Title';
 $_['column_action']    = 'Action';
 
 // Entry
-$_['entry_name']       = 'Appointment Name';
-$_['entry_appointment_description']       = 'Appointment Description';
-$_['entry_appointment_date']       = 'Appointment Date';
-$_['entry_customer']       = 'Select Customer';
+$_['entry_name']       = 'Appointment Title';
+$_['entry_appointment_description']       = 'Description';
+$_['entry_appointment_date']       = 'Date';
+$_['entry_customer']       = 'Customer';
 $_['entry_sales']       = 'Sales Rep Name';
 $_['entry_access']     = 'Access Permission';
 $_['entry_modify']     = 'Modify Permission';
+$_['entry_duration'] = 'Duration';
 
 // Error
 $_['error_permission'] = 'Warning: You do not have permission to modify Appointments!';

@@ -9,6 +9,7 @@ class ControllerReplogicScheduleManagement extends Controller {
 		$this->getList();
 	}
 	public function add() {
+		$this->document->addScript('view/javascript/schedule_management.js');
 		$this->load->language('replogic/schedule_management');
 		$this->document->setTitle($this->language->get('heading_title'));
 		$this->load->model('replogic/schedule_management');
@@ -472,6 +473,7 @@ class ControllerReplogicScheduleManagement extends Controller {
 		$data['entry_appointment_description'] = $this->language->get('entry_appointment_description');
 		$data['entry_appointment_date'] = $this->language->get('entry_appointment_date');
 		$data['entry_customer'] = $this->language->get('entry_customer');
+		$data['entry_duration'] = $this->language->get('entry_duration');
 		
 		$data['entry_sales'] = $this->language->get('entry_sales');
 		$data['entry_access'] = $this->language->get('entry_access');
@@ -805,6 +807,7 @@ class ControllerReplogicScheduleManagement extends Controller {
 		$data['entry_appointment_description'] = $this->language->get('entry_appointment_description');
 		$data['entry_appointment_date'] = $this->language->get('entry_appointment_date');
 		$data['entry_customer'] = $this->language->get('entry_customer');
+		$data['entry_duration'] = $this->language->get('entry_duration');
 		
 		$data['entry_sales'] = $this->language->get('entry_sales');
 		$data['entry_access'] = $this->language->get('entry_access');
