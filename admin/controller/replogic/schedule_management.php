@@ -690,8 +690,13 @@ class ControllerReplogicScheduleManagement extends Controller {
 
 		// today's full date
 		if (!empty($appointment_info)) {
-			$data['booked_times'][]   = date('H:i', strtotime($data['appointment_date']));
 			$data['appointment_date'] = date('l, d F Y', strtotime($data['appointment_date']));
+			$bookedTimesForToday      = $this->model_replogic_schedule_management->getSalesRepAppointmentTimesByDate($appointment_info['salesrep_id'], date('Y-m-d', strtotime($data['appointment_date'])));
+			if (!empty($bookedTimesForToday)) {
+				foreach($bookedTimesForToday as $time) {
+					$data['booked_times'][] = $time['appointment_time'];
+				}
+			}
 		} else {
 			$data['appointment_date'] = date('l, d F Y');
 		}
