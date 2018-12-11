@@ -125,25 +125,13 @@
           <div class="form-group">
             <label class="col-sm-2 control-label" for="input-username"><?php echo $entry_appointment_date; ?></label>
             
-            <div class="input-group date" style="padding-left:14px;">
-                 <div class='input-group date' id='datetimepicker5'>
-                    <input name="appointment_date" type='text' value="<?php echo $appointment_date; ?>"  placeholder="DD-MM-YYYY hh:mm A" class="form-control" data-date-format="DD-MM-YYYY hh:mm A" class="form-control" disabled="disabled"  />
+            <div class="col-sm-3">
+                 <div class='input-group date'>
+                    <input name="appointment_date" type='text' value="<?php echo date('l, d F Y H:i', strtotime($appointment_date)); ?>"  placeholder="DD-MM-YYYY hh:mm A" class="form-control" data-date-format="DD-MM-YYYY hh:mm A" class="form-control" disabled="disabled"  />
                     <span class="input-group-addon">
-                        <span class="glyphicon glyphicon-calendar"></span>
+                        <span class="fa fa-calendar"></span>
                     </span>
                 </div>
-           <style>
-		   .glyphicon-calendar:before {content: "\e109" !important; }
-		   </style>
-        		<script type="text/javascript">
-            $(function () {
-                $('#datetimepicker5').datetimepicker({
-                    defaultDate: new Date(),
-                   
-                });
-            });
-        </script>
-        
             </div>
             
           </div>
@@ -152,9 +140,9 @@
             
             
                 <div class="input-group" style="float:left;margin-left:15px;">
-                <select name="hour" class="form-control" style="float:left;width:135px;" disabled="disabled">
+                <select name="hour" class="form-control" style="float:left;width:153px;" disabled="disabled">
                     <option value="">Select Hours</option>
-                    <?php for($i=1;$i<=12;$i++) { ?>
+                    <?php for($i=0;$i<=12;$i++) { ?>
                     	<?php if($i == $hour) { ?>
                         	<option value="<?php echo $i; ?>" selected="selected"><?php echo $i; ?></option>
                         <?php } else { ?>    
@@ -166,7 +154,7 @@
               </div> 
               <div style="float:left;margin:0px 5px 0px 5px;"><strong style="font-size:23px;">:</strong></div>
               <div style="float:left;">
-               <select name="minutes" class="form-control" style="float:left;width:135px;" disabled="disabled">
+               <select name="minutes" class="form-control" style="float:left;width:153px;" disabled="disabled">
                             <option value="">Select Minutes</option>
                             <?php if($minutes == '00') { ?>
                             <option value="00" selected="selected">00</option>

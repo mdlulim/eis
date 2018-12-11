@@ -226,7 +226,10 @@ $("#popupunassign").click(function () {
                               <td class="text-left"><?php echo $sales_rep_management['name']; ?></td>
                               <td class="text-left"><?php echo $sales_rep_management['team']; ?></td>
                               <td class="text-left"><?php echo $sales_rep_management['email']; ?></td>
-                              <td class="text-right"><a href="<?php echo $sales_rep_management['view']; ?>" data-toggle="tooltip" title="<?php echo $button_view; ?>" class="btn btn-info"><i class="fa fa-eye"></i></a>&nbsp;<a href="<?php echo $sales_rep_management['edit']; ?>" data-toggle="tooltip" title="<?php echo $button_edit; ?>" class="btn btn-primary"><i class="fa fa-pencil"></i></a></td>
+                              <td class="text-right">
+                                <a href="<?php echo $sales_rep_management['view']; ?>" data-toggle="tooltip" title="<?php echo $button_view; ?>" class="btn btn-info"><i class="fa fa-eye"></i></a>&nbsp;
+                                <!--<a href="<?php echo $sales_rep_management['edit']; ?>" data-toggle="tooltip" title="<?php echo $button_edit; ?>" class="btn btn-primary"><i class="fa fa-pencil"></i></a>-->
+                              </td>
                             </tr>
                      <?php } ?>
                 <?php } else { ?>

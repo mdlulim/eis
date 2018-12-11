@@ -23,6 +23,7 @@ $_['entry_sales']       = 'Sales Rep Name';
 $_['entry_access']     = 'Access Permission';
 $_['entry_modify']     = 'Modify Permission';
 $_['entry_duration'] = 'Duration';
+$_['entry_available_times'] = 'Available Times';
 
 // Error
 $_['error_permission'] = 'Warning: You do not have permission to modify Appointments!';

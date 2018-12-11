@@ -3,6 +3,7 @@
   <div class="page-header">
     <div class="container-fluid">
       <div class="pull-right">
+        <a href="<?php echo $edit; ?>" data-toggle="tooltip" title="<?php echo $button_edit; ?>" class="btn btn-primary"><i class="fa fa-pencil"></i></a>
       	<a href="<?php echo $cancel; ?>" data-toggle="tooltip" title="<?php echo $button_cancel; ?>" class="btn btn-default"><i class="fa fa-reply"></i></a>
       </div>
       <h1><?php echo $heading_title; ?></h1>
@@ -83,6 +84,17 @@
               <input type="text" value="<?php echo $salesrepinfo['cell']; ?>" class="form-control" disabled="disabled" />
             </div>
           </div>
+
+          <?php if ($show_resend_password) { ?>
+          <div class="form-group">
+            <div class="col-sm-10 col-sm-push-2">
+              <a href="javascript:void()" class="btn btn-default" id="resend-password" data-repname="<?php echo $salesrepinfo['salesrep_name']; ?>" data-salesrep-id="<?php echo $salesrepinfo['salesrep_id']; ?>" data-token='<?php echo $token; ?>'>
+                <i class="fa fa-send"></i>
+                Resend Password
+              </a>
+            </div>
+          </div>
+          <?php } ?>
           
         </form>
         
@@ -91,6 +103,13 @@
     </div>
   </div>
 </div>
+
+<!-- Page loader -->
+<div class="loader-wrapper" style="display:none">
+  <div class="loader"></div>
+</div>
+<!-- /Page loader -->
+
 <script type="text/javascript"><!--
 $('#button-filter').on('click', function() {
 	var url = 'index.php?route=replogic/sales_rep_management&token=<?php echo $token; ?>';
