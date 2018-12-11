@@ -1,9 +1,9 @@
 <?php echo $header; ?><?php echo $column_left; ?>
-<div id="content">
+<div id="content" data-token="<?php echo $token; ?>" data-redirect-url="<?php echo $redirect_url; ?>">
   <div class="page-header">
     <div class="container-fluid">
       <div class="pull-right">
-        <button type="submit" form="form-user" data-toggle="tooltip" title="<?php echo $button_save; ?>" class="btn btn-primary"><i class="fa fa-save"></i></button>
+        <button type="submit" form="form__schedule-appointment" data-toggle="tooltip" title="<?php echo $button_save; ?>" class="btn btn-primary"><i class="fa fa-save"></i></button>
         <a href="<?php echo $cancel; ?>" data-toggle="tooltip" title="<?php echo $button_cancel; ?>" class="btn btn-default"><i class="fa fa-reply"></i></a></div>
       <h1><?php echo $heading_title; ?></h1>
       <ul class="breadcrumb">
@@ -24,7 +24,8 @@
         <h3 class="panel-title"><i class="fa fa-pencil"></i> <?php echo $text_form; ?></h3>
       </div>
       <div class="panel-body">
-        <form action="<?php echo $action; ?>" method="post" enctype="multipart/form-data" id="form-user" class="form-horizontal">
+        <form name="form__schedule-appointment" action="<?php echo $action; ?>" method="post" enctype="multipart/form-data" id="form__schedule-appointment" class="form-horizontal">
+          <input type="hidden" name="appointment_time" id="input__appointment_time">
           <div class="form-group required">
             <label class="col-sm-2 control-label" for="input-user-group">Business Type</label>
             <div class="col-sm-10">
@@ -46,7 +47,7 @@
               <?php } ?>
               
               
-              <select name="type" id="input-type" class="form-control">
+              <select name="appointment_type" id="input__appointment_type" class="form-control">
                 <option value="">Select Business Type</option>
                 <?php if($type == 'New Business') { ?>
                 	<option value="New Business" selected="selected">New Business</option>
@@ -69,7 +70,7 @@
           <div class="form-group required">
             <label class="col-sm-2 control-label" for="input-username"><?php echo $entry_name; ?></label>
             <div class="col-sm-10">
-              <input type="text" name="appointment_name" value="<?php echo $appointment_name; ?>" placeholder="<?php echo $entry_name; ?>" id="input-username" class="form-control" />
+              <input id="input__appointment_title" type="text" name="appointment_name" value="<?php echo $appointment_name; ?>" placeholder="<?php echo $entry_name; ?>" id="input-username" class="form-control" />
               <?php if ($error_appointment_name) { ?>
               <div class="text-danger"><?php echo $error_appointment_name; ?></div>
               <?php } ?>
@@ -78,7 +79,7 @@
           <div class="form-group required">
             <label class="col-sm-2 control-label" for="input-user-group"><?php echo $entry_sales; ?></label>
             <div class="col-sm-10">
-              <select name="salesrep_id" id="input-sales_manager" class="form-control">
+              <select name="salesrep_id" id="input__salesrep_id" class="form-control">
                 <option value="">Select Sales Rep</option>
                 <?php foreach ($salesReps as $salesRep) { ?>
                 <?php if ($salesRep['salesrep_id'] == $salesrep_id) { ?>
@@ -142,45 +143,41 @@
               <?php } ?>
             </div>
           </div>
-          
           <div class="form-group required">
-            <label class="col-sm-2 control-label" for="input-username"><?php echo $entry_appointment_date; ?></label>
-            
-            <div class="input-group date" style="padding-left:14px;">
-                  <!--<input type="text" name="appointment_date" value="<?php echo $appointment_date; ?>" placeholder="YYYY-MM-DD" data-date-format="YYYY-MM-DD HH:mm:ss" id="input-date-added" class="form-control" style="width:163px;" />
-                  <span class="input-group-btn" style="float:left;">
-                  <button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
-                  </span>-->
-                  
-                
-                <div class='input-group date' id='datetimepicker5'>
-                    <input name="appointment_date" type='text' value="<?php echo $appointment_date; ?>"  placeholder="DD-MM-YYYY hh:mm A" class="form-control" data-date-format="DD-MM-YYYY hh:mm A" class="form-control"  />
-                    <span class="input-group-addon">
-                        <span class="glyphicon glyphicon-calendar"></span>
-                    </span>
+            <label class="col-sm-2 control-label" for="input-username"><?php echo $entry_duration; ?></label>
+            <div class="col-sm-3 col-xs-6">
+              <select class="form-control" name="appointment_duration" id="input__appointment_duration">
+                <option value="0:30" selected>30 minutes</option>
+                <option value="1:00">1 hour</option>
+                <option value="1:30">1.5 hours</option>
+                <option value="2:00">2 hours</option>
+                <option value="3:00">3 hours</option>
+                <option value="4:00">4 hours</option>
+                <option value="5:00">5 hours</option>
+                <option value="6:00">6 hours</option>
+                <option value="7:00">7 hours</option>
+                <option value="8:00">8 hours</option>
+                <option value="9:00">9 hours</option>
+                <option value="10:00">10 hours</option>
+                <option value="11:00">11 hours</option>
+                <option value="1 Day">1 day</option>
+                <option value="2 Days">2 days</option>
+                <option value="3 Day">3 days</option>
+                <option value="4 Day">4 days</option>
+                <option value="1 Week">1 Week</option>
+                <option value="2 Weeks">2 Weeks</option>
+              </select>
+            </div>
+            <div class="col-sm-7 col-xs-6">
+                <div class="checkbox">
+                    <label>
+                        <input name="appointment_duration_all_day" type="checkbox" id="input__all_day_check">
+                        &nbsp;All day meeting
+                    </label>
                 </div>
-           <style>
-		   .glyphicon-calendar:before {content: "\e109" !important; }
-		   </style>
-        		<script type="text/javascript">
-            $(function () {
-                $('#datetimepicker5').datetimepicker({
-                    defaultDate: new Date(),
-                   
-                });
-            });
-        </script>
-      
-                     <?php if ($error_appointment_date) { ?>
-                  <div class="text-danger" style="width:100%;margin-top:40px;"><?php echo $error_appointment_date; ?></div>
-                  <?php } ?>
             </div>
             
-          </div>
-          <div class="form-group required">
-            <label class="col-sm-2 control-label" for="input-username">Appointment Duration</label>
-            
-            
+            <!--
                 <div class="input-group" style="float:left;margin-left:15px;">
                 <select name="hour" class="form-control" style="float:left;width:135px;">
                     <option value="">Select Hours</option>
@@ -233,10 +230,44 @@
               		<div class="text-danger" style="width:100%;margin-top:40px;"><?php echo $error_minutes; ?></div>
               <?php } ?>
               </div>
-              
+              -->
             
             
           </div>
+          
+          <div class="form-group required">
+            <label class="col-sm-2 control-label" for="input-username"><?php echo $entry_appointment_date; ?></label>
+            <div class="col-sm-3">
+              <div class='input-group date'>
+                  <input id="input__appointment_date" name="appointment_date" type='text' data-today="<?php echo $appointment_date; ?>" value="<?php echo $appointment_date; ?>" class="form-control" class="form-control"  />
+                  <span class="input-group-addon">
+                      <span class="fa fa-calendar"></span>
+                  </span>
+              </div>
+    
+              <?php if ($error_appointment_date) : ?>
+                <div class="text-danger" style="width:100%;margin-top:40px;"><?php echo $error_appointment_date; ?></div>
+              <?php endif; ?>
+            </div>
+          </div>
+          
+          <div class="form-group required">
+              <label class="col-sm-2 control-label" for="available-time"><?php echo $entry_available_times; ?></label>
+              <div class="col-sm-9">
+                  <div class="row row__available-times">
+                      <?php if (!empty($available_times)) : ?>
+                          <?php foreach ($available_times as $time) : ?>
+                              <?php if (in_array($time, $booked_times)) : ?>
+                              <div class="col-sm-2 disabled"><?php echo $time; ?></div>
+                              <?php else: ?>
+                              <div class="col-sm-2"><?php echo $time; ?></div>
+                              <?php endif; ?>
+                          <?php endforeach; ?>
+                      <?php endif; ?>
+                  </div>
+              </div>
+          </div>
+
           <div class="form-group">
             <label class="col-sm-2 control-label" for="input-username"><?php echo $entry_appointment_description; ?></label>
             <div class="col-sm-10">
@@ -251,78 +282,5 @@
       </div>
     </div>
   </div>
- <script type="text/javascript">
- $(document.body).on('change',"#input-type",function (e) {
-   //doStuff
-   var optVal= $("#input-type option:selected").val();
-   if(optVal == 'New Business')
-   {
-   		$(".newbusiness").css("display", "block");
-		$(".custmr_id").css("display", "none");
-   }
-   else if(optVal == 'Existing Business')
-   {
-   		$(".custmr_id").css("display", "block");
-		$(".newbusiness").css("display", "none");
-   }
-   else
-   {
-   		$(".custmr_id").css("display", "none");
-		$(".newbusiness").css("display", "none");
-   }
-   
-});
- </script> 
- <script type="text/javascript">
- 	$('select[name=\'salesrep_id\']').on('change', function() {
-		$('select[name=\'salesrep_id\']').html();
-		$.ajax({
-		url: 'index.php?route=replogic/schedule_management/getCustomer&token=<?php echo $token; ?>',
-		type: 'post',
-		data: 'salesrep_id=' + $('select[name=\'salesrep_id\'] option:selected').val(),
-		dataType: 'json',
-		crossDomain: true,
-		success: function(json) {
-			
-			html = '<option value="">Select Customer</option>';
-			
-			if (json&& json != '') {
-				for (i = 0; i < json.length; i++) {
-					html += '<option value="' + json[i]['customer_id'] + '">' + json[i]['firstname'] + '</option>';
-
-				}
-			} else {
-				html += '<option value="">No Found Customer</option>';
-			}
-
-			$('select[name=\'customer_id\']').html(html);
-			
-		},
-		error: function(xhr, ajaxOptions, thrownError) {
-			alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
-		}
-	});
-	
-	});
-	
-	$('select[name=\'customer_id\']').on('change', function() {
-	
-		$.ajax({
-		url: 'index.php?route=replogic/schedule_management/getaddress&token=<?php echo $token; ?>',
-		type: 'post',
-		data: 'customer_id=' + $('select[name=\'customer_id\'] option:selected').val(),
-		dataType: 'json',
-		crossDomain: true,
-		success: function(json) {
-			
-			$('#input-appointment_address').val(json);
-		},
-		error: function(xhr, ajaxOptions, thrownError) {
-			alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
-		}
-	});
-	
-	});
- </script>
 </div>
 <?php echo $footer; ?> 
