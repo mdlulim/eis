@@ -57,7 +57,7 @@
                         </span><br>
                 <span class="ctm">
                 	<div class="col-md-5 rightalign1">Status : </div>
-                    	<div class="col-md-7 paddingleft1"><b>
+                    	<div class="col-md-7 paddingleft1 div__order-status"><b>
                          <?php if($order_status_id == '5') { ?>
                             <a class="btn-success" style="padding:2px 5px;border-radius:5px;">Order Confirmed</a>
                          <?php } else if($order_status_id == '1') { ?>
@@ -492,6 +492,8 @@
 				$('#history').before('<div class="alert alert-success"><i class="fa fa-check-circle"></i> ' + json['success'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
 
 				$('textarea[name=\'comment\']').val('');
+
+        updateOrderDetailsStatus($('select[name="order_status_id"]').val());
 			}
 		},
 		error: function(xhr, ajaxOptions, thrownError) {
@@ -755,6 +757,8 @@ $('#button-history').on('click', function() {
 				$('#history').before('<div class="alert alert-success"><i class="fa fa-check-circle"></i> ' + json['success'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
 
 				$('textarea[name=\'comment\']').val('');
+
+        updateOrderDetailsStatus($('select[name="order_status_id"]').val());
 			}
 		},
 		error: function(xhr, ajaxOptions, thrownError) {
@@ -762,6 +766,28 @@ $('#button-history').on('click', function() {
 		}
 	});
 });
+
+function updateOrderDetailsStatus(status_id) {
+  var divOrderStatus = $('.div__order-status');
+  switch (status_id) {
+    case '1':
+      divOrderStatus.html('<b><a class="btn-warning" style="padding:2px 5px;border-radius:5px;">Pending</a></b>');
+      break;
+
+    case '2':
+      divOrderStatus.html('<b><a class="btn-warning" style="background-color: white;border: 1px solid #000;border-radius: 5px;color: #666666;padding: 0 10px;">Processing</a></b>');
+      break;
+    
+    case '5':
+      divOrderStatus.html('<b><a class="btn-success" style="padding:2px 5px;border-radius:5px;">Order Confirmed</a></b>');
+      break;
+
+    case '0':
+    case '7':
+      divOrderStatus.html('<b><a class="btn-warning" style="background-color: #DB524B;border: 1px solid #000;border-radius: 5px;color: #FFFFFF;padding: 0 10px;">Cancelled</a></b>');
+      break;
+  }
+}
 
 function changeStatus(){
 	var status_id = $('select[name="order_status_id"]').val();

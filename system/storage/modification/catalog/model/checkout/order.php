@@ -778,7 +778,7 @@ class ModelCheckoutOrder extends Model {
 			} else {
 
 				// get order status
-				$order_status_query = $this->db->query("SELECT * FROM " . DB_PREFIX . "order_status WHERE order_status_id = '" . (int)$order_info['order_status_id'] . "' AND language_id = '" . (int)$order_info['language_id'] . "'");
+				$order_status_query = $this->db->query("SELECT * FROM " . DB_PREFIX . "order_status WHERE order_status_id = '" . (int)$order_status_id . "' AND language_id = '" . (int)$order_info['language_id'] . "'");
 	
 				if ($order_status_query->num_rows) {
 					$order_status = $order_status_query->row['name'];
