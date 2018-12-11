@@ -30,7 +30,7 @@ class ModelReplogicSalesRepManagement extends Model {
 		curl_close($curl);
 		$decoded = json_decode($curl_response);
 
-		if (isset($decoded->error)) {
+		if (isset($decoded->error) && $decoded->error) {
 			$message = $decoded->message;
 			$result  = array('success'=>false, 'message'=>$message);
 		} else {
@@ -59,12 +59,12 @@ class ModelReplogicSalesRepManagement extends Model {
 		curl_close($curl);
 		$decoded = json_decode($curl_response);
 
-		if (isset($decoded->error)) {
-			$message = $decoded->message;
-			$result = array('success'=>false, 'error'=>$message);
+		if (isset($decoded->error) && $decoded->error) {
+			$message  = $decoded->message;
+			$result   = array('success'=>false, 'error'=>$message);
 		} else {
 			$message = $decoded->message;
-			$result = array('success'=>true, 'message'=>$message);
+			$result  = array('success'=>true, 'message'=>$message);
 		}
 		return $result;
 	}
