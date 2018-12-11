@@ -173,10 +173,11 @@ class ModelReplogicOrderQuotes extends Model {
 	 * @return int          	number of quotes awaiting approval
 	 */
 	public function getQuotesAwaitingApprovalCount($filters) {
+		$this->load->language('replogic/order_quotes');
 		$sql = "SELECT COUNT(quote_id) AS qty FROM ".DB_PREFIX."replogic_order_quote oq ";
 		$sql.= "LEFT JOIN ".DB_PREFIX."salesrep sr ON sr.salesrep_id=oq.salesrep_id ";
 		$sql.= "LEFT JOIN ".DB_PREFIX."team tm on tm.team_id=sr.sales_team_id ";
-		$sql.= "WHERE oq.status=0";
+		$sql.= "WHERE oq.status=" . $this->language->get('quote_status_pending_id');
 
 		/*===============================
 		=            Filters            =
@@ -223,10 +224,11 @@ class ModelReplogicOrderQuotes extends Model {
 	 * @return int          	number of quotes
 	 */
 	public function getTotalQuotesCount($filters) {
+		$this->load->language('replogic/order_quotes');
 		$sql = "SELECT COUNT(quote_id) AS qty FROM ".DB_PREFIX."replogic_order_quote oq ";
 		$sql.= "LEFT JOIN ".DB_PREFIX."salesrep sr ON sr.salesrep_id=oq.salesrep_id ";
 		$sql.= "LEFT JOIN ".DB_PREFIX."team tm on tm.team_id=sr.sales_team_id ";
-		$sql.= "WHERE oq.status IN (0,1)";
+		$sql.= "WHERE oq.status IN (".$this->language->get('quote_status_pending_id').",".$this->language->get('quote_status_converted_id').")";
 
 		/*===============================
 		=            Filters            =
