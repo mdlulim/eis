@@ -7,6 +7,7 @@ class ModelReplogicSalesRepManagement extends Model {
 		$query       = $this->db->query("SELECT * FROM " . DB_PREFIX . "rep_settings order by company_id asc LIMIT 1");
 		$row         = $query->row;
 		$company_id  = $row['company_id'];
+		$result      = array();
 
 		// use salesrep api to register a new sales rep
 		$service_url    = REP_API_BASE_URL . '/salesreps';
@@ -29,12 +30,43 @@ class ModelReplogicSalesRepManagement extends Model {
 		curl_close($curl);
 		$decoded = json_decode($curl_response);
 
-		if (isset($decoded->error) && $decoded->error == 'Not Found') {
+		if (isset($decoded->error)) {
 			$message = $decoded->message;
+			$result  = array('success'=>false, 'message'=>$message);
 		} else {
 			$message = $decoded->message;
+			$result  = array('success'=>true, 'message'=>$message);
 		}
 		return $message;
+	}
+	public function resetSalesRepPassword($data) {
+		$result = array();
+		// use salesrep api to register a new sales rep
+		$service_url    = REP_API_BASE_URL . '/users/resetpassword';
+		$curl           = curl_init($service_url);
+		$curl_post_data = array(
+			'email' => $data['email']
+		);
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($curl, CURLOPT_POST, true);
+		curl_setopt($curl, CURLOPT_POSTFIELDS, $curl_post_data);
+		$curl_response = curl_exec($curl);
+		if ($curl_response === false) {
+			$info = curl_getinfo($curl);
+			curl_close($curl);
+			die('error occured during curl exec. Additioanl info: ' . var_export($info));
+		}
+		curl_close($curl);
+		$decoded = json_decode($curl_response);
+
+		if (isset($decoded->error)) {
+			$message = $decoded->message;
+			$result = array('success'=>false, 'error'=>$message);
+		} else {
+			$message = $decoded->message;
+			$result = array('success'=>true, 'message'=>$message);
+		}
+		return $result;
 	}
 
 	public function CheckEmailByApi($email) {

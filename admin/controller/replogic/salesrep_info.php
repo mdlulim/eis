@@ -53,6 +53,24 @@ class ControllerReplogicSalesrepInfo extends Controller {
 		}
 		else if($this->request->get['type'] == 'general')
 		{
+
+			/*==================================
+			=       Add Files (Includes)       =
+			==================================*/
+	
+			# stylesheets (CSS) files
+			$this->document->addStyle('view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.css');
+			$this->document->addStyle('view/stylesheet/material-icons/material-icons.css');
+			$this->document->addStyle('view/javascript/bootstrap-sweetalert/sweetalert.css');
+	
+			# javascript (JS) files
+			$this->document->addScript('view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.js');
+			$this->document->addScript('view/javascript/bootstrap-sweetalert/sweetalert.min.js');
+			$this->document->addScript('view/javascript/bootstrap-sweetalert/sweetalert-data.js');
+			$this->document->addScript('view/javascript/salesrep_info.js');
+	
+			/*=====  End of Add Files (Includes)  ======*/
+
 			$this->getGeneralTab();
 		}
 	}
@@ -108,6 +126,7 @@ class ControllerReplogicSalesrepInfo extends Controller {
 
 		
 		$data['cancel'] = $this->url->link('replogic/sales_rep_management', 'token=' . $this->session->data['token'] . $url, true);
+		$data['edit']   = $this->url->link('replogic/sales_rep_management/edit', 'token=' . $this->session->data['token'] . $url . '&salesrep_id=' . $salesrep_id, true);
 		
 		$data['generaltab'] = $this->url->link('replogic/salesrep_info', 'type=general&salesrep_id=' . $salesrep_id .'&token=' . $this->session->data['token'], true);
 		$data['appointmenttab'] = $this->url->link('replogic/salesrep_info', 'type=appointment&salesrep_id=' . $salesrep_id .'&token=' . $this->session->data['token'], true);
@@ -137,6 +156,7 @@ class ControllerReplogicSalesrepInfo extends Controller {
 		$data['button_edit'] = $this->language->get('button_edit');
 		$data['button_delete'] = $this->language->get('button_delete');
 		$data['token'] = $this->session->data['token'];
+		$data['show_resend_password'] = true;
 
 		if (isset($this->error['warning'])) {
 			$data['error_warning'] = $this->error['warning'];
@@ -350,6 +370,7 @@ class ControllerReplogicSalesrepInfo extends Controller {
 		);
 
 		$data['cancel'] = $this->url->link('replogic/sales_rep_management', 'token=' . $this->session->data['token'], true);
+		$data['edit']   = $this->url->link('replogic/sales_rep_management/edit', 'token=' . $this->session->data['token'] . $url, true);
 		
 		$data['generaltab'] = $this->url->link('replogic/salesrep_info', 'type=general&salesrep_id=' . $salesrep_id .'&token=' . $this->session->data['token'], true);
 		$data['appointmenttab'] = $this->url->link('replogic/salesrep_info', 'type=appointment&salesrep_id=' . $salesrep_id .'&token=' . $this->session->data['token'], true);
@@ -602,6 +623,7 @@ class ControllerReplogicSalesrepInfo extends Controller {
 
 		$data['button_save'] = $this->language->get('button_save');
 		$data['button_cancel'] = $this->language->get('button_cancel');
+		$data['button_edit'] = $this->language->get('button_edit');
 
 		if (isset($this->error['warning'])) {
 			$data['error_warning'] = $this->error['warning'];
@@ -668,6 +690,7 @@ class ControllerReplogicSalesrepInfo extends Controller {
 		$data['action'] = $this->url->link('replogic/schedule_management/edit', 'token=' . $this->session->data['token'] . '&appointment_id=' . $this->request->get['appointment_id'] . $url, true);
 		
 		$data['cancel'] = $this->url->link('replogic/salesrep_info', 'token=' . $this->session->data['token'] . $url, true);
+		$data['edit']   = $this->url->link('replogic/sales_rep_management/edit', 'token=' . $this->session->data['token'] . $url . '&salesrep_id=' . $salesrep_id, true);
 
 		$appointment_info = $this->model_replogic_schedule_management->getappointment($this->request->get['appointment_id']);
 			
@@ -1077,6 +1100,7 @@ class ControllerReplogicSalesrepInfo extends Controller {
 
 		$data['button_save'] = $this->language->get('button_save');
 		$data['button_cancel'] = $this->language->get('button_cancel');
+		$data['button_edit'] = $this->language->get('button_edit');
 		$data['button_address_add'] = $this->language->get('button_address_add');
 		$data['button_history_add'] = $this->language->get('button_history_add');
 		$data['button_transaction_add'] = $this->language->get('button_transaction_add');
@@ -1233,14 +1257,16 @@ class ControllerReplogicSalesrepInfo extends Controller {
 
 		if(isset($this->request->get['type']))
 		{
-			$data['cancel'] = $this->url->link('replogic/salesrep_info', 'token=' . $this->session->data['token'] . '&type=customers&salesrep_id='.$this->request->get['csalesrep_id'], true);
-			$data['type'] = $this->request->get['type'];
+			$data['cancel']       = $this->url->link('replogic/salesrep_info', 'token=' . $this->session->data['token'] . '&type=customers&salesrep_id='.$this->request->get['csalesrep_id'], true);
+			$data['type']         = $this->request->get['type'];
 			$data['csalesrep_id'] = $this->request->get['csalesrep_id'];
+			$data['edit']         = $this->url->link('replogic/sales_rep_management/edit', 'token=' . $this->session->data['token'] . $url . '&salesrep_id=' . $data['csalesrep_id'], true);
 		}
 		else
 		{
-			$data['cancel'] = $this->url->link('customer/customer', 'token=' . $this->session->data['token'] . $url, true);
-			$data['type'] = '';
+			$data['cancel']       = $this->url->link('customer/customer', 'token=' . $this->session->data['token'] . $url, true);
+			$data['edit']         = $this->url->link('replogic/sales_rep_management/edit', 'token=' . $this->session->data['token'] . $url, true);
+			$data['type']         = '';
 			$data['csalesrep_id'] = '';
 		}
 
@@ -1574,6 +1600,7 @@ class ControllerReplogicSalesrepInfo extends Controller {
 		);
 		
 		$data['cancel'] = $this->url->link('replogic/sales_rep_management', 'token=' . $this->session->data['token'] . $url, true);
+		$data['edit']   = $this->url->link('replogic/sales_rep_management/edit', 'token=' . $this->session->data['token'] . $url . '&salesrep_id=' . $salesrep_id, true);
 		
 		$data['generaltab'] = $this->url->link('replogic/salesrep_info', 'type=general&salesrep_id=' . $salesrep_id .'&token=' . $this->session->data['token'], true);
 		$data['appointmenttab'] = $this->url->link('replogic/salesrep_info', 'type=appointment&salesrep_id=' . $salesrep_id .'&token=' . $this->session->data['token'], true);
@@ -1926,6 +1953,7 @@ class ControllerReplogicSalesrepInfo extends Controller {
 		}
 		
 		$data['cancel'] = $this->url->link('replogic/sales_rep_management', 'token=' . $this->session->data['token'] . $url, true);
+		$data['edit']   = $this->url->link('replogic/sales_rep_management/edit', 'token=' . $this->session->data['token'] . $url . '&salesrep_id=' . $salesrep_id, true);
 		
 		$data['generaltab'] = $this->url->link('replogic/salesrep_info', 'type=general&salesrep_id=' . $salesrep_id .'&token=' . $this->session->data['token'], true);
 		$data['appointmenttab'] = $this->url->link('replogic/salesrep_info', 'type=appointment&salesrep_id=' . $salesrep_id .'&token=' . $this->session->data['token'], true);
@@ -2532,6 +2560,7 @@ class ControllerReplogicSalesrepInfo extends Controller {
 
 		$data['button_save'] = $this->language->get('button_save');
 		$data['button_cancel'] = $this->language->get('button_cancel');
+		$data['button_edit'] = $this->language->get('button_edit');
 
 		if (isset($this->error['warning'])) {
 			$data['error_warning'] = $this->error['warning'];
@@ -2596,6 +2625,7 @@ class ControllerReplogicSalesrepInfo extends Controller {
 
 		
 		$data['cancel'] = $this->url->link('replogic/salesrep_info', 'token=' . $this->session->data['token'] . $url, true);
+		$data['edit']   = $this->url->link('replogic/sales_rep_management/edit', 'token=' . $this->session->data['token'] . $url . '&salesrep_id=' . $salesrep_id, true);
 
 		$this->load->model('customer/customer');
 		$this->load->model('replogic/sales_rep_management');
@@ -2753,7 +2783,19 @@ class ControllerReplogicSalesrepInfo extends Controller {
             $diff = floor($diff / $intervals['year']);
             return $diff == 1 ? $diff . ' year ago ' : $diff . ' years ago ';
         }
-    }
+	}
 	
+	public function resend_password() {
+		$this->load->model('replogic/sales_rep_management');
+		$json['success'] = false;
+		if (($this->request->server['REQUEST_METHOD'] == 'POST') && (isset($this->request->post['action']) && $this->request->post['action'] == "resend_password") && isset($this->request->post['salesrep_id'])) {
+			# get sales rep info
+			$salesrepInfo = $this->model_replogic_sales_rep_management->getsalesrep($this->request->post['salesrep_id']);
+			if (!empty($salesrepInfo)) {
+				$json = $this->model_replogic_sales_rep_management->resetSalesRepPassword($salesrepInfo);
+			}
+		}
+		echo json_encode($json);
+	}
 	
 }

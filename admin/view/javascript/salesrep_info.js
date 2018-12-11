@@ -6,6 +6,59 @@
     var token;
     var loader;
 
+    /*************************************
+     * START : Resend sales rep password
+     *************************************/
+
+    var initResendPassword = function () {
+    	$(document).on('click', '#resend-password', function(e) {
+            e.preventDefault();
+    		var repName  = $(this).data('repname');
+    		var token    = $(this).data('token');
+    		var repId    = $(this).data('salesrep-id');
+    		var postData = { ajax:1, action:'resend_password', salesrep_id:repId };
+    		swal({
+				title: "Are you sure?",
+				text: "You are about to resend password to "+repName+".",
+				type: "warning",
+				showCancelButton: true,
+				confirmButtonClass: "btn-info",
+				confirmButtonText: "Yes, send it!",
+                showLoaderOnConfirm: true,
+                closeOnConfirm: false
+			},
+			function(isConfirm){
+				if (isConfirm) {
+					$.ajax({
+		    			url: "index.php?route=replogic/salesrep_info/resend_password&token="+token,
+		    			type: 'POST',
+		    			data: postData,
+		    			beforeSend: function() {
+		    				$('.loader-wrapper').show();
+		    			},
+		    			success: function(xhr) {
+		    				var res = $.parseJSON(xhr);
+		    				$('.loader-wrapper').hide();
+		    				if (res.success) {
+		    					swal("Sent!", "Password has been sent to "+repName+".", "success");
+                            } else if (res.error) {
+                                swal("Error!", res.error, "error");
+                            } else {
+                                swal("Error!", "An unexpected error has occurred.", "error");
+                            }
+		    			}
+		    		});
+				}
+			});
+    	});
+    };
+
+    initResendPassword();
+
+    /*************************************
+     * END: Resend sales rep password
+     *************************************/
+
     $document.ready(function() {
 
         var lmContainer     = $('.lm-map-container');
