@@ -560,7 +560,7 @@ class ControllerCommonSalesDashboard extends Controller {
 		$data['order_view_more']  = $this->url->link('sale/order', "token=$token", true);
 		$data['quotes_view_more'] = $this->url->link('replogic/order_quotes', "token=$token", true);
 
-		$data['unapproved_quotes_view_more'] = $this->url->link('replogic/order_quotes', "token=$token&filter_order_status=0");
+		$data['unapproved_quotes_view_more'] = $this->url->link('replogic/order_quotes', "token=$token&filter_order_status=" . $this->language->get('quote_status_pending_id'));
 	
 		/*=====  End of Tiles  ======*/
 		
