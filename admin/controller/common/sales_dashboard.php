@@ -599,7 +599,7 @@ class ControllerCommonSalesDashboard extends Controller {
 					'appointment_date' => $appointmentDate,
 					'appointment_type' => $appointment['type'],
 					'visit_date' => $visitDate,
-					'view' => $this->url->link('replogic/schedule_management/edit', "token=$token&appointment_id=".$appointment['appointment_id'], true)
+					'view' => $this->url->link('replogic/schedule_management/view', "token=$token&appointment_id=".$appointment['appointment_id'], true)
 				);
 			}
 		}
