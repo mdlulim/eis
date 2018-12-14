@@ -15,6 +15,11 @@
             daysOfWeekDisabled: [0, 6],
             format: 'dddd, DD MMMM YYYY'
         });
+
+        // if you're editing appointment, show available times DIV
+        if (location.search.indexOf('route=replogic/schedule_management/edit') !== -1) {
+            $('#div__available-times').show();
+        }
     });
 
     $document.on('change', '#input__appointment_type', function () {
