@@ -38,29 +38,31 @@
         var token       = $('#content').data('token');
         var salesrep_id = $('select[name="salesrep_id"] option:selected').val();
         $('select[name="salesrep_id"]').html();
-        
-		$.ajax({
-            url: `index.php?route=replogic/schedule_management/getCustomer&token=${token}`,
-            type: 'post',
-            data: `salesrep_id=${salesrep_id}`,
-            dataType: 'json',
-            crossDomain: true,
-            success: function(json) {
-                var html = `<option value="">Select Customer</option>`;
-                if (json && json != '') {
-                    for (var i = 0; i < json.length; i++) {
-                        html += `<option value="${json[i]['customer_id']}">${json[i]['firstname']}</option>`;
+        $('#div__available-times').hide();
+        if ($(this).val().length > 0) {
+            $.ajax({
+                url: `index.php?route=replogic/schedule_management/getCustomer&token=${token}`,
+                type: 'post',
+                data: `salesrep_id=${salesrep_id}`,
+                dataType: 'json',
+                crossDomain: true,
+                success: function(json) {
+                    var html = `<option value="">Select Customer</option>`;
+                    if (json && json != '') {
+                        for (var i = 0; i < json.length; i++) {
+                            html += `<option value="${json[i]['customer_id']}">${json[i]['firstname']}</option>`;
+                        }
+                    } else {
+                        html += `<option value="">No Found Customer</option>`;
                     }
-                } else {
-                    html += `<option value="">No Found Customer</option>`;
+                    $('select[name="customer_id"]').html(html);
+                    $('#div__available-times').show();
+                },
+                error: function(xhr, ajaxOptions, thrownError) {
+                    alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
                 }
-                $('select[name="customer_id"]').html(html);
-                
-            },
-            error: function(xhr, ajaxOptions, thrownError) {
-                alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
-            }
-        });
+            });
+        }
 	});
 
 	$document.on('change', 'select[name="customer_id"]', function() {
