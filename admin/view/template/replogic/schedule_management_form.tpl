@@ -251,7 +251,7 @@
             </div>
           </div>
           
-          <div class="form-group required">
+          <div class="form-group required" id="div__available-times" style="display:none">
               <label class="col-sm-2 control-label" for="available-time"><?php echo $entry_available_times; ?></label>
               <div class="col-sm-9">
                   <div class="row row__available-times">
