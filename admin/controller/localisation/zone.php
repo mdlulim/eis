@@ -73,6 +73,18 @@ class ControllerLocalisationZone extends Controller {
 		}
 		$this->getList();
 	}
+
+	public function get_zones_by_country_id() {
+		$json = array();
+		$this->load->model('localisation/zone');
+		$zones = $this->model_localisation_zone->getZonesByCountryId($this->request->get['country_id']);
+		if ($zones) {
+			$json['zones'] = $zones;
+		}
+		$this->response->addHeader('Content-Type: application/json');
+		$this->response->setOutput(json_encode($json));
+	}
+
 	protected function getList() {
 		if (isset($this->request->get['sort'])) {
 			$sort = $this->request->get['sort'];
