@@ -66,14 +66,14 @@
         <li class="divider"></li>
         <li class="dropdown-header"><?php echo $text_quotes; ?></li>
         <li><a href="<?php echo $quotes_header; ?>"><span class="label label-success pull-right"><?php echo $order_quotes_total_all; ?></span><?php echo $text_approvedquotes; ?></a></li>
-        <li><a href="<?php echo $quotes_waiting_header; ?>"><span class="label label-danger pull-right"><?php echo $order_quotes_total_all_waiting; ?></span><?php echo $text_approval; ?></a></li>
+        <li><a href="<?php echo $quotes_waiting_header; ?>"><span class="label <?php echo ($order_quotes_total_all_waiting > 0) ? 'label-danger' : 'label-default'; ?> pull-right"><?php echo $order_quotes_total_all_waiting; ?></span><?php echo $text_approval; ?></a></li>
         
         <?php } else { ?>
         
         <li class="divider"></li>
         <li class="dropdown-header"><?php echo $text_quotes; ?></li>
         <li><a href="<?php echo $quotes_header; ?>"><span class="label label-success pull-right"><?php echo $order_quotes_total_all; ?></span><?php echo $text_approvedquotes; ?></a></li>
-        <li><a href="<?php echo $quotes_waiting_header; ?>"><span class="label label-danger pull-right"><?php echo $order_quotes_total_all_waiting; ?></span><?php echo $text_approval; ?></a></li>
+        <li><a href="<?php echo $quotes_waiting_header; ?>"><span class="label <?php echo ($order_quotes_total_all_waiting > 0) ? 'label-danger' : 'label-default'; ?> pull-right"><?php echo $order_quotes_total_all_waiting; ?></span><?php echo $text_approval; ?></a></li>
         
         <?php } ?>
         
@@ -106,7 +106,7 @@
          <?php if($login_user_group_name != "Sales Manager") { ?>
         <li class="divider"></li>
         <li class="dropdown-header"><?php echo $text_affiliate; ?></li>
-        <li><a href="<?php echo $affiliate_approval; ?>"><span class="label label-danger pull-right"><?php echo $affiliate_total; ?></span><?php echo $text_approval; ?></a></li>
+        <li><a href="<?php echo $affiliate_approval; ?>"><span class="label <?php echo ($affiliate_total > 0) ? 'label-danger' : 'label-default'; ?> pull-right"><?php echo $affiliate_total; ?></span><?php echo $text_approval; ?></a></li>
         <?php } ?>
       </ul>
     </li>
