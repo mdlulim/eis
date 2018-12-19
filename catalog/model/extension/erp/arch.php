@@ -124,8 +124,9 @@ class ModelExtensionErpArch extends Model {
         
         if ($success =='true') { 
             $this->model_checkout_order->addOrderHistory($order_number, $order_status,'Pricing Applied <br/> TTN : '.$transaction_tracking_number,true);
+            sleep(3);
             //$this->acceptQuotation($order_number, $transaction_tracking_number);
-            $this->getQuotation($transaction_tracking_number);
+            $this->getQuotation($order_number,$transaction_tracking_number);
             //return $transaction_tracking_number;
             return true;
 
@@ -136,7 +137,7 @@ class ModelExtensionErpArch extends Model {
        
     }
 
-    public function getQuotation($ttn){
+    public function getQuotation($order_number,$ttn){
         $xmlBody  = "    <tem:request>";
         $xmlBody .= "        <spi1:TransactionTrackingNumber>". $ttn ."</spi1:TransactionTrackingNumber>";
         $xmlBody .= "    </tem:request>";
@@ -145,6 +146,7 @@ class ModelExtensionErpArch extends Model {
         $result   = $this->post("GetQuotation", $xmlBody, $xmlns);
         $log_response = new Log ('getQuotation.log');
         $log_response->write($result);
+        $this->acceptQuotation($order_number, $ttn);
     }
     public function acceptQuotation ($order_number,$ttn){
         $xmlBody  = "    <tem:request>";
