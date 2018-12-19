@@ -131,7 +131,9 @@
     	$document.on('click', '#addNewAddress', function(e) {
 			e.preventDefault();
 			$('#newAddressModal').find('.form-group .text-danger').remove();
-			$('select#input-payment-zone').prop('disabled', true);
+			if ($('select#country-select').val().length === 0) {
+				$('select#input-payment-zone').prop('disabled', true);
+			}
     		$('#newAddressModal').modal('show');
     	});
         
@@ -204,12 +206,12 @@
          ****************************************************/
 
     	$document.on('change', 'select#country-select', function() {
-    		var token = $('#content').data('token');
+    		var token       = $('#content').data('token');
+			var zonesSelect = $('select#input-payment-zone');
+			zonesSelect.prop('disabled', true);
 
     		// if country is selected
     		if ($(this).val().length > 0) {
-				var zonesSelect = $('select#input-payment-zone');
-				zonesSelect.prop('disabled', true);
     			$.ajax({
     				url: 'index.php?route=localisation/zone/get_zones_by_country_id&token='+token,
     				type: 'GET',
