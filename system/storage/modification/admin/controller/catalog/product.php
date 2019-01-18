@@ -39,8 +39,8 @@ class ControllerCatalogProduct extends Controller {
 		$this->document->setTitle($this->language->get('heading_title'));
 
 		$this->load->model('catalog/product');
-		
-        $this->getList();
+
+		$this->getList();
 	}
 
 	public function add() {
@@ -475,18 +475,20 @@ class ControllerCatalogProduct extends Controller {
 		);
 
 		$this->load->model('tool/image');
+
 		$product_total = $this->model_catalog_product->getTotalProducts($filter_data);
 
 		$results = $this->model_catalog_product->getProducts($filter_data);
+
 		foreach ($results as $result) {
-			
 			if (is_file(DIR_IMAGE . $result['image'])) {
 				$image = $this->model_tool_image->resize($result['image'], 40, 40);
 			} else {
 				$image = $this->model_tool_image->resize('tsc_image.png', 40, 40);
 			}
-			
+
 			$special = false;
+
 			$product_specials = $this->model_catalog_product->getProductSpecials($result['product_id']);
 
 			foreach ($product_specials  as $product_special) {
@@ -496,20 +498,19 @@ class ControllerCatalogProduct extends Controller {
 					break;
 				}
 			}
-			
+
 			$data['products'][] = array(
-				 'product_id' => $result['product_id'],
-				 'image'      => $image,
-				 'name'       => $result['name'],
-				 'model'      => $result['model'],
-				 'price'      => $result['price'],
-				 'special'    => $special,
-				 'quantity'   => $result['quantity'],
-				 'status'     => $result['status'] ? $this->language->get('text_enabled') : $this->language->get('text_disabled'),
-				 'edit'       => $this->url->link('catalog/product/edit', 'token=' . $this->session->data['token'] . '&product_id=' . $result['product_id'] . $url, true)
+				'product_id' => $result['product_id'],
+				'image'      => $image,
+				'name'       => $result['name'],
+				'model'      => $result['model'],
+				'price'      => $result['price'],
+				'special'    => $special,
+				'quantity'   => $result['quantity'],
+				'status'     => $result['status'] ? $this->language->get('text_enabled') : $this->language->get('text_disabled'),
+				'edit'       => $this->url->link('catalog/product/edit', 'token=' . $this->session->data['token'] . '&product_id=' . $result['product_id'] . $url, true)
 			);
 		}
-		
 		
 		//$data['Dropdownproducts'] = $this->model_catalog_product->getProducts();
 		//$data['Dropdownmodels'] = $this->model_catalog_product->getProductsModel();
@@ -556,7 +557,6 @@ class ControllerCatalogProduct extends Controller {
 				);
 			}
 		}
-
 		$data['help_category'] = $this->language->get('help_category');
 		$data['entry_category'] = $this->language->get('entry_category');
 		$data['action'] = $this->url->link('catalog/product/assignProduct', 'token=' . $this->session->data['token'], true);
@@ -997,8 +997,7 @@ class ControllerCatalogProduct extends Controller {
 
 		$data['stores'] = $this->model_setting_store->getStores();
 		
-		//$data['all_stores'] = $this->model_setting_store->getAllStores();
-		$data['all_stores'] = $this->model_setting_store->getStores();
+		$data['all_stores'] = $this->model_setting_store->getAllStores();
 
 		if (isset($this->request->post['product_store'])) {
 			$data['product_store'] = $this->request->post['product_store'];

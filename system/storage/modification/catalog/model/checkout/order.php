@@ -242,6 +242,9 @@ class ModelCheckoutOrder extends Model {
 	}
 
 	public function addOrderHistory($order_id, $order_status_id, $comment = '', $notify = false, $override = false) {
+		// Decode twice from javascript encodeURIComponent and curl API http_build_query
+		$comment = html_entity_decode(html_entity_decode($comment, ENT_QUOTES, 'UTF-8'), ENT_QUOTES, 'UTF-8');
+		
 		$order_info = $this->getOrder($order_id);
 		
 		if ($order_info) {
@@ -321,6 +324,8 @@ class ModelCheckoutOrder extends Model {
 
 			$this->db->query("INSERT INTO " . DB_PREFIX . "order_history SET order_id = '" . (int)$order_id . "', order_status_id = '" . (int)$order_status_id . "', notify = '" . (int)$notify . "', comment = '" . $this->db->escape($comment) . "', date_added = NOW()");
 
+            $order_history_id = $this->db->getLastId();
+
 			// If old order status is the processing or complete status but new status is not then commence restock, and remove coupon, voucher and reward history
 			if (in_array($order_info['order_status_id'], array_merge($this->config->get('config_processing_status'), $this->config->get('config_complete_status'))) && !in_array($order_status_id, array_merge($this->config->get('config_processing_status'), $this->config->get('config_complete_status')))) {
 				// Restock
@@ -389,6 +394,103 @@ class ModelCheckoutOrder extends Model {
 				}
 	
 				$subject = sprintf($language->get('text_new_subject'), html_entity_decode($order_info['store_name'], ENT_QUOTES, 'UTF-8'), $order_id);
+
+				$this->load->model('tool/image');
+				$this->load->model('catalog/product');
+				$this->load->model('extension/mail/template');
+
+				$template_load = array(
+					'key' => 'order.customer'
+				);
+
+				if (!empty($order_status_id)) {
+					$template_load['order_status_id'] = $order_status_id;
+				}
+
+				if (!empty($order_info['payment_method'])) {
+					$template_load['payment_method'] = $order_info['payment_method'];
+				}
+
+				if (!empty($order_info['language_id'])) {
+					$template_load['language_id'] = $order_info['language_id'];
+				}
+
+				if (!empty($order_info['customer_id'])) {
+					$template_load['customer_id'] = $order_info['customer_id'];
+				}
+
+				if (!empty($order_info['customer_group_id'])) {
+					$template_load['customer_group_id'] = $order_info['customer_group_id'];
+				}
+
+				$template = $this->model_extension_mail_template->load($template_load);
+
+				$language->load('mail/order');
+
+				$template->data['text_affiliate'] = $language->get('text_affiliate');
+				$template->data['text_customer_group'] = $language->get('text_customer_group');
+				$template->data['text_id'] = $language->get('text_id');
+				$template->data['text_order_link'] = $language->get('text_order_link');
+				$template->data['text_invoice_no'] = $language->get('text_invoice_no');
+
+				$template_data = array();
+
+				if (!empty($order_info['customer_group_id'])) {
+	            	$this->load->model('account/customer_group');
+
+					$customer_group_info = $this->model_account_customer_group->getCustomerGroup($order_info['customer_group_id']);
+
+					if ($customer_group_info) {
+						$template->data['customer_group'] = $customer_group_info;
+					}
+	            }
+
+				if (!empty($order_info['affiliate_id'])) {
+	            	$this->load->model('affiliate/affiliate');
+
+					$affiliate_info = $this->model_affiliate_affiliate->getAffiliate($order_info['affiliate_id']);
+
+					if ($affiliate_info) {
+						$template->data['affiliate'] = $affiliate_info;
+					}
+	            }
+
+				// Custom fields
+				if (!empty($order_info['custom_field']) || !empty($order_info['payment_custom_field'])) {
+					$this->load->model('account/custom_field');
+
+					if (!empty($order_info['customer_group_id'])) {
+						$customer_group_id = $order_info['customer_group_id'];
+					} else {
+						$customer_group_id = $this->config->get('config_customer_group_id');
+					}
+
+					$custom_fields = $this->model_account_custom_field->getCustomFields($customer_group_id);
+
+					foreach($custom_fields as $custom_field){
+						if (isset($order_info['payment_custom_field'][$custom_field['custom_field_id']])) {
+							$template->data['custom_field_' . $custom_field['custom_field_id'] . '_name'] = $custom_field['name'];
+							$template->data['custom_field_' . $custom_field['custom_field_id'] . '_value'] = $order_info['payment_custom_field'][$custom_field['custom_field_id']];
+						} elseif (isset($order_info['custom_field'][$custom_field['custom_field_id']])) {
+							$template->data['custom_field_' . $custom_field['custom_field_id'] . '_name'] = $custom_field['name'];
+							$template->data['custom_field_' . $custom_field['custom_field_id'] . '_value'] = $order_info['custom_field'][$custom_field['custom_field_id']];
+						}
+					}
+				}
+
+				$template->data['order_subject_products'] = '';
+
+				foreach ($order_product_query->rows as $order_product) {
+					$template->data['order_subject_products'] .= ($template->data['order_subject_products'] ? ', ' : '') . $order_product['name'];
+				}
+
+				$length = 32;
+
+    			if (strlen($template->data['order_subject_products']) > $length) {
+    				$template->data['order_subject_products'] = substr($template->data['order_subject_products'], 0, strrpos(substr($template->data['order_subject_products'], 0, $length), ' ')) . '...';
+				}
+
+				$template->data['new_order_status'] = $order_status;
 	
 				// HTML Mail
 				$data = array();
@@ -520,7 +622,9 @@ class ModelCheckoutOrder extends Model {
 				foreach ($order_product_query->rows as $product) {
 					$option_data = array();
 	
-					$order_option_query = $this->db->query("SELECT * FROM " . DB_PREFIX . "order_option WHERE order_id = '" . (int)$order_id . "' AND order_product_id = '" . (int)$product['order_product_id'] . "'");
+					$product_data = $this->model_catalog_product->getProduct($product['product_id']);
+		
+		$order_option_query = $this->db->query("SELECT oo.*, pov.*, ov.image FROM " . DB_PREFIX . "order_option oo LEFT JOIN " . DB_PREFIX . "product_option_value pov ON (pov.product_option_value_id = oo.product_option_value_id) LEFT JOIN " . DB_PREFIX . "option_value ov ON (ov.option_value_id = pov.option_value_id) WHERE oo.order_id = '" . (int)$order_id . "' AND oo.order_product_id = '" . (int)$product['order_product_id'] . "'");
 	
 					foreach ($order_option_query->rows as $option) {
 						if ($option['type'] != 'file') {
@@ -537,11 +641,59 @@ class ModelCheckoutOrder extends Model {
 	
 						$option_data[] = array(
 							'name'  => $option['name'],
-							'value' => (utf8_strlen($value) > 20 ? utf8_substr($value, 0, 20) . '..' : $value)
+							'value' => (utf8_strlen($value) > 120 ? utf8_substr($value, 0, 120) . '..' : $value),
+				            'price' => ((($this->config->get('config_customer_price') && $this->customer->isLogged()) || !$this->config->get('config_customer_price')) && (float)$option['price']) ? $this->currency->format($this->tax->calculate($option['price'], $product_data['tax_class_id'], $this->config->get('config_tax') ? 'P' : false), $this->session->data['currency']) : 0,
+				            'price_prefix' => isset($option['price_prefix']) ? $option['price_prefix'] : '',
+							'stock_quantity' => (!empty($template->data['config']['order_products']['quantity_column']) && isset($option['quantity'])) ? $option['quantity'] : '',
+							'stock_subtract' => (!empty($template->data['config']['order_products']['quantity_column']) && isset($option['subtract'])) ? $option['subtract'] : ''
 						);
 					}
 	
+					$image = $product_data['image'];
+
+					// Product Option Image
+					foreach ($order_option_query->rows as $option) {
+						if ($option['image']) {
+							$image = $option['image'];
+						}
+					}
+
+					if ($image) {
+						$image_width = isset($template->data['config']['order_products']['image_width']) ? $template->data['config']['order_products']['image_width']: 100;
+						$image_height = isset($template->data['config']['order_products']['image_height']) ? $template->data['config']['order_products']['image_height']: 100;
+						if ($image_width && $image_height) {
+							$image = $this->model_tool_image->resize($image, $image_width, $image_height);
+						}
+					}
+
+					$url = $this->url->link('product/product', 'product_id='.$product['product_id'], true);
+
+					if (!empty($template->data['config']['order_products']['quantity_column'])) {
+						if ($product_data['subtract']) {
+							$stock_quantity = $product_data['quantity'] + $product['quantity']; // quantity before order
+						} else {
+							$stock_quantity = false;
+						}
+
+						if ($stock_quantity && $product['quantity'] > $stock_quantity) {
+							$stock_backorder = $product['quantity'] - $stock_quantity;
+						} else {
+							$stock_backorder = false;
+						}
+					}
+
 					$data['products'][] = array(
+						'sku'              => $product_data['sku'],
+						'stock_status'     => $product_data['stock_status'],
+						'stock_subtract'   => $product_data['subtract'],
+						'stock_quantity'   => $stock_quantity,
+						'stock_backorder'  => $stock_backorder,
+						'product_id'       => $product_data['product_id'],
+						'url'     		   => $url,
+						'image'     	   => $image,
+						'weight'		   => ($product_data['weight'] > 0) ? $this->weight->format($product_data['weight'], $product_data['weight_class_id']) : 0,
+						'description'      => utf8_substr(strip_tags(html_entity_decode($product_data['description'], ENT_QUOTES, 'UTF-8')), 0, 200) . '..',
+						'manufacturer'     => $product_data['manufacturer'],
 						'name'     => $product['name'],
 						'model'    => $product['model'],
 						'option'   => $option_data,
@@ -587,7 +739,7 @@ class ModelCheckoutOrder extends Model {
 	
 				if ($comment && $notify) {
 					$text .= $language->get('text_new_instruction') . "\n\n";
-					$text .= $comment . "\n\n";
+					$text .= strip_tags($comment) . "\n\n";
 				}
 	
 				// Products
@@ -679,6 +831,48 @@ class ModelCheckoutOrder extends Model {
 	
 				// Admin Alert Mail
 				if (in_array('order', (array)$this->config->get('config_mail_alert'))) {
+					if(!empty($template->data)) {
+						$other_template_data = $template->data;
+					}
+
+					$this->load->model('extension/mail/template');
+
+					$template_load = array(
+						'key' => 'order.admin'
+					);
+
+					if (!empty($order_status_id)) {
+						$template_load['order_status_id'] = $order_status_id;
+					}
+
+					if (!empty($order_info['payment_method'])) {
+						$template_load['payment_method'] = $order_info['payment_method'];
+					}
+
+					if (!empty($order_info['language_id'])) {
+						$template_load['language_id'] = $order_info['language_id'];
+					}
+
+					$template = $this->model_extension_mail_template->load($template_load);
+
+					// Merge Data
+					foreach($other_template_data as $key => $val) {
+						if (!isset($template->data[$key])) {
+							$template->data[$key] = $val;
+						}
+					}
+
+					$language->load('extension/mail/template');
+
+					$template->data['text_sku'] = $language->get('text_sku');
+					$template->data['text_stock_quantity'] = $language->get('text_stock_quantity');
+					$template->data['text_backorder_quantity'] = $language->get('text_backorder_quantity');
+		
+					$template->data['order_link'] = (defined('HTTP_ADMIN') ? HTTP_ADMIN : HTTPS_SERVER.'admin/') . 'index.php?route=' . rawurlencode('sale/order/info') . '&order_id=' . $order_id;
+
+					if (!empty($order_info['weight'])) {
+						$template->data['order_weight'] = $this->weight->format($order_info['weight'], $this->config->get('config_weight_class_id'), $this->language->get('decimal_point'), $this->language->get('thousand_point'));
+					}
 					$subject = sprintf($language->get('text_new_subject'), html_entity_decode($this->config->get('config_name'), ENT_QUOTES, 'UTF-8'), $order_id);
 	
 					// HTML Mail
@@ -806,6 +1000,334 @@ class ModelCheckoutOrder extends Model {
 				}
 	
 				$message .= $language->get('text_update_footer');
+
+				$this->load->model('extension/mail/template');
+
+				$template_load = array(
+					'key' => 'order.update',
+					'order_status_id' => $order_status_id,
+					'store_id' => $order_info['store_id']
+				);
+
+				if (!empty($order_info['language_id'])) {
+					$template_load['language_id'] = $order_info['language_id'];
+				}
+
+				if (!empty($order_info['customer_id'])) {
+					$template_load['customer_id'] = $order_info['customer_id'];
+				}
+
+				if (!empty($order_info['customer_group_id'])) {
+					$template_load['customer_group_id'] = $order_info['customer_group_id'];
+				}
+				
+				if (!empty($this->request->post['emailtemplate_id'])) {
+					$template_load['emailtemplate_id'] = $this->request->post['emailtemplate_id'];
+				}
+
+				$template = $this->model_extension_mail_template->load($template_load);
+
+            	if (!empty($order_info['customer_group_id'])) {
+	            	$this->load->model('account/customer_group');
+					$template->data['customer_group'] = $this->model_account_customer_group->getCustomerGroup($order_info['customer_group_id']);
+	            }
+
+				if (!empty($order_info['affiliate_id'])) {
+	            	$this->load->model('affiliate/affiliate');
+					$template->data['affiliate'] = $this->model_affiliate_affiliate->getAffiliate($order_info['affiliate_id']);
+	            }
+
+				$template->addData($order_info);
+
+				$template->data['order_status_id'] = $order_status_id;
+
+				if ($order_status_query->num_rows) {
+					$template->data['order_status'] = $order_status_query->row['name'];
+				}
+
+				$template->data['date_added'] = date($language->get('date_format_short'), strtotime($order_info['date_added']));
+
+				if ($order_info['order_status_id'] != $order_status_id){
+					$template->data['prev_order_status_id'] = $order_info['order_status_id'];
+				}
+
+				$template->data['text_update_heading'] = sprintf($language->get('text_update_subject'), html_entity_decode($order_info['store_name'], ENT_QUOTES, 'UTF-8'), $order_id);
+
+				$template->data['comment'] = (trim(strip_tags($comment)) != '') ? $comment : '';
+
+				if ($order_info['comment']) {
+	            	$template->data['order_comment'] = str_replace(array("\r\n", "\r", "\n"), "<br />", $order_info['comment']);
+	            }
+
+	            if ($comment && $order_info['comment'] != $comment) {
+					$template->data['instruction'] = str_replace(array("\r\n", "\r", "\n"), "<br />", $comment);
+				} else {
+					$template->data['instruction'] = '';
+				}
+
+				if ($order_info['customer_id']) {
+					$template->data['order_url'] = $order_info['store_url'] . 'index.php?route=' . rawurlencode('account/order/info') . '&order_id=' . $order_id;
+				}
+
+				// Custom fields
+				if (!empty($order_info['custom_field']) || !empty($order_info['payment_custom_field'])) {
+					$this->load->model('account/custom_field');
+
+					if (!empty($order_info['customer_group_id'])) {
+						$customer_group_id = $order_info['customer_group_id'];
+					} else {
+						$customer_group_id = $this->config->get('config_customer_group_id');
+					}
+
+					$custom_fields = $this->model_account_custom_field->getCustomFields($customer_group_id);
+
+					foreach($custom_fields as $custom_field){
+						if (isset($order_info['payment_custom_field'][$custom_field['custom_field_id']])) {
+							$template->data['custom_field_' . $custom_field['custom_field_id'] . '_name'] = $custom_field['name'];
+							$template->data['custom_field_' . $custom_field['custom_field_id'] . '_value'] = $order_info['payment_custom_field'][$custom_field['custom_field_id']];
+						} elseif (isset($order_info['custom_field'][$custom_field['custom_field_id']])) {
+							$template->data['custom_field_' . $custom_field['custom_field_id'] . '_name'] = $custom_field['name'];
+							$template->data['custom_field_' . $custom_field['custom_field_id'] . '_value'] = $order_info['custom_field'][$custom_field['custom_field_id']];
+						}
+					}
+				}
+
+				// Address
+				if ($order_info['payment_address_format']) {
+					$format = $order_info['payment_address_format'];
+				} else {
+					$format = '{firstname} {lastname}' . "\n" . '{company}' . "\n" . '{address_1}' . "\n" . '{address_2}' . "\n" . '{city} {postcode}' . "\n" . '{zone}' . "\n" . '{country}';
+				}
+
+				$find = array(
+					'{firstname}',
+					'{lastname}',
+					'{company}',
+					'{address_1}',
+					'{address_2}',
+					'{city}',
+					'{postcode}',
+					'{zone}',
+					'{zone_code}',
+					'{country}'
+				);
+
+				$replace = array(
+					'firstname' => $order_info['payment_firstname'],
+					'lastname'  => $order_info['payment_lastname'],
+					'company'   => $order_info['payment_company'],
+					'address_1' => $order_info['payment_address_1'],
+					'address_2' => $order_info['payment_address_2'],
+					'city'      => $order_info['payment_city'],
+					'postcode'  => $order_info['payment_postcode'],
+					'zone'      => $order_info['payment_zone'],
+					'zone_code' => $order_info['payment_zone_code'],
+					'country'   => $order_info['payment_country']
+				);
+
+				$template->data['payment_address'] = str_replace(array("\r\n", "\r", "\n"), '<br />', preg_replace(array("/\s\s+/", "/\r\r+/", "/\n\n+/"), '<br />', trim(str_replace($find, $replace, $format))));
+
+				if ($order_info['shipping_address_format']) {
+					$format = $order_info['shipping_address_format'];
+				} else {
+					$format = '{firstname} {lastname}' . "\n" . '{company}' . "\n" . '{address_1}' . "\n" . '{address_2}' . "\n" . '{city} {postcode}' . "\n" . '{zone}' . "\n" . '{country}';
+				}
+
+				$find = array(
+					'{firstname}',
+					'{lastname}',
+					'{company}',
+					'{address_1}',
+					'{address_2}',
+					'{city}',
+					'{postcode}',
+					'{zone}',
+					'{zone_code}',
+					'{country}'
+				);
+
+				$replace = array(
+					'firstname' => $order_info['shipping_firstname'],
+					'lastname'  => $order_info['shipping_lastname'],
+					'company'   => $order_info['shipping_company'],
+					'address_1' => $order_info['shipping_address_1'],
+					'address_2' => $order_info['shipping_address_2'],
+					'city'      => $order_info['shipping_city'],
+					'postcode'  => $order_info['shipping_postcode'],
+					'zone'      => $order_info['shipping_zone'],
+					'zone_code' => $order_info['shipping_zone_code'],
+					'country'   => $order_info['shipping_country']
+				);
+
+				$template->data['shipping_address'] = str_replace(array("\r\n", "\r", "\n"), '<br />', preg_replace(array("/\s\s+/", "/\r\r+/", "/\n\n+/"), '<br />', trim(str_replace($find, $replace, $format))));
+
+				$template->data['order_subject_products'] = '';
+
+				$cond = "order_id = '" . (int)$order_id . "'";
+
+				if (isset($this->request->post['order_summary_products'])) {
+					$order_products = explode(',', $this->request->post['order_summary_products']);
+					foreach($order_products as $i => $product_id) {
+						$order_products[$i] = (int)$product_id;
+					}
+					$order_products = implode(',', $order_products);
+					$cond .= " AND product_id IN(" . $order_products . ")";
+				}
+
+				$order_product_query = $this->db->query("SELECT * FROM " . DB_PREFIX . "order_product WHERE " . $cond);
+
+				foreach ($order_product_query->rows as $order_product) {
+					$template->data['order_subject_products'] .= ($template->data['order_subject_products'] ? ', ' : '') . $order_product['name'];
+				}
+
+				$length = 32;
+
+    			if (strlen($template->data['order_subject_products']) > $length) {
+    				$template->data['order_subject_products'] = substr($template->data['order_subject_products'], 0, strrpos(substr($template->data['order_subject_products'], 0, $length), ' ')) . '...';
+				}
+
+				if (isset($this->request->post['order_summary']) && !empty($this->request->post['order_summary_products'])) {
+					$this->load->model('tool/image');
+		  			$this->load->model('tool/upload');
+					$this->load->model('catalog/product');
+
+					$order_voucher_query = $this->db->query("SELECT * FROM " . DB_PREFIX . "order_voucher WHERE order_id = '" . (int)$order_id . "'");
+
+					$order_total_query = $this->db->query("SELECT * FROM `" . DB_PREFIX . "order_total` WHERE order_id = '" . (int)$order_id . "' ORDER BY sort_order ASC");
+
+					$template->data['text_product'] = $language->get('text_new_product');
+					$template->data['text_model'] = $language->get('text_new_model');
+					$template->data['text_quantity'] = $language->get('text_new_quantity');
+					$template->data['text_price'] = $language->get('text_new_price');
+					$template->data['text_total'] = $language->get('text_new_total');
+
+			      	// Plain text
+					$message .= $language->get('text_new_products') . "\n";
+
+					foreach ($order_product_query->rows as $product) {
+						$message .= $product['quantity'] . 'x ' . $product['name'] . ' (' . $product['model'] . ') ' . html_entity_decode($this->currency->format($product['total'] + ($this->config->get('config_tax') ? ($product['tax'] * $product['quantity']) : 0), $order_info['currency_code'], $order_info['currency_value']), ENT_NOQUOTES, 'UTF-8') . "\n";
+
+						$order_option_query = $this->db->query("SELECT * FROM " . DB_PREFIX . "order_option WHERE order_id = '" . (int)$order_id . "' AND order_product_id = '" . $product['order_product_id'] . "'");
+
+						foreach ($order_option_query->rows as $option) {
+							if ($option['type'] != 'file') {
+								$value = $option['value'];
+							} else {
+								$upload_info = $this->model_tool_upload->getUploadByCode($option['value']);
+
+								if ($upload_info) {
+									$value = $upload_info['name'];
+								} else {
+									$value = '';
+								}
+							}
+
+							$message .= chr(9) . '-' . $option['name'] . ' ' . (utf8_strlen($value) > 20 ? utf8_substr($value, 0, 20) . '..' : $value) . "\n";
+						}
+					}
+
+					foreach ($order_voucher_query->rows as $voucher) {
+						$message .= '1x ' . $voucher['description'] . ' ' . $this->currency->format($voucher['amount'], $order_info['currency_code'], $order_info['currency_value']);
+					}
+
+					$message .= "\n";
+
+					$message .= $language->get('text_new_order_total') . "\n";
+
+					foreach ($order_total_query->rows as $total) {
+						$message .= $total['title'] . ': ' . html_entity_decode($this->currency->format($total['value'], $order_info['currency_code'], $order_info['currency_value']), ENT_NOQUOTES, 'UTF-8') . "\n";
+					}
+
+					// HTML
+					$template->data['products'] = array();
+
+					foreach ($order_product_query->rows as $product) {
+						$product_data = $this->model_catalog_product->getProduct($product['product_id']);
+						
+						$option_data = array();
+
+						$order_option_query = $this->db->query("SELECT oo.*, pov.* FROM " . DB_PREFIX . "order_option oo LEFT JOIN " . DB_PREFIX . "product_option_value pov ON (pov.product_option_value_id = oo.product_option_value_id) WHERE oo.order_id = '" . (int)$order_id . "' AND oo.order_product_id = '" . (int)$product['order_product_id'] . "'");
+
+						foreach ($order_option_query->rows as $option) {
+							if ($option['type'] != 'file') {
+								$value = $option['value'];
+							} else {
+								$upload_info = $this->model_tool_upload->getUploadByCode($option['value']);
+
+								if ($upload_info) {
+									$value = $upload_info['name'];
+								} else {
+									$value = '';
+								}
+							}
+							
+							if ((($this->config->get('config_customer_price') && $this->customer->isLogged()) || !$this->config->get('config_customer_price')) && (float)$option['price']) {
+								$price = $this->currency->format($this->tax->calculate($option['price'], $product_data['tax_class_id'], $this->config->get('config_tax') ? 'P' : false), $this->session->data['currency']);
+							} else {
+								$price = 0;
+							}
+
+							$option_data[] = array(
+								'name'  => $option['name'],
+								'price' => $price,
+								'price_prefix' => isset($option['price_prefix']) ? $option['price_prefix'] : '',
+								'value' => (utf8_strlen($value) > 120 ? utf8_substr($value, 0, 120) . '..' : $value)
+							);
+						}
+
+						if (isset($product_data['image'])) {
+							$image_width = isset($template->data['config']['order_products']['image_width']) ? $template->data['config']['order_products']['image_width']: 100;
+							$image_height = isset($template->data['config']['order_products']['image_height']) ? $template->data['config']['order_products']['image_height']: 100;
+							if ($image_width && $image_height) {
+								$image = $this->model_tool_image->resize($product_data['image'], $image_width, $image_height);
+							}
+						} else {
+							$image = '';
+						}
+
+						$url = $this->url->link('product/product', 'product_id='.$product['product_id'], true);
+
+						$template->data['products'][] = array(
+							'product_id'       => $product_data['product_id'],
+							'url'     		   => $url,
+							'image'     	   => $image,
+							'weight'		   => ($product_data['weight'] > 0) ? $this->weight->format($product_data['weight'], $product_data['weight_class_id']) : 0,
+							'description'      => utf8_substr(strip_tags(html_entity_decode($product_data['description'], ENT_QUOTES, 'UTF-8')), 0, 200) . '..',
+							'manufacturer'     => $product_data['manufacturer'],
+							'sku'              => $product_data['sku'],
+							'stock_status'     => $product_data['stock_status'],
+							'name'     => $product['name'],
+							'model'    => $product['model'],
+							'option'   => $option_data,
+							'quantity' => $product['quantity'],
+							'price'    => $this->currency->format($product['price'] + ($this->config->get('config_tax') ? $product['tax'] : 0), $order_info['currency_code'], $order_info['currency_value']),
+							'total'    => $this->currency->format($product['total'] + ($this->config->get('config_tax') ? ($product['tax'] * $product['quantity']) : 0), $order_info['currency_code'], $order_info['currency_value'])
+						);
+					}
+
+					$template->data['vouchers'] = array();
+
+					foreach ($order_voucher_query->rows as $voucher) {
+						$template->data['vouchers'][] = array(
+							'description' => $voucher['description'],
+							'amount'      => $this->currency->format($voucher['amount'], $order_info['currency_code'], $order_info['currency_value']),
+						);
+					}
+
+					foreach ($order_total_query->rows as $total) {
+						$template->data['totals'][] = array(
+							'title' => $total['title'],
+							'text'  => $this->currency->format($total['value'], $order_info['currency_code'], $order_info['currency_value']),
+						);
+					}
+				}
+
+				if (!empty($template->data['config']['order_products']['layout']) && file_exists($template->data['config']['template_dir'] . 'order_products/' . $template->data['config']['order_products']['layout'] . '.tpl')){
+					$template->data['order_products_file'] = 'order_products/' . $template->data['config']['order_products']['layout'] . '.tpl';
+				} else {
+					$template->data['order_products_file'] = 'order_products/default.tpl';
+				}
+				
 	
 				$mail = new Mail();
 				$mail->protocol = $this->config->get('config_mail_protocol');
@@ -821,7 +1343,34 @@ class ModelCheckoutOrder extends Model {
 				$mail->setSender(html_entity_decode($order_info['store_name'], ENT_QUOTES, 'UTF-8'));
 				$mail->setSubject(html_entity_decode($subject, ENT_QUOTES, 'UTF-8'));
 				$mail->setText($message);
-				$mail->send();
+				
+				$template->hook($mail);
+
+				if ($template->data['emailtemplate']['attach_invoice']) {
+					if (!$this->config->get('pdf_invoice')) {
+						trigger_error('Error: could not attach invoice! Install module \'opencart pdf order invoice\'');
+					} else {
+			    		$this->load->model('extension/module/pdf_invoice');
+
+			    		$pdf_invoice = $this->model_extension_module_pdf_invoice->getInvoice($order_info, true);
+
+			    		if ($pdf_invoice && file_exists($pdf_invoice)) {
+			    			$template->data['emailtemplate_invoice_pdf'] = $pdf_invoice;
+
+			    			$mail->addAttachment($pdf_invoice);
+			    		}
+		    		}
+		    	}
+
+		    	$mail->send();
+
+				$this->model_extension_mail_template->sent();
+
+				// Remove after send
+		    	if (isset($pdf_invoice) && file_exists($pdf_invoice)) {
+		    		unlink($pdf_invoice);
+		    	}
+		
 			}
 		}
 	}
