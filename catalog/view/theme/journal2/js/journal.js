@@ -814,13 +814,23 @@ if (Journal.isOC2) {
         if ($('.hide-cart .outofstock a[onclick="cart.add(\'' + product_id + '\');"]').length) {
             return false;
         }
+        var url  = '';
+        var data = ``;
 
         quantity = typeof(quantity) != 'undefined' ? quantity : 1;
 
+        if (quantity > 0) {
+            url  = 'index.php?route=checkout/cart/set';
+            data = `product_id=${product_id}&quantity=${quantity}&action=${type}`;
+        } else {
+            url  = 'index.php?route=checkout/cart/remove';
+            data = `key=${$(element).parent().data('cart-id')}`;
+        }
+
         $.ajax({
-            url: 'index.php?route=checkout/cart/set',
+            url: url,
             type: 'post',
-            data: 'product_id=' + product_id + '&quantity=' + quantity + '&action=' + type,
+            data: data,
             dataType: 'json',
             beforeSend: function() {
                 $('#cart > button > a > span').button('loading');
@@ -859,7 +869,9 @@ if (Journal.isOC2) {
                         var quantity = parseInt($(element).parent().find('input[name="quantity"]').val());
                         var currency = (json['currency'].toLowerCase() == "zar") ? "R" : json['currency'];
                         var newPrice = (price * quantity).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
-                        $(element).closest('tr').find('td.total').html(currency + ' ' + newPrice);
+                        if (!isNaN(price)) {
+                            $(element).closest('tr').find('td.total').html(currency + ' ' + newPrice);
+                        }
                     }
 
                     $('#cart ul').load('index.php?route=common/cart/info ul li');
@@ -1021,6 +1033,9 @@ function addToCart(product_id, quantity) {
 }
 
 Journal.addToCart = function (product_id, element) {
+    if ($(element).parent().hasClass('item__out-of-stock')) {
+        return false;
+    }
     var input    = $(element).parent().find('input[name="quantity"]');
     var quantity = (isNaN(input.val())) ? 1 : parseInt(input.val()) + 1;
     input.val(quantity);
@@ -1122,17 +1137,27 @@ $(document).on('keydown', 'input[name="quantity"]', function(e) {
 Journal.removeProductFromCart = function (product_id, element) {
     var input    = $(element).parent().find('input[name="quantity"]');
     var quantity = (isNaN(input.val())) ? 1 : parseInt(input.val()) - 1;
+    var url      = '';
+    var data     = ``;
     input.val(quantity);
 
     if (Journal.isOC2) {
         return cart.set(product_id, quantity, 'remove', element);
     }
 
+    if (quantity > 0) {
+        url  = 'index.php?route=checkout/cart/set';
+        data = `product_id=${product_id}&quantity=${quantity}&action=remove`;
+    } else {
+        url  = 'index.php?route=checkout/cart/remove';
+        data = `key=${product_id}`;
+    }
+
     // do AJAX call
     $.ajax({
-        url: 'index.php?route=checkout/cart/set',
+        url: url,
         type: 'post',
-        data: 'product_id=' + product_id + '&quantity=' + quantity + '&action=remove',
+        data: data,
         dataType: 'json',
         beforeSend: function() {
             $('#cart > button > a > span').button('loading');

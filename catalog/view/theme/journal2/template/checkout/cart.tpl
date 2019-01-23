@@ -101,6 +101,9 @@
                 <td class="text-left name searchable"><a href="<?php echo $product['href']; ?>"><?php echo $product['name']; ?></a>
                   <?php if (!$product['stock']) { ?>
                   <span class="text-danger">***</span>
+                  <span class="stock-alert">
+                    <i class="fa fa-exclamation-triangle"></i> This item is currently out of stock.
+                  </span>
                   <?php } ?>
                   <?php if ($product['option']) { ?>
                   <?php foreach ($product['option'] as $option) { ?>
@@ -118,11 +121,15 @@
                   <?php } ?></td>
                 <td class="text-left category searchable"><?php echo $product['category']; ?></td>
                 <td class="text-left model searchable"><?php echo $product['model']; ?></td>
-                <td class="text-center quantity">
-                  <span class="qty">
+                <td class="text-center quantity <?php echo (!$product['stock']) ? 'add_to_cart-disabled' : '' ?>">
+                  <span class="qty" data-cart-id="<?php echo $product[version_compare(VERSION, '2.1', '<') ? 'key' : 'cart_id']; ?>">
                     <a href="javascript:;" class="journal-stepper" onclick="Journal.removeProductFromCart(<?php echo $product['product_id']; ?>, this)">-</a>
-                    <input name="quantity" value="<?php echo $product['cart_qty'] ?>" size="10" data-min-value="0" id="quantity_<?php echo $product['product_id']; ?>" class="form-control product-info1" type="text" data-cart-qty="<?php echo $product['cart_qty'] ?>" data-product-id="<?php echo $product['product_id'] ?>">
+                    <input name="quantity" value="<?php echo $product['cart_qty'] ?>" size="10" data-min-value="0" id="quantity_<?php echo $product['product_id']; ?>" class="form-control product-info1" type="text" data-cart-qty="<?php echo $product['cart_qty'] ?>" data-product-id="<?php echo $product['product_id'] ?>" <?php echo (!$product['stock']) ? 'disabled' : '' ?>>
+                    <?php if (!$product['stock']) : ?>
+                    <a href="javascript:;" class="journal-stepper">+</a>
+                    <?php else : ?>
                     <a href="javascript:;" class="journal-stepper" onclick="Journal.addToCart(<?php echo $product['product_id']; ?>, this)">+</a>
+                    <?php endif; ?>
                   </span>
                 </td>
                 <td class="text-right price"><?php echo (!$this->config->get('config_hide_price')) ? $product['price'] : ''; ?></td>
