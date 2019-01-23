@@ -1,7 +1,7 @@
 <?php
 class ModelReportReturn extends Model {
 	public function getReturns($data = array()) {
-		$sql = "SELECT MIN(r.date_added) AS date_start, MAX(r.date_added) AS date_end, COUNT(r.return_id) AS `returns` FROM `" . DB_PREFIX . "return` r";
+		$sql = "SELECT r.order_id AS order_id, r.product_id AS product_id,  MIN(r.date_added) AS date_start, MAX(r.date_added) AS date_end, COUNT(r.return_id) AS `returns` FROM `" . DB_PREFIX . "return` r";
 
 		if (!empty($data['filter_return_status_id'])) {
 			$sql .= " WHERE r.return_status_id = '" . (int)$data['filter_return_status_id'] . "'";
@@ -50,9 +50,8 @@ class ModelReportReturn extends Model {
 
 			$sql .= " LIMIT " . (int)$data['start'] . "," . (int)$data['limit'];
 		}
-
+        
 		$query = $this->db->query($sql);
-
 		return $query->rows;
 	}
 

@@ -1,0 +1,126 @@
+.p-l-0 { padding-left: 0 !important; }
+.p-l-13 { padding-left: 13px !important; }
+.p-r-0 { padding-right: 0 !important; }
+
+.m-t-15 { margin-top: 15px !important; }
+.m-t-25 { margin-top: 25px !important; }
+
+.m-b-15 { margin-bottom: 15px !important; }
+.m-b-20 { margin-bottom: 20px !important; }
+.m-b-25 { margin-bottom: 25px !important; }
+
+/* filters */
+.row.filters label {
+    padding-top: 8px;
+}
+
+/* datatables */
+.table-bordered > thead > tr > th {
+    border-bottom: 2px solid #ddd;
+}
+table.dataTable.no-footer {
+    border-bottom: none;
+    margin-left: 0 !important;
+}
+
+.table-bordered > thead > tr > th:first-child,
+.table-bordered > tbody > tr > td:first-child {
+    border-left: none;
+}
+.table-bordered > thead > tr > th,
+.table-bordered > tbody > tr > td {
+    border-right: none;
+    padding: 10px;
+}
+.dataTables_wrapper .dataTables_length, 
+.dataTables_wrapper .dataTables_filter, 
+.dataTables_wrapper .dataTables_info, 
+.dataTables_wrapper .dataTables_processing, 
+.dataTables_wrapper .dataTables_paginate {
+    color: #91969a;
+}
+
+/********************************************************
+ *  DataTable file export buttons
+ ********************************************************/
+
+ #export-buttons > .dt-buttons {
+    position: relative;
+    display: -webkit-inline-box;
+    display: -ms-inline-flexbox;
+    display: inline-flex;
+    vertical-align: middle;
+  }
+  #export-buttons > .dt-buttons > .dt-button {
+    background: #fff;
+    border-color: #ccc;
+    color: #333;
+    margin: 0 -1px 0 0;
+    padding: 8px 13px;
+    border-radius: 0;
+    font-size: 12px;
+  }
+  #export-buttons > .dt-buttons > .dt-button:hover,
+  #export-buttons > .dt-buttons > .dt-button:focus,
+  #export-buttons > .dt-buttons > .dt-button:active {
+    background: rgba(33, 33, 33, 0.1);
+    border-color: transparent;
+  }
+  #export-buttons > .dt-buttons > .dt-button.buttons-print {
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+  }
+  #export-buttons > .dt-buttons > .dt-button.buttons-colvis {
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+    position: relative;
+  }
+  #export-buttons .dt-button-collection[role="menu"] {
+    position: absolute;
+    z-index: 999;
+    top: 51.5px;
+    width: 119px;
+    border: 1px solid #ddd;
+    background: #fff;
+  }
+
+  #export-buttons .dt-button-collection[role="menu"] > .dt-button.buttons-columnVisibility {
+    display: block;
+    width: 100%;
+    border: none;
+    text-align: left;
+    padding: 8px 13px;
+    opacity: .7;
+  }
+  #export-buttons .dt-button-collection[role="menu"] > .dt-button.buttons-columnVisibility:before {
+    content: "\25AA";
+    padding-right: 8px;
+  }
+  #export-buttons .dt-button-collection[role="menu"] > .dt-button.buttons-columnVisibility.active {
+    background: transparent;
+    opacity: 1;
+  }
+  #export-buttons .dt-button-collection[role="menu"] > .dt-button.buttons-columnVisibility.active:before {
+    color: red;
+  }
+
+/* date range picker */
+.report-range-picker {
+    cursor: pointer;
+    display: block;
+    width: 100%;
+    height: 35px;
+    padding: 8px 13px;
+    font-size: 12px;
+    line-height: 1.42857;
+    color: #555;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+    -webkit-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+    -o-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+    transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+}
