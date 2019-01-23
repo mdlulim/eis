@@ -643,6 +643,24 @@ class ControllerCustomerCustomer extends Controller {
 			// customer activity [ wholesale ]
 			if (!empty($result['customer_activity'])) {
 				$wholesale_activity = ($result['key'] == 'customer_invitation') ? 'Invited' : '';
+				switch ($result['key']) {
+					case 'customer_invitation':
+						$wholesale_activity = 'Invited';
+						break;
+
+					case 'login':
+						$activity = json_decode($result['customer_activity'], true);
+						if (!empty($activity['timestamp'])) {
+							$wholesale_activity = '<strong>Last login</strong> ' . relativeTime($activity['timestamp']);
+						} else {
+							$wholesale_activity = ($result['invited'] == 1) ? 'Invited' : '';
+						}
+						break;
+					
+					default:
+						$wholesale_activity = ($result['invited'] == 1) ? 'Invited' : '';
+						break;
+				}
 			} else {
 				$wholesale_activity = ($result['invited'] == 1) ? 'Invited' : 'Not Invited';
 			}
