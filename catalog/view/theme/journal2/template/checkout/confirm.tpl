@@ -24,8 +24,8 @@
           <?php } ?></td>
         <td class="text-left model"><?php echo $product['model']; ?></td>
         <td class="text-right quantity"><?php echo $product['quantity']; ?></td>
-        <td class="text-right price"><?php echo $product['price']; ?></td>
-        <td class="text-right total"><?php echo $product['total']; ?></td>
+        <td class="text-right price"><?php echo (!$this->config->get('config_hide_price')) ? $product['price'] : ''; ?></td>
+        <td class="text-right total"><?php echo (!$this->config->get('config_hide_price')) ? $product['total'] : ''; ?></td>
       </tr>
       <?php } ?>
       <?php foreach ($vouchers as $voucher) { ?>
@@ -38,6 +38,7 @@
       </tr>
       <?php } ?>
     </tbody>
+    <?php if (!$this->config->get('config_hide_price')) { ?>
     <tfoot>
       <?php foreach ($totals as $total) { ?>
       <tr>
@@ -46,6 +47,7 @@
       </tr>
       <?php } ?>
     </tfoot>
+    <?php } ?>
   </table>
 </div>
 <?php echo str_replace("btn btn-primary", "btn btn-primary button", $payment); ?>

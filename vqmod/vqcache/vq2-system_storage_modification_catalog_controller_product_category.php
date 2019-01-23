@@ -310,6 +310,8 @@ class ControllerProductCategory extends Controller {
 					'thumb'       => $image,
 
                 'thumb2'       => $image2,
+				'quantity' => $result['quantity'],
+				'stock_status_id' => $result['stock_status_id'],
             
 
                 'labels'        => $this->model_journal2_product->getLabels($result['product_id']),
