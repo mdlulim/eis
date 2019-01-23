@@ -3,7 +3,80 @@ class ControllerReportProductViewed extends Controller {
 	public function index() {
 		$this->load->language('report/product_viewed');
 
+		/*==================================
+		=       Add Files (Includes)       =
+		==================================*/
+
+		# stylesheets (CSS) files
+		$this->document->addStyle('view/javascript/datatables/datatables.min.css');
+		$this->document->addStyle('view/javascript/bootstrap-sweetalert/sweetalert.css');
+		$this->document->addStyle('view/javascript/daterangepicker/daterangepicker.min.css');
+		$this->document->addStyle('view/javascript/bootstrap-select/bootstrap-select.min.css');
+		$this->document->addStyle('view/stylesheet/report.css');
+
+		# javascript (JS) files
+		$this->document->addScript('view/javascript/datatables/datatables.min.js');
+		$this->document->addScript('view/javascript/datatables/buttons/datatables.buttons.min.js');
+		$this->document->addScript('view/javascript/datatables/buttons/buttons.flash.min.js');
+		$this->document->addScript('view/javascript/datatables/buttons/buttons.print.min.js');
+		$this->document->addScript('view/javascript/datatables/buttons/buttons.colVis.min.js');
+		$this->document->addScript('view/javascript/jszip/jszip.min.js');
+		$this->document->addScript('view/javascript/pdfmake/pdfmake.min.js');
+		$this->document->addScript('view/javascript/pdfmake/vfs_fonts.js');
+		$this->document->addScript('view/javascript/datatables/buttons/buttons.html5.min.js');
+
+		$this->document->addScript('view/javascript/bootstrap-sweetalert/sweetalert.min.js');
+		$this->document->addScript('view/javascript/bootstrap-sweetalert/sweetalert-data.js');
+		$this->document->addScript('view/javascript/moment/moment.min.js');
+		$this->document->addScript('view/javascript/daterangepicker/daterangepicker.min.js');
+		$this->document->addScript('view/javascript/bootstrap-select/bootstrap-select.min.js');
+		$this->document->addScript('view/javascript/report/product_viewed.js');
+
+		/*=====  End of Add Files (Includes)  ======*/
+
 		$this->document->setTitle($this->language->get('heading_title'));
+		$filter = false;
+		
+		/*******************************************
+		 * Filters
+		 *******************************************/
+		$filter = false;
+        
+		// return DATE FROM filter
+		if (isset($this->request->get['filter_date_start'])) {
+			$data['filter_date_start'] = $this->request->get['filter_date_start'];
+			$url                      .= '&filter_date_start=' . $data['filter_date_start'];
+			$filter                    = true;
+		} else {
+			$data['filter_date_start'] = '';
+		}
+		
+		// Order DATE TO filter
+		if (isset($this->request->get['filter_date_end'])) {
+			$data['filter_date_end'] = $this->request->get['filter_date_end'];
+			$url                    .= '&filter_date_end=' . $data['filter_date_end'];
+			$filter                  = true;
+		} else {
+			$data['filter_date_end'] = '';
+		}
+		// return Product Name filter
+		if (isset($this->request->get['filter_product_id'])) {
+			$data['filter_product_id'] = $this->request->get['filter_product_id'];
+			$url                      .= '&filter_product_id=' . $data['filter_product_id'];
+			$filter                    = true;
+		} else {
+			$data['filter_product_id'] = '';
+		}
+		
+		// return Model filter
+		if (isset($this->request->get['filter_model'])) {
+			$data['filter_model'] = $this->request->get['filter_model'];
+			$url                      .= '&filter_model=' . $data['filter_model'];
+			$filter                    = true;
+		} else {
+			$data['filter_model'] = '';
+		}
+
 
 		if (isset($this->request->get['page'])) {
 			$page = $this->request->get['page'];
@@ -11,31 +84,31 @@ class ControllerReportProductViewed extends Controller {
 			$page = 1;
 		}
 		
-		if (isset($this->request->get['filter_product_id'])) {
-			$filter_product_id = $this->request->get['filter_product_id'];
-		} else {
-			$filter_product_id = null;
-		}
+		// if (isset($this->request->get['filter_product_id'])) {
+		// 	$filter_product_id = $this->request->get['filter_product_id'];
+		// } else {
+		// 	$filter_product_id = null;
+		// }
 		
-		if (isset($this->request->get['filter_model'])) {
-			$filter_model = $this->request->get['filter_model'];
-		} else {
-			$filter_model = null;
-		}
+		// if (isset($this->request->get['filter_model'])) {
+		// 	$filter_model = $this->request->get['filter_model'];
+		// } else {
+		// 	$filter_model = null;
+		// }
 		
-		$url = '';
+		// $url = '';
 		
-		if (isset($this->request->get['filter_product_id'])) {
-			$url .= '&filter_product_id=' . $this->request->get['filter_product_id'];
-		}
+		// if (isset($this->request->get['filter_product_id'])) {
+		// 	$url .= '&filter_product_id=' . $this->request->get['filter_product_id'];
+		// }
 		
-		if (isset($this->request->get['filter_model'])) {
-			$url .= '&filter_model=' . urlencode(html_entity_decode($this->request->get['filter_model'], ENT_QUOTES, 'UTF-8'));
-		}
+		// if (isset($this->request->get['filter_model'])) {
+		// 	$url .= '&filter_model=' . urlencode(html_entity_decode($this->request->get['filter_model'], ENT_QUOTES, 'UTF-8'));
+		// }
 		
-		if (isset($this->request->get['page'])) {
-			$url .= '&page=' . $this->request->get['page'];
-		}
+		// if (isset($this->request->get['page'])) {
+		// 	$url .= '&page=' . $this->request->get['page'];
+		// }
 
 		$data['breadcrumbs'] = array();
 
@@ -51,37 +124,44 @@ class ControllerReportProductViewed extends Controller {
 
 		$this->load->model('report/product');
 
-		$filter_data = array(
-			'filter_product_id'       => $filter_product_id,
-			'filter_model'            => $filter_model,
-			'start' => ($page - 1) * $this->config->get('config_limit_admin'),
-			'limit' => $this->config->get('config_limit_admin')
-		);
 
 		$data['products'] = array();
-
-		$product_viewed_total = $this->model_report_product->getTotalProductViews();
-
-		$product_total = $this->model_report_product->getTotalProductsViewed($filter_data);
-
-		$results = $this->model_report_product->getProductsViewed($filter_data);
-
-		foreach ($results as $result) {
-			if ($result['viewed']) {
-				$percent = round($result['viewed'] / $product_viewed_total * 100, 2);
-			} else {
-				$percent = 0;
-			}
-
-			$data['products'][] = array(
-				'name'    => $result['name'],
-				'model'   => $result['model'],
-				'viewed'  => $result['viewed'],
-				'percent' => $percent . '%'
+		$data['results'] = false;
+        
+		if ($filter) {
+			$data['results'] = true;
+			$filter_data = array(
+				'filter_date_start'	      => date('Y-m-d', strtotime($data['filter_date_start'])),
+				'filter_date_end'	      => date('Y-m-d', strtotime($data['filter_date_end'])),
+				'filter_product_id'       => $data['filter_order_status'],
+				'filter_model'            => $data['filter_order_status'],
+				'start' => ($page - 1) * $this->config->get('config_limit_admin'),
+				'limit' => $this->config->get('config_limit_admin')
 			);
+
+			$product_viewed_total = $this->model_report_product->getTotalProductViews();
+			$product_total = $this->model_report_product->getTotalProductsViewed($product_viewed);
+			$results = $this->model_report_product->getProductsViewed($filter_data);
+
+			foreach ($results as $result) {
+				if ($result['viewed']) {
+					$percent = round($result['viewed'] / $product_viewed_total * 100, 2);
+				} else {
+					$percent = 0;
+				}
+	
+				$data['products'][] = array(
+					'name'    => $result['name'],
+					'model'   => $result['model'],
+					'viewed'  => $result['viewed'],
+					'percent' => $percent . '%'
+				);
+			}
 		}
 		
+		
 		$this->load->model('catalog/product');
+		$data['filter'] = $filter;
 		$data['Dorpdownproducts'] = $this->model_catalog_product->getProducts();
 		$data['dropdownmodels'] = $this->model_catalog_product->getProductsModel();
 
@@ -150,7 +230,7 @@ class ControllerReportProductViewed extends Controller {
 		$data['column_left'] = $this->load->controller('common/column_left');
 		$data['footer'] = $this->load->controller('common/footer');
 
-		$this->response->setOutput($this->load->view('report/product_viewed', $data));
+		$this->response->setOutput($this->load->view('report/product_viewed_new', $data));
 	}
 
 	public function reset() {
@@ -166,6 +246,6 @@ class ControllerReportProductViewed extends Controller {
 			$this->session->data['success'] = $this->language->get('text_success');
 		}
 
-		$this->response->redirect($this->url->link('report/product_viewed', 'token=' . $this->session->data['token'], true));
+		$this->response->redirect($this->url->link('report/product_viewed_new', 'token=' . $this->session->data['token'], true));
 	}
 }

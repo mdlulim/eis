@@ -30,7 +30,7 @@ class ControllerReportSaleOrder extends Controller {
 		$this->document->addScript('view/javascript/moment/moment.min.js');
 		$this->document->addScript('view/javascript/daterangepicker/daterangepicker.min.js');
 		$this->document->addScript('view/javascript/bootstrap-select/bootstrap-select.min.js');
-		$this->document->addScript('view/javascript/report.js');
+		$this->document->addScript('view/javascript/report/sale_order.js');
 
 		/*=====  End of Add Files (Includes)  ======*/
 

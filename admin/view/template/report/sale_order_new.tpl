@@ -2,7 +2,7 @@
 <div id="content" data-token="<?php echo $token; ?>">
   <div class="page-header">
     <div class="container-fluid">
-      <h1><?php echo $heading_title; ?></h1>
+      <h1> <?php echo $heading_title; ?></h1>
       <ul class="breadcrumb">
         <?php foreach ($breadcrumbs as $breadcrumb) { ?>
         <li><a href="<?php echo $breadcrumb['href']; ?>"><?php echo $breadcrumb['text']; ?></a></li>
@@ -20,29 +20,14 @@
         	<h3 style="margin-bottom:0">Filters</h3>
             <hr style="margin-top:15px">
             <div class="row filters">
-                <div class="col-sm-4">
-                    <div class="row">
-                        <label class="col-md-4 col-xs-3 text-right">Order Date Range</label>
-                        <div class="col-md-8 col-xs-9 p-l-0">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="control-label">Order Date Range</label>
+                        <div class="col-md-12 col-xs-9 p-l-0">
                             <div id="reportrange" class="report-range-picker">
                                 <i class="fa fa-calendar"></i>&nbsp;
                                 <span></span> &nbsp;<i class="fa fa-caret-down"></i>
                             </div>
-                        </div>
-                    </div>
-                    <div class="row m-t-15">
-                        <label class="col-md-4 col-xs-3 text-right">Order Status</label>
-                        <div class="col-md-8 col-xs-9 p-l-0">
-                            <select id="input-status" name="filter_order_status_id" class="selectpicker form-control" data-live-search="true">
-                                <option value="">All</option>
-                                <?php foreach ($order_statuses as $order_status) { ?>
-                                <?php if ($order_status['order_status_id'] == $filter_order_status) { ?>
-                                <option value="<?php echo $order_status['order_status_id']; ?>" selected="selected"><?php echo $order_status['name']; ?></option>
-                                <?php } else { ?>
-                                <option value="<?php echo $order_status['order_status_id']; ?>"><?php echo $order_status['name']; ?></option>
-                                <?php } ?>
-                                <?php } ?>
-                            </select>
                         </div>
                     </div>
                 </div>
@@ -83,19 +68,6 @@
                                 <?php if (!empty($payment_methods)) : ?>
                                 <?php foreach ($payment_methods as $payment_method) : ?>
                                 <option value="<?=$payment_method['code']?>" <?=($payment_method['code']===$filter_payment_method) ? "selected" : ""?>><?=$payment_method['name']?></option>
-                                <?php endforeach; ?>
-                                <?php endif; ?>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="row m-t-15">
-                        <label class="col-md-4 col-xs-3 text-right">Shipping Method</label>
-                        <div class="col-md-8 col-xs-9 p-l-0">
-                            <select name="filter_shipping_method" class="form-control">
-                                <option value="">All</option>
-                                <?php if (!empty($shipping_methods)) : ?>
-                                <?php foreach ($shipping_methods as $shipping_method) : ?>
-                                <option value="<?=$shipping_method['code']?>" <?=($shipping_method['code']===$filter_shipping_method) ? "selected" : ""?>><?=$shipping_method['name']?></option>
                                 <?php endforeach; ?>
                                 <?php endif; ?>
                             </select>
