@@ -46,7 +46,7 @@ class ModelCatalogProduct extends Model {
 				}
 			}
 		}
-		
+
 		if (isset($data['product_option'])) {
 			foreach ($data['product_option'] as $product_option) {
 				if ($product_option['type'] == 'select' || $product_option['type'] == 'radio' || $product_option['type'] == 'checkbox' || $product_option['type'] == 'image') {
@@ -190,6 +190,8 @@ class ModelCatalogProduct extends Model {
 	}
 
 	public function assignProductToCustomerGroup($product_id, $data){
+		//var_dump($product_id);
+		//var_dump($data);die;
 		// custom price
 		$this->db->query("DELETE FROM " . DB_PREFIX . "product_to_customer_group WHERE product_id = '" . (int)$product_id . "'");
 
