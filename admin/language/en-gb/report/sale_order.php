@@ -3,6 +3,7 @@
 $_['heading_title']     = 'Sales Report';
 $_['report_heading_title'] = 'Sales Report';
 // Text
+$_['text_report_title'] = 'Sales/Orders List';    
 $_['text_list']         = 'Sales List';
 $_['text_year']         = 'Years';
 $_['text_month']        = 'Months';
