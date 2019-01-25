@@ -66,6 +66,20 @@ class ModelCatalogCategory extends Model {
 		$sql = "UPDATE " . DB_PREFIX . "category SET status =" .$status. ", date_modified ='".$dateModified."'  WHERE category_id = " . (int)$product_id;
 		$this->db->query($sql);
 	}
+	
+	public function assignCategoryToCustomerGroup($category_id, $data){
+		// Assign category to customer group
+		$this->db->query("DELETE FROM " . DB_PREFIX . "category_to_customer_group WHERE category_id = '" . (int)$category_id . "'");
+		
+                if (isset($data['customer_group'])) {
+			     foreach ($data['customer_group'] as $customer_group_id) {
+				    
+					$this->db->query("DELETE FROM " . DB_PREFIX . "category_to_customer_group WHERE category_id = '" . (int)$category_id . "' and customer_group_id = '" . (int)$customer_group_id . "'");
+					
+					$this->db->query("INSERT INTO " . DB_PREFIX . "category_to_customer_group SET category_id = '" . (int)$category_id . "', customer_group_id = '" . (int)$customer_group_id. "'");
+			     }
+		        }
+	}
 
 	public function editCategory($category_id, $data) {
 		$this->db->query("UPDATE " . DB_PREFIX . "category SET parent_id = '" . (int)$data['parent_id'] . "', `top` = '" . (isset($data['top']) ? (int)$data['top'] : 0) . "', `column` = '" . (int)$data['column'] . "', sort_order = '" . (int)$data['sort_order'] . "', status = '" . (int)$data['status'] . "', date_modified = NOW() WHERE category_id = '" . (int)$category_id . "'");

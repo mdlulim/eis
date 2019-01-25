@@ -406,8 +406,46 @@ input[type="radio"]:checked,
     font-weight: bold;
 }
 
+
+/*********************************************************
+ * START : Media Queries
+ *********************************************************/
+
 @media (min-width: 768px) {
     .modal-dialog {
         width: 700px;
+    }
+    .lm-filters label {
+        display: inline-block;
+        min-width: 65px;
+        text-align: right;
+    }
+}
+
+@media (min-width: 992px) {
+    .lm-filters label {
+        text-align: left;
+    }
+    .lm-filters .form-control {
+        min-width: 230px;
+    }
+    #lmf-customer {
+        min-width: 196px;
+        width: 213px;
+    }
+}
+
+@media (min-width: 1068px) {
+    .lm-filters .form-control {
+        min-width: 255px;
+    }
+    #lmf-customer {
+        min-width: 230px;
+    }
+}
+
+@media (min-width: 1334px) {
+    #lmf-customer {
+        min-width: 255px;
     }
 }

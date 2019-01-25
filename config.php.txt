@@ -1,3 +1,4 @@
+
 <?php
 define('HTTP_SERVER', 'http://localhost/boothsbs/');
 define('HTTPS_SERVER', 'http://localhost/boothsbs/');

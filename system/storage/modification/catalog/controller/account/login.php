@@ -81,7 +81,8 @@ class ControllerAccountLogin extends Controller {
 
 				$activity_data = array(
 					'customer_id' => $this->customer->getId(),
-					'name'        => $this->customer->getFirstName() . ' ' . $this->customer->getLastName()
+					'name'        => $this->customer->getFirstName() . ' ' . $this->customer->getLastName(),
+					'timestamp'   => date('U')
 				);
 
 				$this->model_account_activity->addActivity('login', $activity_data);
@@ -91,9 +92,7 @@ class ControllerAccountLogin extends Controller {
 			if (isset($this->request->post['redirect']) && $this->request->post['redirect'] != $this->url->link('account/logout', '', true) && (strpos($this->request->post['redirect'], $this->config->get('config_url')) !== false || strpos($this->request->post['redirect'], $this->config->get('config_ssl')) !== false)) {
 				$this->response->redirect($this->url->link('common/home', '', true));
 			} else {
-				$customerInfo = $this->model_account_customer->getCustomer($this->customer->getId());
-				$url          = (isset($customerInfo['prompt_change_password']) && $customerInfo['prompt_change_password'] == 1) ? '&change_password=1' : '';
-				$this->response->redirect($this->url->link('account/account', $url, true));
+				$this->response->redirect($this->url->link('common/home', '', true));
 			}
 		}
 

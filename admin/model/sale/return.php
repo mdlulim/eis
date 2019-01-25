@@ -15,9 +15,23 @@ class ModelSaleReturn extends Model {
 		$this->db->query("DELETE FROM " . DB_PREFIX . "return_history WHERE return_id = '" . (int)$return_id . "'");
 	}
 
+	public function checkOrderExist($order_id, $customer_id){
+		$status_id = 5;
+		$flag = 0; // there is no order with a selected customer
+		$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "order WHERE order_id = '".$order_id."' AND customer_id = '".$customer_id."' ");
+		if($query->row['order_id']){
+		
+			if($query->row['order_status_id'] == 5){ 
+				$flag = 1; //order status is confirmed
+			}else{
+				$flag = 2; //order status is not confirmed
+			}
+		}
+		return $flag;	
+	}
+
 	public function getReturn($return_id) {
 		$query = $this->db->query("SELECT DISTINCT *, (SELECT CONCAT(c.firstname, ' ', c.lastname) FROM " . DB_PREFIX . "customer c WHERE c.customer_id = r.customer_id) AS customer FROM `" . DB_PREFIX . "return` r WHERE r.return_id = '" . (int)$return_id . "'");
-
 		return $query->row;
 	}
 

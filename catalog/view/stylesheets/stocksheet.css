@@ -1,0 +1,372 @@
+/********************************************************
+ *  DataTables
+ ********************************************************/
+
+ .datatable-custom-filters {
+    margin: 15px 0 20px; 
+  }
+  .datatable-custom-filters input.form-control {
+    border: 1px solid rgba(33, 33, 33, 0.12);
+    border-radius: 0;
+    background-color: #fff;
+    box-shadow: none;
+    min-width: 300px;
+    color: #212121;
+    height: 42px; 
+  }
+  .datatable-custom-filters button.btn {
+    border-radius: 0px;
+    padding: 11px 25px 12px !important; 
+    background-color: rgb(56,56,56);
+  }
+  .datatable-custom-filters button.btn.dropdown-toggle {
+    background: gainsboro;
+    border: solid 1px gainsboro;
+    border-radius: 0px;
+    color: #212121;
+    z-index: 2;
+    margin-left: -4px; 
+  }
+  .caret {
+    display: inline-block;
+    width: 0;
+    height: 0;
+    margin-left: 2px;
+    vertical-align: middle;
+    border-top: 4px dashed;
+    border-top: 4px solid\9;
+    border-right: 4px solid transparent;
+    border-left: 4px solid transparent; 
+  }  
+  /* .datatable-custom-filters .input-group-btn {
+    width: 165px;
+  } */
+  .datatable-custom-filters .dropdown-menu {
+    position: absolute !important;
+    top: 100%;
+    left: 0;
+    z-index: 1000;
+    display: none;
+    float: left;
+    min-width: 160px;
+    padding: 5px 0;
+    margin: 2px 0 0;
+    font-size: 14px;
+    text-align: left;
+    list-style: none;
+    background-color: #fff;
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
+    border: 1px solid #ccc;
+    border: 1px solid rgba(0,0,0,.15);
+    border-radius: 4px;
+    -webkit-box-shadow: 0 6px 12px rgba(0,0,0,.175);
+    box-shadow: 0 6px 12px rgba(0,0,0,.175); 
+  }
+  .datatable-custom-filters .dropdown-menu-right {
+    right: 0;
+    left: auto; 
+    margin: 0 !important;
+  }
+  .dropdown-menu {
+    border-radius: 2px;
+    border: none;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.175); 
+  }
+  .input-group-btn.open .dropdown-menu {
+    display: block;
+  }
+
+  .wishlist-info table {
+    font-size: 13px;
+  }
+
+  .wishlist-info table > thead > tr > td,
+  .wishlist-info table > thead > tr > th {
+    background-color: #fff;
+    color: rgb(70, 71, 73);
+    text-transform: uppercase; 
+    border-bottom: 2px solid rgba(33, 33, 33, 0.1);
+    padding: 10px;
+    line-height: inherit !important;
+  }
+  .wishlist-info table > tbody > tr > td.action { text-align: right; }
+
+  .btn-remove {
+    color: red;
+  }
+  .btn-remove,
+  .btn-addtocart {
+    border: solid 1px;
+    padding: 4px 6px;
+    border-radius: 5px;
+  }
+  .btn-remove { padding: 4px 10px; }
+
+/********************************************************
+ *  DataTable pagination
+ ********************************************************/
+
+ .dataTables_wrapper .dataTables_info {
+    margin-top: 15px;
+  }
+  .dataTables_wrapper .dataTables_paginate {
+    border: 1px solid rgba(33, 33, 33, 0.1);
+    border-radius: .25rem;
+    padding: 0;
+    margin: 10px 0 0 0;
+    font-size: 13px;
+    font-weight: 600;
+  }
+  .dataTables_wrapper .dataTables_paginate .paginate_button {
+    padding: 0.65em 1.2em;
+    margin: 0;
+    border-radius: 0;
+  }
+  .dataTables_wrapper .dataTables_paginate .paginate_button.disabled, 
+  .dataTables_wrapper .dataTables_paginate .paginate_button.disabled:hover, 
+  .dataTables_wrapper .dataTables_paginate .paginate_button.disabled:active {
+    color: #999 !important;
+  }
+  .dataTables_wrapper .dataTables_paginate .paginate_button.current, 
+  .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover,
+  .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+    background: rgb(56,56,56);
+    border: none;
+    color: #fff !important;
+    margin: 0;
+    border: 1px solid transparent;
+  }
+  .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+    background: transparent;
+    color: rgb(56,56,56) !important;
+  }
+
+  /********************************************************
+   *  DataTable file export buttons
+   ********************************************************/
+  
+  #export-buttons .dt-buttons {
+    position: relative;
+    display: -webkit-inline-box;
+    display: -ms-inline-flexbox;
+    display: inline-flex;
+    vertical-align: middle;
+  }
+  #export-buttons .dt-buttons .dt-button {
+    background: #fff;
+    border-color: rgba(33, 33, 33, 0.1);
+    margin: 0 -1px 0 0;
+    padding: 0.7em 1.2em;
+    border-radius: 0;
+    font-size: 13px;
+  }
+  #export-buttons .dt-buttons .dt-button:hover,
+  #export-buttons .dt-buttons .dt-button:focus,
+  #export-buttons .dt-buttons .dt-button:active {
+    background: rgba(33, 33, 33, 0.1);
+    border-color: transparent;
+  }
+  #export-buttons .dt-button.buttons-copy {
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+  }
+  #export-buttons .dt-button.buttons-pdf {
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+  }
+
+/********************************************************
+ *  Import to cart
+ ********************************************************/
+
+ .heading-title .btn {
+   margin: 8px;
+   background-color: #fff;
+   color: initial;
+   padding: 2px 10px;
+   font-size: 13px; 
+ }
+ .heading-title .btn:not('.disabled'):active,
+ .heading-title .btn:not('.disabled'):focus,
+ .heading-title .btn:not('.disabled'):hover {
+   color: rgb(70, 130, 180); 
+ }
+ .heading-title .btn > i:before {
+   color: initial !important;
+   content: "\f019";
+   font-family: 'FontAwesome';
+   position: relative;
+   font-style: normal;
+   font-variant: normal;
+   font-weight: normal;
+   color: inherit;
+   font-size: inherit;
+   display: inline-block;
+   -moz-osx-font-smoothing: grayscale;
+   -webkit-font-smoothing: antialiased;
+ }
+ .heading-title a.btn > i:before {
+   content: "\f01e";
+ }
+ .heading-title .btn.disabled {
+   color: #999;
+   cursor: not-allowed; 
+ }
+ .heading-title form {
+     float: right;
+ }
+
+ /********************************************************
+  *  Cart import [custom] modal
+  ********************************************************/
+ 
+  #modalImportStocksheet .modal-body .steps {
+   position: relative;
+   display: block;
+   width: 100%;
+ }
+ #modalImportStocksheet .modal-body .steps > ul {
+   display: table;
+   width: 100%;
+   table-layout: fixed;
+   margin: 0;
+   padding: 0;
+   list-style: none;
+ }
+ #modalImportStocksheet .modal-body .steps > ul > li {
+   display: table-cell;
+   width: auto;
+   vertical-align: top;
+   text-align: center;
+   position: relative;
+   float: none;
+ }
+ #modalImportStocksheet .modal-body .steps > ul > li:after, 
+ #modalImportStocksheet .modal-body .steps > ul > li:before {
+   content: '';
+   z-index: 9;
+   display: block;
+   position: absolute;
+ }
+ #modalImportStocksheet .modal-body .steps > ul > li:after {
+   right: 0;
+ }
+ #modalImportStocksheet .modal-body .steps > ul > li:after, 
+ #modalImportStocksheet .modal-body .steps > ul > li:before {
+   top: 45px;
+   width: 50%;
+   height: 3px;
+   background-color: rgb(56,56,56);
+ }
+ #modalImportStocksheet .modal-body .steps > ul > li.current:after, 
+ #modalImportStocksheet .modal-body .steps > ul > li.current~li:after, 
+ #modalImportStocksheet .modal-body .steps > ul > li.current~li:before {
+   background-color: #F3F3F3;
+ }
+ #modalImportStocksheet .modal-body .steps > ul > li:first-child:before,
+ #modalImportStocksheet .modal-body .steps > ul > li:last-child:after {
+     content: none
+ }
+ #modalImportStocksheet .modal-body .steps > ul > li > a {
+   position: relative;
+   padding-top: 60px;
+   margin-top: 20px;
+   margin-bottom: 20px;
+   display: block;
+   font-size: .7em;
+ }
+ #modalImportStocksheet .modal-body .steps > ul > li.current > a {
+   color: #2f3d4a;
+   cursor: default;
+   font-weight: 600;
+ }
+ #modalImportStocksheet .modal-body .steps .current-info {
+   position: absolute;
+   left: -99999px;
+ }
+ #modalImportStocksheet .modal-body .steps .step {
+   background-color: #fff;
+   display: inline-block;
+   position: absolute;
+   top: 0;
+   left: 50%;
+   margin-left: -28px;
+   z-index: 10;
+   text-align: center;
+   width: 50px;
+   height: 50px;
+   line-height: 50px;
+   border: 3px solid #F3F3F3;
+   font-size: .8rem;
+   border-radius: 50%;
+ }
+ #modalImportStocksheet .modal-body .steps > ul > li.current .step {
+   border-color: rgb(56,56,56);
+   background-color: #fff;
+   color: rgb(56,56,56);
+ }
+ #modalImportStocksheet .modal-body .steps > ul > li.disabled a, 
+ #modalImportStocksheet .modal-body .steps > ul > li.disabled a:focus, 
+ #modalImportStocksheet .modal-body .steps > ul > li.disabled a:hover {
+   color: #999;
+   cursor: default;
+ }
+ #modalImportStocksheet .modal-body .steps > ul > li.done .step {
+   background-color: rgb(56,56,56);
+   border-color: rgb(56,56,56);
+   color: #fff;
+ }
+ #modalImportStocksheet .modal-body .steps > ul > li.done > a {
+   font-weight: 600;
+   color: rgb(56,56,56);
+ }
+ #modalImportStocksheet .modal-body .text-area {
+   text-align: center;
+   font-size: 12px;
+ }
+ #modalImportStocksheet .modal-body .text-area p {
+   display: block;
+   margin-top: -20px;
+   font-size: 12px;
+   margin-bottom: 15px;
+   font-weight: 400;
+   color: #555;
+ }
+ #modalImportStocksheet button:disabled,
+ #modalImportStocksheet button[disabled="disabled"] {
+   cursor: not-allowed;
+   opacity: .6;
+ }
+ .ajax__loader {
+   display: none;
+ }
+ .ajax__loader.load {
+   display: block;
+ }
+ .cart__items-not-found {
+   font-size: 13px;
+   margin-bottom: 30px !important;
+ }
+ .cart__items-not-found table.table.table-striped tbody tr:nth-of-type(odd) {
+   background-color: rgba(0, 0, 0, 0.05);
+ }
+ .cart__items-not-found table.table th,
+ .cart__items-not-found table.table td {
+   padding: 0.75rem;
+   vertical-align: top;
+   border-top: 1px solid #dee2e6;
+ }
+ .cart__items-not-found table.table thead th {
+   vertical-align: bottom;
+   border-bottom: 2px solid #dee2e6;
+ }
+ .cart__items-not-found table.table tbody + tbody {
+   border-top: 2px solid #dee2e6;
+ }
+ .cart__items-not-found table.table .table {
+   background-color: #fff;
+ }
+ .cart__items-not-found table.table.dataTable.no-footer {
+   border-bottom: 2px solid #dee2e6;
+ }

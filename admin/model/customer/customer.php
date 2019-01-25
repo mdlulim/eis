@@ -156,14 +156,13 @@ class ModelCustomerCustomer extends Model {
 		return $query->row;
 	}
 	public function getCustomers($data = array(), $allaccess=false, $current_user_id) {
+		
 		if($allaccess)
 		{
-			$sql = "SELECT c.*, CONCAT(c.firstname) AS name, cgd.name AS customer_group, ca.key, ca.data AS customer_activity, MAX(ca.date_added) AS last_activity_date FROM " . DB_PREFIX . "customer c LEFT JOIN " . DB_PREFIX . "customer_group_description cgd ON (c.customer_group_id = cgd.customer_group_id) LEFT JOIN " . DB_PREFIX . "customer_activity ca ON ca.customer_id = c.customer_id AND ca.key = 'login' LEFT JOIN oc_salesrep sr on sr.salesrep_id = c.salesrep_id LEFT JOIN oc_team tm on tm.team_id = sr.sales_team_id WHERE tm.sales_manager = '".$current_user_id."' and cgd.language_id = '" . (int)$this->config->get('config_language_id') . "'";
+			$sql = "SELECT c.*, CONCAT(c.firstname) AS name, cgd.name AS customer_group, ca.key, (SELECT ca.data FROM oc_customer_activity ca WHERE ca.customer_id = c.customer_id ORDER BY ca.customer_activity_id DESC LIMIT 0,1) AS customer_activity, MAX(ca.date_added) AS last_activity_date FROM " . DB_PREFIX . "customer c LEFT JOIN " . DB_PREFIX . "customer_group_description cgd ON (c.customer_group_id = cgd.customer_group_id) LEFT JOIN " . DB_PREFIX . "customer_activity ca ON ca.customer_id = c.customer_id AND ca.key = 'login' LEFT JOIN oc_salesrep sr on sr.salesrep_id = c.salesrep_id LEFT JOIN oc_team tm on tm.team_id = sr.sales_team_id WHERE tm.sales_manager = '".$current_user_id."' and cgd.language_id = '" . (int)$this->config->get('config_language_id') . "'";
 			
-		}
-		else
-		{
-			$sql = "SELECT c.*, CONCAT(c.firstname) AS name, cgd.name AS customer_group, ca.key, ca.data AS customer_activity, MAX(ca.date_added) AS last_activity_date FROM " . DB_PREFIX . "customer c LEFT JOIN " . DB_PREFIX . "customer_group_description cgd ON (c.customer_group_id = cgd.customer_group_id) LEFT JOIN " . DB_PREFIX . "customer_activity ca ON ca.customer_id = c.customer_id AND ca.key = 'login' LEFT JOIN oc_salesrep sr on sr.salesrep_id = c.salesrep_id WHERE cgd.language_id = '" . (int)$this->config->get('config_language_id') . "'";
+		} else {
+			$sql = "SELECT c.*, CONCAT(c.firstname) AS name, cgd.name AS customer_group, ca.key, (SELECT ca.data FROM oc_customer_activity ca WHERE ca.customer_id = c.customer_id ORDER BY ca.customer_activity_id DESC LIMIT 0,1) AS customer_activity, MAX(ca.date_added) AS last_activity_date FROM " . DB_PREFIX . "customer c LEFT JOIN " . DB_PREFIX . "customer_group_description cgd ON (c.customer_group_id = cgd.customer_group_id) LEFT JOIN " . DB_PREFIX . "customer_activity ca ON ca.customer_id = c.customer_id AND ca.key = 'login' LEFT JOIN oc_salesrep sr on sr.salesrep_id = c.salesrep_id WHERE cgd.language_id = '" . (int)$this->config->get('config_language_id') . "'";
 		}
 		$implode = array();
 		if (!empty($data['filter_name'])) {
@@ -203,6 +202,9 @@ class ModelCustomerCustomer extends Model {
 		if (isset($data['filter_approved']) && !is_null($data['filter_approved'])) {
 			$implode[] = "c.approved = '" . (int)$data['filter_approved'] . "'";
 		}
+		if (isset($data['filter_wholesale']) && !is_null($data['filter_wholesale'])) {
+			$implode[] = "c.invited = '" . (int)$data['filter_wholesale'] . "'";
+		}
 		if (!empty($data['filter_date_added'])) {
 			$implode[] = "DATE(c.date_added) = DATE('" . $this->db->escape($data['filter_date_added']) . "')";
 		}
@@ -240,7 +242,6 @@ class ModelCustomerCustomer extends Model {
 			$sql .= " LIMIT " . (int)$data['start'] . "," . (int)$data['limit'];
 		} else {
 		}
-		
 		$query = $this->db->query($sql);
 		return $query->rows;
 	}

@@ -204,7 +204,7 @@ class ControllerReplogicLocationManagement extends Controller {
 		 * Locations | Google Map
 		 *******************************************/
 
-		$locations                 = $this->model_replogic_location_management->getLocations($filters, true);
+		$locations                 = $this->model_replogic_location_management->getCheckins($filters, true);
 		$data['locations']         = array();
 		$data['markers_salesreps'] = array();
 		$data['markers_customers'] = array();

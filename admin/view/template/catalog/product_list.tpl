@@ -4,7 +4,10 @@
     <div class="container-fluid">
       <div class="pull-right"><a href="<?php echo $add; ?>" data-toggle="tooltip" title="<?php echo $button_add; ?>" class="btn btn-primary"><i class="fa fa-plus"></i></a>
         <button type="submit" form="form-product" formaction="<?php echo $copy; ?>" data-toggle="tooltip" title="<?php echo $button_copy; ?>" class="btn btn-default"><i class="fa fa-copy"></i></button>
-        <button type="button" data-toggle="tooltip" title="<?php echo $button_delete; ?>" class="btn btn-danger" onclick="confirm('<?php echo $text_confirm; ?>') ? $('#form-product').submit() : false;"><i class="fa fa-trash-o"></i></button>
+        <button type="button" id="1" data-toggle="tooltip" title="Enable" class="btn btn-success btnBulkAssign" onclick="massAction(this)" disabled><i class="fa fa-play"></i></button>
+        <button type="button" id = "5"data-toggle="modal" data-target="#myModal" title="Assign" class="btn btn-info btnBulkAssign" disabled><i class="fa fa-link"></i></button>
+        <button type="button" id="3" data-toggle="tooltip" title="Disable" class="btn btn-warning btnBulkAssign" onclick="massAction(this)" disabled><i class="fa fa-pause"></i></button>
+        <button type="button" id="4" data-toggle="tooltip" title="<?php echo $button_delete; ?>" class="btn btn-danger btnBulkAssign" onclick="massAction(this)" disabled><i class="fa fa-trash-o"></i></button>
       </div>
       <h1><?php echo $heading_title; ?></h1>
       <ul class="breadcrumb">
@@ -37,32 +40,11 @@
               <div class="form-group">
                 <label class="control-label" for="input-name"><?php echo $entry_name; ?></label>
                 <input type="text" name="filter_name" value="<?php echo $filter_name; ?>" placeholder="<?php echo $entry_name; ?>" id="input-name" class="form-control" />
-                <!--<select name="filter_product_id" class="form-control">
-                  <option value="">Select Product</option>
-                    <?php foreach ($Dropdownproducts as $Dproduct) {  ?>
-                <?php if ($Dproduct['product_id'] == $filter_product_id) { ?>
-                <option value="<?php echo $Dproduct['product_id']; ?>" selected="selected"><?php echo $Dproduct['name']; ?></option>
-                <?php } else { ?>
-                <option value="<?php echo $Dproduct['product_id']; ?>"><?php echo $Dproduct['name']; ?></option>
-                <?php } ?>
-                <?php } ?>
-                    
-                </select>-->
               </div>
               <div class="form-group">
                 <label class="control-label" for="input-model"><?php echo $entry_model; ?></label>
                 <input type="text" name="filter_model" value="<?php echo $filter_model; ?>" placeholder="<?php echo $entry_model; ?>" id="input-model" class="form-control" />
-                <!--<select name="filter_model" class="form-control">
-                  <option value="">Select Model</option>
-                    <?php foreach ($Dropdownmodels as $Dmodel) {  ?>
-                <?php if ($Dmodel['model'] == $filter_model) { ?>
-                <option value="<?php echo $Dmodel['model']; ?>" selected="selected"><?php echo $Dmodel['model']; ?></option>
-                <?php } else { ?>
-                <option value="<?php echo $Dmodel['model']; ?>"><?php echo $Dmodel['model']; ?></option>
-                <?php } ?>
-                <?php } ?>
-                    
-                </select>-->
+              
               </div>
             </div>
             <div class="col-sm-4">
@@ -93,22 +75,7 @@
                   <?php } ?>
                 </select>
               </div>
-              <!--div class="form-group">
-                <label class="control-label" for="input-image"><?php echo $entry_image; ?></label>
-                <select name="filter_image" id="input-image" class="form-control">
-                  <option value="*"></option>
-                  <?php if ($filter_image) { ?>
-                  <option value="1" selected="selected"><?php echo $text_enabled; ?></option>
-                  <?php } else { ?>
-                  <option value="1"><?php echo $text_enabled; ?></option>
-                  <?php } ?>
-                  <?php if (!$filter_image && !is_null($filter_image)) { ?>
-                  <option value="0" selected="selected"><?php echo $text_disabled; ?></option>
-                  <?php } else { ?>
-                  <option value="0"><?php echo $text_disabled; ?></option>
-                  <?php } ?>
-                </select>
-              </div-->
+              
               <button type="button" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-search"></i> Search</button>
               <button type="button" id="button-filter-reset" class="btn btn-primary pull-right" style="margin-right:10px;"><i class="fa fa-refresh"></i> Reset</button>
             </div>
@@ -119,20 +86,10 @@
             <table class="table table-bordered table-hover">
               <thead>
                 <tr>
-                  <td style="width: auto;">
-                  <ul class="" style="padding: 0px;">
-                     <li style="display: inline-block">
+                  <td style="width: 1px;">
+                  
                      <input type="checkbox" onclick="$('input[name*=\'selected\']').prop('checked', this.checked);" />
-                     </li>
-                      <li style="display: inline-block">
-                        <select id="massaction" class="form-control" onchange="massAction()" style="width: 63px; height: 19px;" >
-                           <option value="">Action</option>
-                           <option value="enable">Enable</option>
-                           <option value="disable">Disable</option>
-                           <option type="button" value="delete">Delete</option>
-                        </select>
-                     </li>
-                  </ul>
+                   
                   </td>
                   <td class="text-center"><?php echo $column_image; ?></td>
                   <td class="text-left"><?php if ($sort == 'pd.name') { ?>
@@ -204,6 +161,69 @@
               </tbody>
             </table>
           </div>
+
+            
+  <!---------------------------------- Modal ----------------------------------------->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Assign Products To Contact Pricing</h4>
+        </div>
+        <div class="modal-body">
+        <!--form action="" method="post" enctype="multipart/form-data" id="form-assign-product" class="form-horizontal" -->
+         
+          <div class="form-group" id="myCategory" style="display: none;">
+                  <div class="col-sm-10">
+                    <input type="text" name="category" value="" placeholder="<?php echo $entry_category; ?>" id="input-category" class="form-control" />
+                    <div id="product-category" class="well well-sm" style="height: 150px; overflow: auto;">
+                      <?php foreach ($product_categories as $product_category) { ?>
+                      <div id="product-category<?php echo $product_category['category_id']; ?>"><i class="fa fa-minus-circle"></i> <?php echo $product_category['name']; ?>
+                        <input type="hidden" name="product_category[]" value="<?php echo $product_category['category_id']; ?>" />
+                      </div>
+                      <?php } ?>
+                    </div>
+                  </div>
+                </div>
+          </div>
+        
+          <div class="" id="myStore">
+                <label class="col-sm-2 control-label"></label>
+                <div class="col-sm-10">
+                  <div class="well well-sm" style="height: 150px; overflow: auto;">
+                    
+                    <?php foreach ($groups as $group) { ?>
+                    <div class="checkbox">
+                      <label>
+                        <?php if (in_array($group['customer_group_id'], $product_store)) { ?>
+                        <input type="checkbox" name="product_store[]" value="<?php echo $group['customer_group_id']; ?>" checked="checked" />
+                        <?php echo $group['name']; ?>
+                        <?php } else { ?>
+                        <input type="checkbox" name="product_store[]" value="<?php echo $group['customer_group_id'] ?>" />
+                        <?php echo $group['name']; ?>
+                        <?php } ?>
+                      </label>
+                    </div>
+                    <?php } ?>
+                  </div>
+                </div>
+              </div>
+        
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" id="2" class="btn btn-success" onclick="massAction(this)" data-dismiss="modal">Assign</button>
+        </div>
+      <!--/form -->   
+      </div>
+      
+    </div>
+  </div>
+  <!-- ----------------------------Modal --------------------------------------------->
+
+
         </form>
         <div class="row">
           <div class="col-sm-6 text-left"><?php echo $pagination; ?></div>
@@ -212,22 +232,41 @@
       </div>
     </div>
   </div>
+
   <script type="text/javascript"><!--
-function massAction() {
-    var selectedValue = document.getElementById("massaction").value;
-   
-    if(selectedValue == "enable"){
+
+
+$('form input[type="checkbox"]').on('change', function() {
+	if ($('form input[type="checkbox"]:checked').length > 0) {
+		$('.btnBulkAssign').prop('disabled', false);
+    } else {
+		$('.btnBulkAssign').prop('disabled', true);
+    }
+});
+//Assign Option
+function massAction(elem) {
+
+    var clickedValue = elem.id;
+    if(clickedValue == 1){
+      //enable
       var url = 'index.php?route=catalog/product/enableProduct&token=<?php echo $token; ?>';
       document.getElementById("form-product").action = url;  //Setting form action to "success.php" page
       confirm('<?php echo $text_enable; ?>') ? $('#form-product').submit() : false;
-    }else if(selectedValue == "disable"){
+    }else if(clickedValue == 2){
+       var url = 'index.php?route=catalog/product/assignProductToCustomerGroup&token=<?php echo $token; ?>';
+       document.getElementById("form-product").action = url;  //Setting form action to "success.php" page
+       confirm('<?php echo "Are you sure?"; ?>') ? $('#form-product').submit() : false;
+    
+    } else if(clickedValue == 3){
+      //Disable
       var url = 'index.php?route=catalog/product/disableProduct&token=<?php echo $token; ?>';
-      document.getElementById("form-product").action = url;  //Setting form action to "success.php" page
-      confirm('<?php echo $text_disable; ?>') ? $('#form-product').submit() : false;
-    }else if(selectedValue == "delete"){
+       document.getElementById("form-product").action = url;  //Setting form action to "success.php" page
+       confirm('<?php echo $text_disable; ?>') ? $('#form-product').submit() : false;
+    }else if(clickedValue == 4){
+      //Delete
        var url = 'index.php?route=catalog/product/delete&token=<?php echo $token; ?>';
        document.getElementById("form-product").action = url;  //Setting form action to "success.php" page
-      confirm('<?php echo $text_confirm; ?>') ? $('#form-product').submit() : false;
+       confirm('<?php echo $text_confirm; ?>') ? $('#form-product').submit() : false;
     }
 
 }
@@ -313,5 +352,62 @@ $('input[name=\'filter_model\']').autocomplete({
     $('input[name=\'filter_model\']').val(item['label']);
   }
 });
-//--></script></div>
+//--></script>
+
+</div>
+<script>
+  // Category
+$('input[name=\'category\']').autocomplete({
+	'source': function(request, response) {
+		$.ajax({
+			url: 'index.php?route=catalog/category/autocomplete&token=<?php echo $token; ?>&filter_name=' +  encodeURIComponent(request),
+			dataType: 'json',
+			success: function(json) {
+				response($.map(json, function(item) {
+					return {
+						label: item['name'],
+						value: item['category_id']
+					}
+				}));
+			}
+		});
+	},
+	'select': function(item) {
+		$('input[name=\'category\']').val('');
+
+		$('#product-category' + item['value']).remove();
+
+		$('#product-category').append('<div id="product-category' + item['value'] + '"><i class="fa fa-minus-circle"></i> ' + item['label'] + '<input type="hidden" name="product_category[]" value="' + item['value'] + '" /></div>');
+	}
+});
+
+$('#product-category').delegate('.fa-minus-circle', 'click', function() {
+	$(this).parent().remove();
+});
+
+// Filter
+$('input[name=\'filter\']').autocomplete({
+	'source': function(request, response) {
+		$.ajax({
+			url: 'index.php?route=catalog/filter/autocomplete&token=<?php echo $token; ?>&filter_name=' +  encodeURIComponent(request),
+			dataType: 'json',
+			success: function(json) {
+				response($.map(json, function(item) {
+					return {
+						label: item['name'],
+						value: item['filter_id']
+					}
+				}));
+			}
+		});
+	},
+	'select': function(item) {
+		$('input[name=\'filter\']').val('');
+
+		$('#product-filter' + item['value']).remove();
+
+		$('#product-filter').append('<div id="product-filter' + item['value'] + '"><i class="fa fa-minus-circle"></i> ' + item['label'] + '<input type="hidden" name="product_filter[]" value="' + item['value'] + '" /></div>');
+	}
+});
+</script>
 <?php echo $footer; ?>

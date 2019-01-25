@@ -8,7 +8,6 @@ class ControllerSaleReturn extends Controller {
 		$this->document->setTitle($this->language->get('heading_title'));
 
 		$this->load->model('sale/return');
-
 		$this->getList();
 	}
 
@@ -18,12 +17,16 @@ class ControllerSaleReturn extends Controller {
 		$this->document->setTitle($this->language->get('heading_title'));
 
 		$this->load->model('sale/return');
-
 		if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validateForm()) {
-			$this->model_sale_return->addReturn($this->request->post);
+			$order_id = $this->request->post['order_id'];
+			$customer_id = $this->request->post['customer_id'];
 
-			$this->session->data['success'] = $this->language->get('text_success');
-
+			$result = $this->model_sale_return->checkOrderExist($order_id, $customer_id);
+			if($result == 1){
+				$this->model_sale_return->addReturn($this->request->post);
+				$this->session->data['success'] = $this->language->get('text_success');
+				$this->response->redirect($this->url->link('sale/return', 'token=' . $this->session->data['token'] . $url, true));
+			}
 			$url = '';
 
 			if (isset($this->request->get['filter_return_id'])) {
@@ -77,8 +80,7 @@ class ControllerSaleReturn extends Controller {
 			if (isset($this->request->get['page'])) {
 				$url .= '&page=' . $this->request->get['page'];
 			}
-
-			$this->response->redirect($this->url->link('sale/return', 'token=' . $this->session->data['token'] . $url, true));
+			
 		}
 
 		$this->getForm();
@@ -998,6 +1000,52 @@ class ControllerSaleReturn extends Controller {
 		if ($this->error && !isset($this->error['warning'])) {
 			$this->error['warning'] = $this->language->get('error_warning');
 		}
+
+		    $order_id = $this->request->post['order_id'];
+			$customer_id = $this->request->post['customer_id'];
+		
+			$result = $this->model_sale_return->checkOrderExist($order_id, $customer_id);
+			 if($result == 2){
+				$this->error['warning'] = $this->language->get('error_return_confirm_order');
+			}else if($result == 0){
+				$this->error['warning']  = $this->language->get('error_return_order_not_match');
+			}
+			 
+			
+			// Products
+			$data['order_products'] = array();
+			$this->load->model('tool/image');
+			$this->load->model('sale/order');
+			$products = $this->model_sale_order->getOrderProducts($order_id);
+			
+			$productId = $this->request->post['product_id'];
+			$quantity = $this->request->post['quantity'];
+			$flag = 0;
+			$flag_quantity = 0;
+			foreach ($products as $product) {
+				if($productId == $product['product_id']){
+					$flag = 1;
+					break;
+				}
+
+				if(($quantity > $product['quantity'])){
+					$flag_quantity = 1;
+					break;
+				}else if ($quantity <= 0){
+					$flag_quantity = 2;
+					break;
+				}
+			}
+
+			if($flag == 0){
+				$this->error['warning']  = $this->language->get('error_return_product_not_match');
+			}
+
+			if($flag_quantity == 1){
+				$this->error['warning']  = $this->language->get('error_return_product_quantity_more');
+			}else if($flag_quantity == 2){
+				$this->error['warning']  = $this->language->get('error_return_product_quantity_less');
+			}
 
 		return !$this->error;
 	}

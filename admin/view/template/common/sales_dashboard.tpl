@@ -1,5 +1,5 @@
 <?=$header?><?=$column_left?>
-  <div id="content" class="sales-dashboard-wrapper">
+  <div id="content" class="sales-dashboard-wrapper" data-page-id="sales_dashboard" data-token="<?php echo $token; ?>" data-page-url="<?php echo $page_url; ?>">
 
     <div class="page-header">
       <div class="container-fluid">
@@ -179,6 +179,7 @@
         </div>
       </div>
 
+      <?php if (!empty($markers_salesreps) && !empty($markers_customers) && !empty($markers_checkins)) : ?>
       <div class="row">
         <div class="col-lg-12 col-md-12 col-sm-12">
           <div class="panel panel-default">
@@ -233,7 +234,6 @@
         // <use:php> 
         // # loop through location markers
         <?php
-        //var_dump($markers_salesreps);die();
          if (!empty($markers_salesreps)) : ?>
             <?php foreach($markers_salesreps as $marker_salesrep) : ?>
                 var obj = {
@@ -383,6 +383,7 @@
           
         </div>
       </div>
+      <?php endif; ?>
 
     </div>
   </div>

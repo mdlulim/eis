@@ -140,11 +140,19 @@ class ControllerUserUser extends Controller {
 		echo json_encode($json);
 	}
 	protected function sendUserInvitation($user_info) {
+
+		$this->load->model('setting/setting');
+
 		$emailClient = $this->config->get('config_mail_client');
 		# build data array
 		$data['subject'] = 'Welcome to Saleslogic';
 		$data['to']      = array('email'=>$user_info['email'], 'name'=>$user_info['firstname']);
 		$data['from']    = array('email'=>$this->config->get('config_email'), 'name'=>$this->config->get('config_name'));
+
+		# get rep settings
+		$repSettings  = $this->model_setting_setting->getRepSettings();
+		$storeUrl     = $repSettings['store_url'] . 'admin';
+		$companyEmail = $repSettings['email'];
 		
 		switch ($emailClient) {
 			case 'mandrill':
@@ -168,7 +176,7 @@ class ControllerUserUser extends Controller {
 			            ),
 			            array(
 			                'name'    => 'STORE_URL',
-			                'content' => $this->config->get('config_url')
+			                'content' => $storeUrl
 			            ),
 			            array(
 			                'name'    => 'STORE_NAME',
@@ -176,7 +184,7 @@ class ControllerUserUser extends Controller {
 			            ),
 			            array(
 			                'name'    => 'STORE_EMAIL',
-			                'content' => $this->config->get('config_email')
+			                'content' => $companyEmail
 			            ),
 			            array(
 			                'name'    => 'HELP_GUIDE',
@@ -225,6 +233,12 @@ class ControllerUserUser extends Controller {
 		} else {
 			$filter_name = null;
 		}
+
+		if (isset($this->request->get['filter_user_group_id'])) {
+			$filter_user_group_id = $this->request->get['filter_user_group_id'];
+		} else {
+			$filter_user_group_id = null;
+		} 
 		
 		if (isset($this->request->get['filter_status'])) {
 			$filter_status = $this->request->get['filter_status'];
@@ -257,7 +271,9 @@ class ControllerUserUser extends Controller {
 		if (isset($this->request->get['filter_name'])) {
 			$url .= '&filter_name=' . $this->request->get['filter_name'];
 		}
-		
+		if (isset($this->request->get['filter_user_group_id'])) {
+			$url .= '&filter_user_group_id=' . $this->request->get['filter_user_group_id'];
+		}
 		if (isset($this->request->get['filter_status'])) {
 			$url .= '&filter_status=' . $this->request->get['filter_status'];
 		}
@@ -289,6 +305,7 @@ class ControllerUserUser extends Controller {
 		$data['users'] = array();
 		$filter_data = array(
 			'filter_name'  => $filter_name,
+			'filter_user_group_id'  => $filter_user_group_id,
 			'filter_status'  => $filter_status,
 			'filter_dateadded'  => $filter_dateadded,
 			'sort'  => $sort,
@@ -296,12 +313,23 @@ class ControllerUserUser extends Controller {
 			'start' => ($page - 1) * $this->config->get('config_limit_admin'),
 			'limit' => $this->config->get('config_limit_admin')
 		);
+
+		$user_groups = $this->model_user_user->getUserGroups();
+		foreach ($user_groups as $group) {
+			$data['user_groups'][] = array(
+				'user_group_id'    => $group['user_group_id'],
+				'name'   => $group['name'],
+			);
+		}
+
 		$user_total = $this->model_user_user->getTotalUsers($filter_data);
 		$results = $this->model_user_user->getUsers($filter_data);
 		foreach ($results as $result) {
 			$data['users'][] = array(
 				'user_id'    => $result['user_id'],
 				'username'   => $result['username'],
+				'user_group'   => $this->model_user_user->getGroupNameNyId($result['user_group_id']),
+				'user_group_id'   => $result['user_group_id'],
 				'status'     => ($result['status'] ? $this->language->get('text_enabled') : $this->language->get('text_disabled')),
 				'date_added' => date($this->language->get('date_format_short'), strtotime($result['date_added'])),
 				'view'       => $this->url->link('user/user/view', 'token=' . $this->session->data['token'] . '&user_id=' . $result['user_id'] . $url, true),
@@ -318,6 +346,7 @@ class ControllerUserUser extends Controller {
 		$data['text_enabled'] = $this->language->get('text_enabled');
 		$data['text_disabled'] = $this->language->get('text_disabled');
 		$data['column_username'] = $this->language->get('column_username');
+		$data['column_user_group'] = $this->language->get('column_user_group');
 		$data['column_status'] = $this->language->get('column_status');
 		$data['column_date_added'] = $this->language->get('column_date_added');
 		$data['column_action'] = $this->language->get('column_action');
@@ -352,6 +381,7 @@ class ControllerUserUser extends Controller {
 			$url .= '&page=' . $this->request->get['page'];
 		}
 		$data['sort_username'] = $this->url->link('user/user', 'token=' . $this->session->data['token'] . '&sort=username' . $url, true);
+		$data['sort_user_group'] = $this->url->link('user/user', 'token=' . $this->session->data['token'] . '&sort=sort_user_group' . $url, true);
 		$data['sort_status'] = $this->url->link('user/user', 'token=' . $this->session->data['token'] . '&sort=status' . $url, true);
 		$data['sort_date_added'] = $this->url->link('user/user', 'token=' . $this->session->data['token'] . '&sort=date_added' . $url, true);
 		$url = '';
@@ -369,6 +399,7 @@ class ControllerUserUser extends Controller {
 		$data['pagination'] = $pagination->render();
 		$data['results'] = sprintf($this->language->get('text_pagination'), ($user_total) ? (($page - 1) * $this->config->get('config_limit_admin')) + 1 : 0, ((($page - 1) * $this->config->get('config_limit_admin')) > ($user_total - $this->config->get('config_limit_admin'))) ? $user_total : ((($page - 1) * $this->config->get('config_limit_admin')) + $this->config->get('config_limit_admin')), $user_total, ceil($user_total / $this->config->get('config_limit_admin')));
 		$data['filter_name'] = $filter_name;
+		$data['filter_user_group_id'] = $filter_user_group_id;
 		$data['filter_status'] = $filter_status;
 		$data['filter_dateadded'] = $filter_dateadded;
 		$data['sort'] = $sort;

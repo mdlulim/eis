@@ -105,14 +105,10 @@ class ControllerCustomerCustomerExportImport extends Controller {
 					//$passwordExportSettings 	? array_push($fields, 'Password') : '';
 					//$newsletterExportSettings 	? array_push($fields, 'Newsletter') : '';
 					//$approvedExportSettings 	? array_push($fields, 'Approved') : '';
-					
-					//var_dump($fields);die();
-					
-					//print_r($fields); exit;	
+						
 					
 					$array1 = $header;
 					$array2 = $fields;
-
 					//====================================================================
 					//        Check field to be imported if they exist
 					//====================================================================
@@ -124,18 +120,8 @@ class ControllerCustomerCustomerExportImport extends Controller {
 						}
 						
 					}
-					//var_dump($field_exist);
-					//if($array1 === array_intersect($array1, $array2) && $array2 === array_intersect($array2, $array1)) 
-					// var_dump($field_exist);
-					// if($fields_exist == 1){ 
-					// 	var_dump("field they exist".$fields_exist );
-					// }else{
-					// 	var_dump("field are not exist".$fields_exist );
-					// }
-					//die();
-					//var_dump($field_exist); die();
+					
 					if($field_exist == 1){ 
-						//var_dump($field_exist); die();
 						
 						for ($row = 2; $row <= $highestRow; $row++)
 						{ 
@@ -150,7 +136,7 @@ class ControllerCustomerCustomerExportImport extends Controller {
 								$all_rows[] = array_combine($header, $sheetdata);
 						}
 						
-						//print_r($all_rows); exit;
+						
 						$customer_id = '';
 						foreach($all_rows as $all_row){
 							if(!empty($all_row) && count($all_row) > 0)
@@ -236,33 +222,12 @@ class ControllerCustomerCustomerExportImport extends Controller {
 												'country' => $country_id,
 												'region' => $zone_id,
 												'defaultaddress' => $defaultaddress
-												
 											);
-											//var_dump('test id'.$customer_id);
-										
-										if($data_array['email'] != ''){
-											//var_dump($data_array['email']);
-										//var_dump("<br />");
-											// if($this->model_customer_customer_export_import->checkEmailIfExist($email) == true){
-											// 	$this->model_customer_customer_export_import->importCsvCustomerDataUpdate($data_array);  // parse the data to model
-											// }else{
-												$this->model_customer_customer_export_import->importCsvCustomerDataInsert($data_array);
-											//}
+
+										if($data_array['email'] != '' && $data_array['companygroup'] != ''){
+											$this->model_customer_customer_export_import->importCsvCustomerDataInsert($data_array);
 										}
-								// if (empty(!$data_array['address1']) || !empty($data_array['companyname']) || !empty($data_array['city']) || !empty($data_array['postcode']) || !empty($data_array['region']) || !empty($data_array['country']) ){
-								// 	if (!empty($customer_id)) // if column 1 is not empty
-								// 	{ 
-										
-								// 		$this->model_customer_customer_export_import->importCsvCustomerDataUpdate($data_array);  // parse the data to model
-										
-								// 	}
-								// 	else
-								// 	{
-									
-								// 		$this->model_customer_customer_export_import->importCsvCustomerDataInsert($data_array);
-									
-								// 	}
-								// }
+							
 								
 							}
 						}

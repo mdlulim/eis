@@ -34,8 +34,8 @@ class ModelCustomerCustomerExportImport extends Model {
 		
 		
 		if ($this->config->get( 'customer_export_import_settings_companyname' ) && ($data['companyname'] != '') ) {
-			$sql .= 'firstname = "'.$data['companyname'].'", ';
-			$sql .= 'lastname = "'.$data['companyname'].'", ';
+			$sql .= 'firstname = '.'"'.$data['companyname'].'"'.', ';
+			$sql .= 'lastname = '.'"'.$data['companyname'].'"'.', ';
 		}
 		
 		if ($this->config->get( 'customer_export_import_settings_email' ) && ($data['email'] != '') ) {
@@ -101,9 +101,9 @@ class ModelCustomerCustomerExportImport extends Model {
 			$adr .= 'customer_id = '.(int)$data['customer_id'].', ';
 			
 			if ($this->config->get( 'customer_export_import_settings_companyname' ) && ($data['companyname'] != '') ) {
-				$adr .= 'firstname = "'.$data['companyname'].'", ';
-				$adr .= 'lastname = "'.$data['companyname'].'", ';
-				$adr .= 'company = "'.$data['companyname'].'", ';
+				$adr .= 'firstname = '.'"'.$data['companyname'].'"'.', ';
+				$adr .= 'lastname = '.'"'.$data['companyname'].'"'.', ';
+				$adr .= 'company = '.'"'.$data['companyname'].'"'.', ';
 			}
 			
 			if ($this->config->get( 'customer_export_import_settings_address1' ) && ($data['address1'] != '') ) {
@@ -175,8 +175,8 @@ class ModelCustomerCustomerExportImport extends Model {
 		
 		if ($this->config->get( 'customer_export_import_settings_companyname' ) && ($data['companyname'] != '') ) {
 			$companyname = $data['companyname'] ;
-			$sql .= 'firstname ="'.$companyname.'", ';
-			$sql .= 'lastname ="'.$companyname.'", ';
+			$sql .= 'firstname ='.'"'.$companyname.'"'.', ';
+			$sql .= 'lastname ='.'"'.$companyname.'"'.', ';
 			//$sql .= "lastname = ".$data['companyname'].", ";
 		}
 		
@@ -231,11 +231,12 @@ class ModelCustomerCustomerExportImport extends Model {
 		}
 		
 		$sql1 = rtrim($sql, ', '); 
+		
         if(empty($val['email'])){
 		}else{
 			$sql1 .= ' WHERE email="'.$data['email'].'"';
 		}
-		//var_dump($sql1);
+		
 		$this->db->query($sql1);
 		
 		if(empty($customer_id))
@@ -249,7 +250,8 @@ class ModelCustomerCustomerExportImport extends Model {
 			
 			if($customer_id)
 			{ 
-				$dlt = "DELETE FROM ".DB_PREFIX."address where customer_id = '".(int)$customer_id."' and firstname = '".$data['companyname']."' and lastname = '".$data['companyname']."' and company = '".$data['companyname']."' and address_1 = '".$data['address1']."' and city = '".$data['city']."' and postcode = '".$data['postcode']."' and country_id = '".$data['country']."' and zone_id = '".$data['region']."'";
+				$dlt = 'DELETE FROM '.DB_PREFIX.'address where customer_id = '.(int)$customer_id.' and firstname = '.'"'.$data['companyname'].'"'.' and lastname = '.'"'.$data['companyname'].'"'.' and company = '.'"'.$data['companyname'].'"'.' and address_1 = "'.$data['address1'].'" and city = "'.$data['city'].'" and postcode = "'.$data['postcode'].'" and country_id = "'.$data['country'].'" and zone_id ="'.$data['region'].'"';
+				$this->db->query($dlt);
 			} 
 			
 			// $this->db->query($dlt);
@@ -266,9 +268,9 @@ class ModelCustomerCustomerExportImport extends Model {
 			}
 			
 			if ($this->config->get( 'customer_export_import_settings_companyname' ) && ($data['companyname'] != '') ) {
-				$adr .= 'firstname = "'.$data['companyname'].'", ';
-				$adr .= 'lastname = "'.$data['companyname'].'", ';
-				$adr .= 'company = "'.$data['companyname'].'", ';
+				$adr .= 'firstname = '.'"'.$data['companyname'].'"'.', ';
+				$adr .= 'lastname = '.'"'.$data['companyname'].'"'.', ';
+				$adr .= 'company = '.'"'.$data['companyname'].'"'.', ';
 			}
 			
 			if ($this->config->get( 'customer_export_import_settings_address1' ) && ($data['address1'] != '') ) {
@@ -297,9 +299,9 @@ class ModelCustomerCustomerExportImport extends Model {
 			
 			$adr1 = rtrim($adr, ', '); 
 		    //echo $adr1; exit;	
-			
 			$this->db->query($adr1);
 			$address_id = $this->db->getLastId();
+			//var_dump($address_id);die;
 			if($customer_id )
 			{
 				if ($this->config->get( 'customer_export_import_settings_defaultaddress' ) && ($data['defaultaddress'] != '')) 
@@ -415,7 +417,6 @@ class ModelCustomerCustomerExportImport extends Model {
 		$countryExportSettings 	? array_push($table_columns, array('name' => 'Country','required'=>'1','size'=>'18')) : '';
 		$regionExportSettings 	? array_push($table_columns, array('name' => 'Region/State','required'=>'1','size'=>'18')) : '';
 		$defaultaddressExportSettings 	? array_push($table_columns, array('name' => 'Default Address','required'=>'0','size'=>'15')) : '';
-		//print_r($table_columns); exit;
 		
 		$column = 0;
 		// First Row Set height
@@ -463,7 +464,7 @@ class ModelCustomerCustomerExportImport extends Model {
 			$worksheet->getRowDimension($excel_row)->setRowHeight(25);
 			
 			$customerID 	= $customer['customer_id'];
-    		$companyname 		= ($companyNameExportSettings) 	? $customer['firstname'] : '';
+    		$companyname 	= ($companyNameExportSettings) 	? $customer['firstname'] : '';
     		$email 			= ($emailExportSettings) 		? $customer['email'] : '';
     		$telephone 		= ($telephoneExportSettings) 	? $customer['telephone'] : '';
     		$address1 		= ($address1ExportSettings) 	? $customer['address_1'] : '';
@@ -546,7 +547,7 @@ class ModelCustomerCustomerExportImport extends Model {
 		//$newsletterExportSettings 	= $this->config->get( 'customer_export_import_settings_newsletter' );
 		$statusExportSettings 		= $this->config->get( 'customer_export_import_settings_status' );
 		//$passwordExportSettings 	= $this->config->get( 'customer_export_import_settings_password' );
-		//$approvedExportSettings 	= $this->config->get( 'customer_export_import_settings_approved' );
+		$approvedExportSettings 	= $this->config->get( 'customer_export_import_settings_approved' );
 		$address1ExportSettings 	= $this->config->get( 'customer_export_import_settings_address1' );
 		$address2ExportSettings 	= $this->config->get( 'customer_export_import_settings_address2' );
 		$cityExportSettings 		= $this->config->get( 'customer_export_import_settings_city' );
@@ -579,7 +580,7 @@ class ModelCustomerCustomerExportImport extends Model {
 		$regionExportSettings 	? array_push($fields, 'Region/State') : '';
 		//$passwordExportSettings 	? array_push($fields, 'Password') : '';
 		//$newsletterExportSettings 	? array_push($fields, 'Newsletter') : '';
-		//$approvedExportSettings 	? array_push($fields, 'Approved') : '';
+		$approvedExportSettings 	? array_push($fields, 'Approved') : '';
 		$defaultaddressExportSettings 	? array_push($fields, 'Default Address') : '';
 		
 		
@@ -636,7 +637,7 @@ class ModelCustomerCustomerExportImport extends Model {
 			$regionExportSettings 	? array_push($lineData, $region) : '';
 			//$passwordExportSettings 	? array_push($lineData, $password) : '';
 			//$newsletterExportSettings 	? array_push($lineData, $newsletter) : '';
-			//$approvedExportSettings 	? array_push($lineData, $approved) : '';
+			$approvedExportSettings 	? array_push($lineData, $approved) : '';
 			$defaultaddressExportSettings 	? array_push($lineData, $defaultaddress) : '';
 			
 			fputcsv($f, $lineData, $delimiter);
@@ -652,7 +653,6 @@ class ModelCustomerCustomerExportImport extends Model {
 	    exit;
 		
 	}
-	
 	
 }
 ?>

@@ -9,11 +9,23 @@ class ControllerReplogicScheduleManagement extends Controller {
 		$this->getList();
 	}
 	public function add() {
+
+		# stylesheets (CSS) files
+		$this->document->addStyle('view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.css');
+		$this->document->addStyle('view/stylesheet/material-icons/material-icons.css');
+		$this->document->addStyle('view/javascript/bootstrap-sweetalert/sweetalert.css');
+		$this->document->addStyle('view/stylesheet/custom.css');
+		$this->document->addStyle('view/stylesheet/location_management.css');
+
+		// Javascript file(s)
+		$this->document->addScript('view/javascript/bootstrap-sweetalert/sweetalert.min.js');
+		$this->document->addScript('view/javascript/bootstrap-sweetalert/sweetalert-data.js');
+		$this->document->addScript('view/javascript/schedule_management.js');
+
 		$this->load->language('replogic/schedule_management');
 		$this->document->setTitle($this->language->get('heading_title'));
 		$this->load->model('replogic/schedule_management');
 		if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validateForm()) {
-			
 			$lastid = $this->model_replogic_schedule_management->addScheduleManagement($this->request->post);
 			$this->session->data['success'] = $this->language->get('text_success');
 			$url = '';
@@ -55,6 +67,19 @@ class ControllerReplogicScheduleManagement extends Controller {
 		$this->getForm();
 	}
 	public function edit() {
+
+		# stylesheets (CSS) files
+		$this->document->addStyle('view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.css');
+		$this->document->addStyle('view/stylesheet/material-icons/material-icons.css');
+		$this->document->addStyle('view/javascript/bootstrap-sweetalert/sweetalert.css');
+		$this->document->addStyle('view/stylesheet/custom.css');
+		$this->document->addStyle('view/stylesheet/location_management.css');
+
+		// Javascript file(s)
+		$this->document->addScript('view/javascript/bootstrap-sweetalert/sweetalert.min.js');
+		$this->document->addScript('view/javascript/bootstrap-sweetalert/sweetalert-data.js');
+		$this->document->addScript('view/javascript/schedule_management.js');
+
 		$this->load->language('replogic/schedule_management');
 		$this->document->setTitle($this->language->get('heading_title'));
 		$this->load->model('replogic/schedule_management');
@@ -285,7 +310,7 @@ class ControllerReplogicScheduleManagement extends Controller {
 		
 		$schedule_management_total = $this->model_replogic_schedule_management->getTotalScheduleManagement($filter_data, $allaccess, $current_user_id);
 		$results = $this->model_replogic_schedule_management->getScheduleManagement($filter_data, $allaccess, $current_user_id);
-		//print_r($results); exit;
+		
 		$this->load->model('replogic/sales_rep_management');
 		 $data['salesReps'] = $this->model_replogic_sales_rep_management->getSalesRepsDropdown($allaccess, $current_user_id);
 		
@@ -298,13 +323,20 @@ class ControllerReplogicScheduleManagement extends Controller {
 			# visit date
 			$visitDate = (!empty($result['checkin']) && $result['checkin']<>"") ? date("D d M Y", strtotime($result['checkin'])) : "";
 			$visitDate.= (!empty($result['checkin']) && $result['checkin']<>"") ? " at " . date("<b>g:i A</b>", strtotime($result['checkin'])) : "";
+			$apointResult = $this->model_replogic_schedule_management->getprospective($result['customer_id']);
+			//var_dump($apointResult['name']);die;
+			if ($result['type'] == "New Business"){
+				$ustomer_Name = $apointResult['name'];
+			}else{
+				$ustomer_Name = $result['customer_name'];
+			}
 			
 			$data['appointments'][] = array(
 				'appointment_id'   => $result['appointment_id'],
 				'appointment_name' => $result['appointment_name'],
 				'appointment_type' => $result['type'],
 				'salesrep_name'    => $result['salesrepname'],
-				'customer_name'    => $result['customer_name'],
+				'customer_name'    => $ustomer_Name,
 				'appointment_date' => $appointmentDate,
 				'visit_date'       => $visitDate,
 				'tasks'            => $this->url->link('replogic/tasks', 'token=' . $this->session->data['token'] . '&appointment_id=' . $result['appointment_id'] . $url, true),
@@ -466,6 +498,8 @@ class ControllerReplogicScheduleManagement extends Controller {
 		$data['entry_appointment_description'] = $this->language->get('entry_appointment_description');
 		$data['entry_appointment_date'] = $this->language->get('entry_appointment_date');
 		$data['entry_customer'] = $this->language->get('entry_customer');
+		$data['entry_duration'] = $this->language->get('entry_duration');
+		$data['entry_available_times'] = $this->language->get('entry_available_times');
 		
 		$data['entry_sales'] = $this->language->get('entry_sales');
 		$data['entry_access'] = $this->language->get('entry_access');
@@ -646,6 +680,29 @@ class ControllerReplogicScheduleManagement extends Controller {
 		} else {
 			$data['type'] = '';
 		}
+
+		/*******************************************
+		 * Available and booked times
+		 *******************************************/
+		
+		$data['booked_times']    = array();
+		$data['available_times'] = array("08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00");
+
+		// today's full date
+		if (!empty($appointment_info)) {
+			$data['appointment_date'] = date('l, d F Y', strtotime($data['appointment_date']));
+			$bookedTimesForToday      = $this->model_replogic_schedule_management->getSalesRepAppointmentTimesByDate($appointment_info['salesrep_id'], date('Y-m-d', strtotime($data['appointment_date'])));
+			if (!empty($bookedTimesForToday)) {
+				foreach($bookedTimesForToday as $time) {
+					$data['booked_times'][] = $time['appointment_time'];
+				}
+			}
+		} else {
+			$data['appointment_date'] = date('l, d F Y');
+		}
+
+		// page url
+		$data['redirect_url'] = $this->url->link('replogic/schedule_management', 'token=' . $this->session->data['token'] . $url, true);
 		
 		$prospect_info = array();
 		if($data['type'] === 'New Business')
@@ -799,6 +856,7 @@ class ControllerReplogicScheduleManagement extends Controller {
 		$data['entry_appointment_description'] = $this->language->get('entry_appointment_description');
 		$data['entry_appointment_date'] = $this->language->get('entry_appointment_date');
 		$data['entry_customer'] = $this->language->get('entry_customer');
+		$data['entry_duration'] = $this->language->get('entry_duration');
 		
 		$data['entry_sales'] = $this->language->get('entry_sales');
 		$data['entry_access'] = $this->language->get('entry_access');

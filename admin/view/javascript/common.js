@@ -177,10 +177,12 @@ $(document).ready(function() {
 
 	// .dropdown-menu > li > a
 	$(document).on('click', '.dropdown-menu > li > a', function(e) {
-		if ($(this).attr('href').indexOf('sales_dashboard') !== -1) {
-			localStorage.setItem('dashboard', 'sales_dashboard');
-		} else if ($(this).attr('href').indexOf('orders_dashboard') !== -1) {
-			localStorage.setItem('dashboard', 'orders_dashboard');
+		if (location.search.indexOf('route=common') !== -1) {
+			if ($(this).attr('href').indexOf('sales_dashboard') !== -1) {
+				localStorage.setItem('dashboard', 'sales_dashboard');
+			} else if ($(this).attr('href').indexOf('orders_dashboard') !== -1) {
+				localStorage.setItem('dashboard', 'orders_dashboard');
+			}
 		}
 	});
 

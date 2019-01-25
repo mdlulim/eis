@@ -3,37 +3,89 @@ class ControllerReportCustomerOrder extends Controller {
 	public function index() {
 		$this->load->language('report/customer_order');
 
+		/*==================================
+		=       Add Files (Includes)       =
+		==================================*/
+
+		# stylesheets (CSS) files
+		$this->document->addStyle('view/javascript/datatables/datatables.min.css');
+		$this->document->addStyle('view/javascript/bootstrap-sweetalert/sweetalert.css');
+		$this->document->addStyle('view/javascript/daterangepicker/daterangepicker.min.css');
+		$this->document->addStyle('view/javascript/bootstrap-select/bootstrap-select.min.css');
+		$this->document->addStyle('view/stylesheet/report.css');
+
+		# javascript (JS) files
+		$this->document->addScript('view/javascript/datatables/datatables.min.js');
+		$this->document->addScript('view/javascript/datatables/buttons/datatables.buttons.min.js');
+		$this->document->addScript('view/javascript/datatables/buttons/buttons.flash.min.js');
+		$this->document->addScript('view/javascript/datatables/buttons/buttons.print.min.js');
+		$this->document->addScript('view/javascript/datatables/buttons/buttons.colVis.min.js');
+		$this->document->addScript('view/javascript/jszip/jszip.min.js');
+		$this->document->addScript('view/javascript/pdfmake/pdfmake.min.js');
+		$this->document->addScript('view/javascript/pdfmake/vfs_fonts.js');
+		$this->document->addScript('view/javascript/datatables/buttons/buttons.html5.min.js');
+
+		$this->document->addScript('view/javascript/bootstrap-sweetalert/sweetalert.min.js');
+		$this->document->addScript('view/javascript/bootstrap-sweetalert/sweetalert-data.js');
+		$this->document->addScript('view/javascript/moment/moment.min.js');
+		$this->document->addScript('view/javascript/daterangepicker/daterangepicker.min.js');
+		$this->document->addScript('view/javascript/bootstrap-select/bootstrap-select.min.js');
+		$this->document->addScript('view/javascript/report/customer_order.js');
+
+		/*=====  End of Add Files (Includes)  ======*/
+
 		$this->document->setTitle($this->language->get('heading_title'));
-
+		$filter = false;
+		
+		/*******************************************
+		 * Filters
+		 *******************************************/
+		$filter = false;
+        
+		// return DATE FROM filter
 		if (isset($this->request->get['filter_date_start'])) {
-			$filter_date_start = $this->request->get['filter_date_start'];
+			$data['filter_date_start'] = $this->request->get['filter_date_start'];
+			$url                      .= '&filter_date_start=' . $data['filter_date_start'];
+			$filter                    = true;
 		} else {
-			$filter_date_start = '';
-		}
-
-		if (isset($this->request->get['filter_date_end'])) {
-			$filter_date_end = $this->request->get['filter_date_end'];
-		} else {
-			$filter_date_end = '';
-		}
-
-		if (isset($this->request->get['filter_customer'])) {
-			$filter_customer = $this->request->get['filter_customer'];
-		} else {
-			$filter_customer = null;
+			$data['filter_date_start'] = '';
 		}
 		
-		if (isset($this->request->get['filter_customer_id'])) {
-			$filter_customer_id = $this->request->get['filter_customer_id'];
+		// Order DATE TO filter
+		if (isset($this->request->get['filter_date_end'])) {
+			$data['filter_date_end'] = $this->request->get['filter_date_end'];
+			$url                    .= '&filter_date_end=' . $data['filter_date_end'];
+			$filter                  = true;
 		} else {
-			$filter_customer_id = null;
+			$data['filter_date_end'] = '';
+		}
+		// return Order Status filter
+		if (isset($this->request->get['filter_order_status_id'])) {
+			$data['filter_order_status_id'] = $this->request->get['filter_order_status_id'];
+			$url                      .= '&filter_order_status_id=' . $data['filter_order_status_id'];
+			$filter                    = true;
+		} else {
+			$data['filter_order_status_id'] = '';
 		}
 
-		if (isset($this->request->get['filter_order_status_id'])) {
-			$filter_order_status_id = $this->request->get['filter_order_status_id'];
+		// return Customer filter
+		if (isset($this->request->get['filter_customer'])) {
+			$data['filter_customer'] = $this->request->get['filter_customer'];
+			$url                      .= '&filter_customer=' . $data['filter_customer'];
+			$filter                    = true;
 		} else {
-			$filter_order_status_id = 0;
+			$data['filter_customer'] = '';
 		}
+
+		// return Customer Id filter
+		if (isset($this->request->get['filter_customer_id'])) {
+			$data['filter_customer_id'] = $this->request->get['filter_customer_id'];
+			$url                      .= '&filter_customer_id=' . $data['filter_customer_id'];
+			$filter                    = true;
+		} else {
+			$data['filter_customer_id'] = '';
+		}
+		
 
 		if (isset($this->request->get['page'])) {
 			$page = $this->request->get['page'];
@@ -42,26 +94,6 @@ class ControllerReportCustomerOrder extends Controller {
 		}
 
 		$url = '';
-
-		if (isset($this->request->get['filter_date_start'])) {
-			$url .= '&filter_date_start=' . $this->request->get['filter_date_start'];
-		}
-
-		if (isset($this->request->get['filter_date_end'])) {
-			$url .= '&filter_date_end=' . $this->request->get['filter_date_end'];
-		}
-
-		if (isset($this->request->get['filter_customer'])) {
-			$url .= '&filter_customer=' . urlencode($this->request->get['filter_customer']);
-		}
-		
-		if (isset($this->request->get['filter_customer_id'])) {
-			$url .= '&filter_customer_id=' . $this->request->get['filter_customer_id'];
-		}
-
-		if (isset($this->request->get['filter_order_status_id'])) {
-			$url .= '&filter_order_status_id=' . $this->request->get['filter_order_status_id'];
-		}
 
 		if (isset($this->request->get['page'])) {
 			$url .= '&page=' . $this->request->get['page'];
@@ -83,36 +115,38 @@ class ControllerReportCustomerOrder extends Controller {
 
 		$data['customers'] = array();
 
-		$filter_data = array(
-			'filter_date_start'			=> $filter_date_start,
-			'filter_date_end'			=> $filter_date_end,
-			'filter_customer'			=> $filter_customer,
-			'filter_customer_id'			=> $filter_customer_id,
-			'filter_order_status_id'	=> $filter_order_status_id,
-			'start'						=> ($page - 1) * $this->config->get('config_limit_admin'),
-			'limit'						=> $this->config->get('config_limit_admin')
-		);
-
-		$customer_total = $this->model_report_customer->getTotalOrders($filter_data);
-
-		$results = $this->model_report_customer->getOrders($filter_data);
-
-		foreach ($results as $result) {
-			$data['customers'][] = array(
-				'customer'       => $result['customer'],
-				'email'          => $result['email'],
-				'customer_group' => $result['customer_group'],
-				'status'         => ($result['status'] ? $this->language->get('text_enabled') : $this->language->get('text_disabled')),
-				'orders'         => $result['orders'],
-				'products'       => $result['products'],
-				'total'          => $this->currency->format($result['total'], $this->config->get('config_currency')),
-				'edit'           => $this->url->link('customer/customer/edit', 'order_report=order_report&token=' . $this->session->data['token'] . '&customer_id=' . $result['customer_id'] . $url, true)
+		if ($filter) {
+			$data['results'] = true;
+			$filter_data = array(
+				'filter_date_start'	      => date('Y-m-d', strtotime($data['filter_date_start'])),
+				'filter_date_end'	      => date('Y-m-d', strtotime($data['filter_date_end'])),
+				'filter_order_status_id'       => $data['filter_order_status_id'],
+				'filter_customer'			=> $data['filter_customer'],
+				'filter_customer_id'			=> $data['filter_customer_id'],
+				'start' => ($page - 1) * $this->config->get('config_limit_admin'),
+				'limit' => $this->config->get('config_limit_admin')
 			);
+
+			$customer_total = $this->model_report_customer->getTotalOrders($filter_data);
+			$results = $this->model_report_customer->getOrders($filter_data);
+
+			foreach ($results as $result) {
+				$data['customers'][] = array(
+					'customer'       => $result['customer'],
+					'email'          => $result['email'],
+					'customer_group' => $result['customer_group'],
+					'status'         => ($result['status'] ? $this->language->get('text_enabled') : $this->language->get('text_disabled')),
+					'orders'         => $result['orders'],
+					'products'       => $result['products'],
+					'total'          => $this->currency->format($result['total'], $this->config->get('config_currency')),
+					'edit'           => $this->url->link('customer/customer/edit', 'order_report=order_report&token=' . $this->session->data['token'] . '&customer_id=' . $result['customer_id'] . $url, true)
+				);
+			}
 		}
 		
 		$this->load->model('customer/customer');
 		$data['Dropdowncustomers'] = $this->model_customer_customer->getCustomers();
-		
+		$data['filter'] = $filter;
 		$data['heading_title'] = $this->language->get('heading_title');
 
 		$data['text_list'] = $this->language->get('text_list');
@@ -175,16 +209,16 @@ class ControllerReportCustomerOrder extends Controller {
 
 		$data['results'] = sprintf($this->language->get('text_pagination'), ($customer_total) ? (($page - 1) * $this->config->get('config_limit_admin')) + 1 : 0, ((($page - 1) * $this->config->get('config_limit_admin')) > ($customer_total - $this->config->get('config_limit_admin'))) ? $customer_total : ((($page - 1) * $this->config->get('config_limit_admin')) + $this->config->get('config_limit_admin')), $customer_total, ceil($customer_total / $this->config->get('config_limit_admin')));
 
-		$data['filter_date_start'] = $filter_date_start;
-		$data['filter_date_end'] = $filter_date_end;
-		$data['filter_customer'] = $filter_customer;
-		$data['filter_customer_id'] = $filter_customer_id;
-		$data['filter_order_status_id'] = $filter_order_status_id;
+		$$data['filter_date_start'] = $data['filter_date_start'];
+		$data['filter_date_end'] = $data['filter_date_end'];
+		$data['filter_customer'] = $data['filter_customer'];
+		$data['filter_customer_id'] = $data['filter_customer_id'];
+		$data['filter_order_status_id'] = $data['filter_order_status_id'];
 
 		$data['header'] = $this->load->controller('common/header');
 		$data['column_left'] = $this->load->controller('common/column_left');
 		$data['footer'] = $this->load->controller('common/footer');
 
-		$this->response->setOutput($this->load->view('report/customer_order', $data));
+		$this->response->setOutput($this->load->view('report/customer_order_new', $data));
 	}
 }

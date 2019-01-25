@@ -9,8 +9,8 @@ class ModelExtensionErpArch extends Model {
         . '\<'          // LOCATE A LEFT WICKET
         . '/{0,1}'      // MAYBE FOLLOWED BY A SLASH
         . '.*?'         // ANYTHING OR NOTHING
-        . ')'           // END GROUP PATTERN
-        . '('           // GROUP PATTERN 2
+        . ')'           // END PATTERN
+        . '('           // GROUP PATTERN 2 
         . ':{1}'        // A COLON (EXACTLY ONE)
         . ')'           // END GROUP PATTERN
         . '#'           // REGEX DELIMITER
@@ -80,12 +80,12 @@ class ModelExtensionErpArch extends Model {
             curl_setopt($soapCh, CURLOPT_POSTFIELDS,     $soapRequest);
             curl_setopt($soapCh, CURLOPT_HTTPHEADER,     $header);
             
-            if (curl_exec($soapCh) === false) {
+            $xmlResponse = curl_exec($soapCh);
+            if ($xmlResponse === false) {
                 $err = 'Curl error: ' . curl_error($soapCh);
                 curl_close($soapCh);
                 print $err;
             } else {
-                $xmlResponse = curl_exec($soapCh);
                 curl_close($soapCh);
                 $log_response = new Log ('response.log');
                 $log_response->write($xmlResponse);
@@ -95,11 +95,12 @@ class ModelExtensionErpArch extends Model {
             out($e);
         }
     }
-
-    public function submitNewQuotation ($debtor_code,$order_number ,$products) {
+    public function submitNewQuotation ($debtor_code,$order_number ,$products,$order_status) {
         // ArchSubmitNewQuotationCall
+        $this->load->model('checkout/order');
+        $xmlProductList = "";
         if (is_array($products)) {
-            $xmlProductList = "";
+            
             foreach ($products as $key => $value) {
                 $xmlProductList .= "<spi1:SubmitQuotationRequest.SubmitQuotationProductList>";
                 $xmlProductList .= "    <spi1:ProductCode>" . $value['model'] . "</spi1:ProductCode>";
@@ -113,7 +114,7 @@ class ModelExtensionErpArch extends Model {
         $xmlBody  = "    <tem:request>";
         $xmlBody .= "        <spi1:DebtorCode>" . $debtor_code . "</spi1:DebtorCode>";
         $xmlBody .= "        <spi1:ProductList>". $xmlProductList . "</spi1:ProductList>";
-        $xmlBody .= "        <spi1:TransactionTrackingNumber>" . $order_number . "</spi1:TransactionTrackingNumber>";
+        $xmlBody .= "        <spi1:TransactionTrackingNumber>0</spi1:TransactionTrackingNumber>";
         $xmlBody .= "    </tem:request>";
         $xmlns    = "xmlns:spi1=\"http://schemas.datacontract.org/2004/07/Spinnaker.Arch.BL.BusinessObjectReaders.ECommerce.Readers.Request\"";
       
@@ -122,10 +123,39 @@ class ModelExtensionErpArch extends Model {
         $transaction_tracking_number = $result['s_Body']['SubmitNewQuotationResponse']['SubmitNewQuotationResult']['a_TransactionTrackingNumber'];
         
         if ($success =='true') { 
-            return $transaction_tracking_number;
+            $this->model_checkout_order->addOrderHistory($order_number, $order_status,'Pricing Applied <br/> TTN : '.$transaction_tracking_number,true);
+            sleep(3);
+            //$this->acceptQuotation($order_number, $transaction_tracking_number);
+            $this->getQuotation($order_number,$transaction_tracking_number);
+            //return $transaction_tracking_number;
+            return true;
+
         } else {
+
             return false;
         }
+       
+    }
+
+    public function getQuotation($order_number,$ttn){
+        $xmlBody  = "    <tem:request>";
+        $xmlBody .= "        <spi1:TransactionTrackingNumber>". $ttn ."</spi1:TransactionTrackingNumber>";
+        $xmlBody .= "    </tem:request>";
+        $xmlns    = "xmlns:spi1=\"http://schemas.datacontract.org/2004/07/Spinnaker.Arch.BL.BusinessObjectReaders.ECommerce.Readers.Request\"";
+      
+        $result   = $this->post("GetQuotation", $xmlBody, $xmlns);
+        $log_response = new Log ('getQuotation.log');
+        $log_response->write($result);
+        $this->acceptQuotation($order_number, $ttn);
+    }
+    public function acceptQuotation ($order_number,$ttn){
+        $xmlBody  = "    <tem:request>";
+        $xmlBody .= "        <spi1:OrderNumber>". $order_number ."</spi1:OrderNumber>";
+        $xmlBody .= "        <spi1:TransactionTrackingNumber>". $ttn ."</spi1:TransactionTrackingNumber>";
+        $xmlBody .= "    </tem:request>";
+        $xmlns    = "xmlns:spi1=\"http://schemas.datacontract.org/2004/07/Spinnaker.Arch.BL.BusinessObjectReaders.ECommerce.Readers.Request\"";
+      
+        $result   = $this->post("AcceptQuotation", $xmlBody, $xmlns);
        
     }
 

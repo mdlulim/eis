@@ -96,7 +96,7 @@
                 </select>
               </div>
             </div>
-            <div class="col-sm-4">
+             <div class="col-sm-4" style="display: none;">
               <div class="form-group">
                 <label class="control-label" for="input-approved"><?php echo $entry_approved; ?></label>
                 <select name="filter_approved" id="input-approved" class="form-control">
@@ -113,12 +113,30 @@
                   <?php } ?>
                 </select>
               </div>
+            </div>
+             <div class="col-sm-4">
+              <div class="form-group">
+                <label class="control-label" for="input-wholesale"><?php echo $entry_wholesale; ?></label>
+                <select name="filter_wholesale" id="input-wholesale" class="form-control">
+                  <option value="*">Select Wholesale Status</option>
+                  <?php if ($filter_wholesale) { ?>
+                  <option value="1" selected="selected">Invited</option>
+                  <?php } else { ?>
+                  <option value="1"><?php echo "Invited"; ?></option>
+                  <?php } ?>
+                  <?php if (!$filter_wholesale && !is_null($filter_wholesale)) { ?>
+                  <option value="0" selected="selected"><?php echo "Not Invited"; ?></option>
+                  <?php } else { ?>
+                  <option value="0"><?php echo "Not Invited"; ?></option>
+                  <?php } ?>
+                </select>
+              </div>
+            </div>
               <!--<div class="form-group">
                 <label class="control-label" for="input-ip"><?php echo $entry_ip; ?></label>
                 <input type="text" name="filter_ip" value="<?php echo $filter_ip; ?>" placeholder="<?php echo $entry_ip; ?>" id="input-ip" class="form-control" />
               </div>-->
 
-            </div>
             <div class="col-sm-4">
 
               <div class="form-group">
@@ -341,8 +359,14 @@ $('#button-filter').on('click', function() {
   
   if (filter_approved != '*') {
     url += '&filter_approved=' + encodeURIComponent(filter_approved);
-  } 
+  }
+
+  var filter_wholesale = $('select[name=\'filter_wholesale\']').val();
   
+  if (filter_wholesale != '*') {
+    url += '&filter_wholesale=' + encodeURIComponent(filter_wholesale);
+  }
+
   var filter_ip = $('input[name=\'filter_ip\']').val();
   
   if (filter_ip) {

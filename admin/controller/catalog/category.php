@@ -8,7 +8,7 @@ class ControllerCatalogCategory extends Controller {
 		$this->document->setTitle($this->language->get('heading_title'));
 
 		$this->load->model('catalog/category');
-
+        
 		$this->getList();
 	}
 
@@ -105,6 +105,24 @@ class ControllerCatalogCategory extends Controller {
 		$this->getList();
 	}
 
+	public function assignCategoryToCustomerGroup() {
+		//Assign multiple products to stoe
+		$this->load->language('catalog/category');
+		$this->document->setTitle($this->language->get('heading_title'));
+		$this->load->model('catalog/category');
+		
+	  if (($this->request->server['REQUEST_METHOD'] == 'POST')) {
+		foreach ($this->request->post['selected'] as $category_id) {
+			$this->model_catalog_category->assignCategoryToCustomerGroup($category_id, $this->request->post);
+		}
+			
+			$this->session->data['success'] = $this->language->get('text_success');
+
+			$this->response->redirect($this->url->link('catalog/category', 'token=' . $this->session->data['token'] . $url, true));
+		}
+		$this->getList();
+	}
+
 	public function delete() {
 		$this->load->language('catalog/category');
 
@@ -172,6 +190,7 @@ class ControllerCatalogCategory extends Controller {
 	}
 
 	protected function getList() {
+	   //die("test");
 		if (isset($this->request->get['sort'])) {
 			$sort = $this->request->get['sort'];
 		} else {

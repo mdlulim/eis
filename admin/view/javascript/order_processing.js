@@ -129,7 +129,11 @@
          ****************************************************/
     	
     	$document.on('click', '#addNewAddress', function(e) {
-    		e.preventDefault();
+			e.preventDefault();
+			$('#newAddressModal').find('.form-group .text-danger').remove();
+			if ($('select#country-select').val().length === 0) {
+				$('select#input-payment-zone').prop('disabled', true);
+			}
     		$('#newAddressModal').modal('show');
     	});
         
@@ -184,7 +188,10 @@
 									html += '<option value="' + json['addresses'][i]['address_id'] + '">' + json['addresses'][i]['address_1'] + ' ' + json['addresses'][i]['address_2'] + ',' + json['addresses'][i]['city'] + ',' + json['addresses'][i]['zone'] + ',' + json['addresses'][i]['country'] + '</option>';
 								}
 							}
+							$('#newAddressModal').find('form')[0].reset();
 						}
+						$('#newAddressModal').find('#newadbook').css({'opacity':1});
+						('#submitAddressForm').prop('disabled', false);
 						$('select#input-shipping-address').html(html);
 						$('select#input-shipping-address').trigger('change');
 		            }
@@ -199,26 +206,28 @@
          ****************************************************/
 
     	$document.on('change', 'select#country-select', function() {
-    		var token = $('#content').data('token');
+    		var token       = $('#content').data('token');
+			var zonesSelect = $('select#input-payment-zone');
+			zonesSelect.prop('disabled', true);
 
     		// if country is selected
     		if ($(this).val().length > 0) {
     			$.ajax({
-    				url: 'index.php?route=localisation/zone/get_zones_by_country_id&token'+token,
+    				url: 'index.php?route=localisation/zone/get_zones_by_country_id&token='+token,
     				type: 'GET',
-    				dataType: 'default: Intelligent Guess (Other values: xml, json, script, or html)',
-    				data: {param1: 'value1'},
-    			})
-    			.done(function() {
-    				console.log("success");
-    			})
-    			.fail(function() {
-    				console.log("error");
-    			})
-    			.always(function() {
-    				console.log("complete");
+					data: {country_id: $(this).val()},
+    				dataType: 'json',
+					success: function (json) {
+						var html = `<option value="">--- Please Select ---</option>`;
+						if (json['zones']) {
+							for (var i in json['zones']) {
+								html += `<option value="${json['zones'][i]['zone_id']}">${json['zones'][i]['name']}</option>`;
+							}
+							zonesSelect.prop('disabled', false);
+						}
+						zonesSelect.html(html);
+					}
     			});
-    			
     		}
     	});
         
@@ -230,6 +239,7 @@
 
     	$document.on('change', 'select#input-shipping-address', function() {
     		if ($(this).val().length && $(this).val() != '') {
+				var token = $('#content').attr('data-api-token');
 	    		// get shipping address from user's selection
 	    		Orders.getShippingAddress($(this).val(),
 	    		function(json) {

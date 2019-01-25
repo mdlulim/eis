@@ -17,6 +17,7 @@
 .datatable-custom-filters button.btn {
   border-radius: 0px;
   padding: 11px 25px 12px !important; 
+  background-color: rgb(56,56,56);
 }
 .datatable-custom-filters button.btn.dropdown-toggle {
   background: gainsboro;
@@ -75,6 +76,10 @@
 /********************************************************
  *  Add/remove cart items
  ********************************************************/
+
+ .cart-info table {
+   font-size: 13px;
+ }
 
 .cart-info td.quantity > .qty,
 .cart .quantity > .qty {
@@ -179,6 +184,9 @@
 .cart-info .total {
   min-width: 100px;
 }
+.cart-info table > tfoot > tr > th {
+  text-align: right;
+}
 
 /********************************************************
  *  DataTable pagination
@@ -208,7 +216,7 @@
 .dataTables_wrapper .dataTables_paginate .paginate_button.current, 
 .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover,
 .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
-  background: #428bca;
+  background: rgb(56,56,56);
   border: none;
   color: #fff !important;
   margin: 0;
@@ -216,14 +224,15 @@
 }
 .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
   background: transparent;
-  color: #428bca !important;
+  color: rgb(56,56,56) !important;
 }
 
 /********************************************************
  *  Import to cart
  ********************************************************/
 
-button#import-cart {
+button#import-cart,
+button#clear-cart {
   margin: 8px;
   background-color: #fff;
   color: initial;
@@ -232,10 +241,14 @@ button#import-cart {
 }
 button#import-cart:not('.disabled'):active,
 button#import-cart:not('.disabled'):focus,
-button#import-cart:not('.disabled'):hover {
+button#import-cart:not('.disabled'):hover,
+button#clear-cart:not('.disabled'):active,
+button#clear-cart:not('.disabled'):focus,
+button#clear-cart:not('.disabled'):hover {
   color: rgb(70, 130, 180); 
 }
-button#import-cart > i:before {
+button#import-cart > i:before,
+button#clear-cart > i:before {
   color: inherit;
   content: "\f019";
   font-family: 'FontAwesome';
@@ -249,6 +262,10 @@ button#import-cart > i:before {
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
 }
+button#clear-cart > i:before {
+  content: "\f1f8";
+}
+button#import-cart.disabled,
 button#import-cart.disabled {
   color: #999;
   cursor: not-allowed; 
@@ -257,6 +274,7 @@ button#import-cart.disabled {
 form#form-cart-importer {
   display: inline;
 }
+
 
 /********************************************************
  *  DataTable file export buttons
@@ -290,4 +308,158 @@ form#form-cart-importer {
 #export-buttons .dt-button.buttons-pdf {
   border-top-right-radius: 4px;
   border-bottom-right-radius: 4px;
+}
+
+/********************************************************
+ *  Cart import [custom] modal
+ ********************************************************/
+
+ #modalImportCart .modal-body .steps {
+  position: relative;
+  display: block;
+  width: 100%;
+}
+#modalImportCart .modal-body .steps > ul {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+#modalImportCart .modal-body .steps > ul > li {
+  display: table-cell;
+  width: auto;
+  vertical-align: top;
+  text-align: center;
+  position: relative;
+  float: none;
+}
+#modalImportCart .modal-body .steps > ul > li:after, 
+#modalImportCart .modal-body .steps > ul > li:before {
+  content: '';
+  z-index: 9;
+  display: block;
+  position: absolute;
+}
+#modalImportCart .modal-body .steps > ul > li:after {
+  right: 0;
+}
+#modalImportCart .modal-body .steps > ul > li:after, 
+#modalImportCart .modal-body .steps > ul > li:before {
+  top: 45px;
+  width: 50%;
+  height: 3px;
+  background-color: rgb(56,56,56);
+}
+#modalImportCart .modal-body .steps > ul > li.current:after, 
+#modalImportCart .modal-body .steps > ul > li.current~li:after, 
+#modalImportCart .modal-body .steps > ul > li.current~li:before {
+  background-color: #F3F3F3;
+}
+#modalImportCart .modal-body .steps > ul > li:first-child:before,
+#modalImportCart .modal-body .steps > ul > li:last-child:after {
+    content: none
+}
+#modalImportCart .modal-body .steps > ul > li > a {
+  position: relative;
+  padding-top: 60px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  display: block;
+  font-size: .7em;
+}
+#modalImportCart .modal-body .steps > ul > li.current > a {
+  color: #2f3d4a;
+  cursor: default;
+  font-weight: 600;
+}
+#modalImportCart .modal-body .steps .current-info {
+  position: absolute;
+  left: -99999px;
+}
+#modalImportCart .modal-body .steps .step {
+  background-color: #fff;
+  display: inline-block;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  margin-left: -28px;
+  z-index: 10;
+  text-align: center;
+  width: 50px;
+  height: 50px;
+  line-height: 50px;
+  border: 3px solid #F3F3F3;
+  font-size: .8rem;
+  border-radius: 50%;
+}
+#modalImportCart .modal-body .steps > ul > li.current .step {
+  border-color: rgb(56,56,56);
+  background-color: #fff;
+  color: rgb(56,56,56);
+}
+#modalImportCart .modal-body .steps > ul > li.disabled a, 
+#modalImportCart .modal-body .steps > ul > li.disabled a:focus, 
+#modalImportCart .modal-body .steps > ul > li.disabled a:hover {
+  color: #999;
+  cursor: default;
+}
+#modalImportCart .modal-body .steps > ul > li.done .step {
+  background-color: rgb(56,56,56);
+  border-color: rgb(56,56,56);
+  color: #fff;
+}
+#modalImportCart .modal-body .steps > ul > li.done > a {
+  font-weight: 600;
+  color: rgb(56,56,56);
+}
+#modalImportCart .modal-body .text-area {
+  text-align: center;
+  font-size: 12px;
+}
+#modalImportCart .modal-body .text-area p {
+  display: block;
+  margin-top: -20px;
+  font-size: 12px;
+  margin-bottom: 15px;
+  font-weight: 400;
+  color: #555;
+}
+#modalImportCart button:disabled,
+#modalImportCart button[disabled="disabled"] {
+  cursor: not-allowed;
+  opacity: .6;
+}
+.ajax__loader {
+  display: none;
+}
+.ajax__loader.load {
+  display: block;
+}
+.cart__items-not-found {
+  font-size: 13px;
+  margin-bottom: 30px !important;
+}
+.cart__items-not-found table.table.table-striped tbody tr:nth-of-type(odd) {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+.cart__items-not-found table.table th,
+.cart__items-not-found table.table td {
+  padding: 0.75rem;
+  vertical-align: top;
+  border-top: 1px solid #dee2e6;
+}
+.cart__items-not-found table.table thead th {
+  vertical-align: bottom;
+  border-bottom: 2px solid #dee2e6;
+}
+.cart__items-not-found table.table tbody + tbody {
+  border-top: 2px solid #dee2e6;
+}
+.cart__items-not-found table.table .table {
+  background-color: #fff;
+}
+.cart__items-not-found table.table.dataTable.no-footer {
+  border-bottom: 2px solid #dee2e6;
 }
