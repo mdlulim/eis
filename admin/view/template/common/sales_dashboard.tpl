@@ -414,7 +414,7 @@
         <div class="modal-content">
             <div class="modal__loader-overlay"><div>Please waiting whilst processing...</div></div>
             <form id="form__schedule-appointment" action=" " method="post" novalidate>
-                <input type="hidden" name="appointment_type" id="input__appointment_type" value="<?php echo ($filter_type=='customer') ? 'Existing Business' : 'New Business'; ?>">
+                <input type="hidden" name="appointment_type" id="input__appointment_type" value="Existing Business">
                 <input type="hidden" name="customer_id" id="input__customer_id">
                 <input type="hidden" name="salesrep_id" id="input__salesrep_id">
                 <input type="hidden" name="appointment_address" id="input__appointment_address">

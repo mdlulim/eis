@@ -114,6 +114,7 @@
             function(isConfirm){
                 if (isConfirm) {
                     var token = $('#content').data('token');
+                    git 
                     var url   = `index.php?route=replogic/schedule_management/scheduleAppointment&token=${token}`;
                     $.ajax({
                         url      : url,
