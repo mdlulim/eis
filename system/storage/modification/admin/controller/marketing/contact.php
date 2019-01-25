@@ -28,37 +28,6 @@ class ControllerMarketingContact extends Controller {
 		$data['entry_subject'] = $this->language->get('entry_subject');
 		$data['entry_message'] = $this->language->get('entry_message');
 
-		$data['entry_template'] = $this->language->get('entry_template');
-		$data['entry_preheader'] = $this->language->get('entry_preheader');
-		$data['warning_template_content'] = $this->language->get('warning_template_content');
-		$data['text_select'] = $this->language->get('text_select');
-
-		$this->load->model('localisation/language');
-		$this->load->model('extension/mail/template');
-
-        $templates = $this->model_extension_mail_template->getTemplates(array(
-			'emailtemplate_key' => 'admin.newsletter'
-		));
-
-		$data['email_templates'] = array();
-
-		foreach($templates as $row) {
-			$label = $row['emailtemplate_label'];
-
-			if ($row['emailtemplate_default']) {
-				$label = $this->language->get('text_default') . ' - ' . $label;
-			}
-
-			$data['email_templates'][] = array(
-				'value' => $row['emailtemplate_id'],
-				'label' => $label
-			);
-		}
-
-		$data['languages'] = $this->model_localisation_language->getLanguages();
-
-        $data['templates_action'] = $this->url->link('extension/mail/template/get_template', 'token='.$this->session->data['token'], true);
-
 		$data['help_customer'] = $this->language->get('help_customer');
 		$data['help_affiliate'] = $this->language->get('help_affiliate');
 		$data['help_product'] = $this->language->get('help_product');
@@ -94,7 +63,7 @@ class ControllerMarketingContact extends Controller {
 		$data['column_left'] = $this->load->controller('common/column_left');
 		$data['footer'] = $this->load->controller('common/footer');
 
-		$this->response->setOutput($this->load->view('marketing/contact_lang', $data));
+		$this->response->setOutput($this->load->view('marketing/contact', $data));
 	}
 
 	public function send() {
@@ -162,12 +131,7 @@ $this->load->model('journal2/newsletter');
 						$results = $this->model_journal2_newsletter->getSubscribers($customer_data);
 
 						foreach ($results as $result) {
-							$emails[] = array(
-								'email' => $result['email'],
-								'customer_id' => isset($result['customer_id']) ? $result['customer_id'] : 0,
-								'store_id' => isset($result['store_id']) ? $result['store_id'] : 0,
-								'language_id' => isset($result['language_id']) ? $result['language_id'] : 0
-							);
+							$emails[] = $result['email'];
 						}
 						break;
 					case 'customer_all':
@@ -181,12 +145,7 @@ $this->load->model('journal2/newsletter');
 						$results = $this->model_customer_customer->getCustomers($customer_data);
 
 						foreach ($results as $result) {
-							$emails[] = array(
-								'email' => $result['email'],
-								'customer_id' => isset($result['customer_id']) ? $result['customer_id'] : 0,
-								'store_id' => isset($result['store_id']) ? $result['store_id'] : 0,
-								'language_id' => isset($result['language_id']) ? $result['language_id'] : 0
-							);
+							$emails[] = $result['email'];
 						}
 						break;
 					case 'customer_group':
@@ -201,12 +160,7 @@ $this->load->model('journal2/newsletter');
 						$results = $this->model_customer_customer->getCustomers($customer_data);
 
 						foreach ($results as $result) {
-							$emails[] = array(
-								'email' => $result['email'],
-								'customer_id' => isset($result['customer_id']) ? $result['customer_id'] : 0,
-								'store_id' => isset($result['store_id']) ? $result['store_id'] : 0,
-								'language_id' => isset($result['language_id']) ? $result['language_id'] : 0
-							);
+							$emails[$result['customer_id']] = $result['email'];
 						}
 						break;
 					case 'customer':
@@ -215,15 +169,7 @@ $this->load->model('journal2/newsletter');
 								$customer_info = $this->model_customer_customer->getCustomer($customer_id);
 
 								if ($customer_info) {
-									$email_total = 1;
-
-									$emails[] = array(
-										'customer' => $customer_info,
-										'email' => $customer_info['email'],
-										'customer_id' => $customer_info['customer_id'],
-										'store_id' => $customer_info['store_id'],
-										'language_id' => $customer_info['language_id']
-									);
+									$emails[] = $customer_info['email'];
 								}
 							}
 						}
@@ -239,10 +185,7 @@ $this->load->model('journal2/newsletter');
 						$results = $this->model_marketing_affiliate->getAffiliates($affiliate_data);
 
 						foreach ($results as $result) {
-							$emails[] = array(
-								'email' => $result['email'],
-								'affiliate_id' => $result['affiliate_id']
-							);
+							$emails[] = $result['email'];
 						}
 						break;
 					case 'affiliate':
@@ -251,13 +194,7 @@ $this->load->model('journal2/newsletter');
 								$affiliate_info = $this->model_marketing_affiliate->getAffiliate($affiliate_id);
 
 								if ($affiliate_info) {
-									$email_total = 1;
-
-									$emails[] = array(
-										'affiliate' => $affiliate_info,
-										'email' => $affiliate_info['email'],
-										'affiliate_id' => $affiliate_info['affiliate_id']
-									);
+									$emails[] = $affiliate_info['email'];
 								}
 							}
 						}
@@ -269,29 +206,20 @@ $this->load->model('journal2/newsletter');
 							$results = $this->model_sale_order->getEmailsByProductsOrdered($this->request->post['product'], ($page - 1) * 10, 10);
 
 							foreach ($results as $result) {
-								$emails[] = array(
-								'email' => $result['email'],
-								'customer_id' => isset($result['customer_id']) ? $result['customer_id'] : 0,
-								'store_id' => isset($result['store_id']) ? $result['store_id'] : 0,
-								'language_id' => isset($result['language_id']) ? $result['language_id'] : 0
-							);
+								$emails[] = $result['email'];
 							}
 						}
 						break;
 				}
 
 				if ($emails) {
-					$json['success'] = sprintf($this->language->get('text_success_sent'), $email_total);
+					$json['success'] = $this->language->get('text_success');
 
 					$start = ($page - 1) * 10;
 					$end = $start + 10;
 
 					if ($end < $email_total) {
-						if ($start) {
-			$json['success'] = sprintf($this->language->get('text_sent'), $start, $email_total);
-		} else {
-			$json['success'] = sprintf($this->language->get('text_sent'), count($emails), $email_total);
-		}
+						$json['success'] = sprintf($this->language->get('text_sent'), $start, $email_total);
 					}
 
 					if ($end < $email_total) {
@@ -300,97 +228,15 @@ $this->load->model('journal2/newsletter');
 						$json['next'] = '';
 					}
 
-					foreach ($emails as $email_info) {
-						$email = $email_info['email'];
-
-						if (isset($email_info['language_id']) && $email_info['language_id']) {
-							$language_id = $email_info['language_id'];
-						} else {
-							$language_id = $this->config->get('config_language_id');
-						}
-
-						if ($this->request->post['store_id'] == 0 && isset($email_info['store_id'])) {
- 							$store_id = $email_info['store_id'];
-						} else {
-							$store_id = $this->request->post['store_id'];
-						}
-
-						$this->load->model('extension/mail/template');
-
-						$template_load = array(
-							'key' => 'admin.newsletter',
-							'language_id' => $language_id,
-							'store_id' => $store_id
-						);
-
-						if (isset($email_info['customer']) && isset($email_info['customer']['customer_id'])) {
-							$template_load['customer_id'] = $email_info['customer']['customer_id'];
-						} elseif (isset($email_info['customer_id'])) {
-							if ($email_info['customer_id']) {
-								$template_load['customer_id'] = $email_info['customer_id'];
-							} else {
-								$this->load->model('customer/customer');
-
-								$customer_info = $this->model_customer_customer->getCustomerByEmail($email);
-
-								if ($customer_info) {
-									$template_load['customer_id'] = $email_info['customer_id'];
-								}
-							}
-						}
-
-						$template = $this->model_extension_mail_template->load($template_load);
-
-						if (isset($email_info['customer'])) {
-							$template->addData($email_info['customer']);
-							unset($email_info['customer']);
-						} elseif (isset($template_load['customer_id'])) {
-							$customer_info = $this->model_customer_customer->getCustomer($template_load['customer_id']);
-							if ($customer_info) {
-								$template->addData($customer_info);
-							}
-						}
-
-						if (isset($email_info['affiliate'])) {
-							$template->addData($email_info['affiliate']);
-							unset($email_info['affiliate']);
-						} elseif (isset($email_info['affiliate_id'])) {
-							$affiliate_info = $this->model_sale_affiliate->getAffiliate($email_info['affiliate_id']);
-							$template->addData($affiliate_info);
-						}
-
-						if (!empty($template->data['emailtemplate']['unsubscribe_text']) && in_array($this->request->post['to'], array('newsletter', 'customer_all', 'customer_group', 'customer'))) {
-							$url = (isset($store_info['url']) ? $store_info['url'] : HTTP_CATALOG) . 'index.php?route=' . rawurlencode('account/newsletter/unsubscribe') . '&code='.md5($email);
-							$template->data['unsubscribe'] = sprintf(html_entity_decode($template->data['emailtemplate']['unsubscribe_text'], ENT_QUOTES, 'UTF-8'), $url);
-					    }
-
-						if (is_array($this->request->post['subject']) && !empty($this->request->post['subject'][$language_id])) {
-							$subject = $this->request->post['subject'][$language_id];
-						} else {
-							$subject = $this->config->get('config_name');
-						}
-
-						if (is_array($this->request->post['preview']) && !empty($this->request->post['preview'][$language_id])) {
-							$template->data['preheader_preview'] = $this->request->post['preview'][$language_id];
-						}
-
-						if (is_array($this->request->post['message']) && !empty($this->request->post['message'][$language_id])) {
-							$body = $this->request->post['message'][$language_id];
-						} else {
-							$body = $store_name;
-						}
-
-						$template->addData($email_info);
-		
 					$message  = '<html dir="ltr" lang="en">' . "\n";
 					$message .= '  <head>' . "\n";
-					$message .= '    <title></title>' . "\n";
+					$message .= '    <title>' . $this->request->post['subject'] . '</title>' . "\n";
 					$message .= '    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">' . "\n";
 					$message .= '  </head>' . "\n";
-					$message .= '  <body>' . html_entity_decode($message, ENT_QUOTES, 'UTF-8') . '</body>' . "\n";
+					$message .= '  <body>' . html_entity_decode($this->request->post['message'], ENT_QUOTES, 'UTF-8') . '</body>' . "\n";
 					$message .= '</html>' . "\n";
 
-					
+					foreach ($emails as $email) {
 						if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
 							$mail = new Mail();
 							$mail->protocol = $this->config->get('config_mail_protocol');
@@ -404,16 +250,9 @@ $this->load->model('journal2/newsletter');
 							$mail->setTo($email);
 							$mail->setFrom($store_email);
 							$mail->setSender(html_entity_decode($store_name, ENT_QUOTES, 'UTF-8'));
-							
-							$template->build();
-
-							$template->fetch(null, $body);
-
-							$mail->setSubject($subject);
-
-							$template->hook($mail);
+							$mail->setSubject(html_entity_decode($this->request->post['subject'], ENT_QUOTES, 'UTF-8'));
+							$mail->setHtml($message);
 							$mail->send();
-							$this->model_extension_mail_template->sent();
 						}
 					}
 				} else {
