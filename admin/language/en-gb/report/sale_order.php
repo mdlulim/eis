@@ -19,7 +19,7 @@ $_['column_products']   = 'No. Products';
 $_['column_tax']        = 'Tax';
 $_['column_total']      = 'Total';
 
-// Entry
+//Entry
 $_['entry_date_start']  = 'Date From';
 $_['entry_date_end']    = 'Date To';
 $_['entry_group']       = 'Group By';
