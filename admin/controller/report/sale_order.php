@@ -310,7 +310,6 @@ class ControllerReportSaleOrder extends Controller {
 				);
 			}
 		}
-		
 		return $data['extensions'];
 	}
 }
