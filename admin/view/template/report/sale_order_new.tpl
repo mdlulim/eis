@@ -156,6 +156,7 @@
   </div>
 
 </div>
+
 <!-- Page loader -->
 <div class="loader-wrapper" style="display:none">
 	<div class="loader"></div>
