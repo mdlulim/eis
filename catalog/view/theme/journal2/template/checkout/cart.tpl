@@ -102,7 +102,7 @@
                   <?php if (!$product['stock']) { ?>
                   <span class="text-danger">***</span>
                   <span class="stock-alert">
-                    <i class="fa fa-exclamation-triangle"></i> This item is currently out of stock.
+                    <i class="fa fa-exclamation-triangle"></i> This item is not available in the desired quantity or not in stock.
                   </span>
                   <?php } ?>
                   <?php if ($product['option']) { ?>
