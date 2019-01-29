@@ -218,7 +218,7 @@ class ControllerCheckoutCart extends Controller {
 
 			// sort cart items | place out of stock items first 
 			usort($data['products'], function($a, $b) {
-				return $a['quantity'] - $b['quantity'];
+				return $a['stock'] - $b['stock'];
 			});
 
 			// Gift Voucher
