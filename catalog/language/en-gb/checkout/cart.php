@@ -66,5 +66,6 @@ $_['error_product']            = 'Warning: There are no products in your cart!';
 $_['error_recurring_required'] = 'Please select a payment recurring!';
 $_['error_no_product_to_add']  = 'Sorry, no products to add to cart!'; 
 
-$_['error_import_upload']      = '%s out of %s item(s) found in the system. Do you wish to continue importing or view items?';
-$_['error_import_cart']        = 'Sorry, no items to add to cart. An unexpected error has occured. Please cancel and try again!';
+$_['error_import_upload']         = '%s out of %s item(s) found in the system. Do you wish to continue importing or view items?';
+$_['error_import_cart']           = 'Sorry, no items to add to cart. An unexpected error has occured. Please cancel and try again!';
+$_['error_import_no_items_found'] = '%s out of %s item(s) found in the system. Only existing item(s) can be imported to cart!';

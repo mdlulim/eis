@@ -449,8 +449,8 @@ Journal.searchAutoComplete = function () {
         deferRequestBy: 500,
         paramName: 'search',
         onSelect: function (suggestion) {
-            if (suggestion.url) {
-                location = suggestion.url;
+            if (suggestion.value) {
+                location = `index.php?route=product/search&search=${suggestion.value}&description=true`;
             } else {
                 return false;
             }
@@ -490,7 +490,8 @@ Journal.searchAutoComplete = function () {
 //                    pattern = '(' + currentValue.replace(reEscape, '\\$1') + ')',
 //                    name = suggestion.value.replace(new RegExp(pattern, 'gi'), '<strong>$1<\/strong>');
                 var name = suggestion.value;
-                var html = '<a href="' + suggestion.url + '">';
+                var url  = `index.php?route=product/search&search=${name}&description=true`;
+                var html = '<a href="' + url + '">';
                 if (suggestion.image) {
                     html += '<span class="p-image xs-33 sm-33 md-33 lg-33 xl-33"><img src="' + suggestion.image + '" /></span>';
                 }
