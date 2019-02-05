@@ -400,6 +400,8 @@ class ControllerCommonSalesDashboard extends Controller {
 		/*===============================
 		=            Filters            =
 		===============================*/
+
+		$appointmentDateFilter = '';
 		
 		if (isset($this->request->get['filter_time_frame'])) {
 			switch ($this->request->get['filter_time_frame']) {
@@ -414,6 +416,9 @@ class ControllerCommonSalesDashboard extends Controller {
 						$filters['filter_date'] = date("Y-m-d");
 						$url .= "&filter_date=" . date("Y-m-d");
 					}
+
+					# appointment view more link with date filter
+					$appointmentDateFilter  = '&filter_appointment_from='.date('d-m-Y', strtotime($filters['filter_date'])).' 00:01 AM&filter_appointment_to='.date('d-m-Y', strtotime($filters['filter_date'])).' 11:59 PM';
 
 					$data['filter_time_frame'] = $this->request->get['filter_time_frame'];
 					$data['filter_display']    = date("l, d F Y", strtotime($filters['filter_date']));
@@ -441,6 +446,9 @@ class ControllerCommonSalesDashboard extends Controller {
 						$url .= "&filter_date_to=" . date("Y-m-d", strtotime("friday this week"));
 					}
 
+					# appointment view more link with date filter
+					$appointmentDateFilter  = '&filter_appointment_from='.date('d-m-Y', strtotime($filters['filter_date_from'])).' 00:01 AM&filter_appointment_to='.date('d-m-Y', strtotime($filters['filter_date_to'])).' 11:59 PM';
+
 					$data['filter_time_frame'] = "week";
 					$data['filter_display']    = date('d F', strtotime($filters['filter_date_from']))." - ".date('d F, Y', strtotime($filters['filter_date_to']));
 					$data['week_selected']     = "selected";
@@ -463,8 +471,11 @@ class ControllerCommonSalesDashboard extends Controller {
 						$url .= "&filter_month=" . date("Y-m");
 					}
 
+					# appointment view more link with date filter
+					$appointmentDateFilter  = '&filter_appointment_from='.date('01-m-Y', strtotime($filters['filter_month'])).' 00:01 AM&filter_appointment_to='.date('t-m-Y', strtotime($filters['filter_month'])).' 11:59 PM';
+
 					$data['filter_time_frame'] = "month";
-					$data['filter_display']    = date('1 M - 30 M, Y', strtotime($filters['filter_month']));
+					$data['filter_display']    = date('1 M - t M, Y', strtotime($filters['filter_month']));
 					$data['month_selected']    = "selected";
 					$data['tf_range']          = 'style="display:none"';
 
@@ -485,6 +496,9 @@ class ControllerCommonSalesDashboard extends Controller {
 						$url .= "&filter_year=" . date("Y");
 					}
 
+					# appointment view more link with date filter
+					$appointmentDateFilter  = '&filter_appointment_from=01-01-'.$filters['filter_year'].' 00:01 AM&filter_appointment_to=31-12-'.$filters['filter_year'].' 11:59 PM';
+
 					$data['filter_time_frame'] = "year";
 					$data['filter_display']    = "1 January - 31 December, ".$filters['filter_year'];
 					$data['year_selected']     = "selected";
@@ -503,6 +517,9 @@ class ControllerCommonSalesDashboard extends Controller {
 					$filters['filter_date_to']   = date("Y-m-d", strtotime($this->request->get['filter_date_to']));
 					$url .= "&filter_date_from=" . date("Y-m-d", strtotime($this->request->get['filter_date_from']));
 					$url .= "&filter_date_to=" . date("Y-m-d", strtotime($this->request->get['filter_date_to']));
+
+					# appointment view more link with date filter
+					$appointmentDateFilter  = '&filter_appointment_from='.date('d-m-Y', strtotime($filters['filter_date_from'])).' 00:01 AM&filter_appointment_to='.date('d-m-Y', strtotime($filters['filter_date_to'])).' 11:59 PM';
 
 					$data['custom_selected']  = "selected";
 					$data['tf_no_range']      = 'style="display:none"';
@@ -524,6 +541,9 @@ class ControllerCommonSalesDashboard extends Controller {
 			$data['filter_prev_link'] = "$url&filter_month=".date('Y-m', strtotime("last month"));
 			$data['filter_next_link'] = "$url&filter_month=".date('Y-m', strtotime("next month"));
 			$data['allow_next_click'] = "disabled";
+
+			# appointment view more link with date filter
+			$appointmentDateFilter  = '&filter_appointment_from='.date('01-m-Y', strtotime($filters['filter_month'])).' 00:01 AM&filter_appointment_to='.date('t-m-Y', strtotime($filters['filter_month'])).' 11:59 PM';
 		}
 
 		if ($currentUserGroup['name'] == 'Sales Manager') {
@@ -604,8 +624,9 @@ class ControllerCommonSalesDashboard extends Controller {
 			}
 		}
 
-		# appointments view more link 
-		$data['appointment_view_more'] = $this->url->link('replogic/schedule_management', "token=$token", true);
+		# appointments view more link
+		
+		$data['appointment_view_more'] = $this->url->link('replogic/schedule_management', 'token=' . $token . $appointmentDateFilter, true);
 	
 		/*=====  End of Latest Appointments  ======*/
 
