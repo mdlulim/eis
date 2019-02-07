@@ -99,7 +99,7 @@ class ControllerAccountStocksheet extends Controller {
         
 		foreach ($results as $result) {
 			$product_info = $this->model_catalog_product->getProductSku($result['sku']);
-
+			
 			if (!empty($product_info)) {
 				if ($product_info['image']) {
 					$image = $this->model_tool_image->resize($product_info['image'], $this->config->get($this->config->get('config_theme') . '_image_wishlist_width'), $this->config->get($this->config->get('config_theme') . '_image_wishlist_height'));
@@ -129,10 +129,13 @@ class ControllerAccountStocksheet extends Controller {
 
 				$data['products'][] = array(
 					'product_id' => $product_info['product_id'],
+					'cart_id'    => $result['cart_id'],
 					'thumb'      => $image,
 					'name'       => $product_info['name'],
 					'model'      => $product_info['model'],
-					'stock'      => $result['quantity'],
+            		'cart_qty'   => (int)$result['cart_qty'],
+					'stock'      => $product_info['quantity'],
+					'quantity'   => $product_info['quantity'],
 					'price'      => $price,
 					'special'    => $special,
 					'href'       => $this->url->link('product/product', 'product_id=' . $product_info['product_id']),

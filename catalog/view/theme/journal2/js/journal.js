@@ -1140,18 +1140,23 @@ Journal.removeProductFromCart = function (product_id, element) {
     var quantity = (isNaN(input.val())) ? 1 : parseInt(input.val()) - 1;
     var url      = '';
     var data     = ``;
-    input.val(quantity);
 
-    if (Journal.isOC2) {
+    if (quantity >= 0) {
+        input.val(quantity);
+    }
+
+    if (Journal.isOC2 && quantity >= 0) {
         return cart.set(product_id, quantity, 'remove', element);
     }
 
     if (quantity > 0) {
         url  = 'index.php?route=checkout/cart/set';
         data = `product_id=${product_id}&quantity=${quantity}&action=remove`;
-    } else {
+    } else if (quantity === 0) {
         url  = 'index.php?route=checkout/cart/remove';
         data = `key=${product_id}`;
+    } else {
+        return false;
     }
 
     // do AJAX call

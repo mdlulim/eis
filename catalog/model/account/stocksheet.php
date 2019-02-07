@@ -40,7 +40,8 @@ class ModelAccountStocksheet extends Model {
 	}
 
 	public function getStocksheet() {
-        $query = $this->db->query("SELECT * FROM " . DB_PREFIX . "stocksheet WHERE customer_id = '" . (int)$this->customer->getId() . "'");
+		# $query = $this->db->query("SELECT * FROM " . DB_PREFIX . "stocksheet WHERE customer_id = '" . (int)$this->customer->getId() . "'");
+		$query = $this->db->query("SELECT s.*, c.cart_id, c.quantity AS cart_qty FROM " . DB_PREFIX . "stocksheet s LEFT JOIN " . DB_PREFIX . "product p ON p.sku = s.sku LEFT JOIN " . DB_PREFIX . "cart c ON c.product_id = p.product_id AND c.customer_id = s.customer_id WHERE s.customer_id = " . (int)$this->customer->getId());
 
 		return $query->rows;
 	}
