@@ -22,12 +22,12 @@
       <h1 class="heading-title">
         <?php echo $heading_title; ?>
         <?php echo $button_import; ?>
-        <span>
+        <!--<span>
           <a href="<?php echo $addStocksheetToCart; ?>" class="btn btn-default btn-sm pull-right btn-add-sheet-to-cart">
             <i class="fa fa-repeat"></i> 
             Add sheet to cart 
           </a>
-        </span>
+        </span>-->
       </h1>
       <?php echo $content_top; ?>
       <div class="content wishlist-info">
@@ -39,7 +39,7 @@
             <div class="form-group">
               <label class="sr-only">Search</label>
               <div class="input-group">
-                <input type="text" class="form-control input-filter" placeholder="Search">
+                <input type="text" class="form-control input-filter" placeholder="Search stock sheet...">
                 <div class="input-group-btn">
                   <button type="button" class="btn btn-primary"><span class="fa fa-search"></span></button>
                   <!--<button type="button" class="btn btn-default dropdown-toggle">
