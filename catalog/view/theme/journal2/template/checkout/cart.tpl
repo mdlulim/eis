@@ -42,7 +42,7 @@
             <div class="form-group">
               <label class="sr-only">Search</label>
               <div class="input-group">
-                <input type="text" class="form-control input-filter" placeholder="Search">
+                <input type="text" class="form-control input-filter" placeholder="Search shopping cart...">
                 <div class="input-group-btn">
                   <button type="button" class="btn btn-primary"><span class="fa fa-search"></span></button>
                   <button type="button" class="btn btn-default dropdown-toggle">
