@@ -340,7 +340,7 @@
                     id      : '<?php echo $marker_salesrep['id']?>',
                     lat     : '<?php echo $marker_salesrep['latitude']?>',
                     lng     : '<?php echo $marker_salesrep['longitude']?>',
-                    name    : '<?php echo $marker_salesrep['name']?>',
+                    name    : '<?php echo htmlspecialchars($marker_salesrep['name'])?>',
                     address : '<?php echo $marker_salesrep['address']?>',
                     icon    : '<?php echo $marker_salesrep['icon']; ?>'
                 }
@@ -362,7 +362,7 @@
                     id         : '<?php echo $marker_customer['id']?>',
                     lat        : '<?php echo $marker_customer['latitude']?>',
                     lng        : '<?php echo $marker_customer['longitude']?>',
-                    name       : '<?php echo $marker_customer['name']?>',
+                    name       : '<?php echo htmlspecialchars($marker_customer['name'])?>',
                     address    : '<?php echo $marker_customer['address']?>',
                     icon       : '<?php echo $marker_customer['icon']; ?>',
                     sr_name    : '<?php echo $marker_customer['salesrep_name']; ?>',
@@ -385,7 +385,7 @@
                     id              : '<?php echo $marker_checkin['id']?>',
                     lat             : '<?php echo $marker_checkin['latitude']?>',
                     lng             : '<?php echo $marker_checkin['longitude']?>',
-                    name            : '<?php echo $marker_checkin['name']?>',
+                    name            : '<?php echo htmlspecialchars($marker_checkin['name'])?>',
                     customer        : '<?php echo $marker_checkin['customer']?>',
                     customer_address: '<?php echo $marker_checkin['customer_address']?>',
                     address         : '<?php echo $marker_checkin['address']?>',
