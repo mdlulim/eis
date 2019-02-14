@@ -41,7 +41,7 @@ class ControllerSaleOrder extends Controller {
 		$this->document->addScript('view/javascript/order_add.js');
 
 		/*=====  End of Add Files (Includes)  ======*/
-
+				
 		$this->load->language('sale/order');
 		$this->document->setTitle($this->language->get('heading_title'));
 		$this->load->model('sale/order');
@@ -316,8 +316,18 @@ class ControllerSaleOrder extends Controller {
 				'edit'            => $this->url->link('sale/order/edit', 'token=' . $this->session->data['token'] . '&order_id=' . $result['order_id'] . $url, true)
 			);
 		}
-		
-		
+		$this->load->model('user/api');
+		$api_info = $this->model_user_api->getApi($this->config->get('config_api_id'));
+	   
+		if ($api_info) {
+			$data['api_id'] = $api_info['api_id'];
+			$data['api_key'] = $api_info['key'];
+			$data['api_ip'] = $this->request->server['REMOTE_ADDR'];
+		} else {
+			$data['api_id'] = '';
+			$data['api_key'] = '';
+			$data['api_ip'] = '';
+		}
 		
 		$this->load->model('replogic/sales_rep_management');
 		$this->load->model('replogic/customer_contact');
@@ -1027,9 +1037,9 @@ class ControllerSaleOrder extends Controller {
 		$data['catalog'] = $this->request->server['HTTPS'] ? HTTPS_CATALOG : HTTP_CATALOG;
 		
 		$this->load->model('user/api');
-		$api_info = $this->model_user_api->getApi($this->config->get('config_api_id'));
 
-		if ($api_info) {
+		$api_info = $this->model_user_api->getApi($this->config->get('config_api_id'));
+        if ($api_info) {
 			$data['api_id'] = $api_info['api_id'];
 			$data['api_key'] = $api_info['key'];
 			$data['api_ip'] = $this->request->server['REMOTE_ADDR'];
@@ -1038,7 +1048,6 @@ class ControllerSaleOrder extends Controller {
 			$data['api_key'] = '';
 			$data['api_ip'] = '';
 		}
-
 		$data['process_order_url'] = $this->url->link('sale/order/processing', 'token=' . $this->session->data['token'] . $url, true);
 		$data['add_order_url'] = $this->url->link('sale/order/add', 'token=' . $this->session->data['token'] . $url, true);
 		$data['cancel_url'] = $this->url->link('sale/order', 'token=' . $this->session->data['token'] . $url, true);

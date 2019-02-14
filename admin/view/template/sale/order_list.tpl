@@ -237,6 +237,7 @@
         <form action="<?php echo $create_order_action; ?>" method="get">
           <input type="hidden" name="route" value="sale/order/add">
           <input type="hidden" name="token" value="<?php echo $token; ?>">
+          <input type="hidden" name="api_id" value="<?php echo $api_id; ?>">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             <h4 class="modal-title" id="createOrderModalLabel">
