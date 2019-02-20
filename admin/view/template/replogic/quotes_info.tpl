@@ -277,7 +277,7 @@
           <div class="form-group">
             <label class="col-sm-2 control-label" for="input-comment">Comment</label>
             <div class="col-sm-10">
-              <textarea id="input-comment" class="form-control" name="comment" value="<?php echo $comments; ?>"></textarea>
+              <textarea id="input-comment" class="form-control" name="comment" value="<?php echo $comment; ?>"></textarea>
             </div>
           </div>
         
