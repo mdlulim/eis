@@ -32,8 +32,7 @@
 
     <?php if ($qstatus == $quote_status_denied) : ?>
     <div class="alert alert-danger">
-      <h4><i class="fa fa-exclamation-triangle"></i> <strong>Reason for denying this quote:</strong> "<?php echo $
-      ; ?>"</h4>
+      <h4><i class="fa fa-exclamation-triangle"></i> <strong>Reason for denying this quote:</strong> "<?php echo $comment; ?>"</h4>
     </div>
     <?php endif; ?>
   	
@@ -278,7 +277,7 @@
           <div class="form-group">
             <label class="col-sm-2 control-label" for="input-comment">Comment</label>
             <div class="col-sm-10">
-              <textarea id="input-comment" class="form-control" name="comment"><?php echo $comment; ?></textarea>
+              <textarea id="input-comment" class="form-control" name="comment"></textarea>
             </div>
           </div>
         
