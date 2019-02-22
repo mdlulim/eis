@@ -31,6 +31,7 @@ class ControllerReplogicOrderQuotes extends Controller {
 
 		$this->getForm();
 	}
+
 	public function approve() { 
 		
 		$this->load->model('replogic/order_quotes');
@@ -85,25 +86,7 @@ class ControllerReplogicOrderQuotes extends Controller {
 		}
 		
 	}
-	// public function deny() { 
-		
-	// 	$this->load->model('replogic/order_quotes');
-	// 	$this->load->language('replogic/order_quotes');
-	// 	if (!empty($this->request->post['quote_id']) && !empty($this->request->post['reason'])) {
-			
-	// 		$quote_id = $this->request->post['quote_id'];
-	// 		$reason   = $this->request->post['reason'];
-	// 		$json     = array();
-			
-	// 		$this->model_replogic_order_quotes->denyQuote($quote_id, $reason, $this->language->get('quote_status_denied_id'));
-			
-	// 		$json['success'] = $this->language->get('text_success');
-			
-	// 		$this->response->addHeader('Content-Type: application/json');
-	// 		$this->response->setOutput(json_encode($json));
-	// 	}
-		
-	// }
+
 	public function CancelQuotes() { 
 		
 		$this->load->model('replogic/order_quotes');
@@ -164,6 +147,7 @@ class ControllerReplogicOrderQuotes extends Controller {
 		}
 		
 	}
+
 	public function deny() {
 		$this->load->language('replogic/order_quotes');
 
@@ -221,6 +205,7 @@ class ControllerReplogicOrderQuotes extends Controller {
 
 		$this->getList();
 	}
+	
 	public function delete() {
 		$this->load->language('replogic/order_quotes');
 
@@ -466,7 +451,6 @@ class ControllerReplogicOrderQuotes extends Controller {
 		$current_user = $this->session->data['user_id'];
 		$current_user_group_id = $this->model_user_user->getUser($current_user); ;
 		$current_user_group = $this->model_user_user_group->getUserGroup($current_user_group_id['user_group_id']);
-		//print_r($current_user_group); exit;
 		
 		
 		foreach ($results as $result) {
@@ -518,6 +502,7 @@ class ControllerReplogicOrderQuotes extends Controller {
 				'total'         => $this->currency->format($total, 'ZAR', '1.0000'),
 				'date_added'    => $myFormatForView,
 				'shipping_code' => (!empty($result['shipping_code'])) ? $result['shipping_code'] : '',
+				'signed'        => $result['signed'],
 				'view'          => $view_button,
 				'edit'          => $this->url->link('replogic/order_quotes/edit', 'token=' . $this->session->data['token'] . '&quote_id=' . $result['quote_id'] . $url, true)
 			);
@@ -552,6 +537,7 @@ class ControllerReplogicOrderQuotes extends Controller {
 		$data['column_customer'] = $this->language->get('column_customer');
 		$data['column_customer_contact'] = $this->language->get('column_customer_contact');
 		$data['column_status'] = $this->language->get('column_status');
+		$data['column_signed'] = $this->language->get('column_signed');
 		$data['column_total'] = $this->language->get('column_total');
 		$data['column_date_added'] = $this->language->get('column_date_added');
 		$data['column_date_modified'] = $this->language->get('column_date_modified');
