@@ -2,9 +2,6 @@
 <div id="content" data-token="<?php echo $token; ?>">
     <div class="page-header">
         <div class="container-fluid">
-            <div class="pull-right">
-                <button type="submit" id="button-save" form="form-setting" data-toggle="tooltip" title="<?php echo $button_save; ?>" disabled="disabled" class="btn btn-primary"><i class="fa fa-save"></i></button>
-            </div>
             <h1><?php echo $heading_title; ?></h1>
             <ul class="breadcrumb">
                 <?php foreach ($breadcrumbs as $breadcrumb) : ?>
