@@ -2,7 +2,7 @@
 <div id="content" data-token="<?php echo $token; ?>">
   <div class="page-header">
     <div class="container-fluid">
-      <h1> <?php echo $heading_title; ?></h1>
+      <h1><?php echo $report_heading_title; ?></h1>
       <ul class="breadcrumb">
         <?php foreach ($breadcrumbs as $breadcrumb) { ?>
         <li><a href="<?php echo $breadcrumb['href']; ?>"><?php echo $breadcrumb['text']; ?></a></li>
@@ -13,15 +13,15 @@
   <div class="container-fluid">
     <div class="panel panel-default">
       <div class="panel-heading">
-        <h3 class="panel-title"><i class="fa fa-print"></i> <?php echo $heading_title; ?></h3>
+        <h3 class="panel-title"><i class="fa fa-print"></i> <?php echo $report_heading_title; ?></h3>
       </div>
       <div class="panel-body">
         <div class="well">
         	<h3 style="margin-bottom:0">Filters</h3>
             <hr style="margin-top:15px">
             <div class="row filters">
-                <div class="col-sm-6">
-                    <div class="form-group">
+                <div class="col-sm-4">
+                    <div class="row">
                         <label class="control-label">Order Date Range</label>
                         <div class="col-md-12 col-xs-9 p-l-0">
                             <div id="reportrange" class="report-range-picker">
@@ -30,11 +30,26 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row m-t-15">
+                        <label class="control-label">Order Status</label>
+                        <div class="col-md-12 col-xs-9 p-l-0">
+                            <select id="input-status" name="filter_order_status_id" class="selectpicker form-control" data-live-search="true">
+                                <option value="">All</option>
+                                <?php foreach ($order_statuses as $order_status) { ?>
+                                <?php if ($order_status['order_status_id'] == $filter_order_status) { ?>
+                                <option value="<?php echo $order_status['order_status_id']; ?>" selected="selected"><?php echo $order_status['name']; ?></option>
+                                <?php } else { ?>
+                                <option value="<?php echo $order_status['order_status_id']; ?>"><?php echo $order_status['name']; ?></option>
+                                <?php } ?>
+                                <?php } ?>
+                            </select>
+                        </div>
+                    </div>
                 </div>
                 <div class="col-sm-4">
                     <div class="row">
-                        <label class="col-md-4 col-xs-3 text-right">Sales Rep Name</label>
-                        <div class="col-md-8 col-xs-9 p-l-0">
+                        <label class="control-label">Sales Rep Name</label>
+                        <div class="col-md-12 col-xs-9 p-l-0">
                             <select id="input-salesrep" name="filter_salesrep" class="selectpicker form-control" data-live-search="true">
                                 <option value="" data-subtext="Sales Reps">All</option>
                                 <?php if (!empty($salesreps)) : ?>
@@ -46,8 +61,8 @@
                         </div>
                     </div>
                     <div class="row m-t-15">
-                        <label class="col-md-4 col-xs-3 text-right">Sales Manager</label>
-                        <div class="col-md-8 col-xs-9 p-l-0">
+                        <label class="control-label">Sales Manager</label>
+                        <div class="col-md-12 col-xs-9 p-l-0">
                             <select id="input-sales_manager" name="filter_sales_manager" class="selectpicker form-control" data-live-search="true">
                                 <option value="" data-subtext="Sales Managers">All</option>
                                 <?php if (!empty($sales_managers)) : ?>
@@ -61,13 +76,26 @@
                 </div>
                 <div class="col-sm-4">
                     <div class="row">
-                        <label class="col-md-4 col-xs-3 text-right">Payment Method</label>
-                        <div class="col-md-8 col-xs-9 p-l-0">
+                        <label class="control-label">Payment Method</label>
+                        <div class="col-md-12 col-xs-9 p-l-0">
                             <select name="filter_payment_method" class="selectpicker form-control" data-live-search="true">
                                 <option value="">All</option>
                                 <?php if (!empty($payment_methods)) : ?>
                                 <?php foreach ($payment_methods as $payment_method) : ?>
                                 <option value="<?=$payment_method['code']?>" <?=($payment_method['code']===$filter_payment_method) ? "selected" : ""?>><?=$payment_method['name']?></option>
+                                <?php endforeach; ?>
+                                <?php endif; ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row m-t-15">
+                        <label class="control-label">Shipping Method</label>
+                        <div class="col-md-12 col-xs-9 p-l-0">
+                            <select name="filter_shipping_method" class="form-control">
+                                <option value="">All</option>
+                                <?php if (!empty($shipping_methods)) : ?>
+                                <?php foreach ($shipping_methods as $shipping_method) : ?>
+                                <option value="<?=$shipping_method['code']?>" <?=($shipping_method['code']===$filter_shipping_method) ? "selected" : ""?>><?=$shipping_method['name']?></option>
                                 <?php endforeach; ?>
                                 <?php endif; ?>
                             </select>

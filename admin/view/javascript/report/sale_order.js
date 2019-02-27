@@ -112,6 +112,7 @@
             if (filter_date_start) {
                 url += `&filter_date_start=${encodeURIComponent(filter_date_start)}`;
             }
+            
             if (filter_date_end) {
                 url += `&filter_date_end=${encodeURIComponent(filter_date_end)}`;
             }

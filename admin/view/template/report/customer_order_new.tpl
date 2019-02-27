@@ -2,7 +2,7 @@
 <div id="content" data-token="<?php echo $token; ?>">
   <div class="page-header">
     <div class="container-fluid">
-      <h1> <?php echo $heading_title; ?></h1>
+      <h1><?php echo $report_heading_title; ?></h1>
       <ul class="breadcrumb">
         <?php foreach ($breadcrumbs as $breadcrumb) { ?>
         <li><a href="<?php echo $breadcrumb['href']; ?>"><?php echo $breadcrumb['text']; ?></a></li>
@@ -13,7 +13,7 @@
   <div class="container-fluid">
     <div class="panel panel-default">
       <div class="panel-heading">
-        <h3 class="panel-title"><i class="fa fa-print"></i> <?php echo $heading_title; ?></h3>
+        <h3 class="panel-title"><i class="fa fa-print"></i> <?php echo $report_heading_title; ?></h3>
       </div>
       <div class="panel-body">
         <div class="well">
@@ -66,8 +66,7 @@
                             </select>
                         </div>
                     </div>
-                </div>
-            </div>
+            </div> 
             </div>
             <div class="row m-t-15">
                 <div class="col-sm-12 pull-right">
@@ -92,7 +91,7 @@
                 <table id="customerOrderReportDataTable" class="table table-bordered">
                     <thead>
                         <tr>
-                            <td class="text-left"><?php echo $column_customer; ?></td>
+                             <td class="text-left"><?php echo $column_customer; ?></td>
                             <td class="text-left"><?php echo $column_email; ?></td>
                             <td class="text-left"><?php echo $column_customer_group; ?></td>
                             <td class="text-left"><?php echo $column_status; ?></td>
@@ -101,10 +100,9 @@
                             <td class="text-left"><?php echo $column_total; ?></td>
                             <td class="text-left"><?php echo $column_action; ?></td>
                         </tr>
-                        </thead>
-                        <tbody>
-                        <?php if ($customers) { ?>
-                        <?php foreach ($customers as $customer) { ?>
+                    </thead>
+                    <tbody>
+                        <?php foreach($customers as $customer) : ?>
                         <tr>
                             <td class="text-left"><?php echo $customer['customer']; ?></td>
                             <td class="text-left"><?php echo $customer['email']; ?></td>
@@ -114,14 +112,10 @@
                             <td class="text-left"><?php echo $customer['products']; ?></td>
                             <td class="text-left"><?php echo $customer['total']; ?></td>
                             <td class="text-left"><a href="<?php echo $customer['edit']; ?>" data-toggle="tooltip" title="<?php echo $button_edit; ?>" class="btn btn-primary"><i class="fa fa-pencil"></i></a></td>
+                        
                         </tr>
-                        <?php } ?>
-                        <?php } else { ?>
-                        <tr>
-                            <td class="text-center" colspan="8"><?php echo $text_no_results; ?></td>
-                        </tr>
-                        <?php } ?>
-                        </tbody>
+                        <?php endforeach; ?>
+                    </tbody>
                 </table>
             </div>
         </div>
