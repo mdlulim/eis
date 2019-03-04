@@ -6,7 +6,7 @@
         <?php if($delete) { ?>
         <button type="button" id="button-delete" form="form-order" data-toggle="tooltip" title="<?php echo $button_delete; ?>" class="btn btn-danger"><i class="fa fa-trash-o"></i></button>
         <?php } ?>
-        <button type="button" id="button-deny" form="form-order" data-toggle="tooltip" title="Deny Quote(s)" class="btn btn-danger"><i class="fa fa-times"></i></button>
+        <!--button type="button" id="button-deny" form="form-order" data-toggle="tooltip" title="Deny Quote(s)" class="btn btn-danger"><i class="fa fa-times"></i></button -->
       </div>
       <h1><?php echo $heading_title; ?></h1>
       <ul class="breadcrumb">
