@@ -147,64 +147,91 @@ class ControllerReplogicOrderQuotes extends Controller {
 		}
 		
 	}
-
-	public function deny() {
-		$this->load->language('replogic/order_quotes');
-
-		$this->document->setTitle($this->language->get('heading_title'));
-
+	
+	public function deny() { 
+		
 		$this->load->model('replogic/order_quotes');
-
-		if (isset($this->request->post['selected']) && $this->validate()) {
-			foreach ($this->request->post['selected'] as $quote_id) {
-				$this->model_replogic_order_quotes->Declinestatuschange($quote_id);
-			}
-
-			$this->session->data['success'] = $this->language->get('text_success');
-
-			$url = '';
-
-			if (isset($this->request->get['filter_quote_id'])) {
-				$url .= '&filter_quote_id=' . $this->request->get['filter_quote_id'];
-			}
-	
-			if (isset($this->request->get['filter_customer'])) {
-				$url .= '&filter_customer=' . urlencode(html_entity_decode($this->request->get['filter_customer'], ENT_QUOTES, 'UTF-8'));
-			}
+		$this->load->language('replogic/order_quotes');
+		if (!empty($this->request->post['quote_id']) && !empty($this->request->post['reason'])) {
 			
-			if (isset($this->request->get['filter_customer_id'])) {
-			$url .= '&filter_customer_id=' . $this->request->get['filter_customer_id'];
-			}
+			$quote_id = $this->request->post['quote_id'];
+			$reason   = $this->request->post['reason'];
+			$json     = array();
 			
-			if (isset($this->request->get['filter_salesrepid'])) {
-				$url .= '&filter_salesrepid=' . $this->request->get['filter_salesrepid'];
-			}
+			$this->model_replogic_order_quotes->denyQuote($quote_id, $reason, $this->language->get('quote_status_denied_id'));
 			
-			if (isset($this->request->get['filter_customer_contact_id'])) {
-			$url .= '&filter_customer_contact_id=' . $this->request->get['filter_customer_contact_id'];
-			}
+			$json['success'] = $this->language->get('text_success');
 			
-			if (isset($this->request->get['filter_customer_contact'])) {
-				$url .= '&filter_customer_contact=' . urlencode(html_entity_decode($this->request->get['filter_customer_contact'], ENT_QUOTES, 'UTF-8'));
-			}
-	
-			if (isset($this->request->get['filter_order_status'])) {
-				$url .= '&filter_order_status=' . $this->request->get['filter_order_status'];
-			}
-	
-			if (isset($this->request->get['filter_date_added'])) {
-				$url .= '&filter_date_added=' . $this->request->get['filter_date_added'];
-			}
-	
-			if (isset($this->request->get['filter_date_modified'])) {
-				$url .= '&filter_date_modified=' . $this->request->get['filter_date_modified'];
-			}
-
-			$this->response->redirect($this->url->link('replogic/order_quotes', 'token=' . $this->session->data['token'] . $url, true));
+			$this->response->addHeader('Content-Type: application/json');
+			$this->response->setOutput(json_encode($json));
 		}
-
-		$this->getList();
+		
 	}
+
+	// public function deny() {
+	// 	$this->load->language('replogic/order_quotes');
+
+	// 	$this->document->setTitle($this->language->get('heading_title'));
+
+	// 	$this->load->model('replogic/order_quotes');
+	// 	if (isset($this->request->post['selected']) && $this->validate()) {
+	// 		foreach ($this->request->post['selected'] as $quote_id) {
+	// 			$this->model_replogic_order_quotes->Declinestatuschange($quote_id);
+	// 		}
+
+	// 		$this->session->data['success'] = $this->language->get('text_success');
+
+	// 		$url = '';
+
+	// 		if (isset($this->request->get['filter_quote_id'])) {
+	// 			$url .= '&filter_quote_id=' . $this->request->get['filter_quote_id'];
+	// 		}
+	
+	// 		if (isset($this->request->get['filter_customer'])) {
+	// 			$url .= '&filter_customer=' . urlencode(html_entity_decode($this->request->get['filter_customer'], ENT_QUOTES, 'UTF-8'));
+	// 		}
+			
+	// 		if (isset($this->request->get['filter_customer_id'])) {
+	// 		$url .= '&filter_customer_id=' . $this->request->get['filter_customer_id'];
+	// 		}
+			
+	// 		if (isset($this->request->get['filter_salesrepid'])) {
+	// 			$url .= '&filter_salesrepid=' . $this->request->get['filter_salesrepid'];
+	// 		}
+			
+	// 		if (isset($this->request->get['filter_customer_contact_id'])) {
+	// 		$url .= '&filter_customer_contact_id=' . $this->request->get['filter_customer_contact_id'];
+	// 		}
+			
+	// 		if (isset($this->request->get['filter_customer_contact'])) {
+	// 			$url .= '&filter_customer_contact=' . urlencode(html_entity_decode($this->request->get['filter_customer_contact'], ENT_QUOTES, 'UTF-8'));
+	// 		}
+	
+	// 		if (isset($this->request->get['filter_order_status'])) {
+	// 			$url .= '&filter_order_status=' . $this->request->get['filter_order_status'];
+	// 		}
+	
+	// 		if (isset($this->request->get['filter_date_added'])) {
+	// 			$url .= '&filter_date_added=' . $this->request->get['filter_date_added'];
+	// 		}
+	
+	// 		if (isset($this->request->get['filter_date_modified'])) {
+	// 			$url .= '&filter_date_modified=' . $this->request->get['filter_date_modified'];
+	// 		}
+
+	// 		$this->response->redirect($this->url->link('replogic/order_quotes', 'token=' . $this->session->data['token'] . $url, true));
+	// 	}else if (!empty($this->request->post['quote_id']) && !empty($this->request->post['reason']) && $this->validate()) {
+	// 		$quote_id = $this->request->post['quote_id'];
+	// 		$reason   = $this->request->post['reason'];
+			
+	// 	    $this->model_replogic_order_quotes->denyQuote($quote_id, $reason, $this->language->get('quote_status_denied_id'));
+	// 		$this->session->data['success'] = $this->language->get('text_success');
+	// 		$this->response->redirect($this->url->link('replogic/order_quotes', 'token=' . $this->session->data['token'] . $url, true));
+		
+	// 	}
+
+	// 	$this->getList();
+	// }
 	
 	public function delete() {
 		$this->load->language('replogic/order_quotes');
