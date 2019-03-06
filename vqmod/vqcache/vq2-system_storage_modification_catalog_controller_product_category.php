@@ -96,12 +96,27 @@ class ControllerProductCategory extends Controller {
 		$category_info = $this->model_catalog_category->getCategory($category_id);
 		$data['category_id'] = $category_id;
 
+
+		 		 if (isset($this->request->post['config_enable_admin_product_customer_group_prices'])) {
+			         $data['config_enable_admin_product_customer_group_prices'] = $this->request->post['config_enable_admin_product_customer_group_prices'];
+		          } elseif ($this->config->get('config_enable_admin_product_customer_group_prices')){
+			         $data['config_enable_admin_product_customer_group_prices'] = $this->config->get('config_enable_admin_product_customer_group_prices');
+		          }else{
+			         $data['config_enable_admin_product_customer_group_prices'] = '0';
+		          }
+                  
+                  if (!$this->customer->getGroupId()){
+                    $data['usergroupid'] = $this->config->get('config_customer_group_id');
+                  } else {
+                    $data['usergroupid'] = $this->customer->getGroupId();
+                  }
+			
 		if ($category_info) {
 			$this->document->setTitle($category_info['meta_title']);
 			$this->document->setDescription($category_info['meta_description']);
 			$this->document->setKeywords($category_info['meta_keyword']);
-
-			$data['heading_title'] = $category_info['name'];
+			
+			$data['heading_title'] = $category_info['name'] . sprintf($this->language->get('button_add_category_to_cart'), $data['category_id']);
 
 			$data['text_refine'] = $this->language->get('text_refine');
 			$data['text_empty'] = $this->language->get('text_empty');
@@ -203,8 +218,26 @@ class ControllerProductCategory extends Controller {
 					$image = $this->model_tool_image->resize('placeholder.png', $this->config->get($this->config->get('config_theme') . '_image_product_width'), $this->config->get($this->config->get('config_theme') . '_image_product_height'));
 				}
 
+
+                if ($this->config->get('config_enable_admin_product_customer_group_prices')){
+		 		if (!$this->customer->getGroupId()){
+                    $cgid = $this->config->get('config_customer_group_id');
+                  } else {
+                    $cgid = $this->customer->getGroupId();
+                  }
+
+			    $this->load->model('catalog/product');
+			     $cgprice = $this->model_catalog_product->getProductCustomerGroupPrice($result['product_id'], $cgid);
+                }
+			
 				if ($this->customer->isLogged() || !$this->config->get('config_customer_price')) {
-					$price = $this->currency->format($this->tax->calculate($result['price'], $result['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']);
+					
+                 if ($this->config->get('config_enable_admin_product_customer_group_prices')){
+                    $price = $this->currency->format($this->tax->calculate($result['cgprice'], $result['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']);
+                 } else {
+                    $price = $this->currency->format($this->tax->calculate($result['price'], $result['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']   );
+                 }
+			
 				} else {
 					$price = false;
 				}
@@ -216,7 +249,14 @@ class ControllerProductCategory extends Controller {
 				}
 
 				if ($this->config->get('config_tax')) {
-					$tax = $this->currency->format((float)$result['special'] ? $result['special'] : $result['price'], $this->session->data['currency']);
+					
+		 		 if ($this->config->get('config_enable_admin_product_customer_group_prices')){
+                    $tax = $this->currency->format((float)$result['special'] ? $result['special'] : $result['cgprice'], $this->session->data['currency']);
+                 } else {
+                    $tax = $this->currency->format((float)$result['special'] ? $result['special'] : $result['price'], $this->session->data['currency']);
+                 }
+
+			
 				} else {
 					$tax = false;
 				}

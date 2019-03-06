@@ -1,3 +1,3 @@
 <?php
 // Text
-$_['text_title'] = 'Quotation';
+$_['text_title'] = 'Order';

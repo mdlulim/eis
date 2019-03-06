@@ -99,7 +99,7 @@ class ControllerAccountStocksheet extends Controller {
         
 		foreach ($results as $result) {
 			$product_info = $this->model_catalog_product->getProductSku($result['sku']);
-
+			
 			if (!empty($product_info)) {
 				if ($product_info['image']) {
 					$image = $this->model_tool_image->resize($product_info['image'], $this->config->get($this->config->get('config_theme') . '_image_wishlist_width'), $this->config->get($this->config->get('config_theme') . '_image_wishlist_height'));
@@ -129,10 +129,13 @@ class ControllerAccountStocksheet extends Controller {
 
 				$data['products'][] = array(
 					'product_id' => $product_info['product_id'],
+					'cart_id'    => $result['cart_id'],
 					'thumb'      => $image,
 					'name'       => $product_info['name'],
 					'model'      => $product_info['model'],
-					'stock'      => $result['quantity'],
+            		'cart_qty'   => (int)$result['cart_qty'],
+					'stock'      => $product_info['quantity'],
+					'quantity'   => $product_info['quantity'],
 					'price'      => $price,
 					'special'    => $special,
 					'href'       => $this->url->link('product/product', 'product_id=' . $product_info['product_id']),
@@ -261,7 +264,7 @@ class ControllerAccountStocksheet extends Controller {
 
 		$json     = array();
 		$formats  = array('xls', 'xlsx', 'csv'); // supported file types
-		$colHeads = array('Product Name', 'Category', 'SKU', 'Model', 'Quantity', 'Stock', 'Unit Price', 'Total'); // expected column headings
+		$colHeads = array('product name', 'category', 'sku', 'model', 'quantity', 'stock', 'unit price', 'total'); // expected column headings
 		$maxSize  = 5097152;  // maximum file size (5MB)
 
 		if ($this->request->server['REQUEST_METHOD'] == 'POST') {
@@ -325,7 +328,7 @@ class ControllerAccountStocksheet extends Controller {
 									}
 									
 									// Check if row has right data [not headings]
-									if (!in_array($header1[0][0], $colHeads)) {
+									if (!in_array(strtolower($header1[0][0]), $colHeads)) {
 										$detailsColumn++;
 										for ($row = 2; $row <= 2; $row++) {
 											$header1 = $sheet->rangeToArray('A' . $row . ':' . $highestColumn . $row, NULL, FALSE, FALSE);
@@ -352,9 +355,32 @@ class ControllerAccountStocksheet extends Controller {
 									// loop through data rows [from imported file]
 									foreach ($dataRows as $data) {
 										if (!empty($data) && count($data) > 0) {
-											
-											$barcode  = (!empty($data['Model'])) ? (string)$data['Model'] : (string)$data['SKU'];           # sku/barcode
-											$quantity = (!empty($data['Stock'])) ? (int)$data['Stock'] : (int)$data['Quantity']; # quantity
+											// sku | model
+											if (array_key_exists('SKU', $data)) {
+												$skuKey = 'SKU';
+											} else if (array_key_exists('sku', $data)) {
+												$skuKey = 'sku';
+											} else if (array_key_exists('Model', $data)) {
+												$skuKey = 'Model';
+											} else if (array_key_exists('model', $data)) {
+												$skuKey = 'model';
+											} else {
+												$skuKey = 'sku';
+											}
+
+											// quantity | stock
+											if (array_key_exists('Quantity', $data)) {
+												$qtyKey = 'Quantity';
+											} else if (array_key_exists('Stock', $data)) {
+												$qtyKey = 'Stock';
+											} else if (array_key_exists('stock', $data)) {
+												$qtyKey = 'stock';
+											} else {
+												$qtyKey = 'quantity';
+											}
+
+											$barcode  = $data[$skuKey];      # sku/barcode
+											$quantity = (int)$data[$qtyKey]; # quantity
 											
 											if (!empty($barcode)) {
 												$barcodes[]   = (string)$barcode;
