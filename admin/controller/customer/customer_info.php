@@ -3631,7 +3631,10 @@ class ControllerCustomerCustomerInfo extends Controller {
 
 		$json['success'] = false;
 
-		$emailClient = $this->config->get('config_mail_client');
+		# get mail client
+		$this->load->model('setting/configuration');
+		$config      = $this->model_setting_configuration->get('general', 'mail_client');
+		$emailClient = $config['value'];
 
 		# get rep settings
 		$repSettings  = $this->model_setting_setting->getRepSettings();

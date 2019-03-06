@@ -81,11 +81,11 @@ class ControllerSettingConfiguration extends Controller {
 		$json = array();
 
 		if (!empty($this->request->post)) {
-			$confg_field_id                 = $this->model_setting_configuration->addConfigField($this->request->post);
-			$json['success']                = true;
-			$json['data']                   = $this->request->post;
-			$json['data']['value']          = '';
-			$json['data']['confg_field_id'] = $confg_field_id;
+			$confg_field_id                  = $this->model_setting_configuration->addConfigField($this->request->post);
+			$json['success']                 = true;
+			$json['data']                    = $this->request->post;
+			$json['data']['value']           = '';
+			$json['data']['config_field_id'] = $confg_field_id;
 		}
 
 		$this->response->addHeader('Content-Type: application/json');
