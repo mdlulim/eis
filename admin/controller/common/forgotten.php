@@ -32,7 +32,9 @@ class ControllerCommonForgotten extends Controller {
 				$this->model_user_user->editPassword($userInfo['user_id'], $password);
 
 				# get mail client
-				$emailClient = $this->config->get('config_mail_client');
+				$this->load->model('setting/configuration');
+				$config      = $this->model_setting_configuration->get('general', 'mail_client');
+				$emailClient = $config['value'];
 
 				# build data array for email
 				$email['subject'] = 'Password Reset Confirmation';

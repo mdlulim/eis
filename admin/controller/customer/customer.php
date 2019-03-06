@@ -2019,7 +2019,10 @@ class ControllerCustomerCustomer extends Controller {
 
 	protected function sendCustomerInvitation($customer_id) {
 
-		$emailClient = $this->config->get('config_mail_client');
+		# get mail client
+		$this->load->model('setting/configuration');
+		$config      = $this->model_setting_configuration->get('general', 'mail_client');
+		$emailClient = $config['value'];
 
 		$this->load->model('customer/customer');
 		$this->load->model('setting/setting');
@@ -2132,7 +2135,12 @@ class ControllerCustomerCustomer extends Controller {
 		set_time_limit(0);
 		ini_set('memory_limit', '1G');
 
-		$emailClient  = $this->config->get('config_mail_client');
+		# get mail client
+		$this->load->model('setting/configuration');
+		$config      = $this->model_setting_configuration->get('general', 'mail_client');
+		$emailClient = $config['value'];
+
+
 		$customers    = array();
 		$allCustomers = false;
 
