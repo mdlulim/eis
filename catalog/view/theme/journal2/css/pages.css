@@ -218,6 +218,38 @@ label {
   background-color: rgb(56, 56, 56);
 }
 
+/* disabled add to cart [for out of stock items] */
+.outofstock .qty {
+  opacity: .5;
+}
+.outofstock .qty a {
+  cursor: not-allowed;
+}
+.outofstock .stock-alert {
+  font-family: Tahoma, Geneva, Arial, sans-serif;
+  display: inline-block;
+  color: #F52D29;
+  margin-left: 10px;
+  margin-top: 2px;
+  font-size: 11px;
+  border-radius: 1px;
+  padding: 4px 8px;
+  background-color: #ffecec;
+  border: 1px solid #f5aca6;
+}
+.alert-box {
+  color: #555;
+  border-radius: 10px;
+  font-family: Tahoma, Geneva, Arial, sans-serif;
+  font-size: 11px;
+  padding: 10px 10px 10px 36px;
+  margin: 10px;
+}
+  .alert-box span {
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+
 /******************************
  CHECKOUT PAGE
 *******************************/

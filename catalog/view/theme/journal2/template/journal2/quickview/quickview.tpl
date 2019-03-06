@@ -301,9 +301,15 @@
             <!-- <label class="control-label text-qty" for="input-quantity"><?php echo $entry_qty; ?></label>
             <input type="text" name="quantity" value="<?php echo $minimum; ?>" size="2" data-min-value="<?php echo $minimum; ?>" id="input-quantity" class="form-control" />
             <input type="hidden" name="product_id" value="<?php echo $product_id; ?>" /> -->
+            <?php if (!empty($quantity) && $quantity > 0) : ?>
             <a href="javascript:;" class="journal-stepper" onclick="Journal.removeProductFromCart(<?php echo $product_id; ?>, this)">-</a>
             <input name="quantity" value="<?php echo $cart_qty; ?>" size="10" data-min-value="0" id="quantity_<?php echo $product_id; ?>" class="form-control product-info1" type="text" data-cart-qty="<?php echo $cart_qty; ?>" data-product-id="<?php echo $product_id ?>">
             <a href="javascript:;" class="journal-stepper" onclick="Journal.addToCart(<?php echo $product_id; ?>, this)">+</a>
+            <?php else : ?>
+            <a href="javascript:;" class="journal-stepper">-</a>
+            <input name="quantity" value="<?php echo $cart_qty; ?>" size="10" data-min-value="0" id="quantity_<?php echo $product_id; ?>" class="form-control product-info1" type="text" data-cart-qty="<?php echo $cart_qty; ?>" data-product-id="<?php echo $product_id ?>" disabled>
+            <a href="javascript:;" class="journal-stepper">+</a>
+            <?php endif; ?>
         </span>
         <!-- <button type="button" id="button-cart" data-loading-text="<?php echo $text_loading; ?>" class="button"><span class="button-cart-text"><?php echo $button_cart; ?></span></button> -->
         <a id="more-details" class="button hint--top" data-hint="<?php echo ($this->journal2->settings->get('quickview_more_details_text')); ?>" target="_top" href="<?php echo $url->link('product/product&product_id=' . $product_id); ?>"><i></i></a>
