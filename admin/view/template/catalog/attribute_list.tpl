@@ -115,7 +115,7 @@
                   <td class="text-left"><?php echo $attribute['name']; ?></td>
                   <td class="text-left"><?php echo $attribute['attribute_group']; ?></td>
                   <td class="text-right"><?php echo $attribute['sort_order']; ?></td>
-                  <td class="text-right"><a href="<?php echo $attribute['edit']; ?>" data-toggle="tooltip" title="<?php echo $button_edit; ?>" class="btn btn-primary"><i class="fa fa-pencil"></i></a></td>
+                  <td class="text-right"><a href="<?php echo $attribute['view']; ?>" data-toggle="tooltip" title="View Details" class="btn btn-primary"><i class="fa fa-eye"></i></a></td>
                 </tr>
                 <?php } ?>
                 <?php } else { ?>
