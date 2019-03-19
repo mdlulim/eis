@@ -89,6 +89,15 @@ class ControllerCatalogAttribute extends Controller {
 			$this->response->redirect($this->url->link('catalog/attribute', 'token=' . $this->session->data['token'] . $url, true));
 		}
 
+		$this->getForm(false);
+	}
+	public function view() {
+		$this->load->language('catalog/attribute');
+
+		$this->document->setTitle($this->language->get('heading_title'));
+
+		$this->load->model('catalog/attribute');
+		
 		$this->getForm();
 	}
 
@@ -234,7 +243,7 @@ class ControllerCatalogAttribute extends Controller {
 				'name'            => $result['name'],
 				'attribute_group' => $result['attribute_group'],
 				'sort_order'      => $result['sort_order'],
-				'edit'            => $this->url->link('catalog/attribute/edit', 'token=' . $this->session->data['token'] . '&attribute_id=' . $result['attribute_id'] . $url, true)
+				'view'            => $this->url->link('catalog/attribute/view', 'token=' . $this->session->data['token'] . '&attribute_id=' . $result['attribute_id'] . $url, true)
 			);
 		}
 		
@@ -341,7 +350,7 @@ class ControllerCatalogAttribute extends Controller {
 		$this->response->setOutput($this->load->view('catalog/attribute_list', $data));
 	}
 
-	protected function getForm() {
+	protected function getForm($readonly = true) {
 		$data['heading_title'] = $this->language->get('heading_title');
 
 		$data['text_form'] = !isset($this->request->get['attribute_id']) ? $this->language->get('text_add') : $this->language->get('text_edit');
@@ -417,6 +426,13 @@ class ControllerCatalogAttribute extends Controller {
 			$attribute_info = $this->model_catalog_attribute->getAttribute($this->request->get['attribute_id']);
 		}
 
+		if ($readonly) {
+			$view = 'catalog/attribute_view';
+			$data['edit_att'] = $this->url->link('catalog/attribute/edit', 'token=' . $this->session->data['token'] . '&attribute_id=' . $attribute_info['attribute_id'] . $url, true);
+		} else {
+			$view = 'catalog/attribute_form';
+		}
+
 		$this->load->model('localisation/language');
 
 		$data['languages'] = $this->model_localisation_language->getLanguages();
@@ -453,7 +469,7 @@ class ControllerCatalogAttribute extends Controller {
 		$data['column_left'] = $this->load->controller('common/column_left');
 		$data['footer'] = $this->load->controller('common/footer');
 
-		$this->response->setOutput($this->load->view('catalog/attribute_form', $data));
+		$this->response->setOutput($this->load->view($view, $data));
 	}
 
 	protected function validateForm() {
