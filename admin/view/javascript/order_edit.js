@@ -54,7 +54,8 @@
             function(isConfirm){
                 if (isConfirm) {
                 	var token = $('#content').attr('data-api-token');
-                    Orders.save(token,
+                    $('input[name="order_status_id"]').val("5");
+                    Orders.edit(token,
                 	function(json) {
                 		swal({
 						  	title: "Order Confirmed!",
