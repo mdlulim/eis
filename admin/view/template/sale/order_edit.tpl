@@ -83,7 +83,12 @@
     
     <div class="panel panel-default">
       <div class="panel-heading">
-        <h3 class="panel-title"><i class="fa fa-shopping-cart"></i> New Order</h3>
+        <?php if($order_id){ ?>
+        <h3 class="panel-title"><i class="fa fa-shopping-cart"></i> Order Id : <strong>#<?php echo $order_id; ?></h3>
+        <?php } else{ ?>
+             <h3 class="panel-title"><i class="fa fa-shopping-cart"></i> New Order</h3>
+       <?php } ?>
+       
       </div>
       <div class="panel-body" style="padding-bottom:0px;">
       
