@@ -131,6 +131,12 @@ $_['order_status_processing_id'] = 2;       # Processing
 $_['order_status_confirmed_id']  = 5;       # Confirmed
 $_['order_status_cancelled_id']  = 7;       # Cancelled
 
+// Order Statuses Text
+$_['order_status_pending_text']    = 'Pending';      
+$_['order_status_processing_text'] = 'Processing';      
+$_['order_status_confirmed_text']  = 'Confirmed';;      
+$_['order_status_cancelled_text']  = 'Cancelled';      
+
 // Quote Statuses
 $_['quote_status_pending_id']    = 1;
 $_['quote_status_converted_id']  = 2;
