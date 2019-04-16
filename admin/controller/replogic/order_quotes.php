@@ -592,6 +592,7 @@ class ControllerReplogicOrderQuotes extends Controller {
 		$data['quote_status_converted'] = $this->language->get('quote_status_converted_id');
 		$data['quote_status_denied'] = $this->language->get('quote_status_denied_id');
 
+		
 		$data['token'] = $this->session->data['token'];
 
 		if (isset($this->error['warning'])) {
@@ -1165,7 +1166,6 @@ class ControllerReplogicOrderQuotes extends Controller {
 		
 		$data['comment'] = $quote_info['comments'];
 		$data['qstatus'] = $quote_info['status'];
-		
 		$cust_con = $this->model_replogic_customer_contact->getcustomercontact($quote_info['customer_contact_id']);
 		
 		$cust = $this->model_customer_customer->getCustomer($quote_info['customer_id']);
@@ -1200,6 +1200,18 @@ class ControllerReplogicOrderQuotes extends Controller {
 			$this->document->setTitle($this->language->get('heading_title'));
 
 			$data['heading_title'] = $this->language->get('heading_title');
+
+			# quotes statuses
+			$data['quote_statuses'] = $this->model_replogic_order_quotes->getQuoteStatus();
+			$data['quote_status_pending'] = $this->language->get('quote_status_pending_id');
+			$data['quote_status_converted'] = $this->language->get('quote_status_converted_id');
+			$data['quote_status_denied'] = $this->language->get('quote_status_denied_id');
+
+			$data['order_status_pending_text']    = $this->language->get('order_status_pending_text');    
+			$data['order_status_processing_text'] = $this->language->get('order_status_processing_text');     
+			$data['order_status_confirmed_text']  = $this->language->get('order_status_confirmed_text');     
+			$data['order_status_cancelled_text']  = $this->language->get('order_status_cancelled_text');  
+			$data['ttotal_price'] = $quote_info['ttotal_price'];
 
 			$data['text_ip_add'] = sprintf($this->language->get('text_ip_add'), $this->request->server['REMOTE_ADDR']);
 			$data['text_order_detail'] = $this->language->get('text_order_detail');
@@ -1351,7 +1363,7 @@ class ControllerReplogicOrderQuotes extends Controller {
 			$data['token'] = $this->session->data['token'];
 
 			$data['order_id'] = $order_id;
-			
+		
 		if ($order_info) {
 
 			$data['store_id'] = $order_info['store_id'];
@@ -1463,10 +1475,18 @@ class ControllerReplogicOrderQuotes extends Controller {
 			);
 
 			$data['shipping_address'] = str_replace(array("\r\n", "\r", "\n"), '<br />', preg_replace(array("/\s\s+/", "/\r\r+/", "/\n\n+/"), '<br />', trim(str_replace($find, $replace, $format))));
-
+			
+			$data['addresses'] = array(
+				'address_1' => $order_info['shipping_address_1'],
+				'address_2' => $order_info['shipping_address_2'],
+				'city'      => $order_info['shipping_city'],
+				'postcode'  => $order_info['shipping_postcode'],
+				'zone'      => $order_info['shipping_zone'],
+				'zone_code' => $order_info['shipping_zone_code'],
+				'country'   => $order_info['shipping_country']
+			);
 			// Uploaded files
 			$this->load->model('tool/upload');
-
 			$data['products'] = array();
 
 			$products = $this->model_sale_order->getOrderProducts($order_id);
@@ -1533,6 +1553,7 @@ class ControllerReplogicOrderQuotes extends Controller {
 			}
 
 			$data['totals'] = array();
+			
 
 			$totals = $this->model_sale_order->getOrderTotals($order_id);
 
@@ -1542,7 +1563,9 @@ class ControllerReplogicOrderQuotes extends Controller {
 					'text'  => $this->currency->format($total['value'], $order_info['currency_code'], $order_info['currency_value'])
 				);
 			}
-
+			$my_total = $data['totals'];
+			$data['quote_id'] = $quote_id;
+            $data['totals'] =$my_total[0]['text'];
 			$data['comment'] = nl2br($order_info['comment']);
 
 			$this->load->model('customer/customer');
@@ -1854,7 +1877,21 @@ class ControllerReplogicOrderQuotes extends Controller {
 			//print_r($data['order_products']); exit;
 			$data['vouchers'] = array();
 			$data['totals'] = $this->currency->format($array['cart_total_price'], 'ZAR', '1.0000');
-			
+			$data['quote_id'] = $quote_id;
+			$customer_id = $quote_info['customer_id'];
+			$cus_addresses = $this->model_customer_customer->getAddresses($customer_id);
+			foreach ($cus_addresses as $address) { 
+				$data['addresses'] = array(
+					'address_1' => $address['address_1'],
+					'address_2' => $address['address_2'],
+					'city'      => $address['city'],
+					'postcode'  => $address['postcode'],
+					'zone'      => $address['zone'],
+					'zone_code' => $address['zone_code'],
+					'country'   => $address['country']
+				);
+			}
+		  //var_dump($data['addresses']);die;
 			// The URL we send API requests to
 			$data['catalog'] = $this->request->server['HTTPS'] ? HTTPS_CATALOG : HTTP_CATALOG;
 			// API login
