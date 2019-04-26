@@ -489,6 +489,7 @@ Journal.searchAutoComplete = function () {
 //                var reEscape = new RegExp('(\\' + ['/', '.', '*', '+', '?', '|', '(', ')', '[', ']', '{', '}', '\\'].join('|\\') + ')', 'g'),
 //                    pattern = '(' + currentValue.replace(reEscape, '\\$1') + ')',
 //                    name = suggestion.value.replace(new RegExp(pattern, 'gi'), '<strong>$1<\/strong>');
+                var hidePrice = $('body').data('hide-price');
                 var name = suggestion.value;
                 var url  = `index.php?route=product/search&search=${name}&description=true`;
                 var html = '<a href="' + url + '">';
@@ -496,7 +497,7 @@ Journal.searchAutoComplete = function () {
                     html += '<span class="p-image xs-33 sm-33 md-33 lg-33 xl-33"><img src="' + suggestion.image + '" /></span>';
                 }
                 html += '<span class="p-name xs-66 sm-66 md-66 lg-66 xl-66"><span>' + name + '</span>';
-                if (suggestion.price) {
+                if (!hidePrice && suggestion.price) {
                     if (suggestion.special) {
                         html += '<span class="p-price xs-66 sm-66 md-66 lg-66 xl-66"><span class="price-old">' + suggestion.price + '</span><span class="price-new">' + suggestion.special + '</span></span>';
                     } else {

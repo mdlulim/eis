@@ -38,8 +38,8 @@
                             </span>
                         </div>
                     </td>
-                    <td class="text-right price"><?php echo (!$this->config->get('config_hide_price')) ? $product['price'] : ''; ?></td>
-                    <td class="text-right total"><?php echo (!$this->config->get('config_hide_price')) ? $product['total'] : ''; ?></td>
+                    <td class="text-right price"><?php echo (!$hide_price) ? $product['price'] : ''; ?></td>
+                    <td class="text-right total"><?php echo (!$hide_price) ? $product['total'] : ''; ?></td>
                 </tr>
             <?php } ?>
             <?php foreach ($vouchers as $voucher) { ?>
@@ -52,7 +52,7 @@
                 </tr>
             <?php } ?>
             </tbody>
-            <?php if (!$this->config->get('config_hide_price')) { ?>
+            <?php if (!$hide_price) { ?>
             <tfoot>
             <?php foreach ($totals as $total) { ?>
                 <tr>

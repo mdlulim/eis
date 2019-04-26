@@ -11,7 +11,12 @@ class ModelSettingConfiguration extends Model {
 
 		if (!is_null($key)) {
 			$key   = strtolower($category . '_' . $key);
-			$query = $this->db->query("SELECT cf.*, cg.value FROM " . DB_PREFIX . "config_field cf LEFT JOIN " . DB_PREFIX . "config cg ON cg.config_field_id = cf.config_field_id WHERE category = '" . $category . "' AND status = 1 AND `key` = '" . $this->db->escape($key) . "'");
+			if (strtolower($category) === 'integration' && $key === 'type') {
+				$query = $this->db->query("SELECT cf.*, cg.value FROM " . DB_PREFIX . "config_field cf LEFT JOIN " . DB_PREFIX . "config cg ON cg.config_field_id = cf.config_field_id WHERE category = '" . $category . "' AND status = 1 AND `name` = 'status' AND `value` = 'enable'");
+				return $query->row['section'];
+			} else {
+				$query = $this->db->query("SELECT cf.*, cg.value FROM " . DB_PREFIX . "config_field cf LEFT JOIN " . DB_PREFIX . "config cg ON cg.config_field_id = cf.config_field_id WHERE category = '" . $category . "' AND status = 1 AND `key` = '" . $this->db->escape($key) . "'");
+			}
 			return $query->row;
 		} else {
 			$query = $this->db->query("SELECT cf.*, cg.value FROM " . DB_PREFIX . "config_field cf LEFT JOIN " . DB_PREFIX . "config cg ON cg.config_field_id = cf.config_field_id WHERE category = '" . $category . "' AND status = 1 ORDER BY sort_order ASC, section ASC, cf.config_field_id ASC");

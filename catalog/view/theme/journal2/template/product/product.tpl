@@ -304,7 +304,7 @@
           <div class="countdown-wrapper"><div class="expire-text"><?php echo $this->journal2->settings->get('countdown_product_page_title'); ?></div><div class="countdown"></div></div>
           <script>Journal.countdown($('.right .countdown'), '<?php echo $date_end; ?>');</script>
           <?php endif; ?>
-          <?php if (!$this->config->get('config_hide_price') && $price) { ?>
+          <?php if (!$hide_price && $price) { ?>
           <ul class="list-unstyled price" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
             <meta itemprop="itemCondition" content="http://schema.org/NewCondition" />
             <meta itemprop="priceCurrency" content="<?php echo $this->journal2->settings->get('product_price_currency'); ?>" />
@@ -634,7 +634,7 @@
                       <?php } ?>
                     </div>
                     <?php } ?>
-                    <?php if (!$this->config->get('config_hide_price') && $product['price']) { ?>
+                    <?php if (!$hide_price && $product['price']) { ?>
                     <p class="price">
                       <?php if (!$product['special']) { ?>
                       <?php echo $product['price']; ?>

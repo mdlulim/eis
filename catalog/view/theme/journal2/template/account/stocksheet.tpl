@@ -100,7 +100,7 @@
               </span>
             </td>
             <td class="text-right price">
-              <?php if (!$this->config->get('config_hide_price') && $product['price']) { ?>
+              <?php if (!$hide_price && $product['price']) { ?>
               <div class="price">
                 <?php if (!$product['special']) { ?>
                 <?php echo $product['price']; ?>

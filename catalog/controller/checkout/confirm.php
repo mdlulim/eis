@@ -36,9 +36,14 @@ class ControllerCheckoutConfirm extends Controller {
 			$redirect = $this->url->link('checkout/cart');
 		}
 
-		if ($storeId === 0 && INTEGRATION_ID == '1') {
+		# get integration type/option
+		$this->load->model('setting/configuration');
+		$integration = $this->model_setting_configuration->get('integration', 'type');
+
+		switch (TRUE) {
 
 			/*************************************************
+			 * ARCH INTEGRATION:
 			 * If Arch Integration and Store ID = '0' 
 			 *  - Only redirect to cart if all products in
 			 *    cart have zero quantity. This will allow
@@ -48,51 +53,59 @@ class ControllerCheckoutConfirm extends Controller {
 			 *    with ZERO quantities.
 			 *************************************************/
 
-			// Validate minimum quantity requirements.
-			$products      = $this->cart->getProducts();
-			$allowCheckout = false;
+			case (strtolower($integration) === 'arch' && $storeId === 0):
 
-			foreach ($products as $product) {
-				$product_total = 0;
-				foreach ($products as $product_2) {
-					if ($product_2['product_id'] == $product['product_id']) {
-						$product_total += $product_2['quantity'];
+				// Validate minimum quantity requirements.
+				$products      = $this->cart->getProducts();
+				$allowCheckout = false;
+
+				foreach ($products as $product) {
+					$product_total = 0;
+					foreach ($products as $product_2) {
+						if ($product_2['product_id'] == $product['product_id']) {
+							$product_total += $product_2['quantity'];
+						}
+					}
+					if ($product_total > 0) {
+						$allowCheckout = true;
+					} else {
+						$this->cart->remove($product['cart_id']);
 					}
 				}
-				if ($product_total > 0) {
-					$allowCheckout = true;
-				} else {
-					$this->cart->remove($product['cart_id']);
+
+				if (!$allowCheckout) {
+					$redirect = $this->url->link('checkout/cart');
 				}
-			}
 
-			if (!$allowCheckout) {
-				$redirect = $this->url->link('checkout/cart');
-			}
+			break;
 
-		} else {
 
 			/*************************************************
-			 * Validate minimum quantity requirements.
+			 * DEFAULT
+			 *	- Validate minimum quantity requirements.
 			 *************************************************/
-			
-			$products = $this->cart->getProducts();
 
-			foreach ($products as $product) {
-				$product_total = 0;
+			default:
+				
+				$products = $this->cart->getProducts();
 
-				foreach ($products as $product_2) {
-					if ($product_2['product_id'] == $product['product_id']) {
-						$product_total += $product_2['quantity'];
+				foreach ($products as $product) {
+					$product_total = 0;
+
+					foreach ($products as $product_2) {
+						if ($product_2['product_id'] == $product['product_id']) {
+							$product_total += $product_2['quantity'];
+						}
+					}
+
+					if ($product['minimum'] > $product_total) {
+						$redirect = $this->url->link('checkout/cart');
+
+						break;
 					}
 				}
 
-				if ($product['minimum'] > $product_total) {
-					$redirect = $this->url->link('checkout/cart');
-
-					break;
-				}
-			}
+			break;
 		}
 
 		if (!$redirect) {

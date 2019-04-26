@@ -219,7 +219,7 @@
                   </span>
                 </div>
                 <div class="col-3 product-price">
-                  <?php if (!$this->config->get('config_hide_price') && $product['price']) { ?>
+                  <?php if (!$hide_price && $product['price']) { ?>
                   <p class="price">
                     <?php if (!$product['special']) { ?>
                     <?php echo $product['price']; ?>
@@ -247,7 +247,7 @@
                   <?php } ?>
                 </div>
                 <?php } ?>
-                <?php if (!$this->config->get('config_hide_price') && $product['price']) { ?>
+                <?php if (!$hide_price && $product['price']) { ?>
                 <p class="price">
                   <?php if (!$product['special']) { ?>
                   <?php echo $product['price']; ?>
