@@ -235,6 +235,18 @@ class ControllerModuleJournal2Carousel extends Controller {
             }
             $this->data['show_title_class'] = $this->data['show_title'] ? '' : 'no-heading';
 
+            /******************************************************************
+             * START | Hide/show price configuration
+             ******************************************************************/
+    
+            $this->load->model('setting/configuration');
+            $config = $this->model_setting_configuration->get('wholesale', 'hide_price');
+            $this->data['hide_price'] = (strtolower($config['value']) === 'yes');
+    
+            /******************************************************************
+             * END | Hide/show price configuration
+             ******************************************************************/
+
             $this->template = "journal2/module/carousel_{$this->data['module_type']}.tpl";
 
             if (self::$CACHEABLE === true && !$this->has_random_products) {
