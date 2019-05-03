@@ -47,7 +47,7 @@
           <tr>
             <td><?php echo $text_price; ?></td>
             <?php foreach ($products as $product) { ?>
-            <td><?php if ($products[$product['product_id']]['price']) { ?>
+            <td><?php if (!$hide_price && $products[$product['product_id']]['price']) { ?>
               <?php if (!$products[$product['product_id']]['special']) { ?>
               <?php echo $products[$product['product_id']]['price']; ?>
               <?php } else { ?>

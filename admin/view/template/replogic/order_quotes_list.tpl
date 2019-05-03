@@ -140,11 +140,13 @@
                     <?php } else { ?>
                     <a href="<?php echo $sort_status; ?>"><?php echo $column_status; ?></a>
                     <?php } ?></td>
+                  <?php if ($quote_approval) { ?>
                   <td class="text-left"><?php if ($sort == 'signed') { ?>
                     <a href="<?php echo $sort_signed; ?>" class="<?php echo strtolower($order); ?>"><?php echo $column_signed; ?></a>
                     <?php } else { ?>
                     <a href="<?php echo $sort_signed; ?>"><?php echo $column_signed; ?></a>
                     <?php } ?></td>
+                  <?php } ?>
                   <td class="text-right"><?php echo $column_action; ?></td>
                 </tr>
               </thead>
@@ -180,7 +182,9 @@
                       <a class="btn-warning" style="padding:2px 5px;border-radius:5px;"><?=$order['quote_status']?></a>
                     <?php endif; ?>
                   </td>
+                  <?php if ($quote_approval) { ?>
                   <td class="text-left"><?php echo ($order['signed']) ? 'Signed' : 'Not Signed'; ?></td>
+                  <?php } ?>
                   <td class="text-right">
                     
                       <?php if($order['view']) { ?>

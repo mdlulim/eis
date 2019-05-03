@@ -4,7 +4,7 @@
     <div class="container-fluid">
       <div class="pull-right">
       	<div style="float:left">
-          <?php if ($qstatus == $quote_status_pending) :?>
+          <?php if ($qstatus == $quote_status_pending && $process_order) :?>
           <button data-href="<?php echo $deny_url; ?>" id="button-deny" data-toggle="tooltip" title="Deny" style="float: right; font-family: Calibri;" class="btn btn-danger decline">
             <i class="fa fa-times"></i>
           </button>

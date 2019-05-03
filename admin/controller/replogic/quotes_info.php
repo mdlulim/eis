@@ -206,6 +206,7 @@ class ControllerReplogicQuotesInfo extends Controller {
 		$data['comment'] = $quote_info['comments'];
 		$data['qstatus'] = $quote_info['status'];
 		$data['quote_status'] = $quote_info['quote_status'];
+		$data['signed'] = $quote_info['signed'];
 		
 		$cust_con = $this->model_replogic_customer_contact->getcustomercontact($quote_info['customer_contact_id']);
 		
@@ -314,6 +315,28 @@ class ControllerReplogicQuotesInfo extends Controller {
 			$data['api_key'] = '';
 			$data['api_ip'] = '';
 		}
+
+		/******************************************************************
+		 * START | Quote approval configuration
+		 ******************************************************************/
+
+		$this->load->model('setting/configuration');
+		$config                = $this->model_setting_configuration->get('rep', 'quote_approval');
+		$quote_approval        = (strtolower($config['value']) === 'yes');
+		
+		if ($quote_approval) {
+			if ($data['signed']) {
+				$data['process_order'] = true;
+			} else {
+				$data['process_order'] = false;
+			}
+		} else {
+			$data['process_order'] = true;
+		}
+
+		/******************************************************************
+		 * END | Quote approval configuration
+		 ******************************************************************/
 
 		$data['order_status_id'] = $this->language->get('order_status_confirmed_id');
 		$data['currency_code'] = $this->config->get('config_currency');

@@ -45,6 +45,18 @@ class ControllerProductCategory extends Controller {
 			$limit = $this->config->get($this->config->get('config_theme') . '_product_limit');
 		}
 
+		/******************************************************************
+		 * START | Hide/show price configuration
+		 ******************************************************************/
+
+		$this->load->model('setting/configuration');
+		$config = $this->model_setting_configuration->get('wholesale', 'hide_price');
+		$data['hide_price'] = (strtolower($config['value']) === 'yes');
+
+		/******************************************************************
+		 * END | Hide/show price configuration
+		 ******************************************************************/
+
 		$data['breadcrumbs'] = array();
 
 		$data['breadcrumbs'][] = array(
@@ -115,8 +127,8 @@ class ControllerProductCategory extends Controller {
 			$this->document->setTitle($category_info['meta_title']);
 			$this->document->setDescription($category_info['meta_description']);
 			$this->document->setKeywords($category_info['meta_keyword']);
-			
-			$data['heading_title'] = $category_info['name'] . sprintf($this->language->get('button_add_category_to_cart'), $data['category_id']);
+
+			$data['heading_title'] = $category_info['name'];
 
 			$data['text_refine'] = $this->language->get('text_refine');
 			$data['text_empty'] = $this->language->get('text_empty');

@@ -18,6 +18,7 @@ $_['entry_name']        = 'Contract Pricing Name';
 $_['entry_description'] = 'Description';
 $_['entry_approval']    = 'Approve New Customers';
 $_['entry_sort_order']  = 'Sort Order';
+$_['text_confirm_customer_group']   = 'Are you sure you want to delete selected Contract Pricing?';
 
 // Help
 $_['help_approval']     = 'Customers must be approved by an administrator before they can login.';

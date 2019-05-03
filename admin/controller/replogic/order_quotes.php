@@ -414,6 +414,18 @@ class ControllerReplogicOrderQuotes extends Controller {
 			$url .= '&page=' . $this->request->get['page'];
 		}
 
+		/******************************************************************
+		 * START | Quote approval configuration
+		 ******************************************************************/
+
+		$this->load->model('setting/configuration');
+		$config = $this->model_setting_configuration->get('rep', 'quote_approval');
+		$data['quote_approval'] = (strtolower($config['value']) === 'yes');
+
+		/******************************************************************
+		 * END | Quote approval configuration
+		 ******************************************************************/
+
 		$data['breadcrumbs'] = array();
 
 		$data['breadcrumbs'][] = array(

@@ -664,6 +664,18 @@ class ControllerJournal2Checkout extends Controller {
 
         $this->data['payment_code'] = Journal2Utils::getProperty($this->session->data, 'payment_method.code');
 
+		/******************************************************************
+		 * START | Hide/show price configuration
+		 ******************************************************************/
+
+		$this->load->model('setting/configuration');
+		$config = $this->model_setting_configuration->get('wholesale', 'hide_price');
+		$this->data['hide_price'] = (strtolower($config['value']) === 'yes');
+
+		/******************************************************************
+		 * END | Hide/show price configuration
+		 ******************************************************************/
+
         if ($return) {
             return $this->renderView('journal2/checkout/cart.tpl');
         } else {

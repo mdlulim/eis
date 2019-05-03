@@ -72,6 +72,18 @@ class ControllerModuleJournal2SideProducts extends Controller {
 
         $cache = $this->journal2->cache->get($cache_property);
 
+		/******************************************************************
+		 * START | Hide/show price configuration
+		 ******************************************************************/
+
+		$this->load->model('setting/configuration');
+		$config = $this->model_setting_configuration->get('wholesale', 'hide_price');
+		$this->data['hide_price'] = (strtolower($config['value']) === 'yes');
+
+		/******************************************************************
+		 * END | Hide/show price configuration
+		 ******************************************************************/
+
         if ($cache === null || self::$CACHEABLE !== true) {
             $products = array();
             $this->data['module_id'] = $setting['module_id'];

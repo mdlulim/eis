@@ -16,7 +16,7 @@
                     <?php } ?>
                     <div class="product-details">
                         <div class="name"><a href="<?php echo $product['href']; ?>"><?php echo $product['name']; ?></a></div>
-                        <?php if (!$this->config->get('config_hide_price') && $product['price']) { ?>
+                        <?php if (!$hide_price && $product['price']) { ?>
                         <div class="price">
                             <?php if (!$product['special']) { ?>
                             <?php echo $product['price']; ?>

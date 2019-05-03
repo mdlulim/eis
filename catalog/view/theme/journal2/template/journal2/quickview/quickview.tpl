@@ -126,7 +126,7 @@
     <?php if($this->journal2->settings->get('product_sold')): ?>
     <div class="product-sold-count-text"><?php echo $this->journal2->settings->get('product_sold'); ?></div>
     <?php endif; ?>
-    <?php if (!$this->config->get('config_hide_price') && $price) { ?>
+    <?php if (!$hide_price && $price) { ?>
     <ul class="list-unstyled price" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
         <?php if (!$special) { ?>
         <li class="product-price" itemprop="price"><?php echo $price; ?></li>
