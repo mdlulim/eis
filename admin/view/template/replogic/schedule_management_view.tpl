@@ -21,7 +21,7 @@
     <?php } ?>
     <div class="panel panel-default">
       <div class="panel-heading">
-        <h3 class="panel-title"><i class="fa fa-info-circle" style="font-size:23px;"></i> Appointment Info : <strong><?php echo $appointment_name; ?></strong></h3>
+        <h3 class="panel-title"><i class="fa fa-eye" style="font-size:23px;"></i> View Appointment : <strong><?php echo $appointment_name; ?></strong></h3>
       </div>
       <div class="panel-body">
         <form action="<?php echo $action; ?>" method="post" enctype="multipart/form-data" id="form-user" class="form-horizontal">
