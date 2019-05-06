@@ -988,7 +988,9 @@ class ControllerReplogicScheduleManagement extends Controller {
 		
 		if(isset($this->request->get['type']))
 		{
-			$data['cancel'] = $this->url->link('customer/customer_info/appointmentView', 'appointment_id='.$this->request->get['appointment_id'].'&type='.$this->request->get['type'].'&customer_id='.$this->request->get['customer_id'].'&token=' . $this->session->data['token'], true);
+			//$data['cancel'] = $this->url->link('customer/customer_info/appointmentView', 'appointment_id='.$this->request->get['appointment_id'].'&type='.$this->request->get['type'].'&customer_id='.$this->request->get['customer_id'].'&token=' . $this->session->data['token'], true);
+		        $data['cancel'] = $this->url->link('customer/customer_info', '&type='.$this->request->get['type'].'&customer_id='.$this->request->get['customer_id'].'&token=' . $this->session->data['token'], true);
+		
 		}
 		else
 		{
