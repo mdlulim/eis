@@ -414,18 +414,6 @@ class ControllerReplogicOrderQuotes extends Controller {
 			$url .= '&page=' . $this->request->get['page'];
 		}
 
-		/******************************************************************
-		 * START | Quote approval configuration
-		 ******************************************************************/
-
-		$this->load->model('setting/configuration');
-		$config = $this->model_setting_configuration->get('rep', 'quote_approval');
-		$data['quote_approval'] = (strtolower($config['value']) === 'yes');
-
-		/******************************************************************
-		 * END | Quote approval configuration
-		 ******************************************************************/
-
 		$data['breadcrumbs'] = array();
 
 		$data['breadcrumbs'][] = array(
@@ -1221,7 +1209,8 @@ class ControllerReplogicOrderQuotes extends Controller {
 
 			$data['order_status_pending_text']    = $this->language->get('order_status_pending_text');    
 			$data['order_status_processing_text'] = $this->language->get('order_status_processing_text');     
-			$data['order_status_confirmed_text']  = $this->language->get('order_status_confirmed_text');     
+			$data['order_status_confirmed_text']  = $this->language->get('order_status_confirmed_text');
+			$data['quote_status_converted_text']    = $this->language->get('quote_status_converted_text');        
 			$data['order_status_cancelled_text']  = $this->language->get('order_status_cancelled_text');  
 			$data['ttotal_price'] = $quote_info['ttotal_price'];
 
@@ -1375,7 +1364,7 @@ class ControllerReplogicOrderQuotes extends Controller {
 			$data['token'] = $this->session->data['token'];
 
 			$data['order_id'] = $order_id;
-		
+			$data['currency_code'] = $this->config->get('config_currency');
 		if ($order_info) {
 
 			$data['store_id'] = $order_info['store_id'];
@@ -1903,6 +1892,7 @@ class ControllerReplogicOrderQuotes extends Controller {
 					'country'   => $address['country']
 				);
 			}
+		
 		  //var_dump($data['addresses']);die;
 			// The URL we send API requests to
 			$data['catalog'] = $this->request->server['HTTPS'] ? HTTPS_CATALOG : HTTP_CATALOG;
