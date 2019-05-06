@@ -9,7 +9,7 @@
         <?php } ?>
         <a href="<?php echo $cancel; ?>" data-toggle="tooltip" title="<?php echo $button_cancel; ?>" class="btn btn-default"><i class="fa fa-reply"></i></a>
       </div>
-      <h1><?php echo $heading_title; ?> </h1>
+      <h1> <?php echo $heading_title; ?> </h1>
       <ul class="breadcrumb">
         <?php foreach ($breadcrumbs as $breadcrumb) { ?>
         <li><a href="<?php echo $breadcrumb['href']; ?>"><?php echo $breadcrumb['text']; ?></a></li>
@@ -123,7 +123,7 @@
                         <?php if ($qstatus == $quote_status_pending) : ?>
                           <b><a class="btn-warning quote-status" style="padding:2px 5px; border-radius:5px;"><?=$order_status_pending_text?></a></b>
                         <?php elseif ($qstatus == $quote_status_converted) :?>
-                          <b><a class="btn-success quote-status" style="padding:2px 5px; border-radius:5px;"><?=$quote_status?></a></b>
+                          <b><a class="btn-success quote-status" style="padding:2px 5px; border-radius:5px;"><?=$quote_status_converted_text?></a></b>
                         <?php elseif ($qstatus == $quote_status_denied) :?>
                           <b><a class="btn-danger quote-status" style="padding:2px 5px; border-radius:5px;"><?=$quote_status?></a></b>
                         <?php endif; ?>
