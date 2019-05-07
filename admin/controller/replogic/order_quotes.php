@@ -1210,7 +1210,8 @@ class ControllerReplogicOrderQuotes extends Controller {
 			$data['order_status_pending_text']    = $this->language->get('order_status_pending_text');    
 			$data['order_status_processing_text'] = $this->language->get('order_status_processing_text');     
 			$data['order_status_confirmed_text']  = $this->language->get('order_status_confirmed_text');
-			$data['quote_status_converted_text']    = $this->language->get('quote_status_converted_text');        
+			$data['quote_status_converted_text']    = $this->language->get('quote_status_converted_text');  
+			$data['quote_status_denied_text']    = $this->language->get('quote_status_denied_text');  
 			$data['order_status_cancelled_text']  = $this->language->get('order_status_cancelled_text');  
 			$data['ttotal_price'] = $quote_info['ttotal_price'];
 
