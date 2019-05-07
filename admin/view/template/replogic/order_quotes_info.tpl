@@ -125,7 +125,7 @@
                         <?php elseif ($qstatus == $quote_status_converted) :?>
                           <b><a class="btn-success quote-status" style="padding:2px 5px; border-radius:5px;"><?=$quote_status_converted_text?></a></b>
                         <?php elseif ($qstatus == $quote_status_denied) :?>
-                          <b><a class="btn-danger quote-status" style="padding:2px 5px; border-radius:5px;"><?=$quote_status?></a></b>
+                          <b><a class="btn-danger quote-status" style="padding:2px 5px; border-radius:5px;"><?=$quote_status_denied_text?></a></b>
                         <?php endif; ?>
                       </div>
                       </span><br>
