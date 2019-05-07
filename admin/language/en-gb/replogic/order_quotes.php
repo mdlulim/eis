@@ -136,6 +136,7 @@ $_['order_status_pending_text']    = 'Pending';
 $_['order_status_processing_text'] = 'Processing';      
 $_['order_status_confirmed_text']  = 'Confirmed';
 $_['quote_status_converted_text']  = 'Converted to Order';
+$_['quote_status_denied_text']  = 'Denied'; 
 $_['order_status_cancelled_text']  = 'Cancelled';      
 
 // Quote Statuses
