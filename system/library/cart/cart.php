@@ -32,14 +32,14 @@ class Cart {
 
 	public function getProducts() {
 		$product_data = array();
-
 		$cart_query = $this->db->query("SELECT * FROM " . DB_PREFIX . "cart WHERE api_id = '" . (isset($this->session->data['api_id']) ? (int)$this->session->data['api_id'] : 0) . "' AND customer_id = '" . (int)$this->customer->getId() . "' AND session_id = '" . $this->db->escape($this->session->getId()) . "'");
-
+		$customer_group_id = $this->customer->getGroupId();
+		
 		foreach ($cart_query->rows as $cart) {
 			$stock = true;
 
 			$product_query = $this->db->query("SELECT * FROM " . DB_PREFIX . "product_to_store p2s LEFT JOIN " . DB_PREFIX . "product p ON (p2s.product_id = p.product_id) LEFT JOIN " . DB_PREFIX . "product_description pd ON (p.product_id = pd.product_id) WHERE p2s.store_id = '" . (int)$this->config->get('config_store_id') . "' AND p2s.product_id = '" . (int)$cart['product_id'] . "' AND pd.language_id = '" . (int)$this->config->get('config_language_id') . "' AND p.date_available <= NOW() AND p.status = '1'");
-
+			
 			if ($product_query->num_rows && ($cart['quantity'] >= 0)) { 
 				$option_price = 0;
 				$option_points = 0;
@@ -172,6 +172,12 @@ class Cart {
 					if ($cart_2['product_id'] == $cart['product_id']) {
 						$discount_quantity += $cart_2['quantity'];
 					}
+				}
+				// Product By Customer Group Id
+				$product_price_by_group = $this->db->query("SELECT price FROM " . DB_PREFIX . "product_to_customer_group_prices WHERE product_id = '" . (int)$cart['product_id'] . "' AND customer_group_id = '" . (int)$customer_group_id . "' ");
+				//var_dump($product_price_by_group);die;
+				if ($product_price_by_group->num_rows) {
+					$price = $product_price_by_group->row['price'];
 				}
 
 				$product_discount_query = $this->db->query("SELECT price FROM " . DB_PREFIX . "product_discount WHERE product_id = '" . (int)$cart['product_id'] . "' AND customer_group_id = '" . (int)$this->config->get('config_customer_group_id') . "' AND quantity <= '" . (int)$discount_quantity . "' AND ((date_start = '0000-00-00' OR date_start < NOW()) AND (date_end = '0000-00-00' OR date_end > NOW())) ORDER BY quantity DESC, priority ASC, price ASC LIMIT 1");
@@ -331,7 +337,6 @@ class Cart {
 
 	public function getRecurringProducts() {
 		$product_data = array();
-
 		foreach ($this->getProducts() as $value) {
 			if ($value['recurring']) {
 				$product_data[] = $value;
@@ -343,7 +348,6 @@ class Cart {
 
 	public function getWeight() {
 		$weight = 0;
-
 		foreach ($this->getProducts() as $product) {
 			if ($product['shipping']) {
 				$weight += $this->weight->convert($product['weight'], $product['weight_class_id'], $this->config->get('config_weight_class_id'));
@@ -355,11 +359,9 @@ class Cart {
 
 	public function getSubTotal() {
 		$total = 0;
-
 		foreach ($this->getProducts() as $product) {
 			$total += $product['total'];
 		}
-
 		return $total;
 	}
 
