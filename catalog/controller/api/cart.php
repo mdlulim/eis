@@ -162,11 +162,17 @@ class ControllerApiCart extends Controller {
 			$json['products'] = array();
 
 			$products = $this->cart->getProducts();
+			$tax_class = array();
 			
 			$this->load->model('tool/image');
 
 			foreach ($products as $product) {
 				$product_total = 0;
+				$tax_class [] = array(
+					'product_id' => $product['product_id'],
+					'price' => $this->currency->format($this->tax->calculate($product['price'], $product['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']),
+					'tax_class_id' => $product['tax_class_id']
+				);
 
 				foreach ($products as $product_2) {
 					if ($product_2['product_id'] == $product['product_id']) {
@@ -212,6 +218,7 @@ class ControllerApiCart extends Controller {
 				);
 			}
 
+
 			// Voucher
 			$json['vouchers'] = array();
 
@@ -239,6 +246,14 @@ class ControllerApiCart extends Controller {
 			$taxes = $this->cart->getTaxes();
 			$total = 0;
 
+			// $total_tax = 0;
+			// foreach ($products as $product){
+				
+			// 	if($product['tax_class_id'] == "9"){
+			// 		$total_tax += $product['price'] * 0.15;
+			// 	}
+			// }
+
 			// Because __call can not keep var references so we put them into an array. 
 			$total_data = array(
 				'totals' => &$totals,
@@ -249,7 +264,7 @@ class ControllerApiCart extends Controller {
 			$sort_order = array();
 
 			$results = $this->model_extension_extension->getExtensions('total');
-
+			
 			foreach ($results as $key => $value) {
 				$sort_order[$key] = $this->config->get($value['code'] . '_sort_order');
 			}
@@ -257,20 +272,28 @@ class ControllerApiCart extends Controller {
 			array_multisort($sort_order, SORT_ASC, $results);
 
 			foreach ($results as $result) {
+				
 				if ($this->config->get($result['code'] . '_status')) {
 					$this->load->model('extension/total/' . $result['code']);
 					
 					// We have to put the totals in an array so that they pass by reference.
+					
 					$this->{'model_extension_total_' . $result['code']}->getTotal($total_data);
 				}
 			}
 
 			$sort_order = array();
-
+			// $totals[] = array(
+			// 	"code"		=> "total",
+			// 	"title"		=> "Vet :",
+			// 	"value"	=> $total_tax,
+			// 	"sort_order"	=>8
+			// );
+			
 			foreach ($totals as $key => $value) {
 				$sort_order[$key] = $value['sort_order'];
 			}
-
+            
 			array_multisort($sort_order, SORT_ASC, $totals);
 
 			$json['totals'] = array();
@@ -281,6 +304,7 @@ class ControllerApiCart extends Controller {
 					'text'  => $this->currency->format($total['value'], $this->session->data['currency'])
 				);
 			}
+
 		}
 
 		if (isset($this->request->server['HTTP_ORIGIN'])) {

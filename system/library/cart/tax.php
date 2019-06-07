@@ -55,11 +55,25 @@ final class Tax {
 		}
 	}
 
+	public function setTaxRate() {
+		$tax_query = $this->db->query("SELECT tr1.tax_class_id, tr2.tax_rate_id, tr2.name, tr2.rate, tr2.type, tr1.priority FROM " . DB_PREFIX . "tax_rule tr1 LEFT JOIN " . DB_PREFIX . "tax_rate tr2 ON (tr1.tax_rate_id = tr2.tax_rate_id) INNER JOIN " . DB_PREFIX . "tax_rate_to_customer_group tr2cg ON (tr2.tax_rate_id = tr2cg.tax_rate_id) LEFT JOIN " . DB_PREFIX . "zone_to_geo_zone z2gz ON (tr2.geo_zone_id = z2gz.geo_zone_id) LEFT JOIN " . DB_PREFIX . "geo_zone gz ON (tr2.geo_zone_id = gz.geo_zone_id) WHERE tr1.based = 'store' AND tr2cg.customer_group_id = '" . (int)$this->config->get('config_customer_group_id') . "' ORDER BY tr1.priority ASC");
+		foreach ($tax_query->rows as $result) {
+			$this->tax_rates[$result['tax_class_id']][$result['tax_rate_id']] = array(
+				'tax_rate_id' => $result['tax_rate_id'],
+				'name'        => $result['name'],
+				'rate'        => $result['rate'],
+				'type'        => $result['type'],
+				'priority'    => $result['priority']
+			);
+		}
+		return $this->tax_rates;
+	}
+
 	public function calculate($value, $tax_class_id, $calculate = true) {
 		if ($tax_class_id && $calculate) {
 			$amount = 0;
-
-			$tax_rates = $this->getRates($value, $tax_class_id);
+			$product_id = null;
+			$tax_rates = $this->getRates($product_id, $value, $tax_class_id);
 
 			foreach ($tax_rates as $tax_rate) {
 				if ($calculate != 'P' && $calculate != 'F') {
@@ -77,8 +91,8 @@ final class Tax {
 
 	public function getTax($value, $tax_class_id) {
 		$amount = 0;
-
-		$tax_rates = $this->getRates($value, $tax_class_id);
+		$product_id =null;
+		$tax_rates = $this->getRates($product_id, $value, $tax_class_id);
 
 		foreach ($tax_rates as $tax_rate) {
 			$amount += $tax_rate['amount'];
@@ -97,11 +111,13 @@ final class Tax {
 		}
 	}
 
-	public function getRates($value, $tax_class_id) {
+	public function getRates($product_id, $value, $tax_class_id) {
 		$tax_rate_data = array();
-
-		if (isset($this->tax_rates[$tax_class_id])) {
-			foreach ($this->tax_rates[$tax_class_id] as $tax_rate) {
+		$tax_rates = $this->setTaxRate();
+		var_dump($tax_class_id);die;
+		//if (isset($this->tax_rates[$tax_class_id])) {
+		if (isset($tax_rates[$tax_class_id]) && isset($product_id)) {
+			foreach ($tax_rates[$tax_class_id] as $tax_rate) {
 				if (isset($tax_rate_data[$tax_rate['tax_rate_id']])) {
 					$amount = $tax_rate_data[$tax_rate['tax_rate_id']]['amount'];
 				} else {
@@ -123,7 +139,7 @@ final class Tax {
 				);
 			}
 		}
-
+		//var_dump($tax_rate_data);die;
 		return $tax_rate_data;
 	}
 }
