@@ -114,7 +114,7 @@ final class Tax {
 	public function getRates($product_id, $value, $tax_class_id) {
 		$tax_rate_data = array();
 		$tax_rates = $this->setTaxRate();
-		var_dump($tax_class_id);die;
+
 		//if (isset($this->tax_rates[$tax_class_id])) {
 		if (isset($tax_rates[$tax_class_id]) && isset($product_id)) {
 			foreach ($tax_rates[$tax_class_id] as $tax_rate) {
