@@ -173,12 +173,12 @@ class Cart {
 						$discount_quantity += $cart_2['quantity'];
 					}
 				}
-				// Product By Customer Group Id
+
 				$product_price_by_group = $this->db->query("SELECT price FROM " . DB_PREFIX . "product_to_customer_group_prices WHERE product_id = '" . (int)$cart['product_id'] . "' AND customer_group_id = '" . (int)$customer_group_id . "' ");
-				//var_dump($product_price_by_group);die;
 				if ($product_price_by_group->num_rows) {
 					$price = $product_price_by_group->row['price'];
 				}
+				
 
 				$product_discount_query = $this->db->query("SELECT price FROM " . DB_PREFIX . "product_discount WHERE product_id = '" . (int)$cart['product_id'] . "' AND customer_group_id = '" . (int)$this->config->get('config_customer_group_id') . "' AND quantity <= '" . (int)$discount_quantity . "' AND ((date_start = '0000-00-00' OR date_start < NOW()) AND (date_end = '0000-00-00' OR date_end > NOW())) ORDER BY quantity DESC, priority ASC, price ASC LIMIT 1");
 
@@ -271,7 +271,7 @@ class Cart {
 				$this->remove($cart['cart_id']);
 			}
 		}
-
+        //var_dump($product_data);die;
 		return $product_data;
 	}
 
@@ -369,10 +369,11 @@ class Cart {
 		$tax_data = array();
 
 		foreach ($this->getProducts() as $product) {
+			
 			if ($product['tax_class_id']) {
-				$tax_rates = $this->tax->getRates($product['price'], $product['tax_class_id']);
-
+				$tax_rates = $this->tax->getRates($product['product_id'], $product['price'], $product['tax_class_id']);
 				foreach ($tax_rates as $tax_rate) {
+					//var_dump($tax_rate['amount']);die;
 					if (!isset($tax_data[$tax_rate['tax_rate_id']])) {
 						$tax_data[$tax_rate['tax_rate_id']] = ($tax_rate['amount'] * $product['quantity']);
 					} else {
@@ -381,7 +382,7 @@ class Cart {
 				}
 			}
 		}
-
+		
 		return $tax_data;
 	}
 
@@ -391,7 +392,6 @@ class Cart {
 		foreach ($this->getProducts() as $product) {
 			$total += $this->tax->calculate($product['price'], $product['tax_class_id'], $this->config->get('config_tax')) * $product['quantity'];
 		}
-
 		return $total;
 	}
 
