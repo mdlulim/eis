@@ -79,10 +79,10 @@
                     <a href="<?php echo $sort_note_title; ?>" class="<?php echo strtolower($order); ?>"><?php echo $column_note_title; ?></a>
                     <?php } else { ?>
                     <a href="<?php echo $sort_note_title; ?>"><?php echo $column_note_title; ?></a>
-                    <?php } ?></td>
-                    <td class="text-left">Description</td>
-                 <!-- <td class="text-left">Sales Manager</td>-->
-                  
+                    <?php } ?>
+                  </td>
+                  <td class="text-left">Description</td>
+                  <td class="text-left" style="width:200px; min-width:200px">Attachment(s)</td>
                   <td class="text-right"><?php echo $column_action; ?></td>
                 </tr>
               </thead>
@@ -90,20 +90,36 @@
                 <?php if($access == 'yes') { ?>
                 <?php if ($notes) { ?>
                     <?php foreach ($notes as $note) {  ?>
-                        
-                            <tr>
-                              <td class="text-center"><?php if (in_array($note['note_id'], $selected)) { ?>
-                                <input type="checkbox" name="selected[]" value="<?php echo $note['note_id']; ?>" checked="checked" />
-                                <?php } else { ?>
-                                <input type="checkbox" name="selected[]" value="<?php echo $note['note_id']; ?>" />
-                                <?php } ?></td>
-                              <td class="text-left"><?php echo $note['note_title']; ?></td>
-                              <td class="text-left"><?php echo $note['description']; ?></td>
-                             <!-- <td class="text-left"><?php echo $note['sales_manager']; ?></td>-->
-                              <td class="text-right"><a href="<?php echo $note['edit']; ?>" data-toggle="tooltip" title="<?php echo $button_edit; ?>" class="btn btn-primary"><i class="fa fa-pencil"></i></a></td>
-                            </tr>
-                     <?php } ?>
-                    <?php } else { ?>
+                    <tr>
+                      <td class="text-center"><?php if (in_array($note['note_id'], $selected)) { ?>
+                        <input type="checkbox" name="selected[]" value="<?php echo $note['note_id']; ?>" checked="checked" />
+                        <?php } else { ?>
+                        <input type="checkbox" name="selected[]" value="<?php echo $note['note_id']; ?>" />
+                        <?php } ?></td>
+                      <td class="text-left"><?php echo $note['note_title']; ?></td>
+                      <td class="text-left"><?php echo $note['description']; ?></td>
+                      <td class="text-left attachments-docs">
+                        <?php if (!empty($note['attachments'])) : ?>
+                          <?php if (count($note['attachments']) > 1) : ?>
+                          <a href="<?php echo $note['attachments'][0]; ?>" target="_blank">
+                            <i class="fa <?php echo (in_array(strtolower(pathinfo($note['attachments'][0], PATHINFO_EXTENSION)), ['gif','jpg','jpeg','png'])) ? 'fa-photo' : 'fa-file'; ?>"></i>
+                            <span><?php echo (pathinfo($note['attachments'][0], PATHINFO_BASENAME)); ?></span>
+                          </a>
+                          <a href="<?php echo $note['edit']; ?>" style="display: inline-block; border: 1px solid #ddd; border-radius: 15px; padding: 5px 10px; text-align: center; margin-right: 8px">
+                            <span style="display: inline-block; vertical-align: middle;">+<?php echo (count($note['attachments']) - 1); ?></span>
+                          </a>
+                          <?php else: ?>
+                          <a href="<?php echo $note['attachments'][0]; ?>" target="_blank">
+                            <i class="fa <?php echo (in_array(strtolower(pathinfo($note['attachments'][0], PATHINFO_EXTENSION)), ['gif','jpg','jpeg','png'])) ? 'fa-photo' : 'fa-file'; ?>"></i>
+                            <span><?php echo (pathinfo($note['attachments'][0], PATHINFO_BASENAME)); ?></span>
+                          </a>
+                          <?php endif; ?>
+                        <?php endif; ?>
+                      </td>
+                      <td class="text-right"><a href="<?php echo $note['edit']; ?>" data-toggle="tooltip" title="<?php echo $button_edit; ?>" class="btn btn-primary"><i class="fa fa-pencil"></i></a></td>
+                    </tr>
+                    <?php } ?>
+                  <?php } else { ?>
                     <tr>
                       <td class="text-center" colspan="5">No any Appointment Notes Available</td>
                     </tr>
