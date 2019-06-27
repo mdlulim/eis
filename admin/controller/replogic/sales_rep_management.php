@@ -797,9 +797,9 @@ class ControllerReplogicSalesRepManagement extends Controller {
 			}
 		}*/
 		
-		$user_info = $this->model_replogic_sales_rep_management->CheckEmailByApi($this->request->post['email']);
+		$api_res = $this->model_replogic_sales_rep_management->CheckEmailByApi($this->request->post['email']);
 		if (!isset($this->request->get['salesrep_id'])) {
-			if (!empty($user_info->data)) {
+			if (!empty($api_res->users)) {
 				$this->error['warning'] = $this->language->get('error_exists');
 			}
 		}
