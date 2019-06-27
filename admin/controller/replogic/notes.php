@@ -274,6 +274,7 @@ class ControllerReplogicNotes extends Controller {
 				'note_id'       => $result['note_id'],
 				'note_title'    => $result['note_title'],
 				'description'   => $result['note_content'],
+				'date_added'    => date('D d M Y', strtotime($result['date_added'])) . ' at <strong>' . date('h:i A', strtotime($result['date_added'])) . '<strong>',
 				'sales_manager' => $sales_manag,
 				'attachments'   => json_decode($result['attachments'], true),
 				'edit'          => $this->url->link('replogic/notes/edit', 'token=' . $this->session->data['token'] . '&appointment_id=' . $this->request->get['appointment_id'] .'&note_id=' . $result['note_id'] . $url, true)
@@ -480,6 +481,7 @@ class ControllerReplogicNotes extends Controller {
 
 		if (isset($this->request->get['note_id']) && $this->request->server['REQUEST_METHOD'] != 'POST') {
 			$note_info = $this->model_replogic_notes->getNote($this->request->get['note_id']);
+			$data['attachments'] = json_decode($note_info['attachments'], true);
 		}
 
 		if (isset($this->request->post['note_title'])) {
