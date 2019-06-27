@@ -78,58 +78,74 @@ class ControllerCheckoutPaymentAddress extends Controller {
 			$json['redirect'] = $this->url->link('checkout/cart');
 		}
 
-		if ($storeId === 0 && INTEGRATION_ID == '1') {
+		# get integration type/option
+		$this->load->model('setting/configuration');
+		$integration = $this->model_setting_configuration->get('integration', 'type');
+
+		switch (TRUE) {
 
 			/*************************************************
+			 * ARCH INTEGRATION:
 			 * If Arch Integration and Store ID = '0' 
 			 *  - Only redirect to cart if all products in
 			 *    cart have zero quantity. This will allow
 			 *    checkout ONLY on items/products with 
-			 *    quantity >= 1
+			 *    quantity >= 1.
+			 *  - Unset [or remove from cart] all products 
+			 *    with ZERO quantities.
 			 *************************************************/
-			
-			$products      = $this->cart->getProducts();
-			$allowCheckout = false;
 
-			foreach ($products as $product) {
-				$product_total = 0;
-				foreach ($products as $product_2) {
-					if ($product_2['product_id'] == $product['product_id']) {
-						$product_total += $product_2['quantity'];
+			case (strtolower($integration) === 'arch' && $storeId === 0):
+			
+				$products      = $this->cart->getProducts();
+				$allowCheckout = false;
+
+				foreach ($products as $product) {
+					$product_total = 0;
+					foreach ($products as $product_2) {
+						if ($product_2['product_id'] == $product['product_id']) {
+							$product_total += $product_2['quantity'];
+						}
+					}
+					if ($product_total > 0) {
+						$allowCheckout = true;
 					}
 				}
-				if ($product_total > 0) {
-					$allowCheckout = true;
+
+				if (!$allowCheckout) {
+					$json['redirect'] = $this->url->link('checkout/cart');
 				}
-			}
 
-			if (!$allowCheckout) {
-				$json['redirect'] = $this->url->link('checkout/cart');
-			}
+			break;
 
-		} else {
 
 			/*************************************************
-			 * Validate minimum quantity requirements.
+			 * DEFAULT
+			 *	- Validate minimum quantity requirements.
 			 *************************************************/
+
+			default:
 			
-			$products = $this->cart->getProducts();
+				$products = $this->cart->getProducts();
 
-			foreach ($products as $product) {
-				$product_total = 0;
+				foreach ($products as $product) {
+					$product_total = 0;
 
-				foreach ($products as $product_2) {
-					if ($product_2['product_id'] == $product['product_id']) {
-						$product_total += $product_2['quantity'];
+					foreach ($products as $product_2) {
+						if ($product_2['product_id'] == $product['product_id']) {
+							$product_total += $product_2['quantity'];
+						}
+					}
+
+					if ($product['minimum'] > $product_total) {
+						$json['redirect'] = $this->url->link('checkout/cart');
+
+						break;
 					}
 				}
 
-				if ($product['minimum'] > $product_total) {
-					$json['redirect'] = $this->url->link('checkout/cart');
+			break;
 
-					break;
-				}
-			}
 		}
 
 		if (!$json) {

@@ -22,12 +22,12 @@
       <h1 class="heading-title">
         <?php echo $heading_title; ?>
         <?php echo $button_import; ?>
-        <span>
+        <!--<span>
           <a href="<?php echo $addStocksheetToCart; ?>" class="btn btn-default btn-sm pull-right btn-add-sheet-to-cart">
             <i class="fa fa-repeat"></i> 
             Add sheet to cart 
           </a>
-        </span>
+        </span>-->
       </h1>
       <?php echo $content_top; ?>
       <div class="content wishlist-info">
@@ -39,7 +39,7 @@
             <div class="form-group">
               <label class="sr-only">Search</label>
               <div class="input-group">
-                <input type="text" class="form-control input-filter" placeholder="Search">
+                <input type="text" class="form-control input-filter" placeholder="Search stock sheet...">
                 <div class="input-group-btn">
                   <button type="button" class="btn btn-primary"><span class="fa fa-search"></span></button>
                   <!--<button type="button" class="btn btn-default dropdown-toggle">
@@ -67,14 +67,14 @@
           </form>
         </div>
       </div>
-        <div class="table-responsive">
+        <div class="table-responsive cart-info">
       <table class="table table-bordered table-hover" data-order='[[1, "asc"]]'>
         <thead>
           <tr>
             <td class="text-left image"><?php echo $column_image; ?></td>
             <td class="text-left name"><?php echo $column_name; ?></td>
             <td class="text-left model"><?php echo $column_model; ?></td>
-            <td class="text-right stock"><?php echo $column_stock; ?></td>
+            <td class="text-right quantity"><?php echo $column_quantity; ?></td>
             <td class="text-right price"><?php echo $column_price; ?></td>
             <td class="text-right action"><!--<?php echo $column_action; ?>--></td>
           </tr>
@@ -87,9 +87,20 @@
               <?php } ?></td>
             <td class="text-left name"><a href="<?php echo $product['href']; ?>"><?php echo $product['name']; ?></a></td>
             <td class="text-left model"><?php echo $product['model']; ?></td>
-            <td class="text-right stock"><input type="text" name="stock" data-product-id="<?php echo $product['product_id']; ?>" value="<?php echo $product['stock']; ?>" maxlength="4" size="4"/></td>
+            <td class="text-right quantity">
+              <!--<input type="text" name="stock" data-product-id="<?php echo $product['product_id']; ?>" value="<?php echo $product['stock']; ?>" maxlength="4" size="4"/>-->
+              <span class="qty" data-cart-id="<?php echo $product[version_compare(VERSION, '2.1', '<') ? 'key' : 'cart_id']; ?>">
+                <a href="javascript:;" class="journal-stepper" onclick="Journal.removeProductFromCart(<?php echo $product['product_id']; ?>, this)">-</a>
+                <input name="quantity" min="0" value="<?php echo $product['cart_qty'] ?>" size="10" data-min-value="0" id="quantity_<?php echo $product['product_id']; ?>" class="form-control product-info1" type="text" data-cart-qty="<?php echo $product['cart_qty'] ?>" data-product-id="<?php echo $product['product_id'] ?>" <?php echo (!$product['stock']) ? 'disabled' : '' ?>>
+                <?php if (!$product['stock']) : ?>
+                <a href="javascript:;" class="journal-stepper">+</a>
+                <?php else : ?>
+                <a href="javascript:;" class="journal-stepper" onclick="Journal.addToCart(<?php echo $product['product_id']; ?>, this)">+</a>
+                <?php endif; ?>
+              </span>
+            </td>
             <td class="text-right price">
-              <?php if (!$this->config->get('config_hide_price') && $product['price']) { ?>
+              <?php if (!$hide_price && $product['price']) { ?>
               <div class="price">
                 <?php if (!$product['special']) { ?>
                 <?php echo $product['price']; ?>
@@ -99,9 +110,9 @@
               </div>
               <?php } ?></td>
               <td class="text-right action <?php echo isset($product['labels']) && is_array($product['labels']) && isset($product['labels']['outofstock']) ? 'outofstock' : ''; ?>">
-                <a onclick="cart.add('<?php echo $product['product_id']; ?>');" data-toggle="tooltip" title="<?php echo $button_cart; ?>" class="btn-addtocart">
+                <!--<a onclick="cart.add('<?php echo $product['product_id']; ?>');" data-toggle="tooltip" title="<?php echo $button_cart; ?>" class="btn-addtocart">
                   <i class="fa fa-shopping-cart"></i>
-                </a>
+                </a>-->
                 <a href="<?php echo $product['remove']; ?>" data-toggle="tooltip" title="<?php echo $button_remove; ?>" class="btn-remove">
                   <i class="fa fa-trash-o"></i>
                 </a>

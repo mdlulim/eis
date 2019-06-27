@@ -6,7 +6,7 @@
         <?php if($delete) { ?>
         <button type="button" id="button-delete" form="form-order" data-toggle="tooltip" title="<?php echo $button_delete; ?>" class="btn btn-danger"><i class="fa fa-trash-o"></i></button>
         <?php } ?>
-        <button type="button" id="button-deny" form="form-order" data-toggle="tooltip" title="Deny Quote(s)" class="btn btn-danger"><i class="fa fa-times"></i></button>
+        <!--button type="button" id="button-deny" form="form-order" data-toggle="tooltip" title="Deny Quote(s)" class="btn btn-danger"><i class="fa fa-times"></i></button -->
       </div>
       <h1><?php echo $heading_title; ?></h1>
       <ul class="breadcrumb">
@@ -140,6 +140,13 @@
                     <?php } else { ?>
                     <a href="<?php echo $sort_status; ?>"><?php echo $column_status; ?></a>
                     <?php } ?></td>
+                  <?php if ($quote_approval) { ?>
+                  <td class="text-left"><?php if ($sort == 'signed') { ?>
+                    <a href="<?php echo $sort_signed; ?>" class="<?php echo strtolower($order); ?>"><?php echo $column_signed; ?></a>
+                    <?php } else { ?>
+                    <a href="<?php echo $sort_signed; ?>"><?php echo $column_signed; ?></a>
+                    <?php } ?></td>
+                  <?php } ?>
                   <td class="text-right"><?php echo $column_action; ?></td>
                 </tr>
               </thead>
@@ -175,6 +182,9 @@
                       <a class="btn-warning" style="padding:2px 5px;border-radius:5px;"><?=$order['quote_status']?></a>
                     <?php endif; ?>
                   </td>
+                  <?php if ($quote_approval) { ?>
+                  <td class="text-left"><?php echo ($order['signed']) ? 'Signed' : 'Not Signed'; ?></td>
+                  <?php } ?>
                   <td class="text-right">
                     
                       <?php if($order['view']) { ?>

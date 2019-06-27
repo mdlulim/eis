@@ -34,6 +34,18 @@ class ControllerProductSpecial extends Controller {
 			$limit = $this->config->get($this->config->get('config_theme') . '_product_limit');
 		}
 
+		/******************************************************************
+		 * START | Hide/show price configuration
+		 ******************************************************************/
+
+		$this->load->model('setting/configuration');
+		$config = $this->model_setting_configuration->get('wholesale', 'hide_price');
+		$data['hide_price'] = (strtolower($config['value']) === 'yes');
+
+		/******************************************************************
+		 * END | Hide/show price configuration
+		 ******************************************************************/
+
 		$this->document->setTitle($this->language->get('heading_title'));
 
 		$data['breadcrumbs'] = array();
@@ -165,6 +177,8 @@ class ControllerProductSpecial extends Controller {
 				'thumb'       => $image,
 
                 'thumb2'       => $image2,
+				'quantity' => $result['quantity'],
+				'stock_status_id' => $result['stock_status_id'],
             
 
                 'labels'        => $this->model_journal2_product->getLabels($result['product_id']),

@@ -87,6 +87,7 @@ class ControllerCatalogCategory extends Controller {
 			}
 
 			 $this->session->data['success'] = $this->language->get('text_success');
+			$this->request->post['selected'] = null;
 		}
 		$this->getList();
 	} 
@@ -100,7 +101,8 @@ class ControllerCatalogCategory extends Controller {
 			foreach ($this->request->post['selected'] as $product_id) {
 				$this->model_catalog_category->enableCategory($product_id);
 			}
-			$this->session->data['success'] = $this->language->get('text_success');		
+			$this->session->data['success'] = $this->language->get('text_success');	
+			$this->request->post['selected'] = null;
 		}
 		$this->getList();
 	}

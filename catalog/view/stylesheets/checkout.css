@@ -6,7 +6,7 @@
   margin: 15px 0 20px; 
 }
 .datatable-custom-filters input.form-control {
-  border: 1px solid rgba(33, 33, 33, 0.12);
+  border: 1px solid rgba(56, 56, 56, 1);
   border-radius: 0;
   background-color: #fff;
   box-shadow: none;
@@ -186,6 +186,13 @@
 }
 .cart-info table > tfoot > tr > th {
   text-align: right;
+}
+.quantity.add_to_cart-disabled {
+  opacity: .5;
+  cursor: not-allowed;
+}
+.quantity.add_to_cart-disabled a {
+  cursor: not-allowed;
 }
 
 /********************************************************
@@ -462,4 +469,47 @@ form#form-cart-importer {
 }
 .cart__items-not-found table.table.dataTable.no-footer {
   border-bottom: 2px solid #dee2e6;
+}
+
+/********************************************************
+ *  Checkout page
+ ********************************************************/
+
+.checkout-product table > thead > tr > td {
+  font-size: 13px;
+  background-color: #fff;
+  color: rgb(70, 71, 73);
+  text-transform: uppercase;
+  border-bottom: 2px solid rgba(33, 33, 33, 0.1);
+  padding: 10px;
+}
+.checkout-product table > tbody > tr > td {
+  font-size: 13px;
+  padding: 14px 10px;
+}
+.checkout-product table > tfoot > tr > td {
+  font-size: 13px;
+  background-color: #fff;
+  color: rgb(70, 71, 73);
+  text-transform: uppercase;
+  border-top: 2px solid rgba(33, 33, 33, 0.1);
+  padding: 10px;
+}
+.checkout-product table > tfoot > tr:nth-child(2) > td {
+  border: none;
+}
+.checkout-product table tr > td.quantity {
+  text-align: center;
+}
+
+.stock-alert {
+  font-family: Tahoma, Geneva, Arial, sans-serif;
+  display: inline-block;
+  color: #F52D29;
+  margin-top: 2px;
+  font-size: 11px;
+  border-radius: 1px;
+  padding: 4px 8px;
+  background-color: #ffecec;
+  border: 1px solid #f5aca6;
 }

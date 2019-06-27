@@ -640,6 +640,31 @@ class ControllerCustomerCustomer extends Controller {
 				$unlock = '';
 			}
 
+			// customer activity [ wholesale ]
+			if (!empty($result['customer_activity'])) {
+				$wholesale_activity = ($result['key'] == 'customer_invitation') ? 'Invited' : '';
+				switch ($result['key']) {
+					case 'customer_invitation':
+						$wholesale_activity = 'Invited';
+						break;
+
+					case 'login':
+						$activity = json_decode($result['customer_activity'], true);
+						if (!empty($activity['timestamp'])) {
+							$wholesale_activity = '<strong>Last login</strong> ' . relativeTime($activity['timestamp']);
+						} else {
+							$wholesale_activity = ($result['invited'] == 1) ? 'Invited' : '';
+						}
+						break;
+					
+					default:
+						$wholesale_activity = ($result['invited'] == 1) ? 'Invited' : '';
+						break;
+				}
+			} else {
+				$wholesale_activity = ($result['invited'] == 1) ? 'Invited' : 'Not Invited';
+			}
+		    //var_dump($this->customerActivity($result));
 			$data['customers'][] = array(
 				'customer_id'    => $result['customer_id'],
 				//'name'           => $result['name'],
@@ -863,31 +888,26 @@ class ControllerCustomerCustomer extends Controller {
 	}
 
 	protected function customerActivity($customer) {
-		$wholesale_activity = '';
-		if (!empty($customer['customer_activity'])) {
-			$wholesale_activity = ($customer['key'] == 'customer_invitation') ? 'Invited' : '';
-			switch ($customer['key']) {
-				case 'customer_invitation':
-					$wholesale_activity = 'Invited';
-					break;
+		if (!empty($customer['invited'])) {
+			if ($customer['invited'] == 1) {
+				if (!empty($customer['key'])) {
+					switch($customer['key']) {
 
-				case 'login':
-					$activity = json_decode($customer['customer_activity'], true);
-					if (!empty($activity['timestamp'])) {
-						$wholesale_activity = '<strong>Last login</strong> ' . relativeTime($activity['timestamp']);
-					} else {
-						$wholesale_activity = ($customer['invited'] == 1) ? 'Invited' : '';
+						/**********************************************************
+						 * Last activity: Customer has logged in
+						 **********************************************************/
+						case 'login': return 'Last Login ' . date('Y-m-d H:i A', strtotime($customer['last_activity_date']));
+
+						/**********************************************************
+						 * Last activity: Customer has been invited
+						 **********************************************************/
+						default: return 'Invited';
 					}
-					break;
-				
-				default:
-					$wholesale_activity = ($customer['invited'] == 1) ? 'Invited' : '';
-					break;
+				}
+				return 'Invited';
 			}
-		} else {
-			$wholesale_activity = ($customer['invited'] == 1) ? 'Invited' : 'Not Invited';
 		}
-		return $wholesale_activity;
+		return 'Not Invited';
 	}
 
 	protected function getForm() {
@@ -2009,7 +2029,10 @@ class ControllerCustomerCustomer extends Controller {
 
 	protected function sendCustomerInvitation($customer_id) {
 
-		$emailClient = $this->config->get('config_mail_client');
+		# get mail client
+		$this->load->model('setting/configuration');
+		$config      = $this->model_setting_configuration->get('general', 'mail_client');
+		$emailClient = $config['value'];
 
 		$this->load->model('customer/customer');
 		$this->load->model('setting/setting');
@@ -2122,7 +2145,12 @@ class ControllerCustomerCustomer extends Controller {
 		set_time_limit(0);
 		ini_set('memory_limit', '1G');
 
-		$emailClient  = $this->config->get('config_mail_client');
+		# get mail client
+		$this->load->model('setting/configuration');
+		$config      = $this->model_setting_configuration->get('general', 'mail_client');
+		$emailClient = $config['value'];
+
+
 		$customers    = array();
 		$allCustomers = false;
 

@@ -33,7 +33,7 @@ class ModelReplogicNotes extends Model {
 			$sql .= " AND salesrep_id LIKE '" . $this->db->escape($data['filter_salesrep_id']) . "'";
 		}*/
 		
-		$sql .= " ORDER BY note_title";
+		$sql .= " ORDER BY note_id DESC, note_title";
 
 		if (isset($data['order']) && ($data['order'] == 'DESC')) {
 			$sql .= " DESC";

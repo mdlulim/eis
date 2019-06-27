@@ -1069,6 +1069,68 @@ Orders.save = function(token, scallback) {
 
 /**
  *
+ * Save/Create new Order
+ * @param {string} token         api session access token
+ * @param {function} scallback   success callback function
+ */
+Orders.edit = function(token, scallback) {
+	var catalog     = $('#content').data('catalog');
+	var customerTab = $('#tab-customer');
+	var orderId     = $('input[name="order_id"]').val();
+	var storeId     = customerTab.find('input[name="store_id"]').val();
+	var url         = `${catalog}index.php?route=api/order/edit&token=${token}&store_id=${storeId}&order_id=${orderId}`;
+	// order post data
+	var orderData   = {
+		payment_method : $('select#input-payment_method').val(),
+		shipping_method: $('select#input-shipping_method').val(),
+		order_status_id: $('input[name="order_status_id"]').val(),
+		comment        : $('textarea#input-comment').val(),
+		order_id       : orderId
+	};
+	$.ajax({
+		url        : url,
+		type       : 'post',
+		data       : orderData,
+		dataType   : 'json',
+		crossDomain: true,
+		beforeSend : function() {
+			if ($('.sweet-overlay').length === 0) {
+				$('.loader-wrapper').show();
+			}
+		},
+		complete: function() {
+			$('.loader-wrapper').hide();
+		},
+		success: function(json) {
+			$('.alert, .text-danger').remove();
+
+			if (json['error']) {
+				$('#content > .container-fluid').prepend(`<div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> ${json['error']} <button type="button" class="close" data-dismiss="alert">&times;</button></div>`);
+			}
+
+			if (json['success']) {
+				if (typeof scallback !== "undefined") {
+					scallback(json);
+				} else {
+					var utoken = $('#content').data('token');
+					var url    = `index.php?route=sale/order&token=${utoken}`;
+					window.location.href = url;
+				}
+            }
+
+			if (json['order_id']) {
+				$('input[name="order_id"]').val(json['order_id']);
+			}
+		},
+		error: function(xhr, ajaxOptions, thrownError) {
+			alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+		}
+	});
+};
+
+
+/**
+ *
  * Cancel Order
  * @param {string} token         api session access token
  * @param {function} scallback   success callback function

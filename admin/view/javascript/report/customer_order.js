@@ -117,25 +117,24 @@
             }
             
             /*******************************************
-             * Filter Customer Id 
+             * Filter order status
+             *******************************************/
+
+            var filter_order_status = $('select[name="filter_order_status_id"]').val();
+            if (filter_order_status) {
+                url += `&filter_order_status=${encodeURIComponent(filter_order_status)}`;
+            }
+                
+            /*******************************************
+             * Filter Customer Id
              *******************************************/
 
             var filter_customer_id = $('select[name="filter_customer_id"]').val();
             if (filter_customer_id) {
                 url += `&filter_customer_id=${encodeURIComponent(filter_customer_id)}`;
             }
-            /*******************************************
-             * Filter order status 
-             *******************************************/
+               
 
-            var filter_order_status_id = $('select[name="filter_order_status_id"]').val();
-            if (filter_order_status_id) {
-                url += `&filter_order_status_id=${encodeURIComponent(filter_order_status_id)}`;
-            }
-
-            
-                
-           
             location = url;
         });
     };

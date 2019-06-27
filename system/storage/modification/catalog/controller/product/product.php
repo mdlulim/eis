@@ -5,6 +5,18 @@ class ControllerProductProduct extends Controller {
 	public function index() {
 		$this->load->language('product/product');
 
+		/******************************************************************
+		 * START | Hide/show price configuration
+		 ******************************************************************/
+
+		$this->load->model('setting/configuration');
+		$config = $this->model_setting_configuration->get('wholesale', 'hide_price');
+		$data['hide_price'] = (strtolower($config['value']) === 'yes');
+
+		/******************************************************************
+		 * END | Hide/show price configuration
+		 ******************************************************************/
+
 		$data['breadcrumbs'] = array();
 
 		$data['breadcrumbs'][] = array(

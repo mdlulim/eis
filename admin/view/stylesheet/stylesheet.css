@@ -672,3 +672,161 @@ input[type="checkbox"]:checked::after, .checkbox input[type="checkbox"]:checked:
 .bs-callout-info {
     border-left-color: #1b809e;
 }
+/* Note Attachments */
+td.attachments-docs a {
+	display: inline-block; 
+	border: 1px solid #ddd; 
+	border-radius: 15px; 
+	padding: 5px 10px; 
+	text-align: center; 
+	margin-right: 5px;
+	font-weight: 600;
+}
+td.attachments-docs a i {
+	display: inline-block; 
+	vertical-align: middle; 
+	margin-right: 5px;
+}
+td.attachments-docs a span {
+	display: inline-block; 
+	vertical-align: middle;
+}
+/* preview */
+.nt-preview {
+	position: relative;
+	display: block;
+	min-height: 100px;
+	cursor: pointer;
+	border: 1px solid #eee;
+}
+.nt-preview .nt-doc {
+	position: relative;
+	overflow: hidden;
+	height: 120px;
+	display: block;
+	z-index: 10;
+}
+.nt-preview.file-preview .nt-doc {
+	background: #999;
+	background: linear-gradient(to bottom, #eee, #ddd);
+	text-align: center;
+}
+.nt-preview .nt-details {
+	position: absolute;
+	z-index: 20;
+	top: 0;
+	left: 0;
+	display: none;
+	font-size: 14px;
+	font-weight: bold;
+	min-width: 100%;
+	min-height: 100%;
+	padding: 0;
+	text-align: left;
+	color: rgba(0, 0, 0, .9);
+	line-height: 150%;
+	-webkit-transition: opacity 0.2s linear;
+    -moz-transition: opacity 0.2s linear;
+    -ms-transition: opacity 0.2s linear;
+    -o-transition: opacity 0.2s linear;
+    transition: opacity 0.2s linear;
+}
+.nt-preview:hover .nt-details {
+	display: block;
+}
+.nt-preview.file-preview .nt-details {
+	display: block;
+	opacity: 1;
+}
+.nt-preview .nt-doc img {
+	display: block;
+	width: 100%;
+}
+.nt-preview .nt-doc i {
+	display: none;
+    margin-top: .7em;
+	font-size: 3.2em;
+}
+.nt-preview.file-preview .nt-doc i {
+	display: inline-block;
+	opacity: .7;
+}
+.nt-preview.file-preview .nt-doc img {
+	display: none;
+}
+.nt-preview:hover .nt-doc img {
+	-webkit-transform: scale(1.05, 1.05);
+    -moz-transform: scale(1.05, 1.05);
+    -ms-transform: scale(1.05, 1.05);
+    -o-transform: scale(1.05, 1.05);
+    transform: scale(1.05, 1.05);
+    -webkit-filter: blur(8px);
+    filter: blur(8px);
+}
+.nt-preview .nt-details .nt-filename {
+	white-space: nowrap;
+}
+.nt-preview .nt-details .nt-filename i {
+	color: #2991CE;
+	font-size: 16px;
+}
+.nt-preview .nt-details .nt-filename .file-size {
+	font-size: 11px;
+	font-weight: normal;
+	padding-left: 18px;
+	margin-top: -5px;
+}
+.nt-preview.file-preview .nt-details .nt-filename i,
+.nt-preview.file-preview .nt-details .nt-filename .file-size,
+.nt-preview.file-preview .nt-details .nt-filename .file-actions {
+	display: none;
+}
+.nt-preview .nt-details .nt-filename span {
+	color: rgba(0, 0, 0, .6);
+	font-size: 11px;
+}
+.nt-preview .nt-details .nt-filename {
+	position: absolute;
+    bottom: 0;
+    width: 100%;
+    background: rgba(255,255,255,.4);
+    padding: 5px 10px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.nt-preview.file-preview:hover .nt-doc i {
+	display: none;
+}
+.nt-preview:hover .nt-details .nt-filename {
+	top: 0;
+	height: 100%;
+}
+.nt-preview.file-preview:hover .nt-details .nt-filename i {
+	display: inline-block;
+}
+.nt-preview:hover .nt-details .nt-filename .file-size {
+	display: block;
+}
+.nt-preview .nt-details .nt-filename .file-actions {
+	position: absolute;
+	bottom: 18px;
+	text-align: center;
+    width: calc(100% - 20px);
+}
+.nt-preview .nt-details .nt-filename .file-actions a {
+	display: inline-block;
+	background-color: #777;
+	border-radius: 3px;
+	padding: 5px 12px 3px 12px;
+	margin-right: 3px;
+	cursor: pointer;
+}
+.nt-preview .nt-details .nt-filename .file-actions a:hover {
+	background-color: #999;
+}
+.nt-preview .nt-details .nt-filename .file-actions a i {
+	color: #fff;
+}
+.nt-preview:hover .nt-details .nt-filename .file-actions {
+	display: block;
+}

@@ -1,0 +1,24 @@
+.form-horizontal .form-group {
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.form-horizontal fieldset {
+    margin-top: 15px;
+}
+
+fieldset legend {
+    text-transform: capitalize;
+    display: inline-block;
+    width: auto;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+form fieldset legend {
+    margin-bottom: 0;
+}
+
+form fieldset .btn-add {
+    margin-right: 15px;
+}

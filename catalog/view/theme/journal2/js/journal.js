@@ -449,8 +449,8 @@ Journal.searchAutoComplete = function () {
         deferRequestBy: 500,
         paramName: 'search',
         onSelect: function (suggestion) {
-            if (suggestion.url) {
-                location = suggestion.url;
+            if (suggestion.value) {
+                location = `index.php?route=product/search&search=${suggestion.value}&description=true`;
             } else {
                 return false;
             }
@@ -489,13 +489,15 @@ Journal.searchAutoComplete = function () {
 //                var reEscape = new RegExp('(\\' + ['/', '.', '*', '+', '?', '|', '(', ')', '[', ']', '{', '}', '\\'].join('|\\') + ')', 'g'),
 //                    pattern = '(' + currentValue.replace(reEscape, '\\$1') + ')',
 //                    name = suggestion.value.replace(new RegExp(pattern, 'gi'), '<strong>$1<\/strong>');
+                var hidePrice = $('body').data('hide-price');
                 var name = suggestion.value;
-                var html = '<a href="' + suggestion.url + '">';
+                var url  = `index.php?route=product/search&search=${name}&description=true`;
+                var html = '<a href="' + url + '">';
                 if (suggestion.image) {
                     html += '<span class="p-image xs-33 sm-33 md-33 lg-33 xl-33"><img src="' + suggestion.image + '" /></span>';
                 }
                 html += '<span class="p-name xs-66 sm-66 md-66 lg-66 xl-66"><span>' + name + '</span>';
-                if (suggestion.price) {
+                if (!hidePrice && suggestion.price) {
                     if (suggestion.special) {
                         html += '<span class="p-price xs-66 sm-66 md-66 lg-66 xl-66"><span class="price-old">' + suggestion.price + '</span><span class="price-new">' + suggestion.special + '</span></span>';
                     } else {
@@ -814,13 +816,23 @@ if (Journal.isOC2) {
         if ($('.hide-cart .outofstock a[onclick="cart.add(\'' + product_id + '\');"]').length) {
             return false;
         }
+        var url  = '';
+        var data = ``;
 
         quantity = typeof(quantity) != 'undefined' ? quantity : 1;
 
+        if (quantity > 0) {
+            url  = 'index.php?route=checkout/cart/set';
+            data = `product_id=${product_id}&quantity=${quantity}&action=${type}`;
+        } else {
+            url  = 'index.php?route=checkout/cart/remove';
+            data = `key=${$(element).parent().data('cart-id')}`;
+        }
+
         $.ajax({
-            url: 'index.php?route=checkout/cart/set',
+            url: url,
             type: 'post',
-            data: 'product_id=' + product_id + '&quantity=' + quantity + '&action=' + type,
+            data: data,
             dataType: 'json',
             beforeSend: function() {
                 $('#cart > button > a > span').button('loading');
@@ -859,7 +871,9 @@ if (Journal.isOC2) {
                         var quantity = parseInt($(element).parent().find('input[name="quantity"]').val());
                         var currency = (json['currency'].toLowerCase() == "zar") ? "R" : json['currency'];
                         var newPrice = (price * quantity).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
-                        $(element).closest('tr').find('td.total').html(currency + ' ' + newPrice);
+                        if (!isNaN(price)) {
+                            $(element).closest('tr').find('td.total').html(currency + ' ' + newPrice);
+                        }
                     }
 
                     $('#cart ul').load('index.php?route=common/cart/info ul li');
@@ -1021,6 +1035,9 @@ function addToCart(product_id, quantity) {
 }
 
 Journal.addToCart = function (product_id, element) {
+    if ($(element).parent().hasClass('item__out-of-stock')) {
+        return false;
+    }
     var input    = $(element).parent().find('input[name="quantity"]');
     var quantity = (isNaN(input.val())) ? 1 : parseInt(input.val()) + 1;
     input.val(quantity);
@@ -1122,17 +1139,32 @@ $(document).on('keydown', 'input[name="quantity"]', function(e) {
 Journal.removeProductFromCart = function (product_id, element) {
     var input    = $(element).parent().find('input[name="quantity"]');
     var quantity = (isNaN(input.val())) ? 1 : parseInt(input.val()) - 1;
-    input.val(quantity);
+    var url      = '';
+    var data     = ``;
 
-    if (Journal.isOC2) {
+    if (quantity >= 0) {
+        input.val(quantity);
+    }
+
+    if (Journal.isOC2 && quantity >= 0) {
         return cart.set(product_id, quantity, 'remove', element);
+    }
+
+    if (quantity > 0) {
+        url  = 'index.php?route=checkout/cart/set';
+        data = `product_id=${product_id}&quantity=${quantity}&action=remove`;
+    } else if (quantity === 0) {
+        url  = 'index.php?route=checkout/cart/remove';
+        data = `key=${product_id}`;
+    } else {
+        return false;
     }
 
     // do AJAX call
     $.ajax({
-        url: 'index.php?route=checkout/cart/set',
+        url: url,
         type: 'post',
-        data: 'product_id=' + product_id + '&quantity=' + quantity + '&action=remove',
+        data: data,
         dataType: 'json',
         beforeSend: function() {
             $('#cart > button > a > span').button('loading');

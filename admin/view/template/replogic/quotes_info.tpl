@@ -4,7 +4,7 @@
     <div class="container-fluid">
       <div class="pull-right">
       	<div style="float:left">
-          <?php if ($qstatus == $quote_status_pending) :?>
+          <?php if ($qstatus == $quote_status_pending && $process_order) :?>
           <button data-href="<?php echo $deny_url; ?>" id="button-deny" data-toggle="tooltip" title="Deny" style="float: right; font-family: Calibri;" class="btn btn-danger decline">
             <i class="fa fa-times"></i>
           </button>
@@ -277,7 +277,7 @@
           <div class="form-group">
             <label class="col-sm-2 control-label" for="input-comment">Comment</label>
             <div class="col-sm-10">
-              <textarea id="input-comment" class="form-control" name="comment"></textarea>
+              <textarea id="input-comment" class="form-control" name="comment"><?php echo $comment; ?></textarea>
             </div>
           </div>
         

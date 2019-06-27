@@ -68,6 +68,7 @@ $_['column_status']              = 'Status';
 $_['column_date_added']          = 'Date Added';
 $_['column_date_modified']       = 'Date Modified';
 $_['column_total']               = 'Order Value';
+$_['column_signed']              = 'Approval Status';
 $_['column_image']               = 'Images';
 $_['column_product']             = 'Product';
 $_['column_model']               = 'Model';
@@ -129,6 +130,14 @@ $_['order_status_pending_id']    = 1;       # Pending
 $_['order_status_processing_id'] = 2;       # Processing
 $_['order_status_confirmed_id']  = 5;       # Confirmed
 $_['order_status_cancelled_id']  = 7;       # Cancelled
+
+// Order Statuses Text
+$_['order_status_pending_text']    = 'Pending';      
+$_['order_status_processing_text'] = 'Processing';      
+$_['order_status_confirmed_text']  = 'Confirmed';
+$_['quote_status_converted_text']  = 'Converted to Order';
+$_['quote_status_denied_text']  = 'Denied'; 
+$_['order_status_cancelled_text']  = 'Cancelled';      
 
 // Quote Statuses
 $_['quote_status_pending_id']    = 1;

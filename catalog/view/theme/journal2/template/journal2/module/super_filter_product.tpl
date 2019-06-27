@@ -46,15 +46,26 @@
                 <div class="row product-table-row-details">
                     <div class="col-4 product-name">
                         <strong><a href="<?php echo $product['href']; ?>"><?php echo $product['name']; ?></a></strong>
+                        <?php if (empty($product['quantity']) || $product['quantity'] === 0) : ?>
+                        <span class="stock-alert">
+                            <i class="fa fa-exclamation-triangle"></i> This item is currently out of stock.
+                        </span>
+                        <?php endif; ?>
                     </div>
                     <div class="col-2 product-sku">
                         <strong><a href="<?php echo $product['href']; ?>"><?php echo $product['model']; ?></a></strong>
                     </div>
                     <div class="col-3">
                         <span class="qty">
+                            <?php if (!empty($product['quantity']) && $product['quantity'] > 0) : ?>
                             <a href="javascript:;" class="journal-stepper" onclick="Journal.removeProductFromCart(<?php echo $product['product_id']; ?>, this)">-</a>
                             <input name="quantity" value="<?php echo $product['cart_qty'] ?>" size="10" data-min-value="0" id="quantity_<?php echo $product['product_id']; ?>" class="form-control product-info1" type="text" data-cart-qty="<?php echo $product['cart_qty'] ?>" data-product-id="<?php echo $product['product_id'] ?>">
                             <a href="javascript:;" class="journal-stepper" onclick="Journal.addToCart(<?php echo $product['product_id']; ?>, this)">+</a>
+                            <?php else : ?>
+                            <a href="javascript:;" class="journal-stepper">-</a>
+                            <input name="quantity" value="<?php echo $product['cart_qty'] ?>" size="10" data-min-value="0" id="quantity_<?php echo $product['product_id']; ?>" class="form-control product-info1" type="text" data-cart-qty="<?php echo $product['cart_qty'] ?>" data-product-id="<?php echo $product['product_id'] ?>" disabled>
+                            <a href="javascript:;" class="journal-stepper">+</a>
+                            <?php endif; ?>
                         </span>
                     </div>
                     <div class="col-3 product-price">

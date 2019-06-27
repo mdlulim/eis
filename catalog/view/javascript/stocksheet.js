@@ -51,6 +51,12 @@
             }).container().appendTo('#export-buttons');
             createFilter(oTable, oFilterColumns);
         }
+        if ($('.datatable-custom-filters form').length) {
+            $('.datatable-custom-filters form').on('submit', function(form) {
+                form.preventDefault();
+                return false;
+            });
+        }
     });
 
     $(document).on('change', 'form#form-stocksheet-importer>input[type="file"]', function() {

@@ -72,6 +72,12 @@
                 };
                 $('.cart__items-not-found table.table').DataTable(vOptions);
             }
+            if ($('.datatable-custom-filters form').length) {
+                $('.datatable-custom-filters form').on('submit', function(form) {
+                    form.preventDefault();
+                    return false;
+                });
+            }
         });
 
         $(document).on('click', '.datatable-custom-filters ul.dropdown-menu input[type="checkbox"]', function() {

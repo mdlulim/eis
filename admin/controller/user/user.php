@@ -143,7 +143,11 @@ class ControllerUserUser extends Controller {
 
 		$this->load->model('setting/setting');
 
-		$emailClient = $this->config->get('config_mail_client');
+		# get mail client
+		$this->load->model('setting/configuration');
+		$config      = $this->model_setting_configuration->get('general', 'mail_client');
+		$emailClient = $config['value'];
+		
 		# build data array
 		$data['subject'] = 'Welcome to Saleslogic';
 		$data['to']      = array('email'=>$user_info['email'], 'name'=>$user_info['firstname']);
