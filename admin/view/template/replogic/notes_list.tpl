@@ -1,4 +1,4 @@
-<?php echo $header; ?><?php echo $column_left; ?>
+ <?php echo $header; ?><?php echo $column_left; ?>
 <div id="content">
   <div class="page-header">
     <div class="container-fluid">
@@ -82,7 +82,8 @@
                     <?php } ?>
                   </td>
                   <td class="text-left">Description</td>
-                  <td class="text-left" style="width:200px; min-width:200px">Attachment(s)</td>
+                  <td class="text-left">Attachment(s)</td>
+                  <td class="text-left">Date Added</td>
                   <td class="text-right"><?php echo $column_action; ?></td>
                 </tr>
               </thead>
@@ -116,6 +117,7 @@
                           <?php endif; ?>
                         <?php endif; ?>
                       </td>
+                      <td class="text-left"><?php echo $note['date_added']; ?></td>
                       <td class="text-right"><a href="<?php echo $note['edit']; ?>" data-toggle="tooltip" title="<?php echo $button_edit; ?>" class="btn btn-primary"><i class="fa fa-pencil"></i></a></td>
                     </tr>
                     <?php } ?>
