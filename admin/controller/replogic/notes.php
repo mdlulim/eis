@@ -480,6 +480,7 @@ class ControllerReplogicNotes extends Controller {
 
 		if (isset($this->request->get['note_id']) && $this->request->server['REQUEST_METHOD'] != 'POST') {
 			$note_info = $this->model_replogic_notes->getNote($this->request->get['note_id']);
+			$data['attachments'] = json_decode($note_info['attachments'], true);
 		}
 
 		if (isset($this->request->post['note_title'])) {
