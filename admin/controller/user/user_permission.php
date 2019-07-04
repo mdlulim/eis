@@ -330,7 +330,8 @@ class ControllerUserUserPermission extends Controller {
 		}
 
 		$ignore = array(
-			getDashboard($this->user),
+			// getDashboard($this->user),
+			'common/dashboard',
 			'common/startup',
 			'common/login',
 			'common/logout',
@@ -368,12 +369,11 @@ class ControllerUserUserPermission extends Controller {
 
 		// Sort the file array
 		sort($files);
-					
+		
 		foreach ($files as $file) {
 			$controller = substr($file, strlen(DIR_APPLICATION . 'controller/'));
 
 			$permission = substr($controller, 0, strrpos($controller, '.'));
-
 			if (!in_array($permission, $ignore)) {
 				$data['permissions'][] = $permission;
 			}

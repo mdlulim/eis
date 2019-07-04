@@ -217,7 +217,7 @@ function massAction(elem) {
     else if(clickedValue == 3){
        var url = 'index.php?route=catalog/category/delete&token=<?php echo $token; ?>';
        document.getElementById("form-category").action = url;  //Setting form action to "success.php" page
-      confirm('<?php echo $text_confirm; ?>') ? $('#form-category').submit() : false;
+      confirm('<?php echo "Are you sure you want to delete selected category? "; ?>') ? $('#form-category').submit() : false;
     }else if(clickedValue == 4){
        //Assigin
        var url = 'index.php?route=catalog/category/assignCategoryToCustomerGroup&token=<?php echo $token; ?>';

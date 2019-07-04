@@ -76,18 +76,6 @@ class ControllerProductSearch extends Controller {
 			$this->document->setTitle($this->language->get('heading_title'));
 		}
 
-		/******************************************************************
-		 * START | Hide/show price configuration
-		 ******************************************************************/
-
-		$this->load->model('setting/configuration');
-		$config = $this->model_setting_configuration->get('wholesale', 'hide_price');
-		$data['hide_price'] = (strtolower($config['value']) === 'yes');
-
-		/******************************************************************
-		 * END | Hide/show price configuration
-		 ******************************************************************/
-
 		$data['breadcrumbs'] = array();
 
 		$data['breadcrumbs'][] = array(
@@ -292,8 +280,7 @@ class ControllerProductSearch extends Controller {
 					'thumb'       => $image,
 
                 'thumb2'       => $image2,
-					'quantity' => $result['quantity'],
-					'stock_status_id' => $result['stock_status_id'],
+            
 
                 'labels'        => $this->model_journal2_product->getLabels($result['product_id']),
             
