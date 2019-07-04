@@ -54,16 +54,50 @@
             </div>
           </div>-->
           
-          <div class="form-group required">
-            <label class="col-sm-2 control-label" for="input-username"><?php echo $entry_note_description; ?></label>
-            <div class="col-sm-10">
-              <textarea name="note_description" id="input-description" class="form-control" cols="10" rows="10" placeholder="<?php echo $entry_note_description; ?>"><?php echo $note_description; ?></textarea>
-              <?php if ($error_note_description) { ?>
-              <div class="text-danger"><?php echo $error_note_description; ?></div>
-              <?php } ?>
-            </div>
-          </div>
-          
+          	<div class="form-group required">
+	            <label class="col-sm-2 control-label" for="input-username"><?php echo $entry_note_description; ?></label>
+	            <div class="col-sm-10">
+	              <textarea name="note_description" id="input-description" class="form-control" cols="10" rows="10" placeholder="<?php echo $entry_note_description; ?>"><?php echo $note_description; ?></textarea>
+	              <?php if ($error_note_description) { ?>
+	              <div class="text-danger"><?php echo $error_note_description; ?></div>
+	              <?php } ?>
+	            </div>
+          	</div>
+
+            <?php if (!empty($attachments)) : ?>
+          	<div class="form-group">
+          		<label class="col-sm-2 control-label">Attachment(s)</label>
+          		<div class="col-sm-10">
+          			<div class="row">
+                  <?php foreach ($attachments as $attachment) : ?>
+          				<div class="col-sm-2">
+          					<div class="nt-preview <?php echo (in_array(strtolower(pathinfo($attachment, PATHINFO_EXTENSION)), ['gif','jpg','jpeg','png'])) ? '' : 'file-preview'; ?>" target="_blank">
+          						<div class="nt-doc">
+          							<img src="<?php echo $attachment; ?>" class="<?php echo pathinfo($attachment, PATHINFO_EXTENSION); ?>">
+          							<i class="fa <?php echo (in_array(strtolower(pathinfo($attachment, PATHINFO_EXTENSION)), ['gif','jpg','jpeg','png'])) ? 'fa-photo' : 'fa-file'; ?>"></i>
+          						</div>
+          						<div class="nt-details">
+          							<div class="nt-filename">
+          								<i class="fa <?php echo (in_array(strtolower(pathinfo($attachment, PATHINFO_EXTENSION)), ['gif','jpg','jpeg','png'])) ? 'fa-photo' : 'fa-file'; ?>"></i>
+          								<span><?php echo pathinfo($attachment, PATHINFO_BASENAME); ?></span>
+	          							<div class="file-size"><?php echo getRemoteFilesize($attachment); ?></div>
+				                          <div class="file-actions">
+				                            <a href="<?php echo $attachment; ?>" target="_blank" download>
+				                              <i class="fa fa-download"></i>
+				                            </a>
+				                            <a href="<?php echo $attachment; ?>" target="_blank">
+				                              <i class="fa fa-external-link"></i>
+				                            </a>
+				                          </div>
+          							</div>
+          						</div>
+          					</div>
+          				</div>
+                  <?php endforeach; ?>
+          			</div>
+          		</div>
+          	</div>
+            <?php endif; ?>
           
         </form>
       </div>
