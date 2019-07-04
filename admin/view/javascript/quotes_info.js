@@ -107,12 +107,21 @@
     		// if country is selected
     		if ($(this).val().length > 0) {
     			$.ajax({
-    				url     : 'index.php?route=localisation/zone/get_zones_by_country_id&token'+token,
-    				type    : 'get',
-    				dataType: 'json',
-    				data    : {country_id : $(this).val()},
-    				success : function(json) {
-
+    				url       : 'index.php?route=localisation/zone/get_zones_by_country_id&token='+token,
+    				type      : 'get',
+    				dataType  : 'json',
+					data      : {country_id : $(this).val()},
+					beforeSend: function() {
+						$('#input-payment-zone').html('<option>Loading...</option>').prop('disabled', true);
+					},
+    				success   : function(json) {
+						if (json.zones) {
+							var html = ``;
+							for (var i=0; i<json.zones.length; i++) {
+								html += `<option value="${json.zones[i].zone_id}">${json.zones[i].name}</option>`;
+							}
+							$('#input-payment-zone').prop('disabled', false).html(html);
+						}
     				}
     			});
     		}

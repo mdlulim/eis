@@ -424,10 +424,10 @@
                               <div class="form-group required">
                                   <label for="input-payment-country" class="control-label"><?php echo $entry_country; ?></label>
                                   
-                                    <select name="country_id" id="input-payment-country" class="form-control">
+                                    <select name="country_id" id="country-select" class="form-control">
                                       <option value=""><?php echo $text_select; ?></option>
                                       <?php foreach ($countries as $country) { ?>
-                                          <?php if($country['country_id'] == '193') { ?>
+                                          <?php if ($country['country_id'] == $config_country_id) { ?>
                                           <option value="<?php echo $country['country_id']; ?>" selected="selected"><?php echo $country['name']; ?></option>
                                           <?php } else { ?>
                                           <option value="<?php echo $country['country_id']; ?>"><?php echo $country['name']; ?></option>
@@ -439,6 +439,11 @@
            				    <div class="form-group required">
                         <label for="input-payment-zone" class="control-label"><?php echo $entry_zone; ?></label>
                         <select name="zone_id" id="input-payment-zone" class="form-control">
+                          <?php if (!empty($zones)) : ?>
+                          <?php foreach ($zones as $zone) : ?>
+                          <option value="<?php echo $zone['zone_id']; ?>"><?php echo $zone['name']; ?></option>
+                          <?php endforeach; ?>
+                          <?php endif; ?>
                         </select>
                       </div>
         </div>

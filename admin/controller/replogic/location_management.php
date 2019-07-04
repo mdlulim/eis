@@ -160,7 +160,6 @@ class ControllerReplogicLocationManagement extends Controller {
 			$filters['filter_customer_id'] = $this->request->get['filter_customer_id'];
 		}
 
-
 		/*******************************************
 		 * Get teams:
 		 * - if 'sales manager' update team id filter
@@ -197,13 +196,14 @@ class ControllerReplogicLocationManagement extends Controller {
 			$data['customers'] = $this->model_customer_customer->getProspectiveCustomers($cfilters);
 		} else {
 			$data['customers'] = $this->model_customer_customer->getCustomers($cfilters, $isSalesManager, $currentUser);
+		//	var_dump($data['customers']);die;
 		}
 
 
 		/*******************************************
 		 * Locations | Google Map
 		 *******************************************/
-
+		
 		$locations                 = $this->model_replogic_location_management->getCheckins($filters, true);
 		$data['locations']         = array();
 		$data['markers_salesreps'] = array();
