@@ -959,6 +959,8 @@ class ControllerCatalogProduct extends Controller {
 		$this->load->model('setting/store');
 
 		$data['stores'] = $this->model_setting_store->getStores();
+		
+		//$data['all_stores'] = $this->model_setting_store->getAllStores();
 
 		if (isset($this->request->post['product_store'])) {
 			$data['product_store'] = $this->request->post['product_store'];

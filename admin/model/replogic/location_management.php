@@ -68,7 +68,7 @@ class ModelReplogicLocationManagement extends Model {
 			 ***************************************/
 
 			if ($group_by_salesrep || !empty($data['filter_groupby_salesrep'])) {
-				$sql = "SELECT c.*, a.type FROM " . DB_PREFIX . "salesrep_checkins c LEFT JOIN " . DB_PREFIX . "salesrep_checkins c2 ON (c.salesrep_id = c2.salesrep_id AND c.checkin_id < c2.checkin_id) INNER JOIN " . DB_PREFIX . "appointment a ON a.appointment_id=c.appointment_id LEFT JOIN " . DB_PREFIX . "salesrep sr ON c.salesrep_id = sr.salesrep_id WHERE c2.checkin_id IS NULL AND sr.sales_team_id = ".(int)$data['filter_team_id'];
+				$sql = "SELECT c.*, a.type FROM " . DB_PREFIX . "salesrep_checkins c LEFT JOIN " . DB_PREFIX . "salesrep_checkins c2 ON (c.salesrep_id = c2.salesrep_id AND c.checkin_id = c2.checkin_id) INNER JOIN " . DB_PREFIX . "appointment a ON a.appointment_id=c.appointment_id LEFT JOIN " . DB_PREFIX . "salesrep sr ON c.salesrep_id = sr.salesrep_id WHERE c2.checkin_id IS NULL AND sr.sales_team_id = ".(int)$data['filter_team_id'];
 			} else {
 				$sql = "SELECT c.*, a.type FROM " . DB_PREFIX . "salesrep_checkins c INNER JOIN " . DB_PREFIX . "appointment a ON a.appointment_id=c.appointment_id LEFT JOIN " . DB_PREFIX . "salesrep sr ON c.salesrep_id = sr.salesrep_id WHERE c.checkin_id > 0 AND sr.sales_team_id = ".(int)$data['filter_team_id'];
 			}
@@ -80,7 +80,7 @@ class ModelReplogicLocationManagement extends Model {
 			 ***************************************/
 
 			if ($group_by_salesrep || !empty($data['filter_groupby_salesrep'])) {
-				$sql = "SELECT c.*, a.type FROM " . DB_PREFIX . "salesrep_checkins c LEFT JOIN " . DB_PREFIX . "salesrep_checkins c2 ON (c.salesrep_id = c2.salesrep_id AND c.checkin_id < c2.checkin_id) INNER JOIN " . DB_PREFIX . "appointment a ON a.appointment_id=c.appointment_id WHERE c2.checkin_id IS NULL";
+				$sql = "SELECT c.*, a.type FROM " . DB_PREFIX . "salesrep_checkins c LEFT JOIN " . DB_PREFIX . "salesrep_checkins c2 ON (c.salesrep_id = c2.salesrep_id AND c.checkin_id < c2.checkin_id) INNER JOIN " . DB_PREFIX . "appointment a ON a.appointment_id=c.appointment_id WHERE c2.checkin_id IS NOT NULL";
 			} else {
 				$sql = "SELECT c.*, a.type FROM " . DB_PREFIX . "salesrep_checkins c INNER JOIN " . DB_PREFIX . "appointment a ON a.appointment_id = c.appointment_id WHERE c.checkin_id > 0";
 			}
@@ -107,7 +107,7 @@ class ModelReplogicLocationManagement extends Model {
 		 ***************************************/
 
 		if (!empty($data['filter_customer_id'])) {
-			$sql .= " AND ck.customer_id = " . (int)$data['filter_customer_id'];
+			$sql .= " AND c.customer_id = " . (int)$data['filter_customer_id'];
 		}
 
 		/***************************************

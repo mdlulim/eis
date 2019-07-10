@@ -373,7 +373,6 @@ class Cart {
 			if ($product['tax_class_id']) {
 				$tax_rates = $this->tax->getRates($product['product_id'], $product['price'], $product['tax_class_id']);
 				foreach ($tax_rates as $tax_rate) {
-					//var_dump($tax_rate['amount']);die;
 					if (!isset($tax_data[$tax_rate['tax_rate_id']])) {
 						$tax_data[$tax_rate['tax_rate_id']] = ($tax_rate['amount'] * $product['quantity']);
 					} else {

@@ -18,7 +18,7 @@ class ControllerCatalogAttribute extends Controller {
 		$this->document->setTitle($this->language->get('heading_title'));
 
 		$this->load->model('catalog/attribute');
-
+        
 		if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validateForm()) {
 			$this->model_catalog_attribute->addAttribute($this->request->post);
 
@@ -49,7 +49,7 @@ class ControllerCatalogAttribute extends Controller {
 			$this->response->redirect($this->url->link('catalog/attribute', 'token=' . $this->session->data['token'] . $url, true));
 		}
 
-		$this->getForm();
+		$this->getForm($readonly = false);
 	}
 
 	public function edit() {

@@ -297,6 +297,11 @@ class ControllerReplogicQuotesInfo extends Controller {
 			$data['access'] = false;
 			$current_user_id = $this->session->data['user_id'];
 		}
+
+		// Get zones
+		$this->load->model('localisation/zone');
+		$data['config_country_id'] = $this->config->get('config_country_id');
+		$data['zones']             = $this->model_localisation_zone->getZonesByCountryId($data['config_country_id']);
 		
 		// The URL we send API requests to
 		$data['catalog'] = $this->request->server['HTTPS'] ? HTTPS_CATALOG : HTTP_CATALOG;

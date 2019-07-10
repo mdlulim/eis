@@ -1647,7 +1647,7 @@ class ControllerReplogicSalesrepInfo extends Controller {
 				'date_added'    => date($this->language->get('date_format_short'), strtotime($result['date_added'])),
 				'date_modified' => date($this->language->get('date_format_short'), strtotime($result['date_modified'])),
 				'shipping_code' => $result['shipping_code'],
-				'view'          => $this->url->link('sale/order/info', 'token=' . $this->session->data['token'] . '&csalesrep_id='.$salesrep_id.'&order_id=' . $result['order_id'] . $url, true),
+				'view'          => $this->url->link('sale/order/info', 'token=' . $this->session->data['token'] . 'order_id=' . $result['order_id'] . $url, true),
 				'edit'           => $this->url->link('sale/order/edit', 'token=' . $this->session->data['token'] . '&csalesrep_id='.$salesrep_id.'&order_id=' . $result['order_id']. $url, true)
 			);
 		}

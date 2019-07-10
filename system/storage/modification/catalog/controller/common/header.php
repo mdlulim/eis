@@ -1,34 +1,8 @@
 <?php
 class ControllerCommonHeader extends Controller {
 	public function index() {
-		if ($this->config->get('config_store_id') == 0) {
-			// Force login config check
-			$this->load->model('setting/configuration');
-			$config = $this->model_setting_configuration->get('wholesale', 'force_login');
-			if (isset($config['value']) && strtolower($config['value']) === 'yes') {
-				// Check customer isn't logged in
-				if (!$this->customer->isLogged()) {
-					// Redirect if route isn't account/login
-					if (empty($this->request->get['route']) || $this->request->get['route'] != 'account/login') {
-						$this->response->redirect($this->url->link('account/login', '', 'SSL'));
-					}
-				}
-			}
-		}
 		// Analytics
 		$this->load->model('extension/extension');
-
-		/******************************************************************
-		 * START | Hide/show price configuration
-		 ******************************************************************/
-
-		$this->load->model('setting/configuration');
-		$config = $this->model_setting_configuration->get('wholesale', 'hide_price');
-		$data['hide_price'] = (strtolower($config['value']) === 'yes');
-
-		/******************************************************************
-		 * END | Hide/show price configuration
-		 ******************************************************************/
 
 		$data['analytics'] = array();
 

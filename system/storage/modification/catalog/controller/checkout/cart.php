@@ -27,18 +27,6 @@ class ControllerCheckoutCart extends Controller {
 		$this->document->addScript('catalog/view/javascript/checkout.js');
 
 		/*=====  End of Add Files (Includes)  ======*/
-
-		/******************************************************************
-		 * START | Hide/show price configuration
-		 ******************************************************************/
-
-		$this->load->model('setting/configuration');
-		$config = $this->model_setting_configuration->get('wholesale', 'hide_price');
-		$data['hide_price'] = (strtolower($config['value']) === 'yes');
-
-		/******************************************************************
-		 * END | Hide/show price configuration
-		 ******************************************************************/
 		
 
 		$this->load->language('checkout/cart');
@@ -227,11 +215,6 @@ class ControllerCheckoutCart extends Controller {
 					'href'      => $this->url->link('product/product', 'product_id=' . $product['product_id'])
 				);
 			}
-
-			// sort cart items | place out of stock items first 
-			usort($data['products'], function($a, $b) {
-				return $a['stock'] - $b['stock'];
-			});
 
 			// Gift Voucher
 			$data['vouchers'] = array();
@@ -1106,7 +1089,7 @@ class ControllerCheckoutCart extends Controller {
 
 		$json     = array();
 		$formats  = array('xls', 'xlsx', 'csv'); // supported file types
-		$colHeads = array('product name', 'category', 'sku', 'quantity', 'unit price', 'total'); // expected column headings
+		$colHeads = array('Product Name', 'Category', 'SKU', 'Quantity', 'Unit Price', 'Total'); // expected column headings
 		$maxSize  = 5097152;  // maximum file size (5MB)
 
 		if ($this->request->server['REQUEST_METHOD'] == 'POST') {
@@ -1170,7 +1153,7 @@ class ControllerCheckoutCart extends Controller {
 									}
 									
 									// Check if row has right data [not headings]
-									if (!in_array(strtolower($header1[0][0]), $colHeads)) {
+									if (!in_array($header1[0][0], $colHeads)) {
 										$detailsColumn++;
 										for ($row = 2; $row <= 2; $row++) {
 											$header1 = $sheet->rangeToArray('A' . $row . ':' . $highestColumn . $row, NULL, FALSE, FALSE);
@@ -1189,7 +1172,7 @@ class ControllerCheckoutCart extends Controller {
 										}
 										$dataRows[] = array_combine($header, $sheetdata);
 									}
-
+			
 									$barcodes   = array();
 									$quantities = array();
 									$dataItems  = array();
@@ -1197,11 +1180,9 @@ class ControllerCheckoutCart extends Controller {
 									// loop through data rows [from imported file]
 									foreach ($dataRows as $data) {
 										if (!empty($data) && count($data) > 0) {
-											$skuKey   = array_key_exists('SKU', $data)      ? 'SKU'      : 'sku';
-											$qtyKey   = array_key_exists('Quantity', $data) ? 'Quantity' : 'quantity';
-
-											$barcode  = $data[$skuKey];      # sku/barcode
-											$quantity = (int)$data[$qtyKey]; # quantity
+											
+											$barcode  = $data['SKU'];           # sku/barcode
+											$quantity = (int)$data['Quantity']; # quantity
 											
 											if (!empty($barcode) && !empty($quantity) && is_numeric($quantity)) {
 												$barcodes[]   = $barcode;
@@ -1230,9 +1211,6 @@ class ControllerCheckoutCart extends Controller {
 										} else {
 											$json['warning'] = sprintf($this->language->get('error_import_upload'), count($json['found']), count($json['items']));
 										}
-									} else {
-										// ERROR : all items/products were not found in database
-										$json['error'] = sprintf($this->language->get('error_import_no_items_found'), count($products), count($json['items']));
 									}
 								}
 							}
