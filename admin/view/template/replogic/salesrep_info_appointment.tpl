@@ -55,32 +55,17 @@
                         <span class="glyphicon glyphicon-calendar"></span>
                     </span>
                 </div>
-           <style>
-		   .glyphicon-calendar:before {content: "\e109" !important; }
-		   </style>
-            	<script type="text/javascript">
-            $(function () {
-                $('#filter_appointment_from').datetimepicker({
-                     //defaultDate: new Date(),
-					// inline: true,
+                <style>
+                  .glyphicon-calendar:before {content: "\e109" !important; }
+                </style>
+                <script type="text/javascript">
+                $(function () {
+                  $('#filter_appointment_from').datetimepicker({
+                      //defaultDate: new Date(),
+                    // inline: true,
+                  });
                 });
-            });
-        </script>  
-               
-              </div>
-              <div class="form-group">
-                <label class="control-label" for="input-price">Customer Name</label>
-                <select name="filter_customer_id" class="form-control">
-                	<option value="">Customer Name</option>
-                    <?php foreach ($customers as $customer) {  ?>
-                <?php if ($customer['customer_id'] == $filter_customer_id) { ?>
-                <option value="<?php echo $customer['customer_id']; ?>" selected="selected"><?php echo $customer['firstname']; ?></option>
-                <?php } else { ?>
-                <option value="<?php echo $customer['customer_id']; ?>"><?php echo $customer['firstname']; ?></option>
-                <?php } ?>
-                <?php } ?>
-                    
-                </select>
+                </script> 
               </div>
             </div>
             <div class="col-sm-6" style="margin-bottom:10px;">
@@ -99,21 +84,58 @@
                     </span>
                 </div>
             
-        		<script type="text/javascript">
-            $(function () {
-                $('#filter_appointment_to').datetimepicker({
-                    //defaultDate: new Date(),
-                   
-                });
-            });
-        </script>
+                <script type="text/javascript">
+                  $(function () {
+                    $('#filter_appointment_to').datetimepicker({
+                      //defaultDate: new Date(),
+                    });
+                  });
+                </script>
                   
               </div>
             </div>
-            <button type="button" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-search"></i> Search</button>
-            <button type="button" id="button-filter-reset" class="btn btn-primary pull-right" style="margin-right:10px;"><i class="fa fa-refresh"></i> Reset</button>
           </div>
-           
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label class="control-label" for="input-price">Customer Name</label>
+                <select name="filter_customer_id" class="form-control">
+                	<option value="">Customer Name</option>
+                  <?php foreach ($customers as $customer) :  ?>
+                  <?php if ($customer['customer_id'] == $filter_customer_id) : ?>
+                  <option value="<?php echo $customer['customer_id']; ?>" selected="selected"><?php echo $customer['firstname']; ?></option>
+                  <?php else : ?>
+                  <option value="<?php echo $customer['customer_id']; ?>"><?php echo $customer['firstname']; ?></option>
+                  <?php endif; ?>
+                  <?php endforeach; ?>
+                </select>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label class="control-label" for="input-price"><?php echo $text_business_type ?></label>
+                <select name="filter_type" id="input-type" class="form-control">
+                  <option value=""><?php echo $select_business_type ?></option>
+                  <?php if (strtolower($filter_type) === 'new business') : ?>
+                      <option value="New Business" selected="selected">New Business</option>
+                  <?php else : ?>
+                      <option value="New Business">New Business</option>
+                  <?php endif; ?>
+                  <?php if (strtolower($filter_type) === 'existing business') : ?>
+                      <option value="Existing Business" selected="selected">Existing Business</option>
+                  <?php else : ?>
+                      <option value="Existing Business">Existing Business</option>
+                  <?php endif; ?>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12">
+              <button type="button" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-search"></i> Search</button>
+              <button type="button" id="button-filter-reset" class="btn btn-primary pull-right" style="margin-right:10px;"><i class="fa fa-refresh"></i> Reset</button>
+            </div>
+          </div> 
         </div>
         
         <form action="<?php echo $delete; ?>" method="post" enctype="multipart/form-data" id="form-user">
@@ -217,6 +239,12 @@ $('#button-filter').on('click', function() {
 
 	if (filter_appointment_to) {
 		url += '&filter_appointment_to=' + encodeURIComponent(filter_appointment_to);
+	}
+	
+	var filter_type = $('select[name="filter_type"]').val();
+
+	if (filter_type) {
+		url += '&filter_type=' + encodeURIComponent(filter_type);
 	}
 
 	var filter_appointment_to = $('input[name=\'filter_appointment_to\']').val();

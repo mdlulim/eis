@@ -155,7 +155,7 @@ class ModelCustomerCustomer extends Model {
 		$query = $this->db->query("SELECT DISTINCT * FROM " . DB_PREFIX . "customer WHERE LCASE(email) = '" . $this->db->escape(utf8_strtolower($email)) . "'");
 		return $query->row;
 	}
-	public function getCustomers($data = array(), $allaccess=false, $current_user_id) {
+	public function getCustomers($data = array(), $allaccess=false, $current_user_id=0) {
 		
 		if($allaccess)
 		{

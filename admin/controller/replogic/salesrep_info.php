@@ -286,6 +286,12 @@ class ControllerReplogicSalesrepInfo extends Controller {
 		} else {
 			$filter_salesrep_id = null;
 		}
+
+		if (isset($this->request->get['filter_type'])) {
+			$filter_type = $this->request->get['filter_type'];
+		} else {
+			$filter_type = null;
+		}
 		
 		if (isset($this->request->get['sort'])) {
 			$sort = $this->request->get['sort'];
@@ -306,6 +312,10 @@ class ControllerReplogicSalesrepInfo extends Controller {
 		}
 
 		$url = '';
+
+		if (isset($this->request->get['filter_type'])) {
+			$url .= '&filter_type=' . $this->request->get['filter_type'];
+		}
 
 		if (isset($this->request->get['type'])) {
 			$url .= '&type=' . $this->request->get['type'];
@@ -382,15 +392,16 @@ class ControllerReplogicSalesrepInfo extends Controller {
 		$data['appointments'] = array();
 
 		$filter_data = array(
-			'filter_appointment_name'	  => $filter_appointment_name,
-			'filter_customer_id'  => $filter_customer_id,
-			'filter_appointment_from'	  => $filter_appointment_from,
+			'filter_type'             => $filter_type,
+			'filter_appointment_name' => $filter_appointment_name,
+			'filter_customer_id'      => $filter_customer_id,
+			'filter_appointment_from' => $filter_appointment_from,
 			'filter_appointment_to'	  => $filter_appointment_to,
-			'filter_salesrep_id' => $salesrep_id,
-			'sort'  => $sort,
-			'order' => $order,
-			'start' => ($page - 1) * $this->config->get('config_limit_admin'),
-			'limit' => $this->config->get('config_limit_admin')
+			'filter_salesrep_id'      => $salesrep_id,
+			'sort'                    => $sort,
+			'order'                   => $order,
+			'start'                   => ($page - 1) * $this->config->get('config_limit_admin'),
+			'limit'                   => $this->config->get('config_limit_admin')
 		);
 
 		$this->load->model('user/user');
@@ -422,8 +433,6 @@ class ControllerReplogicSalesrepInfo extends Controller {
 		
 		foreach ($results as $result) {
 			# customer details
-			$customerdetail = $this->model_customer_customer->getCustomer($result['customer_id']); ;
-			$customername = $customerdetail['firstname'];
 		
 			# appointment date
 			$appointmentDate = date("D d M Y", strtotime($result['appointment_date'])); 
@@ -438,7 +447,7 @@ class ControllerReplogicSalesrepInfo extends Controller {
 				'appointment_name' => $result['appointment_name'],
 				'appointment_type' => $result['type'],
 				'salesrep_name'    => $result['salesrepname'],
-				'customer_name'    => $customername,
+				'customer_name'    => $result['customer_name'],
 				'appointment_date' => $appointmentDate,
 				'visit_date'       => $visitDate,
 				'tasks'            => $this->url->link('replogic/tasks', 'token=' . $this->session->data['token'] . '&appointment_id=' . $result['appointment_id'] . $url, true),
@@ -461,6 +470,9 @@ class ControllerReplogicSalesrepInfo extends Controller {
 		$data['text_list'] = $this->language->get('text_list');
 		$data['text_no_results'] = $this->language->get('text_no_results');
 		$data['text_confirm'] = $this->language->get('text_confirm');
+		$data['text_business_type'] = $this->language->get('text_business_type');
+
+		$data['select_business_type'] = $this->language->get('select_business_type');
 
 		$data['column_name'] = $this->language->get('column_name');
 		$data['column_action'] = $this->language->get('column_action');
@@ -491,6 +503,10 @@ class ControllerReplogicSalesrepInfo extends Controller {
 		}
 
 		$url = '';
+		
+		if (isset($this->request->get['filter_type'])) {
+			$url .= '&filter_type=' . $this->request->get['filter_type'];
+		}
 		
 		if (isset($this->request->get['type'])) {
 			$url .= '&type=' . $this->request->get['type'];
@@ -536,6 +552,10 @@ class ControllerReplogicSalesrepInfo extends Controller {
 		$data['sort_salesrepname'] = $this->url->link('replogic/salesrep_info', 'token=' . $this->session->data['token'] . '&sort=salesrepname' . $url, true);
 
 		$url = '';
+
+		if (isset($this->request->get['filter_type'])) {
+			$url .= '&filter_type=' . $this->request->get['filter_type'];
+		}
 		
 		if (isset($this->request->get['type'])) {
 			$url .= '&type=' . $this->request->get['type'];
@@ -588,6 +608,7 @@ class ControllerReplogicSalesrepInfo extends Controller {
 		$data['filter_appointment_from'] = $filter_appointment_from;
 		$data['filter_appointment_to'] = $filter_appointment_to;
 		$data['filter_salesrep_id'] = $filter_salesrep_id;
+		$data['filter_type'] = $filter_type;
 		$data['sort'] = $sort;
 		$data['order'] = $order;
 
