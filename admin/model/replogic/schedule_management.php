@@ -179,15 +179,15 @@ class ModelReplogicScheduleManagement extends Model {
 		}
 		
 		if (!empty($data['filter_appointment_name'])) {
-			$sql .= " AND ".$appointment_name." LIKE '" . $this->db->escape($data['filter_appointment_name']) . "%'";
+			$sql .= " AND ".$appointment_name." LIKE '%" . $this->db->escape($data['filter_appointment_name']) . "%'";
 		}
 
 		if (!empty($data['filter_salesrep_id'])) {
-			$sql .= " AND ".$salesrep_id." = '" . $this->db->escape($data['filter_salesrep_id']) . "'";
+			$sql .= " AND ".$salesrep_id." = '" . (int)$this->db->escape($data['filter_salesrep_id']) . "'";
 		}
 		
 		if (!empty($data['filter_customer_id'])) {
-			$sql .= " AND ".$customer_id." = '" . $this->db->escape($data['filter_customer_id']) . "'";
+			$sql .= " AND ".$customer_id." = '" . (int)$this->db->escape($data['filter_customer_id']) . "'";
 		}
 		
 		if (!empty($data['filter_appointment_from']) && !empty($data['filter_appointment_to'])) { 
@@ -220,7 +220,7 @@ class ModelReplogicScheduleManagement extends Model {
 
 			$sql .= " LIMIT " . (int)$data['start'] . "," . (int)$data['limit'];
 		}
-    //echo $sql; exit;
+		
 		$query = $this->db->query($sql);
 
 		return $query->rows;

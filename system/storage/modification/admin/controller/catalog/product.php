@@ -1208,7 +1208,7 @@ class ControllerCatalogProduct extends Controller {
 			$data['manufacturer'] = '';
 		}
 
-		//Categories
+		// Categories
 		$this->load->model('catalog/category');
 
 		if (isset($this->request->post['product_category'])) {
