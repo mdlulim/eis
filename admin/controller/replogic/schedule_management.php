@@ -661,6 +661,7 @@ class ControllerReplogicScheduleManagement extends Controller {
 			$time = strtotime($appointment_info['appointment_date']);
 			$myFormatForView = date("d-m-Y g:i A", $time); 
 			$data['appointment_date'] = $myFormatForView;
+			$data['time'] = $time ;
 		} else {
 			$data['appointment_date'] = '';
 		}
@@ -1014,6 +1015,7 @@ class ControllerReplogicScheduleManagement extends Controller {
 			$time = strtotime($appointment_info['appointment_date']);
 			$myFormatForView = date("d-m-Y g:i A", $time); 
 			$data['appointment_date'] = $myFormatForView;
+			$data['time'] = $time;
 		} else {
 			$data['appointment_date'] = '';
 		}

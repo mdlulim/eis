@@ -232,7 +232,7 @@ function validateAppointmentForm() {
     var salesrep = $('#input__salesrep_id');
     var time     = $('#input__appointment_time');
     var valid    = true;
-
+    console.log(type);
     // validate appointment type
     type.closest('.form-group').removeClass('has-error').find('small.text-danger').remove(); // clear previous error messages (if any)
     if (type.val().length === 0) {

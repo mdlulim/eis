@@ -5,7 +5,7 @@
       <div class="pull-right">
         <button type="submit" form="form__schedule-appointment" data-toggle="tooltip" title="<?php echo $button_save; ?>" class="btn btn-primary"><i class="fa fa-save"></i></button>
         <a href="<?php echo $cancel; ?>" data-toggle="tooltip" title="<?php echo $button_cancel; ?>" class="btn btn-default"><i class="fa fa-reply"></i></a></div>
-      <h1><?php echo $heading_title; ?></h1>
+      <h1><?php echo $heading_title; ?> test</h1>
       <ul class="breadcrumb">
         <?php foreach ($breadcrumbs as $breadcrumb) { ?>
         <li><a href="<?php echo $breadcrumb['href']; ?>"><?php echo $breadcrumb['text']; ?></a></li>
@@ -25,7 +25,7 @@
       </div>
       <div class="panel-body">
         <form name="form__schedule-appointment" action="<?php echo $action; ?>" method="post" enctype="multipart/form-data" id="form__schedule-appointment" class="form-horizontal">
-          <input type="hidden" name="appointment_time" id="input__appointment_time">
+          <input type="hidden" name="appointment_time" id="input__appointment_time" value="<?php echo $time; ?>">
           <div class="form-group required">
             <label class="col-sm-2 control-label" for="input-user-group">Business Type</label>
             <div class="col-sm-10">
@@ -33,7 +33,7 @@
 				  <style>
                     .newbusiness{display:block;}
                     .custmr_id{display:none;}
-                  </style>
+          </style>
               <?php } else if($type == 'Existing Business') { ?>
               		<style>
                     .newbusiness{display:none;}
