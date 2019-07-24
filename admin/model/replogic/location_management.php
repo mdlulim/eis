@@ -209,6 +209,10 @@ class ModelReplogicLocationManagement extends Model {
 			if (!empty($data['filter_month']))  { 
 				$sql .= " AND DATE_FORMAT(ck.checkin, '%Y-%m') = '" . $this->db->escape($data['filter_month']) . "'";
 			}
+			
+			if (!empty($data['filter_year']))  { 
+				$sql .= " AND DATE_FORMAT(ck.checkin, '%Y') = '" . $this->db->escape($data['filter_year']) . "'";
+			}
 
 			if ($group_by_salesrep) {
 				$sql .= " GROUP BY ck.salesrep_id";
@@ -252,6 +256,10 @@ class ModelReplogicLocationManagement extends Model {
 			if (!empty($data['filter_month']))  { 
 				$sql .= " AND DATE_FORMAT(ck.checkin, '%Y-%m') = '" . $this->db->escape($data['filter_month']) . "'";
 			}
+			
+			if (!empty($data['filter_year']))  { 
+				$sql .= " AND DATE_FORMAT(ck.checkin, '%Y') = '" . $this->db->escape($data['filter_year']) . "'";
+			}
 
 			if ($group_by_salesrep) {
 				$sql .= " GROUP BY ck.salesrep_id";
@@ -278,6 +286,7 @@ class ModelReplogicLocationManagement extends Model {
 
 			$sql .= " LIMIT " . (int)$data['start'] . "," . (int)$data['limit'];
 		}
+		// echo $sql;
 		$query = $this->db->query($sql);
 
 		return $query->rows;
