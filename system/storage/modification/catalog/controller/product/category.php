@@ -285,8 +285,9 @@ class ControllerProductCategory extends Controller {
 					'price'       => $price,
 					'special'     => $special,
 
-                'date_end'       => $date_end,
-            
+				'date_end'       => $date_end,
+				
+				'quantity'       => $result['quantity'],
 
                 'date_end'       => $date_end,
             
@@ -298,7 +299,7 @@ class ControllerProductCategory extends Controller {
 					'href'        => $this->url->link('product/product', 'path=' . $this->request->get['path'] . '&product_id=' . $result['product_id'] . $url)
 				);
 			}
-
+			
 			$url = '';
 
 			if (isset($this->request->get['filter'])) {
