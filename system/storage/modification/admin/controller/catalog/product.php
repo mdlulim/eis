@@ -1208,29 +1208,29 @@ class ControllerCatalogProduct extends Controller {
 			$data['manufacturer'] = '';
 		}
 
-		// Categories
-		// $this->load->model('catalog/category');
+		//Categories
+		$this->load->model('catalog/category');
 
-		// if (isset($this->request->post['product_category'])) {
-		// 	$categories = $this->request->post['product_category'];
-		// } elseif (isset($this->request->get['product_id'])) {
-		// 	$categories = $this->model_catalog_product->getProductCategories($this->request->get['product_id']);
-		// } else {
-		// 	$categories = array();
-		// }
+		if (isset($this->request->post['product_category'])) {
+			$categories = $this->request->post['product_category'];
+		} elseif (isset($this->request->get['product_id'])) {
+			$categories = $this->model_catalog_product->getProductCategories($this->request->get['product_id']);
+		} else {
+			$categories = array();
+		}
 
-		// $data['product_categories'] = array();
+		$data['product_categories'] = array();
 
-		// foreach ($categories as $category_id) {
-		// 	$category_info = $this->model_catalog_category->getCategory($category_id);
+		foreach ($categories as $category_id) {
+			$category_info = $this->model_catalog_category->getCategory($category_id);
 
-		// 	if ($category_info) {
-		// 		$data['product_categories'][] = array(
-		// 			'category_id' => $category_info['category_id'],
-		// 			'name'        => ($category_info['path']) ? $category_info['path'] . ' &gt; ' . $category_info['name'] : $category_info['name']
-		// 		);
-		// 	}
-		// }
+			if ($category_info) {
+				$data['product_categories'][] = array(
+					'category_id' => $category_info['category_id'],
+					'name'        => ($category_info['path']) ? $category_info['path'] . ' &gt; ' . $category_info['name'] : $category_info['name']
+				);
+			}
+		}
 		
 		// Filters
 		$this->load->model('catalog/filter');

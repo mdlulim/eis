@@ -290,6 +290,7 @@ class ControllerReplogicQuotesInfo extends Controller {
 		$current_user = $this->session->data['user_id'];
 		$current_user_group_id = $this->model_user_user->getUser($current_user);
 		$current_user_group = $this->model_user_user_group->getUserGroup($current_user_group_id['user_group_id']); ;
+		//var_dump($current_user_group_id);die;
 		if ($current_user_group_id['user_group_id'] == '15' || $current_user_group_id['user_group_id'] == '19') {
 			$data['access'] = true;
 			$current_user_id = 0;

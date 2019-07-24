@@ -136,10 +136,11 @@ class ModelReplogicScheduleManagement extends Model {
 		
 		if ($allaccess)
 		{
-			$sql  = "SELECT ap.*,CONCAT(sr.salesrep_name,' ',sr.salesrep_lastname) AS salesrepname,cs.firstname AS customer_name,sc.checkin "; 
+			$sql  = "SELECT ap.*,CONCAT(sr.salesrep_name,' ',sr.salesrep_lastname) AS salesrepname,IF(LCASE(ap.type='new business'), pc.name, cs.firstname) AS customer_name,sc.checkin "; 
 			$sql .= "FROM ".DB_PREFIX."appointment ap ";
 			$sql .= "LEFT JOIN ".DB_PREFIX."salesrep sr ON (ap.salesrep_id=sr.salesrep_id) ";
 			$sql .= "LEFT JOIN ".DB_PREFIX."customer cs ON cs.customer_id=ap.customer_id ";
+			$sql .= "LEFT JOIN ".DB_PREFIX."prospective_customer pc ON pc.prospect_id=ap.customer_id ";
 			$sql .= "LEFT JOIN ".DB_PREFIX."salesrep_checkins sc ON sc.appointment_id=ap.appointment_id";
 			
 			if (!empty($data['filter_appointment_name']) || !empty($data['filter_salesrep_id']) || !empty($data['filter_appointment_from']) || !empty($data['filter_appointment_to']) || !empty($data['filter_customer_id']) || !empty($data['filter_type'])) 		{
@@ -155,11 +156,12 @@ class ModelReplogicScheduleManagement extends Model {
 		}
 		else
 		{
-			$sql = "SELECT ap.*,CONCAT(sr.salesrep_name,' ',sr.salesrep_lastname) AS salesrepname,cs.firstname AS customer_name,sc.checkin ";
+			$sql = "SELECT ap.*,CONCAT(sr.salesrep_name,' ',sr.salesrep_lastname) AS salesrepname,IF(LCASE(ap.type='new business'), pc.name, cs.firstname) AS customer_name,sc.checkin ";
 			$sql .= "FROM ".DB_PREFIX."appointment ap ";
 			$sql .= "LEFT JOIN ".DB_PREFIX."salesrep sr ON sr.salesrep_id=ap.salesrep_id ";
 			$sql .= "LEFT JOIN ".DB_PREFIX."team tm ON tm.team_id=sr.sales_team_id ";
 			$sql .= "LEFT JOIN ".DB_PREFIX."customer cs ON cs.customer_id=ap.customer_id ";
+			$sql .= "LEFT JOIN ".DB_PREFIX."prospective_customer pc ON pc.prospect_id=ap.customer_id ";
 			$sql .= "LEFT JOIN ".DB_PREFIX."salesrep_checkins sc ON sc.appointment_id=ap.appointment_id ";
 			$sql .= "WHERE tm.sales_manager=".$current_user_id;
 			
@@ -181,11 +183,11 @@ class ModelReplogicScheduleManagement extends Model {
 		}
 
 		if (!empty($data['filter_salesrep_id'])) {
-			$sql .= " AND ".$salesrep_id." LIKE '" . $this->db->escape($data['filter_salesrep_id']) . "'";
+			$sql .= " AND ".$salesrep_id." = '" . $this->db->escape($data['filter_salesrep_id']) . "'";
 		}
 		
 		if (!empty($data['filter_customer_id'])) {
-			$sql .= " AND ".$customer_id." LIKE '" . $this->db->escape($data['filter_customer_id']) . "'";
+			$sql .= " AND ".$customer_id." = '" . $this->db->escape($data['filter_customer_id']) . "'";
 		}
 		
 		if (!empty($data['filter_appointment_from']) && !empty($data['filter_appointment_to'])) { 
