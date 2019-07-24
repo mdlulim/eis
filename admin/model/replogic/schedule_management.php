@@ -136,7 +136,7 @@ class ModelReplogicScheduleManagement extends Model {
 		
 		if ($allaccess)
 		{
-			$sql  = "SELECT ap.*,CONCAT(sr.salesrep_name,' ',sr.salesrep_lastname) AS salesrepname,IF(LCASE(ap.type) = 'new business', pc.name, cs.firstname) AS customer_name,sc.checkin "; 
+			$sql  = "SELECT ap.*,CONCAT(sr.salesrep_name,' ',sr.salesrep_lastname) AS salesrepname,IF(LCASE(ap.type='new business'), pc.name, cs.firstname) AS customer_name,sc.checkin "; 
 			$sql .= "FROM ".DB_PREFIX."appointment ap ";
 			$sql .= "LEFT JOIN ".DB_PREFIX."salesrep sr ON (ap.salesrep_id=sr.salesrep_id) ";
 			$sql .= "LEFT JOIN ".DB_PREFIX."customer cs ON cs.customer_id=ap.customer_id ";
@@ -156,7 +156,7 @@ class ModelReplogicScheduleManagement extends Model {
 		}
 		else
 		{
-			$sql = "SELECT ap.*,CONCAT(sr.salesrep_name,' ',sr.salesrep_lastname) AS salesrepname,IF(LCASE(ap.type) = 'new business', pc.name, cs.firstname) AS customer_name,sc.checkin ";
+			$sql = "SELECT ap.*,CONCAT(sr.salesrep_name,' ',sr.salesrep_lastname) AS salesrepname,IF(LCASE(ap.type='new business'), pc.name, cs.firstname) AS customer_name,sc.checkin ";
 			$sql .= "FROM ".DB_PREFIX."appointment ap ";
 			$sql .= "LEFT JOIN ".DB_PREFIX."salesrep sr ON sr.salesrep_id=ap.salesrep_id ";
 			$sql .= "LEFT JOIN ".DB_PREFIX."team tm ON tm.team_id=sr.sales_team_id ";
