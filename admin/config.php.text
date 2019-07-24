@@ -1,0 +1,45 @@
+<?php
+define('HTTP_SERVER', 'https://online-1.saleslogic.io/uat/admin/');
+define('HTTP_CATALOG', 'https://online-1.saleslogic.io/uat/');
+
+define('HTTPS_SERVER', 'https://online-1.saleslogic.io/uat/admin/');
+define('HTTPS_CATALOG', 'https://online-1.saleslogic.io/uat/');
+
+define('DIR_APPLICATION', '/var/www/html/testdisk/uat/admin/');
+define('DIR_SYSTEM', '/var/www/html/testdisk/uat/system/');
+define('DIR_IMAGE', '/var/www/html/testdisk/uat/image/');
+define('DIR_LANGUAGE', '/var/www/html/testdisk/uat/admin/language/');
+define('DIR_TEMPLATE', '/var/www/html/testdisk/uat/admin/view/template/');
+define('DIR_CONFIG', '/var/www/html/testdisk/uat/system/config/');
+define('DIR_CACHE', '/var/www/html/testdisk/uat/system/storage/cache/');
+define('DIR_DOWNLOAD', '/var/www/html/testdisk/uat/system/storage/download/');
+define('DIR_LOGS', '/var/www/html/testdisk/uat/system/storage/logs/');
+define('DIR_MODIFICATION', '/var/www/html/testdisk/uat/system/storage/modification/');
+define('DIR_UPLOAD', '/var/www/html/testdisk/uat/system/storage/upload/');
+define('DIR_CATALOG', '/var/www/html/testdisk/uat/catalog/');
+define('HELP_GUIDE','https://help.saleslogic.io/portal/home');
+define('ARCH_API','http://ecommerce.archsoftware.co.za/Service.svc?WSDL');
+define('STOCK2SHOP_API_URL', 'https://app.stock2shop.com/v1/');
+define('STOCK2SHOP_API_USERNAME', 'Kiroshan');
+define('STOCK2SHOP_API_PASSWORD', '123456');
+/**
+ * Define integration global variable 
+ * 1. Arch = 1
+ * 2. Stock2shop = 2
+ */
+define('INTEGRATION_ID', '0');
+
+// Saleslogic Rep API Base URL
+define('REP_API_BASE_URL', 'https://saleslogicapi.azurewebsites.net/api/v1/');
+define('ORDER_ONLINE_URL', 'https://online-1.saleslogic.io/emails/wholesale/templates/order-online.php');
+define('ORDER_ONLINE_KEY', 'BbZJjyoXAdr8BUZuiKKARWimKfrSmQ6fv8kZ7OFfc');
+
+define('DB_DRIVER', 'mysqli');
+define('DB_HOSTNAME', 'saleslogic123.mysql.database.azure.com');
+define('DB_USERNAME', 'test123@saleslogic123');
+define('DB_PASSWORD', 'Saleslogic123');
+define('DB_DATABASE', 'uat');
+define('DB_PORT', '3306');
+define('DB_PREFIX', 'oc_');
+
+?>

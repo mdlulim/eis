@@ -4,8 +4,12 @@ $_['heading_title']    = 'Sales Representative';
 $_['breadcrum_title']    = 'Sales Rep Info';
 
 // Text
-$_['text_success']     = 'Success: You have modified Sales Representative!';
-$_['text_list']        = 'Sales Rep Info : ';
+$_['text_success']       = 'Success: You have modified Sales Representative!';
+$_['text_list']          = 'Sales Rep Info : ';
+$_['text_business_type'] = 'Business Type';
+
+// Select
+$_['select_business_type'] = 'Select Business Type';
 
 // Column
 $_['column_name']      = 'Sales Rep Name';
