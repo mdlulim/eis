@@ -1,5 +1,5 @@
 <div id="cart" class="btn-group btn-block">
-  <!--button type="button" data-toggle="dropdown" class="btn btn-inverse btn-block btn-lg dropdown-toggle heading"><a><span id="cart-total" data-loading-text="<?php echo $text_loading; ?>&nbsp;&nbsp;"><?php echo $text_items; ?></span> <i></i></a></button-->
+  <button type="button" data-toggle="dropdown" class="btn btn-inverse btn-block btn-lg dropdown-toggle heading"><a><span id="cart-total" data-loading-text="<?php echo $text_loading; ?>&nbsp;&nbsp;"><?php echo $text_items; ?></span> <i></i></a></button>
   <div class="content">
     <ul class="cart-wrapper">
     <?php if ($products || $vouchers) { ?>

@@ -29,6 +29,14 @@ class ControllerAccountWishList extends Controller {
 
 		$this->document->setTitle($this->language->get('heading_title'));
 
+		/******************************************************
+		 * Check configuration setting for hide/show price
+		 ******************************************************/
+
+		$this->load->model('setting/configuration');
+		$config             = $this->model_setting_configuration->get('wholesale', 'hide_price');
+		$data['hide_price'] = (strtolower($config['value']) === 'yes');
+
 		$data['breadcrumbs'] = array();
 
 		$data['breadcrumbs'][] = array(

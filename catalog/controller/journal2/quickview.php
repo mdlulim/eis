@@ -200,6 +200,14 @@ class ControllerJournal2Quickview extends Controller {
 			$product_id = 0;
 		}
 
+		/******************************************************
+		 * Check configuration setting for hide/show price
+		 ******************************************************/
+
+		$this->load->model('setting/configuration');
+		$config                   = $this->model_setting_configuration->get('wholesale', 'hide_price');
+		$this->data['hide_price'] = (strtolower($config['value']) === 'yes');
+
         $this->data['product_id'] = $product_id;
 		
 		$this->load->model('catalog/product');

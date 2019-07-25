@@ -192,6 +192,14 @@ class ControllerProductCategory extends Controller {
 				}
 			}
 
+			/******************************************************
+			 * Check configuration setting for hide/show price
+			 ******************************************************/
+
+			$this->load->model('setting/configuration');
+			$config             = $this->model_setting_configuration->get('wholesale', 'hide_price');
+			$data['hide_price'] = (strtolower($config['value']) === 'yes');
+
 			$product_total = $this->model_catalog_product->getTotalProducts($filter_data);
 
 			$results = $this->model_catalog_product->getProducts($filter_data);
@@ -285,8 +293,9 @@ class ControllerProductCategory extends Controller {
 					'price'       => $price,
 					'special'     => $special,
 
-                'date_end'       => $date_end,
-            
+				'date_end'       => $date_end,
+				
+				'quantity'       => $result['quantity'],
 
                 'date_end'       => $date_end,
             
@@ -298,7 +307,7 @@ class ControllerProductCategory extends Controller {
 					'href'        => $this->url->link('product/product', 'path=' . $this->request->get['path'] . '&product_id=' . $result['product_id'] . $url)
 				);
 			}
-
+			
 			$url = '';
 
 			if (isset($this->request->get['filter'])) {
