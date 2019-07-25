@@ -56,7 +56,8 @@ $_['help_product']        = '(Autocomplete)';
 // Error
 $_['error_return_confirm_order']            = 'Please ensure that your order is confirmed before returning a product!';
 $_['error_return_order_not_match']          = 'The order number you supplied does not exist in our system, please check your purchase order number again and key in the correct order number!';
-$_['error_return_product_not_match']        = 'The product you trying to return was not in order {order ID} please check your purchase order invoice and key in the correct product name!';
+$_['error_return_product_not_match']        = 'The order does not have the product the user wishes to return';
+//$_['error_return_product_not_match']        = 'The product you trying to return was not in order {order ID} please check your purchase order invoice and key in the correct product name!';
 $_['error_return_product_quantity_more']    = 'The Product Quantity you are trying to return is greater than the product quantity in an order!';
 $_['error_return_product_quantity_less']    = 'The Product Quantity you are trying to return is less than the product quantity ordered, please check your PO for correct quantity and try again!';
 $_['error_warning']                         = 'Warning: Please check the form carefully for errors!';
