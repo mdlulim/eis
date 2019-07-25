@@ -37,9 +37,17 @@ class ControllerCheckoutCheckout extends Controller {
 		}
 
 
-                if (strpos($this->config->get('config_template'), 'journal2') === 0 && $this->journal2->settings->get('journal_checkout')) {
-                    return new Action('journal2/checkout');
-                }
+		if (strpos($this->config->get('config_template'), 'journal2') === 0 && $this->journal2->settings->get('journal_checkout')) {
+			return new Action('journal2/checkout');
+		}
+
+		/******************************************************
+		 * Check configuration setting for hide/show price
+		 ******************************************************/
+
+		$this->load->model('setting/configuration');
+		$config             = $this->model_setting_configuration->get('wholesale', 'hide_price');
+		$data['hide_price'] = (strtolower($config['value']) === 'yes');
             
 		$data['breadcrumbs'] = array();
 

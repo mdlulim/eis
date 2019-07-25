@@ -29,6 +29,14 @@ class ControllerJournal2Search extends Controller {
         $this->load->model('catalog/product');
         $this->load->model('tool/image');
 
+		/******************************************************
+		 * Check configuration setting for hide/show price
+		 ******************************************************/
+
+		$this->load->model('setting/configuration');
+		$config             = $this->model_setting_configuration->get('wholesale', 'hide_price');
+		$json['hide_price'] = (strtolower($config['value']) === 'yes');
+
         $json = array('results' => array());
 
         if(isset($this->request->get['search'])) {

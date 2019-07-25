@@ -270,6 +270,14 @@ class ControllerProductProduct extends Controller {
 				$url .= '&limit=' . $this->request->get['limit'];
 			}
 
+			/******************************************************
+			 * Check configuration setting for hide/show price
+			 ******************************************************/
+
+			$this->load->model('setting/configuration');
+			$config             = $this->model_setting_configuration->get('wholesale', 'hide_price');
+			$data['hide_price'] = (strtolower($config['value']) === 'yes');
+
 			$data['breadcrumbs'][] = array(
 				'text' => $product_info['name'],
 				'href' => $this->url->link('product/product', $url . '&product_id=' . $this->request->get['product_id'])
